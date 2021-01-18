@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.groups;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.index.CAItems;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,6 @@ public class ModGroup extends ItemGroup{
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(Items.LEVER);
+		return new ItemStack(CAItems.CAPACITOR.get());
 	}
 }

@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.util.NonNullLazyValue;
@@ -39,10 +40,11 @@ public class CreateAddition {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         
-        new ModGroup("create_addition_group");
+        new ModGroup("main");
         
         CABlocks.register();
         CATileEntities.register();
+        CAItems.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {

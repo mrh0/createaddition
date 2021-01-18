@@ -125,6 +125,8 @@ dependencies {
     // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
 	
 	implementation fg.deobf("curse.maven:create-328085:3167531")
+	runtimeOnly fg.deobf("curse.maven:immersive-engineering-231951:3102280")
+	runtimeOnly fg.deobf("curse.maven:jei-238222:3157864")
 	// compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
 	//runtimeOnly fileTree(dir: 'libs', includes: ['*.jar'])
 

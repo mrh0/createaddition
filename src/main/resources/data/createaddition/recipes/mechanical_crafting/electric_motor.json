@@ -1,0 +1,26 @@
+{
+  "type": "create:mechanical_crafting",
+  "pattern": [
+    " BSB ",
+    "BSRSB",
+    " BSB ",
+    "  C  "
+  ],
+  "key": {
+    "C": {
+      "item": "createaddition:capacitor"
+    },
+    "B": {
+      "tag": "forge:plates/brass"
+    },
+    "R": {
+      "tag": "forge:rods/iron"
+    },
+    "S": {
+      "tag": "forge:wires/copper"
+    }
+  },
+  "result": {
+    "item": "createaddition:electric_motor"
+  }
+}

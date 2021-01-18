@@ -1,8 +1,10 @@
 {
-	"item.createaddition.electric_motor.tooltip": "EXAMPLE ITEM (just a marker that this tooltip exists)",
-	"item.createaddition.electric_motor.tooltip.summary": "A brief description of the item. _Underscores_ highlight a term.",
-	"item.createaddition.electric_motor.tooltip.condition1": "When this",
-	"item.createaddition.electric_motor.tooltip.behaviour1": "Then this item does this. (behaviours show on shift)",
+	"createaddition.tooltip.energy": "Stored Energy:",
 	
-	"block.createaddition.electric_motor": "Electric Motor"
+	"item.createaddition.capacitor": "Capacitor",
+	"item.createaddition.multimeter": "Multimeter",
+	"item.createaddition.zinc_sheet": "Zinc Sheet",
+	"block.createaddition.electric_motor": "Electric Motor",
+	
+	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }
