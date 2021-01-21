@@ -1,5 +1,5 @@
 {
-    "parent": "createaddition:block/electric_motor/item",
+    "parent": "createaddition:block/alternator/item",
     "display": {
         "gui": {
             "rotation": [ 30, 45, 0 ],

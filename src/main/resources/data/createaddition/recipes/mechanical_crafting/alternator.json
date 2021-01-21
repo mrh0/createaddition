@@ -1,0 +1,24 @@
+{
+  "type": "create:mechanical_crafting",
+  "pattern": [
+    "ISESI",
+    "  C  "
+  ],
+  "key": {
+    "C": {
+      "item": "createaddition:capacitor"
+    },
+    "I": {
+      "tag": "forge:plates/iron"
+    },
+    "E": {
+      "item": "createaddition:electric_motor"
+    },
+    "S": {
+      "tag": "forge:wires/copper"
+    }
+  },
+  "result": {
+    "item": "createaddition:alternator"
+  }
+}

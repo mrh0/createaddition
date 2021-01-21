@@ -1,8 +1,9 @@
-package com.mrh0.createaddition.blocks.electric_motor;
+package com.mrh0.createaddition.blocks.alternator;
 
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.contraptions.base.DirectionalKineticBlock;
+import com.simibubi.create.content.contraptions.base.IRotate;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
@@ -17,17 +18,13 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
-public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<ElectricMotorTileEntity> {
+public class AlternatorBlock extends DirectionalKineticBlock implements ITE<AlternatorTileEntity>, IRotate {
 	
-	public static final VoxelShaper ELECTRIC_MOTOR_SHAPE = CAShapes.shape(0, 5, 0, 16, 11, 16).add(3, 0, 3, 13, 14, 13).forDirectional();
-
-	public ElectricMotorBlock(Properties properties) {
-		super(properties);
-	}
-
+	public static final VoxelShaper ALTERNATOR_SHAPE = CAShapes.shape(0, 1, 0, 16, 13, 16).add(1, 0, 1, 15, 14, 15).forDirectional();
+	
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return ELECTRIC_MOTOR_SHAPE.get(state.get(FACING));
+		return ALTERNATOR_SHAPE.get(state.get(FACING));
 	}
 	
 	@Override
@@ -39,14 +36,8 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 		return getDefaultState().with(FACING, preferred);
 	}
 
-	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return CATileEntities.ELECTRIC_MOTOR.create();
-	}
-	
-	@Override
-	public Class<ElectricMotorTileEntity> getTileEntityClass() {
-		return ElectricMotorTileEntity.class;
+	public AlternatorBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override
@@ -61,7 +52,19 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 	}
 
 	@Override
-	public boolean hideStressImpact() {
-		return true;
+	public Class<AlternatorTileEntity> getTileEntityClass() {
+		return AlternatorTileEntity.class;
 	}
+
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return CATileEntities.ALTERNATOR.create();
+	}
+
+	@Override
+	public SpeedLevel getMinimumRequiredSpeedLevel() {
+		return SpeedLevel.MEDIUM;
+	}
+	
+	
 }

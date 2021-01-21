@@ -2,6 +2,7 @@ package com.mrh0.createaddition.index;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.AllTags.AllBlockTags;
@@ -17,8 +18,16 @@ public class CABlocks {
 	
 	public static final BlockEntry<ElectricMotorBlock> ELECTRIC_MOTOR = REGISTRATE.block("electric_motor", ElectricMotorBlock::new)
 			.initialProperties(SharedProperties::stone)
-			.tag(AllBlockTags.SAFE_NBT.tag)
-			.transform(StressConfigDefaults.setCapacity(16.0))
+			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
+			//.transform(StressConfigDefaults.setCapacity(16.0))
+			.item()
+			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<AlternatorBlock> ALTERNATOR = REGISTRATE.block("alternator", AlternatorBlock::new)
+			.initialProperties(SharedProperties::stone)
+			.transform(StressConfigDefaults.setImpact(8.0))
+			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
 			.item()
 			.transform(customItemModel())
 			.register();

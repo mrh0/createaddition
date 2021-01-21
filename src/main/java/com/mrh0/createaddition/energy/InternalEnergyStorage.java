@@ -1,7 +1,14 @@
 package com.mrh0.createaddition.energy;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public class InternalEnergyStorage extends EnergyStorage {
 	public InternalEnergyStorage(int capacity) {
@@ -39,7 +46,30 @@ public class InternalEnergyStorage extends EnergyStorage {
     	return true;
     }
     
+    public int internalConsumeEnergy(int consume) {
+    	int oenergy = energy;
+        energy = Math.max(0, energy - consume);
+        return oenergy - energy;
+    }
+    
+    public int internalProduceEnergy(int produce) {
+    	int oenergy = energy;
+        energy = Math.min(capacity, energy + produce);
+        return oenergy - energy;
+    }
+    
     public void setEnergy(int energy) {
     	this.energy = energy;
+    }
+    
+    public void outputToSide(World world, BlockPos pos, Direction side, int max) {
+    	TileEntity te = world.getTileEntity(pos.offset(side));
+		if(te == null)
+			return;
+		LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		IEnergyStorage ies = opt.orElse(null);
+		if(ies == null)
+			return;
+		this.receiveEnergy(ies.receiveEnergy(this.extractEnergy(max, false), false), false);
     }
 }

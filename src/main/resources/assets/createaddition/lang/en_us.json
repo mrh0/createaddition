@@ -1,10 +1,20 @@
 {
-	"createaddition.tooltip.energy": "Stored Energy:",
+	"createaddition.tooltip.energy.stored": "Stored Energy:",
+	"createaddition.tooltip.energy.consumption": "Energy Usage:",
+	"createaddition.tooltip.energy.production": "Energy Generated:",
 	
 	"item.createaddition.capacitor": "Capacitor",
 	"item.createaddition.multimeter": "Multimeter",
+	"item.createaddition.multimeter.title":"[Multimeter]:",
 	"item.createaddition.zinc_sheet": "Zinc Sheet",
+	"item.createaddition.diamond_grit": "Diamond Grit",
+	"item.createaddition.diamond_grit_sandpaper": "Diamond Grit Sandpaper",
+	
+	"item.createaddition.copper_spool": "Copper Spool",
+	"item.createaddition.copper_wire": "Copper Wire",
+	
 	"block.createaddition.electric_motor": "Electric Motor",
+	"block.createaddition.alternator": "Alternator",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }
