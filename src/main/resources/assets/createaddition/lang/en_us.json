@@ -15,6 +15,7 @@
 	
 	"block.createaddition.electric_motor": "Electric Motor",
 	"block.createaddition.alternator": "Alternator",
+	"block.createaddition.creative_energy": "Creative Generator",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }

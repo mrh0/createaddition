@@ -40,7 +40,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	// TODO: Configs
 	private static Integer minRPM = 32, maxRPM = 256;
 	
-	private static final int maxIn = getEnergyConsumptionRate(maxRPM) * 4;
+	private static final int maxIn = 4096;//getEnergyConsumptionRate(maxRPM) * 100;
 	private static final int maxOut = 0;
 	private static final int capacity = 16000;
 	
@@ -155,13 +155,14 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		super.lazyTick();
 		if(world.isRemote())
 			return;
+		int con = getEnergyConsumptionRate(generatedSpeed.getValue()) * 20;
 		if(!active) {
-			if(energy.getEnergyStored() > energy.getMaxEnergyStored()/4) {
+			if(energy.getEnergyStored() > con * 2) {
 				active = true;
 			}
 		}
 		else {
-			int con = getEnergyConsumptionRate(generatedSpeed.getValue()) * 20;
+			
 			int ext = energy.internalConsumeEnergy(con);
 			if(ext < con) {
 				active = false;

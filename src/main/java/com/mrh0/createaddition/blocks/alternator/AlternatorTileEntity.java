@@ -30,7 +30,7 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 	private LazyOptional<IEnergyStorage> lazyEnergy;
 	
 	private static final int maxIn = 0;
-	private static final int maxOut = 2048;
+	private static final int maxOut = 4096;
 	private static final int capacity = 32000;
 
 	public AlternatorTileEntity(TileEntityType<?> typeIn) {

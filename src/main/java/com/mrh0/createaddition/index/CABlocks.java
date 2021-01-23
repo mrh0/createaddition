@@ -3,7 +3,9 @@ package com.mrh0.createaddition.index;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
+import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
+import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.foundation.config.StressConfigDefaults;
@@ -28,6 +30,20 @@ public class CABlocks {
 			.initialProperties(SharedProperties::stone)
 			.transform(StressConfigDefaults.setImpact(8.0))
 			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
+			.item()
+			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<RollingMillBlock> ROLLING_MILL = REGISTRATE.block("rolling_mill", RollingMillBlock::new)
+			.initialProperties(SharedProperties::stone)
+			.transform(StressConfigDefaults.setImpact(8.0))
+			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
+			.item()
+			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<CreativeEnergyBlock> CREATIVE_ENERGY = REGISTRATE.block("creative_energy", CreativeEnergyBlock::new)
+			.initialProperties(SharedProperties::stone)
 			.item()
 			.transform(customItemModel())
 			.register();

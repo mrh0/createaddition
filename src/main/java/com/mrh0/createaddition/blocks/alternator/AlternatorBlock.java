@@ -65,6 +65,4 @@ public class AlternatorBlock extends DirectionalKineticBlock implements ITE<Alte
 	public SpeedLevel getMinimumRequiredSpeedLevel() {
 		return SpeedLevel.MEDIUM;
 	}
-	
-	
 }

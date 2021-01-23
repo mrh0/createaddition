@@ -2,7 +2,7 @@
   "variants": {
     "facing=down": {
       "model": "createaddition:block/electric_motor/block",
-      "x": 90, "y": 90
+      "x": 270, "y": 90
     },
     "facing=up": {
       "model": "createaddition:block/electric_motor/block",

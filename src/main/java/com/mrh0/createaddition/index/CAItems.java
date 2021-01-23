@@ -30,6 +30,10 @@ public class CAItems {
 			REGISTRATE.item("copper_wire", Item::new)
 			.register();
 	
+	public static final ItemEntry<Item> COPPER_ROD =
+			REGISTRATE.item("copper_rod", Item::new)
+			.register();
+	
 	public static final ItemEntry<Item> DIAMOND_GRIT =
 			REGISTRATE.item("diamond_grit", Item::new)
 			.register();
