@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern":
+	["P",
+	 "N",
+	 "P"],
+	"key":
+	{
+		"P":
+		{
+			"tag": "forge:plates/iron"
+		},
+		"N":
+		{
+			"tag": "forge:nuggets/iron"
+		}
+	},
+	"result":{
+		"item": "createaddition:spool",
+		"count": 4
+	}
+}

@@ -2,6 +2,7 @@ package com.mrh0.createaddition.blocks.rolling_mill;
 
 import java.util.Optional;
 
+import com.mrh0.createaddition.create.KineticTileEntityFix;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
@@ -25,7 +26,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public class RollingMillTileEntity extends KineticTileEntity {
+public class RollingMillTileEntity extends KineticTileEntityFix {
 
 	public ItemStackHandler inputInv;
 	public ItemStackHandler outputInv;

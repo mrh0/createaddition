@@ -1,0 +1,9 @@
+{
+	"type":"createaddition:rolling",
+	"input": {
+      	"tag": "forge:plates/gold"
+	},
+	"result": {
+		"item": "createaddition:gold_wire"
+	}
+}

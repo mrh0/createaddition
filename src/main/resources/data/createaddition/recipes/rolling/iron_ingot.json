@@ -1,0 +1,9 @@
+{
+	"type":"createaddition:rolling",
+	"input": {
+      	"tag": "forge:ingots/iron"
+	},
+	"result": {
+		"item": "createaddition:iron_rod"
+	}
+}

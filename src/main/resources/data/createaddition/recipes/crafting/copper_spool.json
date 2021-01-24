@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern":
+	[" W ",
+	 "WSW",
+	 " W "],
+	"key":
+	{
+		"W":
+		{
+			"tag": "forge:wires/copper"
+		},
+		"S":
+		{
+			"item": "createaddition:spool"
+		}
+	},
+	"result":{
+		"item": "createaddition:copper_spool",
+		"count": 1
+	}
+}

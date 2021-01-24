@@ -22,17 +22,7 @@ public class CAItems {
 			REGISTRATE.item("capacitor", Item::new)
 			.register();
 	
-	public static final ItemEntry<Item> COPPER_SPOOL =
-			REGISTRATE.item("copper_spool", Item::new)
-			.register();
 	
-	public static final ItemEntry<Item> COPPER_WIRE =
-			REGISTRATE.item("copper_wire", Item::new)
-			.register();
-	
-	public static final ItemEntry<Item> COPPER_ROD =
-			REGISTRATE.item("copper_rod", Item::new)
-			.register();
 	
 	public static final ItemEntry<Item> DIAMOND_GRIT =
 			REGISTRATE.item("diamond_grit", Item::new)
@@ -50,6 +40,30 @@ public class CAItems {
 	public static final ItemEntry<Multimeter> MULTIMETER =
 		REGISTRATE.item("multimeter", Multimeter::new)
 			.register();
+	
+	public static final ItemEntry<Item> SPOOL =
+			REGISTRATE.item("spool", Item::new).register();
+	
+	public static final ItemEntry<Item> COPPER_SPOOL =
+			REGISTRATE.item("copper_spool", Item::new).register();
+	public static final ItemEntry<Item> COPPER_WIRE =
+			REGISTRATE.item("copper_wire", Item::new).register();
+	public static final ItemEntry<Item> COPPER_ROD =
+			REGISTRATE.item("copper_rod", Item::new).register();
+	
+	public static final ItemEntry<Item> IRON_SPOOL =
+			REGISTRATE.item("iron_spool", Item::new).register();
+	public static final ItemEntry<Item> IRON_WIRE =
+			REGISTRATE.item("iron_wire", Item::new).register();
+	public static final ItemEntry<Item> IRON_ROD =
+			REGISTRATE.item("iron_rod", Item::new).register();
+	
+	public static final ItemEntry<Item> GOLD_SPOOL =
+			REGISTRATE.item("gold_spool", Item::new).register();
+	public static final ItemEntry<Item> GOLD_WIRE =
+			REGISTRATE.item("gold_wire", Item::new).register();
+	public static final ItemEntry<Item> GOLD_ROD =
+			REGISTRATE.item("gold_rod", Item::new).register();
 	
 	public static void register() {}
 }

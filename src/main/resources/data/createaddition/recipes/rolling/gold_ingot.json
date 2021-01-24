@@ -1,0 +1,9 @@
+{
+	"type":"createaddition:rolling",
+	"input": {
+      	"tag": "forge:ingots/gold"
+	},
+	"result": {
+		"item": "createaddition:gold_rod"
+	}
+}

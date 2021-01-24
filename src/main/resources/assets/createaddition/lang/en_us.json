@@ -12,10 +12,37 @@
 	
 	"item.createaddition.copper_spool": "Copper Spool",
 	"item.createaddition.copper_wire": "Copper Wire",
+	"item.createaddition.copper_rod": "Copper Rod",
+	
+	"item.createaddition.iron_spool": "Iron Spool",
+	"item.createaddition.iron_wire": "Iron Wire",
+	"item.createaddition.iron_rod": "Iron Rod",
+	
+	"item.createaddition.steel_spool": "Steel Spool",
+	"item.createaddition.steel_wire": "Steel Wire",
+	"item.createaddition.steel_rod": "Steel Rod",
+	
+	"item.createaddition.electrum_spool": "Electrum Spool",
+	"item.createaddition.electrum_wire": "Electrum Wire",
+	"item.createaddition.electrum_rod": "Electrum Rod",
+	
+	"item.createaddition.aluminum_spool": "Aluminum Spool",
+	"item.createaddition.aluminum_wire": "Aluminum Wire",
+	"item.createaddition.aluminum_rod": "Aluminum Rod",
+	
+	"item.createaddition.gold_spool": "Gold Spool",
+	"item.createaddition.gold_wire": "Gold Wire",
+	"item.createaddition.gold_rod": "Gold Rod",
+	
+	"item.createaddition.brass_rod": "Brass Rod",
+	"item.createaddition.bronze_rod": "Bronze Rod",
+	
+	"item.createaddition.spool": "Spool",
 	
 	"block.createaddition.electric_motor": "Electric Motor",
 	"block.createaddition.alternator": "Alternator",
 	"block.createaddition.creative_energy": "Creative Generator",
+	"block.createaddition.rolling_mill": "Rolling Mill",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }
