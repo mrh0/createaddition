@@ -16,7 +16,7 @@ Create Crafts & Additions extends Create and acts as a bridge between electricit
 
 # Content
 
-![alt text](https://github.com/mrh0/createaddition/blob/main/alpha_items.png?raw=true)
+![Items](https://github.com/mrh0/createaddition/blob/main/createaddition_items.png?raw=true)
 
 - Electric Motor.
 - Alternator.
