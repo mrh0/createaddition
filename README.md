@@ -6,7 +6,7 @@ Minecraft Forge Mod by MRH0
 
 # Download
 
-Latest Version: - for Minecraft 1.16.4
+Latest Alpha: [NOT RELEASED] for Minecraft 1.16.4
 
 At: [SOON]
 
