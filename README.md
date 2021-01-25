@@ -12,7 +12,7 @@ At: [SOON]
 
 # About
 
-This mod acts as a bridge between electricity and Create by adding an Electric Motor which generate kinetic energy from Forge energy and an Alternator which does the oposite at 75% efficency. To crafts these items you need to make a Rolling Mill which is a kinetic machine that is used to make rods and wires. All the recipes are available through JEI.
+This mod acts as a bridge between electricity and Create by adding an Electric Motor which generate kinetic energy from Forge energy and an Alternator which does the opposite at 75% efficency. To crafts these items you need to make a Rolling Mill which is a kinetic machine that is used to make rods and wires. All the recipes are available through JEI.
 
 # Content
 
