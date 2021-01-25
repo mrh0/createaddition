@@ -1,4 +1,4 @@
-# Create Crafts &amp; Additions by MrH0
+# Create Crafts &amp; Additions by MRH0
 Addon to the Create mod by the Create Team.
 
 Create Crafts & Aditions
