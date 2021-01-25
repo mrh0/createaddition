@@ -12,7 +12,7 @@ At: [SOON]
 
 # About
 
-Create Crafts & Aditions: a Minecraft Forge Mod by MRH0
+This mod act as a bridge between electricity and create by adding a Electric Motor which generate kinetic energy from Forge energy and an Alternator which does the oposite at 75% efficency. To crafts these items you need to make a Rolling Mill which is a kinetic machine that is used to make rods and wires. All the recipes are available through JEI.
 
 # License
 
