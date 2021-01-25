@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
 import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
@@ -33,6 +34,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class RollingMillBlock extends HorizontalKineticBlock implements ITE<RollingMillTileEntity> {
 
+	public static final VoxelShape ROLLING_MILL_SHAPE = CAShapes.shape(0,0,0,16,5,16).add(2,0,2,14,16,14).build();
+	
 	public RollingMillBlock(Properties properties) {
 		super(properties);
 	}
@@ -49,7 +52,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return AllShapes.MILLSTONE;
+		return ROLLING_MILL_SHAPE;
 	}
 
 	@Override

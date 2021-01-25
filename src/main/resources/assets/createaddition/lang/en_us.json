@@ -2,6 +2,7 @@
 	"createaddition.tooltip.energy.stored": "Stored Energy:",
 	"createaddition.tooltip.energy.consumption": "Energy Usage:",
 	"createaddition.tooltip.energy.production": "Energy Generated:",
+	"createaddition.recipe.rolling": "Rolling",
 	
 	"item.createaddition.capacitor": "Capacitor",
 	"item.createaddition.multimeter": "Multimeter",

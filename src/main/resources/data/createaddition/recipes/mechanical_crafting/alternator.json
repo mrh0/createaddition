@@ -15,7 +15,7 @@
       "item": "createaddition:electric_motor"
     },
     "S": {
-      "tag": "forge:wires/copper"
+      "item": "createaddition:copper_spool"
     }
   },
   "result": {

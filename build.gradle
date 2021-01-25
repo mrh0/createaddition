@@ -15,6 +15,11 @@ repositories {
 	maven {
 		url "https://www.cursemaven.com"
 	}
+	maven {
+        // location of the maven that hosts JEI files (And TiC)
+        name "Progwml6 maven"
+        url "https://dvs1.progwml6.com/files/maven/"
+    }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -23,7 +28,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 
-version = '20210124a'
+version = '20210125a'
 group = 'com.yourname.modid' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'modid'
 
@@ -124,9 +129,14 @@ dependencies {
     // These dependencies get remapped to your current MCP mappings
     // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
 	
+	// compile against the JEI API but do not include it at runtime
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    // at runtime, use the full JEI jar
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+	
 	implementation fg.deobf("curse.maven:create-328085:3167531")
 	runtimeOnly fg.deobf("curse.maven:immersive-engineering-231951:3102280")
-	runtimeOnly fg.deobf("curse.maven:jei-238222:3157864")
+	//runtimeOnly fg.deobf("curse.maven:jei-238222:3157864")
 	// compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
 	//runtimeOnly fileTree(dir: 'libs', includes: ['*.jar'])
 

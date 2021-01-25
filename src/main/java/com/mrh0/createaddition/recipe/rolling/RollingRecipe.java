@@ -8,6 +8,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -27,6 +28,10 @@ public class RollingRecipe implements IRecipe<RecipeWrapper> {
 		this.output = output;
 		this.id = id;
 		this.ingredient = ingredient;
+	}
+	
+	public Ingredient getIngredient() {
+		return ingredient;
 	}
 	
 	@Override
@@ -64,7 +69,6 @@ public class RollingRecipe implements IRecipe<RecipeWrapper> {
 
 	@Override
 	public IRecipeType<?> getType() {
-		System.out.println("TYPE:" + TYPE);
 		return TYPE;
 	}
 	

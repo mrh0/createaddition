@@ -38,8 +38,6 @@ public class RollingRecipeSerializer extends CARecipeSerializer<RollingRecipe>{
 	public RollingRecipe readFromJson(ResourceLocation recipeId, JsonObject json) {
 		ItemStack output = readOutput(json.get("result"));
 		Ingredient input = Ingredient.deserialize(json.get("input"));
-		System.out.println("OUT:" + output);
-		System.out.println("IN:" + input.test(new ItemStack(Items.IRON_INGOT, 1)));
 		return new RollingRecipe(input, output, recipeId);
 	}
 
