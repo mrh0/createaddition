@@ -20,10 +20,10 @@ This mod act as a bridge between electricity and create by adding a Electric Mot
 
 - Electric Motor.
 - Alternator.
-- Creative Generator.
 - Rolling Mill.
-- Multimeter.
+- Creative Generator.
 - Diamond Grit Sandpaper.
+- Multimeter.
 - Varius wires, rods, spools and other crafting components.
 
 # License
