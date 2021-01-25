@@ -6,9 +6,9 @@ Minecraft Forge Mod by MRH0
 
 # Download
 
-Latest Alpha: [NOT RELEASED] for Minecraft 1.16.4
+Latest Alpha 20210125b for Minecraft 1.16.4+5
 
-At: [SOON]
+At: https://www.curseforge.com/minecraft/mc-mods/createaddition
 
 # About
 
