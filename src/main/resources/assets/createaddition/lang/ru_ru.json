@@ -1,0 +1,49 @@
+{
+	"createaddition.tooltip.energy.stored": "Накопленная энергия:",
+	"createaddition.tooltip.energy.consumption": "Потребляемая энергия:",
+	"createaddition.tooltip.energy.production": "Вырабатываемая энергия:",
+	"createaddition.recipe.rolling": "Прокатка",
+	
+	"item.createaddition.capacitor": "Конденсатор",
+	"item.createaddition.multimeter": "Мультиметр",
+	"item.createaddition.multimeter.title":"[Мультиметр]:",
+	"item.createaddition.zinc_sheet": "Цинковый лист",
+	"item.createaddition.diamond_grit": "Алмазная пыль",
+	"item.createaddition.diamond_grit_sandpaper": "Наждачная бумага с алмазным напылением",
+	
+	"item.createaddition.copper_spool": "Медная катушка",
+	"item.createaddition.copper_wire": "Медный провод",
+	"item.createaddition.copper_rod": "Медный стержень",
+	
+	"item.createaddition.iron_spool": "Железная катушка",
+	"item.createaddition.iron_wire": "Железный провод",
+	"item.createaddition.iron_rod": "Железный стержень",
+	
+	"item.createaddition.steel_spool": "Стальная катушка",
+	"item.createaddition.steel_wire": "Стальной провод",
+	"item.createaddition.steel_rod": "Стальной стержень",
+	
+	"item.createaddition.electrum_spool": "Электрумовая катушка",
+	"item.createaddition.electrum_wire": "Электрумовый провод",
+	"item.createaddition.electrum_rod": "Электрумовый стержень",
+	
+	"item.createaddition.aluminum_spool": "Алюминиевая катушка",
+	"item.createaddition.aluminum_wire": "Алюминиевый провод",
+	"item.createaddition.aluminum_rod": "Алюминиевый стержень",
+	
+	"item.createaddition.gold_spool": "Золотая катушка",
+	"item.createaddition.gold_wire": "Золотой провод",
+	"item.createaddition.gold_rod": "Золотой стержень",
+	
+	"item.createaddition.brass_rod": "Латунный стержень",
+	"item.createaddition.bronze_rod": "Бронзовый стержень",
+	
+	"item.createaddition.spool": "Пустая катушка",
+	
+	"block.createaddition.electric_motor": "Электромотор",
+	"block.createaddition.alternator": "Генератор",
+	"block.createaddition.creative_energy": "Творческий генератор",
+	"block.createaddition.rolling_mill": "Прокатный станок",
+	
+	"itemGroup.createaddition:main":"Create Crafts & Additions"
+}
