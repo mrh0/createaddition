@@ -65,5 +65,8 @@ public class CAItems {
 	public static final ItemEntry<Item> GOLD_ROD =
 			REGISTRATE.item("gold_rod", Item::new).register();
 	
+	public static final ItemEntry<Item> BRASS_ROD =
+			REGISTRATE.item("brass_rod", Item::new).register();
+	
 	public static void register() {}
 }

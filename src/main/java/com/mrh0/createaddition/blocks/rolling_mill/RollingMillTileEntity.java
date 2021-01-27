@@ -2,6 +2,7 @@ package com.mrh0.createaddition.blocks.rolling_mill;
 
 import java.util.Optional;
 
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.create.KineticTileEntityFix;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
@@ -33,6 +34,10 @@ public class RollingMillTileEntity extends KineticTileEntityFix {
 	public LazyOptional<IItemHandler> capability;
 	public int timer;
 	private RollingRecipe lastRecipe;
+	
+	private static final int 
+		STRESS = Config.ROLLING_MILL_STRESS.get(), 
+		DURATION = Config.ROLLING_MILL_PROCESSING_DURATION.get();
 
 	public RollingMillTileEntity(TileEntityType<? extends RollingMillTileEntity> type) {
 		super(type);
@@ -201,7 +206,13 @@ public class RollingMillTileEntity extends KineticTileEntityFix {
 	}
 	
 	public static int getProcessingDuration() {
-		return 100;
+		return DURATION;
+	}
+	
+	public float calculateStressApplied() {
+		float impact = STRESS;
+		this.lastStressApplied = impact;
+		return impact;
 	}
 }
 

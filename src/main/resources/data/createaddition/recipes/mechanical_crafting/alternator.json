@@ -1,8 +1,10 @@
 {
   "type": "create:mechanical_crafting",
   "pattern": [
-    "ISESI",
-    "  C  "
+  	"  A  "
+  	"ISSSI",
+    "ISRSI",
+    "ICGCI"
   ],
   "key": {
     "C": {
@@ -11,11 +13,17 @@
     "I": {
       "tag": "forge:plates/iron"
     },
-    "E": {
-      "item": "createaddition:electric_motor"
+    "R": {
+      "tag": "forge:rods/iron"
     },
     "S": {
       "item": "createaddition:copper_spool"
+    },
+    "G": {
+      "item": "createaddition:gold_spool"
+    },
+    "A": {
+      "item": "create:andesite_alloy"
     }
   },
   "result": {

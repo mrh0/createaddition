@@ -4,6 +4,7 @@
       	"tag": "forge:ingots/gold"
 	},
 	"result": {
-		"item": "createaddition:gold_rod"
+		"item": "createaddition:gold_rod",
+		"count": 2
 	}
 }

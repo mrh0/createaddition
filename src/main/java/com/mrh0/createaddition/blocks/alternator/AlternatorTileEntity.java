@@ -3,7 +3,9 @@ package com.mrh0.createaddition.blocks.alternator;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.create.KineticTileEntityFix;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.item.Multimeter;
@@ -29,13 +31,15 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 	protected final InternalEnergyStorage energy;
 	private LazyOptional<IEnergyStorage> lazyEnergy;
 	
-	private static final int maxIn = 0;
-	private static final int maxOut = 4096;
-	private static final int capacity = 32000;
+	private static final int 
+		MAX_IN = 0,
+		MAX_OUT = Config.ALTERNATOR_MAX_OUTPUT.get(),
+		CAPACITY = Config.ALTERNATOR_CAPACITY.get(),
+		STRESS = Config.ALTERNATOR_STRESS.get();
 
 	public AlternatorTileEntity(TileEntityType<?> typeIn) {
 		super(typeIn);
-		energy = new InternalEnergyStorage(capacity, maxIn, maxOut);
+		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		lazyEnergy = LazyOptional.of(() -> energy);
 		setLazyTickRate(20);
 	}
@@ -54,7 +58,7 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 	}
 	
 	public float calculateStressApplied() {
-		float impact = 16;
+		float impact = STRESS;
 		this.lastStressApplied = impact;
 		return impact;
 	}
@@ -71,7 +75,7 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 	}
 
 	public boolean isEnergyOutput(Direction side) {
-		return side != Direction.SOUTH;
+		return side != getBlockState().get(AlternatorBlock.FACING);
 	}
 	
 	@Override
@@ -97,20 +101,13 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 		for(Direction side : Direction.values()) {
 			if(!isEnergyOutput(side))
 				continue;
-			energy.outputToSide(world, pos, side, maxOut);
+			energy.outputToSide(world, pos, side, MAX_OUT);
 		}
 	}
 	
 	public static int getEnergyProductionRate(int rpm) {
-		// TODO: Configs
 		return (int)(ElectricMotorTileEntity.getEnergyConsumptionRate(Math.abs(rpm)) * 0.75);
 	}
-	
-	/*public float calculateStressApplied() {
-		float impact = (float) 16;
-		//this.lastStressApplied = impact; // This is a problem!
-		return impact;
-	}*/
 	
 	@Override
 	protected Block getStressConfigKey() {

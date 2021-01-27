@@ -1,12 +1,16 @@
 {
   "type": "create:mechanical_crafting",
   "pattern": [
+  	"  A  ",
     " BSB ",
     "BSRSB",
     " BSB ",
     "  C  "
   ],
   "key": {
+  	"A": {
+      "item": "create:andesite_alloy"
+    },
     "C": {
       "item": "createaddition:capacitor"
     },

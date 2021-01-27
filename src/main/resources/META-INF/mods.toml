@@ -9,9 +9,9 @@ modLoader="javafml" #mandatory
 loaderVersion="[35,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
-license="All rights reserved"
+license="MIT License, Copyright 2021 MRH0"
 # A URL to refer people to when problems occur with this mod
-#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+issueTrackerURL="https://github.com/mrh0/createaddition/issues" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
@@ -25,7 +25,7 @@ displayName="Create Crafts & Additions" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+displayURL="https://github.com/mrh0/createaddition" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="createaddition.png" #optional
 # A text field displayed in the mod UI
@@ -34,7 +34,7 @@ credits="Special Thanks to the Forge Discord and the Create Team." #optional
 authors="MRH0" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-createaddition INDEV
+Create Crafts & Additions extends Create and acts as a bridge between electricity and kinetic energy from Create by adding an Electric Motor which generates kinetic energy from Forge energy and an Alternator which does the opposite.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.createaddition]] #optional
