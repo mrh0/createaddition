@@ -28,7 +28,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 
-version = '1.16.4-20210126a'
+version = '1.16.4-20210202a'
 group = 'com.mrh0.createaddition' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createaddition'
 

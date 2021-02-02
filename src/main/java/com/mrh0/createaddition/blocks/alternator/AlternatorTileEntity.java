@@ -36,6 +36,7 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 		MAX_OUT = Config.ALTERNATOR_MAX_OUTPUT.get(),
 		CAPACITY = Config.ALTERNATOR_CAPACITY.get(),
 		STRESS = Config.ALTERNATOR_STRESS.get();
+	private static final double EFFICIENCY = Config.ALTERNATOR_EFFICIENCY.get();
 
 	public AlternatorTileEntity(TileEntityType<?> typeIn) {
 		super(typeIn);
@@ -106,7 +107,7 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 	}
 	
 	public static int getEnergyProductionRate(int rpm) {
-		return (int)(ElectricMotorTileEntity.getEnergyConsumptionRate(Math.abs(rpm)) * 0.75);
+		return (int)(ElectricMotorTileEntity.getEnergyConsumptionRate(Math.abs(rpm)) * EFFICIENCY);
 	}
 	
 	@Override

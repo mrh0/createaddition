@@ -168,7 +168,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	public static int getEnergyConsumptionRate(int rpm) {
-		return Config.ELECTRIC_MOTOR_CONSUMPTION.get() * rpm / MAX_RPM;
+		return Config.FE_TO_SU.get() * rpm / MAX_RPM;
 	}
 	
 	@Override

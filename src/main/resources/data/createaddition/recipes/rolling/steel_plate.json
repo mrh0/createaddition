@@ -1,0 +1,14 @@
+{
+	"type":"createaddition:rolling",
+	"input": {
+      	"tag": "forge:plates/steel"
+	},
+	"result": {
+		"item": "immersiveengineering:wire_steel",
+		"count": 1
+	},
+	"conditions": [ {
+		"type": "forge:mod_loaded",
+		"modid": "immersiveengineering"
+    } ]
+}

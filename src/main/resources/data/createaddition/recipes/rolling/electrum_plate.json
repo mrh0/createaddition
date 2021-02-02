@@ -1,0 +1,14 @@
+{
+	"type":"createaddition:rolling",
+	"input": {
+      	"tag": "forge:plates/electrum"
+	},
+	"result": {
+		"item": "immersiveengineering:wire_electrum",
+		"count": 1
+	},
+	"conditions": [ {
+		"type": "forge:mod_loaded",
+		"modid": "immersiveengineering"
+    } ]
+}
