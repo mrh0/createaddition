@@ -2,6 +2,7 @@ package com.mrh0.createaddition.blocks.accumulator;
 
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
+import com.mrh0.createaddition.energy.WireType;
 
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -12,7 +13,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWireNode {
 
 	public AccumulatorTileEntity(TileEntityType<?> tileEntityTypeIn) {
-		super(tileEntityTypeIn);
+		super(tileEntityTypeIn, 1600, 8196, 8196);
 	}
 
 	@Override
@@ -36,12 +37,29 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 
 	@Override
-	public void setNode(int node, BlockPos pos) {
-		
+	public BlockPos getNodePos(int nodes) {
+		return null;
+	}
+	
+	@Override
+	public WireType getNodeType(int node) {
+		return null;
+	}
+	
+	@Override
+	public int getNodeIndex(int node) {
+		return 0;
 	}
 
 	@Override
-	public BlockPos getNode(int nodes) {
-		return null;
+	public void setNode(int node, int other, BlockPos pos, WireType type) {
+
 	}
+
+	@Override
+	public BlockPos getMyPos() {
+		return pos;
+	}
+
+	
 }

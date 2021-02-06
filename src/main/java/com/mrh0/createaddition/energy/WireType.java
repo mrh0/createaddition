@@ -7,11 +7,27 @@ public enum WireType {
 	GOLD(1, 1024, 0, null),
 	ELECTRUM(2, 8196, 0, null);
 	
-	public final int ID, TRANSFER, COLOR;
+	protected final int ID, TRANSFER, COLOR;
 	
 	private WireType(int id, int transfer, int color, ItemStack drop) {
 		ID = id;
 		TRANSFER = transfer;
 		COLOR = color;
+	}
+	
+	public static WireType fromIndex(int index) {
+		switch(index) {
+			case 0:
+				return COPPER;
+			case 1:
+				return GOLD;
+			case 2:
+				return ELECTRUM;
+		}
+		return null;
+	}
+	
+	public int getIndex() {
+		return ID;
 	}
 }

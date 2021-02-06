@@ -19,12 +19,9 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	protected final InternalEnergyStorage energy;
 	protected LazyOptional<IEnergyStorage> lazyEnergy;
 	
-	protected static final int 
-	MAX_IN = 0,
-	MAX_OUT = 0,
-	CAPACITY = 0;
+	private boolean firstTickState = true;
 	
-	public BaseElectricTileEntity(TileEntityType<?> tileEntityTypeIn) {
+	public BaseElectricTileEntity(TileEntityType<?> tileEntityTypeIn, int CAPACITY, int MAX_IN, int MAX_OUT) {
 		super(tileEntityTypeIn);
 		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		lazyEnergy = LazyOptional.of(() -> energy);
@@ -62,4 +59,22 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		super.remove();
 		lazyEnergy.invalidate();
 	}
+	
+	public void outputTick(int max) {
+		for(Direction side : Direction.values()) {
+			if(!isEnergyOutput(side))
+				continue;
+			energy.outputToSide(world, pos, side, max);
+		}
+	}
+	
+	@Override
+	public void tick() {
+		super.tick();
+		if(firstTickState)
+			firstTick();
+		firstTickState = false;
+	}
+	
+	public void firstTick() {};
 }

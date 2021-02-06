@@ -61,7 +61,7 @@ public class Multimeter extends Item {
 				
 				c.getPlayer().sendMessage(new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.title")
 						.append(new StringTextComponent(" " +getString(energy,
-								new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.no_capability").getStringTruncated(Integer.MAX_VALUE)) + "fe ").append(new StringTextComponent(measur))),
+								new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.no_capability").getStringTruncated(Integer.MAX_VALUE), "fe") + " ").append(new StringTextComponent(measur))),
 						PlayerEntity.getUUID(c.getPlayer().getGameProfile()));
 				return ActionResultType.SUCCESS;
 			}
@@ -69,14 +69,14 @@ public class Multimeter extends Item {
 		return ActionResultType.PASS;
 	}
 	
-	public static String getString(IEnergyStorage ies, String nan) {
+	public static String getString(IEnergyStorage ies, String nan, String unit) {
 		if(ies == null)
 			return nan;
-		return format(ies.getEnergyStored()) + "/" + format(ies.getMaxEnergyStored());
+		return format(ies.getEnergyStored()) + "/" + format(ies.getMaxEnergyStored()) + "fe";
 	}
 	
 	public static String getString(IEnergyStorage ies) {
-		return getString(ies, "NaN");
+		return getString(ies, "NaN", "fe");
 	}
 	
 	public static String format(int n) {
@@ -111,7 +111,7 @@ public class Multimeter extends Item {
 		if(nbt == null)
 			return 0;
 		int r = now - nbt.getInt("start");
-    	return r > 0 ? r : 0;
+    	return r;
     }
 	
 	public static long getDeltaTime(CompoundNBT nbt, long now){

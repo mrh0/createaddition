@@ -3,13 +3,17 @@ buildscript {
         maven { 
 			url = 'https://files.minecraftforge.net/maven'
 		}
+		maven { url='https://dist.creeper.host/Sponge/maven' }
         jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
+
+
 
 repositories {
 	maven {
@@ -27,6 +31,11 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
+apply plugin: 'org.spongepowered.mixin'
+
+mixin {
+    add sourceSets.main, "createaddition.refmap.json"
+}
 
 version = '1.16.4-20210202a'
 group = 'com.mrh0.createaddition' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -52,6 +61,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+			arg "-mixin.config=createaddition.mixins.json"
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
@@ -158,6 +168,14 @@ jar {
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"mrh0",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+            "MixinConfigs": "createaddition.mixins.json"
         ])
     }
 }

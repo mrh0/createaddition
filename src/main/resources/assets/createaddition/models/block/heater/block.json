@@ -1,0 +1,50 @@
+{
+	"textures": {
+		"0": "createaddition:block/electric_motor/brass_motor_sides",
+		"1": "createaddition:block/electric_motor/brass_motor",
+		"particle": "createaddition:block/electric_motor/brass_motor_sides"
+	},
+	"elements": [
+		{
+			"name": "Body",
+			"from": [4, 2, 4],
+			"to": [12, 14, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [12, 10, 12]},
+			"faces": {
+				"north": {"uv": [4, 2, 12, 14], "texture": "#0"},
+				"east": {"uv": [4, 2, 12, 14], "texture": "#0"},
+				"south": {"uv": [4, 2, 12, 14], "texture": "#0"},
+				"west": {"uv": [4, 2, 12, 14], "texture": "#0"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#1"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#1"}
+			}
+		},
+		{
+			"name": "foot",
+			"from": [3, 0, 3],
+			"to": [13, 2, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [11, 8, 11]},
+			"faces": {
+				"north": {"uv": [3, 3, 13, 5], "texture": "#1"},
+				"east": {"uv": [3, 3, 13, 5], "texture": "#1"},
+				"south": {"uv": [3, 3, 13, 5], "texture": "#1"},
+				"west": {"uv": [3, 3, 13, 5], "texture": "#1"},
+				"up": {"uv": [3, 3, 13, 13], "texture": "#1"},
+				"down": {"uv": [3, 3, 13, 13], "texture": "#1"}
+			}
+		},
+		{
+			"from": [5, 13, 5],
+			"to": [11, 16, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [13, 21, 13]},
+			"faces": {
+				"north": {"uv": [5, 13, 11, 16], "texture": "#0"},
+				"east": {"uv": [5, 13, 11, 16], "texture": "#0"},
+				"south": {"uv": [5, 13, 11, 16], "texture": "#0"},
+				"west": {"uv": [5, 13, 11, 16], "texture": "#0"},
+				"up": {"uv": [5, 5, 11, 11], "texture": "#1"},
+				"down": {"uv": [0, 0, 6, 6], "texture": "#missing"}
+			}
+		}
+	]
+}

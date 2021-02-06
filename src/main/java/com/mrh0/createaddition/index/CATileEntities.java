@@ -1,8 +1,10 @@
 package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.blocks.alternator.AlternatorTileEntity;
+import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.*;
+import com.mrh0.createaddition.blocks.heater.HeaterTileEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillTileEntity;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.alternator.*;
@@ -33,6 +35,15 @@ public class CATileEntities {
 			.validBlocks(CABlocks.CREATIVE_ENERGY)
 			.register();
 	
+	public static final TileEntityEntry<ConnectorTileEntity> CONNECTOR = CreateAddition.registrate()
+			.tileEntity("connector", ConnectorTileEntity::new)
+			.validBlocks(CABlocks.CONNECTOR)
+			.register();
+	
+	public static final TileEntityEntry<HeaterTileEntity> HEATER = CreateAddition.registrate()
+			.tileEntity("heater", HeaterTileEntity::new)
+			.validBlocks(CABlocks.HEATER)
+			.register();
 	
 	public static void register() {}
 }
