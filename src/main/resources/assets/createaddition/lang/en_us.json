@@ -5,8 +5,13 @@
 	"createaddition.recipe.rolling": "Rolling",
 	
 	"item.createaddition.capacitor": "Capacitor",
+	
 	"item.createaddition.multimeter": "Multimeter",
 	"item.createaddition.multimeter.title":"[Multimeter]:",
+	"item.createaddition.multimeter.measuring":"[Measuring..]",
+	"item.createaddition.multimeter.ticks":"ticks",
+	"item.createaddition.multimeter.no_capability":"No Forge Energy capability on this side.",
+	
 	"item.createaddition.zinc_sheet": "Zinc Sheet",
 	"item.createaddition.diamond_grit": "Diamond Grit",
 	"item.createaddition.diamond_grit_sandpaper": "Diamond Grit Sandpaper",
@@ -44,6 +49,7 @@
 	"block.createaddition.alternator": "Alternator",
 	"block.createaddition.creative_energy": "Creative Generator",
 	"block.createaddition.rolling_mill": "Rolling Mill",
+	"block.createaddition.heater": "Induction Heater",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }

@@ -22,12 +22,13 @@ public class Config {
 	public static ForgeConfigSpec.IntValue ELECTRIC_MOTOR_MAX_RPM;
 	public static ForgeConfigSpec.IntValue ELECTRIC_MOTOR_MAX_INPUT;
 	public static ForgeConfigSpec.IntValue ELECTRIC_MOTOR_CAPACITY;
-	public static ForgeConfigSpec.IntValue ELECTRIC_MOTOR_CONSUMPTION;
+	public static ForgeConfigSpec.IntValue FE_TO_SU;
 	public static ForgeConfigSpec.IntValue ELECTRIC_MOTOR_STRESS;
 	
 	public static ForgeConfigSpec.IntValue ALTERNATOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.IntValue ALTERNATOR_CAPACITY;
 	public static ForgeConfigSpec.IntValue ALTERNATOR_STRESS;
+	public static ForgeConfigSpec.DoubleValue ALTERNATOR_EFFICIENCY;
 	
 	public static ForgeConfigSpec.IntValue ROLLING_MILL_PROCESSING_DURATION;
 	public static ForgeConfigSpec.IntValue ROLLING_MILL_STRESS;
@@ -35,6 +36,9 @@ public class Config {
 	static {
 		
 		COMMON_BUILDER.comment("General Settings").push(CATAGORY_GENERAL);
+		
+		FE_TO_SU = COMMON_BUILDER.comment("Forge Energy conversion rate (in FE/t at max RPM).")
+				.defineInRange("fe_conversion", 60, 0, Integer.MAX_VALUE);
 
 		COMMON_BUILDER.pop();
 		
@@ -46,14 +50,11 @@ public class Config {
 		ELECTRIC_MOTOR_MAX_RPM = COMMON_BUILDER.comment("Electric Motor maximum RPM.")
 				.defineInRange("motor_max_rpm", 256, 1, 256);
 		
-		ELECTRIC_MOTOR_MAX_INPUT = COMMON_BUILDER.comment("Electric Motor max input in FE.")
-				.defineInRange("motor_max_input", 8192, 0, Short.MAX_VALUE);
+		ELECTRIC_MOTOR_MAX_INPUT = COMMON_BUILDER.comment("Electric Motor max input in FE (Energy transfer not consumption).")
+				.defineInRange("motor_max_input", 8192, 0, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_CAPACITY = COMMON_BUILDER.comment("Electric Motor internal capacity in FE.")
-				.defineInRange("motor_capacity", 16000, 0, Short.MAX_VALUE);
-		
-		ELECTRIC_MOTOR_CONSUMPTION = COMMON_BUILDER.comment("Electric Motor consumption in FE/t at max RPM.")
-				.defineInRange("motor_consumption", 60, 0, Short.MAX_VALUE);
+				.defineInRange("motor_capacity", 16000, 0, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_STRESS = COMMON_BUILDER.comment("Electric Motor generated base stress (Not implemented).")
 				.defineInRange("motor_stress", 16, 0, 256);
@@ -62,21 +63,24 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Alternator").push(CATAGORY_ALTERNATOR);
 		
-		ALTERNATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Alternator max input in FE.")
-				.defineInRange("generator_max_output", 8192, 0, Short.MAX_VALUE);
+		ALTERNATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Alternator max input in FE (Energy transfer not generation).")
+				.defineInRange("generator_max_output", 8192, 0, Integer.MAX_VALUE);
 		
 		ALTERNATOR_CAPACITY = COMMON_BUILDER.comment("Alternator internal capacity in FE.")
-				.defineInRange("generator_capacity", 32000, 0, Short.MAX_VALUE);
+				.defineInRange("generator_capacity", 32000, 0, Integer.MAX_VALUE);
 		
 		ALTERNATOR_STRESS = COMMON_BUILDER.comment("Alternator base stress impact.")
 				.defineInRange("generator_consumption", 16, 0, 1024);
+		
+		ALTERNATOR_EFFICIENCY = COMMON_BUILDER.comment("Alternator efficiency relative to base conversion rate.")
+				.defineInRange("generator_efficiency", 0.75d, 0.01d, 0.99d);
 		
 		COMMON_BUILDER.pop();
 		
 		COMMON_BUILDER.comment("Rolling Mill").push(CATAGORY_ROLLING_MILL);
 		
 		ROLLING_MILL_PROCESSING_DURATION = COMMON_BUILDER.comment("Rolling Mill duration in ticks.")
-				.defineInRange("rolling_mill_processing_duration", 100, 0, Short.MAX_VALUE);
+				.defineInRange("rolling_mill_processing_duration", 100, 0, Integer.MAX_VALUE);
 		
 		ROLLING_MILL_STRESS = COMMON_BUILDER.comment("Rolling Mill base stress impact.")
 				.defineInRange("rolling_mill_stress", 16, 0, 1024);

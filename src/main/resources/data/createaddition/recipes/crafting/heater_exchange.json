@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+		    "item": "immersiveengineering:furnace_heater"
+		}
+	],
+	"result":{
+		"item": "createaddition:heater",
+		"count": 1
+	},
+    "conditions": [ {
+        "type": "forge:mod_loaded",
+        "modid": "immersiveengineering"
+    } ]
+}
