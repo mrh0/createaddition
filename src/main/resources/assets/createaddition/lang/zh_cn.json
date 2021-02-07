@@ -5,8 +5,13 @@
 	"createaddition.recipe.rolling": "轧制",
 	
 	"item.createaddition.capacitor": "电容",
+
 	"item.createaddition.multimeter": "万用表",
 	"item.createaddition.multimeter.title":"[万用表]：",
+	"item.createaddition.multimeter.measuring":"[测量中..]",
+	"item.createaddition.multimeter.ticks":"刻",
+	"item.createaddition.multimeter.no_capability":"此面不支持 FE 功能",
+
 	"item.createaddition.zinc_sheet": "锌板",
 	"item.createaddition.diamond_grit": "钻石粉",
 	"item.createaddition.diamond_grit_sandpaper": "钻石细粒砂纸",
@@ -44,6 +49,7 @@
 	"block.createaddition.alternator": "交流发电机",
 	"block.createaddition.creative_energy": "创造模式发电机",
 	"block.createaddition.rolling_mill": "轧机",
+	"block.createaddition.heater": "感应加热器",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }
