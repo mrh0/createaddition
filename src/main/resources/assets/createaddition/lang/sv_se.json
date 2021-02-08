@@ -1,0 +1,49 @@
+{
+	"createaddition.tooltip.energy.stored": "Lagrad energi:",
+	"createaddition.tooltip.energy.consumption": "Energianvändning:",
+	"createaddition.tooltip.energy.production": "Energiproduktion:",
+	"createaddition.recipe.rolling": "Valsverk",
+
+	"item.createaddition.capacitor": "Kondensator",
+	"item.createaddition.multimeter": "Multimeter",
+	"item.createaddition.multimeter.title": "[Multimeter]:",
+	"item.createaddition.zinc_sheet": "Zinkplåt",
+	"item.createaddition.diamond_grit": "Diamant-grit",
+	"item.createaddition.diamond_grit_sandpaper": "Diamant-grit sandpapper",
+
+	"item.createaddition.copper_spool": "Kopparspole",
+	"item.createaddition.copper_wire": "Koppartråd",
+	"item.createaddition.copper_rod": "Kopparstång",
+
+	"item.createaddition.iron_spool": "Järnspole",
+	"item.createaddition.iron_wire": "Järntråd",
+	"item.createaddition.iron_rod": "Järnstång",
+
+	"item.createaddition.steel_spool": "Stålspole",
+	"item.createaddition.steel_wire": "Ståltråd",
+	"item.createaddition.steel_rod": "Stålstång",
+
+	"item.createaddition.electrum_spool": "Electrumspole",
+	"item.createaddition.electrum_wire": "Electrumtråd",
+	"item.createaddition.electrum_rod": "Electrumstång",
+
+	"item.createaddition.aluminum_spool": "Aluminiumspole",
+	"item.createaddition.aluminum_wire": "Aluminiumtråd",
+	"item.createaddition.aluminum_rod": "Aluminiumstång",
+
+	"item.createaddition.gold_spool": "Guldspole",
+	"item.createaddition.gold_wire": "Guldtråd",
+	"item.createaddition.gold_rod": "Guldstång",
+
+	"item.createaddition.brass_rod": "Mässingstång",
+	"item.createaddition.bronze_rod": "Bronsstång",
+
+	"item.createaddition.spool": "Tom spole",
+
+	"block.createaddition.electric_motor": "Elektrisk motor",
+	"block.createaddition.alternator": "Generator",
+	"block.createaddition.creative_energy": "Kreativ Generator",
+	"block.createaddition.rolling_mill": "Valsverk",
+
+	"itemGroup.createaddition: main": "Create Crafts & Additions"
+}

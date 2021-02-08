@@ -39,6 +39,7 @@ public class CAItems {
 	
 	public static final ItemEntry<Multimeter> MULTIMETER =
 		REGISTRATE.item("multimeter", Multimeter::new)
+			.properties((p) -> p.maxStackSize(1))
 			.register();
 	
 	public static final ItemEntry<Item> SPOOL =
@@ -64,6 +65,9 @@ public class CAItems {
 			REGISTRATE.item("gold_wire", Item::new).register();
 	public static final ItemEntry<Item> GOLD_ROD =
 			REGISTRATE.item("gold_rod", Item::new).register();
+	
+	public static final ItemEntry<Item> BRASS_ROD =
+			REGISTRATE.item("brass_rod", Item::new).register();
 	
 	public static void register() {}
 }

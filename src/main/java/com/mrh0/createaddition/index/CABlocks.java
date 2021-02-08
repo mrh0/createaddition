@@ -3,8 +3,10 @@ package com.mrh0.createaddition.index;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
+import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
+import com.mrh0.createaddition.blocks.heater.HeaterBlock;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.AllTags.AllBlockTags;
@@ -43,6 +45,18 @@ public class CABlocks {
 			.register();
 	
 	public static final BlockEntry<CreativeEnergyBlock> CREATIVE_ENERGY = REGISTRATE.block("creative_energy", CreativeEnergyBlock::new)
+			.initialProperties(SharedProperties::stone)
+			.item()
+			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<ConnectorBlock> CONNECTOR = REGISTRATE.block("connector",  ConnectorBlock::new)
+			.initialProperties(SharedProperties::stone)
+			.item()
+			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<HeaterBlock> HEATER = REGISTRATE.block("heater",  HeaterBlock::new)
 			.initialProperties(SharedProperties::stone)
 			.item()
 			.transform(customItemModel())

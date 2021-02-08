@@ -1,0 +1,49 @@
+{
+	"createaddition.tooltip.energy.stored": "Energia Armazenada:",
+	"createaddition.tooltip.energy.consumption": "Uso de Energia:",
+	"createaddition.tooltip.energy.production": "Energia Gerada:",
+	"createaddition.recipe.rolling": "Laminação",
+	
+	"item.createaddition.capacitor": "Capacitor",
+	"item.createaddition.multimeter": "Multímetro",
+	"item.createaddition.multimeter.title":"[Multímetro]:",
+	"item.createaddition.zinc_sheet": "Folha de Zinco",
+	"item.createaddition.diamond_grit": "Grãos de Diamante",
+	"item.createaddition.diamond_grit_sandpaper": "Lixa de Grãos de Diamante",
+	
+	"item.createaddition.copper_spool": "Carretel de Cobre",
+	"item.createaddition.copper_wire": "Fio de Cobre",
+	"item.createaddition.copper_rod": "Haste de Cobre",
+	
+	"item.createaddition.iron_spool": "Carretel de Ferro",
+	"item.createaddition.iron_wire": "Fio de Ferro",
+	"item.createaddition.iron_rod": "Haste de Ferro",
+	
+	"item.createaddition.steel_spool": "Carretel de Aço",
+	"item.createaddition.steel_wire": "Fio de Aço",
+	"item.createaddition.steel_rod": "Haste de Aço",
+	
+	"item.createaddition.electrum_spool": "Carretel de Eletro",
+	"item.createaddition.electrum_wire": "Fio de Eletro",
+	"item.createaddition.electrum_rod": "Haste de Eletro",
+	
+	"item.createaddition.aluminum_spool": "Carretel de Alumínio",
+	"item.createaddition.aluminum_wire": "Fio de Alumínio",
+	"item.createaddition.aluminum_rod": "Haste de Alumínio",
+	
+	"item.createaddition.gold_spool": "Carretel de Ouro",
+	"item.createaddition.gold_wire": "Fio de Ouro",
+	"item.createaddition.gold_rod": "Haste de Ouro",
+	
+	"item.createaddition.brass_rod": "Haste de Latão",
+	"item.createaddition.bronze_rod": "Haste de Bronze",
+	
+	"item.createaddition.spool": "Carretel de Vazio",
+	
+	"block.createaddition.electric_motor": "Motor Elétrico",
+	"block.createaddition.alternator": "Alternador",
+	"block.createaddition.creative_energy": "Gerador Criativo",
+	"block.createaddition.rolling_mill": "Laminadora",
+	
+	"itemGroup.createaddition:main":"Create Crafts & Additions"
+}

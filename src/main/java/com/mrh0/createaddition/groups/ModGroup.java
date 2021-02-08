@@ -1,11 +1,10 @@
 package com.mrh0.createaddition.groups;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.index.CAItems;
+import com.mrh0.createaddition.index.CABlocks;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 
 public class ModGroup extends ItemGroup{
 	public static ModGroup MAIN;;
@@ -17,6 +16,6 @@ public class ModGroup extends ItemGroup{
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(CAItems.CAPACITOR.get());
+		return new ItemStack(CABlocks.ELECTRIC_MOTOR.get());
 	}
 }

@@ -1,0 +1,10 @@
+{
+	"required": true,
+	"package": "com.mrh0.createaddition.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "createaddition.refmap.json",
+	"mixins": [
+		"AbstractFurnaceMixin"
+	],
+	"minVersion": "0.8"
+}

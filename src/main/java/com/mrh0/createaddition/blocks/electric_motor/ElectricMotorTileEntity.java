@@ -3,14 +3,12 @@ package com.mrh0.createaddition.blocks.electric_motor;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.item.Multimeter;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.Create;
 import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
-import com.simibubi.create.content.contraptions.components.motor.CreativeMotorTileEntity;
-import com.simibubi.create.foundation.config.AllConfigs;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
@@ -32,23 +30,24 @@ import net.minecraftforge.energy.CapabilityEnergy;
 
 public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 
-	public static final int DEFAULT_SPEED = 64;
+	
 	protected ScrollValueBehaviour generatedSpeed;
 	protected final InternalEnergyStorage energy;
 	private LazyOptional<net.minecraftforge.energy.IEnergyStorage> lazyEnergy;
 	
-	// TODO: Configs
-	private static Integer minRPM = 32, maxRPM = 256;
-	
-	private static final int maxIn = 4096;//getEnergyConsumptionRate(maxRPM) * 100;
-	private static final int maxOut = 0;
-	private static final int capacity = 16000;
+	private static final Integer 
+		MIN_RPM = Config.ELECTRIC_MOTOR_MIN_RPM.get(),
+		MAX_RPM = Config.ELECTRIC_MOTOR_MAX_RPM.get(),
+		DEFAULT_SPEED = MIN_RPM,
+		MAX_IN = Config.ELECTRIC_MOTOR_MAX_INPUT.get(),
+		MAX_OUT = 0,
+		CAPACITY = Config.ELECTRIC_MOTOR_CAPACITY.get();
 	
 	private boolean active = false;
 
 	public ElectricMotorTileEntity(TileEntityType<? extends ElectricMotorTileEntity> type) {
 		super(type);
-		energy = new InternalEnergyStorage(capacity, maxIn, maxOut);
+		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		lazyEnergy = LazyOptional.of(() -> energy);
 		setLazyTickRate(20);
 	}
@@ -61,7 +60,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 			new CenteredSideValueBoxTransform((motor, side) -> motor.get(ElectricMotorBlock.FACING) == side.getOpposite());
 
 		generatedSpeed = new ScrollValueBehaviour(Lang.translate("generic.speed"), this, slot);
-		generatedSpeed.between(minRPM, maxRPM);
+		generatedSpeed.between(MIN_RPM, MAX_RPM);
 		generatedSpeed.value = DEFAULT_SPEED;
 		generatedSpeed.scrollableValue = DEFAULT_SPEED;
 		generatedSpeed.withUnit(i -> Lang.translate("generic.unit.rpm"));
@@ -89,7 +88,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").mergeStyle(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").mergeStyle(TextFormatting.AQUA)));
 		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").mergeStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyConsumptionRate(generatedSpeed.getValue()) * 20) + "fe/s ")
+		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
 				.mergeStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").mergeStyle(TextFormatting.DARK_GRAY)));
 		added = true;
 		return added;
@@ -111,10 +110,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	@Override
 	protected Block getStressConfigKey() {
-		//AllBlocks.HAND_CRANK.get();
-		//AllConfigs.SERVER.kinetics.stressValues.getCapacities().keySet().forEach((x) -> System.out.println(x));
-		//System.out.println(AllConfigs.SERVER.kinetics.stressValues.getCapacityOf(CABlocks.ELECTRIC_MOTOR.get()));
-		return AllBlocks.WATER_WHEEL.get();//CABlocks.ELECTRIC_MOTOR.get();
+		return AllBlocks.WATER_WHEEL.get();
 	}
 	
 	public InternalEnergyStorage getEnergyStorage() {
@@ -129,7 +125,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	public boolean isEnergyInput(Direction side) {
-		return side != Direction.NORTH;
+		return side != getBlockState().get(ElectricMotorBlock.FACING);
 	}
 
 	public boolean isEnergyOutput(Direction side) {
@@ -172,8 +168,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	public static int getEnergyConsumptionRate(int rpm) {
-		// TODO: Configs
-		return 60 * rpm/maxRPM;
+		return Config.FE_TO_SU.get() * rpm / MAX_RPM;
 	}
 	
 	@Override
