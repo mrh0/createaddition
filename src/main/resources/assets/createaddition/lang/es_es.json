@@ -1,55 +1,55 @@
 {
-	"createaddition.tooltip.energy.stored": "Energía almacenada:",
-	"createaddition.tooltip.energy.consumption": "Uso de energía:",
-	"createaddition.tooltip.energy.production": "Energía generada:",
-	"createaddition.recipe.rolling": "Laminación",
-	
+	"createaddition.tooltip.energy.stored": "EnergÃ­a almacenada:",
+	"createaddition.tooltip.energy.consumption": "Uso de energÃ­a:",
+	"createaddition.tooltip.energy.production": "EnergÃ­a generada:",
+	"createaddition.recipe.rolling": "LaminaciÃ³n",
+
 	"item.createaddition.capacitor": "Capacitor",
-	
-	"item.createaddition.multimeter": "Multímetro",
-	"item.createaddition.multimeter.title":"[Multímetro]:",
-	"item.createaddition.multimeter.measuring":"[Medición..]",
+
+	"item.createaddition.multimeter": "MultÃ­metro",
+	"item.createaddition.multimeter.title":"[MultÃ­metro]:",
+	"item.createaddition.multimeter.measuring":"[MediciÃ³n..]",
 	"item.createaddition.multimeter.ticks":"ticks",
-	"item.createaddition.multimeter.no_capability":"No hay capacidad de forjar energía de este lado.",
-	
+	"item.createaddition.multimeter.no_capability":"No hay capacidad de forjar energÃ­a de este lado.",
+
 	"item.createaddition.zinc_sheet": "Hoja de zinc",
 	"item.createaddition.diamond_grit": "Grano de diamante",
 	"item.createaddition.diamond_grit_sandpaper": "Papel de lija de grano de diamante",
-	
+
 	"item.createaddition.copper_spool": "Carrete de cobre",
 	"item.createaddition.copper_wire": "Alambre de cobre",
 	"item.createaddition.copper_rod": "Barra de cobre",
-	
+
 	"item.createaddition.iron_spool": "Carrete de hierro",
 	"item.createaddition.iron_wire": "Alambre de hierro",
 	"item.createaddition.iron_rod": "Barra de hierro",
-	
+
 	"item.createaddition.steel_spool": "Carrete de acero",
 	"item.createaddition.steel_wire": "Alambre de acero",
 	"item.createaddition.steel_rod": "Barra de acero",
-	
+
 	"item.createaddition.electrum_spool": "Electrum Spool",
 	"item.createaddition.electrum_wire": "Alambre de Electrum",
 	"item.createaddition.electrum_rod": "Varilla de Electrum",
-	
+
 	"item.createaddition.aluminum_spool": "Carrete de aluminio",
 	"item.createaddition.aluminum_wire": "Alambre de aluminio",
 	"item.createaddition.aluminum_rod": "Varilla de aluminio",
-	
+
 	"item.createaddition.gold_spool": "Carrete de oro",
 	"item.createaddition.gold_wire": "Alambre de oro",
 	"item.createaddition.gold_rod": "Varilla de oro",
-	
-	"item.createaddition.brass_rod": "Varilla de latón",
+
+	"item.createaddition.brass_rod": "Varilla de latÃ³n",
 	"item.createaddition.bronze_rod": "Varilla de bronce",
-	
-	"item.createaddition.spool": "Carrete vacío",
-	
-	"block.createaddition.electric_motor": "Motor eléctrico",
+
+	"item.createaddition.spool": "Carrete vacÃ­o",
+
+	"block.createaddition.electric_motor": "Motor elÃ©ctrico",
 	"block.createaddition.alternator": "Alternador",
 	"block.createaddition.creative_energy": "Generador creativo",
-	"block.createaddition.rolling_mill": "Taller de laminación",
-	"block.createaddition.heater": "Calentador de inducción",
-	
+	"block.createaddition.rolling_mill": "Taller de laminaciÃ³n",
+	"block.createaddition.heater": "Calentador de inducciÃ³n",
+
 	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }
