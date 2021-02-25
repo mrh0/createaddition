@@ -44,12 +44,24 @@
 	"item.createaddition.bronze_rod": "Bronze Rod",
 	
 	"item.createaddition.spool": "Empty Spool",
+	"item.createaddition.spool.nbt": "Stores connection location.",
+	
+	"statusbar.createaddition.wire.connected": "Wire connected",
+	"statusbar.createaddition.wire.long": "Wire is too long",
+	"statusbar.createaddition.wire.obstructed": "Wire path is obstructed",
+	"statusbar.createaddition.wire.count": "Wire node is full",
+	"statusbar.createaddition.wire.removed": "Wire removed",
+	"statusbar.createaddition.wire.exists": "Wire connection already exists",
+	"statusbar.createaddition.wire.no_connection": "Wire not connected here",
+	"statusbar.createaddition.wire.invalid": "Invalid connection",
 	
 	"block.createaddition.electric_motor": "Electric Motor",
 	"block.createaddition.alternator": "Alternator",
 	"block.createaddition.creative_energy": "Creative Generator",
 	"block.createaddition.rolling_mill": "Rolling Mill",
 	"block.createaddition.heater": "Induction Heater",
+	"block.createaddition.accumulator": "Accumulator",
+	"block.createaddition.connector": "Connector",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }

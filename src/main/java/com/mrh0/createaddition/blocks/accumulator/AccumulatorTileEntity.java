@@ -17,7 +17,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 
 	@Override
-	public Vector3f getNodePosition(int node) {
+	public Vector3f getNodeOffset(int node) {
 		return new Vector3f(0f, 1f/16f, 0f);
 	}
 
@@ -61,5 +61,16 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		return pos;
 	}
 
-	
+	@Override
+	public void setCache(Direction side, IEnergyStorage storage) {
+	}
+
+	@Override
+	public IEnergyStorage getCachedEnergy(Direction side) {
+		return null;
+	}
+
+	@Override
+	public void invalidateNodeCache() {
+	}
 }

@@ -2,6 +2,7 @@ package com.mrh0.createaddition.index;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
@@ -54,6 +55,12 @@ public class CABlocks {
 			.initialProperties(SharedProperties::stone)
 			.item()
 			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = REGISTRATE.block("accumulator",  AccumulatorBlock::new)
+			.initialProperties(SharedProperties::stone)
+			//.item()
+			//.transform(customItemModel())
 			.register();
 	
 	public static final BlockEntry<HeaterBlock> HEATER = REGISTRATE.block("heater",  HeaterBlock::new)

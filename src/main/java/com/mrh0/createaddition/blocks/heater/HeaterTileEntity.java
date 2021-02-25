@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.heater;
 
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.mixin.AbstractFurnaceMixin;
 import com.simibubi.create.AllBlocks;
@@ -12,19 +13,21 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public class HeaterTileEntity extends BaseElectricTileEntity {
 	
 	public AbstractFurnaceTileEntity  cache;
 	private boolean isFurnaceEngine = false;
-	public static final int CONSUMPTION = 30, CONSUMPTION_ENGINE = 400;
-	public static final boolean ALLOW_ENGINE = false;
+	public static final int CONSUMPTION = Config.HEATER_NORMAL_CONSUMPTION.get(),
+			CONSUMPTION_ENGINE = Config.HEATER_FURNACE_ENGINE_CONSUMPTION.get();
+	public static final boolean ALLOW_ENGINE = Config.HEATER_FURNACE_ENGINE_ENABLED.get();
 	private boolean litState = false;
 	
 	private static final int 
-	MAX_IN = 8196,
+	MAX_IN = Config.HEATER_MAX_INPUT.get(),
 	MAX_OUT = 0,
-	CAPACITY = 16000;
+	CAPACITY = Config.HEATER_CAPACITY.get();
 	
 	public HeaterTileEntity(TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn, CAPACITY, MAX_IN, MAX_OUT);
@@ -47,6 +50,8 @@ public class HeaterTileEntity extends BaseElectricTileEntity {
 			return;
 		if(cache == null)
 			return;
+		if(cache.isRemoved())
+			cache = null;
 		IIntArray data = ((AbstractFurnaceMixin)cache).getFurnaceData();
 		
 		if(hasEnoughEnergy()) {
@@ -91,6 +96,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity {
 		super.lazyTick();
 		if(hasEnoughEnergy())
 			energy.internalConsumeEnergy(isFurnaceEngine ? CONSUMPTION_ENGINE * 20 : CONSUMPTION * 20);
+		isFurnaceEngine = hasFurnaceEngine();
 	}
 	
 	public void updateState(boolean lit) {
@@ -106,5 +112,14 @@ public class HeaterTileEntity extends BaseElectricTileEntity {
 	public void firstTick() {
 		super.firstTick();
 		refreshCache();
+	}
+
+	@Override
+	public void setCache(Direction side, IEnergyStorage storage) {
+	}
+
+	@Override
+	public IEnergyStorage getCachedEnergy(Direction side) {
+		return null;
 	}
 }

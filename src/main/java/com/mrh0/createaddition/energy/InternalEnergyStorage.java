@@ -62,6 +62,7 @@ public class InternalEnergyStorage extends EnergyStorage {
     	this.energy = energy;
     }
     
+    @Deprecated
     public void outputToSide(World world, BlockPos pos, Direction side, int max) {
     	TileEntity te = world.getTileEntity(pos.offset(side));
 		if(te == null)

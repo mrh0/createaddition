@@ -5,8 +5,13 @@
 	"createaddition.recipe.rolling": "Прокатка",
 	
 	"item.createaddition.capacitor": "Конденсатор",
+	
 	"item.createaddition.multimeter": "Мультиметр",
 	"item.createaddition.multimeter.title":"[Мультиметр]:",
+	"item.createaddition.multimeter.measuring":"[Измерение...]",
+	"item.createaddition.multimeter.ticks":" тиков",
+	"item.createaddition.multimeter.no_capability":"С этой стороны блока не поступает Forge Energy.",
+	
 	"item.createaddition.zinc_sheet": "Цинковый лист",
 	"item.createaddition.diamond_grit": "Алмазная пыль",
 	"item.createaddition.diamond_grit_sandpaper": "Наждачная бумага с алмазным напылением",
@@ -44,6 +49,7 @@
 	"block.createaddition.alternator": "Генератор",
 	"block.createaddition.creative_energy": "Творческий генератор",
 	"block.createaddition.rolling_mill": "Прокатный станок",
+	"block.createaddition.heater": "Индукционный нагреватель",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }
