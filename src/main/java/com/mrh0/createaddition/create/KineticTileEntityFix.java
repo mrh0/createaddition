@@ -37,8 +37,6 @@ public abstract class KineticTileEntityFix extends KineticTileEntity
 				network.initFromTE(capacity, stress, networkSize);
 			network.addSilently(this, lastCapacityProvided, lastStressApplied);
 		}
-
-		
 	}
 
 	public float calculateAddedStressCapacity() {
@@ -101,8 +99,8 @@ public abstract class KineticTileEntityFix extends KineticTileEntity
 	}
 
 	@Override
-	protected void fromTag(BlockState state, CompoundNBT compound, boolean clientPacket) {
-		super.fromTag(state, compound, clientPacket);
+	protected void read(CompoundNBT compound, boolean clientPacket) {
+		super.read(compound, clientPacket);
 		boolean overStressedBefore = overStressed;
 		clearKineticInformation();
 
@@ -128,8 +126,6 @@ public abstract class KineticTileEntityFix extends KineticTileEntity
 			overStressed = capacity < stress && StressImpact.isEnabled();
 		}
 
-		
-
 		if (clientPacket && overStressedBefore != overStressed && speed != 0)
 			effects.triggerOverStressedEffect();
 	}
@@ -144,5 +140,4 @@ public abstract class KineticTileEntityFix extends KineticTileEntity
 		lastStressApplied = 0;
 		lastCapacityProvided = 0;
 	}
-
 }

@@ -5,7 +5,6 @@ import java.util.Optional;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.create.KineticTileEntityFix;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
-import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
 
 import net.minecraft.block.BlockState;
@@ -17,7 +16,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -123,11 +122,11 @@ public class RollingMillTileEntity extends KineticTileEntityFix {
 
 		ItemParticleData data = new ItemParticleData(ParticleTypes.ITEM, stackInSlot);
 		float angle = world.rand.nextFloat() * 360;
-		Vector3d offset = new Vector3d(0, 0, 0.5f);
+		Vec3d offset = new Vec3d(0, 0, 0.5f);
 		offset = VecHelper.rotate(offset, angle, Axis.Y);
-		Vector3d target = VecHelper.rotate(offset, getSpeed() > 0 ? 25 : -25, Axis.Y);
+		Vec3d target = VecHelper.rotate(offset, getSpeed() > 0 ? 25 : -25, Axis.Y);
 
-		Vector3d center = offset.add(VecHelper.getCenterOf(pos));
+		Vec3d center = offset.add(VecHelper.getCenterOf(pos));
 		target = VecHelper.offsetRandomly(target.subtract(offset), world.rand, 1 / 128f);
 		world.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
 	}
@@ -141,11 +140,11 @@ public class RollingMillTileEntity extends KineticTileEntityFix {
 	}
 
 	@Override
-	protected void fromTag(BlockState state, CompoundNBT compound, boolean clientPacket) {
+	protected void read(CompoundNBT compound, boolean clientPacket) {
 		timer = compound.getInt("Timer");
 		inputInv.deserializeNBT(compound.getCompound("InputInventory"));
 		outputInv.deserializeNBT(compound.getCompound("OutputInventory"));
-		super.fromTag(state, compound, clientPacket);
+		super.read(compound, clientPacket);
 	}
 
 	public int getProcessingSpeed() {

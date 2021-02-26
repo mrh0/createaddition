@@ -6,13 +6,14 @@ import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.Vector3d;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -99,7 +100,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 	
 	@Override
-	public int getNodeFromPos(Vector3d vector3d) {
+	public int getNodeFromPos(Vec3d vector3d) {
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(hasConnection(i))
 				continue;
@@ -137,11 +138,11 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundNBT nbt, boolean clientPacket) {
-		super.fromTag(state, nbt, clientPacket);
+	protected void read(CompoundNBT compound, boolean clientPacket) {
+		super.read(compound, clientPacket);
 		for(int i = 0; i < getNodeCount(); i++)
-			if(IWireNode.hasNode(nbt, i))
-				readNode(nbt, i);
+			if(IWireNode.hasNode(compound, i))
+				readNode(compound, i);
 	}
 	
 	@Override

@@ -6,11 +6,11 @@ import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
 
 public class ConnectorRenderer extends TileEntityRenderer<ConnectorTileEntity> {
 
@@ -25,9 +25,9 @@ public class ConnectorRenderer extends TileEntityRenderer<ConnectorTileEntity> {
 		for(int i = 0; i < tileEntityIn.getNodeCount(); i++) {
 			if(tileEntityIn.getNodeType(i) != null) {
 				Vector3f d1 = tileEntityIn.getNodeOffset(i);
-				float ox1 = ((float)d1.getX());
-				float oy1 = ((float)d1.getY());
-				float oz1 = ((float)d1.getZ());
+				float ox1 = d1.getX();
+				float oy1 = d1.getY();
+				float oz1 = d1.getZ();
 				
 				
 				IWireNode wn = tileEntityIn.getNode(i);
@@ -35,9 +35,9 @@ public class ConnectorRenderer extends TileEntityRenderer<ConnectorTileEntity> {
 					return;
 				
 				Vector3f d2 = wn.getNodeOffset(tileEntityIn.getNodeIndex(i)); // get other
-				float ox2 = ((float)d2.getX());
-				float oy2 = ((float)d2.getY());
-				float oz2 = ((float)d2.getZ());
+				float ox2 = d2.getX();
+				float oy2 = d2.getY();
+				float oz2 = d2.getZ();
 				
 				float tx = tileEntityIn.getNodePos(i).getX() - tileEntityIn.getPos().getX();
 		        float ty = tileEntityIn.getNodePos(i).getY() - tileEntityIn.getPos().getY();
