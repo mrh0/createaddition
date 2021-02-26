@@ -44,18 +44,18 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 		lazyEnergy = LazyOptional.of(() -> energy);
 		setLazyTickRate(20);
 	}
-	
-	@Override
-	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
-		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").mergeStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").mergeStyle(TextFormatting.AQUA)));
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.production").mergeStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
-				.mergeStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").mergeStyle(TextFormatting.DARK_GRAY)));
-		added = true;
-		return added;
+	@Override
+	public boolean addToGoggleTooltip(List<String> tooltip, boolean isPlayerSneaking) {
+		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+
+		tooltip.add(new StringTextComponent(spacing).appendSibling(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").applyTextStyle(TextFormatting.GRAY)).getString());
+		tooltip.add(new StringTextComponent(spacing).appendSibling(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").applyTextStyle(TextFormatting.AQUA)).getString());
+		tooltip.add(new StringTextComponent(spacing).appendSibling(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.production").applyTextStyle(TextFormatting.GRAY)).getString());
+		tooltip.add(new StringTextComponent(spacing).appendSibling(new StringTextComponent(" " + Multimeter.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
+				.applyTextStyle(TextFormatting.AQUA)).appendSibling(new StringTextComponent(Lang.translate("gui.goggles.at_current_speed")).applyTextStyle(TextFormatting.DARK_GRAY)).getString());
+
+		return true;
 	}
 	
 	public float calculateStressApplied() {
@@ -80,8 +80,8 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundNBT compound, boolean clientPacket) {
-		super.fromTag(state, compound, clientPacket);
+	public void read(CompoundNBT compound, boolean clientPacket) {
+		super.read(compound, clientPacket);
 		energy.read(compound);
 	}
 	

@@ -4,10 +4,10 @@ import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWireNode {

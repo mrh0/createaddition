@@ -82,16 +82,16 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	@Override
-	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
-		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+	public boolean addToGoggleTooltip(List<String> tooltip, boolean isPlayerSneaking) {
+		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").mergeStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").mergeStyle(TextFormatting.AQUA)));
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").mergeStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
-				.mergeStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").mergeStyle(TextFormatting.DARK_GRAY)));
-		added = true;
-		return added;
+		tooltip.add(new StringTextComponent(spacing).appendSibling(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").applyTextStyle(TextFormatting.GRAY)).toString());
+		tooltip.add(new StringTextComponent(spacing).appendSibling(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").applyTextStyle(TextFormatting.AQUA)).toString());
+		tooltip.add(new StringTextComponent(spacing).appendSibling(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").applyTextStyle(TextFormatting.GRAY)).toString());
+		tooltip.add(new StringTextComponent(spacing).appendSibling(new StringTextComponent(" " + Multimeter.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
+				.applyTextStyle(TextFormatting.AQUA)).appendSibling(new StringTextComponent(Lang.translate("gui.goggles.at_current_speed")).applyTextStyle(TextFormatting.DARK_GRAY)).getString());
+		
+		return true;
 	}
 
 	@Override
@@ -133,8 +133,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundNBT compound, boolean clientPacket) {
-		super.fromTag(state, compound, clientPacket);
+	public void read(CompoundNBT compound, boolean clientPacket) {
+		super.read(compound, clientPacket);
 		energy.read(compound);
 		active = compound.getBoolean("active");
 	}

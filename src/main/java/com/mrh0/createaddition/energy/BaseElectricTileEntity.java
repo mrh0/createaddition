@@ -47,10 +47,11 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	public abstract boolean isEnergyInput(Direction side);
 
 	public abstract boolean isEnergyOutput(Direction side);
-	
+
+
 	@Override
-	public void fromTag(BlockState state, CompoundNBT compound, boolean clientPacket) {
-		super.fromTag(state, compound, clientPacket);
+	protected void read(CompoundNBT compound, boolean clientPacket) {
+		super.read(compound, clientPacket);
 		energy.read(compound);
 	}
 	

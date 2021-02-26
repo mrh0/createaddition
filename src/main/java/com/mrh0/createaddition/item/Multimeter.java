@@ -59,10 +59,10 @@ public class Multimeter extends Item {
 				
 				c.getItem().setTag(tag);
 				
-				c.getPlayer().sendMessage(new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.title")
-						.append(new StringTextComponent(" " +getString(energy,
-								new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.no_capability").getStringTruncated(Integer.MAX_VALUE), "fe") + " ").append(new StringTextComponent(measur))),
-						PlayerEntity.getUUID(c.getPlayer().getGameProfile()));
+				c.getPlayer().sendMessage(
+						new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.title")
+							.appendSibling(new StringTextComponent(" " + getString(energy, new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.no_capability").getStringTruncated(Integer.MAX_VALUE), "fe") + " ").appendSibling(new StringTextComponent(measur)))
+				);
 				return ActionResultType.SUCCESS;
 			}
 		}

@@ -1,13 +1,13 @@
 package com.mrh0.createaddition.energy;
 
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -25,7 +25,7 @@ public interface IWireNode {
 		return getNodeEnergyStorage(node).canReceive();
 	}
 	
-	public default int getNodeFromPos(Vector3d vector3d) {
+	public default int getNodeFromPos(Vec3d vector3d) {
 		return 0;
 	}
 	
