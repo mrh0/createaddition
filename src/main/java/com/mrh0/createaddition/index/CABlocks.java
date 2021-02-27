@@ -10,7 +10,9 @@ import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.blocks.heater.HeaterBlock;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.groups.ModGroup;
+import com.simibubi.create.Create;
 import com.simibubi.create.AllTags.AllBlockTags;
+import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.config.StressConfigDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
@@ -69,5 +71,13 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
-	public static void register() {}
+	public static void register() {
+		Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.MATERIALS);
+		Create.registrate().addToSection(ALTERNATOR, AllSections.MATERIALS);
+		Create.registrate().addToSection(ROLLING_MILL, AllSections.MATERIALS);
+		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.MATERIALS);
+		Create.registrate().addToSection(CONNECTOR, AllSections.MATERIALS);
+		Create.registrate().addToSection(ACCUMULATOR, AllSections.MATERIALS);
+		Create.registrate().addToSection(HEATER, AllSections.MATERIALS);
+	}
 }

@@ -28,11 +28,11 @@ public class CAItems {
 	
 	public static final ItemEntry<Item> DIAMOND_GRIT =
 			REGISTRATE.item("diamond_grit", Item::new)
-			//.onRegister(s -> TooltipHelper.referTo(s, AllItems.SAND_PAPER))
 			.register();
 	
 	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER = REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new)
 			.transform(CreateRegistrate.customRenderedItem(() -> SandPaperModel::new))
+			.onRegister(s -> TooltipHelper.referTo(s, AllItems.SAND_PAPER))
 			.register();
 	
 	public static final ItemEntry<Item> ZINC_SHEET =
@@ -78,6 +78,11 @@ public class CAItems {
 				.register();*/
 	
 	public static void register() {
-		//Create.registrate().addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
+		Create.registrate().addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
+		Create.registrate().addToSection(MULTIMETER, AllSections.MATERIALS);
+		Create.registrate().addToSection(COPPER_SPOOL, AllSections.MATERIALS);
+		Create.registrate().addToSection(GOLD_SPOOL, AllSections.MATERIALS);
+		Create.registrate().addToSection(SPOOL, AllSections.MATERIALS);
+		
 	}
 }
