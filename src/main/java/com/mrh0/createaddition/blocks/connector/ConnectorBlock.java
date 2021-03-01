@@ -2,6 +2,7 @@ package com.mrh0.createaddition.blocks.connector;
 
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
+import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
@@ -9,10 +10,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -20,7 +23,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity> {
+public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, IWrenchable {
 
 	public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).forDirectional();
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -73,5 +76,20 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity> {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext c) {
 		return this.getDefaultState().with(FACING, c.getFace().getOpposite());
+	}
+	
+	@Override
+	public ActionResultType onSneakWrenched(BlockState state, ItemUseContext c) {
+		if(c.getPlayer().isCreative())
+			return IWrenchable.super.onSneakWrenched(state, c);
+		TileEntity te = c.getWorld().getTileEntity(c.getPos());
+		if(te == null)
+			return IWrenchable.super.onSneakWrenched(state, c);
+		if(!(te instanceof ConnectorTileEntity))
+			return IWrenchable.super.onSneakWrenched(state, c);
+		ConnectorTileEntity cte = (ConnectorTileEntity) te;
+		
+		cte.dropWires(c.getWorld(), c.getPlayer());
+		return IWrenchable.super.onSneakWrenched(state, c);
 	}
 }

@@ -1,6 +1,12 @@
 package com.mrh0.createaddition.energy;
 
+import com.mrh0.createaddition.index.CAItems;
+import com.mrh0.createaddition.util.Util;
+
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -232,6 +238,39 @@ public interface IWireNode {
 		}
 		for(ItemStack stack : stacks) {
 			dropWire(world, getMyPos(), stack);
+		}
+	}
+	
+	public default void dropWires(World world, PlayerEntity player) {
+
+		NonNullList<ItemStack> stacks1 = NonNullList.withSize(WireType.values().length, ItemStack.EMPTY);
+		NonNullList<ItemStack> stacks2 = NonNullList.withSize(WireType.values().length, ItemStack.EMPTY);
+		for(int i = 0; i < getNodeCount(); i++) {
+			if(getNodeType(i) == null)
+				continue;
+			int n = getNodeType(i).getIndex();
+			ItemStack spools = Util.findStack(CAItems.SPOOL.get().getItem(), player.inventory);
+			if(spools.getCount() > 0) {
+				if(stacks1.get(n).isEmpty())
+					stacks1.set(n, getNodeType(i).getSourceDrop());
+				else
+					stacks1.get(n).grow(getNodeType(i).getSourceDrop().getCount());
+				spools.shrink(1);
+			}
+			else {
+				if(stacks2.get(n).isEmpty())
+					stacks2.set(n, getNodeType(i).getDrop());
+				else
+					stacks2.get(n).grow(getNodeType(i).getDrop().getCount());
+			}
+		}
+		for(ItemStack stack : stacks1) {
+			if(!stack.isEmpty())
+				dropWire(world, getMyPos(), player.inventory.addItemStackToInventory(stack) ? ItemStack.EMPTY : stack);
+		}
+		for(ItemStack stack : stacks2) {
+			if(!stack.isEmpty())
+				dropWire(world, getMyPos(), player.inventory.addItemStackToInventory(stack) ? ItemStack.EMPTY : stack);
 		}
 	}
 }

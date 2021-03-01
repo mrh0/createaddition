@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
 import com.mrh0.createaddition.index.CATileEntities;
+import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 
 import net.minecraft.block.Block;
@@ -13,7 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.world.IBlockReader;
 
-public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity> {
+public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity>, IWrenchable {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	

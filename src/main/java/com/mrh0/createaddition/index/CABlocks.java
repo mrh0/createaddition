@@ -18,6 +18,9 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.repack.registrate.util.entry.BlockEntry;
 
+import net.minecraft.item.Item;
+import net.minecraftforge.registries.ObjectHolder;
+
 public class CABlocks {
 	
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
@@ -72,12 +75,12 @@ public class CABlocks {
 			.register();
 	
 	public static void register() {
-		Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.MATERIALS);
-		Create.registrate().addToSection(ALTERNATOR, AllSections.MATERIALS);
-		Create.registrate().addToSection(ROLLING_MILL, AllSections.MATERIALS);
-		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.MATERIALS);
-		Create.registrate().addToSection(CONNECTOR, AllSections.MATERIALS);
-		Create.registrate().addToSection(ACCUMULATOR, AllSections.MATERIALS);
-		Create.registrate().addToSection(HEATER, AllSections.MATERIALS);
+		Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
+		Create.registrate().addToSection(ALTERNATOR, AllSections.KINETICS);
+		Create.registrate().addToSection(ROLLING_MILL, AllSections.KINETICS);
+		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
+		Create.registrate().addToSection(CONNECTOR, AllSections.KINETICS);
+		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);
+		Create.registrate().addToSection(HEATER, AllSections.KINETICS);
 	}
 }

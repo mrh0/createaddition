@@ -1,5 +1,7 @@
 package com.mrh0.createaddition.blocks.heater;
 
+import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.compat.immersive_engineering.IEHeaterOptional;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.mixin.AbstractFurnaceMixin;
@@ -52,6 +54,13 @@ public class HeaterTileEntity extends BaseElectricTileEntity {
 			return;
 		if(cache.isRemoved())
 			cache = null;
+		if(cache == null)
+			return;
+		
+		/*if(CreateAddition.IE_ACTIVE) {
+			litState =  IEHeaterOptional.externalHeater(cache, energy);
+		}*/
+		
 		IIntArray data = ((AbstractFurnaceMixin)cache).getFurnaceData();
 		
 		if(hasEnoughEnergy()) {

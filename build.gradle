@@ -37,7 +37,7 @@ mixin {
     add sourceSets.main, "createaddition.refmap.json"
 }
 
-version = '1.16.4-20210226b'
+version = '1.16.4-20210301a'
 group = 'com.mrh0.createaddition' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createaddition'
 
@@ -145,7 +145,10 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 	
 	implementation fg.deobf("curse.maven:create-328085:3167531")
-	runtimeOnly fg.deobf("curse.maven:immersive-engineering-231951:3102280")
+	implementation fg.deobf("curse.maven:immersive-engineering-231951:3102280")
+	
+	runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3172395")
+	
 	//runtimeOnly fg.deobf("curse.maven:jei-238222:3157864")
 	// compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
 	//runtimeOnly fileTree(dir: 'libs', includes: ['*.jar'])

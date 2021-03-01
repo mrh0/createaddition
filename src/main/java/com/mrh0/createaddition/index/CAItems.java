@@ -16,6 +16,7 @@ import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.repack.registrate.util.entry.ItemEntry;
 
 import net.minecraft.item.Item;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class CAItems {
 
@@ -77,12 +78,13 @@ public class CAItems {
 				.properties((p) -> p.maxStackSize(1))
 				.register();*/
 	
+	
+	
 	public static void register() {
 		Create.registrate().addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
-		Create.registrate().addToSection(MULTIMETER, AllSections.MATERIALS);
+		Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
 		Create.registrate().addToSection(COPPER_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(GOLD_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(SPOOL, AllSections.MATERIALS);
-		
 	}
 }

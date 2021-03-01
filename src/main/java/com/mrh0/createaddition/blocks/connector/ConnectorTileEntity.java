@@ -22,6 +22,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	private BlockPos[] connectionPos;
 	private int[] connectionIndecies;
 	private WireType[] connectionTypes;
+	public IWireNode[] nodeCache;
 	
 	public static Vector3f OFFSET_DOWN = new Vector3f(0f, -3f/16f, 0f);
 	public static Vector3f OFFSET_UP = new Vector3f(0f, 3f/16f, 0f);
@@ -29,8 +30,6 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	public static Vector3f OFFSET_WEST = new Vector3f(-3f/16f, 0f, 0f);
 	public static Vector3f OFFSET_SOUTH = new Vector3f(0f, 0f, 3f/16f);
 	public static Vector3f OFFSET_EAST = new Vector3f(3f/16f, 0f, 0f);
-	
-	public IWireNode[] nodeCache;
 	
 	private static final int CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
 	
@@ -46,7 +45,6 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 	
 	public IWireNode getNode(int node) {
-		//return IWireNode.getWireNode(world, getNodePos(node));
 		if(getNodeType(node) == null) {
 			nodeCache[node] = null;
 			return null;
