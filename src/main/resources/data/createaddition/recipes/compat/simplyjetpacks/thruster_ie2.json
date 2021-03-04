@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pep",
+    "wcw",
+    "php"
+  ],
+  "key": {
+    "p": { "tag": "forge:plates/aluminum" },
+    "e": { "item": "immersiveengineering:electron_tube" },
+    "w": { "item": "immersiveengineering:wirecoil_electrum" },
+    "c": { "item": "immersiveengineering:coil_mv" },
+    "h": { "item": "createaddition:heater" }
+  },
+  "result": {
+    "item": "simplyjetpacks:thruster_ie2",
+    "count": 1
+  },
+  "conditions": [
+    {
+    	"type": "forge:mod_loaded",
+    	"modid": "immersiveengineering"
+  	},
+  	{
+    	"type": "forge:mod_loaded",
+    	"modid": "simplyjetpacks"
+  	}
+  ]
+}

@@ -21,7 +21,7 @@ import net.minecraft.world.IWorldReader;
 
 public class HeaterBlock extends Block implements ITE<HeaterTileEntity> {
 	
-	public static final VoxelShaper ALTERNATOR_SHAPE = CAShapes.shape(4, 0, 4, 12, 14, 12).add(3, 0, 3, 13, 2, 13).add(5, 0, 5, 11, 16, 11).forDirectional();
+	public static final VoxelShaper HEATER_SHAPE = CAShapes.shape(4, 0, 4, 12, 14, 12).add(3, 0, 3, 13, 2, 13).add(5, 0, 5, 11, 16, 11).forDirectional();
 	
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
@@ -32,7 +32,7 @@ public class HeaterBlock extends Block implements ITE<HeaterTileEntity> {
 	
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return ALTERNATOR_SHAPE.get(state.get(FACING).getOpposite());
+		return HEATER_SHAPE.get(state.get(FACING).getOpposite());
 	}
 
 	@Override

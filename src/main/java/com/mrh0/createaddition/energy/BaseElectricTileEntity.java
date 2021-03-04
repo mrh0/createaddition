@@ -2,11 +2,13 @@ package com.mrh0.createaddition.energy;
 
 import java.util.List;
 
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -20,10 +22,14 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	protected LazyOptional<IEnergyStorage> lazyEnergy;
 	
 	private boolean firstTickState = true;
+	protected final int CAPACITY, MAX_IN, MAX_OUT;
 	
 	public BaseElectricTileEntity(TileEntityType<?> tileEntityTypeIn, int CAPACITY, int MAX_IN, int MAX_OUT) {
 		super(tileEntityTypeIn);
 		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
+		this.CAPACITY = CAPACITY;
+		this.MAX_IN = MAX_IN;
+		this.MAX_OUT = MAX_OUT;
 		lazyEnergy = LazyOptional.of(() -> energy);
 		setLazyTickRate(20);
 	}
@@ -77,4 +83,18 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	}
 	
 	public void firstTick() {};
+	
+	public void updateCachedEnergy(Direction side) {
+		TileEntity te = world.getTileEntity(pos.offset(side));
+		if(te == null) {
+			setCache(side, null);
+			return;
+		}
+		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		setCache(side, le.orElse(null));
+	}
+	
+	public abstract void setCache(Direction side, IEnergyStorage storage);
+	
+	public abstract IEnergyStorage getCachedEnergy(Direction side);
 }

@@ -4,6 +4,7 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -33,6 +34,8 @@ public class CreateAddition {
     
     public static final String MODID = "createaddition";
     
+    public static boolean IE_ACTIVE = false;
+    
     private static final NonNullLazyValue<CreateRegistrate> registrate = CreateRegistrate.lazy(CreateAddition.MODID);
 
     public CreateAddition() {
@@ -53,6 +56,8 @@ public class CreateAddition {
         MinecraftForge.EVENT_BUS.register(this);
         
         Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("createaddition-common.toml"));
+        
+        IE_ACTIVE = ModList.get().isLoaded("immersiveengineering");
         
         new ModGroup("main");
         
