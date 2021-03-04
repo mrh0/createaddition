@@ -24,7 +24,7 @@ Create Crafts & Additions extends Create and acts as a bridge between electricit
 - Creative Generator.
 - Diamond Grit Sandpaper.
 - Multimeter.
-- Various wires, rods, spools and other crafting components.
+And more!
 
 # License
 
