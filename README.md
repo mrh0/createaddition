@@ -32,7 +32,7 @@ Available under MIT the license more info at: https://tldrlegal.com/license/mit-
 
 MIT License
 
-Copyright 2021 MRH0 (aka MRH/mrhminer/hminer)
+Copyright 2021 MRH0
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
