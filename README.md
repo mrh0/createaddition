@@ -6,7 +6,7 @@ Minecraft Forge Mod by MRH0
 
 # Download
 
-Latest Alpha 20210125b for Minecraft 1.16.4+5
+Latest Alpha 20210303a for Minecraft 1.16.4+5
 
 At: https://www.curseforge.com/minecraft/mc-mods/createaddition
 
@@ -24,7 +24,7 @@ Create Crafts & Additions extends Create and acts as a bridge between electricit
 - Creative Generator.
 - Diamond Grit Sandpaper.
 - Multimeter.
-- Various wires, rods, spools and other crafting components.
+And more!
 
 # License
 
@@ -32,7 +32,7 @@ Available under MIT the license more info at: https://tldrlegal.com/license/mit-
 
 MIT License
 
-Copyright 2021 MRH0 (aka MRH/mrhminer/hminer)
+Copyright 2021 MRH0
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -7,8 +7,10 @@ import com.mrh0.createaddition.blocks.electric_motor.*;
 import com.mrh0.createaddition.blocks.heater.HeaterTileEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillTileEntity;
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.accumulator.AccumulatorTileEntity;
 import com.mrh0.createaddition.blocks.alternator.*;
 import com.mrh0.createaddition.blocks.rolling_mill.*;
+import com.mrh0.createaddition.blocks.connector.*;
 import com.simibubi.create.repack.registrate.util.entry.TileEntityEntry;
 
 public class CATileEntities {
@@ -38,11 +40,17 @@ public class CATileEntities {
 	public static final TileEntityEntry<ConnectorTileEntity> CONNECTOR = CreateAddition.registrate()
 			.tileEntity("connector", ConnectorTileEntity::new)
 			.validBlocks(CABlocks.CONNECTOR)
+			.renderer(() -> ConnectorRenderer::new)
 			.register();
 	
 	public static final TileEntityEntry<HeaterTileEntity> HEATER = CreateAddition.registrate()
 			.tileEntity("heater", HeaterTileEntity::new)
 			.validBlocks(CABlocks.HEATER)
+			.register();
+	
+	public static final TileEntityEntry<AccumulatorTileEntity> ACCUMULATOR = CreateAddition.registrate()
+			.tileEntity("accumulator", AccumulatorTileEntity::new)
+			.validBlocks(CABlocks.ACCUMULATOR)
 			.register();
 	
 	public static void register() {}
