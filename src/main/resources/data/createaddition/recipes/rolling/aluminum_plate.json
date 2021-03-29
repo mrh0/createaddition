@@ -5,7 +5,7 @@
 	},
 	"result": {
 		"item": "immersiveengineering:wire_aluminum",
-		"count": 1
+		"count": 2
 	},
 	"conditions": [ {
 		"type": "forge:mod_loaded",

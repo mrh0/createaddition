@@ -1,0 +1,19 @@
+{
+  "type":"immersiveengineering:metal_press",
+  "mold":{
+	"item":"immersiveengineering:mold_plate"
+  },
+  "result":{
+	"item":"create:lapis_sheet"
+  },
+  "input":{
+	"tag":"forge:storage_blocks/lapis"
+  },
+  "energy":2400,
+  "conditions": [ 
+  	{
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+  	} 
+  ]
+}

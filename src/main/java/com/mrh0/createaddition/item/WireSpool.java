@@ -30,7 +30,8 @@ public class WireSpool extends Item {
 
 	@Override
 	public ActionResultType onItemUse(ItemUseContext c) {
-		
+		//if(c.getWorld().isRemote())
+		//	return ActionResultType.PASS;
 		
 		CompoundNBT nbt = c.getItem().getTag();
 		if(nbt == null)
@@ -45,9 +46,9 @@ public class WireSpool extends Item {
 		
 		/*if(c.getPlayer().isSneaking()) {
 			for(int i = 0; i < node.getNodeCount(); i++) {
-				BlockPos p = node.getNodePos(i);
-				if(p != null)
-					System.out.println(i+"@"+p.getX()+":"+p.getY()+":"+p.getZ());
+				int index = node.getNodeIndex(i);
+				if(index != -1)
+					System.out.println(i+"->"+node.isNodeInput(i));
 			}
 			return ActionResultType.CONSUME;
 		}*/
@@ -62,6 +63,8 @@ public class WireSpool extends Item {
 			else
 				result = IWireNode.connect(c.getWorld(), getPos(nbt), getNode(nbt), c.getPos(), node.getNodeFromPos(c.getHitVec()), getWireType(c.getItem().getItem()));
 
+			te.markDirty();
+			
 			if(!c.getPlayer().isCreative()) {
 				if(result == WireConnectResult.REMOVED) {
 					c.getItem().shrink(1);
@@ -70,7 +73,7 @@ public class WireSpool extends Item {
 					if(shouldDrop)
 						c.getPlayer().dropItem(stack, false);
 				}
-				else if(result == WireConnectResult.CONNECTED) {
+				else if(result.isLinked()) {
 					c.getItem().shrink(1);
 					ItemStack stack = new ItemStack(CAItems.SPOOL.get(), 1);
 					boolean shouldDrop = !c.getPlayer().addItemStackToInventory(stack);
@@ -81,16 +84,15 @@ public class WireSpool extends Item {
 			
 			c.getPlayer().sendStatusMessage(result.getMessage(), true);
 			c.getItem().setTag(null);
-			//System.out.println("Connected:" + result);
 		}
 		else {
 			int index = node.getNodeFromPos(c.getHitVec());
-			if(index < 0) {
-				//System.out.println("Full");
+			if(index < 0)
 				return ActionResultType.PASS;
-			}
+			if(!isRemover(c.getItem().getItem()))
+				c.getPlayer().sendStatusMessage(WireConnectResult.getConnect(node.isNodeInput(index), node.isNodeOutput(index)).getMessage(), true);
+			c.getItem().setTag(null);
 			c.getItem().setTag(setContent(nbt, node.getMyPos(), index));
-			//System.out.println("Set");
 		}
 		
 		return ActionResultType.CONSUME;
