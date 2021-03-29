@@ -11,32 +11,40 @@
 	"item.createaddition.multimeter.measuring":"[Измерение...]",
 	"item.createaddition.multimeter.ticks":" тиков",
 	"item.createaddition.multimeter.no_capability":"С этой стороны блока не поступает Forge Energy.",
-	
+	"item.createaddition.multimeter.tooltip": "МУЛЬТИМЕТР",
+	"item.createaddition.multimeter.tooltip.summary": "Измеряет _емкость_ и _вход/выход_ _FE_ с любой стороны.",
 	"item.createaddition.zinc_sheet": "Цинковый лист",
 	"item.createaddition.diamond_grit": "Алмазная пыль",
 	"item.createaddition.diamond_grit_sandpaper": "Наждачная бумага с алмазным напылением",
+	"item.createaddition.diamond_grit_sandpaper.tooltip": "НАЖДАЧНАЯ БУМАГА С АЛМАЗНЫМ НАПЫЛЕНИЕМ",
 	
-	"item.createaddition.copper_spool": "Медная катушка",
+	"item.createaddition.copper_spool": "Катушка с медным проводом",
+	"item.createaddition.copper_spool.tooltip": "КАТУШКА",
+	"item.createaddition.copper_spool.tooltip.summary": "ПКМ на два _коннектора_ создаст _проводное_ _соединение_ между ними и вернет _пустую_ _катушку_.",
+	
 	"item.createaddition.copper_wire": "Медный провод",
 	"item.createaddition.copper_rod": "Медный стержень",
 	
-	"item.createaddition.iron_spool": "Железная катушка",
+	"item.createaddition.iron_spool": "Катушка с железным проводом",
 	"item.createaddition.iron_wire": "Железный провод",
 	"item.createaddition.iron_rod": "Железный стержень",
 	
-	"item.createaddition.steel_spool": "Стальная катушка",
+	"item.createaddition.steel_spool": "Катушка со стальным проводом",
 	"item.createaddition.steel_wire": "Стальной провод",
 	"item.createaddition.steel_rod": "Стальной стержень",
 	
-	"item.createaddition.electrum_spool": "Электрумовая катушка",
+	"item.createaddition.electrum_spool": "Катушка с электрумовым проводом",
 	"item.createaddition.electrum_wire": "Электрумовый провод",
 	"item.createaddition.electrum_rod": "Электрумовый стержень",
 	
-	"item.createaddition.aluminum_spool": "Алюминиевая катушка",
+	"item.createaddition.aluminum_spool": "Катушка с алюминиевым проводом",
 	"item.createaddition.aluminum_wire": "Алюминиевый провод",
 	"item.createaddition.aluminum_rod": "Алюминиевый стержень",
 	
-	"item.createaddition.gold_spool": "Золотая катушка",
+	"item.createaddition.gold_spool": "Катушка с золотым проводом",
+	"item.createaddition.gold_spool.tooltip": "КАТУШКА",
+	"item.createaddition.gold_spool.tooltip.summary": "ПКМ на два _коннектора_ создаст _проводное_ _соединение_ между ними и вернет _пустую_ _катушку_.",
+	
 	"item.createaddition.gold_wire": "Золотой провод",
 	"item.createaddition.gold_rod": "Золотой стержень",
 	
@@ -44,12 +52,50 @@
 	"item.createaddition.bronze_rod": "Бронзовый стержень",
 	
 	"item.createaddition.spool": "Пустая катушка",
+	"item.createaddition.spool.nbt": "Сохраняет место подключения.",
+	"item.createaddition.spool.tooltip": "КАТУШКА",
+	"item.createaddition.spool.tooltip.summary": "ПКМ на два соединенных проводами _коннектора_ отсоединит их и вернет _катушку_ _с_ _проводом_.",
+	
+	"statusbar.createaddition.wire.connected": "Провод присоединен",
+	"statusbar.createaddition.wire.long": "Длина провода слишком велика",
+	"statusbar.createaddition.wire.obstructed": "На пути соединения провода размещен блок",
+	"statusbar.createaddition.wire.count": "Количество соединений на один блок слишком велико",
+	"statusbar.createaddition.wire.removed": "Провод отсоединен",
+	"statusbar.createaddition.wire.exists": "Соединение провода уже существует",
+	"statusbar.createaddition.wire.no_connection": "Нет соединения провода",
+	"statusbar.createaddition.wire.invalid": "Неверное соединение",
 	
 	"block.createaddition.electric_motor": "Электромотор",
+	"block.createaddition.electric_motor.tooltip": "ЭЛЕКТРОМОТОР",
+	"block.createaddition.electric_motor.tooltip.summary": "Создает _крутящий_ _момент_ из _FE_ с настраиваемой _скоростью_ _вращения_. Количество потребляемой энергии зависит от _скорости_ _вращения_.",
+	
 	"block.createaddition.alternator": "Генератор",
+	"block.createaddition.alternator.tooltip": "ГЕНЕРАТОР",
+	"block.createaddition.alternator.tooltip.summary": "Вырабатывает _FE_ из _крутящего_ _момента_. Количество вырабатываемой энергии зависит от _скорости_ _вращения_.",
+	
 	"block.createaddition.creative_energy": "Творческий генератор",
+	"block.createaddition.creative_energy.tooltip": "ГЕНЕРАТОР",
+	"block.createaddition.creative_energy.tooltip.summary": "Вырабатывает бесконечное количество _FE_.",
+	
 	"block.createaddition.rolling_mill": "Прокатный станок",
+	"block.createaddition.rolling_mill.tooltip": "ПРОКАТНЫЙ СТАНОК",
+	"block.createaddition.rolling_mill.tooltip.summary": "Кинетический механизм для _прокатки_ различных _материалов_. Активируется подачей _крутящего_ _момента_ на любую из сторон. Результат должен быть извлечен из механизхма вручную или с помощью воронки.",
+	"block.createaddition.rolling_mill.tooltip.condition1": "При подаче крутящего момента",
+	"block.createaddition.rolling_mill.tooltip.behaviour1": "Применяет _рецепты_ _прокатки_ к любым предметам, вставленным сбоку или сверху блока.",
+	"block.createaddition.rolling_mill.tooltip.condition2": "При нажатии ПКМ",
+    "block.createaddition.rolling_mill.tooltip.behaviour2": "Собирает результат прокатки вам в инвентарь.",
+	
 	"block.createaddition.heater": "Индукционный нагреватель",
+	"block.createaddition.heater.tooltip": "ИНДУКЦИОННЫЙ НАГРЕВАТЕЛЬ",
+	"block.createaddition.heater.tooltip.summary": "Когда подсоединен к _печи_ и запитан _FE_ сверху будет нагревать _Печь_. Не будет работать с печным двигателем, если это не _включено_ в _конфигах_.",
+	
+	"block.createaddition.accumulator": "Аккумулятор",
+	"block.createaddition.accumulator.tooltip": "АККУМУЛЯТОР",
+	"block.createaddition.accumulator.tooltip.summary": "Хранит _FE_ _[WIP]_",
+	
+	"block.createaddition.connector": "Коннектор",
+	"block.createaddition.connector.tooltip": "КОННЕКТОР",
+	"block.createaddition.connector.tooltip.summary": "Соединяет блоки, работающие на _FE_ с помощью _проводов_. ПКМ на два _коннектора_ медной или золотой _катушкой_ создаст _проводное_ _соединение_.",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }
