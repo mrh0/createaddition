@@ -4,6 +4,7 @@
       	"tag": "forge:plates/iron"
 	},
 	"result": {
-		"item": "createaddition:iron_wire"
+		"item": "createaddition:iron_wire",
+		"count": 2
 	}
 }

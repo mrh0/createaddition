@@ -36,6 +36,15 @@ public class InternalEnergyStorage extends EnergyStorage {
     	setEnergy(nbt.getInt("energy"));
     }
     
+    public CompoundNBT write(CompoundNBT nbt, String name) {
+    	nbt.putInt("energy_"+name, energy);
+    	return nbt;
+    }
+    
+    public void read(CompoundNBT nbt, String name) {
+    	setEnergy(nbt.getInt("energy_"+name));
+    }
+    
     @Override
     public boolean canExtract() {
     	return true;
@@ -71,6 +80,12 @@ public class InternalEnergyStorage extends EnergyStorage {
 		IEnergyStorage ies = opt.orElse(null);
 		if(ies == null)
 			return;
-		this.receiveEnergy(ies.receiveEnergy(this.extractEnergy(max, false), false), false);
+		int ext = this.extractEnergy(max, false);
+		this.receiveEnergy(ext - ies.receiveEnergy(ext, false), false);
+    }
+    
+    @Override
+    public String toString() {
+    	return getEnergyStored() + "/" + getMaxEnergyStored();
     }
 }

@@ -31,7 +31,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	public static Vector3f OFFSET_SOUTH = new Vector3f(0f, 0f, 3f/16f);
 	public static Vector3f OFFSET_EAST = new Vector3f(3f/16f, 0f, 0f);
 	
-	private static final int CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
+	public static final int CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
 	
 	public ConnectorTileEntity(TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn, CAPACITY, MAX_IN, MAX_OUT);
@@ -108,15 +108,11 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 
 	@Override
 	public BlockPos getNodePos(int node) {
-		if(connectionPos[node] == null)
-			return null;
 		return connectionPos[node];
 	}
 
 	@Override
 	public WireType getNodeType(int node) {
-		if(connectionPos[node] == null)
-			return null;
 		return connectionTypes[node];
 	}
 	
@@ -129,6 +125,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	
 	@Override
 	public void setNode(int node, int other, BlockPos pos, WireType type) {
+		//System.out.println("SET: " + node + "->" + other);
 		connectionPos[node] = pos; 
 		connectionIndecies[node] = other;
 		connectionTypes[node] = type;
@@ -188,7 +185,23 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			IWireNode n = getNode(i);
 			if(n == null)
 				continue;
+			if(!isNodeOutput(i))
+				continue;
+			if(!n.isNodeInput(getNodeIndex(i)))
+				continue;
+			
 			IEnergyStorage es = n.getNodeEnergyStorage(getNodeIndex(i));
+			/*if(n.isNodeStorage(i)) {
+				int ext = Math.min(es.getMaxEnergyStored()-es.getEnergyStored(), Math.max(energy.getEnergyStored(), MAX_OUT));
+				ext = energy.extractEnergy(ext, false);
+				es.receiveEnergy(Math.max(ext, 0), false);
+			}
+			else {
+				int ext = energy.getEnergyStored()-es.getEnergyStored();
+				ext = energy.extractEnergy(ext, false);
+				es.receiveEnergy(Math.max(ext, 0), false);
+			}*/
+			
 			int ext = energy.getEnergyStored()-es.getEnergyStored();
 			ext = energy.extractEnergy(ext, false);
 			es.receiveEnergy(Math.max(ext, 0), false);

@@ -10,6 +10,7 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorTileEntity;
 import com.mrh0.createaddition.blocks.alternator.*;
 import com.mrh0.createaddition.blocks.rolling_mill.*;
+import com.mrh0.createaddition.blocks.accumulator.*;
 import com.mrh0.createaddition.blocks.connector.*;
 import com.simibubi.create.repack.registrate.util.entry.TileEntityEntry;
 
@@ -51,6 +52,7 @@ public class CATileEntities {
 	public static final TileEntityEntry<AccumulatorTileEntity> ACCUMULATOR = CreateAddition.registrate()
 			.tileEntity("accumulator", AccumulatorTileEntity::new)
 			.validBlocks(CABlocks.ACCUMULATOR)
+			.renderer(() -> AccumulatorRenderer::new)
 			.register();
 	
 	public static void register() {}

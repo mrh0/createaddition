@@ -51,6 +51,7 @@ public class CAItems {
 	
 	public static final ItemEntry<WireSpool> COPPER_SPOOL =
 			REGISTRATE.item("copper_spool", WireSpool::new).register();
+	
 	public static final ItemEntry<Item> COPPER_WIRE =
 			REGISTRATE.item("copper_wire", Item::new).register();
 	public static final ItemEntry<Item> COPPER_ROD =

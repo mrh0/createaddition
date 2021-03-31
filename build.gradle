@@ -3,7 +3,7 @@ buildscript {
         maven { 
 			url = 'https://files.minecraftforge.net/maven'
 		}
-		maven { url='https://dist.creeper.host/Sponge/maven' }
+		maven { url='https://repo.spongepowered.org/repository/maven-public/' }
         jcenter()
         mavenCentral()
     }
@@ -37,7 +37,7 @@ mixin {
     add sourceSets.main, "createaddition.refmap.json"
 }
 
-version = '1.16.4-20210301a'
+version = '1.16.5-20210320b'
 group = 'com.mrh0.createaddition' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createaddition'
 
@@ -120,7 +120,7 @@ dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.16.4-35.1.17'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
 	
 	//def registrate = "com.tterrag.registrate:Registrate:MC1.16.2-1.0.0-beta.33"
     //implementation fg.deobf(registrate)
@@ -147,7 +147,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:create-328085:3167531")
 	implementation fg.deobf("curse.maven:immersive-engineering-231951:3102280")
 	
-	runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3172395")
+	// runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3172395")
 	
 	//runtimeOnly fg.deobf("curse.maven:jei-238222:3157864")
 	// compileOnly fileTree(dir: 'libs', includes: ['*.jar'])

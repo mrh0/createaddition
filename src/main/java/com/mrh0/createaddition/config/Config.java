@@ -15,6 +15,7 @@ public class Config {
 	public static final String CATAGORY_ROLLING_MILL = "rolling_mill";
 	public static final String CATAGORY_HEATER = "heater";
 	public static final String CATAGORY_WIRES = "wires";
+	public static final String CATAGORY_ACCUMULATOR = "accumulator";
 	
 	private static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 	
@@ -45,6 +46,10 @@ public class Config {
 	public static ForgeConfigSpec.IntValue CONNECTOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.IntValue CONNECTOR_CAPACITY;
 	
+	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_INPUT;
+	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_OUTPUT;
+	public static ForgeConfigSpec.IntValue ACCUMULATOR_CAPACITY;
+	
 	public static ForgeConfigSpec.DoubleValue COPPER_WIRE_LOSS;
 	public static ForgeConfigSpec.DoubleValue GOLD_WIRE_LOSS;
 	
@@ -56,6 +61,7 @@ public class Config {
 				.defineInRange("fe_conversion", 80, 0, Integer.MAX_VALUE);
 
 		COMMON_BUILDER.pop();
+		
 		
 		COMMON_BUILDER.comment("Electric Motor").push(CATAGORY_ELECTRIC_MOTOR);
 		
@@ -76,6 +82,7 @@ public class Config {
 		
 		COMMON_BUILDER.pop();
 		
+		
 		COMMON_BUILDER.comment("Alternator").push(CATAGORY_ALTERNATOR);
 		
 		ALTERNATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Alternator max input in FE (Energy transfer not generation).")
@@ -92,6 +99,7 @@ public class Config {
 		
 		COMMON_BUILDER.pop();
 		
+		
 		COMMON_BUILDER.comment("Rolling Mill").push(CATAGORY_ROLLING_MILL);
 		
 		ROLLING_MILL_PROCESSING_DURATION = COMMON_BUILDER.comment("Rolling Mill duration in ticks.")
@@ -101,6 +109,7 @@ public class Config {
 				.defineInRange("rolling_mill_stress", 16, 0, 1024);
 		
 		COMMON_BUILDER.pop();
+		
 		
 		COMMON_BUILDER.comment("Heater").push(CATAGORY_HEATER);
 		
@@ -121,6 +130,7 @@ public class Config {
 		
 		COMMON_BUILDER.pop();
 		
+		
 		COMMON_BUILDER.comment("Wires").push(CATAGORY_WIRES);
 		
 		CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Connector max input (Energy transfer).")
@@ -137,6 +147,22 @@ public class Config {
 		
 		GOLD_WIRE_LOSS = COMMON_BUILDER.comment("Loss per block in gold wire (Not implemented, currently no loss).")
 				.defineInRange("gold_wire_loss", 0.005d, 0d, 0.5d);
+		
+		COMMON_BUILDER.pop();
+		
+		COMMON_CONFIG = COMMON_BUILDER.build();
+		
+		
+		COMMON_BUILDER.comment("Accumulator").push(CATAGORY_ACCUMULATOR);
+		
+		ACCUMULATOR_MAX_INPUT = COMMON_BUILDER.comment("Accumulator max input (Energy transfer).")
+				.defineInRange("accumulator_max_input", 8192, 0, Integer.MAX_VALUE);
+		
+		ACCUMULATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Accumulator max output (Energy transfer).")
+				.defineInRange("accumulator_max_output", 8192, 0, Integer.MAX_VALUE);
+		
+		ACCUMULATOR_CAPACITY = COMMON_BUILDER.comment("Accumulator internal capacity.")
+				.defineInRange("accumulator_capacity", 4196000, 0, Integer.MAX_VALUE);
 		
 		COMMON_BUILDER.pop();
 		

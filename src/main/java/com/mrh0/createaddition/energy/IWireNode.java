@@ -60,6 +60,7 @@ public interface IWireNode {
 		if(pos == null)
 			return  nbt;
 		int index = getNodeIndex(node);
+		//System.out.println("WRITE: " + node + "->" + index);
 		WireType type = getNodeType(node);
 		nbt.putInt("x"+node, pos.getX());
 		nbt.putInt("y"+node, pos.getY());
@@ -74,7 +75,8 @@ public interface IWireNode {
 			return;
 		BlockPos pos = new BlockPos(nbt.getInt("x"+node), nbt.getInt("y"+node), nbt.getInt("z"+node));
 		WireType type =  WireType.fromIndex(nbt.getInt("type"+node));
-		int index = nbt.getInt("node");
+		int index = nbt.getInt("node"+node);
+		//System.out.println("READ: " + node + "->" + index);
 		setNode(node, index, pos, type);
 	}
 	
@@ -127,6 +129,7 @@ public interface IWireNode {
 	}
 	
 	public BlockPos getMyPos();
+	public IWireNode getNode(int node);
 	
 	public static WireConnectResult connect(World world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
 		TileEntity te1 = world.getTileEntity(pos1);
@@ -151,14 +154,17 @@ public interface IWireNode {
 		IWireNode wn1 = (IWireNode) te1;
 		IWireNode wn2 = (IWireNode) te2;
 		
+		//System.out.println("1 : In:" + wn1.isNodeInput(node1) + " Out:" + wn1.isNodeOutput(node1));
+		//System.out.println("2 : In:" + wn2.isNodeInput(node2) + " Out:" + wn2.isNodeOutput(node2));
+		
 		if(wn1.hasConnectionTo(pos2))
 			return WireConnectResult.EXISTS;
 		
 		wn1.setNode(node1, node2, wn2.getMyPos(), type);
 		wn2.setNode(node2, node1, wn1.getMyPos(), type);
-		System.out.println("Connected: " + wn1.getMyPos() + " to " + wn2.getMyPos());
+		//System.out.println("Connected: " + node1 + " to " + node2);
 		
-		return WireConnectResult.CONNECTED;
+		return WireConnectResult.getLink(wn2.isNodeInput(node2), wn2.isNodeOutput(node2));
 	}
 	
 	public static WireType getTypeOfConnection(World world, BlockPos pos1, BlockPos pos2) {
@@ -219,6 +225,14 @@ public interface IWireNode {
 		if(!(te instanceof IWireNode))
 			return null;
 		return (IWireNode) te;
+	}
+	
+	public default boolean isNodeInput(int node) {
+		return true;
+	}
+	
+	public default boolean isNodeOutput(int node) {
+		return true;
 	}
 	
 	public static void dropWire(World world, BlockPos pos, ItemStack stack) {

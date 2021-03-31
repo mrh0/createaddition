@@ -4,6 +4,7 @@
       	"tag": "forge:plates/copper"
 	},
 	"result": {
-		"item": "createaddition:copper_wire"
+		"item": "createaddition:copper_wire",
+		"count": 2
 	}
 }

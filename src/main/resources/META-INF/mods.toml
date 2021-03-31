@@ -51,7 +51,7 @@ Create Crafts & Additions extends Create and acts as a bridge between electricit
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.16.3_v0.3e,)"
+    versionRange="[mc1.16.3_v0.3e]"
     ordering="NONE"
     side="BOTH"
 [[dependencies.immersiveengineering]]

@@ -64,8 +64,8 @@ public class CABlocks {
 	
 	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = REGISTRATE.block("accumulator",  AccumulatorBlock::new)
 			.initialProperties(SharedProperties::stone)
-			//.item()
-			//.transform(customItemModel())
+			.item()
+			.transform(customItemModel())
 			.register();
 	
 	public static final BlockEntry<HeaterBlock> HEATER = REGISTRATE.block("heater",  HeaterBlock::new)
