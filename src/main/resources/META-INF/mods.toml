@@ -35,6 +35,7 @@ authors="MRH0" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 Create Crafts & Additions extends Create and acts as a bridge between electricity and kinetic energy from Create by adding an Electric Motor which generates kinetic energy from Forge energy and an Alternator which does the opposite.
+Join the Discord: https://discord.gg/mRbNnyKTEu
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.createaddition]] #optional
@@ -51,7 +52,7 @@ Create Crafts & Additions extends Create and acts as a bridge between electricit
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.16.3_v0.3e]"
+    versionRange="[mc1.16.5_v0.3.1,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.immersiveengineering]]

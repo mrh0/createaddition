@@ -38,15 +38,12 @@ public class Multimeter extends Item {
 			LazyOptional<IEnergyStorage> cap;
 			cap = te.getCapability(CapabilityEnergy.ENERGY, c.getFace());
 			
-			
-			if(te instanceof IWireNode) {
+			/*if(te instanceof IWireNode) {
 				IWireNode wn = (IWireNode) te;
 				for(int i = 0; i < wn.getNodeCount(); i++) {
 					System.out.println(i + ":" + wn.getNodeEnergyStorage(i).toString());
 				}
-			}
-			
-			
+			}*/
 			
 			if(cap != null) {
 				IEnergyStorage energy = cap.orElse(null);

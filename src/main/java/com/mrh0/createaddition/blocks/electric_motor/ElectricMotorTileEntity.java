@@ -9,6 +9,8 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.item.Multimeter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
+import com.simibubi.create.content.contraptions.components.motor.CreativeMotorTileEntity;
+import com.simibubi.create.foundation.config.AllConfigs;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
@@ -36,12 +38,13 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	private LazyOptional<net.minecraftforge.energy.IEnergyStorage> lazyEnergy;
 	
 	private static final Integer 
-		MIN_RPM = Config.ELECTRIC_MOTOR_MIN_RPM.get(),
-		MAX_RPM = Config.ELECTRIC_MOTOR_MAX_RPM.get(),
-		DEFAULT_SPEED = MIN_RPM,
+		RPM_RANGE = Config.ELECTRIC_MOTOR_RPM_RANGE.get(),
+		DEFAULT_SPEED = 32,
 		MAX_IN = Config.ELECTRIC_MOTOR_MAX_INPUT.get(),
+		MIN_CONSUMPTION = Config.ELECTRIC_MOTOR_MINIMUM_CONSUMPTION.get(),
 		MAX_OUT = 0,
-		CAPACITY = Config.ELECTRIC_MOTOR_CAPACITY.get();
+		CAPACITY = Config.ELECTRIC_MOTOR_CAPACITY.get(),
+		STRESS = Config.BASELINE_STRESS.get();
 	
 	private boolean active = false;
 
@@ -60,36 +63,30 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 			new CenteredSideValueBoxTransform((motor, side) -> motor.get(ElectricMotorBlock.FACING) == side.getOpposite());
 
 		generatedSpeed = new ScrollValueBehaviour(Lang.translate("generic.speed"), this, slot);
-		generatedSpeed.between(MIN_RPM, MAX_RPM);
+		generatedSpeed.between(-RPM_RANGE, RPM_RANGE);
 		generatedSpeed.value = DEFAULT_SPEED;
 		generatedSpeed.scrollableValue = DEFAULT_SPEED;
 		generatedSpeed.withUnit(i -> Lang.translate("generic.unit.rpm"));
 		generatedSpeed.withCallback(i -> this.updateGeneratedRotation());
-		generatedSpeed.withStepFunction(ElectricMotorTileEntity::step);
+		generatedSpeed.withStepFunction(CreativeMotorTileEntity::step);
 		behaviours.add(generatedSpeed);
 	}
 	
-	public static int step(StepContext context) {
-		if (context.shift)
-			return 1;
-		int current = context.currentValue;
-		int magnitude = Math.abs(current) - (context.forward == current > 0 ? 0 : 1);
-		int step = 32;
-		
-		if (magnitude >= 128)
-			step *= 4;
-		return step;
+	public float calculateAddedStressCapacity() {
+		float capacity = generatedSpeed.getValue() > 0 ? STRESS/generatedSpeed.getValue() : 0;
+		this.lastCapacityProvided = capacity;
+		return capacity;
 	}
 	
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").mergeStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").mergeStyle(TextFormatting.AQUA)));
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").mergeStyle(TextFormatting.GRAY)));
+		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
+		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy)).formatted(TextFormatting.AQUA)));
+		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").formatted(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
-				.mergeStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").mergeStyle(TextFormatting.DARK_GRAY)));
+				.formatted(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").formatted(TextFormatting.DARK_GRAY)));
 		added = true;
 		return added;
 	}
@@ -153,9 +150,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 			return;
 		int con = getEnergyConsumptionRate(generatedSpeed.getValue()) * 20;
 		if(!active) {
-			if(energy.getEnergyStored() > con * 2) {
+			if(energy.getEnergyStored() > con * 2)
 				active = true;
-			}
 		}
 		else {
 			
@@ -168,7 +164,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	public static int getEnergyConsumptionRate(int rpm) {
-		return Config.FE_TO_SU.get() * rpm / MAX_RPM;
+		//return (int)Math.max((double)Config.FE_TO_SU.get() * ((double)Math.abs(rpm) / 256d * stress / STRESS), (double)MIN_CONSUMPTION);
+		return (int)Math.max((double)Config.FE_RPM.get() * ((double)rpm / 256d), (double)MIN_CONSUMPTION);
 	}
 	
 	@Override

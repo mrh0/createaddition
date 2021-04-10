@@ -37,7 +37,7 @@ mixin {
     add sourceSets.main, "createaddition.refmap.json"
 }
 
-version = '1.16.5-20210320b'
+version = '1.16.5-20210404a'
 group = 'com.mrh0.createaddition' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createaddition'
 
@@ -50,7 +50,9 @@ minecraft {
     // stable_#            Stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'snapshot', version:  '20201028-1.16.3'
+    mappings channel: 'snapshot', version:  '20200920-mixed-1.16.3'
+
+	// 20201028-1.16.3
 
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
@@ -62,6 +64,7 @@ minecraft {
         client {
             workingDirectory project.file('run')
 			arg "-mixin.config=createaddition.mixins.json"
+			jvmArgs "-Dmixin.env.disableRefMap=true"
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
@@ -78,6 +81,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+			jvmArgs "-Dmixin.env.disableRefMap=true"
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
@@ -94,6 +98,7 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
+			jvmArgs "-Dmixin.env.disableRefMap=true"
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
@@ -144,7 +149,7 @@ dependencies {
     // at runtime, use the full JEI jar
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 	
-	implementation fg.deobf("curse.maven:create-328085:3167531")
+	implementation fg.deobf("curse.maven:create-328085:3261455")
 	implementation fg.deobf("curse.maven:immersive-engineering-231951:3102280")
 	
 	// runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3172395")
@@ -157,6 +162,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+	annotationProcessor 'org.spongepowered:mixin:0.8:processor'
 }
 
 

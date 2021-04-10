@@ -1,0 +1,31 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern":
+	["BRB",
+	 "CEC",
+	 "BRB"],
+	"key":
+	{
+		"R":
+		{
+			"tag": "forge:dusts/redstone"
+		},
+		"B":
+		{
+			"tag": "forge:plates/brass"
+		},
+		"C":
+		{
+			"item": "createaddition:connector"
+		},
+		"E":
+		{
+			"item": "create:electron_tube"
+		}
+	},
+	"result":{
+		"item": "createaddition:redstone_relay",
+		"count": 1
+	}
+}

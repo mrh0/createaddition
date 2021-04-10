@@ -1,5 +1,6 @@
 {
 	"required": true,
+	"priority": 1000,
 	"package": "com.mrh0.createaddition.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "createaddition.refmap.json",

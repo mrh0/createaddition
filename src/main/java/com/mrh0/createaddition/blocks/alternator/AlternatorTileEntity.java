@@ -15,6 +15,7 @@ import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.text.ITextComponent;
@@ -35,7 +36,7 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 		MAX_IN = 0,
 		MAX_OUT = Config.ALTERNATOR_MAX_OUTPUT.get(),
 		CAPACITY = Config.ALTERNATOR_CAPACITY.get(),
-		STRESS = Config.ALTERNATOR_STRESS.get();
+		STRESS = Config.BASELINE_STRESS.get();
 	private static final double EFFICIENCY = Config.ALTERNATOR_EFFICIENCY.get();
 
 	public AlternatorTileEntity(TileEntityType<?> typeIn) {
@@ -48,18 +49,18 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").mergeStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").mergeStyle(TextFormatting.AQUA)));
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.production").mergeStyle(TextFormatting.GRAY)));
+		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
+		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
+		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.production").formatted(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
-				.mergeStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").mergeStyle(TextFormatting.DARK_GRAY)));
+				.formatted(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").formatted(TextFormatting.DARK_GRAY)));
 		added = true;
 		return added;
 	}
 	
+	@Override
 	public float calculateStressApplied() {
-		float impact = STRESS;
+		float impact = STRESS/256f;
 		this.lastStressApplied = impact;
 		return impact;
 	}
@@ -94,20 +95,39 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 	@Override
 	public void lazyTick() {
 		super.lazyTick();
-		if(world.isRemote())
-			return;
+		//if(world.isRemote())
+		//	return;
 		if(Math.abs(getSpeed()) > 0 && isSpeedRequirementFulfilled())
 			energy.internalProduceEnergy(getEnergyProductionRate((int)getSpeed()) * 20);
 		
-		for(Direction side : Direction.values()) {
+		/*for(Direction side : Direction.values()) {
 			if(!isEnergyOutput(side))
 				continue;
 			energy.outputToSide(world, pos, side, MAX_OUT);
+		}*/
+		
+		for(Direction d : Direction.values()) {
+			if(!isEnergyOutput(d))
+				continue;
+			TileEntity te = world.getTileEntity(pos.offset(d));
+			if(te == null)
+				continue;
+			LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite());
+			IEnergyStorage ies = opt.orElse(null);
+			if(ies == null)
+				continue;
+			int ext = energy.extractEnergy(ies.receiveEnergy(MAX_OUT, true), false);
+			ies.receiveEnergy(ext, false);
+			//int rest = ext-ies.receiveEnergy(ext, false);
+			//energy.internalProduceEnergy(rest);
 		}
+		
+		//causeBlockUpdate();
 	}
 	
 	public static int getEnergyProductionRate(int rpm) {
-		return (int)(ElectricMotorTileEntity.getEnergyConsumptionRate(Math.abs(rpm)) * EFFICIENCY);
+		rpm = Math.abs(rpm);
+		return (int)(ElectricMotorTileEntity.getEnergyConsumptionRate(rpm)  * ((double)rpm / 256d) * EFFICIENCY);//return (int)((double)Config.FE_TO_SU.get() * ((double)Math.abs(rpm)/256d) * EFFICIENCY);
 	}
 	
 	@Override

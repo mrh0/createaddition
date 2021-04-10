@@ -46,7 +46,7 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		BlockState bs = worldIn.getBlockState(pos);
-		if(bs.getBlock() == Blocks.AIR)
+		if(!bs.isIn(this))
 			return ACCUMULATOR_SHAPE_X;
 		Axis axis = bs.get(FACING).getAxis();
 		return axis == Axis.X ? ACCUMULATOR_SHAPE_X : ACCUMULATOR_SHAPE_Z;

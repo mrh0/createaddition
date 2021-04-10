@@ -161,23 +161,6 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	public void lazyTick() {
 		super.lazyTick();
 		
-		/*int[] a = new int[getNodeCount()];
-		
-		for(int i = 0; i < getNodeCount(); i++) {
-			if(getNodeType(i) == null) {
-				a[i] = 0;
-				continue;
-			}
-			a[i] = calculateOutput(getNode(i).getNodeEnergyStorage(getNodeIndex(i)));
-		}
-		
-		String debug = "";
-		for(int i = 0; i < getNodeCount(); i++)
-			debug += getNode(i) + ":";
-		System.out.println(debug);
-		algo(a);*/
-		
-		
 		// Shitty code:
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
@@ -191,36 +174,22 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 				continue;
 			
 			IEnergyStorage es = n.getNodeEnergyStorage(getNodeIndex(i));
-			/*if(n.isNodeStorage(i)) {
-				int ext = Math.min(es.getMaxEnergyStored()-es.getEnergyStored(), Math.max(energy.getEnergyStored(), MAX_OUT));
-				ext = energy.extractEnergy(ext, false);
-				es.receiveEnergy(Math.max(ext, 0), false);
-			}
-			else {
-				int ext = energy.getEnergyStored()-es.getEnergyStored();
-				ext = energy.extractEnergy(ext, false);
-				es.receiveEnergy(Math.max(ext, 0), false);
-			}*/
 			
 			int ext = energy.getEnergyStored()-es.getEnergyStored();
 			ext = energy.extractEnergy(ext, false);
 			es.receiveEnergy(Math.max(ext, 0), false);
 		}
 		
-		for(Direction d : Direction.values()) {
-			if(!isEnergyOutput(d))
-				continue;
-			TileEntity te = world.getTileEntity(pos.offset(d));
-			if(te == null)
-				return;
-			LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite());
-			IEnergyStorage ies = opt.orElse(null);
-			if(ies == null)
-				return;
-			int ext = energy.extractEnergy(Integer.MAX_VALUE, false);
-			int rest = ext-ies.receiveEnergy(ext, false);
-			int back = energy.receiveEnergy(rest, false);
-		}
+		Direction d = getBlockState().get(ConnectorBlock.FACING);
+		TileEntity te = world.getTileEntity(pos.offset(d));
+		if(te == null)
+			return;
+		LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite());
+		IEnergyStorage ies = opt.orElse(null);
+		if(ies == null)
+			return;
+		int ext = energy.extractEnergy(ies.receiveEnergy(MAX_OUT, true), false);
+		ies.receiveEnergy(ext, false);
 	}
 
 	@Override

@@ -1,0 +1,74 @@
+{
+  "mappings": {
+    "com/simibubi/create/foundation/mixin/LightUpdateMixin": {
+      "markLightChanged": "Lnet/minecraft/client/multiplayer/ClientChunkProvider;func_217201_a(Lnet/minecraft/world/LightType;Lnet/minecraft/util/math/SectionPos;)V"
+    },
+    "com/simibubi/create/foundation/mixin/NetworkLightUpdateMixin": {
+      "handleUpdateLight": "Lnet/minecraft/client/network/play/ClientPlayNetHandler;func_217269_a(Lnet/minecraft/network/play/server/SUpdateLightPacket;)V"
+    },
+    "com/simibubi/create/foundation/mixin/TileRemoveMixin": {
+      "remove": "Lnet/minecraft/tileentity/TileEntity;func_145843_s()V"
+    },
+    "com/simibubi/create/foundation/mixin/RenderHooksMixin": {
+      "scheduleBlockRerenderIfNeeded": "Lnet/minecraft/client/renderer/WorldRenderer;func_224746_a(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)V",
+      "renderLayer": "Lnet/minecraft/client/renderer/WorldRenderer;func_228441_a_(Lnet/minecraft/client/renderer/RenderType;Lcom/mojang/blaze3d/matrix/MatrixStack;DDD)V",
+      "loadRenderers": "Lnet/minecraft/client/renderer/WorldRenderer;func_72712_a()V",
+      "net.minecraft.client.renderer.WorldRenderer.updateChunks(J)V": "Lnet/minecraft/client/renderer/WorldRenderer;func_174967_a(J)V",
+      "render": "Lnet/minecraft/client/renderer/WorldRenderer;func_228426_a_(Lcom/mojang/blaze3d/matrix/MatrixStack;FJZLnet/minecraft/client/renderer/ActiveRenderInfo;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/util/math/vector/Matrix4f;)V"
+    },
+    "com/simibubi/create/foundation/mixin/CancelTileEntityRenderMixin": {
+      "getTileEntities": "Lnet/minecraft/client/renderer/chunk/ChunkRenderDispatcher$CompiledChunk;func_178485_b()Ljava/util/List;"
+    },
+    "com/simibubi/create/foundation/mixin/StepSoundMixin": {
+      "move": "Lnet/minecraft/entity/Entity;move(Lnet/minecraft/entity/MoverType;Lnet/minecraft/util/math/vector/Vector3d;)V",
+      "spawnSprintingParticles": "Lnet/minecraft/entity/Entity;func_233569_aL_()V"
+    },
+    "com/simibubi/create/foundation/mixin/TileWorldHookMixin": {
+      "addTileEntity": "Lnet/minecraft/world/World;func_175700_a(Lnet/minecraft/tileentity/TileEntity;)Z",
+      "tickBlockEntities": "Lnet/minecraft/world/World;func_217391_K()V"
+    },
+    "com/simibubi/create/foundation/mixin/ShaderCloseMixin": {
+      "displayGuiScreen": "Lnet/minecraft/client/Minecraft;func_147108_a(Lnet/minecraft/client/gui/screen/Screen;)V"
+    },
+    "com/simibubi/create/foundation/mixin/FogColorTrackerMixin": {
+      "fog": "Lcom/mojang/blaze3d/platform/GlStateManager;func_227660_a_(I[F)V"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/simibubi/create/foundation/mixin/LightUpdateMixin": {
+        "markLightChanged": "Lnet/minecraft/client/multiplayer/ClientChunkProvider;func_217201_a(Lnet/minecraft/world/LightType;Lnet/minecraft/util/math/SectionPos;)V"
+      },
+      "com/simibubi/create/foundation/mixin/NetworkLightUpdateMixin": {
+        "handleUpdateLight": "Lnet/minecraft/client/network/play/ClientPlayNetHandler;func_217269_a(Lnet/minecraft/network/play/server/SUpdateLightPacket;)V"
+      },
+      "com/simibubi/create/foundation/mixin/TileRemoveMixin": {
+        "remove": "Lnet/minecraft/tileentity/TileEntity;func_145843_s()V"
+      },
+      "com/simibubi/create/foundation/mixin/RenderHooksMixin": {
+        "scheduleBlockRerenderIfNeeded": "Lnet/minecraft/client/renderer/WorldRenderer;func_224746_a(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)V",
+        "renderLayer": "Lnet/minecraft/client/renderer/WorldRenderer;func_228441_a_(Lnet/minecraft/client/renderer/RenderType;Lcom/mojang/blaze3d/matrix/MatrixStack;DDD)V",
+        "loadRenderers": "Lnet/minecraft/client/renderer/WorldRenderer;func_72712_a()V",
+        "net.minecraft.client.renderer.WorldRenderer.updateChunks(J)V": "Lnet/minecraft/client/renderer/WorldRenderer;func_174967_a(J)V",
+        "render": "Lnet/minecraft/client/renderer/WorldRenderer;func_228426_a_(Lcom/mojang/blaze3d/matrix/MatrixStack;FJZLnet/minecraft/client/renderer/ActiveRenderInfo;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/util/math/vector/Matrix4f;)V"
+      },
+      "com/simibubi/create/foundation/mixin/CancelTileEntityRenderMixin": {
+        "getTileEntities": "Lnet/minecraft/client/renderer/chunk/ChunkRenderDispatcher$CompiledChunk;func_178485_b()Ljava/util/List;"
+      },
+      "com/simibubi/create/foundation/mixin/StepSoundMixin": {
+        "move": "Lnet/minecraft/entity/Entity;move(Lnet/minecraft/entity/MoverType;Lnet/minecraft/util/math/vector/Vector3d;)V",
+        "spawnSprintingParticles": "Lnet/minecraft/entity/Entity;func_233569_aL_()V"
+      },
+      "com/simibubi/create/foundation/mixin/TileWorldHookMixin": {
+        "addTileEntity": "Lnet/minecraft/world/World;func_175700_a(Lnet/minecraft/tileentity/TileEntity;)Z",
+        "tickBlockEntities": "Lnet/minecraft/world/World;func_217391_K()V"
+      },
+      "com/simibubi/create/foundation/mixin/ShaderCloseMixin": {
+        "displayGuiScreen": "Lnet/minecraft/client/Minecraft;func_147108_a(Lnet/minecraft/client/gui/screen/Screen;)V"
+      },
+      "com/simibubi/create/foundation/mixin/FogColorTrackerMixin": {
+        "fog": "Lcom/mojang/blaze3d/platform/GlStateManager;func_227660_a_(I[F)V"
+      }
+    }
+  }
+}

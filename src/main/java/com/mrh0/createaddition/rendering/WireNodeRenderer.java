@@ -47,7 +47,7 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 				matrixStackIn.push();
 				
 				IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.getLines());
-				Matrix4f matrix4f1 = matrixStackIn.getLast().getMatrix();
+				Matrix4f matrix4f1 = matrixStackIn.peek().getModel();
 				
 				WireType type = te.getNodeType(i);
 				
@@ -80,7 +80,7 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 	}
 	
 	private static void vert(float x, float y, float z, IVertexBuilder builder, Matrix4f matrix, float f, WireType type, float dis) {
-		builder.pos(matrix, x * f, y * (f * f + f) * 0.5F + 0.25F + hang(f, dis), z * f).color(type.getRed(), type.getGreen(), type.getBlue(), 255).endVertex();
+		builder.vertex(matrix, x * f, y * (f * f + f) * 0.5F + 0.25F + hang(f, dis), z * f).color(type.getRed(), type.getGreen(), type.getBlue(), 255).endVertex();
 	}
 	
 	private static float hang(float f, float dis) {

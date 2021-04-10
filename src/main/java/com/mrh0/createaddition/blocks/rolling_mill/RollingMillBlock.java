@@ -54,9 +54,9 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return ROLLING_MILL_SHAPE;
 	}
-
+	
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (!player.getHeldItem(handIn).isEmpty())
 			return ActionResultType.PASS;
 		if (worldIn.isRemote)
@@ -100,7 +100,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 			return;
 
 		RollingMillTileEntity rollingMill = null;
-		for (BlockPos pos : Iterate.hereAndBelow(entityIn.getPosition())) {
+		for (BlockPos pos : Iterate.hereAndBelow(entityIn.getBlockPos())) {
 			try {
 				rollingMill = getTileEntity(worldIn, pos);
 			} catch (TileEntityException e) {
