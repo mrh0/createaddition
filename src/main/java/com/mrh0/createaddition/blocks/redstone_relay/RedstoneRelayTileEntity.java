@@ -1,17 +1,12 @@
-package com.mrh0.createaddition.blocks.accumulator;
+package com.mrh0.createaddition.blocks.redstone_relay;
 
-import java.util.List;
-
-import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.energy.WireType;
-import com.mrh0.createaddition.item.Multimeter;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.utility.Lang;
+import com.mrh0.createaddition.index.CABlocks;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -20,13 +15,9 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWireNode, IHaveGoggleInformation {
+public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements IWireNode {
 
 	private final InternalEnergyStorage energyBufferIn;
 	private final InternalEnergyStorage energyBufferOut;
@@ -36,14 +27,24 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	private WireType[] connectionTypes;
 	public IWireNode[] nodeCache;
 	
-	public static Vector3f OFFSET_NORTH = new Vector3f(	0f, 	9f/16f, 	-5f/16f);
-	public static Vector3f OFFSET_WEST = new Vector3f(	-5f/16f, 	9f/16f, 	0f);
-	public static Vector3f OFFSET_SOUTH = new Vector3f(	0f, 	9f/16f, 	5f/16f);
-	public static Vector3f OFFSET_EAST = new Vector3f(	5f/16f, 	9f/16f, 	0f);
+	public static Vector3f OFFSET_NORTH = new Vector3f(	0f, 	-1f/16f, 	-5f/16f);
+	public static Vector3f OFFSET_WEST = new Vector3f(	-5f/16f, 	-1f/16f, 	0f);
+	public static Vector3f OFFSET_SOUTH = new Vector3f(	0f, 	-1f/16f, 	5f/16f);
+	public static Vector3f OFFSET_EAST = new Vector3f(	5f/16f, 	-1f/16f, 	0f);
+	
+	public static Vector3f IN_VERTICAL_OFFSET_NORTH = new Vector3f(	5f/16f, 	0f, 	-1f/16f);
+	public static Vector3f IN_VERTICAL_OFFSET_WEST = new Vector3f(	-1f/16f, 	0f, 	-5f/16f);
+	public static Vector3f IN_VERTICAL_OFFSET_SOUTH = new Vector3f(	-5f/16f, 	0f, 	1f/16f);
+	public static Vector3f IN_VERTICAL_OFFSET_EAST = new Vector3f(	1f/16f, 	0f, 	5f/16f);
+	
+	public static Vector3f OUT_VERTICAL_OFFSET_NORTH = new Vector3f(	-5f/16f, 	0f, 	-1f/16f);
+	public static Vector3f OUT_VERTICAL_OFFSET_WEST = new Vector3f(	-1f/16f, 	0f, 	5f/16f);
+	public static Vector3f OUT_VERTICAL_OFFSET_SOUTH = new Vector3f(	5f/16f, 	0f, 	1f/16f);
+	public static Vector3f OUT_VERTICAL_OFFSET_EAST = new Vector3f(	1f/16f, 	0f, 	-5f/16f);
 	
 	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
-	public AccumulatorTileEntity(TileEntityType<?> tileEntityTypeIn) {
+	public RedstoneRelayTileEntity(TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn, CAPACITY, MAX_IN, MAX_OUT);
 
 		energyBufferIn = new InternalEnergyStorage(ConnectorTileEntity.CAPACITY, MAX_IN, MAX_OUT);
@@ -73,28 +74,30 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	
 	@Override
 	public Vector3f getNodeOffset(int node) {
+		boolean vertical = getBlockState().get(RedstoneRelay.VERTICAL);
+		Direction direction = getBlockState().get(RedstoneRelay.HORIZONTAL_FACING);
 		if(node > 3) {
-			switch(getBlockState().get(AccumulatorBlock.FACING)) {
+			switch(direction) {
 				case NORTH:
-					return OFFSET_NORTH;
+					return vertical ? OUT_VERTICAL_OFFSET_NORTH : OFFSET_NORTH;
 				case WEST:
-					return OFFSET_WEST;
+					return vertical ? OUT_VERTICAL_OFFSET_WEST : OFFSET_WEST;
 				case SOUTH:
-					return OFFSET_SOUTH;
+					return vertical ? OUT_VERTICAL_OFFSET_SOUTH : OFFSET_SOUTH;
 				case EAST:
-					return OFFSET_EAST;
+					return vertical ? OUT_VERTICAL_OFFSET_EAST : OFFSET_EAST;
 			}
 		}
 		else {
-			switch(getBlockState().get(AccumulatorBlock.FACING)) {
+			switch(direction) {
 				case NORTH:
-					return OFFSET_SOUTH;
+					return vertical ? IN_VERTICAL_OFFSET_NORTH : OFFSET_SOUTH;
 				case WEST:
-					return OFFSET_EAST;
+					return vertical ? IN_VERTICAL_OFFSET_WEST : OFFSET_EAST;
 				case SOUTH:
-					return OFFSET_NORTH;
+					return vertical ? IN_VERTICAL_OFFSET_SOUTH : OFFSET_NORTH;
 				case EAST:
-					return OFFSET_WEST;
+					return vertical ? IN_VERTICAL_OFFSET_EAST : OFFSET_WEST;
 			}
 		}
 		return OFFSET_NORTH;
@@ -127,28 +130,27 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	
 	@Override
 	public int getNodeFromPos(Vector3d vec) {
-		Direction dir = world.getBlockState(pos).get(AccumulatorBlock.FACING);
+		Direction dir = world.getBlockState(pos).get(RedstoneRelay.HORIZONTAL_FACING);
 		boolean upper = true;
 		vec = vec.subtract(pos.getX(), pos.getY(), pos.getZ());
 		switch(dir) {
 			case NORTH:
-				upper = vec.getZ() < 0.5d;
-				break;
-			case WEST:
 				upper = vec.getX() < 0.5d;
 				break;
-			case SOUTH:
+			case WEST:
 				upper = vec.getZ() > 0.5d;
 				break;
-			case EAST:
+			case SOUTH:
 				upper = vec.getX() > 0.5d;
+				break;
+			case EAST:
+				upper = vec.getZ() < 0.5d;
 				break;
 		}
 		
 		for(int i = upper ? 4 : 0; i < (upper ? 8 : 4); i++) {
 			if(hasConnection(i))
 				continue;
-			//System.out.println(vec.x + ":" + vec.z + " out: " + upper + ":" + dir + ":" + i);
 			return i;
 		}
 		return -1;
@@ -194,7 +196,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
 				IWireNode.clearNode(nbt, i);
-			else //?
+			else
 				writeNode(nbt, i);
 		}
 		energyBufferIn.write(nbt, "buffIn");
@@ -237,11 +239,15 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public void lazyTick() {
 		super.lazyTick();
 
-		int ext1 = energyBufferIn.extractEnergy(Integer.MAX_VALUE, false);
-		energyBufferIn.receiveEnergy(ext1 - energy.receiveEnergy(ext1, false), false);
-		
-		int ext2 = energy.extractEnergy(Integer.MAX_VALUE, false);
-		energy.receiveEnergy(ext2 - energyBufferOut.receiveEnergy(ext2, false), false);
+		BlockState bs = world.getBlockState(pos);
+		if(bs == null)
+			return;
+		if(!bs.isIn(CABlocks.REDSTONE_RELAY.get()))
+			return;
+		if(bs.get(RedstoneRelay.POWERED)) {
+			int ext1 = energyBufferIn.extractEnergy(energyBufferOut.receiveEnergy(Integer.MAX_VALUE, true), false);
+			energyBufferOut.receiveEnergy(ext1, false);
+		}
 		
 		// Shitty code:
 		for(int i = 0; i < getNodeCount(); i++) {
@@ -261,8 +267,6 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			ext3 = energyBufferOut.extractEnergy(ext3, false);
 			es.receiveEnergy(Math.max(ext3, 0), false);
 		}
-		
-		//causeBlockUpdate();
 	}
 	
 	@Override
@@ -280,11 +284,4 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		invalidateCaps();
 		super.remove();
 	}
-	
-	/*@Override
-	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
-		return true;
-	}*/
 }

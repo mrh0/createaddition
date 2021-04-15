@@ -111,5 +111,13 @@
 	"block.createaddition.connector.tooltip": "CONNECTOR",
 	"block.createaddition.connector.tooltip.summary": "Connects _fe_ blocks with _wires_ to transfer _fe_. R-Click two _Connectors_ with a _Copper Spool_ or _Gold Spool_ to create a _wire link_.",
 	
+	"block.createaddition.redstone_relay": "Redstone Relay",
+	"block.createaddition.redstone_relay.tooltip": "REDSTONE_RELAY",
+	"block.createaddition.redstone_relay.tooltip.summary": "Allows _fe_ to pass from the _input connector_ to the _output connector_ when receiving a _redstone signal_.",
+	"block.createaddition.redstone_relay.tooltip.condition1": "Output",
+	"block.createaddition.redstone_relay.tooltip.behaviour1": "Provides _fe_ to all _wires_ connected to the _Connector_ marked in _white_.",
+	"block.createaddition.redstone_relay.tooltip.condition2": "Input",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "Accepts _fe_ on any side except on the top and from any _wires_ connected to the unmarked _Connector_.",
+	
 	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }

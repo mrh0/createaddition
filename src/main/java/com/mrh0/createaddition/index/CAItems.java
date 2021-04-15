@@ -57,8 +57,8 @@ public class CAItems {
 	public static final ItemEntry<Item> COPPER_ROD =
 			REGISTRATE.item("copper_rod", Item::new).register();
 
-	public static final ItemEntry<Item> IRON_SPOOL =
-			REGISTRATE.item("iron_spool", Item::new).register();
+	//public static final ItemEntry<Item> IRON_SPOOL =
+	//		REGISTRATE.item("iron_spool", Item::new).register();
 	public static final ItemEntry<Item> IRON_WIRE =
 			REGISTRATE.item("iron_wire", Item::new).register();
 	public static final ItemEntry<Item> IRON_ROD =

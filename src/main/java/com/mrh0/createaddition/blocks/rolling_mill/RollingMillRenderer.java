@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.simibubi.create.AllBlockPartials;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.content.contraptions.base.KineticTileEntityRenderer;
-import com.simibubi.create.foundation.utility.SuperByteBuffer;
+import com.simibubi.create.foundation.render.SuperByteBuffer;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -37,7 +37,7 @@ public class RollingMillRenderer  extends KineticTileEntityRenderer {
 		
 		IVertexBuilder vb = buffer.getBuffer(RenderType.getSolid());
 		
-		int packedLightmapCoords = WorldRenderer.getCombinedLight(te.getWorld(), pos);
+		int packedLightmapCoords = WorldRenderer.getLightmapCoordinates(te.getWorld(), pos);
 		SuperByteBuffer shaft = AllBlockPartials.SHAFT_HALF.renderOn(blockState);
 		Axis axis = getRotationAxisOf(te);
 		

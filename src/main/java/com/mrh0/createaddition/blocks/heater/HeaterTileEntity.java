@@ -1,11 +1,16 @@
 package com.mrh0.createaddition.blocks.heater;
 
+import java.util.List;
+
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.compat.immersive_engineering.IEHeaterOptional;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
+import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.mixin.AbstractFurnaceMixin;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
+import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
@@ -15,9 +20,13 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class HeaterTileEntity extends BaseElectricTileEntity {
+public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
 	
 	public AbstractFurnaceTileEntity  cache;
 	private boolean isFurnaceEngine = false;
@@ -100,12 +109,18 @@ public class HeaterTileEntity extends BaseElectricTileEntity {
 		return false;
 	}
 	
+	public int getConsumption() {
+		return (isFurnaceEngine ? CONSUMPTION_ENGINE : CONSUMPTION) * 20;
+	}
+	
 	@Override
 	public void lazyTick() {
 		super.lazyTick();
 		if(hasEnoughEnergy())
-			energy.internalConsumeEnergy(isFurnaceEngine ? CONSUMPTION_ENGINE * 20 : CONSUMPTION * 20);
+			energy.internalConsumeEnergy(getConsumption());
 		isFurnaceEngine = hasFurnaceEngine();
+		
+		//causeBlockUpdate();
 	}
 	
 	public void updateState(boolean lit) {
@@ -115,6 +130,8 @@ public class HeaterTileEntity extends BaseElectricTileEntity {
 			if(state.get(AbstractFurnaceBlock.LIT) != lit)
 				world.setBlockState(pos.offset(d), state.with(AbstractFurnaceBlock.LIT, lit));
 		}
+		causeBlockUpdate();
+		System.out.println("TEST");
 	}
 	
 	@Override
@@ -130,5 +147,14 @@ public class HeaterTileEntity extends BaseElectricTileEntity {
 	@Override
 	public IEnergyStorage getCachedEnergy(Direction side) {
 		return null;
+	}
+	
+	@Override
+	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
+		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
+		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
+		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").formatted(TextFormatting.GRAY)));
+		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")));
+		return true;
 	}
 }

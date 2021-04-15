@@ -8,6 +8,7 @@ import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.blocks.heater.HeaterBlock;
+import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.Create;
@@ -74,6 +75,12 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
+	public static final BlockEntry<RedstoneRelay> REDSTONE_RELAY = REGISTRATE.block("redstone_relay",  RedstoneRelay::new)
+			.initialProperties(SharedProperties::stone)
+			.item()
+			.transform(customItemModel())
+			.register();
+	
 	public static void register() {
 		Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
 		Create.registrate().addToSection(ALTERNATOR, AllSections.KINETICS);
@@ -82,5 +89,6 @@ public class CABlocks {
 		Create.registrate().addToSection(CONNECTOR, AllSections.KINETICS);
 		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);
 		Create.registrate().addToSection(HEATER, AllSections.KINETICS);
+		Create.registrate().addToSection(REDSTONE_RELAY, AllSections.KINETICS);
 	}
 }
