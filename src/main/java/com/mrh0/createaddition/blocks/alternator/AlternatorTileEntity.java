@@ -3,13 +3,11 @@ package com.mrh0.createaddition.blocks.alternator;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
-import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
 import com.mrh0.createaddition.config.Config;
-import com.mrh0.createaddition.create.KineticTileEntityFix;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.item.Multimeter;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.block.Block;
@@ -27,7 +25,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class AlternatorTileEntity extends KineticTileEntityFix {
+public class AlternatorTileEntity extends KineticTileEntity {
 	
 	protected final InternalEnergyStorage energy;
 	private LazyOptional<IEnergyStorage> lazyEnergy;
@@ -127,7 +125,7 @@ public class AlternatorTileEntity extends KineticTileEntityFix {
 	
 	public static int getEnergyProductionRate(int rpm) {
 		rpm = Math.abs(rpm);
-		return (int)(ElectricMotorTileEntity.getEnergyConsumptionRate(rpm)  * ((double)rpm / 256d) * EFFICIENCY);//return (int)((double)Config.FE_TO_SU.get() * ((double)Math.abs(rpm)/256d) * EFFICIENCY);
+		return (int)((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d) * EFFICIENCY);//return (int)((double)Config.FE_TO_SU.get() * ((double)Math.abs(rpm)/256d) * EFFICIENCY);
 	}
 	
 	@Override

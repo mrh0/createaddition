@@ -82,13 +82,13 @@ public class CABlocks {
 			.register();
 	
 	public static void register() {
-		Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
-		Create.registrate().addToSection(ALTERNATOR, AllSections.KINETICS);
-		Create.registrate().addToSection(ROLLING_MILL, AllSections.KINETICS);
+		//Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
+		//Create.registrate().addToSection(ALTERNATOR, AllSections.KINETICS);
+		//Create.registrate().addToSection(ROLLING_MILL, AllSections.KINETICS);
 		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
 		Create.registrate().addToSection(CONNECTOR, AllSections.KINETICS);
 		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);
-		Create.registrate().addToSection(HEATER, AllSections.KINETICS);
+		//Create.registrate().addToSection(HEATER, AllSections.KINETICS);
 		Create.registrate().addToSection(REDSTONE_RELAY, AllSections.KINETICS);
 	}
 }

@@ -9,7 +9,9 @@ import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.energy.WireType;
+import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.util.IComparetorOverride;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.utility.Lang;
 
@@ -26,7 +28,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWireNode, IHaveGoggleInformation {
+public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWireNode, IHaveGoggleInformation, IComparetorOverride {
 
 	private final InternalEnergyStorage energyBufferIn;
 	private final InternalEnergyStorage energyBufferOut;
@@ -233,6 +235,8 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			nodeCache[i] = null;
 	}
 	
+	private int lastComparator = 0;
+	
 	@Override
 	public void lazyTick() {
 		super.lazyTick();
@@ -262,6 +266,11 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			es.receiveEnergy(Math.max(ext3, 0), false);
 		}
 		
+		int comp = getComparetorOverride();
+		if(comp != lastComparator)
+			world.notifyNeighborsOfStateChange(pos, CABlocks.ACCUMULATOR.get());
+		lastComparator = comp;
+		
 		//causeBlockUpdate();
 	}
 	
@@ -279,6 +288,17 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		invalidateNodeCache();
 		invalidateCaps();
 		super.remove();
+	}
+	
+	public void setEnergy(int energy, int buffIn, int buffOut) {
+		this.energy.setEnergy(energy);
+		this.energyBufferIn.setEnergy(buffIn);
+		this.energyBufferOut.setEnergy(buffOut);
+	}
+
+	@Override
+	public int getComparetorOverride() {
+		return (int)((double)energy.getEnergyStored() / (double)energy.getMaxEnergyStored() * 15d);
 	}
 	
 	/*@Override

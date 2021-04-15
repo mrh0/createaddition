@@ -15,7 +15,6 @@ public class ElectricMotorRenderer extends KineticTileEntityRenderer {
 
 	@Override
 	protected SuperByteBuffer getRotatedModel(KineticTileEntity te) {
-		System.out.println("render motor");
 		return AllBlockPartials.SHAFT_HALF.renderOnDirectionalSouth(te.getBlockState());
 	}
 }

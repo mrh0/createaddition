@@ -131,9 +131,11 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 	@Override
 	public int getNodeFromPos(Vector3d vec) {
 		Direction dir = world.getBlockState(pos).get(RedstoneRelay.HORIZONTAL_FACING);
+		boolean vertical = world.getBlockState(pos).get(RedstoneRelay.VERTICAL);
 		boolean upper = true;
 		vec = vec.subtract(pos.getX(), pos.getY(), pos.getZ());
-		switch(dir) {
+		if(vertical) {
+			switch(dir) {
 			case NORTH:
 				upper = vec.getX() < 0.5d;
 				break;
@@ -146,7 +148,25 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 			case EAST:
 				upper = vec.getZ() < 0.5d;
 				break;
+			}
 		}
+		else {
+			switch(dir) {
+				case NORTH:
+					upper = vec.getZ() < 0.5d;
+					break;
+				case WEST:
+					upper = vec.getX() < 0.5d;
+					break;
+				case SOUTH:
+					upper = vec.getZ() > 0.5d;
+					break;
+				case EAST:
+					upper = vec.getX() > 0.5d;
+					break;
+			}
+		}
+		
 		
 		for(int i = upper ? 4 : 0; i < (upper ? 8 : 4); i++) {
 			if(hasConnection(i))
