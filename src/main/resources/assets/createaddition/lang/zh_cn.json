@@ -111,5 +111,13 @@
 	"block.createaddition.connector.tooltip": "连接器",
 	"block.createaddition.connector.tooltip.summary": "用_线缆_连接 FE 方块来传输 _FE_。用_铜线轴_或_金线轴_右键两个_连接器_来生成_线缆连接_。",
 
+	"block.createaddition.redstone_relay": "红石继电器",
+	"block.createaddition.redstone_relay.tooltip": "红石继电器",
+	"block.createaddition.redstone_relay.tooltip.summary": "当接收到红石信号时，允许 _FE _从_输入端连接器_传递到_输出端连接器_。",
+	"block.createaddition.redstone_relay.tooltip.condition1": "输出",
+	"block.createaddition.redstone_relay.tooltip.behaviour1": "提供 _FE_ 给左右连接至标记为_白色_的_连接器_的_线缆_。",
+	"block.createaddition.redstone_relay.tooltip.condition2": "输入",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "接受除顶部以外的任何一侧的 _FE_ 和连接到未标记的_连接器_上的任何_线缆_的 _FE_。",
+	
 	"itemGroup.createaddition:main":"Create Crafts & Additions"
 }
