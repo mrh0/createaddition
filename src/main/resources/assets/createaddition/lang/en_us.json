@@ -84,7 +84,7 @@
 	"deprecated.block.createaddition.alternator.tooltip.summary": "Generates _fe_ from _su_. The amount of energy produced is based on _rpm_.",
 	
 	"block.createaddition.creative_energy": "Creative Generator",
-	"block.createaddition.creative_energy.tooltip": "ALTERNATOR",
+	"block.createaddition.creative_energy.tooltip": "CREATIVE_GENERATOR",
 	"block.createaddition.creative_energy.tooltip.summary": "Generates a infinite supply of _fe_.",
 	
 	"block.createaddition.rolling_mill": "Rolling Mill",
@@ -117,7 +117,7 @@
 	"block.createaddition.redstone_relay.tooltip.condition1": "Output",
 	"block.createaddition.redstone_relay.tooltip.behaviour1": "Provides _fe_ to all _wires_ connected to the _connector_ marked in _white_.",
 	"block.createaddition.redstone_relay.tooltip.condition2": "Input",
-	"block.createaddition.redstone_relay.tooltip.behaviour2": "Accepts _fe_ on any side except on the top and from any _wires_ connected to the unmarked _connector_.",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "Accepts _fe_ from the _wires_ connected to the unmarked _connector_.",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
 	

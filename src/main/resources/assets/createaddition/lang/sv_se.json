@@ -3,10 +3,19 @@
 	"createaddition.tooltip.energy.consumption": "Energianvändning:",
 	"createaddition.tooltip.energy.production": "Energiproduktion:",
 	"createaddition.recipe.rolling": "Valsverk",
+	
+	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerit",
 
 	"item.createaddition.capacitor": "Kondensator",
+	
 	"item.createaddition.multimeter": "Multimeter",
-	"item.createaddition.multimeter.title": "[Multimeter]:",
+	"item.createaddition.multimeter.title":"[Multimeter]:",
+	"item.createaddition.multimeter.measuring":"[Mäter..]",
+	"item.createaddition.multimeter.ticks":"ticks",
+	"item.createaddition.multimeter.no_capability":"Ingen Forge Energy förmåga på denna sida.",
+	"item.createaddition.multimeter.tooltip": "MULTIMETER",
+	"item.createaddition.multimeter.tooltip.summary": "Mäter _kapacitet_ och _in/ut_ på blocksidor med en _Forge energy_ förmåga.",
+	
 	"item.createaddition.zinc_sheet": "Zinkplåt",
 	"item.createaddition.diamond_grit": "Diamant-grit",
 	"item.createaddition.diamond_grit_sandpaper": "Diamant-grit sandpapper",
@@ -39,11 +48,80 @@
 	"item.createaddition.bronze_rod": "Bronsstång",
 
 	"item.createaddition.spool": "Tom spole",
+	"item.createaddition.spool.nbt": "Har en länk.",
+	"item.createaddition.spool.tooltip": "SPOOL",
+	"item.createaddition.spool.tooltip.summary": "Höger-klicka två _Anslutnings Noder_ som är kopplade med en tråd för att ta bort kopplingen.",
+	
+	"statusbar.createaddition.wire.linked": "Noder kopplade",
+	"statusbar.createaddition.wire.linked_in": "Tråden kopplades till ingång",
+	"statusbar.createaddition.wire.linked_out": "Tråden kopplades till utgång",
+	
+	"statusbar.createaddition.wire.connect": "Nod vald",
+	"statusbar.createaddition.wire.connect_in": "Ingångs nod vald",
+	"statusbar.createaddition.wire.connect_out": "Utgångs nod vald",
+	
+	"statusbar.createaddition.wire.long": "Tråden är för lång",
+	"statusbar.createaddition.wire.obstructed": "Något är ivägen för kopplingen",
+	"statusbar.createaddition.wire.count": "Noden har för många kopplade trådar",
+	"statusbar.createaddition.wire.removed": "Tråd borttagen",
+	"statusbar.createaddition.wire.exists": "Denna kopplingen finns redan",
+	"statusbar.createaddition.wire.no_connection": "Ingen koppling finns här",
+	"statusbar.createaddition.wire.invalid": "Ogiltig koppling",
 
 	"block.createaddition.electric_motor": "Elektrisk motor",
 	"block.createaddition.alternator": "Generator",
+	
 	"block.createaddition.creative_energy": "Kreativ Generator",
+	"block.createaddition.creative_energy.tooltip": "CREATIVE_GENERATOR",
+	"block.createaddition.creative_energy.tooltip.summary": "Genererar en oändlig mängd energi _fe_.",
+	
 	"block.createaddition.rolling_mill": "Valsverk",
+	"block.createaddition.heater": "Induktionsvärmare",
+	"block.createaddition.accumulator": "Ackumulator",
+	"block.createaddition.accumulator.tooltip": "ACCUMULATOR",
+	"block.createaddition.accumulator.tooltip.summary": "Accumulates electric charge. ",
+	"block.createaddition.accumulator.tooltip.condition1": "Output",
+	"block.createaddition.accumulator.tooltip.behaviour1": "Ger tillgång till _fe_ till alla _trådar_ kopplade till _noden_ markerad med _vitt_.",
+	"block.createaddition.accumulator.tooltip.condition2": "Input",
+	"block.createaddition.accumulator.tooltip.behaviour2": "Tar in _fe_ på alla sidor utom toppen, och från _trådar_ kopplade till den _nod_ som inte är _vit_ markerad.",
+	
+	"block.createaddition.connector": "Nod",
+	"block.createaddition.connector.tooltip": "CONNECTOR",
+	"block.createaddition.connector.tooltip.summary": "Ansluter _fe_ block med _trådar_ för att överföra _fe_. Höger-klicka två _Noder_ med en _Koppar, eller guld -spole_ för att skapa en koppling mellan noderna.",
+	
+	"block.createaddition.redstone_relay": "Rödstensrelä",
+	"block.createaddition.redstone_relay.tooltip": "REDSTONE_RELAY",
+	"block.createaddition.redstone_relay.tooltip.summary": "Tillåter _fe_ att pasera från _ingångsnoden_ till _utgångsnoden_ när den får en _rödstenssignal_.",
+	"block.createaddition.redstone_relay.tooltip.condition1": "Ingång",
+	"block.createaddition.redstone_relay.tooltip.behaviour1": "Ger tillgång till _fe_ till alla _trådar_ kopplade till _noden_ markerad med _vitt_.",
+	"block.createaddition.redstone_relay.tooltip.condition2": "Utgång",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "Tar in _fe_ från _trådar_ kopplade till den _nod_ som inte är _vit_ markerad.",
 
-	"itemGroup.createaddition: main": "Create Crafts & Additions"
+	"itemGroup.createaddition: main": "Create Crafts & Additions",
+	
+	"create.ponder.electric_motor.header": "Att generera kinetisk kraft med elektrisitet",
+	"create.ponder.electric_motor.text_1": "Electric Motors are a compact and configurable source of Rotational Force",
+	"create.ponder.electric_motor.text_2": "Scrolling on the back panel changes the RPM of the motors' rotational output",
+	"create.ponder.electric_motor.text_3": "The Electric Motor requires a source of energy (fe)",
+	"create.ponder.electric_motor.text_4": "The motors' energy consumption is determined by the set RPM",
+	
+	"create.ponder.alternator.header": "Att generera elektrisitet med kinetisk kraft",
+	"create.ponder.alternator.text_1": "The Alternator requires atleast 32 RPM to operate",
+	"create.ponder.alternator.text_2": "It generates electric energy (fe) from rotational force",
+	"create.ponder.alternator.text_3": "It's energy production is determined by the input RPM",
+	
+	"create.ponder.rolling_mill.header": "Att forma stänger och trådar",
+	"create.ponder.rolling_mill.text_1": "The Rolling Mill uses rotational force to roll metals into Rods and Wires",
+	"create.ponder.rolling_mill.text_2": "To manually input items, drop Ingots or Plates on the top of the Mill",
+	"create.ponder.rolling_mill.text_3": "Right-click the Mill to manually retrieve the output items",
+	
+	"create.ponder.automated_rolling_mill.header": "Att automatisera Valsverket",
+	"create.ponder.automated_rolling_mill.text_1": "The Rolling Mill can be automated using a Belt and two Funnels",
+	"create.ponder.automated_rolling_mill.text_2": "Input Funnel",
+	"create.ponder.automated_rolling_mill.text_3": "Output Funnel",
+	
+	"create.ponder.heater.header": "Att använda elektrisitet för att värma en ugn",
+	"create.ponder.heater.text_1": "The heater can be placed on any side facing the furnace",
+	"create.ponder.heater.text_2": "When connected to a sufficient source of electric energy (fe), the Heater will light the Furnace",
+	"create.ponder.heater.text_3": "The Furnace will stay lit as long as enough energy is provided"
 }
