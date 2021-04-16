@@ -119,5 +119,32 @@
 	"block.createaddition.redstone_relay.tooltip.condition2": "Eingabe",
 	"block.createaddition.redstone_relay.tooltip.behaviour2": "Abzeptiert _FE_ auf jeder seite außer der oberseite und von jenen _Drähte_, die verbunden mit den unmarkierten _Verbinder_.",
 	
-	"itemGroup.createaddition:main":"Create Crafts & Additions"
+	"itemGroup.createaddition:main":"Create Crafts & Additions",
+
+	"create.ponder.electric_motor.header": "Generation von Rotation durch die benuzung von Elektrischer Motoren",
+	"create.ponder.electric_motor.text_1": "Elektrischer Motoren sind eine kompakte und konfigurierbare quelle für Rotations energie",
+	"create.ponder.electric_motor.text_2": "Durch Scrollen auf der Rückseite wird die Drehzahl des Motors geändert",
+	"create.ponder.electric_motor.text_3": "Der Motor benötigt eine Energiequelle (fe)",
+	"create.ponder.electric_motor.text_4": "Der Energieverbrauch des Motors wird durch die eingestellte Drehzahl bestimmt",
+	
+	"create.ponder.alternator.header": "Erzeugung elektrischer Energie mithilfe eines Wechselstromgenerators",
+	"create.ponder.alternator.text_1": "Der Wechselstromgenerator benötigt mindestens 32 RPM um strom zu erzeugen",
+	"create.ponder.alternator.text_2": "Der Wechselstromgenerator erzeugt elektrische (fe) Energie aus Rotationskraft",
+	"create.ponder.alternator.text_3": "Die Energieerzeugung wird durch die Eingangsdrehzahl bestimmt",
+	
+	"create.ponder.rolling_mill.header": "Walzen von Metallen in Stangen und Drähten",
+	"create.ponder.rolling_mill.text_1": "Die Walze verwendet Rotationskraft, um Metalle in Stangen und Drähte zu rollen",
+	"create.ponder.rolling_mill.text_2": "Um Elemente manuell einzugeben, legen sie Barren oder Platten oben auf die Walze",
+	"create.ponder.rolling_mill.text_3": "Klicken Sie mit der rechten Maustaste auf die Mühle, um die Ausgabeelemente manuell herauszunehmen",
+	
+	"create.ponder.automated_rolling_mill.header": "Automatisierung der Walze",
+	"create.ponder.automated_rolling_mill.text_1": "Die Walze kann mit einem Band und zwei Trichtern automatisiert werden",
+	"create.ponder.automated_rolling_mill.text_2": "Eingangs Trichter",
+	"create.ponder.automated_rolling_mill.text_3": "Ausgabe Trichter",
+	
+	"create.ponder.heater.header": "Mit elektrischer Energie einen Ofen erhitzen",
+	"create.ponder.heater.text_1": "Der Induktions Erhitzer kann auf jeder dem Ofen zugewandten Seite aufgestellt werden",
+	"create.ponder.heater.text_2": "Bei Anschluss an eine ausreichende elektrische Energiequelle (fe) zündet der Induktions Erhitzer den Ofen an",
+	"create.ponder.heater.text_3": "Der Ofen bleibt entzündet, solange genügend Energie zur Verfügung steht"
+
 }
