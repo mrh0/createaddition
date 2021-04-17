@@ -1,4 +1,4 @@
-	{
+{
 	"createaddition.tooltip.energy.stored": "已存储的能量：",
 	"createaddition.tooltip.energy.consumption": "已使用的能量：",
 	"createaddition.tooltip.energy.production": "已产生的能量：",
@@ -23,7 +23,7 @@
 	
 	"item.createaddition.copper_spool": "铜线轴",
 	"item.createaddition.copper_spool.tooltip": "线轴",
-	"item.createaddition.copper_spool.tooltip.summary": "右键两个_连接器_会产生连接它们的线并返还一个_空线轴_。",
+	"item.createaddition.copper_spool.tooltip.summary": "右键两个_连接器_会产生连接它们的线缆并返还一个_空线轴_。",
 
 	"item.createaddition.copper_wire": "铜线",
 	"item.createaddition.copper_rod": "铜棒",
@@ -119,5 +119,39 @@
 	"block.createaddition.redstone_relay.tooltip.condition2": "输入",
 	"block.createaddition.redstone_relay.tooltip.behaviour2": "接受除顶部以外的任何一侧的 _FE_ 和连接到未标记的_连接器_上的任何_线缆_的 _FE_。",
 	
-	"itemGroup.createaddition:main":"Create Crafts & Additions"
+	"block.createaddition.furnace_burner": "燃烧炉",
+	"block.createaddition.furnace_burner.tooltip": "燃烧炉",
+	"block.createaddition.furnace_burner.tooltip.summary": "这个_熔炉_不会熔炼物品，但可以用来为_熔炉引擎_提供动力，且不需要熔炼配方。可以使用_漏斗_来输入_燃料_。",
+	"block.createaddition.furnace_burner.tooltip.control1": "右键时",
+	"block.createaddition.furnace_burner.tooltip.action1": "将手上_燃料_放入_熔炉_。",
+	"block.createaddition.furnace_burner.tooltip.control2": "潜行右键时",
+	"block.createaddition.furnace_burner.tooltip.action2": "取出_熔炉_中储存的_燃料_。",
+
+	"itemGroup.createaddition:main":"Create Crafts & Additions",
+		
+	"create.ponder.electric_motor.header": "使用电动马达产生旋转动力",
+	"create.ponder.electric_motor.text_1": "电动马达是一种结构紧凑、可配置的旋转动力源。",
+	"create.ponder.electric_motor.text_2": "在背面上滚动鼠标滑轮可改变电动马达的转速输出。",
+	"create.ponder.electric_motor.text_3": "电动马达需要能源（FE）。",
+	"create.ponder.electric_motor.text_4": "电动马达的能耗由设定的转速决定。",
+	
+	"create.ponder.alternator.header": "使用交流发电机发电",
+	"create.ponder.alternator.text_1": "交流发电机需要至少 32 转/分的转速才能工作。",
+	"create.ponder.alternator.text_2": "它从旋转动力中产生电能（FE）。",
+	"create.ponder.alternator.text_3": "它产生能量的多少是由输入的转速决定的。",
+	
+	"create.ponder.rolling_mill.header": "将金属轧制成棒材和线材",
+	"create.ponder.rolling_mill.text_1": "轧机利用旋转动力将金属轧制成棒和线。",
+	"create.ponder.rolling_mill.text_2": "要手动输入物品，请将锭或板丢在轧机顶部。",
+	"create.ponder.rolling_mill.text_3": "右键轧机手动取出输出物品。",
+	
+	"create.ponder.automated_rolling_mill.header": "轧机的自动化",
+	"create.ponder.automated_rolling_mill.text_1": "轧机可以使用一条传送带和两个漏斗实现自动化。",
+	"create.ponder.automated_rolling_mill.text_2": "输入端漏斗",
+	"create.ponder.automated_rolling_mill.text_3": "输出端漏斗",
+	
+	"create.ponder.heater.header": "使用电能加热熔炉",
+	"create.ponder.heater.text_1": "感应加热器可以放置在熔炉的任何一面。",
+	"create.ponder.heater.text_2": "当接收到足够的电能来源（FE）时，感应加热器将点燃熔炉。",
+	"create.ponder.heater.text_3": "只要提供足够的能量，熔炉就会一直燃烧。"
 }
