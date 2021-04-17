@@ -27,7 +27,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public class RollingMillTileEntity extends KineticTileEntityFix {
+public class RollingMillTileEntity extends KineticTileEntity {
 
 	public ItemStackHandler inputInv;
 	public ItemStackHandler outputInv;

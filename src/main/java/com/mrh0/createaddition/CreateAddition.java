@@ -21,6 +21,7 @@ import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
+import com.mrh0.createaddition.index.CAPonder;
 import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
@@ -71,7 +72,7 @@ public class CreateAddition {
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
-        
+        CAPonder.register();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

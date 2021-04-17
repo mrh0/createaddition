@@ -16,6 +16,7 @@ public class Config {
 	public static final String CATAGORY_HEATER = "heater";
 	public static final String CATAGORY_WIRES = "wires";
 	public static final String CATAGORY_ACCUMULATOR = "accumulator";
+	public static final String CATAGORY_MISC = "misc";
 	
 	private static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 	
@@ -53,6 +54,8 @@ public class Config {
 	
 	public static ForgeConfigSpec.DoubleValue COPPER_WIRE_LOSS;
 	public static ForgeConfigSpec.DoubleValue GOLD_WIRE_LOSS;
+	
+	public static ForgeConfigSpec.IntValue DIAMOND_GRIT_SANDPAPER_USES;
 	
 	static {
 		
@@ -154,8 +157,6 @@ public class Config {
 		
 		COMMON_BUILDER.pop();
 		
-		COMMON_CONFIG = COMMON_BUILDER.build();
-		
 		
 		COMMON_BUILDER.comment("Accumulator").push(CATAGORY_ACCUMULATOR);
 		
@@ -167,6 +168,14 @@ public class Config {
 		
 		ACCUMULATOR_CAPACITY = COMMON_BUILDER.comment("Accumulator internal capacity.")
 				.defineInRange("accumulator_capacity", 4196000, 0, Integer.MAX_VALUE);
+		
+		COMMON_BUILDER.pop();
+		
+		
+		COMMON_BUILDER.comment("Misc").push(CATAGORY_MISC);
+		
+		DIAMOND_GRIT_SANDPAPER_USES = COMMON_BUILDER.comment("Diamond Grit Sandpaper durability (number of uses).")
+				.defineInRange("diamond_grit_sandpaper_uses", 1024, 3, Integer.MAX_VALUE);
 		
 		COMMON_BUILDER.pop();
 		

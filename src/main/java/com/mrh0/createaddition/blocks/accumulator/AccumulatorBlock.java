@@ -1,16 +1,21 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
+import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.util.IComparetorOverride;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -45,10 +50,7 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		BlockState bs = worldIn.getBlockState(pos);
-		if(!bs.isIn(this))
-			return ACCUMULATOR_SHAPE_X;
-		Axis axis = bs.get(FACING).getAxis();
+		Axis axis = state.get(FACING).getAxis();
 		return axis == Axis.X ? ACCUMULATOR_SHAPE_X : ACCUMULATOR_SHAPE_Z;
 	}
 	
@@ -73,6 +75,23 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	}
 	
 	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
+		TileEntity te = world.getTileEntity(pos);
+		if(te != null) {
+			if(te instanceof AccumulatorTileEntity) {
+				AccumulatorTileEntity ate = (AccumulatorTileEntity) te;
+				if(stack.hasTag()) {
+					CompoundNBT nbt = stack.getTag();
+					if(nbt.contains("energy") && nbt.contains("energy_buffIn") && nbt.contains("energy_buffOut"))
+						ate.setEnergy(nbt.getInt("energy"), nbt.getInt("energy_buffIn"), nbt.getInt("energy_buffOut"));
+				
+				}
+			}
+		}
+		super.onBlockPlacedBy(world, pos, state, entity, stack);
+	}
+	
+	@Override
 	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
 		super.onBlockHarvested(worldIn, pos, state, player);
 		if(player.isCreative())
@@ -80,9 +99,9 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 		TileEntity te = worldIn.getTileEntity(pos);
 		if(te == null)
 			return;
-		if(!(te instanceof ConnectorTileEntity))
+		if(!(te instanceof IWireNode))
 			return;
-		AccumulatorTileEntity cte = (AccumulatorTileEntity) te;
+		IWireNode cte = (IWireNode) te;
 		
 		cte.dropWires(worldIn);
 	}
@@ -94,11 +113,21 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 		TileEntity te = c.getWorld().getTileEntity(c.getPos());
 		if(te == null)
 			return IWrenchable.super.onSneakWrenched(state, c);
-		if(!(te instanceof AccumulatorTileEntity))
+		if(!(te instanceof IWireNode))
 			return IWrenchable.super.onSneakWrenched(state, c);
-		AccumulatorTileEntity cte = (AccumulatorTileEntity) te;
+		IWireNode cte = (IWireNode) te;
 		
 		cte.dropWires(c.getWorld(), c.getPlayer());
 		return IWrenchable.super.onSneakWrenched(state, c);
+	}
+	
+	@Override
+	public boolean hasComparatorInputOverride(BlockState state) {
+		return true;
+	}
+	
+	@Override
+	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
+		return IComparetorOverride.getComparetorOverride(worldIn, pos);
 	}
 }

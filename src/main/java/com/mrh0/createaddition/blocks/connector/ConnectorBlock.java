@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.connector;
 
+import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
@@ -8,6 +9,7 @@ import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemUseContext;
@@ -21,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, IWrenchable {
@@ -57,6 +60,11 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext c) {
+		return this.getDefaultState().with(FACING, c.getFace().getOpposite());
+	}
 	
 	@Override
 	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
@@ -66,16 +74,11 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 		TileEntity te = worldIn.getTileEntity(pos);
 		if(te == null)
 			return;
-		if(!(te instanceof ConnectorTileEntity))
+		if(!(te instanceof IWireNode))
 			return;
-		ConnectorTileEntity cte = (ConnectorTileEntity) te;
+		IWireNode cte = (IWireNode) te;
 		
 		cte.dropWires(worldIn);
-	}
-	
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext c) {
-		return this.getDefaultState().with(FACING, c.getFace().getOpposite());
 	}
 	
 	@Override
@@ -85,11 +88,29 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 		TileEntity te = c.getWorld().getTileEntity(c.getPos());
 		if(te == null)
 			return IWrenchable.super.onSneakWrenched(state, c);
-		if(!(te instanceof ConnectorTileEntity))
+		if(!(te instanceof IWireNode))
 			return IWrenchable.super.onSneakWrenched(state, c);
-		ConnectorTileEntity cte = (ConnectorTileEntity) te;
+		IWireNode cte = (IWireNode) te;
 		
 		cte.dropWires(c.getWorld(), c.getPlayer());
 		return IWrenchable.super.onSneakWrenched(state, c);
+	}
+	
+	@Override
+	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		if (!state.isValidPosition(worldIn, pos)) {
+			TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
+			spawnDrops(state, worldIn, pos, tileentity);
+			worldIn.removeBlock(pos, false);
+
+			for (Direction direction : Direction.values())
+				worldIn.notifyNeighborsOfStateChange(pos.offset(direction), this);
+		}
+	}
+	
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+		Direction dir = state.get(FACING);
+		BlockState surface = world.getBlockState(pos.offset(dir));
+		return !surface.isIn(Blocks.AIR);
 	}
 }

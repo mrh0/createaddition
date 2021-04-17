@@ -3,6 +3,7 @@ package com.mrh0.createaddition.blocks.redstone_relay;
 import java.util.Random;
 
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
+import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
@@ -68,15 +69,32 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		BlockState bs = worldIn.getBlockState(pos);
-		if(!bs.isIn(this))
-			return HORIZONTAL_SHAPE_X;
-		Direction dir = bs.get(HORIZONTAL_FACING);
-		if(bs.get(VERTICAL))
+		Direction dir = state.get(HORIZONTAL_FACING);
+		if(state.get(VERTICAL))
 			return VERTICAL_SHAPE.get(dir.getOpposite());
 		Axis axis = dir.getAxis();
 		return axis == Axis.X ? HORIZONTAL_SHAPE_X : HORIZONTAL_SHAPE_Z;
 	}
+	
+	/*@Override
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+		return getShape(state, world, pos, context);
+	}
+	
+	@Override
+	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos) {
+		return getShape(state, world, pos, null);
+	}
+	
+	@Override
+	public VoxelShape getSidesShape(BlockState state, IBlockReader world, BlockPos pos) {
+		return getShape(state, world, pos, null);
+	}
+	
+	@Override
+	public VoxelShape getRaytraceShape(BlockState state, IBlockReader world, BlockPos pos) {
+		return getShape(state, world, pos, null);
+	}*/
 	
 	@Override
 	public boolean hasTileEntity(BlockState state) {
@@ -99,36 +117,6 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 			return getDefaultState().with(HORIZONTAL_FACING, c.getPlayer().isSneaking() ? c.getPlacementHorizontalFacing().rotateYCCW() : c.getPlacementHorizontalFacing().rotateY()).with(VERTICAL, false);
 		else
 			return getDefaultState().with(HORIZONTAL_FACING, c.getFace().getOpposite()).with(VERTICAL, true);
-	}
-	
-	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		super.onBlockHarvested(worldIn, pos, state, player);
-		if(player.isCreative())
-			return;
-		TileEntity te = worldIn.getTileEntity(pos);
-		if(te == null)
-			return;
-		if(!(te instanceof ConnectorTileEntity))
-			return;
-		RedstoneRelayTileEntity cte = (RedstoneRelayTileEntity) te;
-		
-		cte.dropWires(worldIn);
-	}
-	
-	@Override
-	public ActionResultType onSneakWrenched(BlockState state, ItemUseContext c) {
-		if(c.getPlayer().isCreative())
-			return IWrenchable.super.onSneakWrenched(state, c);
-		TileEntity te = c.getWorld().getTileEntity(c.getPos());
-		if(te == null)
-			return IWrenchable.super.onSneakWrenched(state, c);
-		if(!(te instanceof RedstoneRelayTileEntity))
-			return IWrenchable.super.onSneakWrenched(state, c);
-		RedstoneRelayTileEntity cte = (RedstoneRelayTileEntity) te;
-		
-		cte.dropWires(c.getWorld(), c.getPlayer());
-		return IWrenchable.super.onSneakWrenched(state, c);
 	}
 	
 	public void scheduledTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
@@ -154,6 +142,12 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 			for (Direction direction : Direction.values())
 				worldIn.notifyNeighborsOfStateChange(pos.offset(direction), this);
 		}
+	}
+	
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+		boolean vertical = state.get(VERTICAL);
+		Direction direction = state.get(HORIZONTAL_FACING);
+		return hasEnoughSolidSide(world, vertical ? pos.offset(direction) : pos.down(), vertical ? direction.getOpposite() : Direction.UP);
 	}
 
 	protected void updateState(World worldIn, BlockPos pos, BlockState state) {
@@ -190,20 +184,18 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 			Direction direction = state.get(HORIZONTAL_FACING);
 			BlockPos blockpos1 = pos.offset(direction.rotateY());
 			BlockPos blockpos2 = pos.offset(direction.rotateYCCW());
-			int i = Math.max(worldIn.getRedstonePower(blockpos1, direction.getOpposite()), worldIn.getRedstonePower(blockpos2, direction));
+			int i = Math.max(worldIn.getRedstonePower(blockpos1, direction.rotateY()), worldIn.getRedstonePower(blockpos2, direction.rotateYCCW()));
+			int j = Math.max(worldIn.getStrongPower(blockpos1, direction.rotateY()), worldIn.getStrongPower(blockpos2, direction.rotateYCCW()));
 			
 			BlockState blockstate1 = worldIn.getBlockState(blockpos1);
 			BlockState blockstate2 = worldIn.getBlockState(blockpos2);
-			return Math.max(i, Math.max(blockstate1.isIn(Blocks.REDSTONE_WIRE) ? blockstate1.get(RedstoneWireBlock.POWER) : 0, blockstate2.isIn(Blocks.REDSTONE_WIRE) ? blockstate2.get(RedstoneWireBlock.POWER) : 0));
+			return Math.max(Math.max(i, j), Math.max(blockstate1.isIn(Blocks.REDSTONE_WIRE) ? blockstate1.get(RedstoneWireBlock.POWER) : 0, blockstate2.isIn(Blocks.REDSTONE_WIRE) ? blockstate2.get(RedstoneWireBlock.POWER) : 0));
 		}
 	}
-
-	protected int getPowerOnSides(IWorldReader worldIn, BlockPos pos, BlockState state) {
-		Direction direction = state.get(HORIZONTAL_FACING);
+	protected int getPowerOnSides(IWorldReader worldIn, BlockPos pos, Direction direction) {
 		Direction direction1 = direction.rotateY();
 		Direction direction2 = direction.rotateYCCW();
-		return Math.max(this.getPowerOnSide(worldIn, pos.offset(direction1), direction1),
-				this.getPowerOnSide(worldIn, pos.offset(direction2), direction2));
+		return Math.max(this.getPowerOnSide(worldIn, pos.offset(direction1), direction2), this.getPowerOnSide(worldIn, pos.offset(direction2), direction1));
 	}
 
 	protected int getPowerOnSide(IWorldReader worldIn, BlockPos pos, Direction side) {
@@ -227,5 +219,35 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1);
 		}
 
+	}
+	
+	@Override
+	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.onBlockHarvested(worldIn, pos, state, player);
+		if(player.isCreative())
+			return;
+		TileEntity te = worldIn.getTileEntity(pos);
+		if(te == null)
+			return;
+		if(!(te instanceof IWireNode))
+			return;
+		IWireNode cte = (IWireNode) te;
+		
+		cte.dropWires(worldIn);
+	}
+	
+	@Override
+	public ActionResultType onSneakWrenched(BlockState state, ItemUseContext c) {
+		if(c.getPlayer().isCreative())
+			return IWrenchable.super.onSneakWrenched(state, c);
+		TileEntity te = c.getWorld().getTileEntity(c.getPos());
+		if(te == null)
+			return IWrenchable.super.onSneakWrenched(state, c);
+		if(!(te instanceof IWireNode))
+			return IWrenchable.super.onSneakWrenched(state, c);
+		IWireNode cte = (IWireNode) te;
+		
+		cte.dropWires(c.getWorld(), c.getPlayer());
+		return IWrenchable.super.onSneakWrenched(state, c);
 	}
 }

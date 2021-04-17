@@ -73,7 +73,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	public float calculateAddedStressCapacity() {
-		float capacity = generatedSpeed.getValue() > 0 ? STRESS/generatedSpeed.getValue() : 0;
+		float capacity = STRESS/256f;//Math.abs(generatedSpeed.getValue()) > 0 ? STRESS/Math.abs(generatedSpeed.getValue()) : 0;
 		this.lastCapacityProvided = capacity;
 		return capacity;
 	}
@@ -82,8 +82,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy)).formatted(TextFormatting.AQUA)));
+		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
+		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy)).formatted(TextFormatting.AQUA)));
 		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").formatted(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
 				.formatted(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").formatted(TextFormatting.DARK_GRAY)));
@@ -165,7 +165,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	public static int getEnergyConsumptionRate(int rpm) {
 		//return (int)Math.max((double)Config.FE_TO_SU.get() * ((double)Math.abs(rpm) / 256d * stress / STRESS), (double)MIN_CONSUMPTION);
-		return (int)Math.max((double)Config.FE_RPM.get() * ((double)rpm / 256d), (double)MIN_CONSUMPTION);
+		return (int)Math.max((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d), (double)MIN_CONSUMPTION);
 	}
 	
 	@Override

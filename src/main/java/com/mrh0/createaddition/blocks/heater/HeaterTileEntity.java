@@ -131,7 +131,6 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 				world.setBlockState(pos.offset(d), state.with(AbstractFurnaceBlock.LIT, lit));
 		}
 		causeBlockUpdate();
-		System.out.println("TEST");
 	}
 	
 	@Override
@@ -154,7 +153,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
 		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
 		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").formatted(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")));
+		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")).formatted(TextFormatting.AQUA));
 		return true;
 	}
 }
