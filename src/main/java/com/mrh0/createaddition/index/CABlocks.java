@@ -7,6 +7,7 @@ import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
+import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.blocks.heater.HeaterBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
@@ -81,10 +82,17 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
+	public static final BlockEntry<FurnaceBurner> FURNACE_BURNER = REGISTRATE.block("furnace_burner",  FurnaceBurner::new)
+			.initialProperties(SharedProperties::stone)
+			.item()
+			.transform(customItemModel())
+			.register();
+	
 	public static void register() {
 		//Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
 		//Create.registrate().addToSection(ALTERNATOR, AllSections.KINETICS);
 		//Create.registrate().addToSection(ROLLING_MILL, AllSections.KINETICS);
+		Create.registrate().addToSection(FURNACE_BURNER, AllSections.CURIOSITIES);
 		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
 		Create.registrate().addToSection(CONNECTOR, AllSections.KINETICS);
 		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);

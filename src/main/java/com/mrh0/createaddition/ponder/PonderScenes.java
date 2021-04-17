@@ -84,7 +84,7 @@ public class PonderScenes {
 		scene.configureBasePlate(1, 0, 4);
 		scene.world.showSection(util.select.layer(0), Direction.UP);
 
-		BlockPos generator = util.grid.at(2, 1, 2);
+		BlockPos generator = util.grid.at(3, 1, 2);
 
 		for (int i = 0; i < 6; i++) {
 			scene.idle(5);

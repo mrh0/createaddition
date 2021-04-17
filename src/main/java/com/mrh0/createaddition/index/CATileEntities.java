@@ -4,6 +4,7 @@ import com.mrh0.createaddition.blocks.alternator.AlternatorTileEntity;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.*;
+import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurnerTileEntity;
 import com.mrh0.createaddition.blocks.heater.HeaterTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillTileEntity;
@@ -66,6 +67,11 @@ public class CATileEntities {
 			.tileEntity("redstone_relay", RedstoneRelayTileEntity::new)
 			.validBlocks(CABlocks.REDSTONE_RELAY)
 			.renderer(() -> RedstoneRelayRenderer::new)
+			.register();
+	
+	public static final TileEntityEntry<FurnaceBurnerTileEntity> FURNACE_BURNER = CreateAddition.registrate()
+			.tileEntity("furnace_burner", FurnaceBurnerTileEntity::new)
+			.validBlocks(CABlocks.FURNACE_BURNER)
 			.register();
 	
 	public static void register() {}

@@ -3,6 +3,9 @@ package com.mrh0.createaddition.util;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.LightType;
+import net.minecraft.world.World;
 
 public class Util {
 	public static int min(int...v) {
@@ -28,5 +31,21 @@ public class Util {
 				return stack;
 		}
 		return ItemStack.EMPTY;
+	}
+	
+	public static boolean canStack(ItemStack add, ItemStack to){
+		return add.getCount() + to.getCount() <= to.getMaxStackSize() && (add.getItem() == to.getItem()) || to.isEmpty();
+	}
+	
+	public static int getMergeRest(ItemStack add, ItemStack to){
+		return Math.max(add.getCount() + to.getCount() - to.getMaxStackSize(), 0);
+	}
+	
+	public static int getSkyLight(World world, BlockPos pos) {
+		return Math.max(world.getLightLevel(LightType.SKY, pos) - world.getSkylightSubtracted(), 0);
+	}
+	
+	public static ItemStack mergeStack(ItemStack add, ItemStack to) {
+		return new ItemStack(to.isEmpty()?add.getItem():to.getItem(), to.getCount() + add.getCount());
 	}
 }
