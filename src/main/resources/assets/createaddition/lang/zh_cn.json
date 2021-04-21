@@ -109,7 +109,9 @@
 
 	"block.createaddition.connector": "连接器",
 	"block.createaddition.connector.tooltip": "连接器",
-	"block.createaddition.connector.tooltip.summary": "用_线缆_连接 FE 方块来传输 _FE_。用_铜线轴_或_金线轴_右键两个_连接器_来生成_线缆连接_。",
+	"block.createaddition.connector.tooltip.summary": "用_线缆_连接 FE 方块来传输 _FE_。用_铜线轴_或_金线轴_右键两个_连接器_来建立_线缆连接_。",
+	"block.createaddition.connector.tooltip.control1": "右键时",
+	"block.createaddition.connector.tooltip.action1": "当拿着_铜线轴_或_金线轴_右键两个_连接器_来在两个连接器之间建立一个_线缆连接_。",
 
 	"block.createaddition.redstone_relay": "红石继电器",
 	"block.createaddition.redstone_relay.tooltip": "红石继电器",
@@ -126,6 +128,14 @@
 	"block.createaddition.furnace_burner.tooltip.action1": "将手上_燃料_放入_熔炉_。",
 	"block.createaddition.furnace_burner.tooltip.control2": "潜行右键时",
 	"block.createaddition.furnace_burner.tooltip.action2": "取出_熔炉_中储存的_燃料_。",
+
+	"block.createaddition.charger": "充电站",
+	"block.createaddition.charger.tooltip": "充电站",
+	"block.createaddition.charger.tooltip.summary": "使用 _FE_ 给可充电物品充电。",
+	"block.createaddition.charger.tooltip.control1": "使用可充电物品右键时",
+	"block.createaddition.charger.tooltip.action1": "将物品放在_充电站_。",
+	"block.createaddition.charger.tooltip.control2": "空手右键时",
+	"block.createaddition.charger.tooltip.action2": "取出_充电站_上的物品。",
 
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
 		
