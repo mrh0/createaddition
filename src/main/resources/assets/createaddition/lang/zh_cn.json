@@ -133,7 +133,7 @@
 	"block.createaddition.charger.tooltip": "充电站",
 	"block.createaddition.charger.tooltip.summary": "使用 _FE_ 给可充电物品充电。",
 	"block.createaddition.charger.tooltip.control1": "使用可充电物品右键时",
-	"block.createaddition.charger.tooltip.action1": "将物品放在_充电站_。",
+	"block.createaddition.charger.tooltip.action1": "将物品放在_充电站_上。",
 	"block.createaddition.charger.tooltip.control2": "空手右键时",
 	"block.createaddition.charger.tooltip.action2": "取出_充电站_上的物品。",
 
