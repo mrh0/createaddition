@@ -23,7 +23,7 @@ sleep(5)
 motor.stop()
 ```
 
-The function rotate(degrees, [rpm]) will return the time it will take to rotate the shaft by the argument *degrees* at the current speed. If the argument *rpm* is given it will set the speed of the motor and return the rotation time at the new speed.
+The function rotate(degrees, [rpm]) will return the time it will take to rotate the shaft by the argument *degrees* at the current speed. If the optional argument *rpm* is given it will set the speed of the motor and return the rotation time at the new speed.
 ```
 motor.setSpeed(32)
 sleep(motor.rotate(90))
@@ -37,18 +37,18 @@ sleep(motor.rotate(-180, 16))
 motor.stop()
 ```
 
-The function distance(blocks, [rpm]) will return the time it will take to rotate the shaft to push a Piston or Gantry by the argument *blocks* at the current speed. If the argument *rpm* is given it will set the speed of the motor and return the action time at the new speed.
+The function translate(blocks, [rpm]) will return the time it will take to rotate the shaft to push a Piston or Gantry by distance given by the argument *blocks* at the current speed. If the optional argument *rpm* is given it will set the speed of the motor and return the action time at the new speed.
 ```
 motor.setSpeed(32)
-sleep(motor.distance(5))
+sleep(motor.translate(5))
 motor.stop()
 ```
 In the following example, the motor attached to a piston will extend the piston by 5 blocks, stop for a second, retract, and then finaly stop.
 ```
 motor = peripheral.wrap("left")
-sleep(motor.distance(5, 32))
+sleep(motor.translate(5, 32))
 sleep(1)
-sleep(motor.distance(-5, 32))
+sleep(motor.translate(-5, 32))
 motor.stop()
 ```
 
