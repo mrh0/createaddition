@@ -9,7 +9,7 @@ To set the speed of the Electric Motor, call setSpeed(rpm) where rpm is a number
 ```
 motor.setSpeed(rpm)
 ```
-In the following example, the motor will rotate at 32RPM for 5 seconds and then stop:
+In the following example, the motor attached to the left of the computer will rotate at 32RPM for 5 seconds and then stop:
 ```
 motor = peripheral.wrap("left")
 motor.setSpeed(32)
