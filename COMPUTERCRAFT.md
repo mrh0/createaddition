@@ -7,7 +7,7 @@ Supported Blocks:
 
 # Electric Motor
 
-To set the speed of the Electric Motor, call setSpeed(rpm) where rpm is a number between -256 and 256. The function will throw an exception if it is called too many times per second.
+To set the speed of the Electric Motor, call setSpeed(rpm) where the argument *rpm* is a number between -256 and 256. The function will throw an exception if it is called too many times per second.
 ```
 motor.setSpeed(rpm)
 ```
