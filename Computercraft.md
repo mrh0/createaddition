@@ -14,6 +14,6 @@ motor.stop()
 ```
 
 To set the speed of the Electric Motor, call setSpeed(rpm) where rpm is a number between -256 and 256:
-````
+```
 motor.setSpeed(rpm)
 ```
