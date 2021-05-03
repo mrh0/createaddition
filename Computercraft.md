@@ -1,9 +1,9 @@
-# Get started
+# Peripheral Lua API
 
 Supported Blocks:
 - Electric Motor
 
-# Electric Motor Peripheral Lua API
+# Electric Motor
 
 In this example:
 ```
