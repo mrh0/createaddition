@@ -1,4 +1,4 @@
-# Peripheral Lua API
+# Create Crafts & Additions: Computercraft Peripheral API
 
 Version 1
 
