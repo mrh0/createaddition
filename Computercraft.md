@@ -3,7 +3,7 @@
 Supported Blocks:
 - Electric Motor
 
-# Electric Motor Peripheral API
+# Electric Motor Peripheral Lua API
 
 In this example:
 ```
