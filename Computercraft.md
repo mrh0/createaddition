@@ -23,7 +23,18 @@ sleep(5)
 motor.stop()
 ```
 
-The function rotate(degrees, rpm, [initial]) will start 
+The function rotate(degrees, [rpm]) will return the time it will take to rotate the shaft by the argument *degrees* at the current speed. If the argument *rpm* is given it will set the speed of the motor and return the rotation time at the new speed.
+```
+motor.setSpeed(32)
+sleep(motor.rotate(90))
+motor.stop()
+```
+In the following example, the motor will first rotate 180 degrees in the clockwise direction, then 180 degrees at half the speed in the anti-clockwise direction and then finaly stop.
+```
+sleep(motor.rotate(180, 32))
+sleep(motor.rotate(-180, 16))
+motor.stop()
+```
 
 The function getSpeed() will return the current motor speed.
 ```
