@@ -23,6 +23,8 @@ sleep(5)
 motor.stop()
 ```
 
+The function rotate(degrees, rpm, [initial]) will start 
+
 The function getSpeed() will return the current motor speed.
 ```
 rpm = motor.getSpeed()
@@ -34,4 +36,8 @@ su = motor.getStressCapacity()
 The function getEnergyConsumption() will return the motor energy consumption in FE/t.
 ```
 fe = motor.getEnergyConsumption()
+```
+The function getType() will return the motor peripheral name, which will allways be "electric_motor".
+```
+print("Peripheral: " .. motor.getType())
 ```
