@@ -1,5 +1,7 @@
 # Peripheral Lua API
 
+Version 1
+
 Supported Blocks:
 - Electric Motor
 
