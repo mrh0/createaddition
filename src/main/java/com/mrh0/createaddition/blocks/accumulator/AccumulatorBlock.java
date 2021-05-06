@@ -1,15 +1,13 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
-import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
-import com.mrh0.createaddition.util.IComparetorOverride;
+import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -128,6 +126,6 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	
 	@Override
 	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
-		return IComparetorOverride.getComparetorOverride(worldIn, pos);
+		return IComparatorOverride.getComparetorOverride(worldIn, pos);
 	}
 }

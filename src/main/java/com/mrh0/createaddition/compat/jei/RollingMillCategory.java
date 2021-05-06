@@ -2,17 +2,10 @@ package com.mrh0.createaddition.compat.jei;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllItems;
-import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
-import com.simibubi.create.compat.jei.category.animations.AnimatedMillstone;
-import com.simibubi.create.content.contraptions.components.crusher.AbstractCrushingRecipe;
-import com.simibubi.create.content.contraptions.processing.ProcessingOutput;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
 import mezz.jei.api.constants.VanillaTypes;
@@ -20,7 +13,6 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 
 public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 

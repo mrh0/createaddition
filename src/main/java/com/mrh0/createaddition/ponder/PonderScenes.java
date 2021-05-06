@@ -184,19 +184,9 @@ public class PonderScenes {
 
 		scene.idle(5);
 		scene.world.showSection(util.select.position(in), Direction.NORTH);
-		scene.overlay.showText(50)
-			.text("Input Funnel")
-			.placeNearTarget()
-			.pointAt(util.vector.topOf(in));
-		scene.idle(60);
-
 		scene.idle(5);
 		scene.world.showSection(util.select.position(out), Direction.SOUTH);
-		scene.overlay.showText(50)
-		.text("Output Funnel")
-		.placeNearTarget()
-		.pointAt(util.vector.topOf(out));
-		scene.idle(60);
+		scene.idle(20);
 
 		/*ItemStack itemStack = new ItemStack(AllItems.COPPER_INGOT.get());
 
@@ -247,5 +237,40 @@ public class PonderScenes {
 		.placeNearTarget()
 		.pointAt(util.vector.blockSurface(furnace, Direction.NORTH));
 		scene.idle(60);
+	}
+	
+	public static void ccMotor(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cc_electric_motor", "Using Computercraft to control an Electric Motor");
+		scene.configureBasePlate(0, 0, 5);
+		scene.world.showSection(util.select.layer(0), Direction.UP);
+
+		BlockPos motor = util.grid.at(2, 1, 2);
+		BlockPos computer = util.grid.at(1, 1, 2);
+		
+		scene.idle(5);
+		scene.world.showSection(util.select.position(motor), Direction.DOWN);
+		scene.idle(5);
+		scene.world.showSection(util.select.position(computer), Direction.DOWN);
+		
+		scene.idle(10);
+		scene.overlay.showText(50)
+			.text("The Electric Motor can be controlled using Computercraft")
+			.placeNearTarget()
+			.pointAt(util.vector.topOf(computer));
+		scene.idle(60);
+		
+		scene.idle(10);
+		scene.overlay.showText(50)
+			.text("Connect to the motor using 'peripheral.wrap(side)'")
+			.placeNearTarget()
+			.pointAt(util.vector.topOf(computer));
+		scene.idle(60);
+		
+		scene.idle(10);
+		scene.overlay.showText(150)
+			.text("Get to the API documentation by issuing the command '/cca_api' in the chat")
+			.placeNearTarget()
+			.pointAt(util.vector.topOf(computer));
+		scene.idle(160);
 	}
 }

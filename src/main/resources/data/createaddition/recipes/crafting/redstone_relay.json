@@ -2,18 +2,18 @@
 	"type": "minecraft:crafting_shaped",
 	
 	"pattern":
-	["BRB",
+	[" R ",
 	 "CEC",
-	 "BRB"],
+	 "SSS"],
 	"key":
 	{
 		"R":
 		{
 			"tag": "forge:dusts/redstone"
 		},
-		"B":
+		"S":
 		{
-			"tag": "forge:plates/brass"
+			"tag": "forge:stone"
 		},
 		"C":
 		{

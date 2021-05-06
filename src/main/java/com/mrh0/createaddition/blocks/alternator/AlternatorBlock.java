@@ -20,7 +20,7 @@ import net.minecraft.world.IWorldReader;
 
 public class AlternatorBlock extends DirectionalKineticBlock implements ITE<AlternatorTileEntity>, IRotate {
 	
-	public static final VoxelShaper ALTERNATOR_SHAPE = CAShapes.shape(0, 1, 0, 16, 13, 16).add(1, 0, 1, 15, 14, 15).forDirectional();
+	public static final VoxelShaper ALTERNATOR_SHAPE = CAShapes.shape(0, 3, 0, 16, 13, 16).add(2, 0, 2, 14, 14, 14).forDirectional();
 	
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {

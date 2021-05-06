@@ -3,6 +3,8 @@ package com.mrh0.createaddition.blocks.electric_motor;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.compat.computercraft.ElectricMotorPeripheral;
+import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.index.CABlocks;
@@ -10,7 +12,7 @@ import com.mrh0.createaddition.item.Multimeter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
 import com.simibubi.create.content.contraptions.components.motor.CreativeMotorTileEntity;
-import com.simibubi.create.foundation.config.AllConfigs;
+import com.simibubi.create.content.contraptions.relays.advanced.sequencer.Instruction;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
@@ -36,6 +38,22 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	protected ScrollValueBehaviour generatedSpeed;
 	protected final InternalEnergyStorage energy;
 	private LazyOptional<net.minecraftforge.energy.IEnergyStorage> lazyEnergy;
+	private LazyOptional<ElectricMotorPeripheral> lazyPeripheral = null;
+	
+	public enum Instruct {
+		ANGLE,
+		DISTANCE,
+		DURATION,
+		NONE
+	}
+	
+	//Instruct currentInstruct = Instruct.NONE;
+	int currentInstructionDuration;
+	//int currentTarget;
+	//int timer;
+	
+	private boolean cc_update_rpm = false;
+	private int cc_new_rpm = 0;
 	
 	private static final Integer 
 		RPM_RANGE = Config.ELECTRIC_MOTOR_RPM_RANGE.get(),
@@ -52,7 +70,14 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		super(type);
 		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		lazyEnergy = LazyOptional.of(() -> energy);
+		if(CreateAddition.CC_ACTIVE) {
+			lazyPeripheral = LazyOptional.of(() -> Peripherals.createElectricMotorPeripheral(this));
+		}
 		setLazyTickRate(20);
+		
+		currentInstructionDuration = -1;
+		//currentTarget = 0;
+		//timer = 0;
 	}
 
 	@Override
@@ -68,12 +93,30 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		generatedSpeed.scrollableValue = DEFAULT_SPEED;
 		generatedSpeed.withUnit(i -> Lang.translate("generic.unit.rpm"));
 		generatedSpeed.withCallback(i -> this.updateGeneratedRotation());
-		generatedSpeed.withStepFunction(CreativeMotorTileEntity::step);
+		generatedSpeed.withStepFunction(ElectricMotorTileEntity::step);
 		behaviours.add(generatedSpeed);
 	}
 	
+	public static int step(StepContext context) {
+		int current = context.currentValue;
+		int step = 1;
+
+		if (!context.shift) {
+			int magnitude = Math.abs(current) - (context.forward == current > 0 ? 0 : 1);
+
+			if (magnitude >= 4)
+				step *= 4;
+			if (magnitude >= 32)
+				step *= 4;
+			if (magnitude >= 128)
+				step *= 4;
+		}
+
+		return (int) step;
+	}
+	
 	public float calculateAddedStressCapacity() {
-		float capacity = STRESS/256f;//Math.abs(generatedSpeed.getValue()) > 0 ? STRESS/Math.abs(generatedSpeed.getValue()) : 0;
+		float capacity = STRESS/256f;
 		this.lastCapacityProvided = capacity;
 		return capacity;
 	}
@@ -81,9 +124,6 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-
-		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
-		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy)).formatted(TextFormatting.AQUA)));
 		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").formatted(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
 				.formatted(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").formatted(TextFormatting.DARK_GRAY)));
@@ -118,6 +158,10 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)) && !world.isRemote)
 			return lazyEnergy.cast();
+		if(CreateAddition.CC_ACTIVE) {
+			if(Peripherals.isPeripheral(cap))
+				return lazyPeripheral.cast();
+		}
 		return super.getCapability(cap, side);
 	}
 	
@@ -146,25 +190,26 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	@Override
 	public void lazyTick() {
 		super.lazyTick();
+		cc_antiSpam = 5;
 		if(world.isRemote())
 			return;
 		int con = getEnergyConsumptionRate(generatedSpeed.getValue()) * 20;
 		if(!active) {
-			if(energy.getEnergyStored() > con * 2)
+			if(energy.getEnergyStored() > con * 2) {
 				active = true;
+				updateGeneratedRotation();
+			}
 		}
 		else {
-			
 			int ext = energy.internalConsumeEnergy(con);
 			if(ext < con) {
 				active = false;
+				updateGeneratedRotation();
 			}
 		}
-		updateGeneratedRotation();
 	}
 	
 	public static int getEnergyConsumptionRate(int rpm) {
-		//return (int)Math.max((double)Config.FE_TO_SU.get() * ((double)Math.abs(rpm) / 256d * stress / STRESS), (double)MIN_CONSUMPTION);
 		return (int)Math.max((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d), (double)MIN_CONSUMPTION);
 	}
 	
@@ -172,5 +217,97 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	public void remove() {
 		super.remove();
 		lazyEnergy.invalidate();
+		if(lazyPeripheral != null)
+			lazyPeripheral.invalidate();
+	}
+	
+	// CC
+	int cc_antiSpam = 0;
+	@Override
+	public void tick() {
+		super.tick();
+		
+		if(cc_update_rpm && cc_antiSpam > 0) {
+			generatedSpeed.setValue(cc_new_rpm);
+			cc_update_rpm = false;
+			cc_antiSpam--;
+			updateGeneratedRotation();
+		}
+		
+		/*if (world.isRemote)
+			return;
+		if (currentInstructionDuration < 0)
+			return;
+		if (timer < currentInstructionDuration) {
+			timer++;
+			return;
+		}*/
+		
+		//currentTarget = -1;
+		//currentInstruct = Instruct.NONE;
+		//currentInstructionDuration = -1;
+		//timer = 0;
+	}
+	
+	/*@Override
+	public void onSpeedChanged(float previousSpeed) {
+		super.onSpeedChanged(previousSpeed);
+		if (currentInstruct == Instruct.NONE)
+			return;
+		float currentSpeed = Math.abs(speed);
+		if (Math.abs(previousSpeed) == currentSpeed)
+			return;
+
+		float initialProgress = timer / (float) currentInstructionDuration;
+		if(currentInstruct == Instruct.ANGLE)
+			currentInstructionDuration = getDurationAngle(currentTarget, initialProgress, generatedSpeed.getValue());
+		timer = 0;
+	}*/
+	
+	/*public float runAngle(int angle, int speed) {
+		generatedSpeed.setValue(angle < 0 ? -speed : speed);
+		currentInstructionDuration = getDurationAngle(Math.abs(angle), 0, speed);
+		//currentTarget = angle;
+		//timer = 0;
+		
+		return (float)currentInstructionDuration / 20f;
+	}*/
+	
+	public int getDurationAngle(int deg, float initialProgress, float speed) {
+		speed = Math.abs(speed);
+		deg = Math.abs(deg);
+		if(speed < 0.1f)
+			return 0;
+		double degreesPerTick = (speed * 360) / 60 / 20;
+		return (int) ((1 - initialProgress) * deg / degreesPerTick + 1);
+	}
+	
+	public int getDurationDistance(int dis, float initialProgress, float speed) {
+		speed = Math.abs(speed);
+		dis = Math.abs(dis);
+		if(speed < 0.1f)
+			return 0;
+		double metersPerTick = speed / 512;
+		return (int) ((1 - initialProgress) * dis / metersPerTick);
+	}
+	
+	public boolean setRPM(int rpm) {
+		//System.out.println("SETSPEED" + rpm);
+		rpm = Math.max(Math.min(rpm, RPM_RANGE), -RPM_RANGE);
+		cc_new_rpm = rpm;
+		cc_update_rpm = true;
+		return cc_antiSpam > 0;
+	}
+	
+	public int getRPM() {
+		return cc_new_rpm;//generatedSpeed.getValue();
+	}
+	
+	public int getGeneratedStress() {
+		return (int) calculateAddedStressCapacity();
+	}
+	
+	public int getEnergyConsumption() {
+		return getEnergyConsumptionRate(generatedSpeed.getValue());
 	}
 }
