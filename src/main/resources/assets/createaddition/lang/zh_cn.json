@@ -4,7 +4,7 @@
 	"createaddition.tooltip.energy.production": "已产生的能量：",
 	"createaddition.tooltip.energy.charged": "已充能",
 	"createaddition.recipe.rolling": "轧制",
-        "createaddition.recipe.crude_burning": "燃烧",
+	"createaddition.recipe.crude_burning": "燃烧",
 	"createaddition.recipe.crude_burning.burn_time": "燃烧时间",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "闪锌",
@@ -56,8 +56,8 @@
 	
 	"item.createaddition.brass_rod": "黄铜棒",
 	"item.createaddition.bronze_rod": "青铜棒",
-    
-        "item.createaddition.cake_base": "蛋糕底座",
+
+	"item.createaddition.cake_base": "蛋糕底座",
 	"item.createaddition.cake_base_baked": "烘焙蛋糕底座",
 	
 	"item.createaddition.seed_oil_bucket": "种子油桶",
@@ -103,8 +103,8 @@
 	"deprecated.block.createaddition.rolling_mill.tooltip.condition2": "当右键时",
 	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "手动收集产物。",
 
-  	"block.createaddition.heater": "感应加热器",
-        "block.createaddition.heater.engine_heating_disabled": "驱动熔炼引擎已在配置中被禁用。",
+	"block.createaddition.heater": "感应加热器",
+	"block.createaddition.heater.engine_heating_disabled": "驱动熔炼引擎已在配置中被禁用。",
 	"deprecated.block.createaddition.heater.tooltip": "感应加热器",
 	"deprecated.block.createaddition.heater.tooltip.summary": "当放置在_熔炉_上并用 _FE_ 供能感应加热器顶部时会加热_熔炉_。除非在_配置文件_中_启用_否则不会驱动_熔炼引擎_。",
 	
