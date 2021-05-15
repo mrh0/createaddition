@@ -2,7 +2,10 @@
 	"createaddition.tooltip.energy.stored": "已存储的能量：",
 	"createaddition.tooltip.energy.consumption": "已使用的能量：",
 	"createaddition.tooltip.energy.production": "已产生的能量：",
+	"createaddition.tooltip.energy.charged": "已充能",
 	"createaddition.recipe.rolling": "轧制",
+        "createaddition.recipe.crude_burning": "燃烧",
+	"createaddition.recipe.crude_burning.burn_time": "燃烧时间",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "闪锌",
 
@@ -53,6 +56,11 @@
 	
 	"item.createaddition.brass_rod": "黄铜棒",
 	"item.createaddition.bronze_rod": "青铜棒",
+    
+        "item.createaddition.cake_base": "蛋糕底座",
+	"item.createaddition.cake_base_baked": "烘焙蛋糕底座",
+	
+	"item.createaddition.seed_oil_bucket": "种子油桶",
 	
 	"item.createaddition.spool": "空线轴",
 	"item.createaddition.spool.nbt": "存储连接地点",
@@ -95,7 +103,8 @@
 	"deprecated.block.createaddition.rolling_mill.tooltip.condition2": "当右键时",
 	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "手动收集产物。",
 
-	"block.createaddition.heater": "感应加热器",
+  	"block.createaddition.heater": "感应加热器",
+        "block.createaddition.heater.engine_heating_disabled": "驱动熔炼引擎已在配置中被禁用。",
 	"deprecated.block.createaddition.heater.tooltip": "感应加热器",
 	"deprecated.block.createaddition.heater.tooltip.summary": "当放置在_熔炉_上并用 _FE_ 供能感应加热器顶部时会加热_熔炉_。除非在_配置文件_中_启用_否则不会驱动_熔炼引擎_。",
 	
@@ -136,8 +145,23 @@
 	"block.createaddition.charger.tooltip.action1": "将物品放在_充电站_上。",
 	"block.createaddition.charger.tooltip.control2": "空手右键时",
 	"block.createaddition.charger.tooltip.action2": "取出_充电站_上的物品。",
-
+	
+	"block.createaddition.crude_burner": "原油炉",
+	"block.createaddition.crude_burner.tooltip": "原油炉",
+	"block.createaddition.crude_burner.tooltip.summary": "_原油炉_消耗如类似_种子油_一样的缓慢燃烧的_易燃液体_，为_熔炉引擎_提供动力。液体燃料可以用流体管道输入。",
+	"block.createaddition.crude_burner.tooltip.control1": "右键时",
+	"block.createaddition.crude_burner.tooltip.action1": "输入手上_桶_中的液体。",
+	
+	"block.createaddition.chocolate_cake": "巧克力蛋糕",
+	
+	"block.createaddition.seed_oil": "种子油",
+	
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	
+	"createaddition.command.cca_api.link": "点击这里打开 API 文档。",
+	
+	"create.ponder.tag.electric": "电器",
+	"create.ponder.tag.electric.description": "使用电力的组件",
 		
 	"create.ponder.electric_motor.header": "使用电动马达产生旋转动力",
 	"create.ponder.electric_motor.text_1": "电动马达是一种结构紧凑、可配置的旋转动力源。",
@@ -163,5 +187,10 @@
 	"create.ponder.heater.header": "使用电能加热熔炉",
 	"create.ponder.heater.text_1": "感应加热器可以放置在熔炉的任何一面。",
 	"create.ponder.heater.text_2": "当接收到足够的电能来源（FE）时，感应加热器将点燃熔炉。",
-	"create.ponder.heater.text_3": "只要提供足够的能量，熔炉就会一直燃烧。"
+	"create.ponder.heater.text_3": "只要提供足够的能量，熔炉就会一直燃烧。",
+		
+	"create.ponder.cc_electric_motor.header": "使用 Computer Craft 来控制电动马达",
+	"create.ponder.cc_electric_motor.text_1": "电动马达能使用 Computer Craft 来控制。",
+	"create.ponder.cc_electric_motor.text_2": "使用 'peripheral.wrap(side)' 连接至电动马达",
+	"create.ponder.cc_electric_motor.text_3": "在聊天中发出 '/cca_api' 命令来获取 API 文档。"
 }
