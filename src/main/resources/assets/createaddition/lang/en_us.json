@@ -2,6 +2,7 @@
 	"createaddition.tooltip.energy.stored": "Stored Energy:",
 	"createaddition.tooltip.energy.consumption": "Energy Usage:",
 	"createaddition.tooltip.energy.production": "Energy Generated:",
+	"createaddition.tooltip.energy.charged": "Charged",
 	"createaddition.recipe.rolling": "Rolling",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
@@ -96,8 +97,9 @@
 	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "Collects the outputs manually.",
 	
 	"block.createaddition.heater": "Induction Heater",
+	"block.createaddition.heater.engine_heating_disabled": "Heating Furnace Engines has been disabled in the Configs.",
 	"deprecated.block.createaddition.heater.tooltip": "INDUCTION HEATER",
-	"deprecated.block.createaddition.heater.tooltip.summary": "When attached to a _Furnace_ and powered with _fe_ from the top will heat the _Furnace_. Will not power a _Furnace Engine_ unless _enabled_ in the _configs_",
+	"deprecated.block.createaddition.heater.tooltip.summary": "When attached to a _Furnace_ and powered with _fe_ from the top will heat the _Furnace_. Will not power a _Furnace Engine_ unless _enabled_ in the _configs_.",
 	
 	"block.createaddition.accumulator": "Accumulator",
 	"block.createaddition.accumulator.tooltip": "ACCUMULATOR",
@@ -129,7 +131,20 @@
 	"block.createaddition.furnace_burner.tooltip.control2": "R-click while Sneaking",
 	"block.createaddition.furnace_burner.tooltip.action2": "Retrieves the stored _fuel_ from the _Furnace_.",
 	
+	"block.createaddition.charger": "Charging Station",
+	"block.createaddition.charger.tooltip": "CHARGER",
+	"block.createaddition.charger.tooltip.summary": "Charges _electric_ items using _fe_.",
+	"block.createaddition.charger.tooltip.control1": "R-click with Rechargeable Item",
+	"block.createaddition.charger.tooltip.action1": "Puts item on the _charger_.",
+	"block.createaddition.charger.tooltip.control2": "R-click with Empty Hand",
+	"block.createaddition.charger.tooltip.action2": "Retrieves item from the _charger_.",
+	
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	
+	"createaddition.command.cca_api.link": "Click here to open API documentation",
+	
+	"create.ponder.tag.electric": "Electric Appliances",
+	"create.ponder.tag.electric.description": "Components which use electricity",
 	
 	"create.ponder.electric_motor.header": "Generating Rotational Force using Electric Motors",
 	"create.ponder.electric_motor.text_1": "Electric Motors are a compact and configurable source of Rotational Force",
@@ -137,7 +152,7 @@
 	"create.ponder.electric_motor.text_3": "The Electric Motor requires a source of energy (fe)",
 	"create.ponder.electric_motor.text_4": "The motors' energy consumption is determined by the set RPM",
 	
-	"create.ponder.alternator.header": "Generating Electric energy using a Alternator",
+	"create.ponder.alternator.header": "Generating Electric energy using an Alternator",
 	"create.ponder.alternator.text_1": "The Alternator requires atleast 32 RPM to operate",
 	"create.ponder.alternator.text_2": "It generates electric energy (fe) from rotational force",
 	"create.ponder.alternator.text_3": "It's energy production is determined by the input RPM",
@@ -155,5 +170,10 @@
 	"create.ponder.heater.header": "Using electric energy to heat a furnace",
 	"create.ponder.heater.text_1": "The heater can be placed on any side facing the furnace",
 	"create.ponder.heater.text_2": "When connected to a sufficient source of electric energy (fe), the Heater will light the Furnace",
-	"create.ponder.heater.text_3": "The Furnace will stay lit as long as enough energy is provided"
+	"create.ponder.heater.text_3": "The Furnace will stay lit as long as enough energy is provided",
+	
+	"create.ponder.cc_electric_motor.header": "Using ComputerCraft to control an Electric Motor",
+	"create.ponder.cc_electric_motor.text_1": "The Electric Motor can be controlled using ComputerCraft",
+	"create.ponder.cc_electric_motor.text_2": "Connect to the motor using 'peripheral.wrap(side)'",
+	"create.ponder.cc_electric_motor.text_3": "Get to the API documentation by issuing the command '/cca_api' in the chat"
 }

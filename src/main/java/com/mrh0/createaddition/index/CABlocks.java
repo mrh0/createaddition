@@ -4,6 +4,7 @@ import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
+import com.mrh0.createaddition.blocks.charger.Charger;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
@@ -88,11 +89,18 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
+	public static final BlockEntry<Charger> CHARGER = REGISTRATE.block("charger",  Charger::new)
+			.initialProperties(SharedProperties::stone)
+			.item()
+			.transform(customItemModel())
+			.register();
+	
 	public static void register() {
 		//Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
 		//Create.registrate().addToSection(ALTERNATOR, AllSections.KINETICS);
 		//Create.registrate().addToSection(ROLLING_MILL, AllSections.KINETICS);
-		Create.registrate().addToSection(FURNACE_BURNER, AllSections.CURIOSITIES);
+		Create.registrate().addToSection(CHARGER, AllSections.KINETICS);
+		Create.registrate().addToSection(FURNACE_BURNER, AllSections.KINETICS);
 		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
 		Create.registrate().addToSection(CONNECTOR, AllSections.KINETICS);
 		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);

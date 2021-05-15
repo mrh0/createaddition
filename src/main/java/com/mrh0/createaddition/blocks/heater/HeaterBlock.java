@@ -6,6 +6,7 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.shapes.CAShapes;
+import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.VoxelShaper;
@@ -28,9 +29,10 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
-public class HeaterBlock extends Block implements ITE<HeaterTileEntity> {
+public class HeaterBlock extends Block implements ITE<HeaterTileEntity>, IWrenchable {
 	
-	public static final VoxelShaper HEATER_SHAPE = CAShapes.shape(4, 0, 4, 12, 14, 12).add(3, 0, 3, 13, 2, 13).add(5, 0, 5, 11, 16, 11).forDirectional();
+	public static final VoxelShaper HEATER_SHAPE = CAShapes.shape(4, 0, 4, 12, 13, 12).add(3, 0, 3, 13, 2, 13).add(5, 0, 5, 11, 16, 11)
+			.add(3, 3, 3, 13, 7, 13).add(3, 8, 3, 13, 12, 13).forDirectional();
 	
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 

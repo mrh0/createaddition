@@ -3,8 +3,8 @@
 	
 	"pattern":
 	[" C ",
-	 "SPS",
-	 "BIB"],
+	 "SIS",
+	 "BPB"],
 	"key":
 	{
 		"P":
@@ -13,7 +13,7 @@
 		},
 		"I":
 		{
-			"tag": "forge:plates/iron"
+			"tag": "forge:rods/iron"
 		},
 		"B":
 		{

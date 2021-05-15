@@ -4,7 +4,7 @@
   	"  A  ",
   	"ISSSI",
     "ISRSI",
-    "ICGCI"
+    "ISCSI"
   ],
   "key": {
     "C": {
@@ -18,9 +18,6 @@
     },
     "S": {
       "item": "createaddition:copper_spool"
-    },
-    "G": {
-      "item": "createaddition:gold_spool"
     },
     "A": {
       "item": "create:andesite_alloy"

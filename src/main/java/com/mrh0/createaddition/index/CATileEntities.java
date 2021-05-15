@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.blocks.alternator.AlternatorTileEntity;
+import com.mrh0.createaddition.blocks.charger.ChargerTileEntity;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.*;
@@ -15,8 +16,8 @@ import com.mrh0.createaddition.blocks.rolling_mill.*;
 import com.mrh0.createaddition.blocks.accumulator.*;
 import com.mrh0.createaddition.blocks.connector.*;
 import com.mrh0.createaddition.blocks.redstone_relay.*;
+import com.mrh0.createaddition.blocks.charger.*;
 import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
-import com.simibubi.create.content.contraptions.relays.encased.ShaftInstance;
 import com.simibubi.create.repack.registrate.util.entry.TileEntityEntry;
 
 public class CATileEntities {
@@ -72,6 +73,12 @@ public class CATileEntities {
 	public static final TileEntityEntry<FurnaceBurnerTileEntity> FURNACE_BURNER = CreateAddition.registrate()
 			.tileEntity("furnace_burner", FurnaceBurnerTileEntity::new)
 			.validBlocks(CABlocks.FURNACE_BURNER)
+			.register();
+	
+	public static final TileEntityEntry<ChargerTileEntity> CHARGER = CreateAddition.registrate()
+			.tileEntity("charger", ChargerTileEntity::new)
+			.validBlocks(CABlocks.CHARGER)
+			.renderer(() -> ChargerRenderer::new)
 			.register();
 	
 	public static void register() {}

@@ -2,9 +2,9 @@
   "type": "create:mechanical_crafting",
   "pattern": [
   	" N N ",
-    "PCECP",
+    "PCGCP",
     "PCBCP",
-    "PCACP"
+    "PCGCP"
   ],
   "key": {
   	"N": {
@@ -19,11 +19,8 @@
     "B": {
       "item": "create:brass_casing"
     },
-    "A": {
-      "item": "create:andesite_alloy"
-    },
-    "E": {
-      "item": "create:electron_tube"
+    "G": {
+      "item": "createaddition:gold_spool"
     }
   },
   "result": {

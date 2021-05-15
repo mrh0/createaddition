@@ -61,6 +61,12 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
     versionRange="[1.16.4-4.1.1-128,)"
     ordering="NONE"
     side="AFTER"
+[[dependencies.computercraft]]
+    modId="immersiveengineering"
+    mandatory=false
+    versionRange="[,)"
+    ordering="NONE"
+    side="AFTER"
 [[dependencies.createaddition]]
     modId="minecraft"
     mandatory=true

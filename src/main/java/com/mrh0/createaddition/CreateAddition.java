@@ -1,8 +1,10 @@
 package com.mrh0.createaddition;
 
+import net.minecraft.command.CommandSource;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -17,6 +19,8 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.mojang.brigadier.CommandDispatcher;
+import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.CABlocks;
@@ -36,6 +40,7 @@ public class CreateAddition {
     public static final String MODID = "createaddition";
     
     public static boolean IE_ACTIVE = false;
+    public static boolean CC_ACTIVE = false;
     
     private static final NonNullLazyValue<CreateRegistrate> registrate = CreateRegistrate.lazy(CreateAddition.MODID);
 
@@ -59,6 +64,7 @@ public class CreateAddition {
         Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("createaddition-common.toml"));
         
         IE_ACTIVE = ModList.get().isLoaded("immersiveengineering");
+        CC_ACTIVE = ModList.get().isLoaded("computercraft");
         
         new ModGroup("main");
         
@@ -68,7 +74,7 @@ public class CreateAddition {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-
+    	
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
@@ -76,7 +82,7 @@ public class CreateAddition {
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
-        
+
     }
 
     private void processIMC(final InterModProcessEvent event) {
@@ -85,7 +91,13 @@ public class CreateAddition {
 
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
-
+    	
+    }
+    
+    @SubscribeEvent
+    public void onRegisterCommandEvent(RegisterCommandsEvent event) {
+    	CommandDispatcher<CommandSource> dispather = event.getDispatcher();
+    	CCApiCommand.register(dispather);
     }
     
     public static CreateRegistrate registrate() {

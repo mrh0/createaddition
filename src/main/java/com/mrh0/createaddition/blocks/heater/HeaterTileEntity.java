@@ -152,6 +152,10 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
 		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
+		
+		if(isFurnaceEngine && !ALLOW_ENGINE)
+			tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent("block.createaddition.heater.engine_heating_disabled").formatted(TextFormatting.RED)));
+		
 		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").formatted(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")).formatted(TextFormatting.AQUA));
 		return true;

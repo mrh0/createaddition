@@ -1,22 +1,21 @@
 {
 	"textures": {
-		"0": "createaddition:block/electric_motor/brass_motor_sides",
-		"1": "createaddition:block/electric_motor/brass_motor",
-		"particle": "createaddition:block/electric_motor/brass_motor_sides"
+		"main": "createaddition:block/heater/heater",
+		"particle": "createaddition:block/heater/heater"
 	},
 	"elements": [
 		{
 			"name": "Body",
 			"from": [4, 2, 4],
-			"to": [12, 14, 12],
+			"to": [12, 13, 12],
 			"rotation": {"angle": 0, "axis": "y", "origin": [12, 10, 12]},
 			"faces": {
-				"north": {"uv": [4, 2, 12, 14], "texture": "#0"},
-				"east": {"uv": [4, 2, 12, 14], "texture": "#0"},
-				"south": {"uv": [4, 2, 12, 14], "texture": "#0"},
-				"west": {"uv": [4, 2, 12, 14], "texture": "#0"},
-				"up": {"uv": [4, 4, 12, 12], "texture": "#1"},
-				"down": {"uv": [4, 4, 12, 12], "texture": "#1"}
+				"north": {"uv": [6, 9.5, 10, 15], "texture": "#main"},
+				"east": {"uv": [6, 9.5, 10, 15], "texture": "#main"},
+				"south": {"uv": [6, 9.5, 10, 15], "texture": "#main"},
+				"west": {"uv": [6, 9.5, 10, 15], "texture": "#main"},
+				"up": {"uv": [11.5, 11.5, 15.5, 15.5], "texture": "#main"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#missing", "cullface": "down"}
 			}
 		},
 		{
@@ -25,25 +24,52 @@
 			"to": [13, 2, 13],
 			"rotation": {"angle": 0, "axis": "y", "origin": [11, 8, 11]},
 			"faces": {
-				"north": {"uv": [3, 3, 13, 5], "texture": "#1"},
-				"east": {"uv": [3, 3, 13, 5], "texture": "#1"},
-				"south": {"uv": [3, 3, 13, 5], "texture": "#1"},
-				"west": {"uv": [3, 3, 13, 5], "texture": "#1"},
-				"up": {"uv": [3, 3, 13, 13], "texture": "#1"},
-				"down": {"uv": [3, 3, 13, 13], "texture": "#1"}
+				"north": {"uv": [5.5, 15, 10.5, 16], "texture": "#main"},
+				"east": {"uv": [5.5, 15, 10.5, 16], "texture": "#main"},
+				"south": {"uv": [5.5, 15, 10.5, 16], "texture": "#main"},
+				"west": {"uv": [5.5, 15, 10.5, 16], "texture": "#main"},
+				"up": {"uv": [11, 11, 16, 16], "texture": "#main"},
+				"down": {"uv": [11, 6, 16, 11], "texture": "#main"}
 			}
 		},
 		{
+			"name": "top",
 			"from": [5, 13, 5],
 			"to": [11, 16, 11],
 			"rotation": {"angle": 0, "axis": "y", "origin": [13, 21, 13]},
 			"faces": {
-				"north": {"uv": [5, 13, 11, 16], "texture": "#0"},
-				"east": {"uv": [5, 13, 11, 16], "texture": "#0"},
-				"south": {"uv": [5, 13, 11, 16], "texture": "#0"},
-				"west": {"uv": [5, 13, 11, 16], "texture": "#0"},
-				"up": {"uv": [5, 5, 11, 11], "texture": "#1"},
+				"north": {"uv": [0, 14.5, 3, 16], "texture": "#main"},
+				"east": {"uv": [0, 14.5, 3, 16], "texture": "#main"},
+				"south": {"uv": [0, 14.5, 3, 16], "texture": "#main"},
+				"west": {"uv": [0, 14.5, 3, 16], "texture": "#main"},
+				"up": {"uv": [0, 11.5, 3, 14.5], "texture": "#main"},
 				"down": {"uv": [0, 0, 6, 6], "texture": "#missing"}
+			}
+		},
+		{
+			"name": "coil",
+			"from": [3, 3, 3],
+			"to": [13, 7, 13],
+			"faces": {
+				"north": {"uv": [5, 0, 10, 2], "texture": "#main"},
+				"east": {"uv": [0, 0, 5, 2], "texture": "#main"},
+				"south": {"uv": [5, 0, 10, 2], "texture": "#main"},
+				"west": {"uv": [0, 0, 5, 2], "texture": "#main"},
+				"up": {"uv": [0, 2, 5, 7], "rotation": 90, "texture": "#main"},
+				"down": {"uv": [5, 2, 10, 7], "rotation": 90, "texture": "#main"}
+			}
+		},
+		{
+			"name": "coil",
+			"from": [3, 8, 3],
+			"to": [13, 12, 13],
+			"faces": {
+				"north": {"uv": [5, 0, 10, 2], "texture": "#main"},
+				"east": {"uv": [0, 0, 5, 2], "texture": "#main"},
+				"south": {"uv": [5, 0, 10, 2], "texture": "#main"},
+				"west": {"uv": [0, 0, 5, 2], "texture": "#main"},
+				"up": {"uv": [0, 2, 5, 7], "rotation": 90, "texture": "#main"},
+				"down": {"uv": [5, 2, 10, 7], "rotation": 90, "texture": "#main"}
 			}
 		}
 	]
