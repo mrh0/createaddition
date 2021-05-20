@@ -5,16 +5,13 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.CARecipeSerializer;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 
 public class RollingRecipeSerializer extends CARecipeSerializer<RollingRecipe>{
 
-	public RollingRecipeSerializer() {
-		
-	}
+	public RollingRecipeSerializer() {}
 	
 	@Override
 	public RollingRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {

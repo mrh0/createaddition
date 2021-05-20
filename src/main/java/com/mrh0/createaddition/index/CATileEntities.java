@@ -4,6 +4,7 @@ import com.mrh0.createaddition.blocks.alternator.AlternatorTileEntity;
 import com.mrh0.createaddition.blocks.charger.ChargerTileEntity;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
+import com.mrh0.createaddition.blocks.crude_burner.CrudeBurnerTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.*;
 import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurnerTileEntity;
 import com.mrh0.createaddition.blocks.heater.HeaterTileEntity;
@@ -73,6 +74,11 @@ public class CATileEntities {
 	public static final TileEntityEntry<FurnaceBurnerTileEntity> FURNACE_BURNER = CreateAddition.registrate()
 			.tileEntity("furnace_burner", FurnaceBurnerTileEntity::new)
 			.validBlocks(CABlocks.FURNACE_BURNER)
+			.register();
+	
+	public static final TileEntityEntry<CrudeBurnerTileEntity> CRUDE_BURNER = CreateAddition.registrate()
+			.tileEntity("crude_burner", CrudeBurnerTileEntity::new)
+			.validBlocks(CABlocks.CRUDE_BURNER)
 			.register();
 	
 	public static final TileEntityEntry<ChargerTileEntity> CHARGER = CreateAddition.registrate()

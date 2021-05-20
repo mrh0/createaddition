@@ -1,0 +1,8 @@
+{
+	"type":"createaddition:crude_burning",
+	"input": {
+      	"fluidTag": "forge:crude_oil",
+      	"amount": 1000
+	},
+	"burnTime": 1600
+}

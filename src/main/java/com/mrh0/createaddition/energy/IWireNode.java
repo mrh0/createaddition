@@ -1,12 +1,14 @@
 package com.mrh0.createaddition.energy;
 
+import java.util.Optional;
+
+import com.mrh0.createaddition.energy.network.EnergyNetwork;
+import com.mrh0.createaddition.energy.network.EnergyNetworkProvider;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.util.Util;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -17,7 +19,7 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public interface IWireNode {
+public interface IWireNode extends EnergyNetworkProvider {
 	
 	public static final int MAX_LENGTH = 12;
 	

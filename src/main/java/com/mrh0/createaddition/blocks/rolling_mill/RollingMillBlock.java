@@ -2,7 +2,6 @@ package com.mrh0.createaddition.blocks.rolling_mill;
 
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
-import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.item.ItemHelper;

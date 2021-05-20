@@ -1,9 +1,5 @@
 package com.mrh0.createaddition.ponder;
 
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllItems;
-import com.simibubi.create.content.contraptions.components.crusher.CrushingWheelBlock;
-import com.simibubi.create.content.logistics.block.chute.SmartChuteBlock;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.content.PonderPalette;
@@ -11,11 +7,8 @@ import com.simibubi.create.foundation.ponder.elements.InputWindowElement;
 import com.simibubi.create.foundation.utility.Pointing;
 
 import net.minecraft.block.AbstractFurnaceBlock;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;

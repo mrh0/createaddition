@@ -3,7 +3,6 @@ package com.mrh0.createaddition.blocks.rolling_mill;
 import java.util.Optional;
 
 import com.mrh0.createaddition.config.Config;
-import com.mrh0.createaddition.create.KineticTileEntityFix;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
@@ -201,7 +200,7 @@ public class RollingMillTileEntity extends KineticTileEntity {
 
 	}
 
-	public Optional<RollingRecipe> find(RecipeWrapper  inv, World world) {
+	public Optional<RollingRecipe> find(RecipeWrapper inv, World world) {
 		return world.getRecipeManager().getRecipe(RollingRecipe.TYPE, inv, world);
 	}
 	

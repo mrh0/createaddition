@@ -11,10 +11,9 @@ import javax.annotation.Nonnull;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
+import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.Create;
-import com.simibubi.create.compat.jei.CreateJEI;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 
 import mezz.jei.api.IModPlugin;
@@ -48,6 +47,11 @@ public class CreateAdditionJEI implements IModPlugin {
 		.recipes(RollingRecipe.TYPE)
 		.catalyst(CABlocks.ROLLING_MILL::get)
 		.build();
+	
+	final CreateRecipeCategory<?> crude_burning = register("crude_burning", CrudeBurningCategory::new)
+			.recipes(CrudeBurningRecipe.TYPE)
+			.catalyst(CABlocks.CRUDE_BURNER::get)
+			.build();
 	
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration) {

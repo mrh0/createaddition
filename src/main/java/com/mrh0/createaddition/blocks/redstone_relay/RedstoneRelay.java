@@ -2,7 +2,6 @@ package com.mrh0.createaddition.blocks.redstone_relay;
 
 import java.util.Random;
 
-import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;

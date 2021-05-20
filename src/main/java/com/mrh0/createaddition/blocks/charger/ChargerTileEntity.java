@@ -6,10 +6,8 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;

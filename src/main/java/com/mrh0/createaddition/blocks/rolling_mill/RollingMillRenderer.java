@@ -32,7 +32,6 @@ public class RollingMillRenderer  extends KineticTileEntityRenderer {
 			int light, int overlay) {
 		super.renderSafe(te, partialTicks, ms, buffer, light, overlay);
 		BlockState blockState = te.getBlockState();
-		RollingMillTileEntity mixer = (RollingMillTileEntity) te;
 		BlockPos pos = te.getPos();
 		
 		IVertexBuilder vb = buffer.getBuffer(RenderType.getSolid());
@@ -41,7 +40,6 @@ public class RollingMillRenderer  extends KineticTileEntityRenderer {
 		SuperByteBuffer shaft = AllBlockPartials.SHAFT_HALF.renderOn(blockState);
 		Axis axis = getRotationAxisOf(te);
 		
-		//Direction.getFacingFromAxis(AxisDirection.POSITIVE, axis), angle
 		shaft
 			.rotateCentered(Direction.UP, axis == Axis.Z ? 0 : 90*(float)Math.PI/180f)
 			.translate(0, 4f/16f, 0)
@@ -52,7 +50,7 @@ public class RollingMillRenderer  extends KineticTileEntityRenderer {
 		shaft
 			.rotateCentered(Direction.UP, axis == Axis.Z ? 180*(float)Math.PI/180f : 270*(float)Math.PI/180f)
 			.translate(0, 4f/16f, 0)
-			.rotateCentered(Direction.NORTH, -getAngleForTe(te, pos, axis))//Direction.getFacingFromAxis(AxisDirection.POSITIVE, axis)
+			.rotateCentered(Direction.NORTH, -getAngleForTe(te, pos, axis))
 			.light(packedLightmapCoords)
 			.renderInto(ms, vb);
 	}

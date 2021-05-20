@@ -220,65 +220,6 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		return null;
 	}
 	
-	/*protected int calculateOutput(IEnergyStorage other) {
-		if(other == null)
-			return 0;
-		if(((double)other.getEnergyStored()/(double)other.getMaxEnergyStored()) > ((double)energy.getEnergyStored()/(double)energy.getMaxEnergyStored()))
-				return 0;
-		return Util.min(energy.extractEnergy(Integer.MAX_VALUE, true), other.receiveEnergy(Integer.MAX_VALUE, true), other.getMaxEnergyStored() - other.getEnergyStored());
-	}
-	
-	protected void algo(int...a) {
-		int rest = energy.extractEnergy(Integer.MAX_VALUE, false);
-		double[] res = new double[a.length];
-		for(int i = 0; i < a.length; i++)
-			res[i] = 0;
-		double ab = -1;
-		for(int i = 0; i < res.length; i++) {
-			
-			int vi = Util.minIndex(a);
-			int v = a[vi];
-			if(v == 0) {
-				a[vi] = Integer.MAX_VALUE;
-				continue;
-			}
-			double k = rest/(a.length-i);
-			if(k > v && ab == -1) {
-				res[vi] = v;
-				rest -= v;
-			}
-			else {
-				if(ab == -1)
-					ab = k;
-				res[vi] = ab;
-				rest -= ab;
-			}
-			a[vi] = Integer.MAX_VALUE;
-		}
-		double sum = 0;
-		for(int i = 0; i < res.length; i++) {
-			if(res[i] == 0) {
-				output(i, 0);
-				continue;
-			}
-			double floored = Math.floor(res[i]);
-			sum += res[i] - floored;
-			output(i, (int)floored);
-		}
-		energy.receiveEnergy(((int)Math.round(sum)+rest), false);
-	}
-	
-	public void output(int index, int cycle) {
-		if(getNodeType(index) == null)
-			return;
-		IEnergyStorage wn = getNode(index).getNodeEnergyStorage(getNodeIndex(index));
-		output(wn, cycle);
-	}
-	
-	protected void output(IEnergyStorage other, int cycle) {
-		other.receiveEnergy(cycle, false);
-	}*/
-	
 	public void invalidateNodeCache() {
 		for(int i = 0; i < getNodeCount(); i++)
 			nodeCache[i] = null;

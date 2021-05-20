@@ -2,7 +2,6 @@ package com.mrh0.createaddition.energy;
 
 import java.util.List;
 
-import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 
@@ -66,6 +65,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		lazyEnergy.invalidate();
 	}
 	
+	@Deprecated
 	public void outputTick(int max) {
 		for(Direction side : Direction.values()) {
 			if(!isEnergyOutput(side))

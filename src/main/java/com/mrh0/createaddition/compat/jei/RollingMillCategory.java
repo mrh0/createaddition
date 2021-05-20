@@ -52,22 +52,11 @@ public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 
 	@Override
 	public void draw(RollingRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-		int size = 1;//recipe.getRollableResultsAsItemStacks().size();
-
 		AllGuiTextures.JEI_SLOT.draw(matrixStack, 14, 8);
 		AllGuiTextures.JEI_ARROW.draw(matrixStack, 85, 32);
 		AllGuiTextures.JEI_DOWN_ARROW.draw(matrixStack, 43, 4);
 		rolling_mill.draw(matrixStack, 48, 27);
 
-		if (size == 1) {
-			getRenderedSlot(recipe, 0).draw(matrixStack, 139, 27);
-			return;
-		}
-
-		for (int i = 0; i < size; i++) {
-			int xOffset = i % 2 == 0 ? 0 : 19;
-			int yOffset = (i / 2) * -19;
-			getRenderedSlot(recipe, i).draw(matrixStack, 133 + xOffset, 27 + yOffset);
-		}
+		getRenderedSlot(recipe, 0).draw(matrixStack, 139, 27);
 	}
 }

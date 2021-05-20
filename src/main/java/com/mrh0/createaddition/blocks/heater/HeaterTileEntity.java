@@ -3,14 +3,12 @@ package com.mrh0.createaddition.blocks.heater;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.compat.immersive_engineering.IEHeaterOptional;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.mixin.AbstractFurnaceMixin;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;

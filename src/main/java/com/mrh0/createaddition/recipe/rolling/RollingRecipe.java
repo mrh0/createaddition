@@ -1,18 +1,15 @@
 package com.mrh0.createaddition.recipe.rolling;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.recipe.CARecipeSerializer;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public class RollingRecipe implements IRecipe<RecipeWrapper> {
@@ -22,6 +19,7 @@ public class RollingRecipe implements IRecipe<RecipeWrapper> {
 	protected final Ingredient ingredient;
 	
 	public static IRecipeType<RollingRecipe> TYPE = new RollingRecipeType();
+	@SuppressWarnings("deprecation")
 	public static IRecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.getOrDefault(new ResourceLocation(CreateAddition.MODID, "rolling"));
 
 	protected RollingRecipe(Ingredient ingredient, ItemStack output, ResourceLocation id) {

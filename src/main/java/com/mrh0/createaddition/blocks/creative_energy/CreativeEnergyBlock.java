@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.blocks.creative_energy;
 
-import com.mrh0.createaddition.blocks.creative_energy.*;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.logistics.block.inventories.CrateBlock;

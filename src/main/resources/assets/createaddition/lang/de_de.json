@@ -53,6 +53,12 @@
 	
 	"item.createaddition.brass_rod": "Messing Stab",
 	"item.createaddition.bronze_rod": "Bronze Stab",
+		
+	"item.createaddition.cake_base": "Kuchen basis",
+	"item.createaddition.cake_base_baked": "Gebackene Kuchen basis",
+	
+	"item.createaddition.seed_oil_bucket": "Samen-Öleimer",
+	
 	
 	"item.createaddition.spool": "Leere Spule",
 	"item.createaddition.spool.nbt": "Stores connection location.",
@@ -118,8 +124,39 @@
 	"block.createaddition.redstone_relay.tooltip.behaviour1": "Stellt _FE_ für alle _Drähte_ bereit, die mit den _Verbinder_ markiert in _weiß_.",
 	"block.createaddition.redstone_relay.tooltip.condition2": "Eingabe",
 	"block.createaddition.redstone_relay.tooltip.behaviour2": "Abzeptiert _FE_ auf jeder seite außer der oberseite und von jenen _Drähte_, die verbunden mit den unmarkierten _Verbinder_.",
+		
+	"block.createaddition.furnace_burner": "Ofenbrenner",
+	"block.createaddition.furnace_burner.tooltip": "OFENBRENNER",
+	"block.createaddition.furnace_burner.tooltip.summary": "Dieser _Ofen_ Wird keine Gegenstände verarbeiten, aber es kann genutzt werden um einen _Ofen-Motor_ befeuern ohne etwas herzustellen. _Treibstoff_ kann zum beispiel durch einen _Trichter_ Eingefügt werden.",
+	"block.createaddition.furnace_burner.tooltip.control1": "Rechtsklick",
+	"block.createaddition.furnace_burner.tooltip.action1": "Gibt gehaltenen _Treibstoff_ ein.",
+	"block.createaddition.furnace_burner.tooltip.control2": "Rechtsklick während man schleicht",
+	"block.createaddition.furnace_burner.tooltip.action2": "Holt gelagerten _Treibstoff_ ab.",
+	
+	"block.createaddition.charger": "Ladestation",
+	"block.createaddition.charger.tooltip": "LADESTATION",
+	"block.createaddition.charger.tooltip.summary": "Lädt _elektrische_ Gegenstände mit _FE_ auf.",
+	"block.createaddition.charger.tooltip.control1": "Rechtsklick mit aufladbaren Gegenstand",
+	"block.createaddition.charger.tooltip.action1": "Legt Gegenstand auf dem _Ladebereich_.",
+	"block.createaddition.charger.tooltip.control2": "Rechtsklick mit leerer Hand",
+	"block.createaddition.charger.tooltip.action2": "Holt Gegenstand vom _Ladebereich_ ab.",
+	
+	"block.createaddition.crude_burner": "Ölbrenner",
+	"block.createaddition.crude_burner.tooltip": "ÖLBRENNER",
+	"block.createaddition.crude_burner.tooltip.summary": "Der _Ölbrenner_ komsumiert langbrennene _brennbare Flüssigkeiten_ wie _Samen-Öl_ um einen _Ofen-Motor_ zu befeuern. Der _Flüssiger Treibstoff_ kann durch _Flüssigkeiten-Röhren_ eingefügt werden.",
+	"block.createaddition.crude_burner.tooltip.control1": "Rechtsklick",
+	"block.createaddition.crude_burner.tooltip.action1": "Gibt inhalt vom gehaltenen _Eimer_.",
+	
+	"block.createaddition.chocolate_cake": "Schokoladenkuchen",
+	
+	"block.createaddition.seed_oil": "Samen-Öl",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	
+	"createaddition.command.cca_api.link": "Klick hier für eine Api Dokumentation",
+	
+	"create.ponder.tag.electric": "Elektrische Geräte",
+	"create.ponder.tag.electric.description": "Komponente die Strom nutzen",
 
 	"create.ponder.electric_motor.header": "Generation von Rotation durch die benuzung von Elektrischer Motoren",
 	"create.ponder.electric_motor.text_1": "Elektrischer Motoren sind eine kompakte und konfigurierbare quelle für Rotations energie",
@@ -132,7 +169,7 @@
 	"create.ponder.alternator.text_2": "Der Wechselstromgenerator erzeugt elektrische (fe) Energie aus Rotationskraft",
 	"create.ponder.alternator.text_3": "Die Energieerzeugung wird durch die Eingangsdrehzahl bestimmt",
 	
-	"create.ponder.rolling_mill.header": "Walzen von Metallen in Stangen und Drähten",
+	"create.ponder.rolling_mill.header": "Walzen von Metallen zu Stangen und Drähten",
 	"create.ponder.rolling_mill.text_1": "Die Walze verwendet Rotationskraft, um Metalle in Stangen und Drähte zu rollen",
 	"create.ponder.rolling_mill.text_2": "Um Elemente manuell einzugeben, legen sie Barren oder Platten oben auf die Walze",
 	"create.ponder.rolling_mill.text_3": "Klicken Sie mit der rechten Maustaste auf die Mühle, um die Ausgabeelemente manuell herauszunehmen",
@@ -147,4 +184,8 @@
 	"create.ponder.heater.text_2": "Bei Anschluss an eine ausreichende elektrische Energiequelle (fe) zündet der Induktions Erhitzer den Ofen an",
 	"create.ponder.heater.text_3": "Der Ofen bleibt entzündet, solange genügend Energie zur Verfügung steht"
 
+	"create.ponder.cc_electric_motor.header": "Man kann ComputerCraft nutzen um einen Elektrischer Motor kontrollieren",
+	"create.ponder.cc_electric_motor.text_1": "Der Elektrische Motor kann durch ComputerCraft kontrolliert werden",
+	"create.ponder.cc_electric_motor.text_2": "Verbinde den Motor mit 'peripheral.wrap(side)'",
+	"create.ponder.cc_electric_motor.text_3": "Um an die API Dokumentation zu kommen Schreibt man den Befehl: '/cca_api' in den chat"
 }

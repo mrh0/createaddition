@@ -11,8 +11,6 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.item.Multimeter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
-import com.simibubi.create.content.contraptions.components.motor.CreativeMotorTileEntity;
-import com.simibubi.create.content.contraptions.relays.advanced.sequencer.Instruction;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;

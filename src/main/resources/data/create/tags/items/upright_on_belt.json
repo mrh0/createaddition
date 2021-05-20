@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "createaddition:cake_base",
+    "createaddition:cake_base_baked",
+    "createaddition:chocolate_cake",
+    "createaddition:honey_cake",
+    "minecraft:cake",
+    "createaddition:seed_oil_bucket"
+  ]
+}

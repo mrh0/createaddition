@@ -1,0 +1,22 @@
+{
+    "textures": {
+        "particle": "createaddition:block/honey_cake/side",
+        "bottom": "createaddition:block/honey_cake/bottom",
+        "top": "createaddition:block/honey_cake/top",
+        "side": "createaddition:block/honey_cake/side",
+        "inside": "createaddition:block/honey_cake/inner"
+    },
+    "elements": [
+        {   "from": [ 7, 0, 1 ],
+            "to": [ 15, 8, 15 ],
+            "faces": {
+                "down":  { "texture": "#bottom", "cullface": "down" },
+                "up":    { "texture": "#top" },
+                "north": { "texture": "#side" },
+                "south": { "texture": "#side" },
+                "west":  { "texture": "#inside" },
+                "east":  { "texture": "#side" }
+            }
+        }
+    ]
+}

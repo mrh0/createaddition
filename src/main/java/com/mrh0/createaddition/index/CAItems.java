@@ -12,11 +12,11 @@ import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer.SandPaperModel;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.repack.registrate.util.entry.ItemEntry;
 
 import net.minecraft.item.Item;
-import net.minecraftforge.registries.ObjectHolder;
 
 public class CAItems {
 
@@ -73,6 +73,13 @@ public class CAItems {
 	
 	public static final ItemEntry<Item> BRASS_ROD =
 			REGISTRATE.item("brass_rod", Item::new).register();
+	
+	public static final ItemEntry<HiddenIngredientItem> CAKE_BASE =
+			REGISTRATE.item("cake_base", HiddenIngredientItem::new)
+				.register();
+	public static final ItemEntry<HiddenIngredientItem> CAKE_BASE_BAKED =
+			REGISTRATE.item("cake_base_baked", HiddenIngredientItem::new)
+				.register();
 	
 	/*public static final ItemEntry<WireSpool> DEVTOOL =
 			REGISTRATE.item("devtool", WireSpool::new)

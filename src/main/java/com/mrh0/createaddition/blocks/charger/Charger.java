@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.blocks.charger;
 
-import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
@@ -102,6 +101,7 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 		return ActionResultType.PASS;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		TileEntity te = worldIn.getTileEntity(pos);

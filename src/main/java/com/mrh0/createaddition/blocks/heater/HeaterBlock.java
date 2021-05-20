@@ -1,14 +1,9 @@
 package com.mrh0.createaddition.blocks.heater;
 
-import java.util.List;
-
-import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CATileEntities;
-import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.block.Block;
@@ -22,10 +17,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 

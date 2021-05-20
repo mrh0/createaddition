@@ -4,6 +4,8 @@
 	"createaddition.tooltip.energy.production": "Energy Generated:",
 	"createaddition.tooltip.energy.charged": "Charged",
 	"createaddition.recipe.rolling": "Rolling",
+	"createaddition.recipe.crude_burning": "Crude Burning",
+	"createaddition.recipe.crude_burning.burn_time": "Burn time",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
 	
@@ -54,6 +56,11 @@
 	
 	"item.createaddition.brass_rod": "Brass Rod",
 	"item.createaddition.bronze_rod": "Bronze Rod",
+	
+	"item.createaddition.cake_base": "Cake Base",
+	"item.createaddition.cake_base_baked": "Baked Cake Base",
+	
+	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
 	
 	"item.createaddition.spool": "Empty Spool",
 	"item.createaddition.spool.nbt": "Stores connection location.",
@@ -127,9 +134,9 @@
 	"block.createaddition.furnace_burner.tooltip": "FURNACE_BURNER",
 	"block.createaddition.furnace_burner.tooltip.summary": "This _Furnace_ won't smelt items, but can instead be used to power a _Furnace Engine_ without the need for a smelting recipe. _Fuel_ can be inserted using for example a _Hopper_.",
 	"block.createaddition.furnace_burner.tooltip.control1": "R-click",
-	"block.createaddition.furnace_burner.tooltip.action1": "Inserts held _fuel_ into the _Furnace_.",
+	"block.createaddition.furnace_burner.tooltip.action1": "Inserts held _fuel_.",
 	"block.createaddition.furnace_burner.tooltip.control2": "R-click while Sneaking",
-	"block.createaddition.furnace_burner.tooltip.action2": "Retrieves the stored _fuel_ from the _Furnace_.",
+	"block.createaddition.furnace_burner.tooltip.action2": "Retrieves the stored _fuel_.",
 	
 	"block.createaddition.charger": "Charging Station",
 	"block.createaddition.charger.tooltip": "CHARGER",
@@ -138,6 +145,17 @@
 	"block.createaddition.charger.tooltip.action1": "Puts item on the _charger_.",
 	"block.createaddition.charger.tooltip.control2": "R-click with Empty Hand",
 	"block.createaddition.charger.tooltip.action2": "Retrieves item from the _charger_.",
+	
+	"block.createaddition.crude_burner": "Crude Burner",
+	"block.createaddition.crude_burner.tooltip": "CRUDE_BURNER",
+	"block.createaddition.crude_burner.tooltip.summary": "The _Crude Burner_ consume slow-burning _flammable liquids_ like _Seed Oil_ to power the _Furnace Engine_. The _liquid fuel_ can be inserted using _Fluid Pipes_.",
+	"block.createaddition.crude_burner.tooltip.control1": "R-click",
+	"block.createaddition.crude_burner.tooltip.action1": "Inserts content of held _Bucket_.",
+	
+	"block.createaddition.chocolate_cake": "Chocolate Cake",
+	"block.createaddition.honey_cake": "Honey Cake",
+	
+	"block.createaddition.seed_oil": "Seed Oil",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
 	

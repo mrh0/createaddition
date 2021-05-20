@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
+
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
@@ -13,7 +14,6 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -85,6 +85,8 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 					return OFFSET_SOUTH;
 				case EAST:
 					return OFFSET_EAST;
+			default:
+				break;
 			}
 		}
 		else {
@@ -97,6 +99,8 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 					return OFFSET_NORTH;
 				case EAST:
 					return OFFSET_WEST;
+			default:
+				break;
 			}
 		}
 		return OFFSET_NORTH;
@@ -145,12 +149,13 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			case EAST:
 				upper = vec.getX() > 0.5d;
 				break;
+		default:
+			break;
 		}
 		
 		for(int i = upper ? 4 : 0; i < (upper ? 8 : 4); i++) {
 			if(hasConnection(i))
 				continue;
-			//System.out.println(vec.x + ":" + vec.z + " out: " + upper + ":" + dir + ":" + i);
 			return i;
 		}
 		return -1;
@@ -237,6 +242,8 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	
 	private int lastComparator = 0;
 	
+	int lastEnergy = 0;
+	
 	@Override
 	public void lazyTick() {
 		super.lazyTick();
@@ -271,7 +278,9 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			world.notifyNeighborsOfStateChange(pos, CABlocks.ACCUMULATOR.get());
 		lastComparator = comp;
 		
-		//causeBlockUpdate();
+		if(energy.getEnergyStored() != lastEnergy)
+			causeBlockUpdate();
+		lastEnergy = energy.getEnergyStored();
 	}
 	
 	@Override
@@ -301,10 +310,10 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		return (int)((double)energy.getEnergyStored() / (double)energy.getMaxEnergyStored() * 15d);
 	}
 	
-	/*@Override
+	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
 		return true;
-	}*/
+	}
 }

@@ -2,7 +2,8 @@ package com.mrh0.createaddition;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,18 +25,17 @@ import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.index.CAPonder;
 import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CATileEntities;
-import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.util.NonNullLazyValue;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(CreateAddition.MODID)
 public class CreateAddition {
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
     
     public static final String MODID = "createaddition";
     
@@ -71,6 +71,7 @@ public class CreateAddition {
         CABlocks.register();
         CATileEntities.register();
         CAItems.register();
+        CAFluids.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {

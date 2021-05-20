@@ -86,6 +86,8 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 					return vertical ? OUT_VERTICAL_OFFSET_SOUTH : OFFSET_SOUTH;
 				case EAST:
 					return vertical ? OUT_VERTICAL_OFFSET_EAST : OFFSET_EAST;
+			default:
+				break;
 			}
 		}
 		else {
@@ -98,6 +100,8 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 					return vertical ? IN_VERTICAL_OFFSET_SOUTH : OFFSET_NORTH;
 				case EAST:
 					return vertical ? IN_VERTICAL_OFFSET_EAST : OFFSET_WEST;
+			default:
+				break;
 			}
 		}
 		return OFFSET_NORTH;
@@ -148,6 +152,8 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 			case EAST:
 				upper = vec.getZ() < 0.5d;
 				break;
+			default:
+				break;
 			}
 		}
 		else {
@@ -164,6 +170,8 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 				case EAST:
 					upper = vec.getX() > 0.5d;
 					break;
+			default:
+				break;
 			}
 		}
 		

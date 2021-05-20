@@ -4,9 +4,11 @@ import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
+import com.mrh0.createaddition.blocks.cake.Cake;
 import com.mrh0.createaddition.blocks.charger.Charger;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
+import com.mrh0.createaddition.blocks.crude_burner.CrudeBurner;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.blocks.heater.HeaterBlock;
@@ -21,8 +23,8 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.repack.registrate.util.entry.BlockEntry;
 
-import net.minecraft.item.Item;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 
 public class CABlocks {
 	
@@ -89,8 +91,28 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
+	public static final BlockEntry<CrudeBurner> CRUDE_BURNER = REGISTRATE.block("crude_burner",  CrudeBurner::new)
+			.initialProperties(SharedProperties::stone)
+			.item()
+			.transform(customItemModel())
+			.register();
+	
 	public static final BlockEntry<Charger> CHARGER = REGISTRATE.block("charger",  Charger::new)
 			.initialProperties(SharedProperties::stone)
+			.item()
+			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<Cake> CHOCOLATE_CAKE = REGISTRATE.block("chocolate_cake",  Cake::new)
+			.initialProperties(Material.CAKE)
+			.properties(props -> props.sound(SoundType.CLOTH).harvestLevel(0).hardnessAndResistance(0.5f))
+			.item()
+			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<Cake> HONEY_CAKE = REGISTRATE.block("honey_cake",  Cake::new)
+			.initialProperties(Material.CAKE)
+			.properties(props -> props.sound(SoundType.CLOTH).harvestLevel(0).hardnessAndResistance(0.5f))
 			.item()
 			.transform(customItemModel())
 			.register();
@@ -101,6 +123,7 @@ public class CABlocks {
 		//Create.registrate().addToSection(ROLLING_MILL, AllSections.KINETICS);
 		Create.registrate().addToSection(CHARGER, AllSections.KINETICS);
 		Create.registrate().addToSection(FURNACE_BURNER, AllSections.KINETICS);
+		Create.registrate().addToSection(CRUDE_BURNER, AllSections.KINETICS);
 		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
 		Create.registrate().addToSection(CONNECTOR, AllSections.KINETICS);
 		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);

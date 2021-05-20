@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "bites=0": {
+      "model": "createaddition:block/chocolate_cake/cake"
+    },
+    "bites=1": {
+      "model": "createaddition:block/chocolate_cake/slice1"
+    },
+    "bites=2": {
+      "model": "createaddition:block/chocolate_cake/slice2"
+    },
+    "bites=3": {
+      "model": "createaddition:block/chocolate_cake/slice3"
+    },
+    "bites=4": {
+      "model": "createaddition:block/chocolate_cake/slice4"
+    },
+    "bites=5": {
+      "model": "createaddition:block/chocolate_cake/slice5"
+    },
+    "bites=6": {
+      "model": "createaddition:block/chocolate_cake/slice6"
+    }
+  }
+}

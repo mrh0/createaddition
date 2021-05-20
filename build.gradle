@@ -37,7 +37,7 @@ mixin {
     add sourceSets.main, "createaddition.refmap.json"
 }
 
-version = '1.16.5-20210504a'
+version = '1.16.5-20210517a'
 group = 'com.mrh0.createaddition' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createaddition'
 
