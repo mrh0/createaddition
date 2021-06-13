@@ -1,0 +1,197 @@
+{
+	"createaddition.tooltip.energy.stored": "蓄電エネルギー:",
+	"createaddition.tooltip.energy.consumption": "消費エネルギー:",
+	"createaddition.tooltip.energy.production": "生成エネルギー:",
+	"createaddition.tooltip.energy.charged": "充電済",
+	"createaddition.recipe.rolling": "圧延",
+	"createaddition.recipe.crude_burning": "粗油燃焼",
+	"createaddition.recipe.crude_burning.burn_time": "燃焼時間",
+	
+	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
+	
+	"item.createaddition.capacitor": "コンデンサ",
+	
+	"item.createaddition.multimeter": "マルチメーター",
+	"item.createaddition.multimeter.title":"[マルチメーター]:",
+	"item.createaddition.multimeter.measuring":"[測定中...]",
+	"item.createaddition.multimeter.ticks":"ticks",
+	"item.createaddition.multimeter.no_capability":"フォージエネルギー機能面ではありません",
+	"item.createaddition.multimeter.tooltip": "マルチメーター",
+	"item.createaddition.multimeter.tooltip.summary": "フォージエネルギー機能面の容量と入出力を測ります",
+  
+	"item.createaddition.zinc_sheet": "亜鉛板",
+	"item.createaddition.diamond_grit": "ダイヤモンドの粉",
+	"item.createaddition.diamond_grit_sandpaper": "ダイヤモンド紙やすり",
+	"item.createaddition.diamond_grit_sandpaper.tooltip": "ダイヤモンド紙やすり",
+	
+	"item.createaddition.copper_spool": "銅のスプール巻き",
+	"item.createaddition.copper_spool.tooltip": "スプール巻き",
+	"item.createaddition.copper_spool.tooltip.summary": "2つのコネクタを左クリックするとそれ矢の間にワイヤーリンクが作られ、空のスプールが返されます",
+	
+	"item.createaddition.copper_wire": "銅のワイヤー",
+	"item.createaddition.copper_rod": "銅の棒",
+	
+	"item.createaddition.iron_spool": "鉄のスプール巻き",
+	"item.createaddition.iron_wire": "鉄のワイヤー",
+	"item.createaddition.iron_rod": "鉄の棒",
+	
+	"item.createaddition.steel_spool": "鋼鉄のスプール巻き",
+	"item.createaddition.steel_wire": "鋼鉄のワイヤー",
+	"item.createaddition.steel_rod": "鋼鉄の棒",
+	
+	"item.createaddition.electrum_spool": "エレクトラムのスプール巻き",
+	"item.createaddition.electrum_wire": "エレクトラムのワイヤー",
+	"item.createaddition.electrum_rod": "エレクトラムの棒",
+	
+	"item.createaddition.aluminum_spool": "アルミニウムのスプール巻き",
+	"item.createaddition.aluminum_wire": "アルミニウムのワイヤー",
+	"item.createaddition.aluminum_rod": "アルミニウムの棒",
+	
+	"item.createaddition.gold_spool": "金のスプール巻き",
+	"item.createaddition.gold_spool.tooltip": "スプール巻き",
+	"item.createaddition.gold_spool.tooltip.summary": "2つのコネクタを左クリックするとそれ矢の間にワイヤーリンクが作られ、空のスプールが返されます",
+	
+	"item.createaddition.gold_wire": "金のワイヤー",
+	"item.createaddition.gold_rod": "金の棒",
+	
+	"item.createaddition.brass_rod": "ブラスの棒",
+	"item.createaddition.bronze_rod": "ブロンズの棒",
+	
+	"item.createaddition.cake_base": "ケーキベース",
+	"item.createaddition.cake_base_baked": "焼いたケーキベース",
+	
+	"item.createaddition.seed_oil_bucket": "バケツ入りの種油",
+	
+	"item.createaddition.spool": "空のスプール",
+	"item.createaddition.spool.nbt": "接続場所を格納.",
+	"item.createaddition.spool.tooltip": "スプール巻き",
+	"item.createaddition.spool.tooltip.summary": "2つのコネクタを左クリックするとそれ矢の間にワイヤーリンクが作られ、空のスプールが返されます",
+	
+	"statusbar.createaddition.wire.linked": "ノードをリンクしました",
+	"statusbar.createaddition.wire.linked_in": "ワイヤーを入力にリンク",
+	"statusbar.createaddition.wire.linked_out": "ワイヤーを出力にリンク",
+	
+	"statusbar.createaddition.wire.connect": "ワイヤーコネクタを選択",
+	"statusbar.createaddition.wire.connect_in": "ワイヤー入力コネクタを選択",
+	"statusbar.createaddition.wire.connect_out": "ワイヤー出力コネクタを選択",
+	
+	"statusbar.createaddition.wire.long": "ワイヤーが長すぎます",
+	"statusbar.createaddition.wire.obstructed": "ワイヤーの通りに道に障害物があります",
+	"statusbar.createaddition.wire.count": "ワイヤーノードが満員です",
+	"statusbar.createaddition.wire.removed": "ワイヤーを外しました",
+	"statusbar.createaddition.wire.exists": "ワイヤーが接続済です",
+	"statusbar.createaddition.wire.no_connection": "ワイヤーがここに接続されていません",
+	"statusbar.createaddition.wire.invalid": "無効な接続です",
+	
+	"block.createaddition.electric_motor": "エレキモーター",
+	"deprecated.block.createaddition.electric_motor.tooltip": "エレキモーター",
+	"deprecated.block.createaddition.electric_motor.tooltip.summary": "_FE_から_SU_を生成します。また、_回転速度_を設定できます。エネルギー消費量は_回転速度_で決まります",
+	
+	"block.createaddition.alternator": "オルタネーター",
+	"deprecated.block.createaddition.alternator.tooltip": "オルタネーター",
+	"deprecated.block.createaddition.alternator.tooltip.summary": "_SU_から_FE_を生成します。生成されるエネルギー量は_回転速度_で決まります。",
+	
+	"block.createaddition.creative_energy": "クリエイティブ発電機",
+	"block.createaddition.creative_energy.tooltip": "クリエイティブ発電機",
+	"block.createaddition.creative_energy.tooltip.summary": "無限の_FE_を供給します",
+	
+	"block.createaddition.rolling_mill": "圧延機",
+	"deprecated.block.createaddition.rolling_mill.tooltip": "圧延機",
+	"deprecated.block.createaddition.rolling_mill.tooltip.summary": "搬入された_素材_を_圧延_する機械。側面のシャフトから回転力を供給できます。完成品アイテムは機械から搬出する必要があります。",
+	"deprecated.block.createaddition.rolling_mill.tooltip.condition1": "動力が供給されたとき",
+	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour1": "ブロックの側面または上部から搬入されたアイテムを_圧延_します",
+	"deprecated.block.createaddition.rolling_mill.tooltip.condition2": "左クリックした時",
+	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "手動で完成品アイテムを搬出します",
+	
+	"block.createaddition.heater": "誘導加熱器",
+	"block.createaddition.heater.engine_heating_disabled": "かまどエンジンの加熱はコンフィグで無効になっています",
+	"deprecated.block.createaddition.heater.tooltip": "誘導加熱器",
+	"deprecated.block.createaddition.heater.tooltip.summary": "_かまど_に取り付けられ、上部から_FE_を供給すると_かまど_を加熱します。-コンフィグ_で_有効_にしなければ_かまどエンジン_を加熱しません。",
+	
+	"block.createaddition.accumulator": "蓄電器",
+	"block.createaddition.accumulator.tooltip": "蓄電器",
+	"block.createaddition.accumulator.tooltip.summary": "電荷を蓄電します. ",
+	"block.createaddition.accumulator.tooltip.condition1": "出力",
+	"block.createaddition.accumulator.tooltip.behaviour1": "_白く_マークされた_コネクター_に接続されたすべての_ワイヤー_に_FE_を供給します",
+	"block.createaddition.accumulator.tooltip.condition2": "入力",
+	"block.createaddition.accumulator.tooltip.behaviour2": "上面以外のどの面からでも、またマークしていない_コネクター_に接続されたどの_ワイヤー_からでもFEを受け取れます",
+	
+	"block.createaddition.connector": "コネクター",
+	"block.createaddition.connector.tooltip": "コネクター",
+	"block.createaddition.connector.tooltip.summary": "_FE_対応のブロックをワイヤーで接続し、FEを伝達します",
+	"block.createaddition.connector.tooltip.control1": "左クリック",
+	"block.createaddition.connector.tooltip.action1": "_銅のスプール巻き_または_金のスプール巻き_を持ちながらで、2つの_コネクター_の間を_ワイヤー_で接続します",
+	
+	"block.createaddition.redstone_relay": "レッドストーンリレー",
+	"block.createaddition.redstone_relay.tooltip": "レッドストーンリレー",
+	"block.createaddition.redstone_relay.tooltip.summary": "レッドストーン信号を受けたときに_入力コネクタ_から_出力コネクタ_への_FE_の伝達をオンにします。",
+	"block.createaddition.redstone_relay.tooltip.condition1": "出力",
+	"block.createaddition.redstone_relay.tooltip.behaviour1": "_白く_マークされた_コネクター_に接続されたすべての_ワイヤー_に_FE_を供給します",
+	"block.createaddition.redstone_relay.tooltip.condition2": "入力",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "マークしていない_コネクター_に接続された_ワイヤー_からFEを受け取ります",
+	
+	"block.createaddition.furnace_burner": "かまどバーナー",
+	"block.createaddition.furnace_burner.tooltip": "かまどバーナー",
+	"block.createaddition.furnace_burner.tooltip.summary": "この_かまど_はアイテムを精錬することはできません。その代わり、_かまどエンジン_を加熱するのに使えます。燃料は_ホッパー_などを使って搬入できます",
+	"block.createaddition.furnace_burner.tooltip.control1": "左クリック",
+	"block.createaddition.furnace_burner.tooltip.action1": "_燃料_を入れます",
+	"block.createaddition.furnace_burner.tooltip.control2": "スニークしながら左クリック",
+	"block.createaddition.furnace_burner.tooltip.action2": "_燃料_を取り出します",
+	
+	"block.createaddition.charger": "充電器",
+	"block.createaddition.charger.tooltip": "充電器",
+	"block.createaddition.charger.tooltip.summary": "_電気_製品を充電するには_FE_が必要です。",
+	"block.createaddition.charger.tooltip.control1": "充電できるアイテムを持って左クリック",
+	"block.createaddition.charger.tooltip.action1": "充電器にアイテムを置く",
+	"block.createaddition.charger.tooltip.control2": "素手で左クリック",
+	"block.createaddition.charger.tooltip.action2": "アイテムを_充電器_から取り出します",
+	
+	"block.createaddition.crude_burner": "粗油バーナー",
+	"block.createaddition.crude_burner.tooltip": "粗油バーナー",
+	"block.createaddition.crude_burner.tooltip.summary": "_粗油バーナー_は、_種油_のような_燃えにくい液体燃料_を燃やして_かまどエンジン_を動かします。液体燃料は_液体パイプ_を使って搬入します。",
+	"block.createaddition.crude_burner.tooltip.control1": "左クリック",
+	"block.createaddition.crude_burner.tooltip.action1": "持っている_バケツ_から燃料を入れる",
+	
+	"block.createaddition.chocolate_cake": "チョコレートケーキ",
+	"block.createaddition.honey_cake": "ハチミツケーキ",
+	
+	"block.createaddition.seed_oil": "種油",
+	
+	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	
+	"createaddition.command.cca_api.link": "クリックしてオープンAPIドキュメントを開く",
+	
+	"create.ponder.tag.electric": "電気機器",
+	"create.ponder.tag.electric.description": "電気を扱う機械",
+	
+	"create.ponder.electric_motor.header": "エレキモーターによる回転力の生成",
+	"create.ponder.electric_motor.text_1": "エレキモーターはコンパクトで調整できる原動機です",
+	"create.ponder.electric_motor.text_2": "背面を見てスクロールでモーターの回転速度を変えられます",
+	"create.ponder.electric_motor.text_3": "エレキモーターには電気(FE)が必要です",
+	"create.ponder.electric_motor.text_4": "エレキモーターのエネルギー消費量は回転速度で決まります",
+	
+	"create.ponder.alternator.header": "オルタネーターによる発電",
+	"create.ponder.alternator.text_1": "オルタネーターの稼働には最低でも32RPMが必要です",
+	"create.ponder.alternator.text_2": "回転力から電気(FE)を生み出します",
+	"create.ponder.alternator.text_3": "発電量は供給される回転力の回転速度で決まります",
+	
+	"create.ponder.rolling_mill.header": "金属を棒やワイヤーに圧延する",
+	"create.ponder.rolling_mill.text_1": "圧延機は回転力を使って金属を棒やワイヤーに圧延します",
+	"create.ponder.rolling_mill.text_2": "手動で搬入する場合はインゴットや板を圧延機の上部にドロップしてください",
+	"create.ponder.rolling_mill.text_3": "左クリックで圧延機から手動でアイテムを取り出せます",
+	
+	"create.ponder.automated_rolling_mill.header": "圧延機の自動化",
+	"create.ponder.automated_rolling_mill.text_1": "圧延機はベルトと2つのファンネルで自動化できます",
+	"create.ponder.automated_rolling_mill.text_2": "搬入ファンネル",
+	"create.ponder.automated_rolling_mill.text_3": "搬出ファンネル",
+	
+	"create.ponder.heater.header": "電気エネルギーでかまどを加熱する",
+	"create.ponder.heater.text_1": "加熱器はかまどのどの面にも設置できます。",
+	"create.ponder.heater.text_2": "十分な電気エネルギーが供給されると、加熱器はかまどを稼働させます",
+	"create.ponder.heater.text_3": "十分な電気エネルギーが供給されている限り、かまどは点灯し続けます",
+	
+	"create.ponder.cc_electric_motor.header": "コンピュータークラフトを使ってエレキモーターを制御する",
+	"create.ponder.cc_electric_motor.text_1": "コンピュータークラフトを使えば電動モーターを制御できます",
+	"create.ponder.cc_electric_motor.text_2": "「peripheral.wrap(side)」でモーターと接続します",
+	"create.ponder.cc_electric_motor.text_3": "チャットで「/cca_api」コマンドを使って、APIドキュメントにアクセスできます"
+}
