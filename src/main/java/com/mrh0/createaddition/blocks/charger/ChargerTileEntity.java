@@ -62,15 +62,6 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 	public boolean isEnergyOutput(Direction side) {
 		return false;
 	}
-
-	@Override
-	public void setCache(Direction side, IEnergyStorage storage) {
-	}
-
-	@Override
-	public IEnergyStorage getCachedEnergy(Direction side) {
-		return null;
-	}
 	
 	private int lastComparator = 0;
 	

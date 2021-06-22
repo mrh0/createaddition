@@ -1,11 +1,22 @@
 package com.mrh0.createaddition.blocks.connector;
 
+import java.util.List;
+import java.util.Optional;
+
+import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
+import com.mrh0.createaddition.energy.network.EnergyNetwork;
+import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.network.EnergyNetworkPacket;
+import com.mrh0.createaddition.network.IObserveTileEntity;
+import com.mrh0.createaddition.network.ObservePacket;
+import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -13,11 +24,15 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode {
+public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation {
 
 	private BlockPos[] connectionPos;
 	private int[] connectionIndecies;
@@ -35,7 +50,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	
 	public ConnectorTileEntity(TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn, CAPACITY, MAX_IN, MAX_OUT);
-		setLazyTickRate(20);
+		//setLazyTickRate(20);
 		
 		connectionPos = new BlockPos[getNodeCount()];
 		connectionIndecies = new int[getNodeCount()];
@@ -77,11 +92,6 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 
 	@Override
-	public IEnergyStorage getNodeEnergyStorage(int node) {
-		return energy;
-	}
-
-	@Override
 	public boolean isEnergyInput(Direction side) {
 		return getBlockState().get(ConnectorBlock.FACING) == side;
 	}
@@ -117,7 +127,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 	
 	@Override
-	public int getNodeIndex(int node) {
+	public int getOtherNodeIndex(int node) {
 		if(connectionPos[node] == null)
 			return -1;
 		return connectionIndecies[node];
@@ -125,10 +135,13 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	
 	@Override
 	public void setNode(int node, int other, BlockPos pos, WireType type) {
-		//System.out.println("SET: " + node + "->" + other);
 		connectionPos[node] = pos; 
 		connectionIndecies[node] = other;
 		connectionTypes[node] = type;
+		
+		// Invalidate
+		if(network != null)
+			network.invalidate();
 	}
 	
 	@Override
@@ -155,9 +168,13 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		IWireNode.super.removeNode(other);
 		invalidateNodeCache();
 		this.markDirty();
+		
+		// Invalidate
+		if(network != null)
+			network.invalidate();
 	}
 	
-	@Override
+	/*@Override
 	public void lazyTick() {
 		super.lazyTick();
 		
@@ -190,7 +207,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			return;
 		int ext = energy.extractEnergy(ies.receiveEnergy(MAX_OUT, true), false);
 		ies.receiveEnergy(ext, false);
-	}
+	}*/
 
 	@Override
 	public BlockPos getMyPos() {
@@ -203,25 +220,100 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			if(getNodeType(i) == null)
 				continue;
 			IWireNode node = getNode(i);
-			node.removeNode(getNodeIndex(i));
+			node.removeNode(getOtherNodeIndex(i));
 			node.invalidateNodeCache();
 		}
 		invalidateNodeCache();
 		invalidateCaps();
+		// Invalidate
+		if(network != null)
+			network.invalidate();
 		super.remove();
-	}
-
-	@Override
-	public void setCache(Direction side, IEnergyStorage storage) {
-	}
-
-	@Override
-	public IEnergyStorage getCachedEnergy(Direction side) {
-		return null;
 	}
 	
 	public void invalidateNodeCache() {
 		for(int i = 0; i < getNodeCount(); i++)
 			nodeCache[i] = null;
+	}
+	
+	@Override
+	public void tick() {
+		super.tick();
+		if(world.isRemote())
+			return;
+		if(!isNetworkValid())
+			EnergyNetwork.buildNetwork(world, this);
+		networkTick(network);
+	}
+	
+	private EnergyNetwork network;
+	
+	@Override
+	public EnergyNetwork getNetwork(int node) {
+		return network;
+	}
+
+	@Override
+	public void setNetwork(int node, EnergyNetwork network) {
+		this.network = network;
+	}
+	
+	private int demand = 0;
+	private void networkTick(EnergyNetwork en) {
+		if(world.isRemote())
+			return;
+		// TODO: Cache
+		Direction d = getBlockState().get(ConnectorBlock.FACING);
+		TileEntity te = world.getTileEntity(pos.offset(d));
+		if(te == null)
+			return;
+		//IEnergyStorage ies = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite()).orElse(null);
+		IEnergyStorage ies = getCachedEnergy(d);
+		if(ies == null)
+			return;
+		int testExtract = energy.extractEnergy(Integer.MAX_VALUE, true);
+		int testInsert = ies.receiveEnergy(Integer.MAX_VALUE, true);
+		
+		int pull = en.pull(demand);
+		ies.receiveEnergy(pull, false);
+		
+		demand = en.demand(testInsert);
+		
+		int push = en.push(testExtract);
+		ies.extractEnergy(push, false);
+		
+		//System.out.println(testExtract + " i/o " + testInsert + " | " + demand + " | " + push + "/" + pull);
+	}
+
+	@Override
+	public void onObserved(ServerPlayerEntity player) {
+		if(isNetworkValid())
+			EnergyNetworkPacket.send(pos, getNetwork(0).getBuff(), getNetwork(0).getDemand(), player);
+	}
+	
+	@Override
+	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
+		ObservePacket.send(pos);
+		
+		tooltip.add(new StringTextComponent(spacing)
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.connector.info").formatted(TextFormatting.WHITE)));
+		
+		tooltip.add(new StringTextComponent(spacing)
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.supply").formatted(TextFormatting.GRAY)));
+		tooltip.add(new StringTextComponent(spacing).append(" ")
+				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").formatted(TextFormatting.AQUA));
+		
+		tooltip.add(new StringTextComponent(spacing)
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.demand").formatted(TextFormatting.GRAY)));
+		tooltip.add(new StringTextComponent(spacing).append(" ")
+				.append(Multimeter.format((int)EnergyNetworkPacket.clientDemand)).append("fe/t").formatted(TextFormatting.AQUA));
+		
+		
+		tooltip.add(new StringTextComponent(spacing)
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.saturation").formatted(TextFormatting.GRAY)));
+		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + (EnergyNetworkPacket.clientSaturation > 0 ? "+" : "")))
+				.append(Multimeter.format((int)EnergyNetworkPacket.clientSaturation)).append("fe/t").formatted(TextFormatting.AQUA));
+		
+		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 	}
 }

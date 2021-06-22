@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.energy.IWireNode;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,6 +19,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
@@ -37,12 +39,11 @@ public class Multimeter extends Item {
 			LazyOptional<IEnergyStorage> cap;
 			cap = te.getCapability(CapabilityEnergy.ENERGY, c.getFace());
 			
-			/*if(te instanceof IWireNode) {
+			if(te instanceof IWireNode) {
 				IWireNode wn = (IWireNode) te;
-				for(int i = 0; i < wn.getNodeCount(); i++) {
-					System.out.println(i + ":" + wn.getNodeEnergyStorage(i).toString());
-				}
-			}*/
+				for(int i = 0; i < wn.getNodeCount(); i++)
+				System.out.println(wn.getNetwork(i));//wn.getNodeFromPos(c.getHitVec())
+			}
 			
 			if(cap != null) {
 				IEnergyStorage energy = cap.orElse(null);
@@ -68,8 +69,8 @@ public class Multimeter extends Item {
 				c.getItem().setTag(tag);
 				
 				c.getPlayer().sendMessage(new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.title")
-						.append(new StringTextComponent(" " +getString(energy,
-								new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.no_capability").getStringTruncated(Integer.MAX_VALUE), "fe") + " ").append(new StringTextComponent(measur))),
+						.append(new StringTextComponent(" ").append(getTextComponent(energy,
+								new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.no_capability").getStringTruncated(Integer.MAX_VALUE), "fe")).append(new StringTextComponent(" " + measur))),
 						PlayerEntity.getUUID(c.getPlayer().getGameProfile()));
 				return ActionResultType.SUCCESS;
 			}
@@ -77,14 +78,14 @@ public class Multimeter extends Item {
 		return ActionResultType.PASS;
 	}
 	
-	public static String getString(IEnergyStorage ies, String nan, String unit) {
+	public static ITextComponent getTextComponent(IEnergyStorage ies, String nan, String unit) {
 		if(ies == null)
-			return nan;
-		return format(ies.getEnergyStored()) + "/" + format(ies.getMaxEnergyStored()) + "fe";
+			return new StringTextComponent(nan);
+		return new StringTextComponent(format(ies.getEnergyStored())+unit).formatted(TextFormatting.AQUA).append(new StringTextComponent(" / ").formatted(TextFormatting.GRAY)).append(new StringTextComponent(format(ies.getMaxEnergyStored())+unit));
 	}
 	
-	public static String getString(IEnergyStorage ies) {
-		return getString(ies, "NaN", "fe");
+	public static ITextComponent getTextComponent(IEnergyStorage ies) {
+		return getTextComponent(ies, "NaN", "fe");
 	}
 	
 	public static String format(int n) {

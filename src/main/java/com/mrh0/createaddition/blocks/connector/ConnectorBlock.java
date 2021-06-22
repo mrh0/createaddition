@@ -98,8 +98,13 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
+		if(tileentity != null) {
+			if(tileentity instanceof ConnectorTileEntity) {
+				((ConnectorTileEntity)tileentity).updateCache();
+			}
+		}
 		if (!state.isValidPosition(worldIn, pos)) {
-			TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
 			spawnDrops(state, worldIn, pos, tileentity);
 			worldIn.removeBlock(pos, false);
 

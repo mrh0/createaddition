@@ -11,11 +11,14 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +33,8 @@ import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.index.CAPonder;
 import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.network.EnergyNetworkPacket;
+import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.util.NonNullLazyValue;
 
@@ -43,6 +48,13 @@ public class CreateAddition {
     public static boolean CC_ACTIVE = false;
     
     private static final NonNullLazyValue<CreateRegistrate> registrate = CreateRegistrate.lazy(CreateAddition.MODID);
+    
+    private static final String PROTOCOL = "1";
+	public static final SimpleChannel Network = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(MODID, "main"))
+            .clientAcceptedVersions(PROTOCOL::equals)
+            .serverAcceptedVersions(PROTOCOL::equals)
+            .networkProtocolVersion(() -> PROTOCOL)
+            .simpleChannel();
 
     public CreateAddition() {
     	
@@ -54,6 +66,8 @@ public class CreateAddition {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+        
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
         
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, CARecipes::register);
         //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeType.class, CARecipes::register);
@@ -93,6 +107,13 @@ public class CreateAddition {
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
     	
+    }
+    
+    public void postInit(FMLLoadCompleteEvent evt) {
+    	int i = 0;
+        Network.registerMessage(i++, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
+        Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
+    	System.out.println("Create Crafts & Addition Initialized!");
     }
     
     @SubscribeEvent

@@ -26,7 +26,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
 	
-	public AbstractFurnaceTileEntity  cache;
+	public AbstractFurnaceTileEntity cache;
 	private boolean isFurnaceEngine = false;
 	public static final int CONSUMPTION = Config.HEATER_NORMAL_CONSUMPTION.get(),
 			CONSUMPTION_ENGINE = Config.HEATER_FURNACE_ENGINE_CONSUMPTION.get();
@@ -80,6 +80,11 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 			updateState(false);
 			litState = false;
 		}
+		
+		// Old Lazy
+		if(hasEnoughEnergy())
+			energy.internalConsumeEnergy(getConsumption());
+		isFurnaceEngine = hasFurnaceEngine();
 	}
 	
 	public void refreshCache() {
@@ -95,7 +100,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	public boolean hasEnoughEnergy() {
 		if(!ALLOW_ENGINE && isFurnaceEngine)
 			return false;
-		return energy.getEnergyStored() > (isFurnaceEngine ? CONSUMPTION_ENGINE * 20 : CONSUMPTION * 20);
+		return energy.getEnergyStored() > (isFurnaceEngine ? CONSUMPTION_ENGINE : CONSUMPTION);
 	}
 	
 	public boolean hasFurnaceEngine() {
@@ -108,15 +113,13 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	}
 	
 	public int getConsumption() {
-		return (isFurnaceEngine ? CONSUMPTION_ENGINE : CONSUMPTION) * 20;
+		return (isFurnaceEngine ? CONSUMPTION_ENGINE : CONSUMPTION);
 	}
 	
 	@Override
 	public void lazyTick() {
 		super.lazyTick();
-		if(hasEnoughEnergy())
-			energy.internalConsumeEnergy(getConsumption());
-		isFurnaceEngine = hasFurnaceEngine();
+		
 		
 		//causeBlockUpdate();
 	}
@@ -135,15 +138,6 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	public void firstTick() {
 		super.firstTick();
 		refreshCache();
-	}
-
-	@Override
-	public void setCache(Direction side, IEnergyStorage storage) {
-	}
-
-	@Override
-	public IEnergyStorage getCachedEnergy(Direction side) {
-		return null;
 	}
 	
 	@Override

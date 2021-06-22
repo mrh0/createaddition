@@ -69,7 +69,7 @@ public class Config {
 		FE_RPM = COMMON_BUILDER.comment("Forge Energy conversion rate (in FE/t at max RPM).")
 				.defineInRange("fe_conversion", 80, 0, Integer.MAX_VALUE);
 		
-		BASELINE_STRESS = COMMON_BUILDER.comment("Baseline stress factor for the Alternator and Electric Motor.")
+		BASELINE_STRESS = COMMON_BUILDER.comment("Max stress for the Alternator and Electric Motor.")
 				.defineInRange("generator_stress", 4096, 0, Integer.MAX_VALUE);
 
 		COMMON_BUILDER.pop();
@@ -81,13 +81,13 @@ public class Config {
 				.defineInRange("motor_rpm_range", 256, 1, 256);
 		
 		ELECTRIC_MOTOR_MINIMUM_CONSUMPTION = COMMON_BUILDER.comment("Electric Motor minimum required energy consumption in FE/t.")
-				.defineInRange("motor_min_consumption", 10, 0, Integer.MAX_VALUE);
+				.defineInRange("motor_min_consumption", 8, 0, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_MAX_INPUT = COMMON_BUILDER.comment("Electric Motor max input in FE (Energy transfer not consumption).")
-				.defineInRange("motor_max_input", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("motor_max_input", 256, 0, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_CAPACITY = COMMON_BUILDER.comment("Electric Motor internal capacity in FE.")
-				.defineInRange("motor_capacity", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("motor_capacity", 2048, 0, Integer.MAX_VALUE);
 		
 		//ELECTRIC_MOTOR_STRESS = COMMON_BUILDER.comment("Electric Motor generated stress at max RPM in SU.")
 		//		.defineInRange("motor_stress", 4096, 0, Integer.MAX_VALUE);
@@ -97,11 +97,11 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Alternator").push(CATAGORY_ALTERNATOR);
 		
-		ALTERNATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Alternator max input in FE (Energy transfer not generation).")
-				.defineInRange("generator_max_output", 4096, 0, Integer.MAX_VALUE);
+		ALTERNATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Alternator max input in FE (Energy transfer, not generation).")
+				.defineInRange("generator_max_output", 256, 0, Integer.MAX_VALUE);
 		
 		ALTERNATOR_CAPACITY = COMMON_BUILDER.comment("Alternator internal capacity in FE.")
-				.defineInRange("generator_capacity", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("generator_capacity", 2048, 0, Integer.MAX_VALUE);
 		
 		//ALTERNATOR_STRESS = COMMON_BUILDER.comment("Alternator base stress impact.")
 		//		.defineInRange("generator_stress", 16, 0, Integer.MAX_VALUE);
@@ -125,8 +125,8 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Heater").push(CATAGORY_HEATER);
 		
-		HEATER_MAX_INPUT = COMMON_BUILDER.comment("Induction Heater max input in FE (Energy transfer not consumption).")
-				.defineInRange("heater_max_input", 2048, 0, Integer.MAX_VALUE);
+		HEATER_MAX_INPUT = COMMON_BUILDER.comment("Induction Heater max input in FE (Energy transfer, not consumption).")
+				.defineInRange("heater_max_input", 256, 0, Integer.MAX_VALUE);
 		
 		HEATER_CAPACITY = COMMON_BUILDER.comment("Induction Heater internal capacity in FE.")
 				.defineInRange("heater_capacity", 2048, 0, Integer.MAX_VALUE);
@@ -146,19 +146,19 @@ public class Config {
 		COMMON_BUILDER.comment("Wires").push(CATAGORY_WIRES);
 		
 		CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Connector max input in FE/t (Energy transfer).")
-				.defineInRange("connector_max_input", 2048, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_max_input", 256, 0, Integer.MAX_VALUE);
 		
 		CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Connector max output in FE/t (Energy transfer).")
-				.defineInRange("connector_max_output", 2048, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_max_output", 256, 0, Integer.MAX_VALUE);
 		
 		CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Connector internal capacity in FE.")
-				.defineInRange("connector_capacity", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_capacity", 512, 0, Integer.MAX_VALUE);
 		
-		COPPER_WIRE_LOSS = COMMON_BUILDER.comment("Loss per block in copper wire (Not implemented, currently no loss).")
+		/*COPPER_WIRE_LOSS = COMMON_BUILDER.comment("Loss per block in copper wire (Not implemented, currently no loss).")
 				.defineInRange("copper_wire_loss", 0.02d, 0d, 0.5d);
 		
 		GOLD_WIRE_LOSS = COMMON_BUILDER.comment("Loss per block in gold wire (Not implemented, currently no loss).")
-				.defineInRange("gold_wire_loss", 0.005d, 0d, 0.5d);
+				.defineInRange("gold_wire_loss", 0.005d, 0d, 0.5d);*/
 		
 		COMMON_BUILDER.pop();
 		
@@ -166,10 +166,10 @@ public class Config {
 		COMMON_BUILDER.comment("Accumulator").push(CATAGORY_ACCUMULATOR);
 		
 		ACCUMULATOR_MAX_INPUT = COMMON_BUILDER.comment("Accumulator max input in FE/t (Energy transfer).")
-				.defineInRange("accumulator_max_input", 8192, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_max_input", 512, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Accumulator max output in FE/t (Energy transfer).")
-				.defineInRange("accumulator_max_output", 8192, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_max_output", 512, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_CAPACITY = COMMON_BUILDER.comment("Accumulator internal capacity in FE.")
 				.defineInRange("accumulator_capacity", 4196000, 0, Integer.MAX_VALUE);

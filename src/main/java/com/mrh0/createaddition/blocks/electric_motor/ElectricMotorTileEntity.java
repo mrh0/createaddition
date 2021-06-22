@@ -31,24 +31,11 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
-
 	
 	protected ScrollValueBehaviour generatedSpeed;
 	protected final InternalEnergyStorage energy;
 	private LazyOptional<net.minecraftforge.energy.IEnergyStorage> lazyEnergy;
 	private LazyOptional<ElectricMotorPeripheral> lazyPeripheral = null;
-	
-	public enum Instruct {
-		ANGLE,
-		DISTANCE,
-		DURATION,
-		NONE
-	}
-	
-	//Instruct currentInstruct = Instruct.NONE;
-	int currentInstructionDuration;
-	//int currentTarget;
-	//int timer;
 	
 	private boolean cc_update_rpm = false;
 	private int cc_new_rpm = 0;
@@ -72,10 +59,6 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 			lazyPeripheral = LazyOptional.of(() -> Peripherals.createElectricMotorPeripheral(this));
 		}
 		setLazyTickRate(20);
-		
-		currentInstructionDuration = -1;
-		//currentTarget = 0;
-		//timer = 0;
 	}
 
 	@Override
@@ -189,26 +172,11 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	public void lazyTick() {
 		super.lazyTick();
 		cc_antiSpam = 5;
-		if(world.isRemote())
-			return;
-		int con = getEnergyConsumptionRate(generatedSpeed.getValue()) * 20;
-		if(!active) {
-			if(energy.getEnergyStored() > con * 2) {
-				active = true;
-				updateGeneratedRotation();
-			}
-		}
-		else {
-			int ext = energy.internalConsumeEnergy(con);
-			if(ext < con) {
-				active = false;
-				updateGeneratedRotation();
-			}
-		}
+		
 	}
 	
 	public static int getEnergyConsumptionRate(int rpm) {
-		return (int)Math.max((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d), (double)MIN_CONSUMPTION);
+		return rpm > 0 ? (int)Math.max((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d), (double)MIN_CONSUMPTION) : 0;
 	}
 	
 	@Override
@@ -221,15 +189,39 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	// CC
 	int cc_antiSpam = 0;
+	boolean first = true;
+	
 	@Override
 	public void tick() {
 		super.tick();
+		if(first) {
+			updateGeneratedRotation();
+			first = false;
+		}
 		
 		if(cc_update_rpm && cc_antiSpam > 0) {
 			generatedSpeed.setValue(cc_new_rpm);
 			cc_update_rpm = false;
 			cc_antiSpam--;
 			updateGeneratedRotation();
+		}
+		
+		//Old Lazy
+		if(world.isRemote())
+			return;
+		int con = getEnergyConsumptionRate(generatedSpeed.getValue());
+		if(!active) {
+			if(energy.getEnergyStored() > con * 2) {
+				active = true;
+				updateGeneratedRotation();
+			}
+		}
+		else {
+			int ext = energy.internalConsumeEnergy(con);
+			if(ext < con) {
+				active = false;
+				updateGeneratedRotation();
+			}
 		}
 		
 		/*if (world.isRemote)
@@ -270,6 +262,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		
 		return (float)currentInstructionDuration / 20f;
 	}*/
+	
+	
 	
 	public int getDurationAngle(int deg, float initialProgress, float speed) {
 		speed = Math.abs(speed);

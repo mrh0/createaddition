@@ -93,34 +93,33 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	@Override
 	public void lazyTick() {
 		super.lazyTick();
-		//if(world.isRemote())
-		//	return;
+		
+		
+		//causeBlockUpdate();
+	}
+	
+	@Override
+	public void tick() {
+		super.tick();
+		if(world.isRemote())
+			return;
 		if(Math.abs(getSpeed()) > 0 && isSpeedRequirementFulfilled())
 			energy.internalProduceEnergy(getEnergyProductionRate((int)getSpeed()) * 20);
-		
-		/*for(Direction side : Direction.values()) {
-			if(!isEnergyOutput(side))
-				continue;
-			energy.outputToSide(world, pos, side, MAX_OUT);
-		}*/
 		
 		for(Direction d : Direction.values()) {
 			if(!isEnergyOutput(d))
 				continue;
-			TileEntity te = world.getTileEntity(pos.offset(d));
+			/*TileEntity te = world.getTileEntity(pos.offset(d));
 			if(te == null)
 				continue;
 			LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite());
-			IEnergyStorage ies = opt.orElse(null);
+			IEnergyStorage ies = opt.orElse(null);*/
+			IEnergyStorage ies = getCachedEnergy(d);
 			if(ies == null)
 				continue;
 			int ext = energy.extractEnergy(ies.receiveEnergy(MAX_OUT, true), false);
 			ies.receiveEnergy(ext, false);
-			//int rest = ext-ies.receiveEnergy(ext, false);
-			//energy.internalProduceEnergy(rest);
 		}
-		
-		//causeBlockUpdate();
 	}
 	
 	public static int getEnergyProductionRate(int rpm) {
@@ -137,5 +136,71 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	public void remove() {
 		super.remove();
 		lazyEnergy.invalidate();
+	}
+	
+	public void firstTick() {
+		updateCache();
+	};
+	
+	public void updateCache() {
+		if(world.isRemote())
+			return;
+		for(Direction side : Direction.values()) {
+			TileEntity te = world.getTileEntity(pos.offset(side));
+			if(te == null) {
+				setCache(side, LazyOptional.empty());
+				return;
+			}
+			LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+			setCache(side, le);
+		}
+	}
+	
+	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheNorth = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheEast = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheSouth = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheWest = LazyOptional.empty();
+	
+	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
+		switch(side) {
+			case DOWN:
+				escacheDown = storage;
+				break;
+			case EAST:
+				escacheEast = storage;
+				break;
+			case NORTH:
+				escacheNorth = storage;
+				break;
+			case SOUTH:
+				escacheSouth = storage;
+				break;
+			case UP:
+				escacheUp = storage;
+				break;
+			case WEST:
+				escacheWest = storage;
+				break;
+		}
+	}
+	
+	public IEnergyStorage getCachedEnergy(Direction side) {
+		switch(side) {
+			case DOWN:
+				return escacheDown.orElse(null);
+			case EAST:
+				return escacheEast.orElse(null);
+			case NORTH:
+				return escacheNorth.orElse(null);
+			case SOUTH:
+				return escacheSouth.orElse(null);
+			case UP:
+				return escacheUp.orElse(null);
+			case WEST:
+				return escacheWest.orElse(null);
+		}
+		return null;
 	}
 }

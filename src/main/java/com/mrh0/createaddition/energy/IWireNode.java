@@ -1,9 +1,6 @@
 package com.mrh0.createaddition.energy;
 
-import java.util.Optional;
-
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
-import com.mrh0.createaddition.energy.network.EnergyNetworkProvider;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.util.Util;
 
@@ -19,19 +16,11 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public interface IWireNode extends EnergyNetworkProvider {
+public interface IWireNode {
 	
 	public static final int MAX_LENGTH = 12;
 	
 	public Vector3f getNodeOffset(int node);
-	public IEnergyStorage getNodeEnergyStorage(int node);
-	public default boolean canNodeExtract(int node) {
-		return getNodeEnergyStorage(node).canExtract();
-	}
-	
-	public default boolean canNodeReceive(int node) {
-		return getNodeEnergyStorage(node).canReceive();
-	}
 	
 	public default int getNodeFromPos(Vector3d vector3d) {
 		return 0;
@@ -61,7 +50,7 @@ public interface IWireNode extends EnergyNetworkProvider {
 		BlockPos pos = getNodePos(node);
 		if(pos == null)
 			return  nbt;
-		int index = getNodeIndex(node);
+		int index = getOtherNodeIndex(node);
 		//System.out.println("WRITE: " + node + "->" + index);
 		WireType type = getNodeType(node);
 		nbt.putInt("x"+node, pos.getX());
@@ -97,7 +86,7 @@ public interface IWireNode extends EnergyNetworkProvider {
 	
 	public BlockPos getNodePos(int node);
 	public WireType getNodeType(int node);
-	public int getNodeIndex(int node);
+	public int getOtherNodeIndex(int node);
 	public void invalidateNodeCache();
 	
 	public default boolean hasConnection(int node) {
@@ -165,7 +154,6 @@ public interface IWireNode extends EnergyNetworkProvider {
 		wn1.setNode(node1, node2, wn2.getMyPos(), type);
 		wn2.setNode(node2, node1, wn1.getMyPos(), type);
 		//System.out.println("Connected: " + node1 + " to " + node2);
-		
 		return WireConnectResult.getLink(wn2.isNodeInput(node2), wn2.isNodeOutput(node2));
 	}
 	
@@ -288,5 +276,22 @@ public interface IWireNode extends EnergyNetworkProvider {
 			if(!stack.isEmpty())
 				dropWire(world, getMyPos(), player.inventory.addItemStackToInventory(stack) ? ItemStack.EMPTY : stack);
 		}
+	}
+	
+	// Energy Network:
+	
+	public default boolean isNodeIndeciesConnected(int in, int other) {
+		return true;
+	}
+	
+	public EnergyNetwork getNetwork(int node);
+	public void setNetwork(int node, EnergyNetwork network);
+	
+	public default boolean isNetworkValid(int node) {
+		return getNetwork(node) == null ? false :  getNetwork(node).isValid();
+	}
+	
+	public default boolean isNetworkValid() {
+		return isNetworkValid(0);
 	}
 }

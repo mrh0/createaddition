@@ -35,7 +35,7 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 				if(wn == null) 
 					return;
 				
-				Vector3f d2 = wn.getNodeOffset(te.getNodeIndex(i)); // get other
+				Vector3f d2 = wn.getNodeOffset(te.getOtherNodeIndex(i)); // get other
 				float ox2 = ((float)d2.getX());
 				float oy2 = ((float)d2.getY());
 				float oz2 = ((float)d2.getZ());

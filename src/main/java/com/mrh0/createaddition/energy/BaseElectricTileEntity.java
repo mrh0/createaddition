@@ -82,19 +82,69 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		firstTickState = false;
 	}
 	
-	public void firstTick() {};
+	public void firstTick() {
+		updateCache();
+	};
 	
-	public void updateCachedEnergy(Direction side) {
-		TileEntity te = world.getTileEntity(pos.offset(side));
-		if(te == null) {
-			setCache(side, null);
+	public void updateCache() {
+		if(world.isRemote())
 			return;
+		for(Direction side : Direction.values()) {
+			TileEntity te = world.getTileEntity(pos.offset(side));
+			if(te == null) {
+				setCache(side, LazyOptional.empty());
+				return;
+			}
+			LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+			setCache(side, le);
 		}
-		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
-		setCache(side, le.orElse(null));
 	}
 	
-	public abstract void setCache(Direction side, IEnergyStorage storage);
+	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheNorth = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheEast = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheSouth = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheWest = LazyOptional.empty();
 	
-	public abstract IEnergyStorage getCachedEnergy(Direction side);
+	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
+		switch(side) {
+			case DOWN:
+				escacheDown = storage;
+				break;
+			case EAST:
+				escacheEast = storage;
+				break;
+			case NORTH:
+				escacheNorth = storage;
+				break;
+			case SOUTH:
+				escacheSouth = storage;
+				break;
+			case UP:
+				escacheUp = storage;
+				break;
+			case WEST:
+				escacheWest = storage;
+				break;
+		}
+	}
+	
+	public IEnergyStorage getCachedEnergy(Direction side) {
+		switch(side) {
+			case DOWN:
+				return escacheDown.orElse(null);
+			case EAST:
+				return escacheEast.orElse(null);
+			case NORTH:
+				return escacheNorth.orElse(null);
+			case SOUTH:
+				return escacheSouth.orElse(null);
+			case UP:
+				return escacheUp.orElse(null);
+			case WEST:
+				return escacheWest.orElse(null);
+		}
+		return null;
+	}
 }

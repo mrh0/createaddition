@@ -7,6 +7,7 @@ import com.simibubi.create.content.contraptions.base.IRotate;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.tileentity.TileEntity;
@@ -17,6 +18,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
 
 public class AlternatorBlock extends DirectionalKineticBlock implements ITE<AlternatorTileEntity>, IRotate {
 	
@@ -64,5 +66,15 @@ public class AlternatorBlock extends DirectionalKineticBlock implements ITE<Alte
 	@Override
 	public SpeedLevel getMinimumRequiredSpeedLevel() {
 		return SpeedLevel.MEDIUM;
+	}
+	
+	@Override
+	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
+		if(tileentity != null) {
+			if(tileentity instanceof AlternatorTileEntity) {
+				((AlternatorTileEntity)tileentity).updateCache();
+			}
+		}
 	}
 }

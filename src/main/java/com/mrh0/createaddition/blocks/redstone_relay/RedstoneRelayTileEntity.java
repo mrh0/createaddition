@@ -1,26 +1,38 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
-import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
+import java.util.List;
+
+import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
-import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
-import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.energy.WireType;
+import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.network.IObserveTileEntity;
+import com.mrh0.createaddition.network.ObservePacket;
+import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
+import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
+import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 
-public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements IWireNode {
+public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
 
-	private final InternalEnergyStorage energyBufferIn;
-	private final InternalEnergyStorage energyBufferOut;
+	//private final InternalEnergyStorage energyBufferIn;
+	//private final InternalEnergyStorage energyBufferOut;
 	
 	private BlockPos[] connectionPos;
 	private int[] connectionIndecies;
@@ -45,12 +57,12 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
 	public RedstoneRelayTileEntity(TileEntityType<?> tileEntityTypeIn) {
-		super(tileEntityTypeIn, CAPACITY, MAX_IN, MAX_OUT);
+		super(tileEntityTypeIn);
 
-		energyBufferIn = new InternalEnergyStorage(ConnectorTileEntity.CAPACITY, MAX_IN, MAX_OUT);
-		energyBufferOut = new InternalEnergyStorage(ConnectorTileEntity.CAPACITY, MAX_IN, MAX_OUT);
+		//energyBufferIn = new InternalEnergyStorage(ConnectorTileEntity.CAPACITY, MAX_IN, MAX_OUT);
+		//energyBufferOut = new InternalEnergyStorage(ConnectorTileEntity.CAPACITY, MAX_IN, MAX_OUT);
 		
-		setLazyTickRate(20);
+		//setLazyTickRate(20);
 		
 		connectionPos = new BlockPos[getNodeCount()];
 		connectionIndecies = new int[getNodeCount()];
@@ -105,21 +117,6 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 			}
 		}
 		return OFFSET_NORTH;
-	}
-
-	@Override
-	public IEnergyStorage getNodeEnergyStorage(int node) {
-		return isNodeInput(node) ? energyBufferIn : energyBufferOut;
-	}
-
-	@Override
-	public boolean isEnergyInput(Direction side) {
-		return side != Direction.UP;
-	}
-
-	@Override
-	public boolean isEnergyOutput(Direction side) {
-		return false;
 	}
 	
 	@Override
@@ -195,7 +192,7 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 	}
 	
 	@Override
-	public int getNodeIndex(int node) {
+	public int getOtherNodeIndex(int node) {
 		if(connectionPos[node] == null)
 			return -1;
 		return connectionIndecies[node];
@@ -214,8 +211,6 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 		for(int i = 0; i < getNodeCount(); i++)
 			if(IWireNode.hasNode(nbt, i))
 				readNode(nbt, i);
-		energyBufferIn.read(nbt, "buffIn");
-		energyBufferOut.read(nbt, "buffOut");
 	}
 	
 	@Override
@@ -227,8 +222,6 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 			else
 				writeNode(nbt, i);
 		}
-		energyBufferIn.write(nbt, "buffIn");
-		energyBufferOut.write(nbt, "buffOut");
 	}
 	
 	@Override
@@ -249,21 +242,20 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 	}
 
 	@Override
-	public void setCache(Direction side, IEnergyStorage storage) {
-	}
-
-	@Override
-	public IEnergyStorage getCachedEnergy(Direction side) {
-		return null;
-	}
-
-	@Override
 	public void invalidateNodeCache() {
 		for(int i = 0; i < getNodeCount(); i++)
 			nodeCache[i] = null;
 	}
 	
 	@Override
+	public void tick() {
+		super.tick();
+		if(world.isRemote())
+			return;
+		networkTick();
+	}
+
+	/*@Override
 	public void lazyTick() {
 		super.lazyTick();
 
@@ -295,6 +287,20 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 			ext3 = energyBufferOut.extractEnergy(ext3, false);
 			es.receiveEnergy(Math.max(ext3, 0), false);
 		}
+	}*/
+	
+	private int demand = 0;
+	private void networkTick() {
+		if(!isNetworkValid())
+			EnergyNetwork.buildNetwork(world, this);
+		BlockState bs = getBlockState();
+		if(!bs.isIn(CABlocks.REDSTONE_RELAY.get()))
+			return;
+		if(bs.get(RedstoneRelay.POWERED)) {
+			networkOut.push(networkIn.pull(demand));
+			demand = networkIn.demand(networkOut.getDemand());
+			System.out.println(demand);
+		}
 	}
 	
 	@Override
@@ -305,11 +311,64 @@ public class RedstoneRelayTileEntity extends BaseElectricTileEntity implements I
 			IWireNode node = getNode(i);
 			if(node == null)
 				break;
-			node.removeNode(getNodeIndex(i));
+			node.removeNode(getOtherNodeIndex(i));
 			node.invalidateNodeCache();
 		}
 		invalidateNodeCache();
 		invalidateCaps();
+		// Invalidate
+		if(networkIn != null)
+			networkIn.invalidate();
+		if(networkOut != null)
+			networkOut.invalidate();
 		super.remove();
+	}
+	
+	private EnergyNetwork networkIn;
+	private EnergyNetwork networkOut;
+	
+	@Override
+	public EnergyNetwork getNetwork(int node) {
+		return isNodeInput(node) ? networkIn : networkOut;
+	}
+
+	@Override
+	public void setNetwork(int node, EnergyNetwork network) {
+		if(isNodeInput(node))
+			networkIn = network;
+		if(isNodeOutput(node))
+			networkOut = network;
+	}
+	
+	@Override
+	public boolean isNodeIndeciesConnected(int in, int other) {
+		return isNodeInput(in) == isNodeInput(other);
+	}
+
+	@Override
+	public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
+	
+	@Override
+	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
+		ObservePacket.send(pos);
+		@SuppressWarnings("resource")
+		RayTraceResult ray = Minecraft.getInstance().objectMouseOver;
+		if(ray == null)
+			return false;
+		
+		int node = getNodeFromPos(ray.getHitVec());
+		
+		tooltip.add(new StringTextComponent(spacing)
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.relay.info").formatted(TextFormatting.WHITE)));
+		tooltip.add(new StringTextComponent(spacing)
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.selected").formatted(TextFormatting.GRAY)));
+		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" "))
+				.append(new TranslationTextComponent(isNodeInput(node) ? "createaddition.tooltip.energy.input" : "createaddition.tooltip.energy.output").formatted(TextFormatting.AQUA)));
+		return true;
+	}
+
+	@Override
+	public void onObserved(ServerPlayerEntity player) {
+		//causeBlockUpdate();
 	}
 }
