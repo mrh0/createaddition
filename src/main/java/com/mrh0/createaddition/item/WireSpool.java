@@ -81,9 +81,9 @@ public class WireSpool extends Item {
 						c.getPlayer().dropItem(stack, false);
 				}
 			}
-			
-			c.getPlayer().sendStatusMessage(result.getMessage(), true);
 			c.getItem().setTag(null);
+			c.getPlayer().sendStatusMessage(result.getMessage(), true);
+			
 		}
 		else {
 			int index = node.getNodeFromPos(c.getHitVec());
@@ -145,4 +145,6 @@ public class WireSpool extends Item {
 	public static boolean isRemover(Item item) {
 		return item == CAItems.SPOOL.get();
 	}
+	
+	
 }

@@ -41,7 +41,6 @@ public class AlternatorTileEntity extends KineticTileEntity {
 		super(typeIn);
 		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		lazyEnergy = LazyOptional.of(() -> energy);
-		setLazyTickRate(20);
 	}
 	
 	@Override
@@ -90,21 +89,21 @@ public class AlternatorTileEntity extends KineticTileEntity {
 		energy.write(compound);
 	}
 	
-	@Override
-	public void lazyTick() {
-		super.lazyTick();
-		
-		
-		//causeBlockUpdate();
-	}
+	private boolean firstTickState = true;
 	
 	@Override
 	public void tick() {
 		super.tick();
 		if(world.isRemote())
 			return;
+		if(firstTickState)
+			firstTick();
+		firstTickState = false;
+		
 		if(Math.abs(getSpeed()) > 0 && isSpeedRequirementFulfilled())
-			energy.internalProduceEnergy(getEnergyProductionRate((int)getSpeed()) * 20);
+			energy.internalProduceEnergy(getEnergyProductionRate((int)getSpeed()));
+		
+		//System.out.println(energy.getEnergyStored());
 		
 		for(Direction d : Direction.values()) {
 			if(!isEnergyOutput(d))
@@ -118,7 +117,8 @@ public class AlternatorTileEntity extends KineticTileEntity {
 			if(ies == null)
 				continue;
 			int ext = energy.extractEnergy(ies.receiveEnergy(MAX_OUT, true), false);
-			ies.receiveEnergy(ext, false);
+			int rec = ies.receiveEnergy(ext, false);
+			//System.out.println(ext + ":" + getEnergyProductionRate((int)getSpeed()) + ":" + rec + ":" + d);
 		}
 	}
 	
@@ -149,7 +149,7 @@ public class AlternatorTileEntity extends KineticTileEntity {
 			TileEntity te = world.getTileEntity(pos.offset(side));
 			if(te == null) {
 				setCache(side, LazyOptional.empty());
-				return;
+				continue;
 			}
 			LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
 			setCache(side, le);

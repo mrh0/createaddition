@@ -3,7 +3,9 @@
 	"createaddition.tooltip.energy.consumption": "Energy Usage:",
 	"createaddition.tooltip.energy.production": "Energy Generated:",
 	"createaddition.tooltip.energy.charged": "Charged",
-	"createaddition.tooltip.energy.saturation": "Network Saturation:",
+	"createaddition.tooltip.energy.usage": "Network Usage:",
+	"createaddition.tooltip.energy.demand": "Network Consumption:",
+	"createaddition.tooltip.energy.supply": "Network Production:",
 	"createaddition.tooltip.energy.selected": "Focused Connector:",
 	"createaddition.tooltip.energy.input": "Input",
 	"createaddition.tooltip.energy.output": "Output",
@@ -113,6 +115,7 @@
 	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "Collects the outputs manually.",
 	
 	"block.createaddition.heater": "Induction Heater",
+	"block.createaddition.heater.info": "Induction Heater Info:",
 	"block.createaddition.heater.engine_heating_disabled": "Heating Furnace Engines has been disabled in the Configs.",
 	"deprecated.block.createaddition.heater.tooltip": "INDUCTION HEATER",
 	"deprecated.block.createaddition.heater.tooltip.summary": "When attached to a _Furnace_ and powered with _fe_ from the top will heat the _Furnace_. Will not power a _Furnace Engine_ unless _enabled_ in the _configs_.",
@@ -148,6 +151,8 @@
 	"block.createaddition.furnace_burner.tooltip.action2": "Retrieves the stored _fuel_.",
 	
 	"block.createaddition.charger": "Charging Station",
+	"block.createaddition.charger.info": "Charging Station Info:",
+	"block.createaddition.charger.empty": "Empty",
 	"block.createaddition.charger.tooltip": "CHARGER",
 	"block.createaddition.charger.tooltip.summary": "Charges _electric_ items using _fe_.",
 	"block.createaddition.charger.tooltip.control1": "R-click with Rechargeable Item",

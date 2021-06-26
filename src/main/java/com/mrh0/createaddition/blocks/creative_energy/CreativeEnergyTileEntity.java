@@ -3,6 +3,7 @@ package com.mrh0.createaddition.blocks.creative_energy;
 import com.mrh0.createaddition.energy.CreativeEnergyStorage;
 import com.simibubi.create.content.logistics.block.inventories.CrateTileEntity;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -10,7 +11,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class CreativeEnergyTileEntity  extends CrateTileEntity {
+public class CreativeEnergyTileEntity extends CrateTileEntity {
 
 	protected final CreativeEnergyStorage energy;
 	private LazyOptional<IEnergyStorage> lazyEnergy;
@@ -19,7 +20,6 @@ public class CreativeEnergyTileEntity  extends CrateTileEntity {
 		super(tileEntityTypeIn);
 		energy = new CreativeEnergyStorage();
 		lazyEnergy = LazyOptional.of(() -> energy);
-		setLazyTickRate(20);
 	}
 	
 	@Override
@@ -29,18 +29,95 @@ public class CreativeEnergyTileEntity  extends CrateTileEntity {
 		return super.getCapability(cap, side);
 	}
 	
+	private boolean firstTickState = true;
+	
 	@Override
-	public void lazyTick() {
-		super.lazyTick();
+	public void tick() {
+		super.tick();
 		if(world.isRemote())
 			return;
-		for(Direction side : Direction.values())
-			energy.outputToSide(world, pos, side);
+		if(firstTickState)
+			firstTick();
+		firstTickState = false;
+		
+		for(Direction d : Direction.values()) {
+			IEnergyStorage ies = getCachedEnergy(d);
+			if(ies == null)
+				continue;
+			int r = ies.receiveEnergy(Integer.MAX_VALUE, false);
+		}
 	}
 	
 	@Override
 	public void remove() {
 		super.remove();
 		lazyEnergy.invalidate();
+	}
+	
+	public void firstTick() {
+		updateCache();
+	};
+	
+	public void updateCache() {
+		if(world.isRemote())
+			return;
+		for(Direction side : Direction.values()) {
+			TileEntity te = world.getTileEntity(pos.offset(side));
+			if(te == null) {
+				setCache(side, LazyOptional.empty());
+				continue;
+			}
+			LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+			setCache(side, le);
+			
+		}
+	}
+	
+	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheNorth = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheEast = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheSouth = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheWest = LazyOptional.empty();
+	
+	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
+		switch(side) {
+			case DOWN:
+				escacheDown = storage;
+				break;
+			case EAST:
+				escacheEast = storage;
+				break;
+			case NORTH:
+				escacheNorth = storage;
+				break;
+			case SOUTH:
+				escacheSouth = storage;
+				break;
+			case UP:
+				escacheUp = storage;
+				break;
+			case WEST:
+				escacheWest = storage;
+				break;
+		}
+	}
+	
+	public IEnergyStorage getCachedEnergy(Direction side) {
+		switch(side) {
+			case DOWN:
+				return escacheDown.orElse(null);
+			case EAST:
+				return escacheEast.orElse(null);
+			case NORTH:
+				return escacheNorth.orElse(null);
+			case SOUTH:
+				return escacheSouth.orElse(null);
+			case UP:
+				return escacheUp.orElse(null);
+			case WEST:
+				return escacheWest.orElse(null);
+		}
+		return null;
 	}
 }

@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.connector;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -241,8 +242,10 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		super.tick();
 		if(world.isRemote())
 			return;
-		if(!isNetworkValid())
-			EnergyNetwork.buildNetwork(world, this);
+		if(awakeNetwork(world)) {
+			//EnergyNetwork.buildNetwork(world, this);
+			causeBlockUpdate();
+		}
 		networkTick(network);
 	}
 	
@@ -264,55 +267,55 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			return;
 		// TODO: Cache
 		Direction d = getBlockState().get(ConnectorBlock.FACING);
-		TileEntity te = world.getTileEntity(pos.offset(d));
-		if(te == null)
-			return;
+		//TileEntity te = world.getTileEntity(pos.offset(d));
+		//if(te == null)
+		//	return;
 		//IEnergyStorage ies = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite()).orElse(null);
 		IEnergyStorage ies = getCachedEnergy(d);
 		if(ies == null)
 			return;
-		int testExtract = energy.extractEnergy(Integer.MAX_VALUE, true);
-		int testInsert = ies.receiveEnergy(Integer.MAX_VALUE, true);
 		
 		int pull = en.pull(demand);
 		ies.receiveEnergy(pull, false);
 		
+		int testExtract = energy.extractEnergy(Integer.MAX_VALUE, true);
+		int testInsert = ies.receiveEnergy(MAX_OUT, true);
+		
 		demand = en.demand(testInsert);
 		
-		int push = en.push(testExtract);
-		ies.extractEnergy(push, false);
 		
-		//System.out.println(testExtract + " i/o " + testInsert + " | " + demand + " | " + push + "/" + pull);
+		int push = en.push(testExtract);
+		int ext = energy.internalConsumeEnergy(push);
 	}
 
 	@Override
-	public void onObserved(ServerPlayerEntity player) {
-		if(isNetworkValid())
-			EnergyNetworkPacket.send(pos, getNetwork(0).getBuff(), getNetwork(0).getDemand(), player);
+	public void onObserved(ServerPlayerEntity player, ObservePacket pack) {
+		if(isNetworkValid(0))
+			EnergyNetworkPacket.send(pos, getNetwork(0).getPulled(), getNetwork(0).getPushed(), player);
 	}
 	
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
-		ObservePacket.send(pos);
+		ObservePacket.send(pos, 0);
 		
 		tooltip.add(new StringTextComponent(spacing)
 				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.connector.info").formatted(TextFormatting.WHITE)));
 		
 		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.supply").formatted(TextFormatting.GRAY)));
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.usage").formatted(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(" ")
 				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").formatted(TextFormatting.AQUA));
 		
-		tooltip.add(new StringTextComponent(spacing)
+		/*tooltip.add(new StringTextComponent(spacing)
 				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.demand").formatted(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(" ")
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientDemand)).append("fe/t").formatted(TextFormatting.AQUA));
+				.append(Multimeter.format((int)EnergyNetworkPacket.clientDemand)).append("fe/t").formatted(TextFormatting.AQUA));*/
 		
 		
-		tooltip.add(new StringTextComponent(spacing)
+		/*tooltip.add(new StringTextComponent(spacing)
 				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.saturation").formatted(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + (EnergyNetworkPacket.clientSaturation > 0 ? "+" : "")))
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientSaturation)).append("fe/t").formatted(TextFormatting.AQUA));
+				.append(Multimeter.format((int)EnergyNetworkPacket.clientSaturation)).append("fe/t").formatted(TextFormatting.AQUA));*/
 		
 		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 	}

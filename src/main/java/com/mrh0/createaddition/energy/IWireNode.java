@@ -1,5 +1,7 @@
 package com.mrh0.createaddition.energy;
 
+import java.util.HashMap;
+
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.util.Util;
@@ -14,7 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.IEnergyStorage;
 
 public interface IWireNode {
 	
@@ -284,6 +285,17 @@ public interface IWireNode {
 		return true;
 	}
 	
+	public default boolean awakeNetwork(World world) {
+		boolean b = false;
+		for(int i = 0; i < getNodeCount(); i++) {
+			if(!isNetworkValid(i)) {
+				setNetwork(i, EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, i));
+				b = true;
+			}
+		}
+		return b;
+	}
+	
 	public EnergyNetwork getNetwork(int node);
 	public void setNetwork(int node, EnergyNetwork network);
 	
@@ -291,7 +303,13 @@ public interface IWireNode {
 		return getNetwork(node) == null ? false :  getNetwork(node).isValid();
 	}
 	
-	public default boolean isNetworkValid() {
-		return isNetworkValid(0);
-	}
+	/*public default boolean isNetworkValid() {
+		for(int i = 0; i < getNodeCount(); i++) {
+			if(getNetwork(i) == null)
+				return false;
+			if(!getNetwork(i).isValid())
+				return false;
+		}
+		return true;
+	}*/
 }

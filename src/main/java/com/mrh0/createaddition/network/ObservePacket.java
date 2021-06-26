@@ -9,21 +9,25 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class ObservePacket {
 	private BlockPos pos;
+	private int node;
 	
-	public ObservePacket(BlockPos pos) {
+	public ObservePacket(BlockPos pos, int node) {
 		this.pos = pos;
+		this.node = node;
 	}
 	
 	public static void encode(ObservePacket packet, PacketBuffer tag) {
         tag.writeBlockPos(packet.pos);
+        tag.writeInt(packet.node);
     }
 	
 	public static ObservePacket decode(PacketBuffer buf) {
-		ObservePacket scp = new ObservePacket(buf.readBlockPos());
+		ObservePacket scp = new ObservePacket(buf.readBlockPos(), buf.readInt());
         return scp;
     }
 	
@@ -33,7 +37,7 @@ public class ObservePacket {
 				ServerPlayerEntity player = ctx.get().getSender();
 				
 				if (player != null) {
-					sendUpdate(pkt.pos, player);
+					sendUpdate(pkt, player);
 				}
 			
 			} catch (Exception e) {
@@ -44,11 +48,11 @@ public class ObservePacket {
 		ctx.get().setPacketHandled(true);
 	}
 	
-	private static void sendUpdate(BlockPos pos, ServerPlayerEntity player) {
-		TileEntity te = (TileEntity) player.world.getTileEntity(pos);
+	private static void sendUpdate(ObservePacket pkt, ServerPlayerEntity player) {
+		TileEntity te = (TileEntity) player.world.getTileEntity(pkt.pos);
 		IObserveTileEntity ote = (IObserveTileEntity) te;
         if (te != null) {
-        	ote.onObserved(player);
+        	ote.onObserved(player, pkt);
             SUpdateTileEntityPacket supdatetileentitypacket = te.getUpdatePacket();
             if (supdatetileentitypacket != null) {
                 player.connection.sendPacket(supdatetileentitypacket);
@@ -63,11 +67,19 @@ public class ObservePacket {
 			cooldown = 0;
 	}
 	
-	public static void send(BlockPos pos) {
+	public static void send(BlockPos pos, int node) {
 		if(cooldown > 0)
 			return;
 		cooldown = 10;
-		CreateAddition.Network.sendToServer(new ObservePacket(pos));
+		CreateAddition.Network.sendToServer(new ObservePacket(pos, node));
+	}
+	
+	public BlockPos getPos() {
+		return pos;
+	}
+	
+	public int getNode() {
+		return node;
 	}
 }
 

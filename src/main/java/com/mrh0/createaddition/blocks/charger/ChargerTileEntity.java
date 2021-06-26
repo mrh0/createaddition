@@ -133,8 +133,16 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 	
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(Math.round(getCharge()*100) + "% ").formatted(TextFormatting.AQUA))
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.charged").formatted(TextFormatting.GRAY)));
-		return hasChargedStack();
+		tooltip.add(new StringTextComponent(spacing)
+				.append(new TranslationTextComponent("block.createaddition.charger.info").formatted(TextFormatting.WHITE)));
+		if(hasChargedStack()) {
+			tooltip.add(new StringTextComponent(spacing).append(" ").append(new StringTextComponent(Math.round(getCharge()*100) + "% ").formatted(TextFormatting.AQUA))
+					.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.charged").formatted(TextFormatting.GRAY)));
+		}
+		else {
+			tooltip.add(new StringTextComponent(spacing).append(" ").append(new TranslationTextComponent("block.createaddition.charger.empty").formatted(TextFormatting.GRAY)));
+		}
+		
+		return true;
 	}
 }

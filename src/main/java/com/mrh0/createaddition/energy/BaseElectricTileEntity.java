@@ -93,7 +93,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 			TileEntity te = world.getTileEntity(pos.offset(side));
 			if(te == null) {
 				setCache(side, LazyOptional.empty());
-				return;
+				continue;
 			}
 			LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
 			setCache(side, le);

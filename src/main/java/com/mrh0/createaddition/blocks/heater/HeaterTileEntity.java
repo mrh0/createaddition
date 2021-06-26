@@ -145,6 +145,9 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
 		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
 		
+		tooltip.add(new StringTextComponent(spacing)
+				.append(new TranslationTextComponent("block.createaddition.heater.info").formatted(TextFormatting.WHITE)));
+		
 		if(isFurnaceEngine && !ALLOW_ENGINE)
 			tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent("block.createaddition.heater.engine_heating_disabled").formatted(TextFormatting.RED)));
 		

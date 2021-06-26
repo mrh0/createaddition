@@ -106,6 +106,10 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 		}
 		if (!state.isValidPosition(worldIn, pos)) {
 			spawnDrops(state, worldIn, pos, tileentity);
+			
+			if(tileentity instanceof IWireNode)
+				((IWireNode) tileentity).dropWires(worldIn);
+			
 			worldIn.removeBlock(pos, false);
 
 			for (Direction direction : Direction.values())

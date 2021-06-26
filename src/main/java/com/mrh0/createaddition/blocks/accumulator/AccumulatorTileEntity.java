@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.util.IComparatorOverride;
@@ -180,6 +182,12 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		connectionPos[node] = pos; 
 		connectionIndecies[node] = other;
 		connectionTypes[node] = type;
+		
+		// Invalidate
+		if(networkIn != null)
+			networkIn.invalidate();
+		if(networkOut != null)
+			networkOut.invalidate();
 	}
 	
 	@Override
@@ -206,6 +214,12 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		IWireNode.super.removeNode(other);
 		invalidateNodeCache();
 		this.markDirty();
+		
+		// Invalidate
+		if(networkIn != null)
+			networkIn.invalidate();
+		if(networkOut != null)
+			networkOut.invalidate();
 	}
 	
 	@Override
@@ -257,9 +271,19 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	private int demandOut = 0;
 	private int demandIn = 0;
 	private void networkTick() {
-		if(!isNetworkValid())
-			EnergyNetwork.buildNetwork(world, this);
-		networkOut.push(energy.extractEnergy(demandOut, false));
+		if(awakeNetwork(world)) {
+			//EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, 0);//EnergyNetwork.buildNetwork(world, this);
+			causeBlockUpdate();
+		}
+		if(networkOut == null) {
+			//System.out.println("WARN!");
+			return;
+		}
+		
+		
+		energy.extractEnergy(networkOut.push(energy.extractEnergy(demandOut, true)), false);
+		
+		/*energy.receiveEnergy(networkOut.push(energy.extractEnergy(demandOut, false)), false);*/
 		demandOut = networkOut.getDemand();
 		energy.receiveEnergy(networkIn.pull(Math.min(demandIn, energy.receiveEnergy(MAX_IN, true))), false);
 		demandIn = networkIn.demand(energy.receiveEnergy(MAX_IN, true));
@@ -320,13 +344,15 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
-		ObservePacket.send(pos);
+		
 		@SuppressWarnings("resource")
 		RayTraceResult ray = Minecraft.getInstance().objectMouseOver;
 		if(ray == null)
 			return false;
-		
 		int node = getNodeFromPos(ray.getHitVec());
+		
+		ObservePacket.send(pos, node);
+		
 		tooltip.add(new StringTextComponent(spacing)
 				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.accumulator.info").formatted(TextFormatting.WHITE)));
 		tooltip.add(new StringTextComponent(spacing)
@@ -338,11 +364,19 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.selected").formatted(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" "))
 				.append(new TranslationTextComponent(isNodeInput(node) ? "createaddition.tooltip.energy.input" : "createaddition.tooltip.energy.output").formatted(TextFormatting.AQUA)));
+		
+		tooltip.add(new StringTextComponent(spacing)
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.usage").formatted(TextFormatting.GRAY)));
+		tooltip.add(new StringTextComponent(spacing).append(" ")
+				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").formatted(TextFormatting.AQUA));
+		
 		return true;
 	}
 
 	@Override
-	public void onObserved(ServerPlayerEntity player) {
+	public void onObserved(ServerPlayerEntity player, ObservePacket pack) {
+		if(isNetworkValid(0))
+			EnergyNetworkPacket.send(pos, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
 		causeBlockUpdate();
 	}
 }
