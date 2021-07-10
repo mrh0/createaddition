@@ -1,0 +1,23 @@
+{
+  "type": "create:mechanical_crafting",
+  "pattern": [
+  	"ANA",
+    "ANA",
+    " O ",
+    " O "
+  ],
+  "key": {
+  	"A": {
+      "item": "createaddition:overcharged_alloy"
+    },
+    "N": {
+      "tag": "forge:ingots/netherite"
+    },
+    "O": {
+      "tag": "forge:obsidian"
+    }
+  },
+  "result": {
+    "item": "createaddition:overcharged_hammer"
+  }
+}

@@ -73,6 +73,15 @@
 	
 	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
 	
+	"item.createaddition.charging_chromatic_compound": "Charging Chromatic Compound",
+	"item.createaddition.overcharged_alloy": "Overcharged Alloy",
+	"item.createaddition.overcharged_alloy.tooltip": "OVERCHARGED ALLOY",
+	"item.createaddition.overcharged_alloy.tooltip.summary": "A Chromatic material forged by _electricity_",
+	
+	"item.createaddition.overcharged_hammer": "Overcharged Hammer",
+	"item.createaddition.overcharged_hammer.tooltip": "OVERCHARGED HAMMER",
+	"item.createaddition.overcharged_hammer.tooltip.summary": "A powerful _melee and ranged_ weapon infused with the power of _electricity_",
+	
 	"item.createaddition.spool": "Empty Spool",
 	"item.createaddition.spool.nbt": "Stores connection location.",
 	"item.createaddition.spool.tooltip": "SPOOL",

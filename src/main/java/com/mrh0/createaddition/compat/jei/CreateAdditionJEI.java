@@ -13,7 +13,9 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
+import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 
 import mezz.jei.api.IModPlugin;
@@ -62,6 +64,11 @@ public class CreateAdditionJEI implements IModPlugin {
 	public void registerRecipes(IRecipeRegistration registration) {
 		ingredientManager = registration.getIngredientManager();
 		ALL.forEach(c -> c.recipes.forEach(s -> registration.addRecipes(s.get(), c.getUid())));
+		
+		List<ConversionRecipe> r = new ArrayList<>();
+		r.add(ConversionRecipe.create(AllItems.CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
+		//r.add(ConversionRecipe.create(CAItems.CHARGING_CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
+		registration.addRecipes(r, new ResourceLocation("create:mystery_conversion"));
 	}
 
 	@Override

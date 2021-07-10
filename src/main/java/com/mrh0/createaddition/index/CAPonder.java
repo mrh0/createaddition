@@ -10,9 +10,6 @@ public class CAPonder {
 			.defaultLang("Electric", "Components which use electricity");
 	
 	public static void register() {
-		
-		
-		
 		PonderRegistry.addStoryBoard(CABlocks.ELECTRIC_MOTOR, "electric_motor", PonderScenes::electricMotor, PonderTag.KINETIC_SOURCES, ELECTRIC);
 		PonderRegistry.addStoryBoard(CABlocks.ALTERNATOR, "alternator", PonderScenes::alternator, PonderTag.KINETIC_APPLIANCES, ELECTRIC);
 		PonderRegistry.addStoryBoard(CABlocks.ROLLING_MILL, "rolling_mill", PonderScenes::rollingMill, PonderTag.KINETIC_APPLIANCES);

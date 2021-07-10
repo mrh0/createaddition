@@ -1,7 +1,9 @@
 package com.mrh0.createaddition.blocks.charger;
 
+import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.util.IComparatorOverride;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 
@@ -77,9 +79,7 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 			if(te instanceof ChargerTileEntity) {
 				ChargerTileEntity cte = (ChargerTileEntity) te;
 				ItemStack held = player.getHeldItem(handIn);
-				System.out.println("TEST");
 				if(cte.hasChargedStack() && held.isEmpty()) {
-					System.out.println("DROP");
 					InventoryHelper.spawnItemStack(worldIn, (double)player.getPositionVec().getX(), (double)player.getPositionVec().getY(), (double)player.getPositionVec().getZ(), cte.getChargedStack());
 					//player.setHeldItem(handIn, cte.getChargedStack());
 					cte.setChargedStack(ItemStack.EMPTY);
@@ -87,9 +87,10 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 					return ActionResultType.CONSUME;
 				}
 				else {
-					System.out.println("SET");
-					if(!held.getCapability(CapabilityEnergy.ENERGY).isPresent())
-						return ActionResultType.PASS;
+					if(!held.getCapability(CapabilityEnergy.ENERGY).isPresent()) {
+						if(held.getItem() != CAItems.CHARGING_CHROMATIC_COMPOUND.get() && held.getItem() != AllItems.CHROMATIC_COMPOUND.get())
+							return ActionResultType.PASS;
+					}
 					cte.setChargedStack(held);
 					//if(!player.isCreative())
 					held.shrink(1);

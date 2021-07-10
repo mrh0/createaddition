@@ -5,18 +5,24 @@ import static com.simibubi.create.AllTags.AllItemTags.PLATES;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.item.WireSpool;
+import com.mrh0.createaddition.item.ChargingChromaticCompound;
 import com.mrh0.createaddition.item.DiamondGritSandpaper;
 import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.item.OverchargedAlloy;
+import com.mrh0.createaddition.item.OverchargedHammer;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
+import com.simibubi.create.content.curiosities.ChromaticCompoundColor;
 import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer.SandPaperModel;
+import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.repack.registrate.util.entry.ItemEntry;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.Rarity;
 
 public class CAItems {
 
@@ -44,6 +50,23 @@ public class CAItems {
 	public static final ItemEntry<Multimeter> MULTIMETER =
 		REGISTRATE.item("multimeter", Multimeter::new)
 			.properties((p) -> p.maxStackSize(1))
+			.register();
+	
+	public static final ItemEntry<OverchargedAlloy> OVERCHARGED_ALLOY =
+			REGISTRATE.item("overcharged_alloy", OverchargedAlloy::new)
+			.properties(p -> p.rarity(Rarity.UNCOMMON))
+			.register();
+	
+	public static final ItemEntry<ChargingChromaticCompound> CHARGING_CHROMATIC_COMPOUND =
+			REGISTRATE.item("charging_chromatic_compound", ChargingChromaticCompound::new)
+			.properties(p -> p.rarity(Rarity.UNCOMMON))
+			.model(AssetLookup.existingItemModel())
+			.onRegister(CreateRegistrate.itemColors(() -> ChromaticCompoundColor::new))
+			.register();
+	
+	public static final ItemEntry<OverchargedHammer> OVERCHARGED_HAMMER =
+			REGISTRATE.item("overcharged_hammer", OverchargedHammer::new)
+			.properties(p -> p.rarity(Rarity.UNCOMMON))
 			.register();
 	
 	public static final ItemEntry<WireSpool> SPOOL =
@@ -94,5 +117,6 @@ public class CAItems {
 		Create.registrate().addToSection(COPPER_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(GOLD_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(SPOOL, AllSections.MATERIALS);
+		Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
 	}
 }

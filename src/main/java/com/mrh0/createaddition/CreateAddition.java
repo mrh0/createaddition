@@ -28,6 +28,7 @@ import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAEntities;
 import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.index.CAPonder;
@@ -86,6 +87,7 @@ public class CreateAddition {
         CATileEntities.register();
         CAItems.register();
         CAFluids.register();
+        CAEntities.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -94,6 +96,7 @@ public class CreateAddition {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         CAPonder.register();
+        CAEntities.registerRenderers();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
