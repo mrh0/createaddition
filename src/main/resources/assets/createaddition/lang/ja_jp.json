@@ -3,11 +3,22 @@
 	"createaddition.tooltip.energy.consumption": "消費エネルギー:",
 	"createaddition.tooltip.energy.production": "生成エネルギー:",
 	"createaddition.tooltip.energy.charged": "充電済",
+	"createaddition.tooltip.energy.usage": "ネットワーク使用状況:",
+	"createaddition.tooltip.energy.demand": "ネットワーク消費量:",
+	"createaddition.tooltip.energy.supply": "ネットワーク生成量:",
+	"createaddition.tooltip.energy.selected": "フォーカスされたコネクタ:",
+	"createaddition.tooltip.energy.input": "入力",
+	"createaddition.tooltip.energy.output": "出力",
+	
+	"createaddition.tooltip.accumulator.info": "蓄電気の詳細:",
+	"createaddition.tooltip.relay.info": "リレーの詳細:",
+	"createaddition.tooltip.connector.info": "コネクタの詳細:",
+	
 	"createaddition.recipe.rolling": "圧延",
 	"createaddition.recipe.crude_burning": "粗油燃焼",
 	"createaddition.recipe.crude_burning.burn_time": "燃焼時間",
 	
-	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
+	"desc.immersiveengineering.info.mineral.sphalerite": "閃亜鉛鉱",
 	
 	"item.createaddition.capacitor": "コンデンサ",
 	
@@ -104,6 +115,7 @@
 	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "手動で完成品アイテムを搬出します",
 	
 	"block.createaddition.heater": "誘導加熱器",
+	"block.createaddition.heater.info": "誘導加熱器の詳細:",
 	"block.createaddition.heater.engine_heating_disabled": "かまどエンジンの加熱はコンフィグで無効になっています",
 	"deprecated.block.createaddition.heater.tooltip": "誘導加熱器",
 	"deprecated.block.createaddition.heater.tooltip.summary": "_かまど_に取り付けられ、上部から_FE_を供給すると_かまど_を加熱します。-コンフィグ_で_有効_にしなければ_かまどエンジン_を加熱しません。",
@@ -112,23 +124,23 @@
 	"block.createaddition.accumulator.tooltip": "蓄電器",
 	"block.createaddition.accumulator.tooltip.summary": "電荷を蓄電します. ",
 	"block.createaddition.accumulator.tooltip.condition1": "出力",
-	"block.createaddition.accumulator.tooltip.behaviour1": "_白く_マークされた_コネクター_に接続されたすべての_ワイヤー_に_FE_を供給します",
+	"block.createaddition.accumulator.tooltip.behaviour1": "_白く_マークされた_コネクタ_に接続されたすべての_ワイヤー_に_FE_を供給します",
 	"block.createaddition.accumulator.tooltip.condition2": "入力",
-	"block.createaddition.accumulator.tooltip.behaviour2": "上面以外のどの面からでも、またマークしていない_コネクター_に接続されたどの_ワイヤー_からでもFEを受け取れます",
+	"block.createaddition.accumulator.tooltip.behaviour2": "上面以外のどの面からでも、またマークしていない_コネクタ_に接続されたどの_ワイヤー_からでもFEを受け取れます",
 	
-	"block.createaddition.connector": "コネクター",
-	"block.createaddition.connector.tooltip": "コネクター",
+	"block.createaddition.connector": "コネクタ",
+	"block.createaddition.connector.tooltip": "コネクタ",
 	"block.createaddition.connector.tooltip.summary": "_FE_対応のブロックをワイヤーで接続し、FEを伝達します",
 	"block.createaddition.connector.tooltip.control1": "左クリック",
-	"block.createaddition.connector.tooltip.action1": "_銅のスプール巻き_または_金のスプール巻き_を持ちながらで、2つの_コネクター_の間を_ワイヤー_で接続します",
+	"block.createaddition.connector.tooltip.action1": "_銅のスプール巻き_または_金のスプール巻き_を持ちながらで、2つの_コネクタ_の間を_ワイヤー_で接続します",
 	
 	"block.createaddition.redstone_relay": "レッドストーンリレー",
 	"block.createaddition.redstone_relay.tooltip": "レッドストーンリレー",
 	"block.createaddition.redstone_relay.tooltip.summary": "レッドストーン信号を受けたときに_入力コネクタ_から_出力コネクタ_への_FE_の伝達をオンにします。",
 	"block.createaddition.redstone_relay.tooltip.condition1": "出力",
-	"block.createaddition.redstone_relay.tooltip.behaviour1": "_白く_マークされた_コネクター_に接続されたすべての_ワイヤー_に_FE_を供給します",
+	"block.createaddition.redstone_relay.tooltip.behaviour1": "_白く_マークされた_コネクタ_に接続されたすべての_ワイヤー_に_FE_を供給します",
 	"block.createaddition.redstone_relay.tooltip.condition2": "入力",
-	"block.createaddition.redstone_relay.tooltip.behaviour2": "マークしていない_コネクター_に接続された_ワイヤー_からFEを受け取ります",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "マークしていない_コネクタ_に接続された_ワイヤー_からFEを受け取ります",
 	
 	"block.createaddition.furnace_burner": "かまどバーナー",
 	"block.createaddition.furnace_burner.tooltip": "かまどバーナー",
@@ -139,6 +151,8 @@
 	"block.createaddition.furnace_burner.tooltip.action2": "_燃料_を取り出します",
 	
 	"block.createaddition.charger": "充電器",
+	"block.createaddition.charger.info": "充電器の詳細:",
+	"block.createaddition.charger.empty": "空",
 	"block.createaddition.charger.tooltip": "充電器",
 	"block.createaddition.charger.tooltip.summary": "_電気_製品を充電するには_FE_が必要です。",
 	"block.createaddition.charger.tooltip.control1": "充電できるアイテムを持って左クリック",
