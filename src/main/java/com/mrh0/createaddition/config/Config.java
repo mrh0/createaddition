@@ -61,6 +61,7 @@ public class Config {
 	public static ForgeConfigSpec.DoubleValue GOLD_WIRE_LOSS;
 	
 	public static ForgeConfigSpec.IntValue DIAMOND_GRIT_SANDPAPER_USES;
+	public static ForgeConfigSpec.IntValue OVERCHARGING_ENERGY_COST;
 	
 	static {
 		
@@ -195,6 +196,9 @@ public class Config {
 		
 		DIAMOND_GRIT_SANDPAPER_USES = COMMON_BUILDER.comment("Diamond Grit Sandpaper durability (number of uses).")
 				.defineInRange("diamond_grit_sandpaper_uses", 1024, 3, Integer.MAX_VALUE);
+		
+		OVERCHARGING_ENERGY_COST = COMMON_BUILDER.comment("The energy cost of turning Chromatic Compound into Overcharged Alloy.")
+				.defineInRange("overcharging_energy_cost", 16777216, 1, Integer.MAX_VALUE);
 		
 		COMMON_BUILDER.pop();
 		

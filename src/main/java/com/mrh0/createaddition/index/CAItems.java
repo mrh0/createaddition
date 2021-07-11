@@ -118,5 +118,6 @@ public class CAItems {
 		Create.registrate().addToSection(GOLD_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
+		Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
 	}
 }
