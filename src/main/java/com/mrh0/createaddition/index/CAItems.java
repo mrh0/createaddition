@@ -61,7 +61,7 @@ public class CAItems {
 			REGISTRATE.item("charging_chromatic_compound", ChargingChromaticCompound::new)
 			.properties(p -> p.rarity(Rarity.UNCOMMON))
 			.model(AssetLookup.existingItemModel())
-			.onRegister(CreateRegistrate.itemColors(() -> ChromaticCompoundColor::new))
+			.color(() -> ChromaticCompoundColor::new)
 			.register();
 	
 	public static final ItemEntry<OverchargedHammer> OVERCHARGED_HAMMER =
