@@ -32,9 +32,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class OverchargedHammerEntity extends AbstractArrowEntity {
-	private static final DataParameter<Byte> LOYALTY_LEVEL = EntityDataManager.createKey(OverchargedHammerEntity.class,
+	private static final DataParameter<Byte> LOYALTY_LEVEL = EntityDataManager.defineId(OverchargedHammerEntity.class,
 			DataSerializers.BYTE);
-	private static final DataParameter<Boolean> ENCHANTED = EntityDataManager.createKey(OverchargedHammerEntity.class,
+	private static final DataParameter<Boolean> ENCHANTED = EntityDataManager.defineId(OverchargedHammerEntity.class,
 			DataSerializers.BOOLEAN);
 	private ItemStack thrownStack = new ItemStack(CAItems.OVERCHARGED_HAMMER.get());
 	private boolean dealtDamage;
@@ -47,8 +47,8 @@ public class OverchargedHammerEntity extends AbstractArrowEntity {
 	public OverchargedHammerEntity(World world, LivingEntity living, ItemStack stack) {
 		super(CAEntities.OVERCHARGED_HAMMER_ENTITY.get(), living, world);
 		this.thrownStack = stack.copy();
-		this.dataManager.set(LOYALTY_LEVEL, (byte) EnchantmentHelper.getLoyaltyModifier(stack));
-		this.dataManager.set(ENCHANTED, stack.hasEffect());
+		this.entityData.set(LOYALTY_LEVEL, (byte) EnchantmentHelper.getLoyalty(stack));
+		this.entityData.set(ENCHANTED, stack.hasFoil());
 	}
 
 	public OverchargedHammerEntity(World world, double x, double y, double z) {
@@ -56,10 +56,10 @@ public class OverchargedHammerEntity extends AbstractArrowEntity {
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		this.dataManager.register(LOYALTY_LEVEL, (byte) 0);
-		this.dataManager.register(ENCHANTED, false);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(LOYALTY_LEVEL, (byte) 0);
+		this.entityData.define(ENCHANTED, false);
 	}
 
 	/**
@@ -67,25 +67,25 @@ public class OverchargedHammerEntity extends AbstractArrowEntity {
 	 */
 	@Override
 	public void tick() {
-		if (this.timeInGround > 4) {
+		if (this.inGroundTime > 4) {
 			this.dealtDamage = true;
 		}
 
 		Entity entity = this.getOwner();
-		if ((this.dealtDamage || this.getNoClip()) && entity != null) {
+		if ((this.dealtDamage || this.isNoPhysics()) && entity != null) {
 			int i = 3;
-			this.setNoClip(true);
+			this.setNoPhysics(true);
 			Vector3d vector3d = new Vector3d(entity.getX() - this.getX(), entity.getEyeY() - this.getY(),
 					entity.getZ() - this.getZ());
-			this.setPos(this.getX(), this.getY() + vector3d.y * 0.015D * (double) i, this.getZ());
-			if (this.world.isRemote) {
-				this.lastTickPosY = this.getY();
+			this.setPosRaw(this.getX(), this.getY() + vector3d.y * 0.015D * (double) i, this.getZ());
+			if (this.level.isClientSide) {
+				this.yOld = this.getY();
 			}
 
 			double d0 = 0.05D * (double) i;
-			this.setMotion(this.getMotion().scale(0.95D).add(vector3d.normalize().scale(d0)));
+			this.setDeltaMovement(this.getDeltaMovement().scale(0.95D).add(vector3d.normalize().scale(d0)));
 			if (this.returningTicks == 0) {
-				this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0F, 1.0F);
+				this.playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
 			}
 
 			++this.returningTicks;
@@ -95,13 +95,13 @@ public class OverchargedHammerEntity extends AbstractArrowEntity {
 	}
 
 	@Override
-	protected ItemStack getArrowStack() {
+	protected ItemStack getPickupItem() {
 		return this.thrownStack.copy();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public boolean isEnchanted() {
-		return this.dataManager.get(ENCHANTED);
+		return this.entityData.get(ENCHANTED);
 	}
 
 	/**
@@ -109,50 +109,50 @@ public class OverchargedHammerEntity extends AbstractArrowEntity {
 	 */
 	@Nullable
 	@Override
-	protected EntityRayTraceResult rayTraceEntities(Vector3d v1, Vector3d v2) {
-		return this.dealtDamage ? null : super.rayTraceEntities(v1, v2);
+	protected EntityRayTraceResult findHitEntity(Vector3d v1, Vector3d v2) {
+		return this.dealtDamage ? null : super.findHitEntity(v1, v2);
 	}
 
 	/**
 	 * Called when the arrow hits an entity
 	 */
 	@Override
-	protected void onEntityHit(EntityRayTraceResult entityRay) {
+	protected void onHitEntity(EntityRayTraceResult entityRay) {
 		Entity entity = entityRay.getEntity();
 		float f = 8.0F;
 		if (entity instanceof LivingEntity) {
 			LivingEntity livingentity = (LivingEntity) entity;
-			f += EnchantmentHelper.getModifierForCreature(this.thrownStack, livingentity.getCreatureAttribute());
+			f += EnchantmentHelper.getDamageBonus(this.thrownStack, livingentity.getMobType());
 		}
 
 		Entity entity1 = this.getOwner();
-		DamageSource damagesource = DamageSource.causeTridentDamage(this, (Entity) (entity1 == null ? this : entity1));
+		DamageSource damagesource = DamageSource.trident(this, (Entity) (entity1 == null ? this : entity1));
 		this.dealtDamage = true;
-		SoundEvent soundevent = SoundEvents.BLOCK_ANVIL_HIT;
-		if (entity.attackEntityFrom(damagesource, f)) {
+		SoundEvent soundevent = SoundEvents.ANVIL_HIT;
+		if (entity.hurt(damagesource, f)) {
 			if (entity instanceof LivingEntity) {
 				LivingEntity livingentity1 = (LivingEntity) entity;
 				if (entity1 instanceof LivingEntity) {
-					EnchantmentHelper.applyThornEnchantments(livingentity1, entity1);
-					EnchantmentHelper.applyArthropodEnchantments((LivingEntity) entity1, livingentity1);
+					EnchantmentHelper.doPostHurtEffects(livingentity1, entity1);
+					EnchantmentHelper.doPostDamageEffects((LivingEntity) entity1, livingentity1);
 				}
 
-				this.arrowHit(livingentity1);
+				this.doPostHurtEffects(livingentity1);
 			}
 		}
 
-		this.setMotion(this.getMotion().mul(-0.01D, -0.1D, -0.01D));
+		this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
 		float f1 = 1.0F;
-		if (this.world instanceof ServerWorld && this.world.isThundering()
+		if (this.level instanceof ServerWorld && this.level.isThundering()
 				&& EnchantmentHelper.hasChanneling(this.thrownStack)) {
-			BlockPos blockpos = entity.getBlockPos();
-			if (this.world.isSkyVisible(blockpos)) {
-				LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.world);
-				lightningboltentity.refreshPositionAfterTeleport(Vector3d.ofBottomCenter(blockpos));
+			BlockPos blockpos = entity.blockPosition();
+			if (this.level.canSeeSky(blockpos)) {
+				LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.level);
+				lightningboltentity.moveTo(Vector3d.atBottomCenterOf(blockpos));
 				lightningboltentity
-						.setCaster(entity1 instanceof ServerPlayerEntity ? (ServerPlayerEntity) entity1 : null);
-				this.world.addEntity(lightningboltentity);
-				soundevent = SoundEvents.ITEM_TRIDENT_THUNDER;
+						.setCause(entity1 instanceof ServerPlayerEntity ? (ServerPlayerEntity) entity1 : null);
+				this.level.addFreshEntity(lightningboltentity);
+				soundevent = SoundEvents.TRIDENT_THUNDER;
 				f1 = 5.0F;
 			}
 		}
@@ -164,18 +164,18 @@ public class OverchargedHammerEntity extends AbstractArrowEntity {
 	 * The sound made when an entity is hit by this projectile
 	 */
 	@Override
-	protected SoundEvent getHitEntitySound() {
-		return SoundEvents.BLOCK_ANVIL_LAND;
+	protected SoundEvent getDefaultHitGroundSoundEvent() {
+		return SoundEvents.ANVIL_LAND;
 	}
 
 	/**
 	 * Called by a player entity when they collide with an entity
 	 */
 	@Override
-	public void onCollideWithPlayer(PlayerEntity player) {
+	public void playerTouch(PlayerEntity player) {
 		Entity entity = this.getOwner();
-		if (entity == null || entity.getUniqueID() == player.getUniqueID()) {
-			super.onCollideWithPlayer(player);
+		if (entity == null || entity.getUUID() == player.getUUID()) {
+			super.playerTouch(player);
 		}
 	}
 
@@ -183,50 +183,50 @@ public class OverchargedHammerEntity extends AbstractArrowEntity {
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	@Override
-	public void readAdditional(CompoundNBT nbt) {
-		super.readAdditional(nbt);
+	public void readAdditionalSaveData(CompoundNBT nbt) {
+		super.readAdditionalSaveData(nbt);
 		if (nbt.contains("Hammer", 10)) {
-			this.thrownStack = ItemStack.read(nbt.getCompound("Hammer"));
+			this.thrownStack = ItemStack.of(nbt.getCompound("Hammer"));
 		}
 
 		this.dealtDamage = nbt.getBoolean("DealtDamage");
-		this.dataManager.set(LOYALTY_LEVEL, (byte) EnchantmentHelper.getLoyaltyModifier(this.thrownStack));
+		this.entityData.set(LOYALTY_LEVEL, (byte) EnchantmentHelper.getLoyalty(this.thrownStack));
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT nbt) {
-		super.writeAdditional(nbt);
-		nbt.put("Hammer", this.thrownStack.write(new CompoundNBT()));
+	public void addAdditionalSaveData(CompoundNBT nbt) {
+		super.addAdditionalSaveData(nbt);
+		nbt.put("Hammer", this.thrownStack.save(new CompoundNBT()));
 		nbt.putBoolean("DealtDamage", this.dealtDamage);
 	}
 
 	@Override
-	public void age() {
-		int i = this.dataManager.get(LOYALTY_LEVEL);
-		if (this.pickupStatus != AbstractArrowEntity.PickupStatus.ALLOWED || i <= 0) {
-			super.age();
+	public void tickDespawn() {
+		int i = this.entityData.get(LOYALTY_LEVEL);
+		if (this.pickup != AbstractArrowEntity.PickupStatus.ALLOWED || i <= 0) {
+			super.tickDespawn();
 		}
 	}
 
 	@Override
-	protected float getWaterDrag() {
+	protected float getWaterInertia() {
 		return 0.99F;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public boolean isInRangeToRender3d(double x, double y, double z) {
+	public boolean shouldRender(double x, double y, double z) {
 		return true;
 	}
 	
 	public static EntityType.Builder<?> build(EntityType.Builder<?> builder) {
 		@SuppressWarnings("unchecked")
 		EntityType.Builder<OverchargedHammerEntity> entityBuilder = (EntityType.Builder<OverchargedHammerEntity>) builder;
-		return entityBuilder.size(0.25f, 0.25f);
+		return entityBuilder.sized(0.25f, 0.25f);
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

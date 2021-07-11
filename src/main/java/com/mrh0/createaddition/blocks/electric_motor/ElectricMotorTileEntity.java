@@ -66,7 +66,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		super.addBehaviours(behaviours);
 
 		CenteredSideValueBoxTransform slot =
-			new CenteredSideValueBoxTransform((motor, side) -> motor.get(ElectricMotorBlock.FACING) == side.getOpposite());
+			new CenteredSideValueBoxTransform((motor, side) -> motor.getValue(ElectricMotorBlock.FACING) == side.getOpposite());
 
 		generatedSpeed = new ScrollValueBehaviour(Lang.translate("generic.speed"), this, slot);
 		generatedSpeed.between(-RPM_RANGE, RPM_RANGE);
@@ -105,9 +105,9 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").formatted(TextFormatting.GRAY)));
+		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
-				.formatted(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").formatted(TextFormatting.DARK_GRAY)));
+				.withStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").withStyle(TextFormatting.DARK_GRAY)));
 		added = true;
 		return added;
 	}
@@ -123,7 +123,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	public float getGeneratedSpeed() {
 		if (!CABlocks.ELECTRIC_MOTOR.has(getBlockState()))
 			return 0;
-		return convertToDirection(active ? generatedSpeed.getValue() : 0, getBlockState().get(ElectricMotorBlock.FACING));
+		return convertToDirection(active ? generatedSpeed.getValue() : 0, getBlockState().getValue(ElectricMotorBlock.FACING));
 	}
 	
 	@Override
@@ -137,7 +137,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)) && !world.isRemote)
+		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)) && !level.isClientSide)
 			return lazyEnergy.cast();
 		if(CreateAddition.CC_ACTIVE) {
 			if(Peripherals.isPeripheral(cap))
@@ -147,7 +147,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	public boolean isEnergyInput(Direction side) {
-		return side != getBlockState().get(ElectricMotorBlock.FACING);
+		return side != getBlockState().getValue(ElectricMotorBlock.FACING);
 	}
 
 	public boolean isEnergyOutput(Direction side) {
@@ -180,8 +180,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	@Override
-	public void remove() {
-		super.remove();
+	public void setRemoved() {
+		super.setRemoved();
 		lazyEnergy.invalidate();
 		if(lazyPeripheral != null)
 			lazyPeripheral.invalidate();
@@ -207,7 +207,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		}
 		
 		//Old Lazy
-		if(world.isRemote())
+		if(level.isClientSide())
 			return;
 		int con = getEnergyConsumptionRate(generatedSpeed.getValue());
 		if(!active) {

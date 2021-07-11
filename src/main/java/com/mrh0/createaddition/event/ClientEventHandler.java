@@ -30,8 +30,8 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public static void playerRendererEvent(RenderWorldLastEvent evt) {
 		MatrixStack matrixStackIn = evt.getMatrixStack();
-		IRenderTypeBuffer bufferIn = Minecraft.getInstance().getBufferBuilders().getOutlineVertexConsumers();//evt.getBuffers();
-		ItemStack stack = Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND);//evt.getItemStack();
+		IRenderTypeBuffer bufferIn = Minecraft.getInstance().renderBuffers().outlineBufferSource();//evt.getBuffers();
+		ItemStack stack = Minecraft.getInstance().player.getItemInHand(Hand.MAIN_HAND);//evt.getItemStack();
 		if(stack.isEmpty())
 			return;
 		if(!(stack.getItem() instanceof WireSpool))
@@ -43,10 +43,10 @@ public class ClientEventHandler {
 		BlockPos pos = WireSpool.getPos(stack.getTag());
 		int node = WireSpool.getNode(stack.getTag());
 		
-		World world = Minecraft.getInstance().world;
+		World world = Minecraft.getInstance().level;
 		
 		
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 		if(te == null)
 			return;
 		if(!(te instanceof IWireNode))
@@ -57,15 +57,15 @@ public class ClientEventHandler {
 		
 		ClientPlayerEntity p = Minecraft.getInstance().player;
 		
-		float doubleX = (float) (p.lastTickPosX + (p.getPositionVec().getX() - p.lastTickPosX) * evt.getPartialTicks()); 
-		float doubleY = (float) (p.lastTickPosY + (p.getPositionVec().getY() - p.lastTickPosY) * evt.getPartialTicks()); 
-		float doubleZ = (float) (p.lastTickPosZ + (p.getPositionVec().getZ() - p.lastTickPosZ) * evt.getPartialTicks()); 
+		float doubleX = (float) (p.xOld + (p.position().x() - p.xOld) * evt.getPartialTicks()); 
+		float doubleY = (float) (p.yOld + (p.position().y() - p.yOld) * evt.getPartialTicks()); 
+		float doubleZ = (float) (p.zOld + (p.position().z() - p.zOld) * evt.getPartialTicks()); 
 		
-		float tx = te.getPos().getX() + wn.getNodeOffset(node).getX() + 0.5f;
-		float ty = te.getPos().getY() + wn.getNodeOffset(node).getY() - 1f;
-		float tz = te.getPos().getZ() + wn.getNodeOffset(node).getZ() + 0.5f;
+		float tx = te.getBlockPos().getX() + wn.getNodeOffset(node).x() + 0.5f;
+		float ty = te.getBlockPos().getY() + wn.getNodeOffset(node).y() - 1f;
+		float tz = te.getBlockPos().getZ() + wn.getNodeOffset(node).z() + 0.5f;
 
-		matrixStackIn.push();
+		matrixStackIn.pushPose();
 
 		// IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.getLines());
 		// Matrix4f matrix4f1 = matrixStackIn.peek().getModel();
@@ -76,19 +76,19 @@ public class ClientEventHandler {
 
 		//matrixStackIn.translate(tx + .5f, ty + .5f, tz + .5f);
 		matrixStackIn.translate(0,-0.2f,0);
-		WireNodeRenderer.wireRender(te, p.getBlockPos(), matrixStackIn, bufferIn, -doubleX + tx, -doubleY + ty, -doubleZ + tz, WireSpool.getWireType(stack.getItem()), dis);
-		matrixStackIn.pop();
+		WireNodeRenderer.wireRender(te, p.blockPosition(), matrixStackIn, bufferIn, -doubleX + tx, -doubleY + ty, -doubleZ + tz, WireSpool.getWireType(stack.getItem()), dis);
+		matrixStackIn.popPose();
 	}
 	
 	@SubscribeEvent
 	public static void getFogDensity(EntityViewRenderEvent.FogDensity event) {
 		ActiveRenderInfo info = event.getInfo();
-		FluidState fluidState = info.getFluidState();
+		FluidState fluidState = info.getFluidInCamera();
 		if (fluidState.isEmpty())
 			return;
-		Fluid fluid = fluidState.getFluid();
+		Fluid fluid = fluidState.getType();
 
-		if (fluid.isEquivalentTo(CAFluids.SEED_OIL.get())) {
+		if (fluid.isSame(CAFluids.SEED_OIL.get())) {
 			event.setDensity(3.5f);
 			event.setCanceled(true);
 			return;
@@ -98,12 +98,12 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public static void getFogColor(EntityViewRenderEvent.FogColors event) {
 		ActiveRenderInfo info = event.getInfo();
-		FluidState fluidState = info.getFluidState();
+		FluidState fluidState = info.getFluidInCamera();
 		if (fluidState.isEmpty())
 			return;
-		Fluid fluid = fluidState.getFluid();
+		Fluid fluid = fluidState.getType();
 
-		if (fluid.isEquivalentTo(CAFluids.SEED_OIL.get())) {
+		if (fluid.isSame(CAFluids.SEED_OIL.get())) {
 			event.setRed(70 / 256f);
 			event.setGreen(74 / 256f);
 			event.setBlue(52 / 256f);

@@ -23,7 +23,7 @@ public class CAShapes {
 	}
 
 	public static VoxelShape cuboid(double x1, double y1, double z1, double x2, double y2, double z2) {
-		return Block.makeCuboidShape(x1, y1, z1, x2, y2, z2);
+		return Block.box(x1, y1, z1, x2, y2, z2);
 	}
 
 	public static class Builder {
@@ -44,7 +44,7 @@ public class CAShapes {
 
 		public Builder erase(double x1, double y1, double z1, double x2, double y2, double z2) {
 			this.shape =
-				VoxelShapes.combineAndSimplify(shape, cuboid(x1, y1, z1, x2, y2, z2), IBooleanFunction.ONLY_FIRST);
+				VoxelShapes.join(shape, cuboid(x1, y1, z1, x2, y2, z2), IBooleanFunction.ONLY_FIRST);
 			return this;
 		}
 

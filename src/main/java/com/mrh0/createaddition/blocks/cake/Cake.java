@@ -12,6 +12,8 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class Cake extends CakeBlock {
 
 	public Cake(Properties props) {
@@ -19,10 +21,10 @@ public class Cake extends CakeBlock {
 	}
 
 	@Override
-	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult ray) {
-		if (world.isRemote) {
-			ItemStack itemstack = player.getHeldItem(hand);
-			if (this.tryEat(world, pos, state, player).isAccepted())
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult ray) {
+		if (world.isClientSide) {
+			ItemStack itemstack = player.getItemInHand(hand);
+			if (this.tryEat(world, pos, state, player).consumesAction())
 				return ActionResultType.SUCCESS;
 			if (itemstack.isEmpty())
 				return ActionResultType.CONSUME;
@@ -34,11 +36,11 @@ public class Cake extends CakeBlock {
 		if (!player.canEat(false))
 			return ActionResultType.PASS;
 		else {
-			player.addStat(Stats.EAT_CAKE_SLICE);
-			player.getFoodStats().addStats(3, 0.3F);
-			int i = state.get(BITES);
+			player.awardStat(Stats.EAT_CAKE_SLICE);
+			player.getFoodData().eat(3, 0.3F);
+			int i = state.getValue(BITES);
 			if (i < 6)
-				world.setBlockState(pos, state.with(BITES, Integer.valueOf(i + 1)), 3);
+				world.setBlock(pos, state.setValue(BITES, Integer.valueOf(i + 1)), 3);
 			else
 				world.removeBlock(pos, false);
 			return ActionResultType.SUCCESS;

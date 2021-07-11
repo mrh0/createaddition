@@ -58,16 +58,16 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 	}
 
 	protected void onFluidStackChanged(FluidStack newFluidStack) {
-		if (!hasWorld())
+		if (!hasLevel())
 			return;
 		update(newFluidStack);
 	}
 	
 	private void update(FluidStack stack) {
-		if(world.isRemote())
+		if(level.isClientSide())
 			return;
 		if(stack.getFluid() != lastFluid)
-			recipeCache = find(stack, world);
+			recipeCache = find(stack, level);
 		lastFluid = stack.getFluid();
 		changed = true;
 	}
@@ -83,12 +83,12 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 	}
 
 	@Override
-	protected boolean canSmelt(IRecipe<?> recipe) {
+	protected boolean canBurn(IRecipe<?> recipe) {
 		return true;
 	}
 
 	private boolean burning() {
-		return this.burnTime > 0;
+		return this.litTime > 0;
 	}
 	
 	public int getBurnTime(FluidStack fluid) {
@@ -98,7 +98,7 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 	boolean first = true;
 
 	public void tick() {
-		if(world.isRemote())
+		if(level.isClientSide())
 			return;
 		if(first)
 			update(tankInventory.getFluid());
@@ -107,10 +107,10 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 		if(updateTimeout < 0)
 			updateTimeout = 0;
 		if(updateTimeout == 0 && changed) {
-			if (!world.isRemote) {
-				markDirty();
-				if (world != null)
-					world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 2 | 4 | 16);
+			if (!level.isClientSide) {
+				setChanged();
+				if (level != null)
+					level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2 | 4 | 16);
 				changed = false;
 			}
 			updateTimeout = 10;
@@ -118,12 +118,12 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 		boolean flag = this.burning();
 		boolean flag1 = false;
 		if (this.burning())
-			--this.burnTime;
+			--this.litTime;
 
-		if (!this.world.isRemote()) {
+		if (!this.level.isClientSide()) {
 			if (!this.burning()) {
 				
-				this.burnTime = getBurnTime(tankInventory.getFluid());
+				this.litTime = getBurnTime(tankInventory.getFluid());
 				if (this.burning()) {
 					flag1 = true;
 					updateTimeout = 0;
@@ -133,12 +133,12 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 
 			if (flag != this.burning()) {
 				flag1 = true;
-				this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(AbstractFurnaceBlock.LIT,
+				this.level.setBlock(this.worldPosition, this.level.getBlockState(this.worldPosition).setValue(AbstractFurnaceBlock.LIT,
 						Boolean.valueOf(this.burning())), 3);
 			}
 
 			if (flag1)
-				this.markDirty();
+				this.setChanged();
 		}
 	}
 
@@ -146,11 +146,11 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 		return SLOTS;
 	}
 
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean canPlaceItem(int slot, ItemStack stack) {
 		return false;
 	}
 
-	public boolean canExtractItem(int slot, ItemStack stack, Direction dir) {
+	public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
 		return false;
 	}
 
@@ -162,25 +162,25 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundNBT nbt) {
-		super.fromTag(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		tankInventory.readFromNBT(nbt.getCompound("TankContent"));
 	}
 	
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
+	public CompoundNBT save(CompoundNBT nbt) {
 		nbt.put("TankContent", tankInventory.writeToNBT(new CompoundNBT()));
-		return super.write(nbt);
+		return super.save(nbt);
 	}
 	
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(getPos(), 1, write(new CompoundNBT()));
+		return new SUpdateTileEntityPacket(getBlockPos(), 1, save(new CompoundNBT()));
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		fromTag(getBlockState(), pkt.getNbtCompound());
+		load(getBlockState(), pkt.getTag());
 	}
 	
 	@Override
@@ -189,6 +189,6 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 	}
 	
 	public Optional<CrudeBurningRecipe> find(FluidStack stack, World world) {
-		return world.getRecipeManager().getRecipe(CrudeBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
+		return world.getRecipeManager().getRecipeFor(CrudeBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
 	}
 }

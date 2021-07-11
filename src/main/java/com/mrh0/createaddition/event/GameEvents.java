@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 public class GameEvents {
 	@SubscribeEvent
 	public static void worldTickEvent(TickEvent.WorldTickEvent evt) {
-		if(evt.world.isRemote())
+		if(evt.world.isClientSide())
 			return;
 		if(evt.phase == Phase.END)
 			return;
@@ -29,7 +29,7 @@ public class GameEvents {
 	
 	@SubscribeEvent
 	public static void loadEvent(WorldEvent.Load evt) {
-		if(evt.getWorld().isRemote())
+		if(evt.getWorld().isClientSide())
 			return;
 		new EnergyNetworkManager(evt.getWorld());
 	}

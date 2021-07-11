@@ -15,6 +15,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
+import net.minecraft.item.Item.Properties;
+
 public class DevTool extends Item {
 
 	public DevTool(Properties props) {
@@ -52,9 +54,9 @@ public class DevTool extends Item {
     }
 	
 	@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
     	CompoundNBT nbt = stack.getTag();
-    	super.addInformation(stack, worldIn, tooltip, flagIn);
+    	super.appendHoverText(stack, worldIn, tooltip, flagIn);
     	if(hasPos(nbt))
     		tooltip.add(new TranslationTextComponent("item."+CreateAddition.MODID+".devtool.tooltip"));
     }

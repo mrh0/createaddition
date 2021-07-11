@@ -29,6 +29,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class CrudeBurner extends AbstractFurnaceBlock implements ITE<CrudeBurnerTileEntity> {
 
 	public CrudeBurner(Properties props) {
@@ -36,18 +38,18 @@ public class CrudeBurner extends AbstractFurnaceBlock implements ITE<CrudeBurner
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
+	public TileEntity newBlockEntity(IBlockReader world) {
 		return CATileEntities.CRUDE_BURNER.create();
 	}
 
 	@Override
-	protected void interactWith(World world, BlockPos pos, PlayerEntity player) {
-		if(world.isRemote())
+	protected void openContainer(World world, BlockPos pos, PlayerEntity player) {
+		if(world.isClientSide())
 			return;
-		TileEntity tileentity = world.getTileEntity(pos);
+		TileEntity tileentity = world.getBlockEntity(pos);
 		if (tileentity instanceof CrudeBurnerTileEntity) {
 			CrudeBurnerTileEntity cbte = (CrudeBurnerTileEntity) tileentity;
-			ItemStack held = player.getHeldItemMainhand();
+			ItemStack held = player.getMainHandItem();
 			if(!(held.getItem() instanceof BucketItem))
 				return;
 			LazyOptional<IFluidHandlerItem> cap = held.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
@@ -69,8 +71,8 @@ public class CrudeBurner extends AbstractFurnaceBlock implements ITE<CrudeBurner
 				return;
 			tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), FluidAction.EXECUTE);
 			if(!player.isCreative())
-				player.setHeldItem(Hand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
-			player.playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1f, 1f);
+				player.setItemInHand(Hand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
+			player.playSound(SoundEvents.BUCKET_EMPTY, 1f, 1f);
 			//FluidStack.EMPTY.getFluid().getFilledBucket();
 			/*for(int i = 0; i < handler.getTanks(); i++) {
 				FluidStack stack = handler.getFluidInTank(i);
@@ -89,21 +91,21 @@ public class CrudeBurner extends AbstractFurnaceBlock implements ITE<CrudeBurner
 	}
 
 	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-	      if (state.get(LIT)) {
+	      if (state.getValue(LIT)) {
 	         double d0 = (double)pos.getX() + 0.5D;
 	         double d1 = (double)pos.getY();
 	         double d2 = (double)pos.getZ() + 0.5D;
 	         if (rand.nextDouble() < 0.1D) {
-	            world.playSound(d0, d1, d2, SoundEvents.BLOCK_BLASTFURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+	            world.playLocalSound(d0, d1, d2, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 	         }
 
-	         Direction direction = state.get(FACING);
+	         Direction direction = state.getValue(FACING);
 	         Direction.Axis direction$axis = direction.getAxis();
 	         //double d3 = 0.52D;
 	         double d4 = rand.nextDouble() * 0.6D - 0.3D;
-	         double d5 = direction$axis == Direction.Axis.X ? (double)direction.getXOffset() * 0.52D : d4;
+	         double d5 = direction$axis == Direction.Axis.X ? (double)direction.getStepX() * 0.52D : d4;
 	         double d6 = rand.nextDouble() * 9.0D / 16.0D;
-	         double d7 = direction$axis == Direction.Axis.Z ? (double)direction.getZOffset() * 0.52D : d4;
+	         double d7 = direction$axis == Direction.Axis.Z ? (double)direction.getStepZ() * 0.52D : d4;
 	         world.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
 	      }
 	   }

@@ -21,6 +21,6 @@ public abstract class CARecipeCategory<T extends IRecipe<?>> extends CreateRecip
 	
 	@Override
 	public String getTitle() {
-		return new TranslationTextComponent( CreateAddition.MODID + ".recipe." + name).getStringTruncated(Integer.MAX_VALUE);
+		return new TranslationTextComponent( CreateAddition.MODID + ".recipe." + name).getString(Integer.MAX_VALUE);
 	}
 }

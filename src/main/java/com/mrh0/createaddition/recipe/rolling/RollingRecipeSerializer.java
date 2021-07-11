@@ -14,16 +14,16 @@ public class RollingRecipeSerializer extends CARecipeSerializer<RollingRecipe>{
 	public RollingRecipeSerializer() {}
 	
 	@Override
-	public RollingRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-		ItemStack output = buffer.readItemStack();
-		Ingredient input = Ingredient.read(buffer);
+	public RollingRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
+		ItemStack output = buffer.readItem();
+		Ingredient input = Ingredient.fromNetwork(buffer);
 		return new RollingRecipe(input, output, recipeId);
 	}
 
 	@Override
-	public void write(PacketBuffer buffer, RollingRecipe recipe) {
-		buffer.writeItemStack(recipe.output);
-		recipe.ingredient.write(buffer);
+	public void toNetwork(PacketBuffer buffer, RollingRecipe recipe) {
+		buffer.writeItem(recipe.output);
+		recipe.ingredient.toNetwork(buffer);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class RollingRecipeSerializer extends CARecipeSerializer<RollingRecipe>{
 	@Override
 	public RollingRecipe readFromJson(ResourceLocation recipeId, JsonObject json) {
 		ItemStack output = readOutput(json.get("result"));
-		Ingredient input = Ingredient.deserialize(json.get("input"));
+		Ingredient input = Ingredient.fromJson(json.get("input"));
 		return new RollingRecipe(input, output, recipeId);
 	}
 

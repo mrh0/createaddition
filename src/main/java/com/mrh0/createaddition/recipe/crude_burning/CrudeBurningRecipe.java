@@ -21,7 +21,7 @@ public class CrudeBurningRecipe implements IRecipe<FluidRecipeWrapper> {
 	
 	public static IRecipeType<CrudeBurningRecipe> TYPE = new CrudeBurningRecipeType();
 	@SuppressWarnings("deprecation")
-	public static IRecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.getOrDefault(new ResourceLocation(CreateAddition.MODID, "crude_burning"));
+	public static IRecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "crude_burning"));
 	public CrudeBurningRecipe(ResourceLocation id, FluidIngredient fluid, int burnTime) {
 		this.id = id;
 		this.fluidIngredients = fluid;
@@ -40,17 +40,17 @@ public class CrudeBurningRecipe implements IRecipe<FluidRecipeWrapper> {
 	}
 
 	@Override
-	public ItemStack getCraftingResult(FluidRecipeWrapper wrapper) {
+	public ItemStack assemble(FluidRecipeWrapper wrapper) {
 		return new ItemStack(Items.AIR);
 	}
 
 	@Override
-	public boolean canFit(int w, int h) {
+	public boolean canCraftInDimensions(int w, int h) {
 		return true;
 	}
 
 	@Override
-	public ItemStack getRecipeOutput() {
+	public ItemStack getResultItem() {
 		return new ItemStack(Items.AIR);
 	}
 

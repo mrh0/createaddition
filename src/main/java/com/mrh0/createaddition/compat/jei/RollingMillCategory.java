@@ -31,7 +31,7 @@ public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 	public void setIngredients(RollingRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputIngredients(recipe.getIngredients());
 		ArrayList<ItemStack> stacks = new ArrayList<>();
-		stacks.add(recipe.getRecipeOutput());
+		stacks.add(recipe.getResultItem());
 		ingredients.setOutputs(VanillaTypes.ITEM, stacks);
 	}
 
@@ -39,9 +39,9 @@ public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 	public void setRecipe(IRecipeLayout recipeLayout, RollingRecipe recipe, IIngredients ingredients) {
 		IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
 		itemStacks.init(0, true, 14, 8);
-		itemStacks.set(0, Arrays.asList(recipe.getIngredient().getMatchingStacks()));
+		itemStacks.set(0, Arrays.asList(recipe.getIngredient().getItems()));
 
-		ItemStack result = recipe.getRecipeOutput();
+		ItemStack result = recipe.getResultItem();
 		int yOffset = (0 / 2) * -19;
 
 		itemStacks.init(1, false, 139, 27 + yOffset);

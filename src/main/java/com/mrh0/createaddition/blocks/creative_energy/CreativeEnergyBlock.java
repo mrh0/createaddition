@@ -14,6 +14,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class CreativeEnergyBlock extends CrateBlock implements ITE<CreativeEnergyTileEntity> {
 
 	public static final VoxelShape CREATIVE_ENERGY_SHAPE = CAShapes.shape(1,0,1,15,16,15).add(0,2,0,16,14,16).build();
@@ -44,7 +46,7 @@ public class CreativeEnergyBlock extends CrateBlock implements ITE<CreativeEnerg
 	
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
+		TileEntity tileentity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
 		if(tileentity != null) {
 			if(tileentity instanceof CreativeEnergyTileEntity) {
 				((CreativeEnergyTileEntity)tileentity).updateCache();

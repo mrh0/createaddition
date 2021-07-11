@@ -22,6 +22,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
+import net.minecraft.item.Item.Properties;
+
 public class WireSpool extends Item {
 
 	public WireSpool(Properties props) {
@@ -29,15 +31,15 @@ public class WireSpool extends Item {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext c) {
+	public ActionResultType useOn(ItemUseContext c) {
 		//if(c.getWorld().isRemote())
 		//	return ActionResultType.PASS;
 		
-		CompoundNBT nbt = c.getItem().getTag();
+		CompoundNBT nbt = c.getItemInHand().getTag();
 		if(nbt == null)
 			nbt = new CompoundNBT();
 		
-		TileEntity te = c.getWorld().getTileEntity(c.getPos());
+		TileEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
 		if(te == null)
 			return ActionResultType.PASS;
 		if(!(te instanceof IWireNode))
@@ -56,43 +58,43 @@ public class WireSpool extends Item {
 		if(hasPos(nbt)) {
 			WireConnectResult result;
 			
-			WireType connectionType = IWireNode.getTypeOfConnection(c.getWorld(), c.getPos(), getPos(nbt));
+			WireType connectionType = IWireNode.getTypeOfConnection(c.getLevel(), c.getClickedPos(), getPos(nbt));
 			
-			if(isRemover(c.getItem().getItem()))
-				result = IWireNode.disconnect(c.getWorld(), c.getPos(), getPos(nbt));
+			if(isRemover(c.getItemInHand().getItem()))
+				result = IWireNode.disconnect(c.getLevel(), c.getClickedPos(), getPos(nbt));
 			else
-				result = IWireNode.connect(c.getWorld(), getPos(nbt), getNode(nbt), c.getPos(), node.getNodeFromPos(c.getHitVec()), getWireType(c.getItem().getItem()));
+				result = IWireNode.connect(c.getLevel(), getPos(nbt), getNode(nbt), c.getClickedPos(), node.getNodeFromPos(c.getClickLocation()), getWireType(c.getItemInHand().getItem()));
 
-			te.markDirty();
+			te.setChanged();
 			
 			if(!c.getPlayer().isCreative()) {
 				if(result == WireConnectResult.REMOVED) {
-					c.getItem().shrink(1);
+					c.getItemInHand().shrink(1);
 					ItemStack stack = connectionType.getSourceDrop();
-					boolean shouldDrop = !c.getPlayer().addItemStackToInventory(stack);
+					boolean shouldDrop = !c.getPlayer().addItem(stack);
 					if(shouldDrop)
-						c.getPlayer().dropItem(stack, false);
+						c.getPlayer().drop(stack, false);
 				}
 				else if(result.isLinked()) {
-					c.getItem().shrink(1);
+					c.getItemInHand().shrink(1);
 					ItemStack stack = new ItemStack(CAItems.SPOOL.get(), 1);
-					boolean shouldDrop = !c.getPlayer().addItemStackToInventory(stack);
+					boolean shouldDrop = !c.getPlayer().addItem(stack);
 					if(shouldDrop)
-						c.getPlayer().dropItem(stack, false);
+						c.getPlayer().drop(stack, false);
 				}
 			}
-			c.getItem().setTag(null);
-			c.getPlayer().sendStatusMessage(result.getMessage(), true);
+			c.getItemInHand().setTag(null);
+			c.getPlayer().displayClientMessage(result.getMessage(), true);
 			
 		}
 		else {
-			int index = node.getNodeFromPos(c.getHitVec());
+			int index = node.getNodeFromPos(c.getClickLocation());
 			if(index < 0)
 				return ActionResultType.PASS;
-			if(!isRemover(c.getItem().getItem()))
-				c.getPlayer().sendStatusMessage(WireConnectResult.getConnect(node.isNodeInput(index), node.isNodeOutput(index)).getMessage(), true);
-			c.getItem().setTag(null);
-			c.getItem().setTag(setContent(nbt, node.getMyPos(), index));
+			if(!isRemover(c.getItemInHand().getItem()))
+				c.getPlayer().displayClientMessage(WireConnectResult.getConnect(node.isNodeInput(index), node.isNodeOutput(index)).getMessage(), true);
+			c.getItemInHand().setTag(null);
+			c.getItemInHand().setTag(setContent(nbt, node.getMyPos(), index));
 		}
 		
 		return ActionResultType.CONSUME;
@@ -127,9 +129,9 @@ public class WireSpool extends Item {
     }
 	
 	@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
     	CompoundNBT nbt = stack.getTag();
-    	super.addInformation(stack, worldIn, tooltip, flagIn);
+    	super.appendHoverText(stack, worldIn, tooltip, flagIn);
     	if(hasPos(nbt))
     		tooltip.add(new TranslationTextComponent("item."+CreateAddition.MODID+".spool.nbt"));
     }

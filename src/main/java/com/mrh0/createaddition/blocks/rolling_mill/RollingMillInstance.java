@@ -15,13 +15,13 @@ public class RollingMillInstance extends ShaftInstance implements IDynamicInstan
         super(dispatcher, tile);
 
         shaft = getRotatingMaterial()
-                .getModel(AllBlocks.SHAFT.getDefaultState().with(ShaftBlock.AXIS, blockState.get(RollingMillBlock.HORIZONTAL_FACING).getAxis()))
+                .getModel(AllBlocks.SHAFT.getDefaultState().setValue(ShaftBlock.AXIS, blockState.getValue(RollingMillBlock.HORIZONTAL_FACING).getAxis()))
                 .createInstance();
 
         //Quaternion q = Vector3f.POSITIVE_Y.getDegreesQuaternion(AngleHelper.horizontalAngle(blockState.get(RollingMillBlock.HORIZONTAL_FACING)));
 
         //shaft.setRotation(q);
-        shaft.setRotationAxis(blockState.get(RollingMillBlock.HORIZONTAL_FACING).getAxis());
+        shaft.setRotationAxis(blockState.getValue(RollingMillBlock.HORIZONTAL_FACING).getAxis());
 
         transformModels();
     }

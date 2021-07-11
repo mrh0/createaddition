@@ -36,14 +36,14 @@ public class CrudeBurningCategory extends CARecipeCategory<CrudeBurningRecipe> {
 	public void setIngredients(CrudeBurningRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputIngredients(new ArrayList<Ingredient>());
 		ingredients.setOutputs(VanillaTypes.ITEM, new ArrayList<ItemStack>());
-		ingredients.setInputLists(VanillaTypes.FLUID, NonNullList.from(recipe.getFluidIngredient().getMatchingFluidStacks()));
+		ingredients.setInputLists(VanillaTypes.FLUID, NonNullList.of(recipe.getFluidIngredient().getMatchingFluidStacks()));
 	}
 
 	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, CrudeBurningRecipe recipe, IIngredients ingredients) {
 		IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
 		
-		NonNullList<FluidIngredient> fluidIngredients = NonNullList.from(recipe.getFluidIngredient());
+		NonNullList<FluidIngredient> fluidIngredients = NonNullList.of(recipe.getFluidIngredient());
 		
 		List<FluidStack> out = new ArrayList<FluidStack>();
 		
@@ -67,6 +67,6 @@ public class CrudeBurningCategory extends CARecipeCategory<CrudeBurningRecipe> {
 
 		AllGuiTextures.JEI_SLOT.draw(matrixStack, 80, 6);
 
-		Minecraft.getInstance().fontRenderer.draw(matrixStack, new TranslationTextComponent("createaddition.recipe.crude_burning.burn_time").getStringTruncated(Integer.MAX_VALUE) + ": " + ((double)recipe.getBurnTime()/20d)+"s", 9, 34, 4210752);
+		Minecraft.getInstance().font.draw(matrixStack, new TranslationTextComponent("createaddition.recipe.crude_burning.burn_time").getString(Integer.MAX_VALUE) + ": " + ((double)recipe.getBurnTime()/20d)+"s", 9, 34, 4210752);
 	}
 }

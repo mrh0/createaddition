@@ -31,6 +31,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class RollingMillBlock extends HorizontalKineticBlock implements ITE<RollingMillTileEntity> {
 
 	public static final VoxelShape ROLLING_MILL_SHAPE = CAShapes.shape(0,0,0,16,5,16).add(2,0,2,14,16,14).build();
@@ -55,10 +57,10 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 	}
 	
 	@Override
-	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (!player.getHeldItem(handIn).isEmpty())
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		if (!player.getItemInHand(handIn).isEmpty())
 			return ActionResultType.PASS;
-		if (worldIn.isRemote)
+		if (worldIn.isClientSide)
 			return ActionResultType.SUCCESS;
 
 		withTileEntityDo(worldIn, pos, rollingMill -> {
@@ -80,7 +82,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 				}
 			}
 
-			rollingMill.markDirty();
+			rollingMill.setChanged();
 			rollingMill.sendData();
 		});
 
@@ -88,10 +90,10 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 	}
 
 	@Override
-	public void onLanded(IBlockReader worldIn, Entity entityIn) {
-		super.onLanded(worldIn, entityIn);
+	public void updateEntityAfterFallOn(IBlockReader worldIn, Entity entityIn) {
+		super.updateEntityAfterFallOn(worldIn, entityIn);
 
-		if (entityIn.world.isRemote)
+		if (entityIn.level.isClientSide)
 			return;
 		if (!(entityIn instanceof ItemEntity))
 			return;
@@ -99,7 +101,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 			return;
 
 		RollingMillTileEntity rollingMill = null;
-		for (BlockPos pos : Iterate.hereAndBelow(entityIn.getBlockPos())) {
+		for (BlockPos pos : Iterate.hereAndBelow(entityIn.blockPosition())) {
 			rollingMill = getTileEntity(worldIn, pos);
 		}
 		if (rollingMill == null)
@@ -118,14 +120,14 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
 			withTileEntityDo(worldIn, pos, te -> {
 				ItemHelper.dropContents(worldIn, pos, te.inputInv);
 				ItemHelper.dropContents(worldIn, pos, te.outputInv);
 			});
 
-			worldIn.removeTileEntity(pos);
+			worldIn.removeBlockEntity(pos);
 		}
 	}
 
@@ -133,19 +135,19 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		Direction prefferedSide = getPreferredHorizontalFacing(context);
 		if (prefferedSide != null)
-			return getDefaultState().with(HORIZONTAL_FACING, prefferedSide);
+			return defaultBlockState().setValue(HORIZONTAL_FACING, prefferedSide);
 		return super.getStateForPlacement(context);
 	}
 
 	@Override
 	public Axis getRotationAxis(BlockState state) {
-		return state.get(HORIZONTAL_FACING)
+		return state.getValue(HORIZONTAL_FACING)
 			.getAxis();
 	}
 
 	@Override
 	public boolean hasShaftTowards(IWorldReader world, BlockPos pos, BlockState state, Direction face) {
-		return face.getAxis() == state.get(HORIZONTAL_FACING)
+		return face.getAxis() == state.getValue(HORIZONTAL_FACING)
 			.getAxis();
 	}
 }

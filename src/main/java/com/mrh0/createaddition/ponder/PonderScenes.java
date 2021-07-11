@@ -39,7 +39,7 @@ public class PonderScenes {
 
 		Vector3d blockSurface = util.vector.blockSurface(motor, Direction.EAST);
 		AxisAlignedBB point = new AxisAlignedBB(blockSurface, blockSurface);
-		AxisAlignedBB expanded = point.grow(1 / 16f, 1 / 5f, 1 / 5f);
+		AxisAlignedBB expanded = point.inflate(1 / 16f, 1 / 5f, 1 / 5f);
 
 		scene.overlay.chaseBoundingBoxOutline(PonderPalette.WHITE, blockSurface, point, 1);
 		scene.idle(1);
@@ -224,7 +224,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(heater));
 		scene.idle(60);
 		
-		scene.world.setBlocks(util.select.position(furnace), Blocks.FURNACE.getDefaultState().with(AbstractFurnaceBlock.LIT, true), false);
+		scene.world.setBlocks(util.select.position(furnace), Blocks.FURNACE.defaultBlockState().setValue(AbstractFurnaceBlock.LIT, true), false);
 		scene.overlay.showText(50)
 		.text("The Furnace will stay lit as long as enough energy is provided")
 		.placeNearTarget()

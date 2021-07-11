@@ -33,18 +33,18 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 		for (int i = 0; i < te.getNodeCount(); i++) {
 			if (te.getNodeType(i) != null) {
 				Vector3f d1 = te.getNodeOffset(i);
-				float ox1 = ((float) d1.getX());
-				float oy1 = ((float) d1.getY());
-				float oz1 = ((float) d1.getZ());
+				float ox1 = ((float) d1.x());
+				float oy1 = ((float) d1.y());
+				float oz1 = ((float) d1.z());
 
 				IWireNode wn = te.getNode(i);
 				if (wn == null)
 					return;
 
 				Vector3f d2 = wn.getNodeOffset(te.getOtherNodeIndex(i)); // get other
-				float ox2 = ((float) d2.getX());
-				float oy2 = ((float) d2.getY());
-				float oz2 = ((float) d2.getZ());
+				float ox2 = ((float) d2.x());
+				float oy2 = ((float) d2.y());
+				float oz2 = ((float) d2.z());
 
 				BlockPos other = te.getNodePos(i);
 				
@@ -52,7 +52,7 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 				float ty = other.getY() - te.getMyPos().getY();
 				float tz = other.getZ() - te.getMyPos().getZ();
 
-				matrixStackIn.push();
+				matrixStackIn.pushPose();
 
 				// IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.getLines());
 				// Matrix4f matrix4f1 = matrixStackIn.peek().getModel();
@@ -81,7 +81,7 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 				 * 16), type, dis);//tx, ty, tz, } }
 				 */
 
-				matrixStackIn.pop();
+				matrixStackIn.popPose();
 			}
 		}
 	}
@@ -107,28 +107,28 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 
 	public static void wireRender(TileEntity tileEntityIn, BlockPos other, MatrixStack matrix, IRenderTypeBuffer buffer, float x, float y, float z,
 			WireType type, float dis) {
-		matrix.push();
+		matrix.pushPose();
 
 		// matrix.translate(tileEntityIn.getPos().getX(), tileEntityIn.getPos().getY(),
 		// tileEntityIn.getPos().getZ());
 		// float f = (float) 1;
 		// float f1 = (float) 1;
 		// float f2 = (float) 1;
-		IVertexBuilder ivertexbuilder = buffer.getBuffer(RenderType.getLeash());
-		Matrix4f matrix4f = matrix.peek().getModel();
-		float f = MathHelper.fastInverseSqrt(x * x + z * z) * 0.025F / 2.0F;
+		IVertexBuilder ivertexbuilder = buffer.getBuffer(RenderType.leash());
+		Matrix4f matrix4f = matrix.last().pose();
+		float f = MathHelper.fastInvSqrt(x * x + z * z) * 0.025F / 2.0F;
 		float o1 = z * f;
 		float o2 = x * f;
-		BlockPos blockpos1 = tileEntityIn.getPos();//new BlockPos(tileEntityIn.getPos());
+		BlockPos blockpos1 = tileEntityIn.getBlockPos();//new BlockPos(tileEntityIn.getPos());
 		BlockPos blockpos2 = other;//new BlockPos(blockpos1.getX() + x, blockpos1.getY() + y, blockpos1.getZ() + z);
 		//System.out.println("Pos:" + blockpos1 + ":" + blockpos2);
-		int i = tileEntityIn.getWorld().getLightLevel(LightType.BLOCK, blockpos1);
-		int j = tileEntityIn.getWorld().getLightLevel(LightType.BLOCK, blockpos2);
-		int k = tileEntityIn.getWorld().getLightLevel(LightType.SKY, blockpos1);
-		int l = tileEntityIn.getWorld().getLightLevel(LightType.SKY, blockpos2);
+		int i = tileEntityIn.getLevel().getBrightness(LightType.BLOCK, blockpos1);
+		int j = tileEntityIn.getLevel().getBrightness(LightType.BLOCK, blockpos2);
+		int k = tileEntityIn.getLevel().getBrightness(LightType.SKY, blockpos1);
+		int l = tileEntityIn.getLevel().getBrightness(LightType.SKY, blockpos2);
 		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.025F, o1, o2, type, dis);
 		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.0F, o1, o2, type, dis);
-		matrix.pop();
+		matrix.popPose();
 	}
 
 	public static void wirePart(IVertexBuilder vertBuilder, Matrix4f matrix, float x, float y, float z, int l1, int l2,
@@ -166,22 +166,22 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 			float c = 0.015f;
 			
 			if (!sw) {
-				vertBuilder.vertex(matrix, fx -c, fy, fz + (p?-c:c)).color(cr, cg, cb, 255).light(light).endVertex();
+				vertBuilder.vertex(matrix, fx -c, fy, fz + (p?-c:c)).color(cr, cg, cb, 255).uv2(light).endVertex();
 			}
 
-			vertBuilder.vertex(matrix, fx + c, fy, fz + (p?c:-c)).color(cr, cg, cb, 255).light(light).endVertex();
+			vertBuilder.vertex(matrix, fx + c, fy, fz + (p?c:-c)).color(cr, cg, cb, 255).uv2(light).endVertex();
 			if (sw) {
-				vertBuilder.vertex(matrix, fx -c, fy, fz + (p?-c:c)).color(cr, cg, cb, 255).light(light).endVertex();
+				vertBuilder.vertex(matrix, fx -c, fy, fz + (p?-c:c)).color(cr, cg, cb, 255).uv2(light).endVertex();
 			}
 		}
 		else {
 			if (!sw) {
-				vertBuilder.vertex(matrix, fx + o1, fy + a - b, fz - o2).color(cr, cg, cb, 255).light(light).endVertex();
+				vertBuilder.vertex(matrix, fx + o1, fy + a - b, fz - o2).color(cr, cg, cb, 255).uv2(light).endVertex();
 			}
 
-			vertBuilder.vertex(matrix, fx - o1, fy + b, fz + o2).color(cr, cg, cb, 255).light(light).endVertex();
+			vertBuilder.vertex(matrix, fx - o1, fy + b, fz + o2).color(cr, cg, cb, 255).uv2(light).endVertex();
 			if (sw) {
-				vertBuilder.vertex(matrix, fx + o1, fy + a - b, fz - o2).color(cr, cg, cb, 255).light(light).endVertex();
+				vertBuilder.vertex(matrix, fx + o1, fy + a - b, fz - o2).color(cr, cg, cb, 255).uv2(light).endVertex();
 			}
 		}
 		

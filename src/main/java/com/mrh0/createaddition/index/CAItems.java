@@ -49,7 +49,7 @@ public class CAItems {
 	
 	public static final ItemEntry<Multimeter> MULTIMETER =
 		REGISTRATE.item("multimeter", Multimeter::new)
-			.properties((p) -> p.maxStackSize(1))
+			.properties((p) -> p.stacksTo(1))
 			.register();
 	
 	public static final ItemEntry<OverchargedAlloy> OVERCHARGED_ALLOY =

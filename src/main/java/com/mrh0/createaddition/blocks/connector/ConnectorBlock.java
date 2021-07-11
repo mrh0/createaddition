@@ -26,6 +26,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, IWrenchable {
 
 	public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).forDirectional();
@@ -33,12 +35,12 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	
 	public ConnectorBlock(Properties properties) {
 		super(properties);
-		this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH));
+		this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
 	}
 	
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return CONNECTOR_SHAPE.get(state.get(FACING).getOpposite());
+		return CONNECTOR_SHAPE.get(state.getValue(FACING).getOpposite());
 	}
 	
 	@Override
@@ -57,21 +59,21 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	}
 	
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext c) {
-		return this.getDefaultState().with(FACING, c.getFace().getOpposite());
+		return this.defaultBlockState().setValue(FACING, c.getClickedFace().getOpposite());
 	}
 	
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		super.onBlockHarvested(worldIn, pos, state, player);
+	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.playerWillDestroy(worldIn, pos, state, player);
 		if(player.isCreative())
 			return;
-		TileEntity te = worldIn.getTileEntity(pos);
+		TileEntity te = worldIn.getBlockEntity(pos);
 		if(te == null)
 			return;
 		if(!(te instanceof IWireNode))
@@ -85,27 +87,27 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	public ActionResultType onSneakWrenched(BlockState state, ItemUseContext c) {
 		if(c.getPlayer().isCreative())
 			return IWrenchable.super.onSneakWrenched(state, c);
-		TileEntity te = c.getWorld().getTileEntity(c.getPos());
+		TileEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
 		if(te == null)
 			return IWrenchable.super.onSneakWrenched(state, c);
 		if(!(te instanceof IWireNode))
 			return IWrenchable.super.onSneakWrenched(state, c);
 		IWireNode cte = (IWireNode) te;
 		
-		cte.dropWires(c.getWorld(), c.getPlayer());
+		cte.dropWires(c.getLevel(), c.getPlayer());
 		return IWrenchable.super.onSneakWrenched(state, c);
 	}
 	
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
+		TileEntity tileentity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
 		if(tileentity != null) {
 			if(tileentity instanceof ConnectorTileEntity) {
 				((ConnectorTileEntity)tileentity).updateCache();
 			}
 		}
-		if (!state.isValidPosition(worldIn, pos)) {
-			spawnDrops(state, worldIn, pos, tileentity);
+		if (!state.canSurvive(worldIn, pos)) {
+			dropResources(state, worldIn, pos, tileentity);
 			
 			if(tileentity instanceof IWireNode)
 				((IWireNode) tileentity).dropWires(worldIn);
@@ -113,13 +115,13 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 			worldIn.removeBlock(pos, false);
 
 			for (Direction direction : Direction.values())
-				worldIn.notifyNeighborsOfStateChange(pos.offset(direction), this);
+				worldIn.updateNeighborsAt(pos.relative(direction), this);
 		}
 	}
 	
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-		Direction dir = state.get(FACING);
-		BlockState surface = world.getBlockState(pos.offset(dir));
-		return !surface.isIn(Blocks.AIR);
+	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+		Direction dir = state.getValue(FACING);
+		BlockState surface = world.getBlockState(pos.relative(dir));
+		return !surface.is(Blocks.AIR);
 	}
 }

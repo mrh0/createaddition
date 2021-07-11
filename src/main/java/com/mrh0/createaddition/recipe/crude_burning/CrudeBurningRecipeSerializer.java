@@ -14,18 +14,18 @@ public class CrudeBurningRecipeSerializer extends CARecipeSerializer<CrudeBurnin
 
 	public CrudeBurningRecipeSerializer() {
 		// TODO: Should move
-		FluidTags.makeWrapperTag("forge:plantoil");
+		FluidTags.bind("forge:plantoil");
 	}
 	
 	@Override
-	public CrudeBurningRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
+	public CrudeBurningRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
 		int burnTime = buffer.readInt();
 		FluidIngredient fluid = FluidIngredient.read(buffer);
 		return new CrudeBurningRecipe(recipeId, fluid, burnTime);
 	}
 
 	@Override
-	public void write(PacketBuffer buffer, CrudeBurningRecipe recipe) {
+	public void toNetwork(PacketBuffer buffer, CrudeBurningRecipe recipe) {
 		buffer.writeInt(recipe.burnTime);
 		recipe.fluidIngredients.write(buffer);
 	}

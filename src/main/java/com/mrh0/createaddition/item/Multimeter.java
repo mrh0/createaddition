@@ -26,6 +26,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import net.minecraft.item.Item.Properties;
+
 public class Multimeter extends Item {
 
 	public Multimeter(Properties props) {
@@ -33,11 +35,11 @@ public class Multimeter extends Item {
 	}
 	
 	@Override
-	public ActionResultType onItemUse(ItemUseContext c) {
-		TileEntity te = c.getWorld().getTileEntity(c.getPos());
-		if(te != null && !c.getWorld().isRemote()) {
+	public ActionResultType useOn(ItemUseContext c) {
+		TileEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
+		if(te != null && !c.getLevel().isClientSide()) {
 			LazyOptional<IEnergyStorage> cap;
-			cap = te.getCapability(CapabilityEnergy.ENERGY, c.getFace());
+			cap = te.getCapability(CapabilityEnergy.ENERGY, c.getClickedFace());
 			
 			if(te instanceof IWireNode) {
 				IWireNode wn = (IWireNode) te;
@@ -47,31 +49,31 @@ public class Multimeter extends Item {
 			
 			if(cap != null) {
 				IEnergyStorage energy = cap.orElse(null);
-				String measur = new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.measuring").getStringTruncated(Integer.MAX_VALUE);
-				CompoundNBT tag = c.getItem().getTag();
+				String measur = new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.measuring").getString(Integer.MAX_VALUE);
+				CompoundNBT tag = c.getItemInHand().getTag();
 				if(tag == null)
 					tag = new CompoundNBT();
 				if(hasPos(tag)) {
-					if(posEquals(tag, c.getPos(), c.getFace())) {
+					if(posEquals(tag, c.getClickedPos(), c.getClickedFace())) {
 						int de = getDeltaEnergy(tag, energy != null ? energy.getEnergyStored() : 0);
-						long dt = getDeltaTime(tag, c.getWorld().getGameTime());
-						measur = " ["+(dt > 0 ? de/dt : 0) + "fe/t ("+(dt)+(new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.ticks").getStringTruncated(Integer.MAX_VALUE))+")]";
+						long dt = getDeltaTime(tag, c.getLevel().getGameTime());
+						measur = " ["+(dt > 0 ? de/dt : 0) + "fe/t ("+(dt)+(new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.ticks").getString(Integer.MAX_VALUE))+")]";
 						clearPos(tag);
 					}
 					else {
-						setContent(tag, c.getPos(), c.getFace(), c.getWorld().getGameTime(), energy != null ? energy.getEnergyStored() : 0);
+						setContent(tag, c.getClickedPos(), c.getClickedFace(), c.getLevel().getGameTime(), energy != null ? energy.getEnergyStored() : 0);
 					}
 				}
 				else {
-					setContent(tag, c.getPos(), c.getFace(), c.getWorld().getGameTime(), energy != null ? energy.getEnergyStored() : 0);
+					setContent(tag, c.getClickedPos(), c.getClickedFace(), c.getLevel().getGameTime(), energy != null ? energy.getEnergyStored() : 0);
 				}
 				
-				c.getItem().setTag(tag);
+				c.getItemInHand().setTag(tag);
 				
 				c.getPlayer().sendMessage(new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.title")
 						.append(new StringTextComponent(" ").append(getTextComponent(energy,
-								new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.no_capability").getStringTruncated(Integer.MAX_VALUE), "fe")).append(new StringTextComponent(" " + measur))),
-						PlayerEntity.getUUID(c.getPlayer().getGameProfile()));
+								new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.no_capability").getString(Integer.MAX_VALUE), "fe")).append(new StringTextComponent(" " + measur))),
+						PlayerEntity.createPlayerUUID(c.getPlayer().getGameProfile()));
 				return ActionResultType.SUCCESS;
 			}
 		}
@@ -81,7 +83,7 @@ public class Multimeter extends Item {
 	public static ITextComponent getTextComponent(IEnergyStorage ies, String nan, String unit) {
 		if(ies == null)
 			return new StringTextComponent(nan);
-		return new StringTextComponent(format(ies.getEnergyStored())+unit).formatted(TextFormatting.AQUA).append(new StringTextComponent(" / ").formatted(TextFormatting.GRAY)).append(new StringTextComponent(format(ies.getMaxEnergyStored())+unit));
+		return new StringTextComponent(format(ies.getEnergyStored())+unit).withStyle(TextFormatting.AQUA).append(new StringTextComponent(" / ").withStyle(TextFormatting.GRAY)).append(new StringTextComponent(format(ies.getMaxEnergyStored())+unit));
 	}
 	
 	public static ITextComponent getTextComponent(IEnergyStorage ies) {
@@ -97,9 +99,9 @@ public class Multimeter extends Item {
 	}
 	
 	@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
     	CompoundNBT nbt = stack.getTag();
-    	super.addInformation(stack, worldIn, tooltip, flagIn);
+    	super.appendHoverText(stack, worldIn, tooltip, flagIn);
     	if(hasPos(nbt))
     		tooltip.add(new TranslationTextComponent("item."+CreateAddition.MODID+".multimeter.measuring"));
     }
@@ -133,11 +135,11 @@ public class Multimeter extends Item {
 	public static Direction getDirection(CompoundNBT nbt){
 		if(nbt == null)
 			return null;
-    	return Direction.byIndex(nbt.getInt("side"));
+    	return Direction.from3DDataValue(nbt.getInt("side"));
     }
 	
 	public static boolean posEquals(CompoundNBT nbt, BlockPos pos, Direction dir){
-    	return nbt.getInt("x") == pos.getX() && nbt.getInt("y") == pos.getY() && nbt.getInt("z") == pos.getZ() && nbt.getInt("side") == dir.getIndex();
+    	return nbt.getInt("x") == pos.getX() && nbt.getInt("y") == pos.getY() && nbt.getInt("z") == pos.getZ() && nbt.getInt("side") == dir.get3DDataValue();
     }
 	
 	public static void clearPos(CompoundNBT nbt){
@@ -155,7 +157,7 @@ public class Multimeter extends Item {
     	nbt.putInt("x", pos.getX());
     	nbt.putInt("y", pos.getY());
     	nbt.putInt("z", pos.getZ());
-    	nbt.putInt("side", dir.getIndex());
+    	nbt.putInt("side", dir.get3DDataValue());
     	nbt.putLong("tick", tick);
     	nbt.putInt("start", energy);
     	return nbt;

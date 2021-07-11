@@ -30,11 +30,13 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchable {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	
-	public static final VoxelShape CHARGER_SHAPE = VoxelShapes.or(Block.makeCuboidShape(0, 0, 0, 16, 11, 16), Block.makeCuboidShape(1, 1, 1, 15, 13, 15));
+	public static final VoxelShape CHARGER_SHAPE = VoxelShapes.or(Block.box(0, 0, 0, 16, 11, 16), Block.box(1, 1, 1, 15, 13, 15));
 	
 	public Charger(Properties prop) {
 		super(prop);
@@ -61,29 +63,29 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 	}
 	
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 	
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext c) {
-		return getDefaultState().with(FACING, c.getPlayer().isSneaking() ? c.getPlacementHorizontalFacing().rotateYCCW() : c.getPlacementHorizontalFacing().rotateY());
+		return defaultBlockState().setValue(FACING, c.getPlayer().isShiftKeyDown() ? c.getHorizontalDirection().getCounterClockWise() : c.getHorizontalDirection().getClockWise());
 	}
 
 	@Override
-	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if(worldIn.isRemote())
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		if(worldIn.isClientSide())
 			return ActionResultType.SUCCESS;
-		TileEntity te = worldIn.getTileEntity(pos);
+		TileEntity te = worldIn.getBlockEntity(pos);
 		if(te != null) {
 			if(te instanceof ChargerTileEntity) {
 				ChargerTileEntity cte = (ChargerTileEntity) te;
-				ItemStack held = player.getHeldItem(handIn);
+				ItemStack held = player.getItemInHand(handIn);
 				if(cte.hasChargedStack() && held.isEmpty()) {
-					InventoryHelper.spawnItemStack(worldIn, (double)player.getPositionVec().getX(), (double)player.getPositionVec().getY(), (double)player.getPositionVec().getZ(), cte.getChargedStack());
+					InventoryHelper.dropItemStack(worldIn, (double)player.position().x(), (double)player.position().y(), (double)player.position().z(), cte.getChargedStack());
 					//player.setHeldItem(handIn, cte.getChargedStack());
 					cte.setChargedStack(ItemStack.EMPTY);
-					worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+					worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 					return ActionResultType.CONSUME;
 				}
 				else {
@@ -94,7 +96,7 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 					cte.setChargedStack(held);
 					//if(!player.isCreative())
 					held.shrink(1);
-					worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+					worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 					return ActionResultType.CONSUME;
 				}
 			}
@@ -104,25 +106,25 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		TileEntity te = worldIn.getTileEntity(pos);
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		TileEntity te = worldIn.getBlockEntity(pos);
 		if(te != null) {
 			if(te instanceof ChargerTileEntity) {
 				ChargerTileEntity sste = (ChargerTileEntity) te;
-				InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), sste.getChargedStack());
+				InventoryHelper.dropItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), sste.getChargedStack());
 			}
-			te.remove();
+			te.setRemoved();
 		}
-		super.onReplaced(state, worldIn, pos, newState, isMoving);
+		super.onRemove(state, worldIn, pos, newState, isMoving);
 	}
 	
 	@Override
-	public boolean hasComparatorInputOverride(BlockState state) {
+	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 	
 	@Override
-	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
+	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
 		return IComparatorOverride.getComparetorOverride(worldIn, pos);
 	}
 }

@@ -80,7 +80,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 			return null;
 		}
 		if(nodeCache[node] == null)
-			nodeCache[node] = IWireNode.getWireNode(world, getNodePos(node));
+			nodeCache[node] = IWireNode.getWireNode(level, getNodePos(node));
 		if(nodeCache[node] == null)
 			setNode(node, -1, null, null);
 		
@@ -89,8 +89,8 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	
 	@Override
 	public Vector3f getNodeOffset(int node) {
-		boolean vertical = getBlockState().get(RedstoneRelay.VERTICAL);
-		Direction direction = getBlockState().get(RedstoneRelay.HORIZONTAL_FACING);
+		boolean vertical = getBlockState().getValue(RedstoneRelay.VERTICAL);
+		Direction direction = getBlockState().getValue(RedstoneRelay.HORIZONTAL_FACING);
 		if(node > 3) {
 			switch(direction) {
 				case NORTH:
@@ -134,23 +134,23 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	
 	@Override
 	public int getNodeFromPos(Vector3d vec) {
-		Direction dir = world.getBlockState(pos).get(RedstoneRelay.HORIZONTAL_FACING);
-		boolean vertical = world.getBlockState(pos).get(RedstoneRelay.VERTICAL);
+		Direction dir = level.getBlockState(worldPosition).getValue(RedstoneRelay.HORIZONTAL_FACING);
+		boolean vertical = level.getBlockState(worldPosition).getValue(RedstoneRelay.VERTICAL);
 		boolean upper = true;
-		vec = vec.subtract(pos.getX(), pos.getY(), pos.getZ());
+		vec = vec.subtract(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
 		if(vertical) {
 			switch(dir) {
 			case NORTH:
-				upper = vec.getX() < 0.5d;
+				upper = vec.x() < 0.5d;
 				break;
 			case WEST:
-				upper = vec.getZ() > 0.5d;
+				upper = vec.z() > 0.5d;
 				break;
 			case SOUTH:
-				upper = vec.getX() > 0.5d;
+				upper = vec.x() > 0.5d;
 				break;
 			case EAST:
-				upper = vec.getZ() < 0.5d;
+				upper = vec.z() < 0.5d;
 				break;
 			default:
 				break;
@@ -159,16 +159,16 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		else {
 			switch(dir) {
 				case NORTH:
-					upper = vec.getZ() < 0.5d;
+					upper = vec.z() < 0.5d;
 					break;
 				case WEST:
-					upper = vec.getX() < 0.5d;
+					upper = vec.x() < 0.5d;
 					break;
 				case SOUTH:
-					upper = vec.getZ() > 0.5d;
+					upper = vec.z() > 0.5d;
 					break;
 				case EAST:
-					upper = vec.getX() > 0.5d;
+					upper = vec.x() > 0.5d;
 					break;
 			default:
 				break;
@@ -237,7 +237,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	public void removeNode(int other) {
 		IWireNode.super.removeNode(other);
 		invalidateNodeCache();
-		this.markDirty();
+		this.setChanged();
 		
 		// Invalidate
 		if(networkIn != null)
@@ -253,7 +253,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 
 	@Override
 	public BlockPos getMyPos() {
-		return pos;
+		return worldPosition;
 	}
 
 	@Override
@@ -265,7 +265,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	@Override
 	public void tick() {
 		super.tick();
-		if(world.isRemote())
+		if(level.isClientSide())
 			return;
 		networkTick();
 	}
@@ -306,21 +306,21 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	
 	private int demand = 0;
 	private void networkTick() {
-		if(awakeNetwork(world)) {
+		if(awakeNetwork(level)) {
 			//EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, 0);//EnergyNetwork.buildNetwork(world, this);
 			causeBlockUpdate();
 		}
 		BlockState bs = getBlockState();
-		if(!bs.isIn(CABlocks.REDSTONE_RELAY.get()))
+		if(!bs.is(CABlocks.REDSTONE_RELAY.get()))
 			return;
-		if(bs.get(RedstoneRelay.POWERED)) {
+		if(bs.getValue(RedstoneRelay.POWERED)) {
 			networkOut.push(networkIn.pull(demand));
 			demand = networkIn.demand(networkOut.getDemand());
 		}
 	}
 	
 	@Override
-	public void remove() {
+	public void setRemoved() {
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
 				continue;
@@ -337,7 +337,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 			networkIn.invalidate();
 		if(networkOut != null)
 			networkOut.invalidate();
-		super.remove();
+		super.setRemoved();
 	}
 	
 	private EnergyNetwork networkIn;
@@ -367,24 +367,24 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		@SuppressWarnings("resource")
-		RayTraceResult ray = Minecraft.getInstance().objectMouseOver;
+		RayTraceResult ray = Minecraft.getInstance().hitResult;
 		if(ray == null)
 			return false;
-		int node = getNodeFromPos(ray.getHitVec());
+		int node = getNodeFromPos(ray.getLocation());
 		
-		ObservePacket.send(pos, node);
+		ObservePacket.send(worldPosition, node);
 		
 		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.relay.info").formatted(TextFormatting.WHITE)));
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.relay.info").withStyle(TextFormatting.WHITE)));
 		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.selected").formatted(TextFormatting.GRAY)));
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" "))
-				.append(new TranslationTextComponent(isNodeInput(node) ? "createaddition.tooltip.energy.input" : "createaddition.tooltip.energy.output").formatted(TextFormatting.AQUA)));
+				.append(new TranslationTextComponent(isNodeInput(node) ? "createaddition.tooltip.energy.input" : "createaddition.tooltip.energy.output").withStyle(TextFormatting.AQUA)));
 		
 		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.usage").formatted(TextFormatting.GRAY)));
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(" ")
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").formatted(TextFormatting.AQUA));
+				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(TextFormatting.AQUA));
 		
 		return true;
 	}
@@ -392,6 +392,6 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	@Override
 	public void onObserved(ServerPlayerEntity player, ObservePacket pack) {
 		if(isNetworkValid(0))
-			EnergyNetworkPacket.send(pos, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
+			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
 	}
 }

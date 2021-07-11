@@ -5,6 +5,8 @@ import com.simibubi.create.content.curiosities.tools.SandPaperItem;
 
 import net.minecraft.item.ItemStack;
 
+import net.minecraft.item.Item.Properties;
+
 public class DiamondGritSandpaper extends SandPaperItem {
 
 	private static final int USES = Config.DIAMOND_GRIT_SANDPAPER_USES.get();

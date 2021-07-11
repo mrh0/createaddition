@@ -12,6 +12,8 @@ import net.minecraft.world.IBlockDisplayReader;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
+import net.minecraftforge.fluids.FluidAttributes.Builder;
+
 public class CAFluids {
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
 			.itemGroup(() -> ModGroup.MAIN);
@@ -25,7 +27,7 @@ public class CAFluids {
 				.slopeFindDistance(6)
 				.explosionResistance(100f))
 			.bucket()
-			.properties(p -> p.maxStackSize(1))
+			.properties(p -> p.stacksTo(1))
 			.build()
 			.register();
 	

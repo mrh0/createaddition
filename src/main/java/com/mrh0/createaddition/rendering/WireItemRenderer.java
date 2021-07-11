@@ -19,10 +19,10 @@ public class WireItemRenderer extends ItemRenderer {
 	}
 
 	@Override
-	public void renderItem(ItemStack itemStackIn, TransformType transformTypeIn, boolean leftHand,
+	public void render(ItemStack itemStackIn, TransformType transformTypeIn, boolean leftHand,
 			MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn,
 			IBakedModel modelIn) {
-		super.renderItem(itemStackIn, transformTypeIn, leftHand, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn,
+		super.render(itemStackIn, transformTypeIn, leftHand, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn,
 				modelIn);
 	}
 }
