@@ -15,6 +15,7 @@ import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.curiosities.ChromaticCompoundColor;
 import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer.SandPaperModel;
+import com.simibubi.create.content.curiosities.weapons.PotatoCannonProjectileTypes;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.HiddenIngredientItem;
@@ -22,7 +23,9 @@ import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.repack.registrate.util.entry.ItemEntry;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.item.Rarity;
+import net.minecraftforge.common.ToolType;
 
 public class CAItems {
 
@@ -60,6 +63,9 @@ public class CAItems {
 	public static final ItemEntry<ChargingChromaticCompound> CHARGING_CHROMATIC_COMPOUND =
 			REGISTRATE.item("charging_chromatic_compound", ChargingChromaticCompound::new)
 			.properties(p -> p.rarity(Rarity.UNCOMMON))
+			.properties(p -> p.stacksTo(1))
+			.properties(p -> p.addToolType(ToolType.PICKAXE, 3))
+			.properties(p -> p.fireResistant())
 			.model(AssetLookup.existingItemModel())
 			.color(() -> ChromaticCompoundColor::new)
 			.register();
@@ -119,5 +125,7 @@ public class CAItems {
 		Create.registrate().addToSection(SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
 		Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
+		
+		
 	}
 }

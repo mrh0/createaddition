@@ -7,6 +7,8 @@ import com.mrh0.createaddition.index.CAItems;
 import com.google.common.collect.ImmutableMultimap.Builder;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.IVanishable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -126,9 +128,32 @@ public class OverchargedHammer extends Item implements IVanishable {
 	}
 	
 	@Override
+	public boolean isDamageable(ItemStack stack) {
+		return true;
+	}
+	
+	@Override
 	public boolean isValidRepairItem(ItemStack stack1, ItemStack stack2) {
 		return stack2.getItem() == CAItems.OVERCHARGED_ALLOY.get();
 	}
 	
+	@Override
+	public int getItemEnchantability(ItemStack stack) {
+		return 1;
+	}
 	
+	@Override
+	public boolean isEnchantable(ItemStack p_77616_1_) {
+		return true;
+	}
+	
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return enchantment == Enchantments.CHANNELING || enchantment == Enchantments.UNBREAKING || enchantment == Enchantments.VANISHING_CURSE || enchantment == Enchantments.MENDING;
+	}
+	
+	@Override
+	public int getItemStackLimit(ItemStack stack) {
+		return 1;
+	}
 }

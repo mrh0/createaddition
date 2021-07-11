@@ -85,7 +85,7 @@ public class OverchargedHammerEntity extends AbstractArrowEntity {
 			double d0 = 0.05D * (double) i;
 			this.setDeltaMovement(this.getDeltaMovement().scale(0.95D).add(vector3d.normalize().scale(d0)));
 			if (this.returningTicks == 0) {
-				this.playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
+				//this.playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
 			}
 
 			++this.returningTicks;
@@ -228,5 +228,10 @@ public class OverchargedHammerEntity extends AbstractArrowEntity {
 	@Override
 	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+	
+	@Override
+	public boolean isOnFire() {
+		return false;
 	}
 }

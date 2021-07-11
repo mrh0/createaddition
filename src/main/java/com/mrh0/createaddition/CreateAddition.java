@@ -32,6 +32,7 @@ import com.mrh0.createaddition.index.CAEntities;
 import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.index.CAPonder;
+import com.mrh0.createaddition.index.CAPotatoCannonProjectiles;
 import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
@@ -91,7 +92,7 @@ public class CreateAddition {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-    	
+    	CAPotatoCannonProjectiles.register();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
