@@ -16,12 +16,12 @@ public class FluidRecipeWrapper implements IInventory {
 	}
 	
 	@Override
-	public void clear() {
+	public void clearContent() {
 		//fluid = new FluidStack(Fluids.EMPTY.getFluid(), 0);
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getContainerSize() {
 		return 0;
 	}
 
@@ -31,30 +31,30 @@ public class FluidRecipeWrapper implements IInventory {
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int p_70301_1_) {
+	public ItemStack getItem(int p_70301_1_) {
 		return new ItemStack(Items.AIR);
 	}
 
 	@Override
-	public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
+	public ItemStack removeItem(int p_70298_1_, int p_70298_2_) {
 		return new ItemStack(Items.AIR);
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int p_70304_1_) {
+	public ItemStack removeItemNoUpdate(int p_70304_1_) {
 		return new ItemStack(Items.AIR);
 	}
 
 	@Override
-	public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
+	public void setItem(int p_70299_1_, ItemStack p_70299_2_) {
 	}
 
 	@Override
-	public void markDirty() {
+	public void setChanged() {
 	}
 
 	@Override
-	public boolean isUsableByPlayer(PlayerEntity p_70300_1_) {
+	public boolean stillValid(PlayerEntity p_70300_1_) {
 		return true;
 	}
 

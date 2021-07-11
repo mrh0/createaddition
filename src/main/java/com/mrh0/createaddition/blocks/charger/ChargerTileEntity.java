@@ -72,7 +72,7 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 	@Override
 	public void tick() {
 		super.tick();
-		if (world.isRemote())
+		if (level.isClientSide())
 			return;
 
 		if (hasChargedStack()) {
@@ -102,7 +102,7 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 
 		int comp = getComparetorOverride();
 		if (comp != lastComparator)
-			world.notifyNeighborsOfStateChange(pos, CABlocks.CHARGER.get());
+			level.updateNeighborsAt(worldPosition, CABlocks.CHARGER.get());
 		lastComparator = comp;
 
 		if (hasChargedStack())
@@ -112,7 +112,7 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 	@Override
 	public void fromTag(BlockState state, CompoundNBT nbt, boolean clientPacket) {
 		super.fromTag(state, nbt, clientPacket);
-		itemStack = ItemStack.read(nbt.getCompound("item"));
+		itemStack = ItemStack.of(nbt.getCompound("item"));
 		if (itemStack == null)
 			itemStack = ItemStack.EMPTY;
 	}
@@ -120,7 +120,7 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 	@Override
 	public void write(CompoundNBT nbt, boolean clientPacket) {
 		super.write(nbt, clientPacket);
-		nbt.put("item", itemStack.write(new CompoundNBT()));
+		nbt.put("item", itemStack.save(new CompoundNBT()));
 	}
 
 	public void setChargedStack(ItemStack itemStack) {
@@ -128,8 +128,8 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 			itemStack = ItemStack.EMPTY;
 		this.itemStack = itemStack.copy();
 		this.itemStack.setCount(1);
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 0);
-		this.markDirty();
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 0);
+		this.setChanged();
 	}
 
 	public ItemStack getChargedStack() {
@@ -160,16 +160,16 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		tooltip.add(new StringTextComponent(spacing).append(
-				new TranslationTextComponent("block.createaddition.charger.info").formatted(TextFormatting.WHITE)));
+				new TranslationTextComponent("block.createaddition.charger.info").withStyle(TextFormatting.WHITE)));
 		if (hasChargedStack()) {
 			tooltip.add(new StringTextComponent(spacing).append(" ")
 					.append(new StringTextComponent(Math.round(getCharge() * 100) + "% ")
-							.formatted(TextFormatting.AQUA))
+							.withStyle(TextFormatting.AQUA))
 					.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.charged")
-							.formatted(TextFormatting.GRAY)));
+							.withStyle(TextFormatting.GRAY)));
 		} else {
 			tooltip.add(new StringTextComponent(spacing).append(" ").append(
-					new TranslationTextComponent("block.createaddition.charger.empty").formatted(TextFormatting.GRAY)));
+					new TranslationTextComponent("block.createaddition.charger.empty").withStyle(TextFormatting.GRAY)));
 		}
 
 		return true;

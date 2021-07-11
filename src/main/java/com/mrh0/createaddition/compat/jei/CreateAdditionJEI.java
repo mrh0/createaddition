@@ -117,7 +117,7 @@ public class CreateAdditionJEI implements IModPlugin {
 	
 	@SuppressWarnings("resource")
 	static List<IRecipe<?>> findRecipes(Predicate<IRecipe<?>> predicate) {
-		return Minecraft.getInstance().world.getRecipeManager()
+		return Minecraft.getInstance().level.getRecipeManager()
 			.getRecipes()
 			.stream()
 			.filter(predicate)

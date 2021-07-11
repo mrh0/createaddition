@@ -105,14 +105,14 @@ public class CABlocks {
 	
 	public static final BlockEntry<Cake> CHOCOLATE_CAKE = REGISTRATE.block("chocolate_cake",  Cake::new)
 			.initialProperties(Material.CAKE)
-			.properties(props -> props.sound(SoundType.CLOTH).harvestLevel(0).hardnessAndResistance(0.5f))
+			.properties(props -> props.sound(SoundType.WOOL).harvestLevel(0).strength(0.5f))
 			.item()
 			.transform(customItemModel())
 			.register();
 	
 	public static final BlockEntry<Cake> HONEY_CAKE = REGISTRATE.block("honey_cake",  Cake::new)
 			.initialProperties(Material.CAKE)
-			.properties(props -> props.sound(SoundType.CLOTH).harvestLevel(0).hardnessAndResistance(0.5f))
+			.properties(props -> props.sound(SoundType.WOOL).harvestLevel(0).strength(0.5f))
 			.item()
 			.transform(customItemModel())
 			.register();

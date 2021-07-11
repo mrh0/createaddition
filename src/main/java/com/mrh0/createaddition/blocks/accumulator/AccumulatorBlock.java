@@ -28,17 +28,19 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity>, IWrenchable {
 
-	public static final VoxelShape ACCUMULATOR_SHAPE_MAIN = Block.makeCuboidShape(0, 0, 0, 16, 12, 16);
-	public static final VoxelShape ACCUMULATOR_SHAPE_X = VoxelShapes.or(ACCUMULATOR_SHAPE_MAIN, Block.makeCuboidShape(1, 0, 6, 5, 16, 10), Block.makeCuboidShape(11, 0, 6, 15, 16, 10));
-	public static final VoxelShape ACCUMULATOR_SHAPE_Z = VoxelShapes.or(ACCUMULATOR_SHAPE_MAIN, Block.makeCuboidShape(6, 0, 1, 10, 16, 5), Block.makeCuboidShape(6, 0, 11, 10, 16, 15));
+	public static final VoxelShape ACCUMULATOR_SHAPE_MAIN = Block.box(0, 0, 0, 16, 12, 16);
+	public static final VoxelShape ACCUMULATOR_SHAPE_X = VoxelShapes.or(ACCUMULATOR_SHAPE_MAIN, Block.box(1, 0, 6, 5, 16, 10), Block.box(11, 0, 6, 15, 16, 10));
+	public static final VoxelShape ACCUMULATOR_SHAPE_Z = VoxelShapes.or(ACCUMULATOR_SHAPE_MAIN, Block.box(6, 0, 1, 10, 16, 5), Block.box(6, 0, 11, 10, 16, 15));
 	
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	
 	public AccumulatorBlock(Properties properties) {
 		super(properties);
-		this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH));
+		this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
 	}
 
 	@Override
@@ -48,7 +50,7 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Axis axis = state.get(FACING).getAxis();
+		Axis axis = state.getValue(FACING).getAxis();
 		return axis == Axis.X ? ACCUMULATOR_SHAPE_X : ACCUMULATOR_SHAPE_Z;
 	}
 	
@@ -63,18 +65,18 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	}
 	
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 	
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext c) {
-		return getDefaultState().with(FACING, c.getPlayer().isSneaking() ? c.getPlacementHorizontalFacing().rotateYCCW() : c.getPlacementHorizontalFacing().rotateY());
+		return defaultBlockState().setValue(FACING, c.getPlayer().isShiftKeyDown() ? c.getHorizontalDirection().getCounterClockWise() : c.getHorizontalDirection().getClockWise());
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
-		TileEntity te = world.getTileEntity(pos);
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
+		TileEntity te = world.getBlockEntity(pos);
 		if(te != null) {
 			if(te instanceof AccumulatorTileEntity) {
 				AccumulatorTileEntity ate = (AccumulatorTileEntity) te;
@@ -86,15 +88,15 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 				}
 			}
 		}
-		super.onBlockPlacedBy(world, pos, state, entity, stack);
+		super.setPlacedBy(world, pos, state, entity, stack);
 	}
 	
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		super.onBlockHarvested(worldIn, pos, state, player);
+	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.playerWillDestroy(worldIn, pos, state, player);
 		if(player.isCreative())
 			return;
-		TileEntity te = worldIn.getTileEntity(pos);
+		TileEntity te = worldIn.getBlockEntity(pos);
 		if(te == null)
 			return;
 		if(!(te instanceof IWireNode))
@@ -108,24 +110,24 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	public ActionResultType onSneakWrenched(BlockState state, ItemUseContext c) {
 		if(c.getPlayer().isCreative())
 			return IWrenchable.super.onSneakWrenched(state, c);
-		TileEntity te = c.getWorld().getTileEntity(c.getPos());
+		TileEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
 		if(te == null)
 			return IWrenchable.super.onSneakWrenched(state, c);
 		if(!(te instanceof IWireNode))
 			return IWrenchable.super.onSneakWrenched(state, c);
 		IWireNode cte = (IWireNode) te;
 		
-		cte.dropWires(c.getWorld(), c.getPlayer());
+		cte.dropWires(c.getLevel(), c.getPlayer());
 		return IWrenchable.super.onSneakWrenched(state, c);
 	}
 	
 	@Override
-	public boolean hasComparatorInputOverride(BlockState state) {
+	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 	
 	@Override
-	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
+	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
 		return IComparatorOverride.getComparetorOverride(worldIn, pos);
 	}
 }

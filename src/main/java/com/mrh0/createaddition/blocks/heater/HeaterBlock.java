@@ -20,6 +20,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class HeaterBlock extends Block implements ITE<HeaterTileEntity>, IWrenchable {
 	
 	public static final VoxelShaper HEATER_SHAPE = CAShapes.shape(4, 0, 4, 12, 13, 12).add(3, 0, 3, 13, 2, 13).add(5, 0, 5, 11, 16, 11)
@@ -29,12 +31,12 @@ public class HeaterBlock extends Block implements ITE<HeaterTileEntity>, IWrench
 
 	public HeaterBlock(Properties properties) {
 		super(properties);
-		setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH));
+		registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
 	}
 	
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return HEATER_SHAPE.get(state.get(FACING).getOpposite());
+		return HEATER_SHAPE.get(state.getValue(FACING).getOpposite());
 	}
 
 	@Override
@@ -53,19 +55,19 @@ public class HeaterBlock extends Block implements ITE<HeaterTileEntity>, IWrench
 	}
 	
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 	
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext c) {
-		return this.getDefaultState().with(FACING, c.getFace().getOpposite());
+		return this.defaultBlockState().setValue(FACING, c.getClickedFace().getOpposite());
 	}
 	
 	@Override
 	public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor) {
 		super.onNeighborChange(state, world, pos, neighbor);
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 		if(te == null)
 			return;
 		if(!(te instanceof HeaterTileEntity))

@@ -41,7 +41,7 @@ public class CreativeEnergyStorage implements IEnergyStorage {
 	}
 
 	public void outputToSide(World world, BlockPos pos, Direction side) {
-    	TileEntity te = world.getTileEntity(pos.offset(side));
+    	TileEntity te = world.getBlockEntity(pos.relative(side));
 		if(te == null)
 			return;
 		LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());

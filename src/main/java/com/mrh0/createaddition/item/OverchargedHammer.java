@@ -31,18 +31,18 @@ public class OverchargedHammer extends Item implements IVanishable {
 	public OverchargedHammer(Item.Properties props) {
 		super(props);
 	 	Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.GENERIC_ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", 9.0D, AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.GENERIC_ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", (double)-3.1F, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 9.0D, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", (double)-3.1F, AttributeModifier.Operation.ADDITION));
 		this.attributeModifiers = builder.build();
 	}
 
 	@Override
-	public boolean canPlayerBreakBlockWhileHolding(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+	public boolean canAttackBlock(BlockState state, World world, BlockPos pos, PlayerEntity player) {
 		return !player.isCreative();
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
+	public UseAction getUseAnimation(ItemStack stack) {
 		return UseAction.SPEAR;
 	}
 
@@ -52,27 +52,27 @@ public class OverchargedHammer extends Item implements IVanishable {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity living, int a) {
+	public void releaseUsing(ItemStack stack, World world, LivingEntity living, int a) {
 		if (living instanceof PlayerEntity) {
 			PlayerEntity playerentity = (PlayerEntity) living;
 			int i = this.getUseDuration(stack) - a;
 			if (i >= 10) {
-				if (!world.isRemote) {
-					stack.damageItem(1, playerentity, (ent) -> {
-						ent.sendBreakAnimation(living.getActiveHand());
+				if (!world.isClientSide) {
+					stack.hurtAndBreak(1, playerentity, (ent) -> {
+						ent.broadcastBreakEvent(living.getUsedItemHand());
 					});
 					OverchargedHammerEntity hammerentity = new OverchargedHammerEntity(world, playerentity, stack);
-					hammerentity.setProperties(playerentity, playerentity.rotationPitch,
-							playerentity.rotationYaw, 0.0F, 2.5F + (float) 1f * 0.5F, 1.0F);
-					if (playerentity.abilities.isCreativeMode) {
-						hammerentity.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
+					hammerentity.shootFromRotation(playerentity, playerentity.xRot,
+							playerentity.yRot, 0.0F, 2.5F + (float) 1f * 0.5F, 1.0F);
+					if (playerentity.abilities.instabuild) {
+						hammerentity.pickup = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
 					}
 
-					world.addEntity(hammerentity);
-					world.playMovingSound((PlayerEntity) null, hammerentity,
-							SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
-					if (!playerentity.abilities.isCreativeMode) {
-						playerentity.inventory.deleteStack(stack);
+					world.addFreshEntity(hammerentity);
+					world.playSound((PlayerEntity) null, hammerentity,
+							SoundEvents.TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
+					if (!playerentity.abilities.instabuild) {
+						playerentity.inventory.removeItem(stack);
 					}
 				}
 			}
@@ -80,29 +80,29 @@ public class OverchargedHammer extends Item implements IVanishable {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack itemstack = player.getHeldItem(hand);
-		if (itemstack.getDamage() >= itemstack.getMaxDamage() - 1) {
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		ItemStack itemstack = player.getItemInHand(hand);
+		if (itemstack.getDamageValue() >= itemstack.getMaxDamage() - 1) {
 			return ActionResult.fail(itemstack);
 		} else {
-			player.setActiveHand(hand);
+			player.startUsingItem(hand);
 			return ActionResult.consume(itemstack);
 		}
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, LivingEntity livingA, LivingEntity livingB) {
-		stack.damageItem(1, livingB, (ent) -> {
-			ent.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+	public boolean hurtEnemy(ItemStack stack, LivingEntity livingA, LivingEntity livingB) {
+		stack.hurtAndBreak(1, livingB, (ent) -> {
+			ent.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 		});
 		return true;
 	}
 
 	@Override
-	public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity living) {
-		if ((double) state.getBlockHardness(world, pos) != 0.0D) {
-			stack.damageItem(2, living, (ent) -> {
-				ent.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+	public boolean mineBlock(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity living) {
+		if ((double) state.getDestroySpeed(world, pos) != 0.0D) {
+			stack.hurtAndBreak(2, living, (ent) -> {
+				ent.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 			});
 		}
 
@@ -110,13 +110,13 @@ public class OverchargedHammer extends Item implements IVanishable {
 	}
 
 	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot) {
+	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlotType slot) {
 		return slot == EquipmentSlotType.MAINHAND ? this.attributeModifiers
-				: super.getAttributeModifiers(slot);
+				: super.getDefaultAttributeModifiers(slot);
 	}
 
 	@Override
-	public int getItemEnchantability() {
+	public int getEnchantmentValue() {
 		return 1;
 	}
 	
@@ -126,7 +126,7 @@ public class OverchargedHammer extends Item implements IVanishable {
 	}
 	
 	@Override
-	public boolean getIsRepairable(ItemStack stack1, ItemStack stack2) {
+	public boolean isValidRepairItem(ItemStack stack1, ItemStack stack2) {
 		return stack2.getItem() == CAItems.OVERCHARGED_ALLOY.get();
 	}
 	

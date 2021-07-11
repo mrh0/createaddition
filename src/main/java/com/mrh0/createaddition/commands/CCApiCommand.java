@@ -14,17 +14,17 @@ import net.minecraft.util.text.event.HoverEvent;
 
 public class CCApiCommand {
 	public static void register(CommandDispatcher<CommandSource> dispather) {
-		dispather.register(Commands.literal("cca_api").requires(source -> source.hasPermissionLevel(0))
+		dispather.register(Commands.literal("cca_api").requires(source -> source.hasPermission(0))
 			.executes(context -> {
-				PlayerEntity p =  context.getSource().asPlayer();
+				PlayerEntity p =  context.getSource().getPlayerOrException();
 				String link = "https://github.com/mrh0/createaddition/blob/main/COMPUTERCRAFT.md";
 				TextComponent text = new TranslationTextComponent("createaddition.command.cca_api.link");
-				text.styled(style -> {
-					return style.withFormatting(TextFormatting.AQUA, TextFormatting.UNDERLINE)
+				text.withStyle(style -> {
+					return style.applyFormats(TextFormatting.AQUA, TextFormatting.UNDERLINE)
 							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent(link)))
 							.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link));
 				});
-				p.sendMessage(text, PlayerEntity.getUUID(p.getGameProfile()));
+				p.sendMessage(text, PlayerEntity.createPlayerUUID(p.getGameProfile()));
 				return 1;
 			}
 		));

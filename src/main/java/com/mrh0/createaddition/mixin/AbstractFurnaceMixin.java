@@ -9,5 +9,5 @@ import net.minecraft.util.IIntArray;
 @Mixin(AbstractFurnaceTileEntity.class)
 public interface AbstractFurnaceMixin {
 	@Accessor
-	IIntArray getFurnaceData();
+	IIntArray getDataAccess();
 }

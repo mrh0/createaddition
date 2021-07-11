@@ -20,22 +20,25 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
+import com.simibubi.create.content.contraptions.base.IRotate.SpeedLevel;
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class AlternatorBlock extends DirectionalKineticBlock implements ITE<AlternatorTileEntity>, IRotate {
 	
 	public static final VoxelShaper ALTERNATOR_SHAPE = CAShapes.shape(0, 3, 0, 16, 13, 16).add(2, 0, 2, 14, 14, 14).forDirectional();
 	
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return ALTERNATOR_SHAPE.get(state.get(FACING));
+		return ALTERNATOR_SHAPE.get(state.getValue(FACING));
 	}
 	
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		Direction preferred = getPreferredFacing(context);
 		if ((context.getPlayer() != null && context.getPlayer()
-			.isSneaking()) || preferred == null)
+			.isShiftKeyDown()) || preferred == null)
 			return super.getStateForPlacement(context);
-		return getDefaultState().with(FACING, preferred);
+		return defaultBlockState().setValue(FACING, preferred);
 	}
 
 	public AlternatorBlock(Properties properties) {
@@ -44,12 +47,12 @@ public class AlternatorBlock extends DirectionalKineticBlock implements ITE<Alte
 
 	@Override
 	public boolean hasShaftTowards(IWorldReader world, BlockPos pos, BlockState state, Direction face) {
-		return face == state.get(FACING);
+		return face == state.getValue(FACING);
 	}
 
 	@Override
 	public Axis getRotationAxis(BlockState state) {
-		return state.get(FACING)
+		return state.getValue(FACING)
 			.getAxis();
 	}
 
@@ -70,7 +73,7 @@ public class AlternatorBlock extends DirectionalKineticBlock implements ITE<Alte
 	
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
+		TileEntity tileentity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
 		if(tileentity != null) {
 			if(tileentity instanceof AlternatorTileEntity) {
 				((AlternatorTileEntity)tileentity).updateCache();

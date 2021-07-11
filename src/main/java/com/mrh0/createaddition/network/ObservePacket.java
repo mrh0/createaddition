@@ -49,13 +49,13 @@ public class ObservePacket {
 	}
 	
 	private static void sendUpdate(ObservePacket pkt, ServerPlayerEntity player) {
-		TileEntity te = (TileEntity) player.world.getTileEntity(pkt.pos);
+		TileEntity te = (TileEntity) player.level.getBlockEntity(pkt.pos);
 		IObserveTileEntity ote = (IObserveTileEntity) te;
         if (te != null) {
         	ote.onObserved(player, pkt);
             SUpdateTileEntityPacket supdatetileentitypacket = te.getUpdatePacket();
             if (supdatetileentitypacket != null) {
-                player.connection.sendPacket(supdatetileentitypacket);
+                player.connection.send(supdatetileentitypacket);
             }
         }
     }

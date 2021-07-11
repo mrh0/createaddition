@@ -15,7 +15,7 @@ public class ModGroup extends ItemGroup{
 	}
 
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack makeIcon() {
 		return new ItemStack(CABlocks.ELECTRIC_MOTOR.get());
 	}
 }

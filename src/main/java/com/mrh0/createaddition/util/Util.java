@@ -25,8 +25,8 @@ public class Util {
 	}
 	
 	public static ItemStack findStack(Item item, PlayerInventory inv) {
-		for(int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for(int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if(stack.getItem() == item)
 				return stack;
 		}
@@ -42,7 +42,7 @@ public class Util {
 	}
 	
 	public static int getSkyLight(World world, BlockPos pos) {
-		return Math.max(world.getLightLevel(LightType.SKY, pos) - world.getSkylightSubtracted(), 0);
+		return Math.max(world.getBrightness(LightType.SKY, pos) - world.getSkyDarken(), 0);
 	}
 	
 	public static ItemStack mergeStack(ItemStack add, ItemStack to) {

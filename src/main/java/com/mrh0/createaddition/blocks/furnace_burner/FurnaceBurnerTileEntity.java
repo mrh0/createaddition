@@ -33,24 +33,24 @@ public class FurnaceBurnerTileEntity extends AbstractFurnaceTileEntity {
 	}
 
 	@Override
-	protected boolean canSmelt(IRecipe<?> p_214008_1_) {
+	protected boolean canBurn(IRecipe<?> p_214008_1_) {
 		return true;
 	}
 
 	private boolean burning() {
-		return this.burnTime > 0;
+		return this.litTime > 0;
 	}
 
 	public void tick() {
 		boolean flag = this.burning();
 		boolean flag1 = false;
 		if (this.burning())
-			--this.burnTime;
+			--this.litTime;
 
-		if (!this.world.isRemote()) {
+		if (!this.level.isClientSide()) {
 			ItemStack itemstack = this.items.get(1);
 			if (!this.burning()) {
-				this.burnTime = this.getBurnTime(itemstack);
+				this.litTime = this.getBurnDuration(itemstack);
 				if (this.burning()) {
 					flag1 = true;
 					if (itemstack.hasContainerItem())
@@ -65,12 +65,12 @@ public class FurnaceBurnerTileEntity extends AbstractFurnaceTileEntity {
 
 			if (flag != this.burning()) {
 				flag1 = true;
-				this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(AbstractFurnaceBlock.LIT,
+				this.level.setBlock(this.worldPosition, this.level.getBlockState(this.worldPosition).setValue(AbstractFurnaceBlock.LIT,
 						Boolean.valueOf(this.burning())), 3);
 			}
 
 			if (flag1)
-				this.markDirty();
+				this.setChanged();
 		}
 	}
 
@@ -78,7 +78,7 @@ public class FurnaceBurnerTileEntity extends AbstractFurnaceTileEntity {
 		return SLOTS;
 	}
 
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean canPlaceItem(int slot, ItemStack stack) {
 		if (slot != 1)
 			return false;
 		else {
@@ -87,7 +87,7 @@ public class FurnaceBurnerTileEntity extends AbstractFurnaceTileEntity {
 		}
 	}
 
-	public boolean canExtractItem(int slot, ItemStack stack, Direction dir) {
+	public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
 		/*if (dir == Direction.DOWN && slot == 1) {
 			Item item = stack.getItem();
 			if (item != Items.WATER_BUCKET && item != Items.BUCKET) {

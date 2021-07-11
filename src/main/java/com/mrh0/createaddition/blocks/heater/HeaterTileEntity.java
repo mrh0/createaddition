@@ -22,7 +22,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.energy.IEnergyStorage;
 
 public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
 	
@@ -44,7 +43,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 
 	@Override
 	public boolean isEnergyInput(Direction side) {
-		return side == getBlockState().get(HeaterBlock.FACING).getOpposite();
+		return side == getBlockState().getValue(HeaterBlock.FACING).getOpposite();
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	@Override
 	public void tick() {
 		super.tick();
-		if(world.isRemote())
+		if(level.isClientSide())
 			return;
 		if(cache == null)
 			return;
@@ -68,7 +67,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 			litState =  IEHeaterOptional.externalHeater(cache, energy);
 		}*/
 		
-		IIntArray data = ((AbstractFurnaceMixin)cache).getFurnaceData();
+		IIntArray data = ((AbstractFurnaceMixin)cache).getDataAccess();
 		
 		if(hasEnoughEnergy()) {
 			data.set(0, Math.min(200, data.get(0)+2));
@@ -88,8 +87,8 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	}
 	
 	public void refreshCache() {
-		Direction d = getBlockState().get(HeaterBlock.FACING);
-		TileEntity te = world.getTileEntity(pos.offset(d));
+		Direction d = getBlockState().getValue(HeaterBlock.FACING);
+		TileEntity te = level.getBlockEntity(worldPosition.relative(d));
 		if(te instanceof AbstractFurnaceTileEntity)
 			cache = (AbstractFurnaceTileEntity) te;
 		else
@@ -104,10 +103,10 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	}
 	
 	public boolean hasFurnaceEngine() {
-		Direction dir = getBlockState().get(HeaterBlock.FACING);
-		BlockPos origin = pos.offset(dir);
+		Direction dir = getBlockState().getValue(HeaterBlock.FACING);
+		BlockPos origin = worldPosition.relative(dir);
 		for(Direction d : Direction.values())
-			if(world.getBlockState(origin.offset(d)).getBlock() == AllBlocks.FURNACE_ENGINE.get())
+			if(level.getBlockState(origin.relative(d)).getBlock() == AllBlocks.FURNACE_ENGINE.get())
 				return true;
 		return false;
 	}
@@ -125,11 +124,11 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	}
 	
 	public void updateState(boolean lit) {
-		Direction d = getBlockState().get(HeaterBlock.FACING);
-		BlockState state = world.getBlockState(pos.offset(d));
+		Direction d = getBlockState().getValue(HeaterBlock.FACING);
+		BlockState state = level.getBlockState(worldPosition.relative(d));
 		if(state.getBlock() instanceof AbstractFurnaceBlock) {
-			if(state.get(AbstractFurnaceBlock.LIT) != lit)
-				world.setBlockState(pos.offset(d), state.with(AbstractFurnaceBlock.LIT, lit));
+			if(state.getValue(AbstractFurnaceBlock.LIT) != lit)
+				level.setBlockAndUpdate(worldPosition.relative(d), state.setValue(AbstractFurnaceBlock.LIT, lit));
 		}
 		causeBlockUpdate();
 	}
@@ -146,13 +145,13 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
 		
 		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent("block.createaddition.heater.info").formatted(TextFormatting.WHITE)));
+				.append(new TranslationTextComponent("block.createaddition.heater.info").withStyle(TextFormatting.WHITE)));
 		
 		if(isFurnaceEngine && !ALLOW_ENGINE)
-			tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent("block.createaddition.heater.engine_heating_disabled").formatted(TextFormatting.RED)));
+			tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent("block.createaddition.heater.engine_heating_disabled").withStyle(TextFormatting.RED)));
 		
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").formatted(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")).formatted(TextFormatting.AQUA));
+		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(TextFormatting.GRAY)));
+		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")).withStyle(TextFormatting.AQUA));
 		return true;
 	}
 }

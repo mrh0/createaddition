@@ -20,7 +20,7 @@ public class RollingRecipe implements IRecipe<RecipeWrapper> {
 	
 	public static IRecipeType<RollingRecipe> TYPE = new RollingRecipeType();
 	@SuppressWarnings("deprecation")
-	public static IRecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.getOrDefault(new ResourceLocation(CreateAddition.MODID, "rolling"));
+	public static IRecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "rolling"));
 
 	protected RollingRecipe(Ingredient ingredient, ItemStack output, ResourceLocation id) {
 		this.output = output;
@@ -36,21 +36,21 @@ public class RollingRecipe implements IRecipe<RecipeWrapper> {
 	public boolean matches(RecipeWrapper inv, World worldIn) {
 		if (inv.isEmpty())
 			return false;
-		return ingredient.test(inv.getStackInSlot(0));
+		return ingredient.test(inv.getItem(0));
 	}
 
 	@Override
-	public ItemStack getCraftingResult(RecipeWrapper inv) {
+	public ItemStack assemble(RecipeWrapper inv) {
 		return this.output;
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return width * height > 0;
 	}
 
 	@Override
-	public ItemStack getRecipeOutput() {
+	public ItemStack getResultItem() {
 		return this.output;
 	}
 
@@ -71,12 +71,12 @@ public class RollingRecipe implements IRecipe<RecipeWrapper> {
 	}
 	
 	@Override
-	public ItemStack getIcon() {
+	public ItemStack getToastSymbol() {
 		return this.output;
 	}
 	
 	@Override
-	public boolean isDynamic() {
+	public boolean isSpecial() {
 		return true;
 	}
 	

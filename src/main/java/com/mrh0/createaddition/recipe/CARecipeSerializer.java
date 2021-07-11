@@ -15,7 +15,7 @@ public abstract class CARecipeSerializer <R extends IRecipe<?>> extends ForgeReg
 	public abstract ItemStack getIcon();
 
 	@Override
-	public final R read(ResourceLocation recipeId, JsonObject json) {
+	public final R fromJson(ResourceLocation recipeId, JsonObject json) {
 		if(CraftingHelper.processConditions(json, "conditions"))
 			return readFromJson(recipeId, json);
 		return readFromJson(recipeId, json);
@@ -23,7 +23,7 @@ public abstract class CARecipeSerializer <R extends IRecipe<?>> extends ForgeReg
 
 	protected ItemStack readOutput(JsonElement outputObject) {
 		if(outputObject.isJsonObject() && outputObject.getAsJsonObject().has("item"))
-			return ShapedRecipe.deserializeItem(outputObject.getAsJsonObject());
+			return ShapedRecipe.itemFromJson(outputObject.getAsJsonObject());
 		return null;
 	}
 

@@ -22,19 +22,19 @@ public class OverchargedHammerRenderer extends EntityRenderer<OverchargedHammerE
 
 	public void render(OverchargedHammerEntity entity, float x, float y,
 			MatrixStack stack, IRenderTypeBuffer buff, int i) {
-		stack.push();
-		stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(
-				MathHelper.lerp(y, entity.prevRotationYaw, entity.rotationYaw) - 90.0F));
-		stack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(
-				MathHelper.lerp(y, entity.prevRotationPitch, entity.rotationPitch) + 90.0F));
-		IVertexBuilder ivertexbuilder = net.minecraft.client.renderer.ItemRenderer.getDirectGlintVertexConsumer(
-				buff, this.model.getLayer(this.getEntityTexture(entity)), false, entity.isEnchanted());
-		this.model.render(stack, ivertexbuilder, i, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.pop();
+		stack.pushPose();
+		stack.mulPose(Vector3f.YP.rotationDegrees(
+				MathHelper.lerp(y, entity.yRotO, entity.yRot) - 90.0F));
+		stack.mulPose(Vector3f.ZP.rotationDegrees(
+				MathHelper.lerp(y, entity.xRotO, entity.xRot) + 90.0F));
+		IVertexBuilder ivertexbuilder = net.minecraft.client.renderer.ItemRenderer.getFoilBufferDirect(
+				buff, this.model.renderType(this.getTextureLocation(entity)), false, entity.isEnchanted());
+		this.model.renderToBuffer(stack, ivertexbuilder, i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		stack.popPose();
 		super.render(entity, x, y, stack, buff, i);
 	}
 
-	public ResourceLocation getEntityTexture(OverchargedHammerEntity p_110775_1_) {
+	public ResourceLocation getTextureLocation(OverchargedHammerEntity p_110775_1_) {
 		return TEX;
 	}
 	

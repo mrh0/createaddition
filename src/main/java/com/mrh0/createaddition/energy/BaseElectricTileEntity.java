@@ -38,7 +38,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)) && !world.isRemote)
+		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)) && !level.isClientSide)
 			return lazyEnergy.cast();
 		return super.getCapability(cap, side);
 	}
@@ -60,8 +60,8 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	}
 	
 	@Override
-	public void remove() {
-		super.remove();
+	public void setRemoved() {
+		super.setRemoved();
 		lazyEnergy.invalidate();
 	}
 	
@@ -70,7 +70,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		for(Direction side : Direction.values()) {
 			if(!isEnergyOutput(side))
 				continue;
-			energy.outputToSide(world, pos, side, max);
+			energy.outputToSide(level, worldPosition, side, max);
 		}
 	}
 	
@@ -87,10 +87,10 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	};
 	
 	public void updateCache() {
-		if(world.isRemote())
+		if(level.isClientSide())
 			return;
 		for(Direction side : Direction.values()) {
-			TileEntity te = world.getTileEntity(pos.offset(side));
+			TileEntity te = level.getBlockEntity(worldPosition.relative(side));
 			if(te == null) {
 				setCache(side, LazyOptional.empty());
 				continue;

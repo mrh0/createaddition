@@ -17,6 +17,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<ElectricMotorTileEntity> {
 	
 	public static final VoxelShaper ELECTRIC_MOTOR_SHAPE = CAShapes.shape(0, 5, 0, 16, 11, 16).add(3, 0, 3, 13, 14, 13).forDirectional();
@@ -27,16 +29,16 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return ELECTRIC_MOTOR_SHAPE.get(state.get(FACING));
+		return ELECTRIC_MOTOR_SHAPE.get(state.getValue(FACING));
 	}
 	
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		Direction preferred = getPreferredFacing(context);
 		if ((context.getPlayer() != null && context.getPlayer()
-			.isSneaking()) || preferred == null)
+			.isShiftKeyDown()) || preferred == null)
 			return super.getStateForPlacement(context);
-		return getDefaultState().with(FACING, preferred);
+		return defaultBlockState().setValue(FACING, preferred);
 	}
 
 	@Override
@@ -51,12 +53,12 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 
 	@Override
 	public boolean hasShaftTowards(IWorldReader world, BlockPos pos, BlockState state, Direction face) {
-		return face == state.get(FACING);
+		return face == state.getValue(FACING);
 	}
 
 	@Override
 	public Axis getRotationAxis(BlockState state) {
-		return state.get(FACING)
+		return state.getValue(FACING)
 			.getAxis();
 	}
 

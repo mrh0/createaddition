@@ -25,7 +25,7 @@ public class CAEntities {
 					.setShouldReceiveVelocityUpdates(true))
 				.properties(OverchargedHammerEntity::build)
 				.properties(b -> {
-					b.immuneToFire();
+					b.fireImmune();
 				})
 				.register();
 	}

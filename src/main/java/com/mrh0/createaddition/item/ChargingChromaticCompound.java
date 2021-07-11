@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 
+import net.minecraft.item.Item.Properties;
+
 public class ChargingChromaticCompound extends Item {
 
 	public static int MAX_CHARGE = 16777216;
@@ -57,9 +59,9 @@ public class ChargingChromaticCompound extends Item {
 	}
 	
 	@Override
-	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> list) {
-		if (group != ItemGroup.SEARCH)
+	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> list) {
+		if (group != ItemGroup.TAB_SEARCH)
 			return;
-		super.fillItemGroup(group, list);
+		super.fillItemCategory(group, list);
 	}
 }

@@ -33,11 +33,11 @@ public class RollingMillRenderer  extends KineticTileEntityRenderer {
 			int light, int overlay) {
 		super.renderSafe(te, partialTicks, ms, buffer, light, overlay);
 		BlockState blockState = te.getBlockState();
-		BlockPos pos = te.getPos();
+		BlockPos pos = te.getBlockPos();
 		
-		IVertexBuilder vb = buffer.getBuffer(RenderType.getSolid());
+		IVertexBuilder vb = buffer.getBuffer(RenderType.solid());
 		
-		int packedLightmapCoords = WorldRenderer.getLightmapCoordinates(te.getWorld(), pos);
+		int packedLightmapCoords = WorldRenderer.getLightColor(te.getLevel(), pos);
 		// SuperByteBuffer shaft = AllBlockPartials.SHAFT_HALF.renderOn(blockState);
 		SuperByteBuffer shaft =  PartialBufferer.get(AllBlockPartials.SHAFT_HALF, blockState);
 		Axis axis = getRotationAxisOf(te);

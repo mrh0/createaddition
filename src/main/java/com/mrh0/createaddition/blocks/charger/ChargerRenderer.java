@@ -22,20 +22,20 @@ public class ChargerRenderer  extends TileEntityRenderer<ChargerTileEntity> {
 
 	@Override
 	public void render(ChargerTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
-		Direction dir = tileEntityIn.getBlockState().get(Charger.FACING);
+		Direction dir = tileEntityIn.getBlockState().getValue(Charger.FACING);
 		
 		ItemStack item = tileEntityIn.getChargedStack();
 		
 		if(!tileEntityIn.hasChargedStack())
 			return;
 		
-		matrixStackIn.push();
+		matrixStackIn.pushPose();
 		matrixStackIn.translate(.5f, u1*13.5f, .5f);
-		matrixStackIn.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(dir.getHorizontalAngle() - 90f));
-		matrixStackIn.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90f));
+		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(dir.toYRot() - 90f));
+		matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90f));
 		matrixStackIn.scale(scalar, scalar, scalar);
-        Minecraft.getInstance().getItemRenderer().renderItem(item, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
-        matrixStackIn.pop();
+        Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
+        matrixStackIn.popPose();
 	}
 
 }

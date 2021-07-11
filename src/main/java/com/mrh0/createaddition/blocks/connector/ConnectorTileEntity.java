@@ -66,7 +66,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			return null;
 		}
 		if(nodeCache[node] == null)
-			nodeCache[node] = IWireNode.getWireNode(world, getNodePos(node));
+			nodeCache[node] = IWireNode.getWireNode(level, getNodePos(node));
 		if(nodeCache[node] == null)
 			setNode(node, -1, null, null);
 		
@@ -75,7 +75,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 
 	@Override
 	public Vector3f getNodeOffset(int node) {
-		switch(getBlockState().get(ConnectorBlock.FACING)) {
+		switch(getBlockState().getValue(ConnectorBlock.FACING)) {
 			case DOWN:
 				return OFFSET_DOWN;
 			case UP:
@@ -94,12 +94,12 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 
 	@Override
 	public boolean isEnergyInput(Direction side) {
-		return getBlockState().get(ConnectorBlock.FACING) == side;
+		return getBlockState().getValue(ConnectorBlock.FACING) == side;
 	}
 
 	@Override
 	public boolean isEnergyOutput(Direction side) {
-		return getBlockState().get(ConnectorBlock.FACING) == side;
+		return getBlockState().getValue(ConnectorBlock.FACING) == side;
 	}
 	
 	@Override
@@ -168,7 +168,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	public void removeNode(int other) {
 		IWireNode.super.removeNode(other);
 		invalidateNodeCache();
-		this.markDirty();
+		this.setChanged();
 		
 		// Invalidate
 		if(network != null)
@@ -212,11 +212,11 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 
 	@Override
 	public BlockPos getMyPos() {
-		return pos;
+		return worldPosition;
 	}
 	
 	@Override
-	public void remove() {
+	public void setRemoved() {
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
 				continue;
@@ -229,7 +229,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		// Invalidate
 		if(network != null)
 			network.invalidate();
-		super.remove();
+		super.setRemoved();
 	}
 	
 	public void invalidateNodeCache() {
@@ -240,9 +240,9 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	@Override
 	public void tick() {
 		super.tick();
-		if(world.isRemote())
+		if(level.isClientSide())
 			return;
-		if(awakeNetwork(world)) {
+		if(awakeNetwork(level)) {
 			//EnergyNetwork.buildNetwork(world, this);
 			causeBlockUpdate();
 		}
@@ -263,10 +263,10 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	
 	private int demand = 0;
 	private void networkTick(EnergyNetwork en) {
-		if(world.isRemote())
+		if(level.isClientSide())
 			return;
 		// TODO: Cache
-		Direction d = getBlockState().get(ConnectorBlock.FACING);
+		Direction d = getBlockState().getValue(ConnectorBlock.FACING);
 		//TileEntity te = world.getTileEntity(pos.offset(d));
 		//if(te == null)
 		//	return;
@@ -291,20 +291,20 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	@Override
 	public void onObserved(ServerPlayerEntity player, ObservePacket pack) {
 		if(isNetworkValid(0))
-			EnergyNetworkPacket.send(pos, getNetwork(0).getPulled(), getNetwork(0).getPushed(), player);
+			EnergyNetworkPacket.send(worldPosition, getNetwork(0).getPulled(), getNetwork(0).getPushed(), player);
 	}
 	
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
-		ObservePacket.send(pos, 0);
+		ObservePacket.send(worldPosition, 0);
 		
 		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.connector.info").formatted(TextFormatting.WHITE)));
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.connector.info").withStyle(TextFormatting.WHITE)));
 		
 		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.usage").formatted(TextFormatting.GRAY)));
+				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(" ")
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").formatted(TextFormatting.AQUA));
+				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(TextFormatting.AQUA));
 		
 		/*tooltip.add(new StringTextComponent(spacing)
 				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.demand").formatted(TextFormatting.GRAY)));

@@ -124,10 +124,10 @@ public interface IWireNode {
 	public IWireNode getNode(int node);
 	
 	public static WireConnectResult connect(World world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
-		TileEntity te1 = world.getTileEntity(pos1);
+		TileEntity te1 = world.getBlockEntity(pos1);
 		if(te1 == null)
 			return WireConnectResult.INVALID;
-		TileEntity te2 = world.getTileEntity(pos2);
+		TileEntity te2 = world.getBlockEntity(pos2);
 		if(te2 == null)
 			return WireConnectResult.INVALID;
 		if(te1 == te2)
@@ -140,7 +140,7 @@ public interface IWireNode {
 			return WireConnectResult.COUNT;
 		//if(pos1.equals(pos2))
 		//	return WireConnectResult.INVALID;
-		if(pos1.distanceSq(pos2) > MAX_LENGTH * MAX_LENGTH)
+		if(pos1.distSqr(pos2) > MAX_LENGTH * MAX_LENGTH)
 			return WireConnectResult.LONG;
 		
 		IWireNode wn1 = (IWireNode) te1;
@@ -159,7 +159,7 @@ public interface IWireNode {
 	}
 	
 	public static WireType getTypeOfConnection(World world, BlockPos pos1, BlockPos pos2) {
-		TileEntity te1 = world.getTileEntity(pos1);
+		TileEntity te1 = world.getBlockEntity(pos1);
 		if(te1 == null)
 			return null;
 		if(!(te1 instanceof IWireNode))
@@ -175,10 +175,10 @@ public interface IWireNode {
 	}
 	
 	public static WireConnectResult disconnect(World world, BlockPos pos1, BlockPos pos2) {
-		TileEntity te1 = world.getTileEntity(pos1);
+		TileEntity te1 = world.getBlockEntity(pos1);
 		if(te1 == null)
 			return WireConnectResult.INVALID;
-		TileEntity te2 = world.getTileEntity(pos2);
+		TileEntity te2 = world.getBlockEntity(pos2);
 		if(te2 == null)
 			return WireConnectResult.INVALID;
 		if(te1 == te2)
@@ -210,7 +210,7 @@ public interface IWireNode {
 	public static IWireNode getWireNode(World world, BlockPos pos) {
 		if(pos == null)
 			return null;
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 		if(te == null)
 			return null;
 		if(!(te instanceof IWireNode))
@@ -227,7 +227,7 @@ public interface IWireNode {
 	}
 	
 	public static void dropWire(World world, BlockPos pos, ItemStack stack) {
-		InventoryHelper.dropItems(world, pos, NonNullList.from(ItemStack.EMPTY, stack));
+		InventoryHelper.dropContents(world, pos, NonNullList.of(ItemStack.EMPTY, stack));
 	}
 	
 	public default void dropWires(World world) {
@@ -271,11 +271,11 @@ public interface IWireNode {
 		}
 		for(ItemStack stack : stacks1) {
 			if(!stack.isEmpty())
-				dropWire(world, getMyPos(), player.inventory.addItemStackToInventory(stack) ? ItemStack.EMPTY : stack);
+				dropWire(world, getMyPos(), player.inventory.add(stack) ? ItemStack.EMPTY : stack);
 		}
 		for(ItemStack stack : stacks2) {
 			if(!stack.isEmpty())
-				dropWire(world, getMyPos(), player.inventory.addItemStackToInventory(stack) ? ItemStack.EMPTY : stack);
+				dropWire(world, getMyPos(), player.inventory.add(stack) ? ItemStack.EMPTY : stack);
 		}
 	}
 	

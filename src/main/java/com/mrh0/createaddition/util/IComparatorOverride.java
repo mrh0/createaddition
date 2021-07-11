@@ -8,7 +8,7 @@ public interface IComparatorOverride {
 	public int getComparetorOverride();
 	
 	public static int getComparetorOverride(World worldIn, BlockPos pos) {
-		TileEntity te = worldIn.getTileEntity(pos);
+		TileEntity te = worldIn.getBlockEntity(pos);
 		if(te != null) {
 			if(te instanceof IComparatorOverride) {
 				return ((IComparatorOverride)te).getComparetorOverride();

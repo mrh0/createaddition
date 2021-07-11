@@ -59,7 +59,7 @@ public class RollingMillTileEntity extends KineticTileEntity {
 		if (timer > 0) {
 			timer -= getProcessingSpeed();
 
-			if (world.isRemote) {
+			if (level.isClientSide) {
 				spawnParticles();
 				return;
 			}
@@ -73,8 +73,8 @@ public class RollingMillTileEntity extends KineticTileEntity {
 			return;
 
 		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
-		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, world)) {
-			Optional<RollingRecipe> recipe = find(inventoryIn, world);
+		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
+			Optional<RollingRecipe> recipe = find(inventoryIn, level);
 			if (!recipe.isPresent()) {
 				timer = 100;
 				sendData();
@@ -91,28 +91,28 @@ public class RollingMillTileEntity extends KineticTileEntity {
 	}
 
 	@Override
-	public void remove() {
-		super.remove();
+	public void setRemoved() {
+		super.setRemoved();
 		capability.invalidate();
 	}
 	
 	private void process() {
 		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
 
-		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, world)) {
-			Optional<RollingRecipe> recipe = find(inventoryIn, world);
+		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
+			Optional<RollingRecipe> recipe = find(inventoryIn, level);
 			if (!recipe.isPresent())
 				return;
 			lastRecipe = recipe.get();
 		}
 
-		ItemStack result = lastRecipe.getCraftingResult(inventoryIn).copy();
+		ItemStack result = lastRecipe.assemble(inventoryIn).copy();
 		ItemHandlerHelper.insertItemStacked(outputInv, result, false);
 		ItemStack stackInSlot = inputInv.getStackInSlot(0);
 		stackInSlot.shrink(1);
 		inputInv.setStackInSlot(0, stackInSlot);
 		sendData();
-		markDirty();
+		setChanged();
 	}
 
 	public void spawnParticles() {
@@ -121,14 +121,14 @@ public class RollingMillTileEntity extends KineticTileEntity {
 			return;
 
 		ItemParticleData data = new ItemParticleData(ParticleTypes.ITEM, stackInSlot);
-		float angle = world.rand.nextFloat() * 360;
+		float angle = level.random.nextFloat() * 360;
 		Vector3d offset = new Vector3d(0, 0, 0.5f);
 		offset = VecHelper.rotate(offset, angle, Axis.Y);
 		Vector3d target = VecHelper.rotate(offset, getSpeed() > 0 ? 25 : -25, Axis.Y);
 
-		Vector3d center = offset.add(VecHelper.getCenterOf(pos));
-		target = VecHelper.offsetRandomly(target.subtract(offset), world.rand, 1 / 128f);
-		world.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
+		Vector3d center = offset.add(VecHelper.getCenterOf(worldPosition));
+		target = VecHelper.offsetRandomly(target.subtract(offset), level.random, 1 / 128f);
+		level.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
 	}
 
 	@Override
@@ -163,9 +163,9 @@ public class RollingMillTileEntity extends KineticTileEntity {
 		tester.setStackInSlot(0, stack);
 		RecipeWrapper inventoryIn = new RecipeWrapper(tester);
 
-		if (lastRecipe != null && lastRecipe.matches(inventoryIn, world))
+		if (lastRecipe != null && lastRecipe.matches(inventoryIn, level))
 			return true;
-		return find(inventoryIn, world)
+		return find(inventoryIn, level)
 			.isPresent();
 	}
 
@@ -201,7 +201,7 @@ public class RollingMillTileEntity extends KineticTileEntity {
 	}
 
 	public Optional<RollingRecipe> find(RecipeWrapper inv, World world) {
-		return world.getRecipeManager().getRecipe(RollingRecipe.TYPE, inv, world);
+		return world.getRecipeManager().getRecipeFor(RollingRecipe.TYPE, inv, world);
 	}
 	
 	public static int getProcessingDuration() {
@@ -212,6 +212,11 @@ public class RollingMillTileEntity extends KineticTileEntity {
 		float impact = STRESS;
 		this.lastStressApplied = impact;
 		return impact;
+	}
+
+	@Override
+	public World getWorld() {
+		return getLevel();
 	}
 }
 

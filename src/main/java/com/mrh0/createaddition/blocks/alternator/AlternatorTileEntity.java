@@ -20,6 +20,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -48,9 +49,9 @@ public class AlternatorTileEntity extends KineticTileEntity {
 		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
 		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.production").formatted(TextFormatting.GRAY)));
+		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.production").withStyle(TextFormatting.GRAY)));
 		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
-				.formatted(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").formatted(TextFormatting.DARK_GRAY)));
+				.withStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").withStyle(TextFormatting.DARK_GRAY)));
 		added = true;
 		return added;
 	}
@@ -64,7 +65,7 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)) && !world.isRemote)
+		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)) && !level.isClientSide)
 			return lazyEnergy.cast();
 		return super.getCapability(cap, side);
 	}
@@ -74,7 +75,7 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	}
 
 	public boolean isEnergyOutput(Direction side) {
-		return side != getBlockState().get(AlternatorBlock.FACING);
+		return side != getBlockState().getValue(AlternatorBlock.FACING);
 	}
 	
 	@Override
@@ -94,7 +95,7 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if(world.isRemote())
+		if(level.isClientSide())
 			return;
 		if(firstTickState)
 			firstTick();
@@ -133,8 +134,8 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	}
 	
 	@Override
-	public void remove() {
-		super.remove();
+	public void setRemoved() {
+		super.setRemoved();
 		lazyEnergy.invalidate();
 	}
 	
@@ -143,10 +144,10 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	};
 	
 	public void updateCache() {
-		if(world.isRemote())
+		if(level.isClientSide())
 			return;
 		for(Direction side : Direction.values()) {
-			TileEntity te = world.getTileEntity(pos.offset(side));
+			TileEntity te = level.getBlockEntity(worldPosition.relative(side));
 			if(te == null) {
 				setCache(side, LazyOptional.empty());
 				continue;
@@ -202,5 +203,10 @@ public class AlternatorTileEntity extends KineticTileEntity {
 				return escacheWest.orElse(null);
 		}
 		return null;
+	}
+
+	@Override
+	public World getWorld() {
+		return getLevel();
 	}
 }
