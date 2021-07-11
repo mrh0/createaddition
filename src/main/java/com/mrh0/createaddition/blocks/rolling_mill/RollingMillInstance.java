@@ -1,17 +1,17 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
+import com.jozufozu.flywheel.backend.instancing.IDynamicInstance;
+import com.jozufozu.flywheel.backend.instancing.MaterialManager;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.RotatingData;
 import com.simibubi.create.content.contraptions.relays.elementary.ShaftBlock;
 import com.simibubi.create.content.contraptions.relays.encased.ShaftInstance;
-import com.simibubi.create.foundation.render.backend.instancing.IDynamicInstance;
-import com.simibubi.create.foundation.render.backend.instancing.InstancedTileRenderer;
 
 public class RollingMillInstance extends ShaftInstance implements IDynamicInstance {
 
     private final RotatingData shaft;
 
-    public RollingMillInstance(InstancedTileRenderer<?> dispatcher, RollingMillTileEntity tile) {
+    public RollingMillInstance(MaterialManager<?> dispatcher, RollingMillTileEntity tile) {
         super(dispatcher, tile);
 
         shaft = getRotatingMaterial()

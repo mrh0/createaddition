@@ -100,11 +100,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 
 		RollingMillTileEntity rollingMill = null;
 		for (BlockPos pos : Iterate.hereAndBelow(entityIn.getBlockPos())) {
-			try {
-				rollingMill = getTileEntity(worldIn, pos);
-			} catch (TileEntityException e) {
-				continue;
-			}
+			rollingMill = getTileEntity(worldIn, pos);
 		}
 		if (rollingMill == null)
 			return;
