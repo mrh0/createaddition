@@ -20,6 +20,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -202,5 +203,10 @@ public class AlternatorTileEntity extends KineticTileEntity {
 				return escacheWest.orElse(null);
 		}
 		return null;
+	}
+
+	@Override
+	public World getWorld() {
+		return getLevel();
 	}
 }

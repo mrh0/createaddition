@@ -213,5 +213,10 @@ public class RollingMillTileEntity extends KineticTileEntity {
 		this.lastStressApplied = impact;
 		return impact;
 	}
+
+	@Override
+	public World getWorld() {
+		return getLevel();
+	}
 }
 
