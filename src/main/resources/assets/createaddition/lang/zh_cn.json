@@ -3,6 +3,17 @@
 	"createaddition.tooltip.energy.consumption": "已使用的能量：",
 	"createaddition.tooltip.energy.production": "已产生的能量：",
 	"createaddition.tooltip.energy.charged": "已充能",
+	"createaddition.tooltip.energy.usage": "网络使用情况：",
+	"createaddition.tooltip.energy.demand": "网络消耗量：",
+	"createaddition.tooltip.energy.supply": "网络生产量：",
+	"createaddition.tooltip.energy.selected": "看向的连接器：",
+	"createaddition.tooltip.energy.input": "输入",
+	"createaddition.tooltip.energy.output": "输出",
+		
+	"createaddition.tooltip.accumulator.info": "蓄电池信息：",
+	"createaddition.tooltip.relay.info": "红石继电器信息：",
+	"createaddition.tooltip.connector.info": "连接器信息：",
+
 	"createaddition.recipe.rolling": "轧制",
 	"createaddition.recipe.crude_burning": "燃烧",
 	"createaddition.recipe.crude_burning.burn_time": "燃烧时间",
@@ -62,6 +73,15 @@
 	
 	"item.createaddition.seed_oil_bucket": "种子油桶",
 	
+	"item.createaddition.charging_chromatic_compound": "正在充能的异彩化合物",
+	"item.createaddition.overcharged_alloy": "超负荷合金",
+	"item.createaddition.overcharged_alloy.tooltip": "超负荷合金",
+	"item.createaddition.overcharged_alloy.tooltip.summary": "一种由_电力_铸成的异彩材料",
+	
+	"item.createaddition.overcharged_hammer": "超负荷锤 [WIP]",
+	"item.createaddition.overcharged_hammer.tooltip": "超负荷锤",
+	"item.createaddition.overcharged_hammer.tooltip.summary": "一种注入了电力的强大_近战和远程_武器。 [未完成的物品]",
+
 	"item.createaddition.spool": "空线轴",
 	"item.createaddition.spool.nbt": "存储连接地点",
 	"item.createaddition.spool.tooltip": "线轴",
@@ -104,6 +124,7 @@
 	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "手动收集产物。",
 
 	"block.createaddition.heater": "感应加热器",
+	"block.createaddition.heater.info": "感应加热器信息：",
 	"block.createaddition.heater.engine_heating_disabled": "驱动熔炉引擎已在配置中被禁用。",
 	"deprecated.block.createaddition.heater.tooltip": "感应加热器",
 	"deprecated.block.createaddition.heater.tooltip.summary": "当放置在_熔炉_上并用 _FE_ 供能感应加热器顶部时会加热_熔炉_。除非在_配置文件_中_启用_否则不会驱动_熔炉引擎_。",
@@ -139,6 +160,8 @@
 	"block.createaddition.furnace_burner.tooltip.action2": "取出_熔炉_中储存的_燃料_。",
 
 	"block.createaddition.charger": "充电站",
+	"block.createaddition.charger.info": "充电站信息：",
+	"block.createaddition.charger.empty": "空",
 	"block.createaddition.charger.tooltip": "充电站",
 	"block.createaddition.charger.tooltip.summary": "使用 _FE_ 给可充电物品充电。",
 	"block.createaddition.charger.tooltip.control1": "使用可充电物品右击时",
@@ -153,6 +176,7 @@
 	"block.createaddition.crude_burner.tooltip.action1": "输入手上_桶_中的液体。",
 	
 	"block.createaddition.chocolate_cake": "巧克力蛋糕",
+	"block.createaddition.honey_cake": "蜂蜜蛋糕",
 	
 	"block.createaddition.seed_oil": "种子油",
 	
