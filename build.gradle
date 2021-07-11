@@ -24,6 +24,21 @@ repositories {
         name "Progwml6 maven"
         url "https://dvs1.progwml6.com/files/maven/"
     }
+    maven {
+        //location of the maven for mixed mappings and registrate
+        name = "tterrag maven"
+        url = "https://maven.tterrag.com/"
+    }
+    maven {
+        // location of the maven that hosts JEI files (And TiC)
+        name "Progwml6 maven"
+        url "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        //location of the maven for vazkii's mods
+        name "blamejared"
+        url "http://maven.blamejared.com/"
+    }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
