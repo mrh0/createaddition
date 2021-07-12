@@ -30,6 +30,7 @@ import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAEntities;
 import com.mrh0.createaddition.index.CAFluids;
+import com.mrh0.createaddition.index.CAItemProperties;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.index.CAPonder;
 import com.mrh0.createaddition.index.CAPotatoCannonProjectiles;
@@ -98,6 +99,7 @@ public class CreateAddition {
     private void doClientStuff(final FMLClientSetupEvent event) {
         CAPonder.register();
         CAEntities.registerRenderers();
+        event.enqueueWork(CAItemProperties::register);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

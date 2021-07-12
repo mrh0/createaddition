@@ -37,5 +37,13 @@
 			"translation": [-0.25, -0.5, 0],
 			"scale": [0.7, 0.7, 0.7]
 		}
-	}
+	},
+	"overrides": [
+	    {
+	      "predicate": {
+	        "createaddition:charged": 1
+	      },
+	      "model": "createaddition:item/overcharged_hammer_shine"
+	    }
+    ]
 }

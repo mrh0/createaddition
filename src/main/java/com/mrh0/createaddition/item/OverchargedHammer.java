@@ -107,7 +107,6 @@ public class OverchargedHammer extends Item implements IVanishable {
 				ent.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 			});
 		}
-
 		return true;
 	}
 
