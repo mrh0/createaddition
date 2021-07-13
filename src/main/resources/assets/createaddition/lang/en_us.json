@@ -80,7 +80,7 @@
 	
 	"item.createaddition.overcharged_hammer": "Overcharged Hammer [WIP]",
 	"item.createaddition.overcharged_hammer.tooltip": "OVERCHARGED HAMMER",
-	"item.createaddition.overcharged_hammer.tooltip.summary": "This trusty _Hammer_ is a powerful _melee and ranged_ weapon, infused with the power of _electricity_. [UNFINISHED ITEM]",
+	"item.createaddition.overcharged_hammer.tooltip.summary": "This trusty _Hammer_ has been infused with the power of _electricity_ [UNFINISHED ITEM]",
 	
 	"item.createaddition.spool": "Empty Spool",
 	"item.createaddition.spool.nbt": "Stores connection location.",

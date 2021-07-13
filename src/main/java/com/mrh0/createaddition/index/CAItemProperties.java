@@ -14,7 +14,7 @@ public class CAItemProperties {
 		ItemModelsProperties.register(CAItems.OVERCHARGED_HAMMER.get(), new ResourceLocation(CreateAddition.MODID, "charged"), new IItemPropertyGetter() {
 			@Override
 			public float call(ItemStack item, ClientWorld world, LivingEntity entity) {
-				return 1;
+				return 0;
 			}
 		});
 	}
