@@ -80,7 +80,7 @@
 	
 	"item.createaddition.overcharged_hammer": "超负荷锤 [WIP]",
 	"item.createaddition.overcharged_hammer.tooltip": "超负荷锤",
-	"item.createaddition.overcharged_hammer.tooltip.summary": "一种注入了电力的强大_近战和远程_武器。 [未完成的物品]",
+	"item.createaddition.overcharged_hammer.tooltip.summary": "这把_锤子_已经被注入了_电_能。 [未完成的物品]",
 
 	"item.createaddition.spool": "空线轴",
 	"item.createaddition.spool.nbt": "存储连接地点",
