@@ -6,6 +6,7 @@ import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.blocks.crude_burner.CrudeBurnerTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.*;
+import com.mrh0.createaddition.blocks.treated_gearbox.*;
 import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurnerTileEntity;
 import com.mrh0.createaddition.blocks.heater.HeaterTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
@@ -27,6 +28,13 @@ public class CATileEntities {
 			.instance(() -> HalfShaftInstance::new)
 			.validBlocks(CABlocks.ELECTRIC_MOTOR)
 			.renderer(() -> ElectricMotorRenderer::new)
+			.register();
+
+	public static final TileEntityEntry<TreatedGearboxTileEntity> TREATED_GEARBOX = CreateAddition.registrate()
+			.tileEntity("treated_gearbox", TreatedGearboxTileEntity::new)
+			.instance(() -> HalfShaftInstance::new)
+			.validBlocks(CABlocks.TREATED_GEARBOX)
+			.renderer(() -> TreatedGearboxRenderer::new)
 			.register();
 	
 	public static final TileEntityEntry<AlternatorTileEntity> ALTERNATOR = CreateAddition.registrate()
