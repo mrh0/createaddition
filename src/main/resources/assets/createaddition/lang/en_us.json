@@ -9,6 +9,8 @@
 	"createaddition.tooltip.energy.selected": "Focused Connector:",
 	"createaddition.tooltip.energy.input": "Input",
 	"createaddition.tooltip.energy.output": "Output",
+
+	"createaddition.tooltip.ie_rotation.consumption": "Rotation Input:",
 	
 	"createaddition.tooltip.accumulator.info": "Accumulator Info:",
 	"createaddition.tooltip.relay.info": "Relay Info:",
@@ -102,6 +104,8 @@
 	"statusbar.createaddition.wire.exists": "Wire connection already exists",
 	"statusbar.createaddition.wire.no_connection": "Wire not connected here",
 	"statusbar.createaddition.wire.invalid": "Invalid connection",
+	
+	"block.createaddition.treated_gearbox": "Treated Wood Gearbox",
 	
 	"block.createaddition.electric_motor": "Electric Motor",
 	"deprecated.block.createaddition.electric_motor.tooltip": "ELECTRIC MOTOR",
