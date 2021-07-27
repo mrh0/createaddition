@@ -10,7 +10,6 @@ import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.crude_burner.CrudeBurner;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
-import com.mrh0.createaddition.blocks.treated_gearbox.TreatedGearboxBlock;
 import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.blocks.heater.HeaterBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
@@ -36,13 +35,6 @@ public class CABlocks {
 			.initialProperties(SharedProperties::stone)
 			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
 			//.transform(StressConfigDefaults.setCapacity(16.0))
-			.item()
-			.transform(customItemModel())
-			.register();
-	
-	public static final BlockEntry<TreatedGearboxBlock> TREATED_GEARBOX = REGISTRATE.block("treated_gearbox", TreatedGearboxBlock::new)
-			.initialProperties(SharedProperties::stone)
-			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
 			.item()
 			.transform(customItemModel())
 			.register();

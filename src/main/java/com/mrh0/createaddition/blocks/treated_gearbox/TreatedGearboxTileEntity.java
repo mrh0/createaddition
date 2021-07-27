@@ -5,7 +5,7 @@ import java.util.List;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
-import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAIEBlocks;
 import com.mrh0.createaddition.item.Multimeter;
 import blusunrize.immersiveengineering.api.energy.IRotationAcceptor;
 import com.simibubi.create.AllBlocks;
@@ -86,7 +86,7 @@ public class TreatedGearboxTileEntity extends GeneratingKineticTileEntity implem
 
 	@Override
 	public float getGeneratedSpeed() {
-		if (!CABlocks.TREATED_GEARBOX.has(getBlockState()))
+		if (!CAIEBlocks.TREATED_GEARBOX.has(getBlockState()))
 			return 0;
 		return (float) Math.floor(rotation) * CONVERSION_RATE;
 	}

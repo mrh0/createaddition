@@ -1,6 +1,6 @@
 package com.mrh0.createaddition.blocks.treated_gearbox;
 
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CAIETileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.contraptions.base.DirectionalKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
@@ -43,7 +43,7 @@ public class TreatedGearboxBlock extends DirectionalKineticBlock implements ITE<
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return CATileEntities.TREATED_GEARBOX.create();
+		return CAIETileEntities.TREATED_GEARBOX.create();
 	}
 	
 	@Override

@@ -36,6 +36,8 @@ import com.mrh0.createaddition.index.CAPonder;
 import com.mrh0.createaddition.index.CAPotatoCannonProjectiles;
 import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CAIEBlocks;
+import com.mrh0.createaddition.index.CAIETileEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -90,6 +92,11 @@ public class CreateAddition {
         CAItems.register();
         CAFluids.register();
         CAEntities.register();
+
+        if (IE_ACTIVE) {
+            CAIEBlocks.register();
+            CAIETileEntities.register(); 
+        }
     }
 
     private void setup(final FMLCommonSetupEvent event) {
