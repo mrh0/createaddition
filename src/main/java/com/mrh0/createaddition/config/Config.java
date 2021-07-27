@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class Config {
 
 	public static final String CATAGORY_GENERAL = "general";
+	public static final String CATAGORY_IE_COMPAT = "ie_compat";
 	public static final String CATAGORY_ELECTRIC_MOTOR = "electric_motor";
 	public static final String CATAGORY_ALTERNATOR = "alternator";
 	public static final String CATAGORY_ROLLING_MILL = "rolling_mill";
@@ -22,6 +23,9 @@ public class Config {
 	private static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 	
 	public static ForgeConfigSpec COMMON_CONFIG;
+	
+	public static ForgeConfigSpec.DoubleValue TREATED_GEARBOX_CONVERSION_RATE;
+	public static ForgeConfigSpec.BooleanValue TREATED_GEARBOX_ROUND_RPM;
 	
 	public static ForgeConfigSpec.IntValue ELECTRIC_MOTOR_RPM_RANGE;
 	public static ForgeConfigSpec.IntValue ELECTRIC_MOTOR_MAX_INPUT;
@@ -72,6 +76,17 @@ public class Config {
 		
 		BASELINE_STRESS = COMMON_BUILDER.comment("Max stress for the Alternator and Electric Motor.")
 				.defineInRange("generator_stress", 4096, 0, Integer.MAX_VALUE);
+
+		COMMON_BUILDER.pop();
+
+
+		COMMON_BUILDER.comment("Immersive Engineering Compatability Module").push(CATAGORY_IE_COMPAT);
+
+		TREATED_GEARBOX_CONVERSION_RATE = COMMON_BUILDER.comment("Conversion rate of Treated Gearbox")
+				.defineInRange("treated_gearbox_conversion_rate", 2d, 0d, 2048d);
+
+		TREATED_GEARBOX_ROUND_RPM = COMMON_BUILDER.comment("If output RPM of Treated Gearbox should be rounded")
+				.define("treated_gearbox_round_rpm", true);
 
 		COMMON_BUILDER.pop();
 		

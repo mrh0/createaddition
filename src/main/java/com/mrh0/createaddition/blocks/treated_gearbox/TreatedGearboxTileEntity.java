@@ -36,9 +36,11 @@ public class TreatedGearboxTileEntity extends GeneratingKineticTileEntity implem
 	private float rotation = 0;
 	private int got_rotation = 0;
 	
-	private static final Integer
-		CONVERSION_RATE = 2,
-		STRESS = Config.BASELINE_STRESS.get();
+	private static final Integer STRESS = Config.BASELINE_STRESS.get();
+
+	private static final Double CONVERSION_RATE = Config.TREATED_GEARBOX_CONVERSION_RATE.get();
+	
+	private static final Boolean ROUND_RPM = Config.TREATED_GEARBOX_ROUND_RPM.get();
 	
 	private boolean active = false;
 
@@ -71,7 +73,7 @@ public class TreatedGearboxTileEntity extends GeneratingKineticTileEntity implem
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.ie_rotation.consumption").withStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + this.rotation + "_whatever ")
+		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Math.round(this.rotation*100f)/100f + "r ")
 				.withStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").withStyle(TextFormatting.DARK_GRAY)));
 		added = true;
 		return added;
@@ -88,7 +90,9 @@ public class TreatedGearboxTileEntity extends GeneratingKineticTileEntity implem
 	public float getGeneratedSpeed() {
 		if (!CAIEBlocks.TREATED_GEARBOX.has(getBlockState()))
 			return 0;
-		return (float) Math.floor(rotation) * CONVERSION_RATE;
+		if (ROUND_RPM)
+			return (float) Math.round(Math.floor(rotation * 100f) / 100f * CONVERSION_RATE);
+		return (float) (Math.floor(rotation * 100f) / 100f * CONVERSION_RATE);
 	}
 	
 	@Override
