@@ -1,0 +1,36 @@
+{
+  "type": "create:mechanical_crafting",
+  "pattern": [
+  	"PIP",
+  	"TCT",
+  	"TCT",
+  	"ASA"
+  ],
+  "key": {
+  	"A": {
+      "item": "create:andesite_alloy"
+    },
+  	"S": {
+      "item": "create:shaft"
+    },
+    "C": {
+      "item": "create:cogwheel"
+    },
+    "P": {
+      "tag": "forge:plates/iron"
+    },
+    "I": {
+      "item": "immersiveengineering:component_iron"
+    },
+    "T": {
+      "tag": "forge:treated_wood"
+    }
+  },
+  "result": {
+    "item": "createaddition:treated_gearbox"
+  },
+  "conditions": [ {
+    "type": "forge:mod_loaded",
+    "modid": "immersiveengineering"
+  } ]
+}
