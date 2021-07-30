@@ -21,7 +21,7 @@ import net.minecraft.block.AbstractBlock.Properties;
 
 public class TreatedGearboxBlock extends DirectionalKineticBlock implements ITE<TreatedGearboxTileEntity> {
 	
-	public static final VoxelShaper ELECTRIC_MOTOR_SHAPE = CAShapes.shape(0, 0, 0, 16, 10, 16).add(1, 10, 1, 15, 15, 15).forDirectional();
+	public static final VoxelShaper TREATED_GEARBOX_SHAPE = CAShapes.shape(0, 0, 0, 16, 10, 16).add(1, 10, 1, 15, 15, 15).forDirectional();
 
 	public TreatedGearboxBlock(Properties properties) {
 		super(properties);
@@ -29,7 +29,7 @@ public class TreatedGearboxBlock extends DirectionalKineticBlock implements ITE<
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return ELECTRIC_MOTOR_SHAPE.get(state.getValue(FACING));
+		return TREATED_GEARBOX_SHAPE.get(state.getValue(FACING));
 	}
 	
 	@Override
