@@ -123,10 +123,10 @@ dependencies {
 
     implementation fg.deobf("curse.maven:create-328085:3406857")
     implementation fg.deobf("curse.maven:flywheel-486392:3406855")
-	implementation fg.deobf("curse.maven:immersive-engineering-231951:3102280")
-	implementation fg.deobf("curse.maven:cc-tweaked-282001:3236650")
+	implementation fg.deobf("curse.maven:immersive-engineering-231951:3377691")
+    implementation fg.deobf("curse.maven:cc-tweaked-282001:3368207")
 	
-	 runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3172395")
+	 runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3203659")
 	annotationProcessor 'org.spongepowered:mixin:0.8:processor'
 }
 
