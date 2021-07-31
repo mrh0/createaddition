@@ -1,7 +1,7 @@
 package com.mrh0.createaddition.config;
 
 
-import com.simibubi.create.foundation.config.StressConfigDefaults;
+import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.repack.registrate.builders.BlockBuilder;
 import com.simibubi.create.repack.registrate.util.nullness.NonNullUnaryOperator;
 

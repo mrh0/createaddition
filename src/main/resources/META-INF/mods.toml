@@ -52,13 +52,13 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.16.5_v0.3.1,)"
+    versionRange="[mc1.16.5_v0.3.2,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
     modId="flywheel"
     mandatory=true
-    versionRange="[1.16-0.1,1.16-0.2)"
+    versionRange="[1.16-0.2,1.16-0.3)"
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.immersiveengineering]]
@@ -77,6 +77,6 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.16.4,1.17)"
+    versionRange="[1.16.5,1.17)"
     ordering="NONE"
     side="BOTH"
