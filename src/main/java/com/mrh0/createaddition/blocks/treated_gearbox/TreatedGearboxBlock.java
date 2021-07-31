@@ -2,7 +2,7 @@ package com.mrh0.createaddition.blocks.treated_gearbox;
 
 import com.mrh0.createaddition.index.CAIETileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
-import com.simibubi.create.content.contraptions.base.DirectionalKineticBlock;
+import com.simibubi.create.content.contraptions.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
@@ -19,7 +19,7 @@ import net.minecraft.world.IWorldReader;
 
 import net.minecraft.block.AbstractBlock.Properties;
 
-public class TreatedGearboxBlock extends DirectionalKineticBlock implements ITE<TreatedGearboxTileEntity> {
+public class TreatedGearboxBlock extends HorizontalKineticBlock implements ITE<TreatedGearboxTileEntity> {
 	
 	public static final VoxelShaper TREATED_GEARBOX_SHAPE = CAShapes.shape(0, 0, 0, 16, 10, 16).add(1, 10, 1, 15, 15, 15).forDirectional();
 
@@ -29,16 +29,13 @@ public class TreatedGearboxBlock extends DirectionalKineticBlock implements ITE<
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return TREATED_GEARBOX_SHAPE.get(state.getValue(FACING));
+		return TREATED_GEARBOX_SHAPE.get(state.getValue(HORIZONTAL_FACING));
 	}
-	
+
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		Direction preferred = getPreferredFacing(context);
-		if ((context.getPlayer() != null && context.getPlayer()
-			.isShiftKeyDown()) || preferred == null)
-			return super.getStateForPlacement(context);
-		return defaultBlockState().setValue(FACING, preferred);
+		return this.defaultBlockState()
+				.setValue(HORIZONTAL_FACING, context.getHorizontalDirection());
 	}
 
 	@Override
@@ -53,12 +50,12 @@ public class TreatedGearboxBlock extends DirectionalKineticBlock implements ITE<
 
 	@Override
 	public boolean hasShaftTowards(IWorldReader world, BlockPos pos, BlockState state, Direction face) {
-		return face == state.getValue(FACING);
+		return face == state.getValue(HORIZONTAL_FACING);
 	}
 
 	@Override
 	public Axis getRotationAxis(BlockState state) {
-		return state.getValue(FACING)
+		return state.getValue(HORIZONTAL_FACING)
 			.getAxis();
 	}
 

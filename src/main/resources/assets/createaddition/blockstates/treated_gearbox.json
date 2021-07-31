@@ -1,13 +1,5 @@
 {
   "variants": {
-    "facing=down": {
-      "model": "createaddition:block/treated_gearbox/block",
-      "x": 270, "y": 90
-    },
-    "facing=up": {
-      "model": "createaddition:block/treated_gearbox/block",
-      "x": 90, "y": 90
-    },
     "facing=north": {
       "model": "createaddition:block/treated_gearbox/block",
       "y": 180

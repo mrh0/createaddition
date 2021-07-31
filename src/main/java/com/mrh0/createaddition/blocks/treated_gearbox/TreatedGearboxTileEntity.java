@@ -52,13 +52,13 @@ public class TreatedGearboxTileEntity extends GeneratingKineticTileEntity implem
 	@Override
 	public void inputRotation(double rotation, @Nonnull Direction side)
 	{
-		if(side!=getBlockState().getValue(TreatedGearboxBlock.FACING))
+		if(side!=getBlockState().getValue(TreatedGearboxBlock.HORIZONTAL_FACING))
 			return;
 		this.got_rotation = 5;
 		if (Math.abs(this.rotation - rotation) > 0.05) {
 			this.rotation = (float) rotation;
-			// System.out.println("New rotation!\n");
-			System.out.println(this.rotation);
+//			System.out.println("New rotation!\n");
+//			System.out.println(this.rotation);
 			updateGeneratedRotation();
 		}
 	}
