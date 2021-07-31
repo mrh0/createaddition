@@ -180,41 +180,41 @@
 	
 	"block.createaddition.seed_oil": "Растительное масло",
 	
-	"itemGroup.createaddition:main":"Create Crafts & Additions"
+	"itemGroup.createaddition:main":"Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "Click here to open API documentation",
 	
-	"create.ponder.tag.electric": "Электрические приборы",
-	"create.ponder.tag.electric.description": "Компоненты, использующие электричество",
+	"createaddition.ponder.tag.electric": "Электрические приборы",
+	"createaddition.ponder.tag.electric.description": "Компоненты, использующие электричество",
 	
-	"create.ponder.electric_motor.header": "Генерации силы вращения с помощью электродвигателей",
-	"create.ponder.electric_motor.text_1": "Электродвигатели - это компактный и настраиваемый источник силы вращения",
-	"create.ponder.electric_motor.text_2": "Прокрутка на тыльной панели изменяет частоту вращения электродвигателей",
-	"create.ponder.electric_motor.text_3": "Электродвигатель требует источника энергии (fe)",
-	"create.ponder.electric_motor.text_4": "Потребление энергии двигателями определяется заданными оборотами в минуту",
+	"createaddition.ponder.electric_motor.header": "Генерации силы вращения с помощью электродвигателей",
+	"createaddition.ponder.electric_motor.text_1": "Электродвигатели - это компактный и настраиваемый источник силы вращения",
+	"createaddition.ponder.electric_motor.text_2": "Прокрутка на тыльной панели изменяет частоту вращения электродвигателей",
+	"createaddition.ponder.electric_motor.text_3": "Электродвигатель требует источника энергии (fe)",
+	"createaddition.ponder.electric_motor.text_4": "Потребление энергии двигателями определяется заданными оборотами в минуту",
 	
-	"create.ponder.alternator.header": "Генерации электроэнергии с использованием генератора переменного тока",
-	"create.ponder.alternator.text_1": "Для работы генератора требуется не менее 32 об./мин",
-	"create.ponder.alternator.text_2": "Он генерирует электроэнергию (fe) за счет силы вращения",
-	"create.ponder.alternator.text_3": "Производство энергии определяется входящей частотой вращения",
+	"createaddition.ponder.alternator.header": "Генерации электроэнергии с использованием генератора переменного тока",
+	"createaddition.ponder.alternator.text_1": "Для работы генератора требуется не менее 32 об./мин",
+	"createaddition.ponder.alternator.text_2": "Он генерирует электроэнергию (fe) за счет силы вращения",
+	"createaddition.ponder.alternator.text_3": "Производство энергии определяется входящей частотой вращения",
 	
-	"create.ponder.rolling_mill.header": "Прокатке металлов в стержни и провода",
-	"create.ponder.rolling_mill.text_1": "Прокатный станок использует вращательную силу для прокатки металлов в стержни и провода",
-	"create.ponder.rolling_mill.text_2": "Чтобы добавить элементы вручную, поместите слитки или пластины на верхнюю часть прокатчика",
-	"create.ponder.rolling_mill.text_3": "Щелкните ПКМ по прокатчику, чтобы вручную извлечь выводимые изделия.",
+	"createaddition.ponder.rolling_mill.header": "Прокатке металлов в стержни и провода",
+	"createaddition.ponder.rolling_mill.text_1": "Прокатный станок использует вращательную силу для прокатки металлов в стержни и провода",
+	"createaddition.ponder.rolling_mill.text_2": "Чтобы добавить элементы вручную, поместите слитки или пластины на верхнюю часть прокатчика",
+	"createaddition.ponder.rolling_mill.text_3": "Щелкните ПКМ по прокатчику, чтобы вручную извлечь выводимые изделия.",
 	
-	"create.ponder.automated_rolling_mill.header": "Автоматизации прокатного станка",
-	"create.ponder.automated_rolling_mill.text_1": "Прокатный станок можно автоматизировать с помощью ремня и двух воронок",
-	"create.ponder.automated_rolling_mill.text_2": "Входная воронка",
-	"create.ponder.automated_rolling_mill.text_3": "Выходная воронка",
+	"createaddition.ponder.automated_rolling_mill.header": "Автоматизации прокатного станка",
+	"createaddition.ponder.automated_rolling_mill.text_1": "Прокатный станок можно автоматизировать с помощью ремня и двух воронок",
+	"createaddition.ponder.automated_rolling_mill.text_2": "Входная воронка",
+	"createaddition.ponder.automated_rolling_mill.text_3": "Выходная воронка",
 	
-	"create.ponder.heater.header": "Использовании электроэнергии для нагрева печи",
-	"create.ponder.heater.text_1": "Нагреватель можно разместить с любой стороны печи",
-	"create.ponder.heater.text_2": "При подключении к достаточному источнику электроэнергии (fe) нагреватель будет зажигать печь",
-	"create.ponder.heater.text_3": "Печь будет гореть до тех пор, пока будет обеспечено достаточное количество энергии",
+	"createaddition.ponder.heater.header": "Использовании электроэнергии для нагрева печи",
+	"createaddition.ponder.heater.text_1": "Нагреватель можно разместить с любой стороны печи",
+	"createaddition.ponder.heater.text_2": "При подключении к достаточному источнику электроэнергии (fe) нагреватель будет зажигать печь",
+	"createaddition.ponder.heater.text_3": "Печь будет гореть до тех пор, пока будет обеспечено достаточное количество энергии",
 	
-	"create.ponder.cc_electric_motor.header": "Использование ComputerCraft для управления электродвигателем",
-	"create.ponder.cc_electric_motor.text_1": "Электродвигателем можно управлять с помощью ComputerCraft",
-	"create.ponder.cc_electric_motor.text_2": "Подсоедините к двигателю с помощью периферийного устройства (сбоку)",
-	"create.ponder.cc_electric_motor.text_3": "Получить документацию по API, введя в чате команду /cca_api"
+	"createaddition.ponder.cc_electric_motor.header": "Использование ComputerCraft для управления электродвигателем",
+	"createaddition.ponder.cc_electric_motor.text_1": "Электродвигателем можно управлять с помощью ComputerCraft",
+	"createaddition.ponder.cc_electric_motor.text_2": "Подсоедините к двигателю с помощью периферийного устройства (сбоку)",
+	"createaddition.ponder.cc_electric_motor.text_3": "Получить документацию по API, введя в чате команду /cca_api"
 }

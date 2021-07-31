@@ -1,7 +1,7 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
 import com.jozufozu.flywheel.backend.instancing.IDynamicInstance;
-import com.jozufozu.flywheel.backend.instancing.MaterialManager;
+import com.jozufozu.flywheel.backend.material.MaterialManager;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.RotatingData;
 import com.simibubi.create.content.contraptions.relays.elementary.ShaftBlock;
