@@ -97,7 +97,7 @@ public class CreateAddition {
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
-        CAPonder.register();
+    	event.enqueueWork(CAPonder::register);
         CAEntities.registerRenderers();
         event.enqueueWork(CAItemProperties::register);
     }
