@@ -161,7 +161,7 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 
 		//System.out.println((fx + o1) +":"+ (fy + n1 - n2) +":"+ (fz - o2));
 		
-		if(Math.abs(x) + Math.abs(z) < 2f && Math.abs(y) > 2f) {
+		if(Math.abs(x) + Math.abs(z) < Math.abs(y)) {
 			boolean p = b > 0;
 			float c = 0.015f;
 			

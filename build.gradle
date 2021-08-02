@@ -25,7 +25,7 @@ mixin {
     add sourceSets.main, "createaddition.refmap.json"
 }
 
-version = '1.16.5-20210712a'
+version = '1.16.5-20210801a'
 group = 'com.mrh0.createaddition' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createaddition'
 
@@ -117,16 +117,16 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.0'
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
-    implementation fg.deobf("curse.maven:create-328085:3384090")
-    implementation fg.deobf("curse.maven:flywheel-486392:3384004")
-	implementation fg.deobf("curse.maven:immersive-engineering-231951:3102280")
-	implementation fg.deobf("curse.maven:cc-tweaked-282001:3236650")
+    implementation fg.deobf("curse.maven:create-328085:3406857")
+    implementation fg.deobf("curse.maven:flywheel-486392:3406855")
+	implementation fg.deobf("curse.maven:immersive-engineering-231951:3377691")
+    implementation fg.deobf("curse.maven:cc-tweaked-282001:3368207")
 	
-	 runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3172395")
+	//runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3203659")
 	annotationProcessor 'org.spongepowered:mixin:0.8:processor'
 }
 

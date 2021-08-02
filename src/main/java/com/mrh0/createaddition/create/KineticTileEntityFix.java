@@ -42,7 +42,7 @@ public abstract class KineticTileEntityFix extends KineticTileEntity
 	}
 
 	public float calculateAddedStressCapacity() {
-		float capacity = (float) AllConfigs.SERVER.kinetics.stressValues.getCapacityOf(getStressConfigKey());
+		float capacity = (float) AllConfigs.SERVER.kinetics.stressValues.getCapacity(getStressConfigKey());
 		this.lastCapacityProvided = capacity;
 		return capacity;
 	}
@@ -52,7 +52,7 @@ public abstract class KineticTileEntityFix extends KineticTileEntity
 	}
 
 	public float calculateStressApplied() {
-		float impact = (float) AllConfigs.SERVER.kinetics.stressValues.getImpactOf(getStressConfigKey());
+		float impact = (float) AllConfigs.SERVER.kinetics.stressValues.getImpact(getStressConfigKey());
 		this.lastStressApplied = impact;
 		return impact;
 	}
