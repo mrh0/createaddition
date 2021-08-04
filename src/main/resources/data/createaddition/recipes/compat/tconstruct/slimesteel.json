@@ -1,0 +1,27 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "tag": "forge:slimeball/sky"
+    },
+    {
+      "tag": "tconstruct:seared_blocks"
+    }
+  ],
+  "results": [
+    {
+      "item": "tconstruct:slimesteel_ingot",
+      "count": 2
+    }
+  ],
+  "heatRequirement": "heated",
+  "conditions": [
+    {
+    	"type": "forge:mod_loaded",
+    	"modid": "tconstruct"
+  	}
+  ]
+}

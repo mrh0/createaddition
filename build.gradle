@@ -126,6 +126,9 @@ dependencies {
 	implementation fg.deobf("curse.maven:immersive-engineering-231951:3377691")
     implementation fg.deobf("curse.maven:cc-tweaked-282001:3368207")
 	
+	runtimeOnly fg.deobf("curse.maven:tinkers-construct-74072:3389377")
+	runtimeOnly fg.deobf("curse.maven:mantle-74924:3412365")
+	
 	//runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3203659")
 	annotationProcessor 'org.spongepowered:mixin:0.8:processor'
 }

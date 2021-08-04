@@ -1,0 +1,30 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:glass"
+    }
+  ],
+  "results": [
+    {
+      "item": "tconstruct:tinkers_bronze_ingot",
+      "count": 3
+    }
+  ],
+  "heatRequirement": "heated",
+  "conditions": [
+    {
+    	"type": "forge:mod_loaded",
+    	"modid": "tconstruct"
+  	}
+  ]
+}

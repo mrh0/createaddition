@@ -14,9 +14,12 @@ import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.Create;
 import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
+import com.simibubi.create.content.contraptions.components.deployer.DeployerApplicationRecipe;
+import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -28,6 +31,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 
@@ -65,10 +70,22 @@ public class CreateAdditionJEI implements IModPlugin {
 		ingredientManager = registration.getIngredientManager();
 		ALL.forEach(c -> c.recipes.forEach(s -> registration.addRecipes(s.get(), c.getUid())));
 		
-		List<ConversionRecipe> r = new ArrayList<>();
-		r.add(ConversionRecipe.create(AllItems.CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
+		List<ConversionRecipe> r1 = new ArrayList<>();
+		r1.add(ConversionRecipe.create(AllItems.CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
 		//r.add(ConversionRecipe.create(CAItems.CHARGING_CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
-		registration.addRecipes(r, new ResourceLocation("create:mystery_conversion"));
+		registration.addRecipes(r1, new ResourceLocation("create:mystery_conversion"));
+		
+		//registration.addRecipes(DeployerApplicationRecipe.convert(findRecipesByType(AllRecipeTypes.SANDPAPER_POLISHING.getType())), AllRecipeTypes.DEPLOYING.getId());
+		
+		/*List<DeployerApplicationRecipe> r2 = new ArrayList<>();
+		r2.add(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, Create.asResource("polishing_using_deployer"))
+			.require(Ingredient.of(new ItemStack(AllItems.ROSE_QUARTZ.get())))
+			.require(ItemTags.ACACIA_LOGS)//Ingredient.of(AllItems.SAND_PAPER.get(), AllItems.RED_SAND_PAPER.get(), CAItems.DIAMOND_GRIT_SANDPAPER.get())
+			.output(new ItemStack(AllItems.POLISHED_ROSE_QUARTZ.get()))
+			.build());
+		registration.addRecipes(r2, AllRecipeTypes.DEPLOYING.getId());*/
+		
+		
 	}
 
 	@Override
@@ -76,6 +93,7 @@ public class CreateAdditionJEI implements IModPlugin {
 		ALL.forEach(c -> c.recipeCatalysts.forEach(s -> registration.addRecipeCatalyst(s.get(), c.getUid())));
 		
 		registration.addRecipeCatalyst(new ItemStack(CAItems.DIAMOND_GRIT_SANDPAPER.get()), new ResourceLocation(Create.ID, "sandpaper_polishing"));
+		//registration.addRecipeCatalyst(new ItemStack(CAItems.DIAMOND_GRIT_SANDPAPER.get()), new ResourceLocation(Create.ID, "deploying"));
 	}
 	
 	private <T extends IRecipe<?>> CategoryBuilder<T> register(String name, Supplier<CreateRecipeCategory<T>> supplier) {
