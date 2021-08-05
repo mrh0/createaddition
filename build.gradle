@@ -38,7 +38,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-			arg "-mixin.config=createaddition.mixins.json"
+			args "-mixin.config=createaddition.mixins.json", "--username", "hminer"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
