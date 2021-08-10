@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SFS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "create:sail_frame"
+    },
+    "F": {
+      "tag": "forge:fabric_hemp"
+    }
+  },
+  "result": {
+    "item": "create:white_sail"
+  },
+  "conditions": [ {
+    "type": "forge:mod_loaded",
+    "modid": "immersiveengineering"
+  } ]
+}

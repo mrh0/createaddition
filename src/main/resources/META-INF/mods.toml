@@ -52,13 +52,13 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.16.5_v0.3.2c,)"
+    versionRange="[mc1.16.5_v0.3.2d,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
     modId="flywheel"
     mandatory=true
-    versionRange="[1.16-0.2,1.16-0.3)"
+    versionRange="[1.16-0.2.3,1.16-0.3)"
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.createaddition]]
