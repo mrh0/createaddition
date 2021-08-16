@@ -151,10 +151,17 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 		if (itemStack.getCapability(CapabilityEnergy.ENERGY).isPresent())
 			return getItemCharge(itemStack.getCapability(CapabilityEnergy.ENERGY).orElse(null));
 		if (itemStack.getItem() == CAItems.CHARGING_CHROMATIC_COMPOUND.get())
-			return (float) ChargingChromaticCompound.getCharge(itemStack) * 10f;
+			return (float) ChargingChromaticCompound.getCharge(itemStack) * 90f;
 		if (itemStack.getItem() == CAItems.OVERCHARGED_ALLOY.get())
-			return 10f;
+			return 90f;
 		return 0f;
+	}
+
+	public String getChargeString() {
+		float c = Math.round(getCharge() * 100);
+		if(c >= 9000)
+			return "OVER9000% ";
+		return Math.round(getCharge() * 100) + "% ";
 	}
 
 	@Override
@@ -163,8 +170,7 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 				new TranslationTextComponent("block.createaddition.charger.info").withStyle(TextFormatting.WHITE)));
 		if (hasChargedStack()) {
 			tooltip.add(new StringTextComponent(spacing).append(" ")
-					.append(new StringTextComponent(Math.round(getCharge() * 100) + "% ")
-							.withStyle(TextFormatting.AQUA))
+					.append(new StringTextComponent(getChargeString()).withStyle(TextFormatting.AQUA))
 					.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.charged")
 							.withStyle(TextFormatting.GRAY)));
 		} else {

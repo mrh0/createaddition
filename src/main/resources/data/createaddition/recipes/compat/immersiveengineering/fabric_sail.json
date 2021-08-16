@@ -14,7 +14,8 @@
     }
   },
   "result": {
-    "item": "create:white_sail"
+    "item": "create:white_sail",
+    "count": 8
   },
   "conditions": [ {
     "type": "forge:mod_loaded",

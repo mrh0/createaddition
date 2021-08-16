@@ -78,9 +78,9 @@
 	"item.createaddition.overcharged_alloy.tooltip": "OVERCHARGED ALLOY",
 	"item.createaddition.overcharged_alloy.tooltip.summary": "A Chromatic material forged by _electricity_",
 	
-	"item.createaddition.overcharged_hammer": "Overcharged Hammer [WIP]",
+	"item.createaddition.overcharged_hammer": "Overcharged Hammer",
 	"item.createaddition.overcharged_hammer.tooltip": "OVERCHARGED HAMMER",
-	"item.createaddition.overcharged_hammer.tooltip.summary": "This trusty _Hammer_ has been infused with the power of _electricity_ [UNFINISHED ITEM]",
+	"item.createaddition.overcharged_hammer.tooltip.summary": "This trusty _Hammer_ has been infused with the power of _electricity_",
 	
 	"item.createaddition.spool": "Empty Spool",
 	"item.createaddition.spool.nbt": "Stores connection location.",

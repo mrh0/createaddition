@@ -80,7 +80,6 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 				 * ox2, ty - oy1 + oy2, tz - oz1 + oz2, ivertexbuilder1, matrix4f1, divf(k + 1,
 				 * 16), type, dis);//tx, ty, tz, } }
 				 */
-
 				matrixStackIn.popPose();
 			}
 		}
@@ -107,7 +106,7 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 
 	public static void wireRender(TileEntity tileEntityIn, BlockPos other, MatrixStack matrix, IRenderTypeBuffer buffer, float x, float y, float z,
 			WireType type, float dis) {
-		matrix.pushPose();
+		//matrix.pushPose();
 
 		// matrix.translate(tileEntityIn.getPos().getX(), tileEntityIn.getPos().getY(),
 		// tileEntityIn.getPos().getZ());
@@ -128,7 +127,7 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 		int l = tileEntityIn.getLevel().getBrightness(LightType.SKY, blockpos2);
 		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.025F, o1, o2, type, dis);
 		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.0F, o1, o2, type, dis);
-		matrix.popPose();
+		//matrix.popPose();
 	}
 
 	public static void wirePart(IVertexBuilder vertBuilder, Matrix4f matrix, float x, float y, float z, int l1, int l2,

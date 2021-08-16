@@ -2,7 +2,7 @@
 	"textures": {
 		"0": "createaddition:item/overcharged_hammer",
 		"1": "minecraft:block/light_blue_stained_glass",
-		"particle": "myassets:item/overcharged_hammer"
+		"particle": "createaddition:item/overcharged_hammer"
 	},
 	"elements": [
 		{

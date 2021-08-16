@@ -27,10 +27,11 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = CreateAddition.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientEventHandler {
+	/*
 	@SubscribeEvent
 	public static void playerRendererEvent(RenderWorldLastEvent evt) {
 		MatrixStack matrixStackIn = evt.getMatrixStack();
-		IRenderTypeBuffer bufferIn = Minecraft.getInstance().renderBuffers().outlineBufferSource();//evt.getBuffers();
+		IRenderTypeBuffer bufferIn = Minecraft.getInstance().renderBuffers().bufferSource();//.outlineBufferSource();//evt.getBuffers();
 		ItemStack stack = Minecraft.getInstance().player.getItemInHand(Hand.MAIN_HAND);//evt.getItemStack();
 		if(stack.isEmpty())
 			return;
@@ -65,7 +66,7 @@ public class ClientEventHandler {
 		float ty = te.getBlockPos().getY() + wn.getNodeOffset(node).y() - 1f;
 		float tz = te.getBlockPos().getZ() + wn.getNodeOffset(node).z() + 0.5f;
 
-		matrixStackIn.pushPose();
+		//matrixStackIn.pushPose();
 
 		// IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.getLines());
 		// Matrix4f matrix4f1 = matrixStackIn.peek().getModel();
@@ -77,8 +78,9 @@ public class ClientEventHandler {
 		//matrixStackIn.translate(tx + .5f, ty + .5f, tz + .5f);
 		matrixStackIn.translate(0,-0.2f,0);
 		WireNodeRenderer.wireRender(te, p.blockPosition(), matrixStackIn, bufferIn, -doubleX + tx, -doubleY + ty, -doubleZ + tz, WireSpool.getWireType(stack.getItem()), dis);
-		matrixStackIn.popPose();
+		//matrixStackIn.popPose();
 	}
+	*/
 	
 	@SubscribeEvent
 	public static void getFogDensity(EntityViewRenderEvent.FogDensity event) {
