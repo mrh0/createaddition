@@ -74,7 +74,7 @@ public class CAItems {
 			REGISTRATE.item("overcharged_hammer", OverchargedHammer::new)
 			.transform(CreateRegistrate.customRenderedItem(() -> HammerModel::new))
 			.model(AssetLookup.itemModelWithPartials())
-			.properties(p -> p.addToolType(ToolType.PICKAXE, 4))
+			//.properties(p -> p.addToolType(ToolType.PICKAXE, 4))
 			.properties(p -> p.fireResistant())
 			.properties(p -> p.stacksTo(1))
 			.properties(p -> p.rarity(Rarity.UNCOMMON))

@@ -16,20 +16,16 @@ public class HammerRenderer  extends CustomRenderedItemModelRenderer<HammerModel
 	@Override
 	protected void render(ItemStack stack, HammerModel model, PartialItemModelRenderer renderer, ItemCameraTransforms.TransformType transformType,
 		MatrixStack ms, IRenderTypeBuffer buffer, int light, int overlay) {
-		float worldTime = AnimationTickHolder.getRenderTime() / 20;
+		float worldTime = AnimationTickHolder.getRenderTime() / 10;
 		int maxLight = 0xF000F0;
 
 		renderer.render(model.getOriginalModel(), light);
-		//renderer.renderSolidGlowing(model.getPartial("handle"), maxLight);
+		
+		float f = (1+MathHelper.sin(worldTime)) * .04f;
+		
+		ms.translate(0f, -f/2f, 0f);
+		ms.scale(1f+f, 1f+f, 1f+f);
 		renderer.renderGlowing(model.getPartial("shine"), maxLight);
-
-		/*float floating = MathHelper.sin(worldTime) * .05f;
-		float angle = worldTime * -10 % 360;
-
-		ms.translate(0, floating, 0);
-		ms.mulPose(Vector3f.YP.rotationDegrees(angle));
-
-		renderer.renderGlowing(model.getPartial("shine"), maxLight);*/
 	}
 
 }
