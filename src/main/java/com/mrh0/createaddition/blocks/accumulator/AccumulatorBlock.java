@@ -82,8 +82,8 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 				AccumulatorTileEntity ate = (AccumulatorTileEntity) te;
 				if(stack.hasTag()) {
 					CompoundNBT nbt = stack.getTag();
-					if(nbt.contains("energy") && nbt.contains("energy_buffIn") && nbt.contains("energy_buffOut"))
-						ate.setEnergy(nbt.getInt("energy"), nbt.getInt("energy_buffIn"), nbt.getInt("energy_buffOut"));
+					if(nbt.contains("energy"))
+						ate.setEnergy(nbt.getInt("energy"));
 				
 				}
 			}

@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.recipe.conditions.FluidTagEmptyCondition;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipeSerializer;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
@@ -9,6 +10,7 @@ import com.mrh0.createaddition.recipe.rolling.RollingRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 
 public class CARecipes {
@@ -20,5 +22,7 @@ public class CARecipes {
 		event.getRegistry()
 			.register(new CrudeBurningRecipeSerializer().setRegistryName(new ResourceLocation(CreateAddition.MODID, "crude_burning")));
 		Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(CreateAddition.MODID, "crude_burning"), CrudeBurningRecipe.TYPE);
+		
+		CraftingHelper.register(FluidTagEmptyCondition.Serializer.INSTANCE);
 	}
 }

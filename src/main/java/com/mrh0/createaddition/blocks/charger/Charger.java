@@ -81,24 +81,23 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 			if(te instanceof ChargerTileEntity) {
 				ChargerTileEntity cte = (ChargerTileEntity) te;
 				ItemStack held = player.getItemInHand(handIn);
-				if(cte.hasChargedStack() && held.isEmpty()) {
+				if(cte.hasChargedStack()) {
 					InventoryHelper.dropItemStack(worldIn, (double)player.position().x(), (double)player.position().y(), (double)player.position().z(), cte.getChargedStack());
 					//player.setHeldItem(handIn, cte.getChargedStack());
 					cte.setChargedStack(ItemStack.EMPTY);
 					worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 					return ActionResultType.CONSUME;
 				}
-				else {
-					if(!held.getCapability(CapabilityEnergy.ENERGY).isPresent()) {
-						if(held.getItem() != CAItems.CHARGING_CHROMATIC_COMPOUND.get() && held.getItem() != AllItems.CHROMATIC_COMPOUND.get())
-							return ActionResultType.PASS;
-					}
-					cte.setChargedStack(held);
-					//if(!player.isCreative())
-					held.shrink(1);
-					worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
-					return ActionResultType.CONSUME;
+				
+				if(!held.getCapability(CapabilityEnergy.ENERGY).isPresent()) {
+					if(held.getItem() != CAItems.CHARGING_CHROMATIC_COMPOUND.get() && held.getItem() != AllItems.CHROMATIC_COMPOUND.get())
+						return ActionResultType.PASS;
 				}
+				cte.setChargedStack(held);
+				//if(!player.isCreative())
+				held.shrink(1);
+				worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+				return ActionResultType.CONSUME;
 			}
 		}
 		return ActionResultType.PASS;
