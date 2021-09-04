@@ -79,7 +79,7 @@ public class Config {
 		COMMON_BUILDER.comment("Electric Motor").push(CATAGORY_ELECTRIC_MOTOR);
 		
 		ELECTRIC_MOTOR_RPM_RANGE = COMMON_BUILDER.comment("Electric Motor min/max RPM.")
-				.defineInRange("motor_rpm_range", 256, 1, 256);
+				.defineInRange("motor_rpm_range", 256, 1, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_MINIMUM_CONSUMPTION = COMMON_BUILDER.comment("Electric Motor minimum required energy consumption in FE/t.")
 				.defineInRange("motor_min_consumption", 8, 0, Integer.MAX_VALUE);
