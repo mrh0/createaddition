@@ -36,6 +36,10 @@ public class EnergyNetworkManager {
 	}
 	
 	public static void tickWorld(IWorld world) {
+		if(instances == null)
+			return;
+		if(instances.get(world) == null)
+			return;
 		instances.get(world).tick();
 	}
 }
