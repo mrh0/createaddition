@@ -97,7 +97,7 @@
 	
 	"statusbar.createaddition.wire.long": "El cable es demasiado largo",
 	"statusbar.createaddition.wire.obstructed": "La ruta del cable está obstruida",
-	"statusbar.createaddition.wire.count": "El nodo de cable está lleno",
+	"statusbar.createaddition.wire.count": "Este conector está lleno",
 	"statusbar.createaddition.wire.removed": "Cable eliminado",
 
 	"statusbar.createaddition.wire.exists": "La conexión entre estos conectorees ya existe",
