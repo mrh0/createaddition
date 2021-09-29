@@ -2,6 +2,7 @@ package com.mrh0.createaddition.entities.overcharged_hammer;
 
 import javax.annotation.Nullable;
 
+import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.index.CAEntities;
 import com.mrh0.createaddition.index.CAItems;
 
@@ -19,6 +20,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -118,26 +120,30 @@ public class OverchargedHammerEntity extends AbstractArrowEntity {
 	 */
 	@Override
 	protected void onHitEntity(EntityRayTraceResult entityRay) {
-		Entity entity = entityRay.getEntity();
+		Entity hitEntity = entityRay.getEntity();
 		float f = 8.0F;
-		if (entity instanceof LivingEntity) {
-			LivingEntity livingentity = (LivingEntity) entity;
+		if (hitEntity instanceof LivingEntity) {
+			LivingEntity livingentity = (LivingEntity) hitEntity;
 			f += EnchantmentHelper.getDamageBonus(this.thrownStack, livingentity.getMobType());
 		}
 
-		Entity entity1 = this.getOwner();
-		DamageSource damagesource = DamageSource.trident(this, (Entity) (entity1 == null ? this : entity1));
+		Entity ownerEntity = this.getOwner();
+		DamageSource damagesource = DamageSource.trident(this, (Entity) (ownerEntity == null ? this : ownerEntity));
 		this.dealtDamage = true;
 		SoundEvent soundevent = SoundEvents.ANVIL_HIT;
-		if (entity.hurt(damagesource, f)) {
-			if (entity instanceof LivingEntity) {
-				LivingEntity livingentity1 = (LivingEntity) entity;
-				if (entity1 instanceof LivingEntity) {
-					EnchantmentHelper.doPostHurtEffects(livingentity1, entity1);
-					EnchantmentHelper.doPostDamageEffects((LivingEntity) entity1, livingentity1);
+		if (hitEntity.hurt(damagesource, f)) {
+			if (hitEntity instanceof LivingEntity) {
+				LivingEntity hitLivingEntity = (LivingEntity) hitEntity;
+				if (ownerEntity instanceof LivingEntity) {
+					if(hitLivingEntity instanceof PlayerEntity)
+						hitLivingEntity.addEffect(new EffectInstance(CAEffects.SHOCKING, 20));
+					else	
+						hitLivingEntity.addEffect(new EffectInstance(CAEffects.SHOCKING, 40));
+					EnchantmentHelper.doPostHurtEffects(hitLivingEntity, ownerEntity);
+					EnchantmentHelper.doPostDamageEffects((LivingEntity) ownerEntity, hitLivingEntity);
 				}
 
-				this.doPostHurtEffects(livingentity1);
+				this.doPostHurtEffects(hitLivingEntity);
 			}
 		}
 
@@ -145,12 +151,12 @@ public class OverchargedHammerEntity extends AbstractArrowEntity {
 		float f1 = 1.0F;
 		if (this.level instanceof ServerWorld && this.level.isThundering()
 				&& EnchantmentHelper.hasChanneling(this.thrownStack)) {
-			BlockPos blockpos = entity.blockPosition();
+			BlockPos blockpos = hitEntity.blockPosition();
 			if (this.level.canSeeSky(blockpos)) {
 				LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.level);
 				lightningboltentity.moveTo(Vector3d.atBottomCenterOf(blockpos));
 				lightningboltentity
-						.setCause(entity1 instanceof ServerPlayerEntity ? (ServerPlayerEntity) entity1 : null);
+						.setCause(ownerEntity instanceof ServerPlayerEntity ? (ServerPlayerEntity) ownerEntity : null);
 				this.level.addFreshEntity(lightningboltentity);
 				soundevent = SoundEvents.TRIDENT_THUNDER;
 				f1 = 5.0F;

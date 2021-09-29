@@ -2,14 +2,11 @@ package com.mrh0.createaddition;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.potion.Effect;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -32,6 +29,7 @@ import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.index.CAEntities;
 import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItemProperties;
@@ -42,7 +40,6 @@ import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
-import com.mrh0.createaddition.recipe.conditions.FluidTagEmptyCondition;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.util.NonNullLazyValue;
 
@@ -76,6 +73,8 @@ public class CreateAddition {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
         
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
+        
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Effect.class, CreateAddition::onRegisterEffectEvent);
         
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, CARecipes::register);
         //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeType.class, CARecipes::register);
@@ -131,6 +130,10 @@ public class CreateAddition {
     public void onRegisterCommandEvent(RegisterCommandsEvent event) {
     	CommandDispatcher<CommandSource> dispather = event.getDispatcher();
     	CCApiCommand.register(dispather);
+    }
+    
+    public static void onRegisterEffectEvent(Register<Effect> event) {
+    	CAEffects.register(event.getRegistry());
     }
     
     public static CreateRegistrate registrate() {

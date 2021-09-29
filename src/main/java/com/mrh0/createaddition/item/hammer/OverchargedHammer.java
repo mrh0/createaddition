@@ -43,7 +43,7 @@ public class OverchargedHammer extends Item implements IVanishable {
 	public OverchargedHammer(Item.Properties props) {
 		super(props);//1, -2.8F, ItemTier.NETHERITE, DIGGABLES, 
 	 	Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 9.0D, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 10.0D, AttributeModifier.Operation.ADDITION));
 		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", (double)-3.1F, AttributeModifier.Operation.ADDITION));
 		this.attributeModifiers = builder.build();
 	}
