@@ -78,9 +78,9 @@
 	"item.createaddition.overcharged_alloy.tooltip": "超负荷合金",
 	"item.createaddition.overcharged_alloy.tooltip.summary": "一种由_电力_铸成的异彩材料",
 	
-	"item.createaddition.overcharged_hammer": "超负荷锤 [WIP]",
+	"item.createaddition.overcharged_hammer": "超负荷锤",
 	"item.createaddition.overcharged_hammer.tooltip": "超负荷锤",
-	"item.createaddition.overcharged_hammer.tooltip.summary": "一种注入了电力的强大_近战和远程_武器。 [未完成的物品]",
+	"item.createaddition.overcharged_hammer.tooltip.summary": "这把可靠的_锤子_被注入了_电能_的力量",
 
 	"item.createaddition.spool": "空线轴",
 	"item.createaddition.spool.nbt": "存储连接地点",
@@ -217,4 +217,6 @@
 	"createaddition.ponder.cc_electric_motor.text_1": "电动马达能使用 Computer Craft 来控制。",
 	"createaddition.ponder.cc_electric_motor.text_2": "使用 'peripheral.wrap(side)' 连接至电动马达",
 	"createaddition.ponder.cc_electric_motor.text_3": "在聊天中发出 '/cca_api' 命令来获取 API 文档。"
+	
+	"effect.createaddition.shocking": "触电"
 }
