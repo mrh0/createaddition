@@ -218,5 +218,5 @@
 	"createaddition.ponder.cc_electric_motor.text_2": "使用 'peripheral.wrap(side)' 连接至电动马达",
 	"createaddition.ponder.cc_electric_motor.text_3": "在聊天中发出 '/cca_api' 命令来获取 API 文档。"
 	
-	"effect.createaddition.shocking":"触电"
+	"effect.createaddition.shocking": "触电"
 }
