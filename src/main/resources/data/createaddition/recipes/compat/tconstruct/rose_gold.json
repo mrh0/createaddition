@@ -1,0 +1,30 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/gold"
+    }
+  ],
+  "results": [
+    {
+      "item": "tconstruct:rose_gold_ingot",
+      "count": 4
+    }
+  ],
+  "heatRequirement": "heated",
+  "conditions": [
+    {
+    	"type": "forge:mod_loaded",
+    	"modid": "tconstruct"
+  	}
+  ]
+}

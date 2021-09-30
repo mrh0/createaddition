@@ -6,7 +6,7 @@
 		}
 	},
 	"infusionInput":{
-		"amount":60,
+		"amount":80,
 		"tag":"mekanism:redstone"
 	},
 	"output":{

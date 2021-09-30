@@ -78,9 +78,9 @@
 	"item.createaddition.overcharged_alloy.tooltip": "OVERCHARGED ALLOY",
 	"item.createaddition.overcharged_alloy.tooltip.summary": "A Chromatic material forged by _electricity_",
 	
-	"item.createaddition.overcharged_hammer": "Overcharged Hammer [WIP]",
+	"item.createaddition.overcharged_hammer": "Overcharged Hammer",
 	"item.createaddition.overcharged_hammer.tooltip": "OVERCHARGED HAMMER",
-	"item.createaddition.overcharged_hammer.tooltip.summary": "This trusty _Hammer_ has been infused with the power of _electricity_ [UNFINISHED ITEM]",
+	"item.createaddition.overcharged_hammer.tooltip.summary": "This trusty _Hammer_ has been infused with the power of _electricity_",
 	
 	"item.createaddition.spool": "Empty Spool",
 	"item.createaddition.spool.nbt": "Stores connection location.",
@@ -216,5 +216,7 @@
 	"createaddition.ponder.cc_electric_motor.header": "Using ComputerCraft to control an Electric Motor",
 	"createaddition.ponder.cc_electric_motor.text_1": "The Electric Motor can be controlled using ComputerCraft",
 	"createaddition.ponder.cc_electric_motor.text_2": "Connect to the motor using 'peripheral.wrap(side)'",
-	"createaddition.ponder.cc_electric_motor.text_3": "Get to the API documentation by issuing the command '/cca_api' in the chat"
+	"createaddition.ponder.cc_electric_motor.text_3": "Get to the API documentation by issuing the command '/cca_api' in the chat",
+	
+	"effect.createaddition.shocking":"Shocked"
 }

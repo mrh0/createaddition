@@ -333,7 +333,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		return isNodeInput(in) == isNodeInput(other);
 	}
 	
-	public void setEnergy(int energy, int buffIn, int buffOut) {
+	public void setEnergy(int energy) {
 		this.energy.setEnergy(energy);
 	}
 

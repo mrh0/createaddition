@@ -94,8 +94,8 @@
 	"statusbar.createaddition.wire.no_connection": "ワイヤーがここに接続されていません",
 	"statusbar.createaddition.wire.invalid": "無効な接続です",
 	
-	"block.createaddition.electric_motor": "エレキモーター",
-	"deprecated.block.createaddition.electric_motor.tooltip": "エレキモーター",
+	"block.createaddition.electric_motor": "電動モーター",
+	"deprecated.block.createaddition.electric_motor.tooltip": "電動モーター",
 	"deprecated.block.createaddition.electric_motor.tooltip.summary": "_FE_から_SU_を生成します。また、_回転速度_を設定できます。エネルギー消費量は_回転速度_で決まります",
 	
 	"block.createaddition.alternator": "オルタネーター",

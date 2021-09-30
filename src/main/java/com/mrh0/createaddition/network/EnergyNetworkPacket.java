@@ -49,13 +49,6 @@ public class EnergyNetworkPacket {
 	}
 	
 	private static void updateClientCache(BlockPos pos, int demand, int buff) {
-		/*TileEntity te = (TileEntity) Minecraft.getInstance().world.getTileEntity(pos);
-        if (te == null)
-        	return;
-        if(!(te instanceof IWireNode))
-        	return;
-        IWireNode ote = (IWireNode) te;*/
-		//clientSaturation = saturation;
 		clientDemand = demand;
 		clientBuff = buff;
 		clientSaturation = buff - demand;

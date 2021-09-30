@@ -14,6 +14,7 @@ import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.blocks.heater.HeaterBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.Create;
 import com.simibubi.create.AllTags.AllBlockTags;
@@ -34,14 +35,14 @@ public class CABlocks {
 	public static final BlockEntry<ElectricMotorBlock> ELECTRIC_MOTOR = REGISTRATE.block("electric_motor", ElectricMotorBlock::new)
 			.initialProperties(SharedProperties::stone)
 			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
-			//.transform(StressConfigDefaults.setCapacity(16.0))
+			.transform(BlockStressDefaults.setCapacity(Config.BASELINE_STRESS.get()/256))
 			.item()
 			.transform(customItemModel())
 			.register();
 	
 	public static final BlockEntry<AlternatorBlock> ALTERNATOR = REGISTRATE.block("alternator", AlternatorBlock::new)
 			.initialProperties(SharedProperties::stone)
-			.transform(BlockStressDefaults.setImpact(8.0))
+			.transform(BlockStressDefaults.setImpact(Config.BASELINE_STRESS.get()/256))
 			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
 			.item()
 			.transform(customItemModel())
@@ -49,7 +50,7 @@ public class CABlocks {
 	
 	public static final BlockEntry<RollingMillBlock> ROLLING_MILL = REGISTRATE.block("rolling_mill", RollingMillBlock::new)
 			.initialProperties(SharedProperties::stone)
-			.transform(BlockStressDefaults.setImpact(8.0))
+			.transform(BlockStressDefaults.setImpact(Config.ROLLING_MILL_STRESS.get()))
 			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
 			.item()
 			.transform(customItemModel())

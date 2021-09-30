@@ -11,6 +11,8 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.item.Multimeter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
+import com.simibubi.create.foundation.config.ConfigBase;
+import com.simibubi.create.foundation.config.ui.ConfigHelper.ConfigChange;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
@@ -138,7 +140,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)) && !level.isClientSide)
+		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)))// && !level.isClientSide
 			return lazyEnergy.cast();
 		if(CreateAddition.CC_ACTIVE) {
 			if(Peripherals.isPeripheral(cap))

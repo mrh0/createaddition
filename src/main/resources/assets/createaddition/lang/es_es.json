@@ -1,55 +1,221 @@
 {
-	"createaddition.tooltip.energy.stored": "Energ�a almacenada:",
-	"createaddition.tooltip.energy.consumption": "Uso de energ�a:",
-	"createaddition.tooltip.energy.production": "Energ�a generada:",
-	"createaddition.recipe.rolling": "Laminaci�n",
+	"createaddition.tooltip.energy.stored": "Energía almacenada:",
+	"createaddition.tooltip.energy.consumption": "Uso de energía:",
+	"createaddition.tooltip.energy.production": "Energía generada:",
+	"createaddition.tooltip.energy.charged": "Cargado",
+	"createaddition.tooltip.energy.usage": "Uso de la red:",
+	"createaddition.tooltip.energy.demand": "Consumo de red:",
+	"createaddition.tooltip.energy.supply": "Producción de la red:",
+	"createaddition.tooltip.energy.selected": "Conector seleccionado:",
+	"createaddition.tooltip.energy.input": "Entrada",
+	"createaddition.tooltip.energy.output": "Salida",
 	
-	"item.createaddition.capacitor": "Capacitor",
+	"createaddition.tooltip.accumulator.info": "Información del acumulador:",
+	"createaddition.tooltip.relay.info": "Información del relé:",
+	"createaddition.tooltip.connector.info": "Información del conector:",
 	
-	"item.createaddition.multimeter": "Mult�metro",
-	"item.createaddition.multimeter.title":"[Mult�metro]:",
-	"item.createaddition.multimeter.measuring":"[Medici�n..]",
+	"createaddition.recipe.rolling": "Laminación",
+	"createaddition.recipe.crude_burning": "Quemador crudo",
+	"createaddition.recipe.crude_burning.burn_time": "Tiempo de quemado:",
+	
+	"desc.immersiveengineering.info.mineral.sphalerite": "Esfalerita",
+	
+	"item.createaddition.capacitor": "Condensador",
+	
+	"item.createaddition.multimeter": "Multímetro",
+	"item.createaddition.multimeter.title":"[Multímetro]:",
+	"item.createaddition.multimeter.measuring":"[Medición..]",
 	"item.createaddition.multimeter.ticks":"ticks",
-	"item.createaddition.multimeter.no_capability":"No hay capacidad de forjar energ�a de este lado.",
-	
-	"item.createaddition.zinc_sheet": "Hoja de zinc",
-	"item.createaddition.diamond_grit": "Grano de diamante",
-	"item.createaddition.diamond_grit_sandpaper": "Papel de lija de grano de diamante",
+	"item.createaddition.multimeter.no_capability":"No hay capacidad de Forge Energy en este lado.",
+	"item.createaddition.multimeter.tooltip": "MULTÍMETRO",
+	"item.createaddition.multimeter.tooltip.summary": "Mide la _capacidad_ y _entrada/salida_ de cualquier lado con una capacidad de _Forge Energy_.",
+		
+	"item.createaddition.zinc_sheet": "Lámina de zinc",
+	"item.createaddition.diamond_grit": "Polvo de diamantes",
+	"item.createaddition.diamond_grit_sandpaper": "Papel de lija de polvo de diamantes",
+	"item.createaddition.diamond_grit_sandpaper.tooltip": "PAPEL DE LIJA DE DIAMANTES",
 	
 	"item.createaddition.copper_spool": "Carrete de cobre",
+	"item.createaddition.copper_spool.tooltip": "CARRETE",
+	"item.createaddition.copper_spool.tooltip.summary": "Al hacer click derecho en dos _Conectores_ creará un enlace de cable entre ellos y devolverá un _Carrete vacío_.",
+	
 	"item.createaddition.copper_wire": "Alambre de cobre",
-	"item.createaddition.copper_rod": "Barra de cobre",
+	"item.createaddition.copper_rod": "Vara de cobre",
 	
 	"item.createaddition.iron_spool": "Carrete de hierro",
 	"item.createaddition.iron_wire": "Alambre de hierro",
-	"item.createaddition.iron_rod": "Barra de hierro",
+	"item.createaddition.iron_rod": "Vara de hierro",
 	
 	"item.createaddition.steel_spool": "Carrete de acero",
 	"item.createaddition.steel_wire": "Alambre de acero",
-	"item.createaddition.steel_rod": "Barra de acero",
+	"item.createaddition.steel_rod": "Vara de acero",
 	
-	"item.createaddition.electrum_spool": "Electrum Spool",
+	"item.createaddition.electrum_spool": "Carrete de Electrum",
 	"item.createaddition.electrum_wire": "Alambre de Electrum",
-	"item.createaddition.electrum_rod": "Varilla de Electrum",
+	"item.createaddition.electrum_rod": "Vara de Electrum",
 	
 	"item.createaddition.aluminum_spool": "Carrete de aluminio",
 	"item.createaddition.aluminum_wire": "Alambre de aluminio",
-	"item.createaddition.aluminum_rod": "Varilla de aluminio",
+	"item.createaddition.aluminum_rod": "Vara de aluminio",
 	
 	"item.createaddition.gold_spool": "Carrete de oro",
+	"item.createaddition.gold_spool.tooltip": "CARRETE",
+	"item.createaddition.gold_spool.tooltip.summary": "Al hacer click derecho en doso _Conectores_ creará un enlace de cable entre ellos y devolverá un _Carrete vacío_.",
+	
 	"item.createaddition.gold_wire": "Alambre de oro",
-	"item.createaddition.gold_rod": "Varilla de oro",
+	"item.createaddition.gold_rod": "Vara de oro",
 	
-	"item.createaddition.brass_rod": "Varilla de lat�n",
-	"item.createaddition.bronze_rod": "Varilla de bronce",
+	"item.createaddition.brass_rod": "Vara de latón",
+	"item.createaddition.bronze_rod": "Vara de bronce",
 	
-	"item.createaddition.spool": "Carrete vac�o",
+	"item.createaddition.cake_base": "Base de tarta",
+	"item.createaddition.cake_base_baked": "Base de tarta cocinada",
 	
-	"block.createaddition.electric_motor": "Motor el�ctrico",
+	"item.createaddition.seed_oil_bucket": "Cubo de aceite de semillas",
+	
+	"item.createaddition.charging_chromatic_compound": "Compuesto cromático de carga",
+	"item.createaddition.overcharged_alloy": "Aleación sobrecargada",
+	"item.createaddition.overcharged_alloy.tooltip": "ALEACIÓN SOBRECARGADA",
+	"item.createaddition.overcharged_alloy.tooltip.summary": "Un material cromático forjado por la _electricidad_",
+	
+	"item.createaddition.overcharged_hammer": "Martillo sobrecargado",
+	"item.createaddition.overcharged_hammer.tooltip": "MARTILLO SOBRECARGADO",
+	"item.createaddition.overcharged_hammer.tooltip.summary": "Este fiel _Martillo_ ha sido infundido con el poder de la _electricidad_",
+	
+	"item.createaddition.spool": "Carrete vacio",
+	"item.createaddition.spool.nbt": "Almacena la ubicación de la conexión.",
+	"item.createaddition.spool.tooltip": "CARRETE",
+	"item.createaddition.spool.tooltip.summary": "Al hacer click derecho en dos _Conectores_ enlazados por un cable eliminará el enlace del cable y devolverá un _carrete_ lleno.",
+	
+	"statusbar.createaddition.wire.linked": "Conectores vinculados",
+	"statusbar.createaddition.wire.linked_in": "Cable vinculado a la entrada",
+	"statusbar.createaddition.wire.linked_out": "Cable vinculado a la salida",
+	
+	"statusbar.createaddition.wire.connect": "Conector seleccionado",
+	"statusbar.createaddition.wire.connect_in": "Conector de entrada seleccionado",
+	"statusbar.createaddition.wire.connect_out": "Conector de salida seleccionado",
+	
+	"statusbar.createaddition.wire.long": "El cable es demasiado largo",
+	"statusbar.createaddition.wire.obstructed": "La ruta del cable está obstruida",
+	"statusbar.createaddition.wire.count": "Este conector está lleno",
+	"statusbar.createaddition.wire.removed": "Cable eliminado",
+
+	"statusbar.createaddition.wire.exists": "La conexión entre estos conectorees ya existe",
+	"statusbar.createaddition.wire.no_connection": "El cable no está conectado aquí",
+	"statusbar.createaddition.wire.invalid": "Conexión inválida",
+	
+	"block.createaddition.electric_motor": "Motor eléctrico",
+	"deprecated.block.createaddition.electric_motor.tooltip": "MOTOR ELÉCTRICO",
+	"deprecated.block.createaddition.electric_motor.tooltip.summary": "Genera _SU_ a partir de _FE_ y tiene la _velocidad_ configurable. El consumo de energía se basa en las _RPM_ configuradas.",
+	
 	"block.createaddition.alternator": "Alternador",
-	"block.createaddition.creative_energy": "Generador creativo",
-	"block.createaddition.rolling_mill": "Taller de laminaci�n",
-	"block.createaddition.heater": "Calentador de inducci�n",
+	"deprecated.block.createaddition.alternator.tooltip": "ALTERNADOR",
+	"deprecated.block.createaddition.alternator.tooltip.summary": "Genera _FE_ a partir de _SU_. La cantidad de energía que produce se basa en las _RPM_.",
 	
-	"itemGroup.createaddition:main":"Create Crafts & Additions"
+	"block.createaddition.creative_energy": "Generador creativo",
+	"block.createaddition.creative_energy.tooltip": "GENERADOR_CREATIVO",
+	"block.createaddition.creative_energy.tooltip.summary": "Genera un suministro infinito de _FE_.",
+	
+	"block.createaddition.rolling_mill": "Taller de laminación",
+	"deprecated.block.createaddition.rolling_mill.tooltip": "TALLER DE LAMINACIÓN",
+	"deprecated.block.createaddition.rolling_mill.tooltip.summary": "Un componente cinético adecuado para _laminar_ _materiales_ insertados. Se puede alimentar conectándo _SU_ en los ejes de los lados. Los resultados deben extraerse del componente.",
+	"deprecated.block.createaddition.rolling_mill.tooltip.condition1": "Cuando funciona con cinética",
+	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour1": "Comienza a aplicar _recetas de laminación_ a cualquier elemento insertado desde el costado o la parte superior del bloque.",
+	"deprecated.block.createaddition.rolling_mill.tooltip.condition2": "Cuando se le hace click derecho",
+	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "Recoger el resultado manualmente",
+	
+	"block.createaddition.heater": "Calentador de inducción",
+	"block.createaddition.heater.info": "Información del calentador de inducción:",
+	"deprecated.block.createaddition.heater.tooltip": "INDUCTION HEATER",
+	"block.createaddition.heater.engine_heating_disabled": "Los motores de los hornos de calefacción se han desactivado en las configuraciones.",
+	"deprecated.block.createaddition.heater.tooltip.summary": "Cuando se conecta a un _Horno_ y se alimenta con _FE_ desde la parte superior, calentará el _Horno_. No encenderá un _motor de horno_ a menos que _esté habilitado_ en las _configuraciones_.",
+	
+	"block.createaddition.accumulator": "Acumulador",
+	"block.createaddition.accumulator.tooltip": "ACUMULADOR",
+	"block.createaddition.accumulator.tooltip.summary": "Acumula carga eléctrica.",
+	"block.createaddition.accumulator.tooltip.condition1": "Salida",
+	"block.createaddition.accumulator.tooltip.behaviour1": "Proporciona _FE_ a _cables_ conectados al _conector_ marcado con una flecha hacia arriba.",
+	"block.createaddition.accumulator.tooltip.condition2": "Entrada",
+	"block.createaddition.accumulator.tooltip.behaviour2": "Acepta _FE_ de _cables_ conectados al _conector_ marcado con una flecha hacia abajo.",
+	
+	"block.createaddition.connector": "Conector",
+	"block.createaddition.connector.tooltip": "CONECTOR",
+	"block.createaddition.connector.tooltip.summary": "Conecta bloques compatibles de Forge Energy con _cables_ para transferir _FE_.",
+	"block.createaddition.connector.tooltip.control1": "Click derecho",
+	"block.createaddition.connector.tooltip.action1": "Con un _carrete de cobre_ o un _carrete de oro_ para crear un _vínculo de cables_ entre dos _conectores_.",
+	
+	"block.createaddition.redstone_relay": "Relé de redstone",
+	"block.createaddition.redstone_relay.tooltip": "RELÉ_DE_REDSTONE",
+	"block.createaddition.redstone_relay.tooltip.summary": "Permite que la _FE_ pase del _conector de entrada_ al _conector de salida_ al recibir una _señal de redstone_.",
+	"block.createaddition.redstone_relay.tooltip.condition1": "Salida",
+	"block.createaddition.redstone_relay.tooltip.behaviour1": "Proporciona _FE_ a _cables_ conectados al _conector_ marcado con una flecha hacia arriba.",
+	"block.createaddition.redstone_relay.tooltip.condition2": "Entrada",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "Acepta _FE_ de _cables_ conectados al _conector_ marcado con una flecha hacia abajo.",
+	
+	"block.createaddition.furnace_burner": "Quemador de horno",
+	"block.createaddition.furnace_burner.tooltip": "QUEMADOR_DE_HORNO",
+	"block.createaddition.furnace_burner.tooltip.summary": "Este _horno_ no fundirá elementos, sino que se puede utilizar para alimentar un _motor de horno_ sin la necesidad de una receta de fundición. El _combustible_ se puede insertar utilizando, por ejemplo, una _tolva_.",
+	"block.createaddition.furnace_burner.tooltip.control1": "Click derecho",
+	"block.createaddition.furnace_burner.tooltip.action1": "Inserta combustible.",
+	"block.createaddition.furnace_burner.tooltip.control2": "Click derecho mientras te agachas",
+	"block.createaddition.furnace_burner.tooltip.action2": "Recupera el _combustible_ almacenado.",
+	
+	"block.createaddition.charger": "Estación de carga",
+	"block.createaddition.charger.info": "Información de la estación de carga:",
+	"block.createaddition.charger.empty": "Vacío",
+	"block.createaddition.charger.tooltip": "CARGADOR",
+	"block.createaddition.charger.tooltip.summary": "Carga artículos _eléctricos_ usando _FE_.",
+	"block.createaddition.charger.tooltip.control1": "Haga click derecho con el objeto recargable",
+	"block.createaddition.charger.tooltip.action1": "Pon el artículo en el _cargador_.",
+	"block.createaddition.charger.tooltip.control2": "Haga click derecho con la mano vacía",
+	"block.createaddition.charger.tooltip.action2": "Recupera el artículo del _cargador_.",
+	
+	"block.createaddition.crude_burner": "Quemador crudo",
+	"block.createaddition.crude_burner.tooltip": "QUEMADOR_CRUDO",
+	"block.createaddition.crude_burner.tooltip.summary": "El _quemador crudo_ consume líquidos inflamables de combustión lenta como el aceite de semillas para alimentar el _motor de horno_. El _combustible líquido_ se puede introducir mediante _tuberías de fluidos_.",
+	"block.createaddition.crude_burner.tooltip.control1": "Click derecho",
+	"block.createaddition.crude_burner.tooltip.action1": "Inserta el contenido del _cubo_.",
+	
+	"block.createaddition.chocolate_cake": "Tarta de chocolate",
+	"block.createaddition.honey_cake": "Tarta de miel",
+	
+	"block.createaddition.seed_oil": "Aceite de semillas",
+	
+	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	
+	"createaddition.command.cca_api.link": "Haga clic aquí para abrir la documentación de la API",
+	
+	"createaddition.ponder.tag.electric": "Aparatos eléctricos",
+	"createaddition.ponder.tag.electric.description": "Componentes que utilizan electricidad",
+	
+	"createaddition.ponder.electric_motor.header": "Generando fuerza de rotación usando motores eléctricos",
+	"createaddition.ponder.electric_motor.text_1": "Los motores eléctricos son una fuente compacta y configurable de fuerza rotacional",
+	"createaddition.ponder.electric_motor.text_2": "Usando la rueda del ratón en la parte trasera del motor hace que se cambien las RPM que genera",
+	"createaddition.ponder.electric_motor.text_3": "El motor eléctrico requiere una fuente de energía (FE)",
+	"createaddition.ponder.electric_motor.text_4": "El consumo de energía de los motores está determinado por las RPM configuradas.",
+	
+	"createaddition.ponder.alternator.header": "Generando energía eléctrica usando el alternador",
+	"createaddition.ponder.alternator.text_1": "El alternador requiere al menos 32 RPM para funcionar",
+	"createaddition.ponder.alternator.text_2": "Genera energía eléctrica (FE) a partir de la fuerza de rotación.",
+	"createaddition.ponder.alternator.text_3": "Su producción de energía está determinada por las RPM de entrada.",
+	
+	"createaddition.ponder.rolling_mill.header": "Conviertiendo los metales en varas y alambres",
+	"createaddition.ponder.rolling_mill.text_1": "El laminador utiliza fuerza de rotación para convertir metales en varas y alambres.",
+	"createaddition.ponder.rolling_mill.text_2": "Para ingresar elementos manualmente, coloque lingotes o láminas en la parte superior del molino",
+	"createaddition.ponder.rolling_mill.text_3": "Haga clic derecho para recuperar manualmente los elementos generado",
+	
+	"createaddition.ponder.automated_rolling_mill.header": "Automatización del laminador",
+	"createaddition.ponder.automated_rolling_mill.text_1": "El laminador se puede automatizar mediante una cinta y dos embudos.",
+	"createaddition.ponder.automated_rolling_mill.text_2": "Embudo de entrada",
+	"createaddition.ponder.automated_rolling_mill.text_3": "Embudo de salida",
+	
+	"createaddition.ponder.heater.header": "Usando energía eléctrica para calentar un horno",
+	"createaddition.ponder.heater.text_1": "El calentador se puede colocar en cualquier lado que mire hacia el horno.",
+	"createaddition.ponder.heater.text_2": "Cuando se conecta a una fuente suficiente de energía eléctrica (FE), el calentador encenderá el horno",
+	"createaddition.ponder.heater.text_3": "El horno permanecerá encendido siempre que se proporcione suficiente energía.",
+	
+	"createaddition.ponder.cc_electric_motor.header": "Usando ComputerCraft para controlar un motor eléctrico",
+	"createaddition.ponder.cc_electric_motor.text_1": "El motor eléctrico se puede controlar mediante ComputerCraft",
+	"createaddition.ponder.cc_electric_motor.text_2": "Conecte al motor usando 'peripheral.wrap(side)'",
+	"createaddition.ponder.cc_electric_motor.text_3": "Acceda a la documentación de la API usando el comando '/cca_api' en el chat"
 }

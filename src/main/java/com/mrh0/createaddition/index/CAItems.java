@@ -9,11 +9,13 @@ import com.mrh0.createaddition.item.ChargingChromaticCompound;
 import com.mrh0.createaddition.item.DiamondGritSandpaper;
 import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.item.OverchargedAlloy;
-import com.mrh0.createaddition.item.OverchargedHammer;
+import com.mrh0.createaddition.item.hammer.HammerModel;
+import com.mrh0.createaddition.item.hammer.OverchargedHammer;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.curiosities.ChromaticCompoundColor;
+import com.simibubi.create.content.curiosities.symmetry.client.SymmetryWandModel;
 import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer.SandPaperModel;
 import com.simibubi.create.content.curiosities.weapons.PotatoCannonProjectileTypes;
 import com.simibubi.create.foundation.data.AssetLookup;
@@ -64,14 +66,17 @@ public class CAItems {
 			REGISTRATE.item("charging_chromatic_compound", ChargingChromaticCompound::new)
 			.properties(p -> p.rarity(Rarity.UNCOMMON))
 			.properties(p -> p.stacksTo(1))
-			.properties(p -> p.addToolType(ToolType.PICKAXE, 3))
-			.properties(p -> p.fireResistant())
 			.model(AssetLookup.existingItemModel())
 			.color(() -> ChromaticCompoundColor::new)
 			.register();
-	
+
 	public static final ItemEntry<OverchargedHammer> OVERCHARGED_HAMMER =
 			REGISTRATE.item("overcharged_hammer", OverchargedHammer::new)
+			.transform(CreateRegistrate.customRenderedItem(() -> HammerModel::new))
+			.model(AssetLookup.itemModelWithPartials())
+			//.properties(p -> p.addToolType(ToolType.PICKAXE, 4))
+			.properties(p -> p.fireResistant())
+			.properties(p -> p.stacksTo(1))
 			.properties(p -> p.rarity(Rarity.UNCOMMON))
 			.register();
 	
@@ -79,7 +84,8 @@ public class CAItems {
 			REGISTRATE.item("spool", WireSpool::new).register();
 	
 	public static final ItemEntry<WireSpool> COPPER_SPOOL =
-			REGISTRATE.item("copper_spool", WireSpool::new).register();
+			REGISTRATE.item("copper_spool", WireSpool::new)
+			.register();
 	
 	public static final ItemEntry<Item> COPPER_WIRE =
 			REGISTRATE.item("copper_wire", Item::new).register();

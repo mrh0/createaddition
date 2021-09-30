@@ -1,8 +1,6 @@
 package com.mrh0.createaddition.blocks.connector;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
@@ -19,7 +17,6 @@ import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -29,8 +26,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation {

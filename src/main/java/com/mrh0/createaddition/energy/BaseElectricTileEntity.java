@@ -38,7 +38,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)) && !level.isClientSide)
+		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)))// && !level.isClientSide
 			return lazyEnergy.cast();
 		return super.getCapability(cap, side);
 	}

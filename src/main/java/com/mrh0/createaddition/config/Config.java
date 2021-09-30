@@ -79,7 +79,7 @@ public class Config {
 		COMMON_BUILDER.comment("Electric Motor").push(CATAGORY_ELECTRIC_MOTOR);
 		
 		ELECTRIC_MOTOR_RPM_RANGE = COMMON_BUILDER.comment("Electric Motor min/max RPM.")
-				.defineInRange("motor_rpm_range", 256, 1, 256);
+				.defineInRange("motor_rpm_range", 256, 1, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_MINIMUM_CONSUMPTION = COMMON_BUILDER.comment("Electric Motor minimum required energy consumption in FE/t.")
 				.defineInRange("motor_min_consumption", 8, 0, Integer.MAX_VALUE);
@@ -133,10 +133,10 @@ public class Config {
 				.defineInRange("heater_capacity", 2048, 0, Integer.MAX_VALUE);
 		
 		HEATER_NORMAL_CONSUMPTION = COMMON_BUILDER.comment("Induction Heater normal consumption rate in FE/t.")
-				.defineInRange("heater_normal_consumption", 16, 0, Integer.MAX_VALUE);
+				.defineInRange("heater_normal_consumption", 256, 0, Integer.MAX_VALUE);
 		
 		HEATER_FURNACE_ENGINE_CONSUMPTION = COMMON_BUILDER.comment("Induction Heater when attached to a Furnace Engine consumption rate in FE/t.")
-				.defineInRange("heater_furnace_engine_consumption", 400, 0, Integer.MAX_VALUE);
+				.defineInRange("heater_furnace_engine_consumption", 1024, 0, Integer.MAX_VALUE);
 		
 		HEATER_FURNACE_ENGINE_ENABLED = COMMON_BUILDER.comment("Enable Induction Heater when attached to a Furnace Engine.")
 				.define("heater_furnace_engine_enable", false);

@@ -24,7 +24,7 @@ public class CreativeEnergyTileEntity extends CrateTileEntity {
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && !level.isClientSide)
+		if(cap == CapabilityEnergy.ENERGY)// && !level.isClientSide
 			return lazyEnergy.cast();
 		return super.getCapability(cap, side);
 	}

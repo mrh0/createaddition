@@ -3,6 +3,7 @@ package com.mrh0.createaddition.energy.network;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 
 import net.minecraft.util.math.BlockPos;
@@ -22,7 +23,7 @@ public class EnergyNetwork {
 	private int pulled = 0;
 	private int pushed = 0;
 	
-	private static int MAX_BUFF = 4096;
+	private static int MAX_BUFF = Math.max(Config.CONNECTOR_MAX_INPUT.get(), Config.CONNECTOR_MAX_OUTPUT.get());
 	
 	public EnergyNetwork(World world) {
 		this.inBuff = 0;

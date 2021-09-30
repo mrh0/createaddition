@@ -4,5 +4,14 @@
       	"fluidTag": "forge:creosote",
       	"amount": 1000
 	},
-	"burnTime": 1200
+	"burnTime": 1200,
+	"conditions": [
+	    {
+	      "value": {
+	        "fluidTag": "forge:creosote",
+	        "type": "createaddition:fluidtag_empty"
+	      },
+	      "type": "forge:not"
+	    }
+	]
 }
