@@ -1,11 +1,11 @@
 package com.mrh0.createaddition.index;
 
 import com.simibubi.create.Create;
-import com.simibubi.create.content.curiosities.weapons.PotatoCannonProjectileTypes;
+import com.simibubi.create.content.curiosities.weapons.PotatoCannonProjectileType;
 
 public class CAPotatoCannonProjectiles {
 	
-	public static final PotatoCannonProjectileTypes 
+	public static final PotatoCannonProjectileType
 		CHOCOLATE_CAKE = create("chocolate_cake")
 			.damage(8)
 			.reloadTicks(15)
@@ -29,7 +29,7 @@ public class CAPotatoCannonProjectiles {
 		
 	}
 	
-	private static PotatoCannonProjectileTypes.Builder create(String name) {
-		return new PotatoCannonProjectileTypes.Builder(Create.asResource(name));
+	private static PotatoCannonProjectileType.Builder create(String name) {
+		return new PotatoCannonProjectileType.Builder(Create.asResource(name));
 	}
 }

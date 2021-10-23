@@ -6,11 +6,12 @@ import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
-public class HammerRenderer  extends CustomRenderedItemModelRenderer<HammerModel> {
+public class HammerRenderer extends CustomRenderedItemModelRenderer<HammerModel> {
 
 	@Override
 	protected void render(ItemStack stack, HammerModel model, PartialItemModelRenderer renderer, ItemCameraTransforms.TransformType transformType,
@@ -25,6 +26,11 @@ public class HammerRenderer  extends CustomRenderedItemModelRenderer<HammerModel
 		ms.translate(0f, -f/2f, 0f);
 		ms.scale(1f+f, 1f+f, 1f+f);
 		renderer.renderGlowing(model.getPartial("shine"), maxLight);
+	}
+
+	@Override
+	public HammerModel createModel(IBakedModel iBakedModel) {
+		return new HammerModel(iBakedModel);
 	}
 
 }
