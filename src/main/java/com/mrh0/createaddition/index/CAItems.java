@@ -9,15 +9,14 @@ import com.mrh0.createaddition.item.ChargingChromaticCompound;
 import com.mrh0.createaddition.item.DiamondGritSandpaper;
 import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.item.OverchargedAlloy;
-import com.mrh0.createaddition.item.hammer.HammerModel;
+import com.mrh0.createaddition.item.hammer.HammerRenderer;
 import com.mrh0.createaddition.item.hammer.OverchargedHammer;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.curiosities.ChromaticCompoundColor;
 import com.simibubi.create.content.curiosities.symmetry.client.SymmetryWandModel;
-import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer.SandPaperModel;
-import com.simibubi.create.content.curiosities.weapons.PotatoCannonProjectileTypes;
+import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.HiddenIngredientItem;
@@ -43,7 +42,7 @@ public class CAItems {
 			.register();
 	
 	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER = REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new)
-			.transform(CreateRegistrate.customRenderedItem(() -> SandPaperModel::new))
+			.transform(CreateRegistrate.customRenderedItem(() -> SandPaperItemRenderer::new))
 			.onRegister(s -> TooltipHelper.referTo(s, AllItems.SAND_PAPER))
 			.register();
 	
@@ -72,7 +71,7 @@ public class CAItems {
 
 	public static final ItemEntry<OverchargedHammer> OVERCHARGED_HAMMER =
 			REGISTRATE.item("overcharged_hammer", OverchargedHammer::new)
-			.transform(CreateRegistrate.customRenderedItem(() -> HammerModel::new))
+			.transform(CreateRegistrate.customRenderedItem(() -> HammerRenderer::new))
 			.model(AssetLookup.itemModelWithPartials())
 			//.properties(p -> p.addToolType(ToolType.PICKAXE, 4))
 			.properties(p -> p.fireResistant())

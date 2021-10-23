@@ -40,8 +40,11 @@ import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineModifiers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.util.NonNullLazyValue;
+import net.minecraftforge.registries.IRegistryDelegate;
 
 @Mod(CreateAddition.MODID)
 public class CreateAddition {
@@ -123,6 +126,7 @@ public class CreateAddition {
     	int i = 0;
         Network.registerMessage(i++, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
         Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
+        FurnaceEngineModifiers.INSTANCE.register(CABlocks.CRUDE_BURNER.get().delegate, 2f);
     	System.out.println("Create Crafts & Addition Initialized!");
     }
     

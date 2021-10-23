@@ -3,11 +3,14 @@ package com.mrh0.createaddition.blocks.crude_burner;
 import java.util.Optional;
 import java.util.Random;
 
+import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
+import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineModifiers;
 import com.simibubi.create.foundation.block.ITE;
 
 import net.minecraft.block.AbstractFurnaceBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BucketItem;
@@ -28,13 +31,13 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraftforge.registries.IRegistryDelegate;
 
 public class CrudeBurner extends AbstractFurnaceBlock implements ITE<CrudeBurnerTileEntity> {
 
 	public CrudeBurner(Properties props) {
 		super(props);
+		
 	}
 
 	@Override
