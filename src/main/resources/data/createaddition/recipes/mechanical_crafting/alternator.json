@@ -2,9 +2,9 @@
   "type": "create:mechanical_crafting",
   "pattern": [
   	"  A  ",
-  	"ISSSI",
+  	" ISI ",
     "ISRSI",
-    "ISCSI"
+    " ICI "
   ],
   "key": {
     "C": {

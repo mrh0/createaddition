@@ -11,6 +11,8 @@ import com.mrh0.createaddition.item.ChargingChromaticCompound;
 import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.logistics.block.depot.DepotBehaviour;
+import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -21,12 +23,18 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class ChargerTileEntity extends BaseElectricTileEntity implements IComparatorOverride, IHaveGoggleInformation {
 
-	private ItemStack itemStack = ItemStack.EMPTY;
+	//private ItemStack itemStack = ItemStack.EMPTY;
+	
+	// Depot
+	ChargerBehaviour behav;
 
 	private static final int MAX_IN = Config.CHARGER_MAX_INPUT.get(), CHARGE_RATE = Config.CHARGER_CHARGE_RATE.get(),
 			CAPACITY = Config.CHARGER_CAPACITY.get();
@@ -36,8 +44,18 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 
 		setLazyTickRate(20);
 	}
+	
+	@Override
+	public boolean isEnergyInput(Direction side) {
+		return side != Direction.UP;
+	}
 
-	private void chargeItem(ItemStack stack) {
+	@Override
+	public boolean isEnergyOutput(Direction side) {
+		return false;
+	}
+	
+	/*private void chargeItem(ItemStack stack) {
 		stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(itemEnergy -> {
 			if (!isChargingItem(itemEnergy))
 				return;
@@ -57,15 +75,7 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 		return (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored();
 	}
 
-	@Override
-	public boolean isEnergyInput(Direction side) {
-		return side != Direction.UP;
-	}
-
-	@Override
-	public boolean isEnergyOutput(Direction side) {
-		return false;
-	}
+	
 
 	private int lastComparator = 0;
 
@@ -179,5 +189,25 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 		}
 
 		return true;
+	}*/
+	
+	
+	// Depot
+	@Override
+	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+		behaviours.add(behav = new ChargerBehaviour(this));
+		behav.addSubBehaviours(behaviours);
+	}
+
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return behav.getItemCapability(cap, side);
+		return super.getCapability(cap, side);
+	}
+
+	@Override
+	public int getComparetorOverride() {
+		return 0;
 	}
 }

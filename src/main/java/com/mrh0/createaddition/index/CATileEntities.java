@@ -10,6 +10,7 @@ import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurnerTileEntity;
 import com.mrh0.createaddition.blocks.heater.HeaterTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillTileEntity;
+import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilTileEntity;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorTileEntity;
 import com.mrh0.createaddition.blocks.alternator.*;
@@ -85,6 +86,12 @@ public class CATileEntities {
 			.tileEntity("charger", ChargerTileEntity::new)
 			.validBlocks(CABlocks.CHARGER)
 			.renderer(() -> ChargerRenderer::new)
+			.register();
+	
+	public static final TileEntityEntry<TeslaCoilTileEntity> TESLA_COIL = CreateAddition.registrate()
+			.tileEntity("charger", TeslaCoilTileEntity::new)
+			.validBlocks(CABlocks.TESLA_COIL)
+			//.renderer(() -> ChargerRenderer::new)
 			.register();
 	
 	public static void register() {}

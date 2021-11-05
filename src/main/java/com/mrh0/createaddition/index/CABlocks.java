@@ -14,6 +14,7 @@ import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.blocks.heater.HeaterBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
+import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.Create;
@@ -114,6 +115,12 @@ public class CABlocks {
 	public static final BlockEntry<Cake> HONEY_CAKE = REGISTRATE.block("honey_cake",  Cake::new)
 			.initialProperties(Material.CAKE)
 			.properties(props -> props.sound(SoundType.WOOL).harvestLevel(0).strength(0.5f))
+			.item()
+			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<TeslaCoil> TESLA_COIL = REGISTRATE.block("tesla_coil",  TeslaCoil::new)
+			.initialProperties(SharedProperties::stone)
 			.item()
 			.transform(customItemModel())
 			.register();
