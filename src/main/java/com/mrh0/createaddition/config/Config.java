@@ -48,6 +48,7 @@ public class Config {
 	public static ForgeConfigSpec.IntValue CONNECTOR_MAX_INPUT;
 	public static ForgeConfigSpec.IntValue CONNECTOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.IntValue CONNECTOR_CAPACITY;
+	public static ForgeConfigSpec.IntValue CONNECTOR_MAX_LENGTH;
 	
 	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_INPUT;
 	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_OUTPUT;
@@ -68,7 +69,7 @@ public class Config {
 		COMMON_BUILDER.comment("General Settings").push(CATAGORY_GENERAL);
 		
 		FE_RPM = COMMON_BUILDER.comment("Forge Energy conversion rate (in FE/t at max RPM).")
-				.defineInRange("fe_conversion", 80, 0, Integer.MAX_VALUE);
+				.defineInRange("fe_conversion", 120, 0, Integer.MAX_VALUE);
 		
 		BASELINE_STRESS = COMMON_BUILDER.comment("Max stress for the Alternator and Electric Motor.")
 				.defineInRange("generator_stress", 4096, 0, Integer.MAX_VALUE);
@@ -154,6 +155,9 @@ public class Config {
 		
 		CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Connector internal capacity in FE.")
 				.defineInRange("connector_capacity", 512, 0, Integer.MAX_VALUE);
+		
+		CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Max wire length in blocks.")
+				.defineInRange("connector_capacity", 12, 0, 256);
 		
 		/*COPPER_WIRE_LOSS = COMMON_BUILDER.comment("Loss per block in copper wire (Not implemented, currently no loss).")
 				.defineInRange("copper_wire_loss", 0.02d, 0d, 0.5d);

@@ -99,7 +99,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	public boolean hasEnoughEnergy() {
 		if(!ALLOW_ENGINE && isFurnaceEngine)
 			return false;
-		return energy.getEnergyStored() > (isFurnaceEngine ? CONSUMPTION_ENGINE : CONSUMPTION);
+		return energy.getEnergyStored() > getConsumption();
 	}
 	
 	public boolean hasFurnaceEngine() {

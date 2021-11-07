@@ -34,6 +34,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -71,12 +72,20 @@ public class ChargerBehaviour extends TileEntityBehaviour {
 	public void enableMerging() {
 		allowMerge = true;
 	}
+	
+	public void chargerTick(ChargerTileEntity te, World world) {
+		te.chargeItem(getHeldItemStack());
+	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
 		World world = tileEntity.getLevel();
+		
+		ChargerTileEntity cte = ((ChargerTileEntity) tileEntity);
+		
+		chargerTick(cte, world);
 
 		for (Iterator<TransportedItemStack> iterator = incoming.iterator(); iterator.hasNext();) {
 			TransportedItemStack ts = iterator.next();
@@ -104,30 +113,34 @@ public class ChargerBehaviour extends TileEntityBehaviour {
 			return;
 
 		BlockPos pos = tileEntity.getBlockPos();
-
+		
+		
 		if (world.isClientSide)
 			return;
 		if (handleBeltFunnelOutput())
 			return;
 
-		BeltProcessingBehaviour processingBehaviour =
+		/*BeltProcessingBehaviour processingBehaviour =
 			TileEntityBehaviour.get(world, pos.above(2), BeltProcessingBehaviour.TYPE);
 		if (processingBehaviour == null)
 			return;
 		if (!heldItem.locked && BeltProcessingBehaviour.isBlocked(world, pos))
 			return;
-
+			*/
+		
 		ItemStack previousItem = heldItem.stack;
 		boolean wasLocked = heldItem.locked;
+		/*
 		ProcessingResult result = wasLocked ? processingBehaviour.handleHeldItem(heldItem, transportedHandler)
 			: processingBehaviour.handleReceivedItem(heldItem, transportedHandler);
 		if (result == ProcessingResult.REMOVE) {
 			heldItem = null;
 			tileEntity.sendData();
 			return;
-		}
+		}*/
 
-		heldItem.locked = result == ProcessingResult.HOLD;
+		heldItem.locked = cte.canReceiveCharge(getHeldItemStack());//result == ProcessingResult.HOLD;
+		
 		if (heldItem.locked != wasLocked || !previousItem.equals(heldItem.stack, false))
 			tileEntity.sendData();
 	}

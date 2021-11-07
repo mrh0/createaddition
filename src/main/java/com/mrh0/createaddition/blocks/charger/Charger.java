@@ -46,7 +46,7 @@ import net.minecraft.block.AbstractBlock.Properties;
 
 public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchable {
 
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	//public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	
 	public static final VoxelShape CHARGER_SHAPE = VoxelShapes.or(Block.box(0, 0, 0, 16, 11, 16), Block.box(1, 1, 1, 15, 13, 15));
 	
@@ -76,7 +76,7 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 	
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING);
+		//builder.add(FACING);
 	}
 	
 	/*@Override

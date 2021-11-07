@@ -5,18 +5,13 @@ import java.util.List;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
-import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.item.ChargingChromaticCompound;
 import com.mrh0.createaddition.util.IComparatorOverride;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.logistics.block.depot.DepotBehaviour;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.text.ITextComponent;
@@ -55,7 +50,9 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 		return false;
 	}
 	
-	/*private void chargeItem(ItemStack stack) {
+	protected void chargeItem(ItemStack stack) {
+		if(stack == null)
+			return;
 		stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(itemEnergy -> {
 			if (!isChargingItem(itemEnergy))
 				return;
@@ -64,20 +61,38 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 			energy.internalConsumeEnergy(energyRemoved);
 		});
 	}
+	
+	protected boolean canReceiveCharge(ItemStack stack) {
+		if(stack == null)
+			return false;
+		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
+			return false;
+		IEnergyStorage es = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
+		if(es.receiveEnergy(1, true) != 1)
+			return false;
+		return true;
+	}
 
-	public boolean isChargingItem(IEnergyStorage energy) {
+	protected boolean isChargingItem(IEnergyStorage energy) {
 		return energy.getEnergyStored() >= 0;
 	}
 
-	public float getItemCharge(IEnergyStorage energy) {
+	protected float getItemCharge(IEnergyStorage energy) {
 		if (energy == null)
 			return 0f;
 		return (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored();
 	}
 
+	public ItemStack getChargedStack() {
+		return behav.getHeldItemStack();
+	}
+	
+	public boolean hasChargedStack() {
+		return getChargedStack() != null && !this.getChargedStack().isEmpty();
+	}
 	
 
-	private int lastComparator = 0;
+	/*private int lastComparator = 0;
 
 	@Override
 	public void tick() {
@@ -142,20 +157,20 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 		this.setChanged();
 	}
 
-	public ItemStack getChargedStack() {
-		return itemStack;
-	}
+	
 
-	public boolean hasChargedStack() {
-		return itemStack != null && !this.itemStack.isEmpty();
-	}
+	
 
 	@Override
 	public int getComparetorOverride() {
 		return (int) (getCharge() * 15f);
 	}
 
-	public float getCharge() {
+	
+
+	*/
+	
+	public float getCharge(ItemStack itemStack) {
 		if (!hasChargedStack())
 			return 0f;
 		if (itemStack.getCapability(CapabilityEnergy.ENERGY).isPresent())
@@ -166,14 +181,15 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 			return 90f;
 		return 0f;
 	}
-
+	
 	public String getChargeString() {
-		float c = Math.round(getCharge() * 100);
+		float c = Math.round(getCharge(getChargedStack()) * 100);
 		if(c >= 9000)
 			return "OVER9000% ";
-		return Math.round(getCharge() * 100) + "% ";
+		return Math.round(getCharge(getChargedStack()) * 100) + "% ";
 	}
 
+	
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		tooltip.add(new StringTextComponent(spacing).append(
@@ -189,7 +205,7 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 		}
 
 		return true;
-	}*/
+	}
 	
 	
 	// Depot

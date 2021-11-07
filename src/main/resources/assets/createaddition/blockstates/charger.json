@@ -1,20 +1,7 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "createaddition:block/charger/block",
-      "y": 270
-    },
-    "facing=south": {
-      "model": "createaddition:block/charger/block",
-      "y": 90
-    },
-    "facing=west": {
-      "model": "createaddition:block/charger/block",
-      "y": 180
-    },
-    "facing=east": {
-      "model": "createaddition:block/charger/block",
-      "y": 0
+  	"": {
+    	"model": "createaddition:block/charger/block"
     }
   }
 }

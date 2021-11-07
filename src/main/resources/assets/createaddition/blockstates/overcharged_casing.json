@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "createaddition:block/overcharged_casing/block"
+    }
+  }
+}

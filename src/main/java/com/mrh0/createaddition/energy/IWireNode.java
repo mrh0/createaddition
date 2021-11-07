@@ -2,6 +2,7 @@ package com.mrh0.createaddition.energy;
 
 import java.util.HashMap;
 
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.util.Util;
@@ -19,7 +20,7 @@ import net.minecraft.world.World;
 
 public interface IWireNode {
 	
-	public static final int MAX_LENGTH = 12;
+	public static final int MAX_LENGTH = Config.CONNECTOR_MAX_LENGTH.get();
 	
 	public Vector3f getNodeOffset(int node);
 	

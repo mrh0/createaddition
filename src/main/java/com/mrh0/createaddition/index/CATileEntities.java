@@ -89,7 +89,7 @@ public class CATileEntities {
 			.register();
 	
 	public static final TileEntityEntry<TeslaCoilTileEntity> TESLA_COIL = CreateAddition.registrate()
-			.tileEntity("charger", TeslaCoilTileEntity::new)
+			.tileEntity("tesla_coil", TeslaCoilTileEntity::new)
 			.validBlocks(CABlocks.TESLA_COIL)
 			//.renderer(() -> ChargerRenderer::new)
 			.register();
