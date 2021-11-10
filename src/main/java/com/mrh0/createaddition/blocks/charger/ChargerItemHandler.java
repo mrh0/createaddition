@@ -1,5 +1,5 @@
 package com.mrh0.createaddition.blocks.charger;
-
+/*
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 
 import net.minecraft.item.ItemStack;
@@ -69,3 +69,4 @@ public class ChargerItemHandler implements IItemHandler {
 		return slot == MAIN_SLOT;
 	}
 }
+*/

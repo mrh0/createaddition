@@ -1,5 +1,5 @@
 package com.mrh0.createaddition.blocks.charger;
-
+/*
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -119,25 +119,9 @@ public class ChargerBehaviour extends TileEntityBehaviour {
 			return;
 		if (handleBeltFunnelOutput())
 			return;
-
-		/*BeltProcessingBehaviour processingBehaviour =
-			TileEntityBehaviour.get(world, pos.above(2), BeltProcessingBehaviour.TYPE);
-		if (processingBehaviour == null)
-			return;
-		if (!heldItem.locked && BeltProcessingBehaviour.isBlocked(world, pos))
-			return;
-			*/
 		
 		ItemStack previousItem = heldItem.stack;
 		boolean wasLocked = heldItem.locked;
-		/*
-		ProcessingResult result = wasLocked ? processingBehaviour.handleHeldItem(heldItem, transportedHandler)
-			: processingBehaviour.handleReceivedItem(heldItem, transportedHandler);
-		if (result == ProcessingResult.REMOVE) {
-			heldItem = null;
-			tileEntity.sendData();
-			return;
-		}*/
 
 		heldItem.locked = cte.canReceiveCharge(getHeldItemStack());//result == ProcessingResult.HOLD;
 		
@@ -399,4 +383,4 @@ public class ChargerBehaviour extends TileEntityBehaviour {
 		return TYPE;
 	}
 
-}
+}*/

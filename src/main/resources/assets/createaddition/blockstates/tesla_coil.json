@@ -1,28 +1,40 @@
 {
   "variants": {
-    "facing=down": {
-      "model": "createaddition:block/tesla_coil/block",
-      "x": 0, "y": 90
+    "facing=down,powered=false": {
+      "model": "createaddition:block/tesla_coil/block", "x": 0, "y": 90
     },
-    "facing=up": {
-      "model": "createaddition:block/tesla_coil/block",
-      "x": 180, "y": 90
+    "facing=up,powered=false": {
+      "model": "createaddition:block/tesla_coil/block", "x": 180, "y": 90
     },
-    "facing=north": {
-      "model": "createaddition:block/tesla_coil/block",
-      "x": 90, "y": 180
+    "facing=north,powered=false": {
+      "model": "createaddition:block/tesla_coil/block", "x": 90, "y": 180
     },
-    "facing=south": {
-      "model": "createaddition:block/tesla_coil/block",
-      "x": 90, "y": 0
+    "facing=south,powered=false": {
+      "model": "createaddition:block/tesla_coil/block", "x": 90, "y": 0
     },
-    "facing=west": {
-      "model": "createaddition:block/tesla_coil/block",
-      "x": 90, "y": 90
+    "facing=west,powered=false": {
+      "model": "createaddition:block/tesla_coil/block", "x": 90, "y": 90
     },
-    "facing=east": {
-      "model": "createaddition:block/tesla_coil/block",
-      "x": 90, "y": 270
+    "facing=east,powered=false": {
+      "model": "createaddition:block/tesla_coil/block", "x": 90, "y": 270
+    },
+    "facing=down,powered=true": {
+      "model": "createaddition:block/tesla_coil/powered", "x": 0, "y": 90
+    },
+    "facing=up,powered=true": {
+      "model": "createaddition:block/tesla_coil/powered", "x": 180, "y": 90
+    },
+    "facing=north,powered=true": {
+      "model": "createaddition:block/tesla_coil/powered", "x": 90, "y": 180
+    },
+    "facing=south,powered=true": {
+      "model": "createaddition:block/tesla_coil/powered", "x": 90, "y": 0
+    },
+    "facing=west,powered=true": {
+      "model": "createaddition:block/tesla_coil/powered", "x": 90, "y": 90
+    },
+    "facing=east,powered=true": {
+      "model": "createaddition:block/tesla_coil/powered", "x": 90, "y": 270
     }
   }
 }

@@ -131,7 +131,7 @@ public class CABlocks {
 	public static final BlockEntry<CasingBlock> OVERCHARGED_CASING =
 			REGISTRATE.block("overcharged_casing", CasingBlock::new)
 				.transform(BuilderTransformers.casing(CASpriteShifts.OVERCHARGED_CASING))
-				.properties(p -> p.lightLevel($ -> 8))
+				.properties(p -> p.lightLevel($ -> 4))
 				.register();
 	
 	public static void register() {

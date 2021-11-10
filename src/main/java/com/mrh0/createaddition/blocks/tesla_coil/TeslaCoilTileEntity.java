@@ -5,9 +5,12 @@ import java.util.List;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
+import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.item.ChargingChromaticCompound;
 import com.mrh0.createaddition.item.Multimeter;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.logistics.block.depot.DepotBehaviour;
@@ -15,10 +18,22 @@ import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult;
+import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityPredicate;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -29,9 +44,10 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
 
 	private static final int MAX_IN = Config.CHARGER_MAX_INPUT.get(), CHARGE_RATE = Config.CHARGER_CHARGE_RATE.get(),
-			CAPACITY = Config.CHARGER_CAPACITY.get();
+			CAPACITY = Math.max(Config.CHARGER_CAPACITY.get(), CHARGE_RATE), HURT_ENERGY_REQUIRED = 100, HURT_DMG = 3, HURT_RANGE = 4, HURT_EFFECT_TIME = 20;
 	
 	protected ItemStack chargedStackCache;
+	protected int poweredTimer = 0;
 	
 	public TeslaCoilTileEntity(TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn, 1000, 1000, 1000);
@@ -58,7 +74,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		return false;
 	}
 	
-	protected boolean canStackReceiveCharge(ItemStack stack) {
+	/*protected boolean canStackReceiveCharge(ItemStack stack) {
 		if(stack == null)
 			return false;
 		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
@@ -67,23 +83,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		if(es.receiveEnergy(1, true) != 1)
 			return false;
 		return true;
-	}
-	
-	protected boolean chargeStack(ItemStack stack) {
-		if(stack == null)
-			return false;
-		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
-			return false;
-		IEnergyStorage es = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
-		energy.extractEnergy(es.receiveEnergy(energy.extractEnergy(getConsumption(), true), false), false);
-		if(es.receiveEnergy(1, true) != 1)
-			return false;
-		return true;
-	}
-	
-	public boolean hasEnoughEnergy() {
-		return energy.getEnergyStored() > CHARGE_RATE;
-	}
+	}*/
 	
 	public int getConsumption() {
 		return CHARGE_RATE;
@@ -143,10 +143,108 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}*/
 	
 	protected ProcessingResult onCharge(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+		ProcessingResult res = chargeCompundAndStack(transported, handler);
+		/*if(res == ProcessingResult.HOLD)
+			if(getWorld().getRandom().nextInt(20)>18) {
+				//AxisAlignedBB bounds = new AxisAlignedBB(getBlockPos().subtract(new BlockPos(5,5,5)), getBlockPos().offset(new BlockPos(5,5,5)));
+				List<PlayerEntity> players = getWorld().getEntitiesOfClass(ServerPlayerEntity.class, new AxisAlignedBB(getBlockPos()).inflate(5));//getWorld().getNearbyPlayers(EntityPredicate.DEFAULT, null, bounds);
+				for(PlayerEntity p : players) {
+					getWorld().playSound(p, getBlockPos(), SoundEvents.SPIDER_AMBIENT, SoundCategory.BLOCKS, 1f, 1f);
+					System.out.println("Sound");
+				}
+			}*/
+		return res;
+	}
+	
+	private int getHurtEnergyRate(int signal) {
+		/*if(signal > 0 && signal < 3)
+			return 1;
+		return signal / 3 * HURT_ENERGY_RATE;*/
+		return HURT_ENERGY_REQUIRED;
+	}
+	
+	private void doDmg() {
+		energy.internalConsumeEnergy(HURT_ENERGY_REQUIRED);
+		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoil.FACING));
+		List<LivingEntity> ents = getWorld().getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(origin).inflate(HURT_RANGE));
+		for(LivingEntity e : ents) {
+			e.hurt(DamageSource.IN_WALL, HURT_DMG);
+			e.addEffect(new EffectInstance(CAEffects.SHOCKING, HURT_EFFECT_TIME));
+		}
+	}
+	
+	int dmgTick = 0;
+	
+	@Override
+	public void tick() {
+		super.tick();
+		int signal = getWorld().getBestNeighborSignal(getBlockPos());
+		if(signal > 0 && energy.getEnergyStored() >= HURT_ENERGY_REQUIRED)
+			poweredTimer = 10;
+		
+		dmgTick++;
+		if((dmgTick%=10) == 0 && energy.getEnergyStored() >= HURT_ENERGY_REQUIRED && signal > 0)
+			doDmg();
+		
+		if(level.isClientSide())
+			return;
+		if(poweredTimer > 0) {
+			if(!shouldPower(signal))
+				CABlocks.TESLA_COIL.get().setPowered(level, getBlockPos(), true);
+			poweredTimer--;
+		}
+		else
+			if(shouldPower(signal))
+				CABlocks.TESLA_COIL.get().setPowered(level, getBlockPos(), false);
+	}
+	
+	public boolean shouldPower(int signal) {
+		return getBlockState().getValue(TeslaCoil.POWERED);
+	}
+	
+	protected ProcessingResult chargeCompundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+		
 		ItemStack stack = transported.stack;
-		if(chargeStack(stack))
+		if(stack == null)
+			return ProcessingResult.PASS;
+		
+		if(chargeStack(stack, transported, handler)) {
+			if(energy.getEnergyStored() >= stack.getCount())
+				poweredTimer = 10;
 			return ProcessingResult.HOLD;
+		}
+		if (stack.getItem() == CAItems.CHARGING_CHROMATIC_COMPOUND.get()) {
+			if(energy.getEnergyStored() >= stack.getCount())
+				poweredTimer = 10;
+			
+			int energyPush = Math.min(energy.getEnergyStored(), CHARGE_RATE)/stack.getCount();
+			int energyRemoved = ChargingChromaticCompound.charge(stack, energyPush);
+			energy.internalConsumeEnergy(energyRemoved*stack.getCount());
+
+			if (ChargingChromaticCompound.getEnergy(stack) >= ChargingChromaticCompound.MAX_CHARGE) {
+				TransportedItemStack res = new TransportedItemStack(new ItemStack(CAItems.OVERCHARGED_ALLOY.get(), stack.getCount()));
+				handler.handleProcessingOnItem(transported, TransportedResult.convertTo(res));
+			}
+			
+			return ProcessingResult.HOLD;
+		}
 		return ProcessingResult.PASS;
+	}
+	
+	protected boolean chargeStack(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+		if(stack.getItem() == AllItems.CHROMATIC_COMPOUND.get()) {
+			TransportedItemStack res = new TransportedItemStack(new ItemStack(CAItems.CHARGING_CHROMATIC_COMPOUND.get(), stack.getCount()));
+			handler.handleProcessingOnItem(transported, TransportedResult.convertTo(res));
+			
+			//handler.handleProcessingOnItem(transported, TransportedResult.convertToAndLeaveHeld(collect, left));
+		}
+		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
+			return false;
+		IEnergyStorage es = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
+		energy.extractEnergy(es.receiveEnergy(energy.extractEnergy(getConsumption(), true), false), false);
+		if(es.receiveEnergy(1, true) != 1)
+			return false;
+		return true;
 	}
 	
 	/*@Override

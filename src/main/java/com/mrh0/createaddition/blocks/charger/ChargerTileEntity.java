@@ -5,31 +5,28 @@ import java.util.List;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
+import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.item.ChargingChromaticCompound;
 import com.mrh0.createaddition.util.IComparatorOverride;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 public class ChargerTileEntity extends BaseElectricTileEntity implements IComparatorOverride, IHaveGoggleInformation {
 
-	//private ItemStack itemStack = ItemStack.EMPTY;
-	
-	// Depot
-	ChargerBehaviour behav;
+	private ItemStack itemStack = ItemStack.EMPTY;
 
 	private static final int MAX_IN = Config.CHARGER_MAX_INPUT.get(), CHARGE_RATE = Config.CHARGER_CHARGE_RATE.get(),
 			CAPACITY = Config.CHARGER_CAPACITY.get();
@@ -39,7 +36,27 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 
 		setLazyTickRate(20);
 	}
-	
+
+	private void chargeItem(ItemStack stack) {
+		stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(itemEnergy -> {
+			if (!isChargingItem(itemEnergy))
+				return;
+
+			int energyRemoved = itemEnergy.receiveEnergy(Math.min(energy.getEnergyStored(), CHARGE_RATE), false);
+			energy.internalConsumeEnergy(energyRemoved);
+		});
+	}
+
+	public boolean isChargingItem(IEnergyStorage energy) {
+		return energy.getEnergyStored() >= 0;
+	}
+
+	public float getItemCharge(IEnergyStorage energy) {
+		if (energy == null)
+			return 0f;
+		return (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored();
+	}
+
 	@Override
 	public boolean isEnergyInput(Direction side) {
 		return side != Direction.UP;
@@ -49,50 +66,8 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 	public boolean isEnergyOutput(Direction side) {
 		return false;
 	}
-	
-	protected void chargeItem(ItemStack stack) {
-		if(stack == null)
-			return;
-		stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(itemEnergy -> {
-			if (!isChargingItem(itemEnergy))
-				return;
 
-			int energyRemoved = itemEnergy.receiveEnergy(Math.min(energy.getEnergyStored(), CHARGE_RATE), false);
-			energy.internalConsumeEnergy(energyRemoved);
-		});
-	}
-	
-	protected boolean canReceiveCharge(ItemStack stack) {
-		if(stack == null)
-			return false;
-		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
-			return false;
-		IEnergyStorage es = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
-		if(es.receiveEnergy(1, true) != 1)
-			return false;
-		return true;
-	}
-
-	protected boolean isChargingItem(IEnergyStorage energy) {
-		return energy.getEnergyStored() >= 0;
-	}
-
-	protected float getItemCharge(IEnergyStorage energy) {
-		if (energy == null)
-			return 0f;
-		return (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored();
-	}
-
-	public ItemStack getChargedStack() {
-		return behav.getHeldItemStack();
-	}
-	
-	public boolean hasChargedStack() {
-		return getChargedStack() != null && !this.getChargedStack().isEmpty();
-	}
-	
-
-	/*private int lastComparator = 0;
+	private int lastComparator = 0;
 
 	@Override
 	public void tick() {
@@ -157,20 +132,20 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 		this.setChanged();
 	}
 
-	
+	public ItemStack getChargedStack() {
+		return itemStack;
+	}
 
-	
+	public boolean hasChargedStack() {
+		return itemStack != null && !this.itemStack.isEmpty();
+	}
 
 	@Override
 	public int getComparetorOverride() {
 		return (int) (getCharge() * 15f);
 	}
 
-	
-
-	*/
-	
-	public float getCharge(ItemStack itemStack) {
+	public float getCharge() {
 		if (!hasChargedStack())
 			return 0f;
 		if (itemStack.getCapability(CapabilityEnergy.ENERGY).isPresent())
@@ -181,15 +156,14 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 			return 90f;
 		return 0f;
 	}
-	
+
 	public String getChargeString() {
-		float c = Math.round(getCharge(getChargedStack()) * 100);
+		float c = Math.round(getCharge() * 100);
 		if(c >= 9000)
 			return "OVER9000% ";
-		return Math.round(getCharge(getChargedStack()) * 100) + "% ";
+		return Math.round(getCharge() * 100) + "% ";
 	}
 
-	
 	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		tooltip.add(new StringTextComponent(spacing).append(
@@ -205,25 +179,5 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 		}
 
 		return true;
-	}
-	
-	
-	// Depot
-	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
-		behaviours.add(behav = new ChargerBehaviour(this));
-		behav.addSubBehaviours(behaviours);
-	}
-
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return behav.getItemCapability(cap, side);
-		return super.getCapability(cap, side);
-	}
-
-	@Override
-	public int getComparetorOverride() {
-		return 0;
 	}
 }

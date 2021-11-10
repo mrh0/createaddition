@@ -46,7 +46,7 @@ import net.minecraft.block.AbstractBlock.Properties;
 
 public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchable {
 
-	//public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	
 	public static final VoxelShape CHARGER_SHAPE = VoxelShapes.or(Block.box(0, 0, 0, 16, 11, 16), Block.box(1, 1, 1, 15, 13, 15));
 	
@@ -76,10 +76,10 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 	
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		//builder.add(FACING);
+		builder.add(FACING);
 	}
 	
-	/*@Override
+	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext c) {
 		return defaultBlockState().setValue(FACING, c.getPlayer().isShiftKeyDown() ? c.getHorizontalDirection().getCounterClockWise() : c.getHorizontalDirection().getClockWise());
 	}
@@ -127,11 +127,11 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 			te.setRemoved();
 		}
 		super.onRemove(state, worldIn, pos, newState, isMoving);
-	}*/
+	}
 	
 	
 	// Depot
-	@Override
+	/*@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 		BlockRayTraceResult ray) {
 		if (ray.getDirection() != Direction.UP)
@@ -213,7 +213,7 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 	
 	protected static ChargerBehaviour get(IBlockReader worldIn, BlockPos pos) {
 		return TileEntityBehaviour.get(worldIn, pos, ChargerBehaviour.TYPE);
-	}
+	}*/
 	
 	
 	@Override

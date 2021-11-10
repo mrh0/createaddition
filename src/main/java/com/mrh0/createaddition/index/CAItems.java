@@ -64,7 +64,7 @@ public class CAItems {
 	public static final ItemEntry<ChargingChromaticCompound> CHARGING_CHROMATIC_COMPOUND =
 			REGISTRATE.item("charging_chromatic_compound", ChargingChromaticCompound::new)
 			.properties(p -> p.rarity(Rarity.UNCOMMON))
-			.properties(p -> p.stacksTo(1))
+			.properties(p -> p.stacksTo(16))
 			.model(AssetLookup.existingItemModel())
 			.color(() -> ChromaticCompoundColor::new)
 			.register();

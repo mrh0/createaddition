@@ -64,6 +64,9 @@ public class Config {
 	public static ForgeConfigSpec.IntValue DIAMOND_GRIT_SANDPAPER_USES;
 	public static ForgeConfigSpec.IntValue OVERCHARGING_ENERGY_COST;
 	
+	public static ForgeConfigSpec.DoubleValue FURNACE_BURNER_ENGINE_SPEED;
+	public static ForgeConfigSpec.DoubleValue CRUDE_BURNER_ENGINE_SPEED;
+	
 	static {
 		
 		COMMON_BUILDER.comment("General Settings").push(CATAGORY_GENERAL);
@@ -203,6 +206,12 @@ public class Config {
 		
 		OVERCHARGING_ENERGY_COST = COMMON_BUILDER.comment("The energy cost of turning Chromatic Compound into Overcharged Alloy.")
 				.defineInRange("overcharging_energy_cost", 16777216, 1, Integer.MAX_VALUE);
+		
+		FURNACE_BURNER_ENGINE_SPEED = COMMON_BUILDER.comment("The relative speed of the Furnace Engine when powered by a Furnace Burner.")
+				.defineInRange("furnace_burner_engine_speed", 1d, 0d, 100d);
+		
+		CRUDE_BURNER_ENGINE_SPEED = COMMON_BUILDER.comment("The relative speed of the Furnace Engine when powered by a Crude Burner.")
+				.defineInRange("crude_burner_engine_speed", 2d, 0d, 100d);
 		
 		COMMON_BUILDER.pop();
 		
