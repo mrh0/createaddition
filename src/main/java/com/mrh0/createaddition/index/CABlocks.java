@@ -104,8 +104,8 @@ public class CABlocks {
 	
 	public static final BlockEntry<Charger> CHARGER = REGISTRATE.block("charger",  Charger::new)
 			.initialProperties(SharedProperties::stone)
-			.item()
-			.transform(customItemModel())
+			//.item()
+			//.transform(customItemModel())
 			.register();
 	
 	public static final BlockEntry<Cake> CHOCOLATE_CAKE = REGISTRATE.block("chocolate_cake",  Cake::new)

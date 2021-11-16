@@ -43,14 +43,25 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
 
-	private static final int MAX_IN = Config.CHARGER_MAX_INPUT.get(), CHARGE_RATE = Config.CHARGER_CHARGE_RATE.get(),
-			CAPACITY = Math.max(Config.CHARGER_CAPACITY.get(), CHARGE_RATE), HURT_ENERGY_REQUIRED = 100, HURT_DMG = 3, HURT_RANGE = 4, HURT_EFFECT_TIME = 20;
+	private static final int 
+			MAX_IN = Config.TESLA_COIL_MAX_INPUT.get(), 
+			CHARGE_RATE = Config.TESLA_COIL_CHARGE_RATE.get(),
+			CAPACITY = Math.max(Config.TESLA_COIL_CAPACITY.get(), CHARGE_RATE), 
+			HURT_ENERGY_REQUIRED = Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get(), 
+			HURT_DMG_MOB = Config.TESLA_COIL_HURT_DMG_MOB.get(),
+			HURT_DMG_PLAYER = Config.TESLA_COIL_HURT_DMG_PLAYER.get(),
+			HURT_RANGE = Config.TESLA_COIL_HURT_RANGE.get(), 
+			HURT_EFFECT_TIME_MOB = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get(),
+			HURT_EFFECT_TIME_PLAYER = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get(),
+			HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();
 	
 	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
 	
+	private static DamageSource dmgSource = new DamageSource("tesla_coil");
+	
 	public TeslaCoilTileEntity(TileEntityType<?> tileEntityTypeIn) {
-		super(tileEntityTypeIn, 1000, 1000, 1000);
+		super(tileEntityTypeIn, CAPACITY, MAX_IN, 0);
 	}
 	
 	public BeltProcessingBehaviour processingBehaviour;
@@ -156,20 +167,21 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		return res;
 	}
 	
-	private int getHurtEnergyRate(int signal) {
-		/*if(signal > 0 && signal < 3)
-			return 1;
-		return signal / 3 * HURT_ENERGY_RATE;*/
-		return HURT_ENERGY_REQUIRED;
-	}
-	
 	private void doDmg() {
 		energy.internalConsumeEnergy(HURT_ENERGY_REQUIRED);
 		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoil.FACING));
 		List<LivingEntity> ents = getWorld().getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(origin).inflate(HURT_RANGE));
 		for(LivingEntity e : ents) {
-			e.hurt(DamageSource.IN_WALL, HURT_DMG);
-			e.addEffect(new EffectInstance(CAEffects.SHOCKING, HURT_EFFECT_TIME));
+			int dmg = HURT_DMG_MOB;
+			int time = HURT_EFFECT_TIME_MOB;
+			if(e instanceof PlayerEntity) {
+				dmg = HURT_DMG_PLAYER;
+				time = HURT_EFFECT_TIME_PLAYER;
+			}
+			if(dmg > 0)
+				e.hurt(dmgSource, dmg);
+			if(time > 0)
+				e.addEffect(new EffectInstance(CAEffects.SHOCKING, time));
 		}
 	}
 	
@@ -183,7 +195,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			poweredTimer = 10;
 		
 		dmgTick++;
-		if((dmgTick%=10) == 0 && energy.getEnergyStored() >= HURT_ENERGY_REQUIRED && signal > 0)
+		if((dmgTick%=HURT_FIRE_COOLDOWN) == 0 && energy.getEnergyStored() >= HURT_ENERGY_REQUIRED && signal > 0)
 			doDmg();
 		
 		if(level.isClientSide())
@@ -225,7 +237,6 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 				TransportedItemStack res = new TransportedItemStack(new ItemStack(CAItems.OVERCHARGED_ALLOY.get(), stack.getCount()));
 				handler.handleProcessingOnItem(transported, TransportedResult.convertTo(res));
 			}
-			
 			return ProcessingResult.HOLD;
 		}
 		return ProcessingResult.PASS;
