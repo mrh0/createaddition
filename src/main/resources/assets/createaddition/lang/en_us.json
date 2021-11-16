@@ -180,6 +180,10 @@
 	
 	"block.createaddition.seed_oil": "Seed Oil",
 	
+	"block.createaddition.overcharged_casing": "Overcharged Casing",
+	
+	"block.createaddition.tesla_coil": "Tesla Coil",
+	
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "Click here to open API documentation",

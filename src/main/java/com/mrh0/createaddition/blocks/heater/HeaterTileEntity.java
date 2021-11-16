@@ -39,6 +39,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	
 	public HeaterTileEntity(TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn, CAPACITY, MAX_IN, MAX_OUT);
+		setLazyTickRate(20);
 	}
 
 	@Override
@@ -50,6 +51,8 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	public boolean isEnergyOutput(Direction side) {
 		return false;
 	}
+	
+	int timeout;
 	
 	@Override
 	public void tick() {
@@ -68,22 +71,23 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 		}*/
 		
 		IIntArray data = ((AbstractFurnaceMixin)cache).getDataAccess();
-		
+		timeout--;
+		if(timeout < 0)
+			timeout = 0;
 		if(hasEnoughEnergy()) {
 			data.set(0, Math.min(200, data.get(0)+2));
 			if(!litState)
-				updateState(true);
-			litState = true;
+				if(timeout <= 0)
+					updateState(true);
 		}
 		else if(litState && data.get(0) < 1) {
-			updateState(false);
-			litState = false;
+			if(timeout <= 0)
+				updateState(false);
 		}
 		
 		// Old Lazy
 		if(hasEnoughEnergy())
 			energy.internalConsumeEnergy(getConsumption());
-		isFurnaceEngine = hasFurnaceEngine();
 	}
 	
 	public void refreshCache() {
@@ -99,7 +103,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	public boolean hasEnoughEnergy() {
 		if(!ALLOW_ENGINE && isFurnaceEngine)
 			return false;
-		return energy.getEnergyStored() > (isFurnaceEngine ? CONSUMPTION_ENGINE : CONSUMPTION);
+		return energy.getEnergyStored() > getConsumption();
 	}
 	
 	public boolean hasFurnaceEngine() {
@@ -120,10 +124,11 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 		super.lazyTick();
 		
 		
-		//causeBlockUpdate();
+		isFurnaceEngine = hasFurnaceEngine();
 	}
 	
 	public void updateState(boolean lit) {
+		timeout = 10;
 		Direction d = getBlockState().getValue(HeaterBlock.FACING);
 		BlockState state = level.getBlockState(worldPosition.relative(d));
 		if(state.getBlock() instanceof AbstractFurnaceBlock) {
@@ -131,6 +136,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 				level.setBlockAndUpdate(worldPosition.relative(d), state.setValue(AbstractFurnaceBlock.LIT, lit));
 		}
 		causeBlockUpdate();
+		litState = lit;
 	}
 	
 	@Override

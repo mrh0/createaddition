@@ -1,5 +1,7 @@
 package com.mrh0.createaddition;
 
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.command.CommandSource;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.potion.Effect;
@@ -107,6 +109,10 @@ public class CreateAddition {
     	event.enqueueWork(CAPonder::register);
         CAEntities.registerRenderers();
         event.enqueueWork(CAItemProperties::register);
+        
+        RenderType cutout = RenderType.cutoutMipped();       
+		
+        RenderTypeLookup.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -126,7 +132,10 @@ public class CreateAddition {
     	int i = 0;
         Network.registerMessage(i++, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
         Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
-        FurnaceEngineModifiers.INSTANCE.register(CABlocks.CRUDE_BURNER.get().delegate, 2f);
+        
+        FurnaceEngineModifiers.INSTANCE.register(CABlocks.FURNACE_BURNER.get().delegate, (float)(double)Config.FURNACE_BURNER_ENGINE_SPEED.get());
+        FurnaceEngineModifiers.INSTANCE.register(CABlocks.CRUDE_BURNER.get().delegate, (float)(double)Config.CRUDE_BURNER_ENGINE_SPEED.get());
+        
     	System.out.println("Create Crafts & Addition Initialized!");
     }
     

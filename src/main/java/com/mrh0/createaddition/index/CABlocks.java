@@ -14,12 +14,16 @@ import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.blocks.heater.HeaterBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
+import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
+import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.Create;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.AllSections;
+import com.simibubi.create.content.contraptions.base.CasingBlock;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
+import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.repack.registrate.util.entry.BlockEntry;
@@ -100,8 +104,8 @@ public class CABlocks {
 	
 	public static final BlockEntry<Charger> CHARGER = REGISTRATE.block("charger",  Charger::new)
 			.initialProperties(SharedProperties::stone)
-			.item()
-			.transform(customItemModel())
+			//.item()
+			//.transform(customItemModel())
 			.register();
 	
 	public static final BlockEntry<Cake> CHOCOLATE_CAKE = REGISTRATE.block("chocolate_cake",  Cake::new)
@@ -118,11 +122,24 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
+	public static final BlockEntry<TeslaCoil> TESLA_COIL = REGISTRATE.block("tesla_coil",  TeslaCoil::new)
+			.initialProperties(SharedProperties::stone)
+			.item()
+			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<CasingBlock> OVERCHARGED_CASING =
+			REGISTRATE.block("overcharged_casing", CasingBlock::new)
+				.transform(BuilderTransformers.casing(CASpriteShifts.OVERCHARGED_CASING))
+				.properties(p -> p.lightLevel($ -> 4))
+				.register();
+	
 	public static void register() {
 		//Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
 		//Create.registrate().addToSection(ALTERNATOR, AllSections.KINETICS);
 		//Create.registrate().addToSection(ROLLING_MILL, AllSections.KINETICS);
 		Create.registrate().addToSection(CHARGER, AllSections.KINETICS);
+		Create.registrate().addToSection(TESLA_COIL, AllSections.KINETICS);
 		Create.registrate().addToSection(FURNACE_BURNER, AllSections.KINETICS);
 		Create.registrate().addToSection(CRUDE_BURNER, AllSections.KINETICS);
 		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
@@ -130,5 +147,6 @@ public class CABlocks {
 		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);
 		//Create.registrate().addToSection(HEATER, AllSections.KINETICS);
 		Create.registrate().addToSection(REDSTONE_RELAY, AllSections.KINETICS);
+		Create.registrate().addToSection(OVERCHARGED_CASING, AllSections.MATERIALS);
 	}
 }

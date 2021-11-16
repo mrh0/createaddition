@@ -1,10 +1,10 @@
 {
   "type": "create:mechanical_crafting",
   "pattern": [
-  	"  A  ",
-    " BSB ",
-    "BSRSB",
-    " BCB "
+  	"SSS",
+    " A ",
+    "CBC",
+    "PEP"
   ],
   "key": {
   	"A": {
@@ -13,17 +13,20 @@
     "C": {
       "item": "createaddition:capacitor"
     },
-    "B": {
+    "P": {
       "tag": "forge:plates/brass"
     },
-    "R": {
-      "tag": "forge:rods/iron"
+    "B": {
+      "item": "create:brass_casing"
     },
     "S": {
       "item": "createaddition:copper_spool"
+    },
+    "E": {
+      "item": "create:electron_tube"
     }
   },
   "result": {
-    "item": "createaddition:electric_motor"
+    "item": "createaddition:tesla_coil"
   }
 }
