@@ -56,6 +56,7 @@ public class CreateAddition {
     
     public static boolean IE_ACTIVE = false;
     public static boolean CC_ACTIVE = false;
+    public static boolean AE2_ACTIVE = false;
     
     private static final NonNullLazyValue<CreateRegistrate> registrate = CreateRegistrate.lazy(CreateAddition.MODID);
     
@@ -91,6 +92,7 @@ public class CreateAddition {
         
         IE_ACTIVE = ModList.get().isLoaded("immersiveengineering");
         CC_ACTIVE = ModList.get().isLoaded("computercraft");
+        AE2_ACTIVE = ModList.get().isLoaded("appliedenergistics2");
         
         new ModGroup("main");
         

@@ -125,6 +125,7 @@ dependencies {
     implementation fg.deobf("curse.maven:flywheel-486392:3459739")
 	implementation fg.deobf("curse.maven:immersive-engineering-231951:3377691")
     implementation fg.deobf("curse.maven:cc-tweaked-282001:3368207")
+	implementation fg.deobf("curse.maven:applied-energistics-2-223794:3528122")
 	
 	runtimeOnly fg.deobf("curse.maven:tinkers-construct-74072:3389377")
 	runtimeOnly fg.deobf("curse.maven:mantle-74924:3412365")

@@ -1,43 +1,34 @@
 package com.mrh0.createaddition.blocks.tesla_coil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.compat.applied_energistics.AE2;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.item.ChargingChromaticCompound;
-import com.mrh0.createaddition.item.Multimeter;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.logistics.block.depot.DepotBehaviour;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -54,6 +45,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			HURT_EFFECT_TIME_MOB = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get(),
 			HURT_EFFECT_TIME_PLAYER = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get(),
 			HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();
+		private static final float CERTUS_QUARTZ_CHANCE = (float)(double)Config.CERTUS_QUARTZ_CHARGE_CHANCE.get();
 	
 	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
@@ -85,31 +77,9 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		return false;
 	}
 	
-	/*protected boolean canStackReceiveCharge(ItemStack stack) {
-		if(stack == null)
-			return false;
-		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
-			return false;
-		IEnergyStorage es = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
-		if(es.receiveEnergy(1, true) != 1)
-			return false;
-		return true;
-	}*/
-	
 	public int getConsumption() {
 		return CHARGE_RATE;
 	}
-	
-	/*@Override
-	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
-		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent("block.createaddition.tesla_coil.info").withStyle(TextFormatting.WHITE)));
-		
-		
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")).withStyle(TextFormatting.AQUA));
-		return true;
-	}*/
 	
 	protected float getItemCharge(IEnergyStorage energy) {
 		if (energy == null)
@@ -155,15 +125,6 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	
 	protected ProcessingResult onCharge(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		ProcessingResult res = chargeCompundAndStack(transported, handler);
-		/*if(res == ProcessingResult.HOLD)
-			if(getWorld().getRandom().nextInt(20)>18) {
-				//AxisAlignedBB bounds = new AxisAlignedBB(getBlockPos().subtract(new BlockPos(5,5,5)), getBlockPos().offset(new BlockPos(5,5,5)));
-				List<PlayerEntity> players = getWorld().getEntitiesOfClass(ServerPlayerEntity.class, new AxisAlignedBB(getBlockPos()).inflate(5));//getWorld().getNearbyPlayers(EntityPredicate.DEFAULT, null, bounds);
-				for(PlayerEntity p : players) {
-					getWorld().playSound(p, getBlockPos(), SoundEvents.SPIDER_AMBIENT, SoundCategory.BLOCKS, 1f, 1f);
-					System.out.println("Sound");
-				}
-			}*/
 		return res;
 	}
 	
@@ -225,6 +186,11 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 				poweredTimer = 10;
 			return ProcessingResult.HOLD;
 		}
+		if(chargeAE2(stack, transported, handler)) {
+			if(energy.getEnergyStored() >= CHARGE_RATE)
+				poweredTimer = 10;
+			return ProcessingResult.HOLD;
+		}
 		if (stack.getItem() == CAItems.CHARGING_CHROMATIC_COMPOUND.get()) {
 			if(energy.getEnergyStored() >= stack.getCount())
 				poweredTimer = 10;
@@ -246,8 +212,6 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		if(stack.getItem() == AllItems.CHROMATIC_COMPOUND.get()) {
 			TransportedItemStack res = new TransportedItemStack(new ItemStack(CAItems.CHARGING_CHROMATIC_COMPOUND.get(), stack.getCount()));
 			handler.handleProcessingOnItem(transported, TransportedResult.convertTo(res));
-			
-			//handler.handleProcessingOnItem(transported, TransportedResult.convertToAndLeaveHeld(collect, left));
 		}
 		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
 			return false;
@@ -258,15 +222,20 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		return true;
 	}
 	
-	/*@Override
-	public void tick() {
-		super.tick();
+	protected boolean chargeAE2(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+		if(!CreateAddition.AE2_ACTIVE)
+			return false;
+		if(!AE2.isCertusQuartz(stack))
+			return false;
+		int energyRemoved = energy.internalConsumeEnergy(CHARGE_RATE);
 		
-		DepotBehaviour depot = TileEntityBehaviour.get(level, getBlockPos().below(2), DepotBehaviour.TYPE);
-		if(depot == null) {
-			chargedStackCache = null;
-			return;
+		if(energyRemoved >= CHARGE_RATE && level.random.nextFloat() > CERTUS_QUARTZ_CHANCE) {
+			TransportedItemStack left = transported.copy();
+			left.stack.shrink(1);
+			List<TransportedItemStack> r = new ArrayList<>();
+			AE2.getChargedCertusQuartz(1).ifPresent(is -> r.add(new TransportedItemStack(is)));
+			handler.handleProcessingOnItem(transported, TransportedResult.convertToAndLeaveHeld(r, left));
 		}
-		chargedStackCache = depot.getHeldItemStack();
-	}*/
+		return true;
+	}
 }

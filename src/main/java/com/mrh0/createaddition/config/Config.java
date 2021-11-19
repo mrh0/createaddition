@@ -75,6 +75,7 @@ public class Config {
 	
 	public static ForgeConfigSpec.IntValue DIAMOND_GRIT_SANDPAPER_USES;
 	public static ForgeConfigSpec.IntValue OVERCHARGING_ENERGY_COST;
+	public static ForgeConfigSpec.DoubleValue CERTUS_QUARTZ_CHARGE_CHANCE;
 	
 	public static ForgeConfigSpec.DoubleValue FURNACE_BURNER_ENGINE_SPEED;
 	public static ForgeConfigSpec.DoubleValue CRUDE_BURNER_ENGINE_SPEED;
@@ -243,7 +244,6 @@ public class Config {
 		TESLA_COIL_HURT_FIRE_COOLDOWN = COMMON_BUILDER.comment("Tesla Coil fire interval (in ticks).")
 				.defineInRange("tesla_coil_fire_cooldown", 20, 0, Integer.MAX_VALUE);
 		
-		
 		COMMON_BUILDER.pop();
 		
 		
@@ -254,6 +254,9 @@ public class Config {
 		
 		OVERCHARGING_ENERGY_COST = COMMON_BUILDER.comment("The energy cost of turning Chromatic Compound into Overcharged Alloy.")
 				.defineInRange("overcharging_energy_cost", 16777216, 1, Integer.MAX_VALUE);
+		
+		CERTUS_QUARTZ_CHARGE_CHANCE = COMMON_BUILDER.comment("The chance that a AE2 Certus Quartz will be turned into Charged Certus Quartz for every tick.")
+				.defineInRange("certus_quartz_charge_chance", 0.96d, 0d, 1d);
 		
 		FURNACE_BURNER_ENGINE_SPEED = COMMON_BUILDER.comment("The relative speed of the Furnace Engine when powered by a Furnace Burner.")
 				.defineInRange("furnace_burner_engine_speed", 1d, 0d, 100d);

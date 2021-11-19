@@ -1,5 +1,9 @@
 package com.mrh0.createaddition.ponder;
 
+import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
+import com.mrh0.createaddition.index.CABlocks;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.content.PonderPalette;
@@ -8,6 +12,7 @@ import com.simibubi.create.foundation.utility.Pointing;
 
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -265,5 +270,39 @@ public class PonderScenes {
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(computer));
 		scene.idle(160);
+	}
+	
+	public static void teslaCoil(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("tesla_coil", "Using Tesla Coil");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+		scene.idle(5);
+		scene.world.setBlock(util.grid.at(3, 2, 2), Blocks.WATER.defaultBlockState(), false);
+
+		BlockPos depotPos = util.grid.at(2, 1, 2);
+		scene.world.showSection(util.select.position(2, 1, 2), Direction.DOWN);
+		scene.idle(5);
+		scene.world.showSection(util.select.position(2, 3, 2), Direction.DOWN);
+		
+		Vector3d topOf = util.vector.topOf(depotPos);
+		scene.overlay.showText(60)
+			.attachKeyFrame()
+			.text("Depots can serve as 'stationary' belt elements")
+			.placeNearTarget()
+			.pointAt(topOf);
+		scene.idle(70);
+
+		scene.overlay.showControls(new InputWindowElement(topOf, Pointing.DOWN).rightClick()
+			.withItem(AllItems.CHROMATIC_COMPOUND.asStack()), 20);
+		scene.idle(7);
+		scene.world.createItemOnBeltLike(depotPos, Direction.NORTH, AllItems.CHROMATIC_COMPOUND.asStack());
+		scene.idle(10);
+		scene.world.setBlock(util.grid.at(2, 3, 2), CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.UP).setValue(TeslaCoil.POWERED, true), false);
+		scene.overlay.showText(70)
+			.attachKeyFrame()
+			.text("Right-Click to manually place or remove Items from it")
+			.placeNearTarget()
+			.pointAt(topOf);
+		scene.idle(80);
 	}
 }
