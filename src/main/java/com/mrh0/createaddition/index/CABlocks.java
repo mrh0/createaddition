@@ -22,6 +22,7 @@ import com.simibubi.create.Create;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.contraptions.base.CasingBlock;
+import com.simibubi.create.content.contraptions.components.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -124,7 +125,7 @@ public class CABlocks {
 	
 	public static final BlockEntry<TeslaCoil> TESLA_COIL = REGISTRATE.block("tesla_coil",  TeslaCoil::new)
 			.initialProperties(SharedProperties::stone)
-			.item()
+			.item(AssemblyOperatorBlockItem::new)
 			.transform(customItemModel())
 			.register();
 	

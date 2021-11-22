@@ -2,17 +2,22 @@ package com.mrh0.createaddition.ponder;
 
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.content.PonderPalette;
+import com.simibubi.create.foundation.ponder.elements.BeltItemElement;
 import com.simibubi.create.foundation.ponder.elements.InputWindowElement;
 import com.simibubi.create.foundation.utility.Pointing;
 
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.LeverBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.properties.AttachFace;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -283,26 +288,64 @@ public class PonderScenes {
 		scene.world.showSection(util.select.position(2, 1, 2), Direction.DOWN);
 		scene.idle(5);
 		scene.world.showSection(util.select.position(2, 3, 2), Direction.DOWN);
-		
+		scene.idle(5);
 		Vector3d topOf = util.vector.topOf(depotPos);
-		scene.overlay.showText(60)
+		scene.overlay.showText(50)
 			.attachKeyFrame()
-			.text("Depots can serve as 'stationary' belt elements")
+			.text("Tesla Coil will charge Items below it")
 			.placeNearTarget()
 			.pointAt(topOf);
-		scene.idle(70);
+		scene.idle(60);
 
-		scene.overlay.showControls(new InputWindowElement(topOf, Pointing.DOWN).rightClick()
-			.withItem(AllItems.CHROMATIC_COMPOUND.asStack()), 20);
-		scene.idle(7);
 		scene.world.createItemOnBeltLike(depotPos, Direction.NORTH, AllItems.CHROMATIC_COMPOUND.asStack());
 		scene.idle(10);
 		scene.world.setBlock(util.grid.at(2, 3, 2), CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.UP).setValue(TeslaCoil.POWERED, true), false);
 		scene.overlay.showText(70)
 			.attachKeyFrame()
-			.text("Right-Click to manually place or remove Items from it")
+			.text("It will charge any Forge Energy Items and more!")
 			.placeNearTarget()
 			.pointAt(topOf);
+		scene.idle(80);
+		/*scene.world.removeItemsFromBelt(depotPos);
+		scene.idle(5);
+		scene.world.setBlock(util.grid.at(2, 3, 2), CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.UP).setValue(TeslaCoil.POWERED, false), false);
+		scene.idle(80);*/
+	}
+	
+	public static void teslaCoilHurt(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("tesla_coil_hurt", "Dangerous Tesla Coils");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+		scene.idle(5);
+		//scene.world.setBlock(util.grid.at(3, 2, 2), Blocks.WATER.defaultBlockState(), false);
+
+		BlockPos teslacoil = util.grid.at(2, 1, 2);
+		BlockPos lever = util.grid.at(2, 1, 1);
+		scene.world.showSection(util.select.position(teslacoil), Direction.DOWN);
+		scene.idle(5);
+		scene.overlay.showText(70)
+			.attachKeyFrame()
+			.text("The Tesla Coil is also able to Shock nearby Players and Mobs")
+			.placeNearTarget()
+			.pointAt(util.vector.topOf(teslacoil));
+		scene.idle(80);
+		scene.world.showSection(util.select.position(lever), Direction.SOUTH);
+		scene.idle(5);
+		scene.overlay.showText(50)
+			.attachKeyFrame()
+			.text("This can be activated with a Redstone signal")
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(lever));
+		scene.idle(60);
+		scene.world.setBlock(lever, Blocks.LEVER.defaultBlockState().setValue(LeverBlock.POWERED, true).setValue(LeverBlock.FACING, Direction.SOUTH).setValue(LeverBlock.FACE, AttachFace.FLOOR), false);
+		scene.idle(5);
+		scene.world.setBlock(teslacoil, CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.DOWN).setValue(TeslaCoil.POWERED, true), false);
+		scene.idle(5);
+		scene.overlay.showText(70)
+			.attachKeyFrame()
+			.text("Prepare to be Shocked!")
+			.placeNearTarget()
+			.pointAt(util.vector.topOf(teslacoil));
 		scene.idle(80);
 	}
 }

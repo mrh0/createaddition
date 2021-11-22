@@ -22,6 +22,7 @@ public class CAPonder {
 		HELPER.addStoryBoard(CABlocks.ROLLING_MILL, "automate_rolling_mill", PonderScenes::automateRollingMill, PonderTag.KINETIC_APPLIANCES);
 		HELPER.addStoryBoard(CABlocks.HEATER, "heater", PonderScenes::heater, PonderTag.LOGISTICS, ELECTRIC);
 		HELPER.addStoryBoard(CABlocks.TESLA_COIL, "tesla_coil", PonderScenes::teslaCoil, PonderTag.LOGISTICS, ELECTRIC);
+		HELPER.addStoryBoard(CABlocks.TESLA_COIL, "tesla_coil_hurt", PonderScenes::teslaCoilHurt, PonderTag.LOGISTICS, ELECTRIC);
 		
 		
 		if(CreateAddition.CC_ACTIVE)

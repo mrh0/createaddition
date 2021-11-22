@@ -227,7 +227,7 @@ public class Config {
 				.defineInRange("tesla_coil_hurt_energy_required", 1024, 0, Integer.MAX_VALUE);
 		
 		TESLA_COIL_HURT_RANGE = COMMON_BUILDER.comment("Hurt range (in blocks/meters).")
-				.defineInRange("tesla_coil_hurt_range", 4, 0, Integer.MAX_VALUE);
+				.defineInRange("tesla_coil_hurt_range", 3, 0, Integer.MAX_VALUE);
 		
 		TESLA_COIL_HURT_DMG_MOB = COMMON_BUILDER.comment("Damaged dealt to mobs when Tesla Coil is fired (in half hearts).")
 				.defineInRange("tesla_coil_hurt_mob", 3, 0, Integer.MAX_VALUE);

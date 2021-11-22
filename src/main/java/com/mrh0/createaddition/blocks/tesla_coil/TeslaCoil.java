@@ -58,7 +58,7 @@ public class TeslaCoil extends Block implements ITE<TeslaCoilTileEntity>, IWrenc
 	
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext c) {
-		return this.defaultBlockState().setValue(FACING, c.getClickedFace().getOpposite());
+		return this.defaultBlockState().setValue(FACING, c.isSecondaryUseActive() ? c.getClickedFace() : c.getClickedFace().getOpposite());
 	}
 	
 	public void setPowered(World world, BlockPos pos, boolean powered) {
