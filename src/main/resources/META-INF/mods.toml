@@ -52,13 +52,13 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.16.5_v0.3.2d,)"
+    versionRange="[mc1.16.5_v0.3.2f,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
     modId="flywheel"
     mandatory=true
-    versionRange="[1.16-0.2.3,1.16-0.3)"
+    versionRange="[1.16-0.2.4,1.16-0.3)"
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.createaddition]]
@@ -71,6 +71,12 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
     modId="computercraft"
     mandatory=false
     versionRange="[0,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.createaddition]]
+    modId="appliedenergistics2"
+    mandatory=false
+    versionRange="[8.4.0,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]

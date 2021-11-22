@@ -1,5 +1,7 @@
 package com.mrh0.createaddition.item;
 
+import com.mrh0.createaddition.config.Config;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -8,7 +10,7 @@ import net.minecraft.util.NonNullList;
 
 public class ChargingChromaticCompound extends Item {
 
-	public static int MAX_CHARGE = 100000;//Config.OVERCHARGING_ENERGY_COST.get();
+	public static int MAX_CHARGE = Config.OVERCHARGING_ENERGY_COST.get();
 	
 	public ChargingChromaticCompound(Properties props) {
 		super(props);
