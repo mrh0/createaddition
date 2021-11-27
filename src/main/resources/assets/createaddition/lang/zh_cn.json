@@ -180,6 +180,10 @@
 	
 	"block.createaddition.seed_oil": "种子油",
 	
+	"block.createaddition.overcharged_casing": "超负荷机壳",
+	
+	"block.createaddition.tesla_coil": "特斯拉线圈",
+
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "点击这里打开 API 文档。",
@@ -218,5 +222,16 @@
 	"createaddition.ponder.cc_electric_motor.text_2": "使用 'peripheral.wrap(side)' 连接至电动马达",
 	"createaddition.ponder.cc_electric_motor.text_3": "在聊天中发出 '/cca_api' 命令来获取 API 文档。",
 	
-	"effect.createaddition.shocking": "触电"
+	"createaddition.ponder.tesla_coil.header": "使用特斯拉线圈给物品充电",
+	"createaddition.ponder.tesla_coil.text_1": "特斯拉线圈会给放置在它下面的物品充电",
+	"createaddition.ponder.tesla_coil.text_2": "它可以为任何支持 FE 的物品和更多的物品充电!",
+	
+	"createaddition.ponder.tesla_coil_hurt.header": "危险的特斯拉线圈",
+	"createaddition.ponder.tesla_coil_hurt.text_1": "特斯拉线圈也能对附近的玩家和生物造成伤害。",
+	"createaddition.ponder.tesla_coil_hurt.text_2": "此功能可以用红石信号来激活",
+	"createaddition.ponder.tesla_coil_hurt.text_3": "准备好触电吧！",
+	
+	"effect.createaddition.shocking":"触电",
+	"death.attack.tesla_coil": "%1$s 受到了致命电击",
+  	"death.attack.tesla_coil.player": "%1$s 在与 %2$s 的战斗中受到了致命电击"
 }
