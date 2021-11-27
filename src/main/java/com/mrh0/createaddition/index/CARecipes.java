@@ -8,6 +8,7 @@ import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipeSerializer;
 
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.crafting.CraftingHelper;
