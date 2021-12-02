@@ -181,7 +181,10 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		ItemStack stack = transported.stack;
 		if(stack == null)
 			return ProcessingResult.PASS;
-		
+		if(stack.getItem() == AllItems.CHROMATIC_COMPOUND.get()) {
+			TransportedItemStack res = new TransportedItemStack(new ItemStack(CAItems.CHARGING_CHROMATIC_COMPOUND.get(), stack.getCount()));
+			handler.handleProcessingOnItem(transported, TransportedResult.convertTo(res));
+		}
 		if(chargeStack(stack, transported, handler)) {
 			if(energy.getEnergyStored() >= stack.getCount())
 				poweredTimer = 10;
@@ -196,7 +199,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			if(energy.getEnergyStored() >= stack.getCount())
 				poweredTimer = 10;
 			
-			int energyPush = Math.min(energy.getEnergyStored(), CHARGE_RATE)/stack.getCount();
+			int energyPush = Math.min(energy.getEnergyStored(), getConsumption())/stack.getCount();
 			int energyRemoved = ChargingChromaticCompound.charge(stack, energyPush);
 			energy.internalConsumeEnergy(energyRemoved*stack.getCount());
 
@@ -210,16 +213,15 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}
 	
 	protected boolean chargeStack(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		if(stack.getItem() == AllItems.CHROMATIC_COMPOUND.get()) {
-			TransportedItemStack res = new TransportedItemStack(new ItemStack(CAItems.CHARGING_CHROMATIC_COMPOUND.get(), stack.getCount()));
-			handler.handleProcessingOnItem(transported, TransportedResult.convertTo(res));
-		}
 		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
 			return false;
+		System.out.println("C1");
 		IEnergyStorage es = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
-		energy.extractEnergy(es.receiveEnergy(energy.extractEnergy(getConsumption(), true), false), false);
 		if(es.receiveEnergy(1, true) != 1)
 			return false;
+		System.out.println("C2");
+		int r = energy.internalConsumeEnergy(es.receiveEnergy(Math.min(getConsumption(), energy.getEnergyStored()), false));
+		System.out.println("C3 " + r);
 		return true;
 	}
 	
@@ -228,9 +230,9 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			return false;
 		if(!AE2.isCertusQuartz(stack))
 			return false;
-		int energyRemoved = energy.internalConsumeEnergy(CHARGE_RATE);
+		int energyRemoved = energy.internalConsumeEnergy(getConsumption());
 		
-		if(energyRemoved >= CHARGE_RATE && level.random.nextFloat() > CERTUS_QUARTZ_CHANCE) {
+		if(energyRemoved >= getConsumption() && level.random.nextFloat() > CERTUS_QUARTZ_CHANCE) {
 			TransportedItemStack left = transported.copy();
 			left.stack.shrink(1);
 			List<TransportedItemStack> r = new ArrayList<>();
