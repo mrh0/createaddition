@@ -1,19 +1,11 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
-import com.mojang.math.Vector3d;
-import com.mojang.math.Vector3f;
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
-import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
-import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CABlocks;
@@ -24,12 +16,19 @@ import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.energy.IEnergyStorage;
 
 public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWireNode, IHaveGoggleInformation, IComparatorOverride, IObserveTileEntity {
 	
@@ -38,15 +37,15 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	private WireType[] connectionTypes;
 	public IWireNode[] nodeCache;
 	
-	public static Vector3f OFFSET_NORTH = new Vector3f(	0f, 	9f/16f, 	-5f/16f);
-	public static Vector3f OFFSET_WEST = new Vector3f(	-5f/16f, 	9f/16f, 	0f);
-	public static Vector3f OFFSET_SOUTH = new Vector3f(	0f, 	9f/16f, 	5f/16f);
-	public static Vector3f OFFSET_EAST = new Vector3f(	5f/16f, 	9f/16f, 	0f);
+	public static Vec3 OFFSET_NORTH = new Vec3(	0f, 	9f/16f, 	-5f/16f);
+	public static Vec3 OFFSET_WEST = new Vec3(	-5f/16f, 	9f/16f, 	0f);
+	public static Vec3 OFFSET_SOUTH = new Vec3(	0f, 	9f/16f, 	5f/16f);
+	public static Vec3 OFFSET_EAST = new Vec3(	5f/16f, 	9f/16f, 	0f);
 	
 	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
-	public AccumulatorTileEntity(BlockEntityType<?> tileEntityTypeIn) {
-		super(tileEntityTypeIn, CAPACITY, MAX_IN, MAX_OUT);
+	public AccumulatorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
 		
 		setLazyTickRate(20);
 		
@@ -71,7 +70,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 	
 	@Override
-	public Vector3f getNodeOffset(int node) {
+	public Vec3 getNodeOffset(int node) {
 		if(node > 3) {
 			switch(getBlockState().getValue(AccumulatorBlock.FACING)) {
 				case NORTH:
@@ -184,15 +183,15 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundNBT nbt, boolean clientPacket) {
-		super.fromTag(state, nbt, clientPacket);
+	public void fromTag(CompoundTag nbt, boolean clientPacket) {
+		super.fromTag(nbt, clientPacket);
 		for(int i = 0; i < getNodeCount(); i++)
 			if(IWireNode.hasNode(nbt, i))
 				readNode(nbt, i);
 	}
 	
 	@Override
-	public void write(CompoundNBT nbt, boolean clientPacket) {
+	public void write(CompoundTag nbt, boolean clientPacket) {
 		super.write(nbt, clientPacket);
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
@@ -336,38 +335,37 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 	
 	@Override
-	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
-		
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		@SuppressWarnings("resource")
-		RayTraceResult ray = Minecraft.getInstance().hitResult;
+		HitResult ray = Minecraft.getInstance().hitResult;
 		if(ray == null)
 			return false;
 		int node = getNodeFromPos(ray.getLocation());
 		
 		ObservePacket.send(worldPosition, node);
 		
-		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.accumulator.info").withStyle(TextFormatting.WHITE)));
-		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" "))
+		tooltip.add(new TextComponent(spacing)
+				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.accumulator.info").withStyle(ChatFormatting.WHITE)));
+		tooltip.add(new TextComponent(spacing)
+				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
 				.append(Multimeter.getTextComponent(energy)));
 		
-		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" "))
-				.append(new TranslationTextComponent(isNodeInput(node) ? "createaddition.tooltip.energy.input" : "createaddition.tooltip.energy.output").withStyle(TextFormatting.AQUA)));
+		tooltip.add(new TextComponent(spacing)
+				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
+				.append(new TranslatableComponent(isNodeInput(node) ? "createaddition.tooltip.energy.input" : "createaddition.tooltip.energy.output").withStyle(ChatFormatting.AQUA)));
 		
-		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(" ")
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(TextFormatting.AQUA));
+		tooltip.add(new TextComponent(spacing)
+				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(new TextComponent(spacing).append(" ")
+				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		
 		return true;
 	}
 
 	@Override
-	public void onObserved(ServerPlayerEntity player, ObservePacket pack) {
+	public void onObserved(ServerPlayer player, ObservePacket pack) {
 		if(isNetworkValid(0))
 			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
 		causeBlockUpdate();

@@ -1,33 +1,36 @@
 package com.mrh0.createaddition.entities.overcharged_hammer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.culling.ClippingHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
+
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class OverchargedHammerRenderer extends EntityRenderer<OverchargedHammerEntity> {
 	public static final ResourceLocation TEX = new ResourceLocation("createaddition:textures/entity/overcharged_hammer.png");
 	private final OverchargedHammerModel model = new OverchargedHammerModel();
 
-	public OverchargedHammerRenderer(EntityRendererManager erm) {
+	public OverchargedHammerRenderer(Context erm) {
 		super(erm);
 	}
 
-	public void render(OverchargedHammerEntity entity, float x, float y,
-			MatrixStack stack, IRenderTypeBuffer buff, int i) {
+	@Override
+	public void render(OverchargedHammerEntity entity, float x, float y, PoseStack stack,
+			MultiBufferSource buff, int i) {
 		stack.pushPose();
 		stack.mulPose(Vector3f.YP.rotationDegrees(
-				MathHelper.lerp(y, entity.yRotO, entity.yRot) - 90.0F));
+				Mth.lerp(y, entity.yRotO, entity.yRotO) - 90.0F));
 		stack.mulPose(Vector3f.ZP.rotationDegrees(
-				MathHelper.lerp(y, entity.xRotO, entity.xRot) + 90.0F));
-		IVertexBuilder ivertexbuilder = net.minecraft.client.renderer.ItemRenderer.getFoilBufferDirect(
+				Mth.lerp(y, entity.xRotO, entity.xRotO) + 90.0F));
+		VertexConsumer ivertexbuilder = ItemRenderer.getFoilBufferDirect(
 				buff, this.model.renderType(this.getTextureLocation(entity)), false, entity.isEnchanted());
 		this.model.renderToBuffer(stack, ivertexbuilder, i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.popPose();
@@ -39,7 +42,7 @@ public class OverchargedHammerRenderer extends EntityRenderer<OverchargedHammerE
 	}
 	
 	@Override
-	public boolean shouldRender(OverchargedHammerEntity ent, ClippingHelper clipp, double x, double y, double z) {
+	public boolean shouldRender(OverchargedHammerEntity ent, Frustum clipp, double x, double y, double z) {
 		return true;
 	}
 }

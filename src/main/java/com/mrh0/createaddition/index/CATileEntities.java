@@ -1,7 +1,6 @@
 package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.blocks.alternator.AlternatorTileEntity;
-import com.mrh0.createaddition.blocks.charger.ChargerTileEntity;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.blocks.crude_burner.CrudeBurnerTileEntity;

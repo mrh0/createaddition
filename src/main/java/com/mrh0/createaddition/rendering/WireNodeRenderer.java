@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LightLayer;
@@ -20,8 +21,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {//extends BlockEntityRenderer<T> {
 
-	public WireNodeRenderer(BlockEntityRenderDispatcher rendererDispatcherIn) {
-		//super(rendererDispatcherIn);
+	public WireNodeRenderer(BlockEntityRendererProvider.Context context) {
+		super();
 	}
 
 	private static final float HANG = 0.5f;

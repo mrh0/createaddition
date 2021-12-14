@@ -256,7 +256,7 @@ public interface IWireNode {
 			if(getNodeType(i) == null)
 				continue;
 			int n = getNodeType(i).getIndex();
-			ItemStack spools = Util.findStack(CAItems.SPOOL.get().getItem(), player.getInventory());
+			ItemStack spools = Util.findStack(CAItems.SPOOL.get().asItem(), player.getInventory());
 			if(spools.getCount() > 0) {
 				if(stacks1.get(n).isEmpty())
 					stacks1.set(n, getNodeType(i).getSourceDrop());
