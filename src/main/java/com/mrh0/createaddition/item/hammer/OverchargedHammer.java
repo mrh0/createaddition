@@ -53,7 +53,7 @@ public class OverchargedHammer extends Item implements Vanishable {
 
 	@Override
 	public UseAnim getUseAnimation(ItemStack p_41452_) {
-		return UseAnim.SPEAR;;
+		return UseAnim.SPEAR;
 	}
 
 	@Override

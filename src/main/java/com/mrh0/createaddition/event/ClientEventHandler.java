@@ -1,23 +1,15 @@
 package com.mrh0.createaddition.event;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.item.WireSpool;
 import com.mrh0.createaddition.rendering.WireNodeRenderer;
 
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -27,6 +19,8 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = CreateAddition.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientEventHandler {
+	
+	// Old Wiring renderer
 	/*
 	@SubscribeEvent
 	public static void playerRendererEvent(RenderWorldLastEvent evt) {
@@ -82,9 +76,10 @@ public class ClientEventHandler {
 	}
 	*/
 	
+	// Fluid Fog
 	@SubscribeEvent
 	public static void getFogDensity(EntityViewRenderEvent.FogDensity event) {
-		ActiveRenderInfo info = event.getInfo();
+		Camera info = event.getInfo();
 		FluidState fluidState = info.getFluidInCamera();
 		if (fluidState.isEmpty())
 			return;
@@ -99,7 +94,7 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	public static void getFogColor(EntityViewRenderEvent.FogColors event) {
-		ActiveRenderInfo info = event.getInfo();
+		Camera info = event.getInfo();
 		FluidState fluidState = info.getFluidInCamera();
 		if (fluidState.isEmpty())
 			return;

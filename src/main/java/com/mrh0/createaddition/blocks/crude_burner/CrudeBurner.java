@@ -9,22 +9,21 @@ import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineModifiers;
 import com.simibubi.create.foundation.block.ITE;
 
-import net.minecraft.block.AbstractFurnaceBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -39,17 +38,17 @@ public class CrudeBurner extends AbstractFurnaceBlock implements ITE<CrudeBurner
 		super(props);
 		
 	}
-
+	
 	@Override
-	public TileEntity newBlockEntity(IBlockReader world) {
-		return CATileEntities.CRUDE_BURNER.create();
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return CATileEntities.CRUDE_BURNER.create(pos, state);
 	}
 
 	@Override
-	protected void openContainer(World world, BlockPos pos, PlayerEntity player) {
+	protected void openContainer(Level world, BlockPos pos, Player player) {
 		if(world.isClientSide())
 			return;
-		TileEntity tileentity = world.getBlockEntity(pos);
+		BlockEntity tileentity = world.getBlockEntity(pos);
 		if (tileentity instanceof CrudeBurnerTileEntity) {
 			CrudeBurnerTileEntity cbte = (CrudeBurnerTileEntity) tileentity;
 			ItemStack held = player.getMainHandItem();
@@ -74,7 +73,7 @@ public class CrudeBurner extends AbstractFurnaceBlock implements ITE<CrudeBurner
 				return;
 			tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), FluidAction.EXECUTE);
 			if(!player.isCreative())
-				player.setItemInHand(Hand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
+				player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
 			player.playSound(SoundEvents.BUCKET_EMPTY, 1f, 1f);
 			//FluidStack.EMPTY.getFluid().getFilledBucket();
 			/*for(int i = 0; i < handler.getTanks(); i++) {
@@ -93,13 +92,13 @@ public class CrudeBurner extends AbstractFurnaceBlock implements ITE<CrudeBurner
 		}
 	}
 
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
 	      if (state.getValue(LIT)) {
 	         double d0 = (double)pos.getX() + 0.5D;
 	         double d1 = (double)pos.getY();
 	         double d2 = (double)pos.getZ() + 0.5D;
 	         if (rand.nextDouble() < 0.1D) {
-	            world.playLocalSound(d0, d1, d2, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+	            world.playLocalSound(d0, d1, d2, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 	         }
 
 	         Direction direction = state.getValue(FACING);
@@ -116,5 +115,10 @@ public class CrudeBurner extends AbstractFurnaceBlock implements ITE<CrudeBurner
 	@Override
 	public Class<CrudeBurnerTileEntity> getTileEntityClass() {
 		return CrudeBurnerTileEntity.class;
+	}
+
+	@Override
+	public BlockEntityType<? extends CrudeBurnerTileEntity> getTileEntityType() {
+		return CATileEntities.CRUDE_BURNER.get();
 	}
 }

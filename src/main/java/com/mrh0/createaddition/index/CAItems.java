@@ -24,6 +24,7 @@ import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.repack.registrate.util.entry.ItemEntry;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 
 
 public class CAItems {
@@ -40,7 +41,7 @@ public class CAItems {
 			.register();
 	
 	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER = REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new)
-			.transform(CreateRegistrate.customRenderedItem(() -> SandPaperItemRenderer::new))
+			//.transform(CreateRegistrate.customRenderedItem(() -> SandPaperItemRenderer::new))
 			.onRegister(s -> TooltipHelper.referTo(s, AllItems.SAND_PAPER))
 			.register();
 	
@@ -69,7 +70,7 @@ public class CAItems {
 
 	public static final ItemEntry<OverchargedHammer> OVERCHARGED_HAMMER =
 			REGISTRATE.item("overcharged_hammer", OverchargedHammer::new)
-			.transform(CreateRegistrate.customRenderedItem(() -> HammerRenderer::new))
+			//.transform(CreateRegistrate.customRenderedItem(() -> HammerRenderer::new))
 			.model(AssetLookup.itemModelWithPartials())
 			//.properties(p -> p.addToolType(ToolType.PICKAXE, 4))
 			.properties(p -> p.fireResistant())

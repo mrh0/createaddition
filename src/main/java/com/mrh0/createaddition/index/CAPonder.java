@@ -4,8 +4,9 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.ponder.PonderScenes;
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
-import com.simibubi.create.foundation.ponder.content.PonderTag;
-import net.minecraft.util.ResourceLocation;
+import com.simibubi.create.foundation.ponder.PonderTag;
+
+import net.minecraft.resources.ResourceLocation;
 
 public class CAPonder {
 	public static final PonderTag ELECTRIC = new PonderTag(new ResourceLocation(CreateAddition.MODID, "electric")).item(CABlocks.ELECTRIC_MOTOR.get(), true, false)

@@ -1,5 +1,6 @@
 package com.mrh0.createaddition;
 
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
@@ -114,7 +115,7 @@ public class CreateAddition {
         
         RenderType cutout = RenderType.cutoutMipped();       
 		
-        RenderTypeLookup.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -135,8 +136,8 @@ public class CreateAddition {
         Network.registerMessage(i++, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
         Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
         
-        FurnaceEngineModifiers.INSTANCE.register(CABlocks.FURNACE_BURNER.delegate, (float)(double)Config.FURNACE_BURNER_ENGINE_SPEED.get());
-        FurnaceEngineModifiers.INSTANCE.register(CABlocks.CRUDE_BURNER.delegate, (float)(double)Config.CRUDE_BURNER_ENGINE_SPEED.get());
+        FurnaceEngineModifiers.INSTANCE.register(CABlocks.FURNACE_BURNER.get().delegate, (float)(double)Config.FURNACE_BURNER_ENGINE_SPEED.get());
+        FurnaceEngineModifiers.INSTANCE.register(CABlocks.CRUDE_BURNER.get().delegate, (float)(double)Config.CRUDE_BURNER_ENGINE_SPEED.get());
         
     	System.out.println("Create Crafts & Addition Initialized!");
     }

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import com.mojang.math.Vector3d;
+import com.mojang.math.Vector3f;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
@@ -23,6 +25,10 @@ import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWireNode, IHaveGoggleInformation, IComparatorOverride, IObserveTileEntity {
@@ -39,7 +45,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	
 	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
-	public AccumulatorTileEntity(TileEntityType<?> tileEntityTypeIn) {
+	public AccumulatorTileEntity(BlockEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn, CAPACITY, MAX_IN, MAX_OUT);
 		
 		setLazyTickRate(20);
@@ -118,7 +124,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 	
 	@Override
-	public int getNodeFromPos(Vector3d vec) {
+	public int getNodeFromPos(Vec3 vec) {
 		Direction dir = level.getBlockState(worldPosition).getValue(AccumulatorBlock.FACING);
 		boolean upper = true;
 		vec = vec.subtract(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());

@@ -82,11 +82,11 @@ public class CATileEntities {
 			.validBlocks(CABlocks.CRUDE_BURNER)
 			.register();
 	
-	public static final TileEntityEntry<ChargerTileEntity> CHARGER = CreateAddition.registrate()
+	/*public static final TileEntityEntry<ChargerTileEntity> CHARGER = CreateAddition.registrate()
 			.tileEntity("charger", ChargerTileEntity::new)
 			.validBlocks(CABlocks.CHARGER)
 			.renderer(() -> ChargerRenderer::new)
-			.register();
+			.register();*/
 	
 	public static final TileEntityEntry<TeslaCoilTileEntity> TESLA_COIL = CreateAddition.registrate()
 			.tileEntity("tesla_coil", TeslaCoilTileEntity::new)

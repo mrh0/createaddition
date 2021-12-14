@@ -5,7 +5,6 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.cake.Cake;
-import com.mrh0.createaddition.blocks.charger.Charger;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.crude_burner.CrudeBurner;
@@ -17,7 +16,6 @@ import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
-import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.Create;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.AllSections;
@@ -28,6 +26,9 @@ import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.repack.registrate.util.entry.BlockEntry;
+
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
 
 
 public class CABlocks {
@@ -101,22 +102,22 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
-	public static final BlockEntry<Charger> CHARGER = REGISTRATE.block("charger",  Charger::new)
+	/*public static final BlockEntry<Charger> CHARGER = REGISTRATE.block("charger",  Charger::new)
 			.initialProperties(SharedProperties::stone)
 			//.item()
 			//.transform(customItemModel())
-			.register();
+			.register();*/
 	
 	public static final BlockEntry<Cake> CHOCOLATE_CAKE = REGISTRATE.block("chocolate_cake",  Cake::new)
 			.initialProperties(Material.CAKE)
-			.properties(props -> props.sound(SoundType.WOOL).harvestLevel(0).strength(0.5f))
+			.properties(props -> props.sound(SoundType.WOOL).strength(0.5f))
 			.item()
 			.transform(customItemModel())
 			.register();
 	
 	public static final BlockEntry<Cake> HONEY_CAKE = REGISTRATE.block("honey_cake",  Cake::new)
 			.initialProperties(Material.CAKE)
-			.properties(props -> props.sound(SoundType.WOOL).harvestLevel(0).strength(0.5f))
+			.properties(props -> props.sound(SoundType.WOOL).strength(0.5f))
 			.item()
 			.transform(customItemModel())
 			.register();
@@ -137,7 +138,7 @@ public class CABlocks {
 		//Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
 		//Create.registrate().addToSection(ALTERNATOR, AllSections.KINETICS);
 		//Create.registrate().addToSection(ROLLING_MILL, AllSections.KINETICS);
-		Create.registrate().addToSection(CHARGER, AllSections.KINETICS);
+		//Create.registrate().addToSection(CHARGER, AllSections.KINETICS);
 		Create.registrate().addToSection(TESLA_COIL, AllSections.KINETICS);
 		Create.registrate().addToSection(FURNACE_BURNER, AllSections.KINETICS);
 		Create.registrate().addToSection(CRUDE_BURNER, AllSections.KINETICS);

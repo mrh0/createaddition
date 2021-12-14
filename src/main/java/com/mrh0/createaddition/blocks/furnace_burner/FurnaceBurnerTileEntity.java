@@ -1,39 +1,41 @@
 package com.mrh0.createaddition.blocks.furnace_burner;
 
-import net.minecraft.block.AbstractFurnaceBlock;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class FurnaceBurnerTileEntity extends AbstractFurnaceTileEntity {
+public class FurnaceBurnerTileEntity extends AbstractFurnaceBlockEntity {
 
 	public static final int FUEL_SLOT = 1;
 	private static final int[] SLOTS = new int[] { FUEL_SLOT };
 
-	public FurnaceBurnerTileEntity(TileEntityType<?> type) {
-		super(type, IRecipeType.SMELTING);
+	public FurnaceBurnerTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state, RecipeType.SMELTING);
 	}
 
 	@Override
-	protected ITextComponent getDefaultName() {
-		return new TranslationTextComponent("");
+	protected Component getDefaultName() {
+		return new TranslatableComponent("");
 	}
 
 	@Override
-	protected Container createMenu(int p_213906_1_, PlayerInventory p_213906_2_) {
+	protected AbstractContainerMenu createMenu(int p_213906_1_, Inventory p_213906_2_) {
 		return null;// new FurnaceContainer(p_213906_1_, p_213906_2_, this, this.furnaceData);
 	}
 
 	@Override
-	protected boolean canBurn(IRecipe<?> p_214008_1_) {
+	protected boolean canBurn(Recipe<?> p_214008_1_) {
 		return true;
 	}
 
@@ -65,7 +67,7 @@ public class FurnaceBurnerTileEntity extends AbstractFurnaceTileEntity {
 
 			if (flag != this.burning()) {
 				flag1 = true;
-				this.level.setBlock(this.worldPosition, this.level.getBlockState(this.worldPosition).setValue(AbstractFurnaceBlock.LIT,
+				this.level.setBlock(this.worldPosition, this.getLevel().getBlockState(this.worldPosition).setValue(AbstractFurnaceBlock.LIT,
 						Boolean.valueOf(this.burning())), 3);
 			}
 

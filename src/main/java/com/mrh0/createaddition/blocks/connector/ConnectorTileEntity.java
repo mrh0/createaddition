@@ -2,6 +2,8 @@ package com.mrh0.createaddition.blocks.connector;
 
 import java.util.List;
 
+import com.mojang.math.Vector3d;
+import com.mojang.math.Vector3f;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
@@ -14,18 +16,17 @@ import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation {
@@ -35,17 +36,17 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	private WireType[] connectionTypes;
 	public IWireNode[] nodeCache;
 	
-	public static Vector3f OFFSET_DOWN = new Vector3f(0f, -3f/16f, 0f);
-	public static Vector3f OFFSET_UP = new Vector3f(0f, 3f/16f, 0f);
-	public static Vector3f OFFSET_NORTH = new Vector3f(0f, 0f, -3f/16f);
-	public static Vector3f OFFSET_WEST = new Vector3f(-3f/16f, 0f, 0f);
-	public static Vector3f OFFSET_SOUTH = new Vector3f(0f, 0f, 3f/16f);
-	public static Vector3f OFFSET_EAST = new Vector3f(3f/16f, 0f, 0f);
+	public static Vec3 OFFSET_DOWN = new Vec3(0f, -3f/16f, 0f);
+	public static Vec3 OFFSET_UP = new Vec3(0f, 3f/16f, 0f);
+	public static Vec3 OFFSET_NORTH = new Vec3(0f, 0f, -3f/16f);
+	public static Vec3 OFFSET_WEST = new Vec3(-3f/16f, 0f, 0f);
+	public static Vec3 OFFSET_SOUTH = new Vec3(0f, 0f, 3f/16f);
+	public static Vec3 OFFSET_EAST = new Vec3(3f/16f, 0f, 0f);
 	
 	public static final int CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
 	
-	public ConnectorTileEntity(TileEntityType<?> tileEntityTypeIn) {
-		super(tileEntityTypeIn, CAPACITY, MAX_IN, MAX_OUT);
+	public ConnectorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
 		//setLazyTickRate(20);
 		
 		connectionPos = new BlockPos[getNodeCount()];
@@ -69,7 +70,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 
 	@Override
-	public Vector3f getNodeOffset(int node) {
+	public Vec3 getNodeOffset(int node) {
 		switch(getBlockState().getValue(ConnectorBlock.FACING)) {
 			case DOWN:
 				return OFFSET_DOWN;
@@ -103,7 +104,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 	
 	@Override
-	public int getNodeFromPos(Vector3d vector3d) {
+	public int getNodeFromPos(Vec3 vector3d) {
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(hasConnection(i))
 				continue;
@@ -141,15 +142,15 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundNBT nbt, boolean clientPacket) {
-		super.fromTag(state, nbt, clientPacket);
+	public void fromTag(CompoundTag nbt, boolean clientPacket) {
+		super.fromTag(nbt, clientPacket);
 		for(int i = 0; i < getNodeCount(); i++)
 			if(IWireNode.hasNode(nbt, i))
 				readNode(nbt, i);
 	}
 	
 	@Override
-	public void write(CompoundNBT nbt, boolean clientPacket) {
+	public void write(CompoundTag nbt, boolean clientPacket) {
 		super.write(nbt, clientPacket);
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
@@ -284,22 +285,22 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 
 	@Override
-	public void onObserved(ServerPlayerEntity player, ObservePacket pack) {
+	public void onObserved(ServerPlayer player, ObservePacket pack) {
 		if(isNetworkValid(0))
 			EnergyNetworkPacket.send(worldPosition, getNetwork(0).getPulled(), getNetwork(0).getPushed(), player);
 	}
 	
 	@Override
-	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
 		
-		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.connector.info").withStyle(TextFormatting.WHITE)));
+		tooltip.add(new TextComponent(spacing)
+				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.connector.info").withStyle(ChatFormatting.WHITE)));
 		
-		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(" ")
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(TextFormatting.AQUA));
+		tooltip.add(new TextComponent(spacing)
+				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(new TextComponent(spacing).append(" ")
+				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		
 		/*tooltip.add(new StringTextComponent(spacing)
 				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.demand").formatted(TextFormatting.GRAY)));

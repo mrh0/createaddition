@@ -16,6 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 
 public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {//extends BlockEntityRenderer<T> {
 
@@ -32,7 +33,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 
 		for (int i = 0; i < te.getNodeCount(); i++) {
 			if (te.getNodeType(i) != null) {
-				Vector3f d1 = te.getNodeOffset(i);
+				Vec3 d1 = te.getNodeOffset(i);
 				float ox1 = ((float) d1.x());
 				float oy1 = ((float) d1.y());
 				float oz1 = ((float) d1.z());
@@ -41,7 +42,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 				if (wn == null)
 					return;
 
-				Vector3f d2 = wn.getNodeOffset(te.getOtherNodeIndex(i)); // get other
+				Vec3 d2 = wn.getNodeOffset(te.getOtherNodeIndex(i)); // get other
 				float ox2 = ((float) d2.x());
 				float oy2 = ((float) d2.y());
 				float oz2 = ((float) d2.z());

@@ -1,5 +1,5 @@
 package com.mrh0.createaddition.blocks.charger;
-
+/*
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.util.IComparatorOverride;
@@ -129,9 +129,10 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 		super.onRemove(state, worldIn, pos, newState, isMoving);
 	}
 	
-	
+	*/
 	// Depot
-	/*@Override
+	/*
+	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 		BlockRayTraceResult ray) {
 		if (ray.getDirection() != Direction.UP)
@@ -214,7 +215,7 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 	protected static ChargerBehaviour get(IBlockReader worldIn, BlockPos pos) {
 		return TileEntityBehaviour.get(worldIn, pos, ChargerBehaviour.TYPE);
 	}*/
-	
+	/*
 	
 	@Override
 	public boolean hasAnalogOutputSignal(BlockState state) {
@@ -225,4 +226,4 @@ public class Charger extends Block implements ITE<ChargerTileEntity>, IWrenchabl
 	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
 		return IComparatorOverride.getComparetorOverride(worldIn, pos);
 	}
-}
+}*/

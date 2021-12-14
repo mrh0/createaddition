@@ -3,9 +3,11 @@ package com.mrh0.createaddition.blocks.creative_energy;
 import com.mrh0.createaddition.energy.CreativeEnergyStorage;
 import com.simibubi.create.content.logistics.block.inventories.CrateTileEntity;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -16,8 +18,8 @@ public class CreativeEnergyTileEntity extends CrateTileEntity {
 	protected final CreativeEnergyStorage energy;
 	private LazyOptional<IEnergyStorage> lazyEnergy;
 	
-	public CreativeEnergyTileEntity(TileEntityType<?> tileEntityTypeIn) {
-		super(tileEntityTypeIn);
+	public CreativeEnergyTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+		super(tileEntityTypeIn, pos, state);
 		energy = new CreativeEnergyStorage();
 		lazyEnergy = LazyOptional.of(() -> energy);
 	}
@@ -62,7 +64,7 @@ public class CreativeEnergyTileEntity extends CrateTileEntity {
 		if(level.isClientSide())
 			return;
 		for(Direction side : Direction.values()) {
-			TileEntity te = level.getBlockEntity(worldPosition.relative(side));
+			BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
 			if(te == null) {
 				setCache(side, LazyOptional.empty());
 				continue;

@@ -1,26 +1,25 @@
 package com.mrh0.createaddition.entities.overcharged_hammer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+
+import com.jozufozu.flywheel.core.model.ModelPart;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 
 public class OverchargedHammerModel extends EntityModel<Entity> {
-	private final ModelRenderer bone;
+	private final ModelPart bone;
 	private final ResourceLocation tex = new ResourceLocation("createaddition", "textures/entity/overcharged_hammer.png");
 
 	public OverchargedHammerModel() {
 		texWidth = 64;
 		texHeight = 64;
 
-		bone = new ModelRenderer(this);
+		bone = new ModelPart(this);
 		bone.setPos(0.0F, 0.0F, 0.0F);
 		bone.texOffs(40, 8).addBox(-1.0F, 8.0F, -1.0F, 2.0F, 10.0F, 2.0F, 0.0F, false);
 		bone.texOffs(0, 0).addBox(-4.0F, 0.0F, -6.0F, 8.0F, 8.0F, 12.0F, 0.0F, false);
@@ -33,12 +32,12 @@ public class OverchargedHammerModel extends EntityModel<Entity> {
 	}
 
 	@Override
-	public void renderToBuffer(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		IVertexBuilder ivertexbuilder = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(tex));
-		bone.render(matrixStack, ivertexbuilder, packedLight, packedOverlay);
+	public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		VertexConsumer ivertexbuilder = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(tex));
+		bone.buffer(ivertexbuilder);//.render(matrixStack, ivertexbuilder, packedLight, packedOverlay);
 	}
 
-	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+	public void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {
 		modelRenderer.xRot = x;
 		modelRenderer.yRot = y;
 		modelRenderer.zRot = z;

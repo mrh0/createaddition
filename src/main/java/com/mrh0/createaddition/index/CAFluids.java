@@ -5,10 +5,10 @@ import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.util.entry.RegistryEntry;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockDisplayReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
@@ -19,7 +19,7 @@ public class CAFluids {
 			.itemGroup(() -> ModGroup.MAIN);
 	
 	public static RegistryEntry<ForgeFlowingFluid.Flowing> SEED_OIL =
-		REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition:fluid/seed_oil_still"), new ResourceLocation("createaddition:fluid/seed_oil_flow"), NoColorFluidAttributes::new)
+		REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition:fluid/seed_oil_still"), new ResourceLocation("createaddition:fluid/seed_oil_flow"), FluidAttributes::new)
 			.attributes(b -> b.viscosity(1000)
 				.density(1400))
 			.properties(p -> p.levelDecreasePerBlock(2)
@@ -37,7 +37,7 @@ public class CAFluids {
 		}
 
 		@Override
-		public int getColor(IBlockDisplayReader world, BlockPos pos) {
+		public int getColor(BlockAndTintGetter world, BlockPos pos) {
 			return 0x00ffffff;
 		}
 	}

@@ -12,18 +12,20 @@ import com.mrh0.createaddition.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 
 public interface IWireNode {
 	
 	public static final int MAX_LENGTH = Config.CONNECTOR_MAX_LENGTH.get();
 	
-	public Vector3f getNodeOffset(int node);
+	public Vec3 getNodeOffset(int node);
 	
-	public default int getNodeFromPos(Vector3d vector3d) {
+	public default int getNodeFromPos(Vec3 vector3d) {
 		return 0;
 	}
 	
@@ -227,7 +229,7 @@ public interface IWireNode {
 	}
 	
 	public static void dropWire(Level world, BlockPos pos, ItemStack stack) {
-		InventoryHelper.dropContents(world, pos, NonNullList.of(ItemStack.EMPTY, stack));
+		Containers.dropContents(world, pos, NonNullList.of(ItemStack.EMPTY, stack));
 	}
 	
 	public default void dropWires(Level world) {
