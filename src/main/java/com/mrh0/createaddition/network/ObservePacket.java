@@ -4,13 +4,12 @@ import java.util.function.Supplier;
 
 import com.mrh0.createaddition.CreateAddition;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class ObservePacket {
 	private BlockPos pos;
@@ -21,12 +20,12 @@ public class ObservePacket {
 		this.node = node;
 	}
 	
-	public static void encode(ObservePacket packet, PacketBuffer tag) {
+	public static void encode(ObservePacket packet, FriendlyByteBuf tag) {
         tag.writeBlockPos(packet.pos);
         tag.writeInt(packet.node);
     }
 	
-	public static ObservePacket decode(PacketBuffer buf) {
+	public static ObservePacket decode(FriendlyByteBuf buf) {
 		ObservePacket scp = new ObservePacket(buf.readBlockPos(), buf.readInt());
         return scp;
     }
@@ -34,7 +33,7 @@ public class ObservePacket {
 	public static void handle(ObservePacket pkt, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			try {
-				ServerPlayerEntity player = ctx.get().getSender();
+				ServerPlayer player = ctx.get().getSender();
 				
 				if (player != null) {
 					sendUpdate(pkt, player);
@@ -48,13 +47,13 @@ public class ObservePacket {
 		ctx.get().setPacketHandled(true);
 	}
 	
-	private static void sendUpdate(ObservePacket pkt, ServerPlayerEntity player) {
-		TileEntity te = (TileEntity) player.level.getBlockEntity(pkt.pos);
+	private static void sendUpdate(ObservePacket pkt, ServerPlayer player) {
+		BlockEntity te = (BlockEntity) player.level.getBlockEntity(pkt.pos);
         if (te != null) {
         	if(te instanceof IObserveTileEntity) {
 	        	IObserveTileEntity ote = (IObserveTileEntity) te;
 	        	ote.onObserved(player, pkt);
-	            SUpdateTileEntityPacket supdatetileentitypacket = te.getUpdatePacket();
+	            ClientboundBlockEntityDataPacket supdatetileentitypacket = te.getUpdatePacket();
 	            if (supdatetileentitypacket != null)
 	                player.connection.send(supdatetileentitypacket);
         	}

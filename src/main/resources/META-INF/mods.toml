@@ -44,7 +44,7 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[35,)" #mandatory
+    versionRange="[37,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -52,13 +52,13 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.16.5_v0.3.2f,)"
+    versionRange="[mc1.17.1_v0.4,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
     modId="flywheel"
     mandatory=true
-    versionRange="[1.16-0.2.4,1.16-0.3)"
+    versionRange="[1.17-0.3.0,1.17-0.3.1)"
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.createaddition]]
@@ -83,6 +83,6 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.16.5,1.17)"
+    versionRange="[1.17.1,1.18)"
     ordering="NONE"
     side="BOTH"

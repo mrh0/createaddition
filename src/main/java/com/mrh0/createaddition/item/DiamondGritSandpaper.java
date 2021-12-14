@@ -3,9 +3,8 @@ package com.mrh0.createaddition.item;
 import com.mrh0.createaddition.config.Config;
 import com.simibubi.create.content.curiosities.tools.SandPaperItem;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
-import net.minecraft.item.Item.Properties;
 
 public class DiamondGritSandpaper extends SandPaperItem {
 

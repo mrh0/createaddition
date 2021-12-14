@@ -2,11 +2,12 @@ package com.mrh0.createaddition.blocks.accumulator;
 
 import com.mrh0.createaddition.rendering.WireNodeRenderer;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+
 
 public class AccumulatorRenderer extends WireNodeRenderer<AccumulatorTileEntity> {
 
-	public AccumulatorRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
+	public AccumulatorRenderer(BlockEntityRenderDispatcher rendererDispatcherIn) {
 		super(rendererDispatcherIn);
 	}
 }

@@ -29,8 +29,6 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.repack.registrate.util.entry.BlockEntry;
 
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 
 public class CABlocks {
 	

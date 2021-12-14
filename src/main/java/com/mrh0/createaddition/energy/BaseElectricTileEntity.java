@@ -5,12 +5,12 @@ import java.util.List;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -24,8 +24,8 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	private boolean firstTickState = true;
 	protected final int CAPACITY, MAX_IN, MAX_OUT;
 	
-	public BaseElectricTileEntity(TileEntityType<?> tileEntityTypeIn, int CAPACITY, int MAX_IN, int MAX_OUT) {
-		super(tileEntityTypeIn);
+	public BaseElectricTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state, int CAPACITY, int MAX_IN, int MAX_OUT) {
+		super(tileEntityTypeIn, pos, state);
 		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		this.CAPACITY = CAPACITY;
 		this.MAX_IN = MAX_IN;
@@ -48,14 +48,15 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 
 	public abstract boolean isEnergyOutput(Direction side);
 	
+	
 	@Override
-	public void fromTag(BlockState state, CompoundNBT compound, boolean clientPacket) {
-		super.fromTag(state, compound, clientPacket);
+	protected void fromTag(CompoundTag compound, boolean arg1) {
+		super.fromTag(compound, arg1);
 		energy.read(compound);
 	}
 	
 	@Override
-	public void write(CompoundNBT compound, boolean clientPacket) {
+	public void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
 		energy.write(compound);
 	}
@@ -91,7 +92,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		if(level.isClientSide())
 			return;
 		for(Direction side : Direction.values()) {
-			TileEntity te = level.getBlockEntity(worldPosition.relative(side));
+			BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
 			if(te == null) {
 				setCache(side, LazyOptional.empty());
 				continue;

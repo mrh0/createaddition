@@ -1,32 +1,32 @@
 package com.mrh0.createaddition.rendering;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.LightType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T> {
+public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {//extends BlockEntityRenderer<T> {
 
-	public WireNodeRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
-		super(rendererDispatcherIn);
+	public WireNodeRenderer(BlockEntityRenderDispatcher rendererDispatcherIn) {
+		//super(rendererDispatcherIn);
 	}
 
 	private static final float HANG = 0.5f;
 
 	@Override
-	public void render(T tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
+	public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
 			int combinedLightIn, int combindOverlayIn) {
 		IWireNode te = (IWireNode) tileEntityIn;
 
@@ -104,7 +104,7 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 		return (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
 	}
 
-	public static void wireRender(TileEntity tileEntityIn, BlockPos other, MatrixStack matrix, IRenderTypeBuffer buffer, float x, float y, float z,
+	public static void wireRender(BlockEntity tileEntityIn, BlockPos other, PoseStack matrix, MultiBufferSource buffer, float x, float y, float z,
 			WireType type, float dis) {
 		//matrix.pushPose();
 
@@ -113,36 +113,36 @@ public class WireNodeRenderer<T extends TileEntity> extends TileEntityRenderer<T
 		// float f = (float) 1;
 		// float f1 = (float) 1;
 		// float f2 = (float) 1;
-		IVertexBuilder ivertexbuilder = buffer.getBuffer(RenderType.leash());
+		VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.leash());
 		Matrix4f matrix4f = matrix.last().pose();
-		float f = MathHelper.fastInvSqrt(x * x + z * z) * 0.025F / 2.0F;
+		float f = Mth.fastInvSqrt(x * x + z * z) * 0.025F / 2.0F;
 		float o1 = z * f;
 		float o2 = x * f;
 		BlockPos blockpos1 = tileEntityIn.getBlockPos();//new BlockPos(tileEntityIn.getPos());
 		BlockPos blockpos2 = other;//new BlockPos(blockpos1.getX() + x, blockpos1.getY() + y, blockpos1.getZ() + z);
 		//System.out.println("Pos:" + blockpos1 + ":" + blockpos2);
-		int i = tileEntityIn.getLevel().getBrightness(LightType.BLOCK, blockpos1);
-		int j = tileEntityIn.getLevel().getBrightness(LightType.BLOCK, blockpos2);
-		int k = tileEntityIn.getLevel().getBrightness(LightType.SKY, blockpos1);
-		int l = tileEntityIn.getLevel().getBrightness(LightType.SKY, blockpos2);
+		int i = tileEntityIn.getLevel().getBrightness(LightLayer.BLOCK, blockpos1);
+		int j = tileEntityIn.getLevel().getBrightness(LightLayer.BLOCK, blockpos2);
+		int k = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos1);
+		int l = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos2);
 		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.025F, o1, o2, type, dis);
 		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.0F, o1, o2, type, dis);
 		//matrix.popPose();
 	}
 
-	public static void wirePart(IVertexBuilder vertBuilder, Matrix4f matrix, float x, float y, float z, int l1, int l2,
+	public static void wirePart(VertexConsumer vertBuilder, Matrix4f matrix, float x, float y, float z, int l1, int l2,
 			int l3, int l4, float a, float b, float o1, float o2, WireType type, float dis) {
 		for (int j = 0; j < 24; ++j) {
 			float f = (float) j / 23.0F;
-			int k = (int) MathHelper.lerp(f, (float) l1, (float) l2);
-			int l = (int) MathHelper.lerp(f, (float) l3, (float) l4);
+			int k = (int) Mth.lerp(f, (float) l1, (float) l2);
+			int l = (int) Mth.lerp(f, (float) l3, (float) l4);
 			int light = LightTexture.pack(k, l);
 			wireVert(vertBuilder, matrix, light, x, y, z, a, b, 24, j, false, o1, o2, type, dis);
 			wireVert(vertBuilder, matrix, light, x, y, z, a, b, 24, j + 1, true, o1, o2, type, dis);
 		}
 	}
 
-	public static void wireVert(IVertexBuilder vertBuilder, Matrix4f matrix, int light, float x, float y, float z,
+	public static void wireVert(VertexConsumer vertBuilder, Matrix4f matrix, int light, float x, float y, float z,
 			float a, float b, int count, int index, boolean sw, float o1, float o2, WireType type, float dis) {
 		int cr = type.getRed();
 		int cg = type.getGreen();

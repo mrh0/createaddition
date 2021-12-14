@@ -1,11 +1,11 @@
 package com.mrh0.createaddition;
 
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.command.CommandSource;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.potion.Effect;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.commands.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
@@ -17,11 +17,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -80,9 +80,9 @@ public class CreateAddition {
         
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
         
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Effect.class, CreateAddition::onRegisterEffectEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(MobEffect.class, CreateAddition::onRegisterEffectEvent);
         
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, CARecipes::register);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, CARecipes::register);
         //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeType.class, CARecipes::register);
         
         // Register ourselves for server and other game events we are interested in
@@ -135,19 +135,19 @@ public class CreateAddition {
         Network.registerMessage(i++, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
         Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
         
-        FurnaceEngineModifiers.INSTANCE.register(CABlocks.FURNACE_BURNER.get().delegate, (float)(double)Config.FURNACE_BURNER_ENGINE_SPEED.get());
-        FurnaceEngineModifiers.INSTANCE.register(CABlocks.CRUDE_BURNER.get().delegate, (float)(double)Config.CRUDE_BURNER_ENGINE_SPEED.get());
+        FurnaceEngineModifiers.INSTANCE.register(CABlocks.FURNACE_BURNER.delegate, (float)(double)Config.FURNACE_BURNER_ENGINE_SPEED.get());
+        FurnaceEngineModifiers.INSTANCE.register(CABlocks.CRUDE_BURNER.delegate, (float)(double)Config.CRUDE_BURNER_ENGINE_SPEED.get());
         
     	System.out.println("Create Crafts & Addition Initialized!");
     }
     
     @SubscribeEvent
     public void onRegisterCommandEvent(RegisterCommandsEvent event) {
-    	CommandDispatcher<CommandSource> dispather = event.getDispatcher();
+    	CommandDispatcher<CommandSourceStack> dispather = event.getDispatcher();
     	CCApiCommand.register(dispather);
     }
     
-    public static void onRegisterEffectEvent(Register<Effect> event) {
+    public static void onRegisterEffectEvent(Register<MobEffect> event) {
     	CAEffects.register(event.getRegistry());
     }
     

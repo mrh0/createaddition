@@ -2,11 +2,12 @@ package com.mrh0.createaddition.item;
 
 import com.mrh0.createaddition.config.Config;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
 
 public class ChargingChromaticCompound extends Item {
 
@@ -26,13 +27,13 @@ public class ChargingChromaticCompound extends Item {
 		return true;
 	}
 	
-	public static boolean hasKey(CompoundNBT nbt){
+	public static boolean hasKey(CompoundTag nbt){
 		if(nbt == null)
 			return false;
     	return nbt.contains("charge");
     }
 	
-	public static int getEnergy(CompoundNBT nbt){
+	public static int getEnergy(CompoundTag nbt){
 		if(nbt == null)
 			return 0;
 		if(!hasKey(nbt))
@@ -49,7 +50,7 @@ public class ChargingChromaticCompound extends Item {
     }
 	
 	public static int charge(ItemStack stack, int in) {
-		CompoundNBT nbt = new CompoundNBT();
+		CompoundTag nbt = new CompoundTag();
 		int c = getEnergy(stack.getTag());
 		int n = Math.min(c + in, MAX_CHARGE);
 		nbt.putInt("charge", n);
@@ -59,8 +60,8 @@ public class ChargingChromaticCompound extends Item {
 	}
 	
 	@Override
-	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> list) {
-		if (group != ItemGroup.TAB_SEARCH)
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> list) {
+		if (group != CreativeModeTab.TAB_SEARCH)
 			return;
 		super.fillItemCategory(group, list);
 	}

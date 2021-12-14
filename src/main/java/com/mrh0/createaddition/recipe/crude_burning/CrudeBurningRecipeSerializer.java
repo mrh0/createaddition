@@ -5,10 +5,10 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.CARecipeSerializer;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 public class CrudeBurningRecipeSerializer extends CARecipeSerializer<CrudeBurningRecipe>{
 
@@ -18,18 +18,18 @@ public class CrudeBurningRecipeSerializer extends CARecipeSerializer<CrudeBurnin
 	}
 	
 	@Override
-	public CrudeBurningRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
+	public CrudeBurningRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 		int burnTime = buffer.readInt();
 		FluidIngredient fluid = FluidIngredient.read(buffer);
 		return new CrudeBurningRecipe(recipeId, fluid, burnTime);
 	}
 
 	@Override
-	public void toNetwork(PacketBuffer buffer, CrudeBurningRecipe recipe) {
+	public void toNetwork(FriendlyByteBuf buffer, CrudeBurningRecipe recipe) {
 		buffer.writeInt(recipe.burnTime);
 		recipe.fluidIngredients.write(buffer);
 	}
-
+	
 	@Override
 	public ItemStack getIcon() {
 		return CABlocks.CRUDE_BURNER.asStack();
@@ -41,6 +41,5 @@ public class CrudeBurningRecipeSerializer extends CARecipeSerializer<CrudeBurnin
 		FluidIngredient fluid = FluidIngredient.deserialize(json.get("input"));
 		return new CrudeBurningRecipe(recipeId, fluid, burnTime);
 	}
-
 }
 
