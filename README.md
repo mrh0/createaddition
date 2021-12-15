@@ -27,7 +27,7 @@ Create Crafts & Additions extends Create and acts as a bridge between electricit
 And more!
 
 # Developer
-If you are trying to setup a dev enviroment, make sure you run 'gradlew build' first before 'gradlew gen...Runs'.
+If you are trying to setup a dev enviroment, make sure you run 'gradlew build' first before gradlew gen...Runs.
 
 # License
 
