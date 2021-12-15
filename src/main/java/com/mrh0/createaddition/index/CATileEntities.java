@@ -17,7 +17,6 @@ import com.mrh0.createaddition.blocks.rolling_mill.*;
 import com.mrh0.createaddition.blocks.accumulator.*;
 import com.mrh0.createaddition.blocks.connector.*;
 import com.mrh0.createaddition.blocks.redstone_relay.*;
-import com.mrh0.createaddition.blocks.charger.*;
 import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
 import com.simibubi.create.repack.registrate.util.entry.TileEntityEntry;
 

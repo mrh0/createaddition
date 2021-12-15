@@ -169,11 +169,11 @@ public class Config {
 		CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Connector max output in FE/t (Energy transfer).")
 				.defineInRange("connector_max_output", 256, 0, Integer.MAX_VALUE);
 		
-		CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Connector internal capacity in FE.")
-				.defineInRange("connector_capacity", 512, 0, Integer.MAX_VALUE);
+		CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Connector internal input buffer in FE.")
+				.defineInRange("connector_input_capacity", 512, 0, Integer.MAX_VALUE);
 		
 		CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Max wire length in blocks.")
-				.defineInRange("connector_capacity", 12, 0, 256);
+				.defineInRange("wire_length", 12, 0, 256);
 		
 		/*COPPER_WIRE_LOSS = COMMON_BUILDER.comment("Loss per block in copper wire (Not implemented, currently no loss).")
 				.defineInRange("copper_wire_loss", 0.02d, 0d, 0.5d);

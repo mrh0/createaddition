@@ -86,10 +86,12 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceBlockEntity implements
 		return null;
 	}
 
-	@Override
-	protected boolean canBurn(Recipe<?> recipe, NonNullList<ItemStack> list, int i) {
+	/*@Override
+	public boolean canBurn(Recipe<?> recipe, NonNullList<ItemStack> list, int i) {
 		return true;
-	}
+	}*/
+	
+	
 
 	private boolean burning() {
 		return this.dataAccess.get(_litTime) > 0; //this.litTime > 0;

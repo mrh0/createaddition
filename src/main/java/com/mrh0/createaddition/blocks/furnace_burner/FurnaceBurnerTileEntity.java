@@ -38,10 +38,10 @@ public class FurnaceBurnerTileEntity extends AbstractFurnaceBlockEntity {
 		return null;// new FurnaceContainer(p_213906_1_, p_213906_2_, this, this.furnaceData);
 	}
 
-	@Override
-	private boolean canBurn(@Nullable Recipe<?> p_155006_, NonNullList<ItemStack> p_155007_, int p_155008_) {
+	/*@Override
+	public boolean canBurn(@Nullable Recipe<?> p_155006_, NonNullList<ItemStack> p_155007_, int p_155008_) {
 		return true;
-	}
+	}*/
 
 	private boolean burning() {
 		return this.dataAccess.get(_litTime) > 0;//this.litTime > 0;
