@@ -26,6 +26,9 @@ Create Crafts & Additions extends Create and acts as a bridge between electricit
 - Multimeter.
 And more!
 
+# Developer
+If you are trying to setup a dev enviroment, make sure you run 'gradlew build' first before decompiling.
+
 # License
 
 Available under MIT the license more info at: https://tldrlegal.com/license/mit-license
