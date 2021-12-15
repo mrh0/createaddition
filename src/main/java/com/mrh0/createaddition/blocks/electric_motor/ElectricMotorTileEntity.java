@@ -11,8 +11,6 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.item.Multimeter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
-import com.simibubi.create.foundation.config.ConfigBase;
-import com.simibubi.create.foundation.config.ui.ConfigHelper.ConfigChange;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
@@ -41,7 +39,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	private LazyOptional<ElectricMotorPeripheral> lazyPeripheral = null;
 	
 	private boolean cc_update_rpm = false;
-	private int cc_new_rpm = 0;
+	private int cc_new_rpm = 32;
 	
 	private static final Integer 
 		RPM_RANGE = Config.ELECTRIC_MOTOR_RPM_RANGE.get(),
@@ -76,7 +74,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		generatedSpeed.value = DEFAULT_SPEED;
 		generatedSpeed.scrollableValue = DEFAULT_SPEED;
 		generatedSpeed.withUnit(i -> Lang.translate("generic.unit.rpm"));
-		generatedSpeed.withCallback(i -> this.updateGeneratedRotation());
+		generatedSpeed.withCallback(i -> this.updateGeneratedRotation(i));
 		generatedSpeed.withStepFunction(ElectricMotorTileEntity::step);
 		behaviours.add(generatedSpeed);
 	}
@@ -113,6 +111,11 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 				.withStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").withStyle(TextFormatting.DARK_GRAY)));
 		added = true;
 		return added;
+	}
+	
+	public void updateGeneratedRotation(int i) {
+		super.updateGeneratedRotation();
+		cc_new_rpm = i;
 	}
 
 	@Override
