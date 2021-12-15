@@ -48,7 +48,7 @@ minecraft {
     // Simply re-run your setup task after changing the mappings to update your workspace.
     mappings channel: 'official', version: '1.17.1'
 
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -201,7 +201,7 @@ dependencies {
 	//runtimeOnly fg.deobf("curse.maven:mantle-74924:3412365")
 	
 	//runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3203659")
-	//annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 	
 
     // For more info...

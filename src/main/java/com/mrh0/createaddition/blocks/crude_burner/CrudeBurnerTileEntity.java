@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,6 +40,8 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class CrudeBurnerTileEntity extends AbstractFurnaceBlockEntity implements IHaveGoggleInformation {
 
+	static final int _litTime = 0, _litDuration = 1, _cookingProgress = 2, _cookingTotalTime = 3;
+	
 	private static final int[] SLOTS = new int[] { };
 	protected LazyOptional<IFluidHandler> fluidCapability;
 	protected FluidTank tankInventory;
@@ -89,7 +92,7 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceBlockEntity implements
 	}
 
 	private boolean burning() {
-		return this.litTime > 0;
+		return this.dataAccess.get(_litTime) > 0; //this.litTime > 0;
 	}
 	
 	public int getBurnTime(FluidStack fluid) {
@@ -119,12 +122,12 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceBlockEntity implements
 		boolean flag = this.burning();
 		boolean flag1 = false;
 		if (this.burning())
-			--this.litTime;
+			this.dataAccess.set(_litTime, this.dataAccess.get(_litTime));//--this.litTime;
 
 		if (!this.level.isClientSide()) {
 			if (!this.burning()) {
 				
-				this.litTime = getBurnTime(tankInventory.getFluid());
+				this.dataAccess.set(_litTime, getBurnTime(tankInventory.getFluid()));//this.litTime = getBurnTime(tankInventory.getFluid());
 				if (this.burning()) {
 					flag1 = true;
 					updateTimeout = 0;

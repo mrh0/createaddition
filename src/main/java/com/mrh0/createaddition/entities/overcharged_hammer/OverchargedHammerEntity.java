@@ -2,7 +2,6 @@ package com.mrh0.createaddition.entities.overcharged_hammer;
 
 import javax.annotation.Nullable;
 
-import com.mojang.math.Vector3d;
 import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.index.CAEntities;
 import com.mrh0.createaddition.index.CAItems;
@@ -35,16 +34,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class OverchargedHammerEntity extends AbstractArrow {
-	private static final EntityDataAccessor<Byte> LOYALTY_LEVEL = SynchedEntityData.defineId(OverchargedHammerEntity.class,
-			EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<Boolean> ENCHANTED = SynchedEntityData.defineId(OverchargedHammerEntity.class,
-			EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Byte> LOYALTY_LEVEL = SynchedEntityData
+			.defineId(OverchargedHammerEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Boolean> ENCHANTED = SynchedEntityData
+			.defineId(OverchargedHammerEntity.class, EntityDataSerializers.BOOLEAN);
 	private ItemStack thrownStack = new ItemStack(CAItems.OVERCHARGED_HAMMER.get());
 	private boolean dealtDamage;
 	public int returningTicks;
-	
-	public OverchargedHammerEntity(EntityType<OverchargedHammerEntity> type, Level world) {
-		super(type, world);
+
+	@SuppressWarnings("unchecked")
+	public OverchargedHammerEntity(EntityType<?> type, Level world) {
+		super((EntityType<? extends AbstractArrow>) type, world);
 	}
 
 	public OverchargedHammerEntity(Level world, LivingEntity living, ItemStack stack) {
@@ -88,7 +88,7 @@ public class OverchargedHammerEntity extends AbstractArrow {
 			double d0 = 0.05D * (double) i;
 			this.setDeltaMovement(this.getDeltaMovement().scale(0.95D).add(vector3d.normalize().scale(d0)));
 			if (this.returningTicks == 0) {
-				//this.playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
+				// this.playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
 			}
 
 			++this.returningTicks;
@@ -106,7 +106,7 @@ public class OverchargedHammerEntity extends AbstractArrow {
 	public boolean isEnchanted() {
 		return this.entityData.get(ENCHANTED);
 	}
-	
+
 	/**
 	 * Gets the EntityRayTraceResult representing the entity hit
 	 */
@@ -136,9 +136,9 @@ public class OverchargedHammerEntity extends AbstractArrow {
 			if (hitEntity instanceof LivingEntity) {
 				LivingEntity hitLivingEntity = (LivingEntity) hitEntity;
 				if (ownerEntity instanceof LivingEntity) {
-					if(hitLivingEntity instanceof Player)
+					if (hitLivingEntity instanceof Player)
 						hitLivingEntity.addEffect(new MobEffectInstance(CAEffects.SHOCKING, 20));
-					else	
+					else
 						hitLivingEntity.addEffect(new MobEffectInstance(CAEffects.SHOCKING, 40));
 					EnchantmentHelper.doPostHurtEffects(hitLivingEntity, ownerEntity);
 					EnchantmentHelper.doPostDamageEffects((LivingEntity) ownerEntity, hitLivingEntity);
@@ -156,8 +156,7 @@ public class OverchargedHammerEntity extends AbstractArrow {
 			if (this.level.canSeeSky(blockpos)) {
 				LightningBolt lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.level);
 				lightningboltentity.moveTo(Vec3.atBottomCenterOf(blockpos));
-				lightningboltentity
-						.setCause(ownerEntity instanceof ServerPlayer ? (ServerPlayer) ownerEntity : null);
+				lightningboltentity.setCause(ownerEntity instanceof ServerPlayer ? (ServerPlayer) ownerEntity : null);
 				this.level.addFreshEntity(lightningboltentity);
 				soundevent = SoundEvents.TRIDENT_THUNDER;
 				f1 = 5.0F;
@@ -225,7 +224,7 @@ public class OverchargedHammerEntity extends AbstractArrow {
 	public boolean shouldRender(double x, double y, double z) {
 		return true;
 	}
-	
+
 	public static EntityType.Builder<?> build(EntityType.Builder<?> builder) {
 		@SuppressWarnings("unchecked")
 		EntityType.Builder<OverchargedHammerEntity> entityBuilder = (EntityType.Builder<OverchargedHammerEntity>) builder;
@@ -236,7 +235,7 @@ public class OverchargedHammerEntity extends AbstractArrow {
 	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
-	
+
 	@Override
 	public boolean isOnFire() {
 		return false;

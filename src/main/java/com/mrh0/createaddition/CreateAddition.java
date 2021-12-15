@@ -110,7 +110,7 @@ public class CreateAddition {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
     	event.enqueueWork(CAPonder::register);
-        CAEntities.registerRenderers();
+        //CAEntities.registerRenderers();
         event.enqueueWork(CAItemProperties::register);
         
         RenderType cutout = RenderType.cutoutMipped();       

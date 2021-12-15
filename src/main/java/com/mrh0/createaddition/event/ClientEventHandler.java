@@ -76,8 +76,8 @@ public class ClientEventHandler {
 	}
 	*/
 	
-	// Fluid Fog
-	@SubscribeEvent
+	// Fluid Fog TODO: update!
+	/*@SubscribeEvent
 	public static void getFogDensity(EntityViewRenderEvent.FogDensity event) {
 		Camera info = event.getInfo();
 		FluidState fluidState = info.getFluidInCamera();
@@ -105,5 +105,5 @@ public class ClientEventHandler {
 			event.setGreen(74 / 256f);
 			event.setBlue(52 / 256f);
 		}
-	}
+	}*/
 }

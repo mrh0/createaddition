@@ -4,9 +4,11 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.entities.overcharged_hammer.OverchargedHammerEntity;
 import com.mrh0.createaddition.entities.overcharged_hammer.OverchargedHammerRenderer;
 import com.simibubi.create.Create;
+import com.simibubi.create.content.contraptions.components.structureMovement.glue.SuperGlueEntity;
 import com.simibubi.create.foundation.data.CreateEntityBuilder;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.repack.registrate.util.entry.EntityEntry;
 import com.simibubi.create.repack.registrate.util.entry.RegistryEntry;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -24,8 +26,12 @@ import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
 public class CAEntities {
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate();
 	
-	public static final RegistryEntry<EntityType<OverchargedHammerEntity>> OVERCHARGED_HAMMER_ENTITY = 
-			register("overcharged_hammer", OverchargedHammerEntity::new, () -> OverchargedHammerRenderer::new, MobCategory.MISC, 10, 40, false);
+	/*public static final EntityEntry<OverchargedHammerEntity> OVERCHARGED_HAMMER_ENTITY = 
+			register("overcharged_hammer", OverchargedHammerEntity::new, () -> OverchargedHammerRenderer::new, MobCategory.MISC, 10, 40, false);*/
+	
+	public static final EntityEntry<OverchargedHammerEntity> OVERCHARGED_HAMMER_ENTITY =
+			register("super_glue", OverchargedHammerEntity::new, () -> OverchargedHammerRenderer::new, MobCategory.MISC, 10,
+				40, true, true, OverchargedHammerEntity::build).register();
 	
 	/*public static <T extends Entity> RegistryEntry<EntityType<T>> register(String name, EntityFactory<T> factory, MobCategory group) {
 		return REGISTRATE.entity(name, factory, group)
@@ -50,8 +56,8 @@ public class CAEntities {
 			MobCategory group, int range, int updateFrequency, boolean sendVelocity, boolean immuneToFire,
 			NonNullConsumer<Builder<T>> propertyBuilder) {
 		String id = Lang.asId(name);
-		return (CreateEntityBuilder<T, ?>) CreateAddition.registrate()
-			.entity(id, factory, group)
+		return (CreateEntityBuilder<T, ?>) 
+			REGISTRATE.entity(id, factory, group)
 			.properties(b -> b.setTrackingRange(range)
 				.setUpdateInterval(updateFrequency)
 				.setShouldReceiveVelocityUpdates(sendVelocity))
