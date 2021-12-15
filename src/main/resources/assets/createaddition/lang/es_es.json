@@ -99,7 +99,7 @@
 	"statusbar.createaddition.wire.obstructed": "La ruta del cable está obstruida",
 	"statusbar.createaddition.wire.count": "Este conector está lleno",
 	"statusbar.createaddition.wire.removed": "Cable eliminado",
-	"statusbar.createaddition.wire.exists": "La conexión entre estos conectorees ya existe",
+	"statusbar.createaddition.wire.exists": "La conexión entre estos conectores ya existe",
 	"statusbar.createaddition.wire.no_connection": "El cable no está conectado aquí",
 	"statusbar.createaddition.wire.invalid": "Conexión inválida",
 	
