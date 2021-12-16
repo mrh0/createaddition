@@ -3,14 +3,12 @@ package com.mrh0.createaddition.rendering;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
@@ -20,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {//extends BlockEntityRenderer<T> {
-
+	
 	public WireNodeRenderer(BlockEntityRendererProvider.Context context) {
 		super();
 	}
@@ -65,23 +63,6 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 				wireRender(tileEntityIn, other, matrixStackIn, bufferIn, -tx - ox2 + ox1, -ty - oy2 + oy1, -tz - oz2 + oz1,
 						te.getNodeType(i), dis);
 
-				/*
-				 * float dis = distanceFromZero(tx, ty, tz);
-				 * 
-				 * if(ty+(oy2-oy1) < 0) { matrixStackIn.translate(tx+.5f + ox2, ty+.25f + oy2,
-				 * tz+.5f + oz2);
-				 * 
-				 * for(int k = 0; k < 16; ++k) { vert(-tx - ox2 + ox1, -ty - oy2 + oy1, -tz -
-				 * oz2 + oz1, ivertexbuilder1, matrix4f1, divf(k, 16), type, dis); vert(-tx -
-				 * ox2 + ox1, -ty - oy2 + oy1, -tz - oz2 + oz1, ivertexbuilder1, matrix4f1,
-				 * divf(k + 1, 16), type, dis);//-tx, -ty, -tz, } } else {
-				 * matrixStackIn.translate(.5f + ox1, .25f + oy1, .5f + oz1);
-				 * 
-				 * for(int k = 0; k < 16; ++k) { vert(tx - ox1 + ox2, ty - oy1 + oy2, tz - oz1 +
-				 * oz2, ivertexbuilder1, matrix4f1, divf(k, 16), type, dis); vert(tx - ox1 +
-				 * ox2, ty - oy1 + oy2, tz - oz1 + oz2, ivertexbuilder1, matrix4f1, divf(k + 1,
-				 * 16), type, dis);//tx, ty, tz, } }
-				 */
 				matrixStackIn.popPose();
 			}
 		}
@@ -90,13 +71,6 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 	private static float divf(int a, int b) {
 		return (float) a / (float) b;
 	}
-
-	/*
-	 * private static void vert(float x, float y, float z, IVertexBuilder builder,
-	 * Matrix4f matrix, float f, WireType type, float dis) { builder.vertex(matrix,
-	 * x * f, y * (f * f + f) * 0.5F + 0.25F + hang(f, dis), z *
-	 * f).color(type.getRed(), type.getGreen(), type.getBlue(), 255).endVertex(); }
-	 */
 
 	private static float hang(float f, float dis) {
 		return (float) Math.sin(-f * (float) Math.PI) * (HANG * dis / (float) IWireNode.MAX_LENGTH);
@@ -110,19 +84,14 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 			WireType type, float dis) {
 		//matrix.pushPose();
 
-		// matrix.translate(tileEntityIn.getPos().getX(), tileEntityIn.getPos().getY(),
-		// tileEntityIn.getPos().getZ());
-		// float f = (float) 1;
-		// float f1 = (float) 1;
-		// float f2 = (float) 1;
 		VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.leash());
 		Matrix4f matrix4f = matrix.last().pose();
 		float f = Mth.fastInvSqrt(x * x + z * z) * 0.025F / 2.0F;
 		float o1 = z * f;
 		float o2 = x * f;
-		BlockPos blockpos1 = tileEntityIn.getBlockPos();//new BlockPos(tileEntityIn.getPos());
-		BlockPos blockpos2 = other;//new BlockPos(blockpos1.getX() + x, blockpos1.getY() + y, blockpos1.getZ() + z);
-		//System.out.println("Pos:" + blockpos1 + ":" + blockpos2);
+		BlockPos blockpos1 = tileEntityIn.getBlockPos();
+		BlockPos blockpos2 = other;
+
 		int i = tileEntityIn.getLevel().getBrightness(LightLayer.BLOCK, blockpos1);
 		int j = tileEntityIn.getLevel().getBrightness(LightLayer.BLOCK, blockpos2);
 		int k = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos1);
@@ -188,4 +157,52 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 		
 		
 	}
+	
+	/*private void wireRender(BlockEntity tileEntityIn, BlockPos other, PoseStack stack, MultiBufferSource buffer, float x, float y, float z, WireType type, float dis) {
+		//BlockEntity tileEntityIn, BlockPos other, PoseStack matrix, MultiBufferSource buffer, float x, float y, float z, WireType type, float dis
+		
+		stack.pushPose();
+		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.leash());
+		Matrix4f matrix4f = stack.last().pose();
+		float f = Mth.fastInvSqrt(x * x + z * z) * 0.025F / 2.0F;
+		float o1 = z * f;
+		float o2 = x * f;
+		BlockPos blockpos1 = tileEntityIn.getBlockPos();//new BlockPos(tileEntityIn.getPos());
+		BlockPos blockpos2 = other;//new BlockPos(blockpos1.getX() + x, blockpos1.getY() + y, blockpos1.getZ() + z);
+		//System.out.println("Pos:" + blockpos1 + ":" + blockpos2);
+		int i = tileEntityIn.getLevel().getBrightness(LightLayer.BLOCK, blockpos1);
+		int j = tileEntityIn.getLevel().getBrightness(LightLayer.BLOCK, blockpos2);
+		int k = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos1);
+		int l = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos2);
+
+		for (int i1 = 0; i1 <= 24; ++i1) {
+			addVertexPair(vertexconsumer, matrix4f, x, y, z, i, j, k, l, 0.025F, 0.025F, o1, o2, i1, false);
+		}
+
+		for (int j1 = 24; j1 >= 0; --j1) {
+			addVertexPair(vertexconsumer, matrix4f, x, y, z, i, j, k, l, 0.025F, 0.0F, o1, o2, j1, true);
+		}
+
+		stack.popPose();
+	}
+
+	private static void addVertexPair(VertexConsumer verts, Matrix4f matrix, float p_174310_, float p_174311_,
+			float p_174312_, int p_174313_, int p_174314_, int p_174315_, int p_174316_, float p_174317_,
+			float p_174318_, float p_174319_, float p_174320_, int p_174321_, boolean p_174322_) {
+		float f = (float) p_174321_ / 24.0F;
+		int i = (int) Mth.lerp(f, (float) p_174313_, (float) p_174314_);
+		int j = (int) Mth.lerp(f, (float) p_174315_, (float) p_174316_);
+		int k = LightTexture.pack(i, j);
+		float f1 = p_174321_ % 2 == (p_174322_ ? 1 : 0) ? 0.7F : 1.0F;
+		float f2 = 0.5F * f1;
+		float f3 = 0.4F * f1;
+		float f4 = 0.3F * f1;
+		float f5 = p_174310_ * f;
+		float f6 = p_174311_ > 0.0F ? p_174311_ * f * f : p_174311_ - p_174311_ * (1.0F - f) * (1.0F - f);
+		float f7 = p_174312_ * f;
+		verts.vertex(matrix, f5 - p_174319_, f6 + p_174318_, f7 + p_174320_).color(f2, f3, f4, 1.0F).uv2(k)
+				.endVertex();
+		verts.vertex(matrix, f5 + p_174319_, f6 + p_174317_ - p_174318_, f7 - p_174320_).color(f2, f3, f4, 1.0F)
+				.uv2(k).endVertex();
+	}*/
 }

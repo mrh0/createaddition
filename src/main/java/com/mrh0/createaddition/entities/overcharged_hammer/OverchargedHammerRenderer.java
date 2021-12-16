@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -17,10 +16,11 @@ import net.minecraft.util.Mth;
 public class OverchargedHammerRenderer extends EntityRenderer<OverchargedHammerEntity> {
 	public static final ResourceLocation TEX = new ResourceLocation("createaddition:textures/entity/overcharged_hammer.png");
 	private final OverchargedHammerModel model;
+	//private ModelLayerLocation loc = new ModelLayerLocation(new ResourceLocation(CreateAddition.MODID, "overcharged_hammer"), "main");
 
 	public OverchargedHammerRenderer(Context p_174420_) {
 	      super(p_174420_);
-	      this.model = new OverchargedHammerModel(p_174420_.bakeLayer(ModelLayers.TRIDENT));
+	      this.model = new OverchargedHammerModel();//
 	   }
 
 	   public void render(OverchargedHammerEntity p_116111_, float p_116112_, float p_116113_, PoseStack p_116114_, MultiBufferSource p_116115_, int p_116116_) {

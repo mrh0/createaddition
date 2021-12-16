@@ -18,9 +18,9 @@ public class OverchargedHammerModel extends Model {
 	private final ResourceLocation tex = new ResourceLocation("createaddition",
 			"textures/entity/overcharged_hammer.png");
 
-	public OverchargedHammerModel(ModelPart root) {
+	public OverchargedHammerModel() {
 		super(RenderType::entitySolid);
-		this.root = root;
+		this.root = createLayer().bakeRoot();//root;
 	}
 
 	public static LayerDefinition createLayer() {

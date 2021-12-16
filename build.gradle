@@ -9,7 +9,6 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${forgegradle_version}", changing: true
         classpath "org.spongepowered:mixingradle:${mixingradle_version}"
-        classpath "org.parchmentmc:librarian:${librarian_version}"
     }
 }
 
@@ -19,7 +18,6 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 mixin {
     add sourceSets.main, "createaddition.refmap.json"
