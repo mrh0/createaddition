@@ -49,7 +49,7 @@ public class CATileEntities {
 	
 	public static final TileEntityEntry<ConnectorTileEntity> CONNECTOR = CreateAddition.registrate()
 			.tileEntity("connector", ConnectorTileEntity::new)
-			.validBlocks(CABlocks.CONNECTOR)
+			.validBlocks(CABlocks.CONNECTOR_COPPER)
 			.renderer(() -> ConnectorRenderer::new)
 			.register();
 	

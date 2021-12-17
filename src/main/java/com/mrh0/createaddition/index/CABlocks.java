@@ -66,11 +66,17 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
-	public static final BlockEntry<ConnectorBlock> CONNECTOR = REGISTRATE.block("connector",  ConnectorBlock::new)
+	public static final BlockEntry<ConnectorBlock> CONNECTOR_COPPER = REGISTRATE.block("connector",  ConnectorBlock::new)
 			.initialProperties(SharedProperties::stone)
 			.item()
 			.transform(customItemModel())
 			.register();
+	
+	/*public static final BlockEntry<ConnectorBlock> CONNECTOR_GOLD = REGISTRATE.block("connector_gold",  ConnectorBlock::new)
+			.initialProperties(SharedProperties::stone)
+			.item()
+			.transform(customItemModel())
+			.register();*/
 	
 	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = REGISTRATE.block("accumulator",  AccumulatorBlock::new)
 			.initialProperties(SharedProperties::stone)
@@ -143,7 +149,8 @@ public class CABlocks {
 		Create.registrate().addToSection(FURNACE_BURNER, AllSections.KINETICS);
 		Create.registrate().addToSection(CRUDE_BURNER, AllSections.KINETICS);
 		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
-		Create.registrate().addToSection(CONNECTOR, AllSections.KINETICS);
+		Create.registrate().addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
+		//Create.registrate().addToSection(CONNECTOR_GOLD, AllSections.KINETICS);
 		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);
 		//Create.registrate().addToSection(HEATER, AllSections.KINETICS);
 		Create.registrate().addToSection(REDSTONE_RELAY, AllSections.KINETICS);

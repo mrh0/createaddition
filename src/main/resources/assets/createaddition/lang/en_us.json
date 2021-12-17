@@ -137,11 +137,23 @@
 	"block.createaddition.accumulator.tooltip.condition2": "Input",
 	"block.createaddition.accumulator.tooltip.behaviour2": "Accepts _fe_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
 	
-	"block.createaddition.connector": "Connector",
+	"block.createaddition.connector": "Copper Connector",
 	"block.createaddition.connector.tooltip": "CONNECTOR",
 	"block.createaddition.connector.tooltip.summary": "Connects Forge Energy compatible blocks with _wires_ to transfer _fe_.",
 	"block.createaddition.connector.tooltip.control1": "R-click",
 	"block.createaddition.connector.tooltip.action1": "While holding a _Copper Spool_ or _Gold Spool_ to create a _wire link_ between two _Connectors_.",
+	
+	"block.createaddition.connector_copper": "Copper Connector",
+	"block.createaddition.connector_copper.tooltip": "CONNECTOR",
+	"block.createaddition.connector_copper.tooltip.summary": "Connects Forge Energy compatible blocks with _wires_ to transfer _fe_.",
+	"block.createaddition.connector_copper.tooltip.control1": "R-click",
+	"block.createaddition.connector_copper.tooltip.action1": "While holding a _Copper Spool_ to create a _wire link_ between two _Connectors_.",
+	
+	"block.createaddition.connector_gold": "Gold Connector",
+	"block.createaddition.connector_gold.tooltip": "CONNECTOR",
+	"block.createaddition.connector_gold.tooltip.summary": "Connects Forge Energy compatible blocks with _wires_ to transfer _fe_.",
+	"block.createaddition.connector_gold.tooltip.control1": "R-click",
+	"block.createaddition.connector_gold.tooltip.action1": "While holding a _Gold Spool_ to create a _wire link_ between two _Connectors_.",
 	
 	"block.createaddition.redstone_relay": "Redstone Relay",
 	"block.createaddition.redstone_relay.tooltip": "REDSTONE_RELAY",
