@@ -99,8 +99,7 @@
 	"statusbar.createaddition.wire.obstructed": "La ruta del cable está obstruida",
 	"statusbar.createaddition.wire.count": "Este conector está lleno",
 	"statusbar.createaddition.wire.removed": "Cable eliminado",
-
-	"statusbar.createaddition.wire.exists": "La conexión entre estos conectorees ya existe",
+	"statusbar.createaddition.wire.exists": "La conexión entre estos conectores ya existe",
 	"statusbar.createaddition.wire.no_connection": "El cable no está conectado aquí",
 	"statusbar.createaddition.wire.invalid": "Conexión inválida",
 	
@@ -181,6 +180,10 @@
 	
 	"block.createaddition.seed_oil": "Aceite de semillas",
 	
+	"block.createaddition.overcharged_casing": "Revestidor sobrecargada",
+	
+	"block.createaddition.tesla_coil": "Bobina de Tesla",
+	
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "Haga clic aquí para abrir la documentación de la API",
@@ -217,5 +220,19 @@
 	"createaddition.ponder.cc_electric_motor.header": "Usando ComputerCraft para controlar un motor eléctrico",
 	"createaddition.ponder.cc_electric_motor.text_1": "El motor eléctrico se puede controlar mediante ComputerCraft",
 	"createaddition.ponder.cc_electric_motor.text_2": "Conecte al motor usando 'peripheral.wrap(side)'",
-	"createaddition.ponder.cc_electric_motor.text_3": "Acceda a la documentación de la API usando el comando '/cca_api' en el chat"
+	"createaddition.ponder.cc_electric_motor.text_3": "Acceda a la documentación de la API usando el comando '/cca_api' en el chat",
+	
+	"createaddition.ponder.tesla_coil.header": "Usando una bobina de Tesla para cargar artículos",
+	"createaddition.ponder.tesla_coil.text_1": "La bobina de Tesla cargará los elementos debajo de ella",
+	"createaddition.ponder.tesla_coil.text_2": "¡Cargará cualquier artículo de FE y más!",
+	
+	"createaddition.ponder.tesla_coil_hurt.header": "Las bobinas de Tesla son peligrosas",
+	"createaddition.ponder.tesla_coil_hurt.text_1": "La bobina de Tesla puede infligir daño a los jugadores y también a los mobs cercanos.",
+	"createaddition.ponder.tesla_coil_hurt.text_2": "Esto se puede activar con una señal Redstone.",
+	"createaddition.ponder.tesla_coil_hurt.text_3": "¡Prepárate para ser electrocutado!",
+	
+	"effect.createaddition.shocking":"Electrocutado",
+	"death.attack.tesla_coil": "%1$s recibió una descarga eléctrica letal",
+  	"death.attack.tesla_coil.player": "%1$s recibió una descarga eléctrica letal mientras luchaba %2$s"
+
 }
