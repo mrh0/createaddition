@@ -1,7 +1,9 @@
 package com.mrh0.createaddition.rendering;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
@@ -84,7 +86,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 			WireType type, float dis) {
 		//matrix.pushPose();
 
-		VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.leash());
+		VertexConsumer ivertexbuilder = buffer.getBuffer(CARenderType.WIRE);
 		Matrix4f matrix4f = matrix.last().pose();
 		float f = Mth.fastInvSqrt(x * x + z * z) * 0.025F / 2.0F;
 		float o1 = z * f;
@@ -154,8 +156,6 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 				vertBuilder.vertex(matrix, fx + o1, fy + a - b, fz - o2).color(cr, cg, cb, 255).uv2(light).endVertex();
 			}
 		}
-		
-		
 	}
 	
 	/*private void wireRender(BlockEntity tileEntityIn, BlockPos other, PoseStack stack, MultiBufferSource buffer, float x, float y, float z, WireType type, float dis) {
