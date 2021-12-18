@@ -3,12 +3,11 @@ buildscript {
         maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
         jcenter()
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
-        maven { url = 'https://maven.parchmentmc.org' }
+        //maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${forgegradle_version}", changing: true
-        classpath "org.spongepowered:mixingradle:${mixingradle_version}"
+        //classpath "org.spongepowered:mixingradle:${mixingradle_version}"
     }
 }
 
@@ -17,11 +16,11 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-apply plugin: 'org.spongepowered.mixin'
+//apply plugin: 'org.spongepowered.mixin'
 
-mixin {
-    add sourceSets.main, "createaddition.refmap.json"
-}
+//mixin {
+//    add sourceSets.main, "createaddition.refmap.json"
+//}
 
 
 version = '1.17.1-20211212a'
@@ -54,12 +53,11 @@ minecraft {
         client {
             workingDirectory project.file('run')
 			
-			arg '-mixin.config=create.mixins.json'
-            arg '-mixin.config=flywheel.mixins.json'
-            //jvmArgs '-XX:+UnlockCommercialFeatures' // uncomment for profiling
-            property 'forge.logging.console.level', 'info'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+			//arg '-mixin.config=create.mixins.json'
+            //arg '-mixin.config=flywheel.mixins.json'
+            //property 'forge.logging.console.level', 'info'
+            //property 'mixin.env.remapRefMap', 'true'
+            //property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 			
             // Recommended logging data for a userdev environment
             // The markers can be added/remove as needed separated by commas.
@@ -83,10 +81,10 @@ minecraft {
         server {
             workingDirectory project.file('run')
 
-			arg '-mixin.config=create.mixins.json'
-            property 'forge.logging.console.level', 'info'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+			//arg '-mixin.config=create.mixins.json'
+            //property 'forge.logging.console.level', 'info'
+            //property 'mixin.env.remapRefMap', 'true'
+            //property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             // Recommended logging data for a userdev environment
             // The markers can be added/remove as needed separated by commas.
@@ -110,10 +108,10 @@ minecraft {
         data {
             workingDirectory project.file('run')
 
-			property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+			//property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
+            //property 'forge.logging.console.level', 'debug'
+            //property 'mixin.env.remapRefMap', 'true'
+            //property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             // Recommended logging data for a userdev environment
             // The markers can be added/remove as needed separated by commas.
@@ -199,7 +197,7 @@ dependencies {
 	//runtimeOnly fg.deobf("curse.maven:mantle-74924:3412365")
 	
 	//runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3203659")
-	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+	//annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 	
 
     // For more info...

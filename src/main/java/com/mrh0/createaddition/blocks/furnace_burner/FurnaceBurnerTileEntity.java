@@ -39,7 +39,7 @@ public class FurnaceBurnerTileEntity extends AbstractFurnaceBlockEntity {
 	public boolean canBurn(@Nullable Recipe<?> p_155006_, NonNullList<ItemStack> p_155007_, int p_155008_) {
 		return true;
 	}*/
-
+	
 	private boolean burning() {
 		return this.dataAccess.get(_litTime) > 0;//this.litTime > 0;
 	}
