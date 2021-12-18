@@ -216,13 +216,10 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	protected boolean chargeStack(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
 			return false;
-		System.out.println("C1");
 		IEnergyStorage es = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
 		if(es.receiveEnergy(1, true) != 1)
 			return false;
-		System.out.println("C2");
 		int r = energy.internalConsumeEnergy(es.receiveEnergy(Math.min(getConsumption(), energy.getEnergyStored()), false));
-		System.out.println("C3 " + r);
 		return true;
 	}
 	
