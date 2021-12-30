@@ -22,7 +22,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.TickPriority;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RedStoneWireBlock;
@@ -36,6 +35,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.ticks.TickPriority;
 
 public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>, IWrenchable {
 
@@ -151,7 +151,7 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 		if (flag != flag1 && !worldIn.getBlockTicks().willTickThisTick(pos, this)) {
 			TickPriority tickpriority = TickPriority.VERY_HIGH;
 
-			worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelay(state), tickpriority);
+			worldIn.scheduleTick(pos, this, this.getDelay(state), tickpriority);
 		}
 	}
 
@@ -211,7 +211,7 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	@Override
 	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (this.shouldBePowered(worldIn, pos, state)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 1);
+			worldIn.scheduleTick(pos, this, 1);
 		}
 
 	}

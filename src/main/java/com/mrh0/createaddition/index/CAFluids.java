@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 public class CAFluids {
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
-			.itemGroup(() -> ModGroup.MAIN);
+			.creativeModeTab(() -> ModGroup.MAIN);
 	
 	/*public static RegistryEntry<ForgeFlowingFluid.Flowing> SEED_OIL =
 		REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition:fluid/seed_oil_still"), new ResourceLocation("createaddition:fluid/seed_oil_flow"), FluidAttributes::new)

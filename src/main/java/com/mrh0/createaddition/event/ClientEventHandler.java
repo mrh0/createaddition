@@ -1,20 +1,8 @@
 package com.mrh0.createaddition.event;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.energy.IWireNode;
-import com.mrh0.createaddition.index.CAFluids;
-import com.mrh0.createaddition.item.WireSpool;
-import com.mrh0.createaddition.rendering.WireNodeRenderer;
 
-import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = CreateAddition.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)

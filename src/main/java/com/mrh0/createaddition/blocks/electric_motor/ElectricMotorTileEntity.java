@@ -164,8 +164,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	@Override
-	public void fromTag(CompoundTag compound, boolean clientPacket) {
-		super.fromTag(compound, clientPacket);
+	public void read(CompoundTag compound, boolean clientPacket) {
+		super.read(compound, clientPacket);
 		energy.read(compound);
 		active = compound.getBoolean("active");
 	}
@@ -310,10 +310,5 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	public int getEnergyConsumption() {
 		return getEnergyConsumptionRate(generatedSpeed.getValue());
-	}
-
-	@Override
-	public Level getWorld() {
-		return getLevel();
 	}
 }

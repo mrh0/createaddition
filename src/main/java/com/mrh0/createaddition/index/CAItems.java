@@ -29,7 +29,7 @@ import net.minecraft.world.item.Rarity;
 public class CAItems {
 
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
-		.itemGroup(() -> ModGroup.MAIN);
+		.creativeModeTab(() -> ModGroup.MAIN);
 	
 	public static final ItemEntry<Item> CAPACITOR =
 			REGISTRATE.item("capacitor", Item::new)

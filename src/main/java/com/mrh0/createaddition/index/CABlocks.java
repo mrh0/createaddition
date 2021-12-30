@@ -34,7 +34,7 @@ import net.minecraft.world.level.material.Material;
 public class CABlocks {
 	
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
-			.itemGroup(() -> ModGroup.MAIN);
+			.creativeModeTab(() -> ModGroup.MAIN);
 	
 	public static final BlockEntry<ElectricMotorBlock> ELECTRIC_MOTOR = REGISTRATE.block("electric_motor", ElectricMotorBlock::new)
 			.initialProperties(SharedProperties::stone)

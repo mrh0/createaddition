@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.render.SuperByteBuffer;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
+import net.minecraft.world.level.block.state.BlockState;
 
 
 public class ElectricMotorRenderer extends KineticTileEntityRenderer {
@@ -17,8 +18,8 @@ public class ElectricMotorRenderer extends KineticTileEntityRenderer {
 	}
 
 	@Override
-	protected SuperByteBuffer getRotatedModel(KineticTileEntity te) {
-		return CachedBufferer.partial(AllBlockPartials.SHAFT_HALF, te.getBlockState());
+	protected SuperByteBuffer getRotatedModel(KineticTileEntity te, BlockState state) {
+		return CachedBufferer.partial(AllBlockPartials.SHAFT_HALF, state);
 	}
 }
 

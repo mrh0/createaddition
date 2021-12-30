@@ -139,15 +139,15 @@ public class RollingMillTileEntity extends KineticTileEntity {
 		compound.put("OutputInventory", outputInv.serializeNBT());
 		super.write(compound, clientPacket);
 	}
-
+	
 	@Override
-	protected void fromTag(CompoundTag compound, boolean clientPacket) {
+	protected void read(CompoundTag compound, boolean clientPacket) {
 		timer = compound.getInt("Timer");
 		inputInv.deserializeNBT(compound.getCompound("InputInventory"));
 		outputInv.deserializeNBT(compound.getCompound("OutputInventory"));
-		super.fromTag(compound, clientPacket);
+		super.read(compound, clientPacket);
 	}
-
+	
 	public int getProcessingSpeed() {
 		return Mth.clamp((int) Math.abs(getSpeed() / 16f), 1, 512);
 	}
@@ -213,11 +213,6 @@ public class RollingMillTileEntity extends KineticTileEntity {
 		float impact = STRESS;
 		this.lastStressApplied = impact;
 		return impact;
-	}
-
-	@Override
-	public Level getWorld() {
-		return getLevel();
 	}
 }
 

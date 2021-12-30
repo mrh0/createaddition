@@ -132,7 +132,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	private void doDmg() {
 		energy.internalConsumeEnergy(HURT_ENERGY_REQUIRED);
 		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoil.FACING).getOpposite());
-		List<LivingEntity> ents = getWorld().getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(HURT_RANGE));
+		List<LivingEntity> ents = getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(HURT_RANGE));
 		for(LivingEntity e : ents) {
 			int dmg = HURT_DMG_MOB;
 			int time = HURT_EFFECT_TIME_MOB;
@@ -154,7 +154,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		super.tick();
 		if(level.isClientSide())
 			return;
-		int signal = getWorld().getBestNeighborSignal(getBlockPos());
+		int signal = getLevel().getBestNeighborSignal(getBlockPos());
 		//System.out.println(signal + ":" + (energy.getEnergyStored() >= HURT_ENERGY_REQUIRED));
 		if(signal > 0 && energy.getEnergyStored() >= HURT_ENERGY_REQUIRED)
 			poweredTimer = 10;

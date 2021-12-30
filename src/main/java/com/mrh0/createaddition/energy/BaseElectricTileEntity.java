@@ -50,8 +50,8 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	
 	
 	@Override
-	protected void fromTag(CompoundTag compound, boolean arg1) {
-		super.fromTag(compound, arg1);
+	protected void read(CompoundTag compound, boolean arg1) {
+		super.read(compound, arg1);
 		energy.read(compound);
 	}
 	

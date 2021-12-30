@@ -80,8 +80,8 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	}
 	
 	@Override
-	public void fromTag(CompoundTag compound, boolean clientPacket) {
-		super.fromTag(compound, clientPacket);
+	public void read(CompoundTag compound, boolean clientPacket) {
+		super.read(compound, clientPacket);
 		energy.read(compound);
 	}
 	
@@ -204,10 +204,5 @@ public class AlternatorTileEntity extends KineticTileEntity {
 				return escacheWest.orElse(null);
 		}
 		return null;
-	}
-
-	@Override
-	public Level getWorld() {
-		return getLevel();
 	}
 }

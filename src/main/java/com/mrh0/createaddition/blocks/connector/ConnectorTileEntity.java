@@ -142,8 +142,8 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 	
 	@Override
-	public void fromTag(CompoundTag nbt, boolean clientPacket) {
-		super.fromTag(nbt, clientPacket);
+	public void read(CompoundTag nbt, boolean clientPacket) {
+		super.read(nbt, clientPacket);
 		for(int i = 0; i < getNodeCount(); i++)
 			if(IWireNode.hasNode(nbt, i))
 				readNode(nbt, i);

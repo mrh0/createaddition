@@ -17,13 +17,18 @@ public class ChargingChromaticCompound extends Item {
 		super(props);
 	}
 	
-	@Override
+	/*@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 		return 1d - getCharge(stack);
 	}
 	
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
+		return true;
+	}*/
+	
+	@Override
+	public boolean isBarVisible(ItemStack p_150899_) {
 		return true;
 	}
 	

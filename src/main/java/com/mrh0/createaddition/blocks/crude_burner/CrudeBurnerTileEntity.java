@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
@@ -174,14 +175,13 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceBlockEntity implements
 	}
 	
 	@Override
-	public CompoundTag save(CompoundTag nbt) {
+	public void saveAdditional(CompoundTag nbt) {
 		nbt.put("TankContent", tankInventory.writeToNBT(new CompoundTag()));
-		return super.save(nbt);
 	}
 	
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return new ClientboundBlockEntityDataPacket(getBlockPos(), 1, save(new CompoundTag()));
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override
