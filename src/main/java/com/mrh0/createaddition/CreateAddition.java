@@ -101,7 +101,7 @@ public class CreateAddition {
         CATileEntities.register();
         CAItems.register();
         CAFluids.register();
-        CAEntities.register();
+        //CAEntities.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {

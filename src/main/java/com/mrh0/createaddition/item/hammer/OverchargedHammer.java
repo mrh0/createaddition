@@ -1,3 +1,4 @@
+/*
 package com.mrh0.createaddition.item.hammer;
 
 import java.util.Set;
@@ -5,7 +6,6 @@ import java.util.Set;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
-import com.mrh0.createaddition.entities.overcharged_hammer.OverchargedHammerEntity;
 import com.mrh0.createaddition.index.CAItems;
 
 import net.minecraft.core.BlockPos;
@@ -164,4 +164,4 @@ public class OverchargedHammer extends Item implements Vanishable {
 	public int getItemStackLimit(ItemStack stack) {
 		return 1;
 	}
-}
+}*/

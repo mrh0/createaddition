@@ -134,11 +134,11 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
-	public static final BlockEntry<CasingBlock> OVERCHARGED_CASING =
+	/*public static final BlockEntry<CasingBlock> OVERCHARGED_CASING =
 			REGISTRATE.block("overcharged_casing", CasingBlock::new)
 				.transform(BuilderTransformers.casing(CASpriteShifts.OVERCHARGED_CASING))
 				.properties(p -> p.lightLevel($ -> 4))
-				.register();
+				.register();*/
 	
 	public static void register() {
 		//Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
@@ -154,6 +154,6 @@ public class CABlocks {
 		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);
 		//Create.registrate().addToSection(HEATER, AllSections.KINETICS);
 		Create.registrate().addToSection(REDSTONE_RELAY, AllSections.KINETICS);
-		Create.registrate().addToSection(OVERCHARGED_CASING, AllSections.MATERIALS);
+		//Create.registrate().addToSection(OVERCHARGED_CASING, AllSections.MATERIALS);
 	}
 }

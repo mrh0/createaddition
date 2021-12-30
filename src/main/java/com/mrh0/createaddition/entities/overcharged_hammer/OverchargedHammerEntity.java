@@ -1,3 +1,4 @@
+/*
 package com.mrh0.createaddition.entities.overcharged_hammer;
 
 import javax.annotation.Nullable;
@@ -65,9 +66,6 @@ public class OverchargedHammerEntity extends AbstractArrow {
 		this.entityData.define(ENCHANTED, false);
 	}
 
-	/**
-	 * Called to update the entity's position/logic.
-	 */
 	@Override
 	public void tick() {
 		if (this.inGroundTime > 4) {
@@ -107,18 +105,13 @@ public class OverchargedHammerEntity extends AbstractArrow {
 		return this.entityData.get(ENCHANTED);
 	}
 
-	/**
-	 * Gets the EntityRayTraceResult representing the entity hit
-	 */
 	@Nullable
 	@Override
 	protected EntityHitResult findHitEntity(Vec3 v1, Vec3 v2) {
 		return this.dealtDamage ? null : super.findHitEntity(v1, v2);
 	}
 
-	/**
-	 * Called when the arrow hits an entity
-	 */
+
 	@Override
 	protected void onHitEntity(EntityHitResult entityRay) {
 		Entity hitEntity = entityRay.getEntity();
@@ -166,17 +159,12 @@ public class OverchargedHammerEntity extends AbstractArrow {
 		this.playSound(soundevent, f1, 1.0F);
 	}
 
-	/**
-	 * The sound made when an entity is hit by this projectile
-	 */
+
 	@Override
 	protected SoundEvent getDefaultHitGroundSoundEvent() {
 		return SoundEvents.ANVIL_LAND;
 	}
 
-	/**
-	 * Called by a player entity when they collide with an entity
-	 */
 	@Override
 	public void playerTouch(Player player) {
 		Entity entity = this.getOwner();
@@ -185,9 +173,6 @@ public class OverchargedHammerEntity extends AbstractArrow {
 		}
 	}
 
-	/**
-	 * (abstract) Protected helper method to read subclass entity data from NBT.
-	 */
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
@@ -240,4 +225,4 @@ public class OverchargedHammerEntity extends AbstractArrow {
 	public boolean isOnFire() {
 		return false;
 	}
-}
+}*/

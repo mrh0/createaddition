@@ -93,10 +93,10 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			return 0f;
 		if (itemStack.getCapability(CapabilityEnergy.ENERGY).isPresent())
 			return getItemCharge(itemStack.getCapability(CapabilityEnergy.ENERGY).orElse(null));
-		if (itemStack.getItem() == CAItems.CHARGING_CHROMATIC_COMPOUND.get())
+		/*if (itemStack.getItem() == CAItems.CHARGING_CHROMATIC_COMPOUND.get())
 			return (float) ChargingChromaticCompound.getCharge(itemStack) * 90f;
 		if (itemStack.getItem() == CAItems.OVERCHARGED_ALLOY.get())
-			return 90f;
+			return 90f;*/
 		return 0f;
 	}
 	
@@ -182,10 +182,10 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		ItemStack stack = transported.stack;
 		if(stack == null)
 			return ProcessingResult.PASS;
-		if(stack.getItem() == AllItems.CHROMATIC_COMPOUND.get()) {
+		/*if(stack.getItem() == AllItems.CHROMATIC_COMPOUND.get()) {
 			TransportedItemStack res = new TransportedItemStack(new ItemStack(CAItems.CHARGING_CHROMATIC_COMPOUND.get(), stack.getCount()));
 			handler.handleProcessingOnItem(transported, TransportedResult.convertTo(res));
-		}
+		}*/
 		if(chargeStack(stack, transported, handler)) {
 			if(energy.getEnergyStored() >= stack.getCount())
 				poweredTimer = 10;
@@ -196,7 +196,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 				poweredTimer = 10;
 			return ProcessingResult.HOLD;
 		}
-		if (stack.getItem() == CAItems.CHARGING_CHROMATIC_COMPOUND.get()) {
+		/*if (stack.getItem() == CAItems.CHARGING_CHROMATIC_COMPOUND.get()) {
 			if(energy.getEnergyStored() >= stack.getCount())
 				poweredTimer = 10;
 			
@@ -209,7 +209,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 				handler.handleProcessingOnItem(transported, TransportedResult.convertTo(res));
 			}
 			return ProcessingResult.HOLD;
-		}
+		}*/
 		return ProcessingResult.PASS;
 	}
 	

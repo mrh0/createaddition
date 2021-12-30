@@ -10,7 +10,6 @@ import com.mrh0.createaddition.item.DiamondGritSandpaper;
 import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.item.OverchargedAlloy;
 import com.mrh0.createaddition.item.hammer.HammerRenderer;
-import com.mrh0.createaddition.item.hammer.OverchargedHammer;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
@@ -50,25 +49,25 @@ public class CAItems {
 			.tag(forgeItemTag("plates/zinc"), PLATES.tag)
 			.register();
 	
-	public static final ItemEntry<Multimeter> MULTIMETER =
+	/*public static final ItemEntry<Multimeter> MULTIMETER =
 		REGISTRATE.item("multimeter", Multimeter::new)
 			.properties((p) -> p.stacksTo(1))
-			.register();
+			.register();*/
 	
-	public static final ItemEntry<OverchargedAlloy> OVERCHARGED_ALLOY =
+	/*public static final ItemEntry<OverchargedAlloy> OVERCHARGED_ALLOY =
 			REGISTRATE.item("overcharged_alloy", OverchargedAlloy::new)
 			.properties(p -> p.rarity(Rarity.UNCOMMON))
-			.register();
+			.register();*/
 	
-	public static final ItemEntry<ChargingChromaticCompound> CHARGING_CHROMATIC_COMPOUND =
+	/*public static final ItemEntry<ChargingChromaticCompound> CHARGING_CHROMATIC_COMPOUND =
 			REGISTRATE.item("charging_chromatic_compound", ChargingChromaticCompound::new)
 			.properties(p -> p.rarity(Rarity.UNCOMMON))
 			.properties(p -> p.stacksTo(16))
 			.model(AssetLookup.existingItemModel())
 			.color(() -> ChromaticCompoundColor::new)
-			.register();
+			.register();*/
 
-	public static final ItemEntry<OverchargedHammer> OVERCHARGED_HAMMER =
+	/*public static final ItemEntry<OverchargedHammer> OVERCHARGED_HAMMER =
 			REGISTRATE.item("overcharged_hammer", OverchargedHammer::new)
 			//.transform(CreateRegistrate.customRenderedItem(() -> HammerRenderer::new))
 			.model(AssetLookup.itemModelWithPartials())
@@ -76,7 +75,7 @@ public class CAItems {
 			.properties(p -> p.fireResistant())
 			.properties(p -> p.stacksTo(1))
 			.properties(p -> p.rarity(Rarity.UNCOMMON))
-			.register();
+			.register();*/
 	
 	public static final ItemEntry<WireSpool> SPOOL =
 			REGISTRATE.item("spool", WireSpool::new).register();
@@ -123,12 +122,12 @@ public class CAItems {
 	
 	public static void register() {
 		Create.registrate().addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
-		Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
+		//Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
 		Create.registrate().addToSection(COPPER_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(GOLD_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(SPOOL, AllSections.MATERIALS);
-		Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
-		Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
+		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
+		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
 		
 		
 	}

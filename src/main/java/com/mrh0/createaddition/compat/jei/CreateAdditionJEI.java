@@ -65,21 +65,9 @@ public class CreateAdditionJEI implements IModPlugin {
 		ALL.forEach(c -> c.recipes.forEach(s -> registration.addRecipes(s.get(), c.getUid())));
 		
 		List<ConversionRecipe> r1 = new ArrayList<>();
-		r1.add(ConversionRecipe.create(AllItems.CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
-		//r.add(ConversionRecipe.create(CAItems.CHARGING_CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
+		//r1.add(ConversionRecipe.create(AllItems.CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
+
 		registration.addRecipes(r1, new ResourceLocation("create:mystery_conversion"));
-		
-		//registration.addRecipes(DeployerApplicationRecipe.convert(findRecipesByType(AllRecipeTypes.SANDPAPER_POLISHING.getType())), AllRecipeTypes.DEPLOYING.getId());
-		
-		/*List<DeployerApplicationRecipe> r2 = new ArrayList<>();
-		r2.add(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, Create.asResource("polishing_using_deployer"))
-			.require(Ingredient.of(new ItemStack(AllItems.ROSE_QUARTZ.get())))
-			.require(ItemTags.ACACIA_LOGS)//Ingredient.of(AllItems.SAND_PAPER.get(), AllItems.RED_SAND_PAPER.get(), CAItems.DIAMOND_GRIT_SANDPAPER.get())
-			.output(new ItemStack(AllItems.POLISHED_ROSE_QUARTZ.get()))
-			.build());
-		registration.addRecipes(r2, AllRecipeTypes.DEPLOYING.getId());*/
-		
-		
 	}
 
 	@Override
