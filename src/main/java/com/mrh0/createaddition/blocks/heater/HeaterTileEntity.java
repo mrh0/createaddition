@@ -6,7 +6,6 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.item.Multimeter;
-import com.mrh0.createaddition.mixin.AbstractFurnaceMixin;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
@@ -70,7 +69,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 			litState =  IEHeaterOptional.externalHeater(cache, energy);
 		}*/
 		
-		ContainerData data = ((AbstractFurnaceMixin)cache).getDataAccess();
+		ContainerData data = cache.dataAccess;
 		timeout--;
 		if(timeout < 0)
 			timeout = 0;

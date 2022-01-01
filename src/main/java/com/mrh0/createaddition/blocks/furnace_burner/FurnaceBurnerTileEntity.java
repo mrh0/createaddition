@@ -3,29 +3,25 @@ package com.mrh0.createaddition.blocks.furnace_burner;
 
 import javax.annotation.Nullable;
 
+import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.util.Mth;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class FurnaceBurnerTileEntity extends AbstractFurnaceBlockEntity {
+public class FurnaceBurnerTileEntity extends AbstractBurnerBlockEntity {
 
 	public static final int FUEL_SLOT = 1;
 	private static final int[] SLOTS = new int[] { FUEL_SLOT };
@@ -45,46 +41,46 @@ public class FurnaceBurnerTileEntity extends AbstractFurnaceBlockEntity {
 		return null;// new FurnaceContainer(p_213906_1_, p_213906_2_, this, this.furnaceData);
 	}
 
-	/*@Override
+	@Override
 	public boolean canBurn(@Nullable Recipe<?> p_155006_, NonNullList<ItemStack> p_155007_, int p_155008_) {
 		return true;
-	}*/
+	}
 	
-	private boolean burning() {
+	public boolean isLit() {
 		return this.dataAccess.get(_litTime) > 0;// this.litTime > 0;
 	}
 
-	public void tick() {
-		boolean flag = this.burning();
+	public static void tick(Level p_155014_, BlockPos p_155015_, BlockState p_155016_, AbstractBurnerBlockEntity be) {
+		boolean flag = be.isLit();
 		boolean flag1 = false;
-		if (this.burning())
-			this.dataAccess.set(_litTime, this.dataAccess.get(_litTime));// --this.litTime;
+		if (be.isLit())
+			be.dataAccess.set(_litTime, be.dataAccess.get(_litTime));// --this.litTime;
 
-		if (!this.level.isClientSide()) {
-			ItemStack itemstack = this.items.get(1);
-			if (!this.burning()) {
-				this.dataAccess.set(_litTime, this.getBurnDuration(itemstack));// this.litTime =
+		if (!be.getLevel().isClientSide()) {
+			ItemStack itemstack = be.items.get(1);
+			if (!be.isLit()) {
+				be.dataAccess.set(_litTime, be.getBurnDuration(itemstack));// this.litTime =
 																				// this.getBurnDuration(itemstack);
-				if (this.burning()) {
+				if (be.isLit()) {
 					flag1 = true;
 					if (itemstack.hasContainerItem())
-						this.items.set(1, itemstack.getContainerItem());
+						be.items.set(1, itemstack.getContainerItem());
 					else if (!itemstack.isEmpty()) {
 						itemstack.shrink(1);
 						if (itemstack.isEmpty())
-							this.items.set(1, itemstack.getContainerItem());
+							be.items.set(1, itemstack.getContainerItem());
 					}
 				}
 			}
 
-			if (flag != this.burning()) {
+			if (flag != be.isLit()) {
 				flag1 = true;
-				this.level.setBlock(this.worldPosition, this.getLevel().getBlockState(this.worldPosition)
-						.setValue(AbstractFurnaceBlock.LIT, Boolean.valueOf(this.burning())), 3);
+				be.getLevel().setBlock(be.getBlockPos(), be.getLevel().getBlockState(be.getBlockPos())
+						.setValue(AbstractFurnaceBlock.LIT, Boolean.valueOf(be.isLit())), 3);
 			}
 
 			if (flag1)
-				this.setChanged();
+				be.setChanged();
 		}
 	}
 

@@ -2,6 +2,10 @@ package com.mrh0.createaddition.blocks.furnace_burner;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
+import com.mrh0.createaddition.blocks.base.AbstractBurnerBlock;
+import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.foundation.block.ITE;
@@ -15,12 +19,12 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class FurnaceBurner extends AbstractFurnaceBlock implements ITE<FurnaceBurnerTileEntity> {
+public class FurnaceBurner extends AbstractBurnerBlock implements ITE<FurnaceBurnerTileEntity> {
 
 	public FurnaceBurner(Properties props) {
 		super(props);
@@ -109,8 +113,20 @@ public class FurnaceBurner extends AbstractFurnaceBlock implements ITE<FurnaceBu
 	public Class<FurnaceBurnerTileEntity> getTileEntityClass() {
 		return FurnaceBurnerTileEntity.class;
 	}
+	
 	@Override
 	public BlockEntityType<? extends FurnaceBurnerTileEntity> getTileEntityType() {
 		return CATileEntities.FURNACE_BURNER.get();
+	}
+	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_,
+			BlockEntityType<T> p_153214_) {
+		return createBurnerTicker(p_153212_, p_153214_, CATileEntities.FURNACE_BURNER.get());
+	}
+	
+	@Nullable
+	protected static <T extends BlockEntity> BlockEntityTicker<T> createBurnerTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<? extends AbstractBurnerBlockEntity> p_151990_) {
+		return p_151988_.isClientSide ? null : createTickerHelper(p_151989_, p_151990_, FurnaceBurnerTileEntity::serverTick);
 	}
 }
