@@ -10,7 +10,6 @@ import com.mrh0.createaddition.item.DiamondGritSandpaper;
 import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.item.OverchargedAlloy;
 import com.mrh0.createaddition.item.hammer.HammerRenderer;
-import com.mrh0.createaddition.item.hammer.OverchargedHammer;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
@@ -23,15 +22,14 @@ import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.repack.registrate.util.entry.ItemEntry;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.item.Rarity;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+
 
 public class CAItems {
 
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
-		.itemGroup(() -> ModGroup.MAIN);
+		.creativeModeTab(() -> ModGroup.MAIN);
 	
 	public static final ItemEntry<Item> CAPACITOR =
 			REGISTRATE.item("capacitor", Item::new)
@@ -42,7 +40,7 @@ public class CAItems {
 			.register();
 	
 	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER = REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new)
-			.transform(CreateRegistrate.customRenderedItem(() -> SandPaperItemRenderer::new))
+			//.transform(CreateRegistrate.customRenderedItem(() -> SandPaperItemRenderer::new))
 			.onRegister(s -> TooltipHelper.referTo(s, AllItems.SAND_PAPER))
 			.register();
 	
@@ -51,33 +49,33 @@ public class CAItems {
 			.tag(forgeItemTag("plates/zinc"), PLATES.tag)
 			.register();
 	
-	public static final ItemEntry<Multimeter> MULTIMETER =
+	/*public static final ItemEntry<Multimeter> MULTIMETER =
 		REGISTRATE.item("multimeter", Multimeter::new)
 			.properties((p) -> p.stacksTo(1))
-			.register();
+			.register();*/
 	
-	public static final ItemEntry<OverchargedAlloy> OVERCHARGED_ALLOY =
+	/*public static final ItemEntry<OverchargedAlloy> OVERCHARGED_ALLOY =
 			REGISTRATE.item("overcharged_alloy", OverchargedAlloy::new)
 			.properties(p -> p.rarity(Rarity.UNCOMMON))
-			.register();
+			.register();*/
 	
-	public static final ItemEntry<ChargingChromaticCompound> CHARGING_CHROMATIC_COMPOUND =
+	/*public static final ItemEntry<ChargingChromaticCompound> CHARGING_CHROMATIC_COMPOUND =
 			REGISTRATE.item("charging_chromatic_compound", ChargingChromaticCompound::new)
 			.properties(p -> p.rarity(Rarity.UNCOMMON))
 			.properties(p -> p.stacksTo(16))
 			.model(AssetLookup.existingItemModel())
 			.color(() -> ChromaticCompoundColor::new)
-			.register();
+			.register();*/
 
-	public static final ItemEntry<OverchargedHammer> OVERCHARGED_HAMMER =
+	/*public static final ItemEntry<OverchargedHammer> OVERCHARGED_HAMMER =
 			REGISTRATE.item("overcharged_hammer", OverchargedHammer::new)
-			.transform(CreateRegistrate.customRenderedItem(() -> HammerRenderer::new))
+			//.transform(CreateRegistrate.customRenderedItem(() -> HammerRenderer::new))
 			.model(AssetLookup.itemModelWithPartials())
 			//.properties(p -> p.addToolType(ToolType.PICKAXE, 4))
 			.properties(p -> p.fireResistant())
 			.properties(p -> p.stacksTo(1))
 			.properties(p -> p.rarity(Rarity.UNCOMMON))
-			.register();
+			.register();*/
 	
 	public static final ItemEntry<WireSpool> SPOOL =
 			REGISTRATE.item("spool", WireSpool::new).register();
@@ -124,12 +122,12 @@ public class CAItems {
 	
 	public static void register() {
 		Create.registrate().addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
-		Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
+		//Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
 		Create.registrate().addToSection(COPPER_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(GOLD_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(SPOOL, AllSections.MATERIALS);
-		Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
-		Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
+		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
+		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
 		
 		
 	}

@@ -1,9 +1,9 @@
 package com.mrh0.createaddition.energy;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -40,8 +40,8 @@ public class CreativeEnergyStorage implements IEnergyStorage {
 		return false;
 	}
 
-	public void outputToSide(World world, BlockPos pos, Direction side) {
-    	TileEntity te = world.getBlockEntity(pos.relative(side));
+	public void outputToSide(Level world, BlockPos pos, Direction side) {
+    	BlockEntity te = world.getBlockEntity(pos.relative(side));
 		if(te == null)
 			return;
 		LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());

@@ -1,9 +1,7 @@
 package com.mrh0.createaddition.item;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class OverchargedAlloy extends Item {
 

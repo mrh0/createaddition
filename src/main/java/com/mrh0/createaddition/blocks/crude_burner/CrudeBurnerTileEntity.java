@@ -6,28 +6,31 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 
-import net.minecraft.block.AbstractFurnaceBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,8 +39,10 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements IHaveGoggleInformation {
+public class CrudeBurnerTileEntity extends AbstractFurnaceBlockEntity implements IHaveGoggleInformation {
 
+	static final int _litTime = 0, _litDuration = 1, _cookingProgress = 2, _cookingTotalTime = 3;
+	
 	private static final int[] SLOTS = new int[] { };
 	protected LazyOptional<IFluidHandler> fluidCapability;
 	protected FluidTank tankInventory;
@@ -47,8 +52,8 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 	private int updateTimeout = 10;
 	private boolean changed = true;
 
-	public CrudeBurnerTileEntity(TileEntityType<?> type) {
-		super(type, IRecipeType.SMELTING);
+	public CrudeBurnerTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state, RecipeType.SMELTING);
 		tankInventory = createInventory();
 		fluidCapability = LazyOptional.of(() -> tankInventory);
 	}
@@ -73,22 +78,24 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 	}
 
 	@Override
-	protected ITextComponent getDefaultName() {
-		return new TranslationTextComponent("");
+	protected Component getDefaultName() {
+		return new TranslatableComponent("");
 	}
 
 	@Override
-	protected Container createMenu(int window, PlayerInventory inv) {
+	protected AbstractContainerMenu createMenu(int window, Inventory inv) {
 		return null;
 	}
 
-	@Override
-	protected boolean canBurn(IRecipe<?> recipe) {
+	/*@Override
+	public boolean canBurn(Recipe<?> recipe, NonNullList<ItemStack> list, int i) {
 		return true;
-	}
+	}*/
+	
+	
 
 	private boolean burning() {
-		return this.litTime > 0;
+		return this.dataAccess.get(_litTime) > 0; //this.litTime > 0;
 	}
 	
 	public int getBurnTime(FluidStack fluid) {
@@ -118,12 +125,12 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 		boolean flag = this.burning();
 		boolean flag1 = false;
 		if (this.burning())
-			--this.litTime;
+			this.dataAccess.set(_litTime, this.dataAccess.get(_litTime));//--this.litTime;
 
 		if (!this.level.isClientSide()) {
 			if (!this.burning()) {
 				
-				this.litTime = getBurnTime(tankInventory.getFluid());
+				this.dataAccess.set(_litTime, getBurnTime(tankInventory.getFluid()));//this.litTime = getBurnTime(tankInventory.getFluid());
 				if (this.burning()) {
 					flag1 = true;
 					updateTimeout = 0;
@@ -162,33 +169,32 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceTileEntity implements 
 	}
 	
 	@Override
-	public void load(BlockState state, CompoundNBT nbt) {
-		super.load(state, nbt);
+	public void load(CompoundTag nbt) {
+		super.load(nbt);
 		tankInventory.readFromNBT(nbt.getCompound("TankContent"));
 	}
 	
 	@Override
-	public CompoundNBT save(CompoundNBT nbt) {
-		nbt.put("TankContent", tankInventory.writeToNBT(new CompoundNBT()));
-		return super.save(nbt);
+	public void saveAdditional(CompoundTag nbt) {
+		nbt.put("TankContent", tankInventory.writeToNBT(new CompoundTag()));
 	}
 	
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(getBlockPos(), 1, save(new CompoundNBT()));
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		load(getBlockState(), pkt.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+		load(pkt.getTag());
 	}
 	
 	@Override
-	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		return containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
 	}
 	
-	public Optional<CrudeBurningRecipe> find(FluidStack stack, World world) {
+	public Optional<CrudeBurningRecipe> find(FluidStack stack, Level world) {
 		return world.getRecipeManager().getRecipeFor(CrudeBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
 	}
 }

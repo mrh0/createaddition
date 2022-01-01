@@ -4,10 +4,11 @@ import com.simibubi.create.content.contraptions.base.HorizontalKineticBlock;
 import com.simibubi.create.content.contraptions.components.press.MechanicalPressTileEntity;
 import com.simibubi.create.foundation.block.ITE;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction.Axis;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class Rotor extends HorizontalKineticBlock implements ITE<MechanicalPressTileEntity> {
 
@@ -24,9 +25,14 @@ public class Rotor extends HorizontalKineticBlock implements ITE<MechanicalPress
 	public Class<MechanicalPressTileEntity> getTileEntityClass() {
 		return null;
 	}
-
+	
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
+		return null;
+	}
+	
+	@Override
+	public BlockEntityType<? extends MechanicalPressTileEntity> getTileEntityType() {
 		return null;
 	}
 

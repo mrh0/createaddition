@@ -3,10 +3,11 @@ package com.mrh0.createaddition.groups;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CABlocks;
 
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
-public class ModGroup extends ItemGroup{
+
+public class ModGroup extends CreativeModeTab {
 	public static ModGroup MAIN;;
 	
 	public ModGroup(String name) {

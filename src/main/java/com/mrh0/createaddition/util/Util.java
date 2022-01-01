@@ -1,11 +1,11 @@
 package com.mrh0.createaddition.util;
 
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 
 public class Util {
 	public static int min(int...v) {
@@ -24,7 +24,7 @@ public class Util {
 		return m;
 	}
 	
-	public static ItemStack findStack(Item item, PlayerInventory inv) {
+	public static ItemStack findStack(Item item, Inventory inv) {
 		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
 			if(stack.getItem() == item)
@@ -41,8 +41,8 @@ public class Util {
 		return Math.max(add.getCount() + to.getCount() - to.getMaxStackSize(), 0);
 	}
 	
-	public static int getSkyLight(World world, BlockPos pos) {
-		return Math.max(world.getBrightness(LightType.SKY, pos) - world.getSkyDarken(), 0);
+	public static int getSkyLight(Level world, BlockPos pos) {
+		return Math.max(world.getBrightness(LightLayer.SKY, pos) - world.getSkyDarken(), 0);
 	}
 	
 	public static ItemStack mergeStack(ItemStack add, ItemStack to) {

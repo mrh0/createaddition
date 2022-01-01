@@ -10,22 +10,22 @@ import com.mrh0.createaddition.mixin.AbstractFurnaceMixin;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
-import net.minecraft.block.AbstractFurnaceBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
 	
-	public AbstractFurnaceTileEntity cache;
+	public AbstractFurnaceBlockEntity cache;
 	private boolean isFurnaceEngine = false;
 	public static final int CONSUMPTION = Config.HEATER_NORMAL_CONSUMPTION.get(),
 			CONSUMPTION_ENGINE = Config.HEATER_FURNACE_ENGINE_CONSUMPTION.get();
@@ -37,8 +37,8 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	MAX_OUT = 0,
 	CAPACITY = Config.HEATER_CAPACITY.get();
 	
-	public HeaterTileEntity(TileEntityType<?> tileEntityTypeIn) {
-		super(tileEntityTypeIn, CAPACITY, MAX_IN, MAX_OUT);
+	public HeaterTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
 		setLazyTickRate(20);
 	}
 
@@ -70,7 +70,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 			litState =  IEHeaterOptional.externalHeater(cache, energy);
 		}*/
 		
-		IIntArray data = ((AbstractFurnaceMixin)cache).getDataAccess();
+		ContainerData data = ((AbstractFurnaceMixin)cache).getDataAccess();
 		timeout--;
 		if(timeout < 0)
 			timeout = 0;
@@ -92,9 +92,9 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	
 	public void refreshCache() {
 		Direction d = getBlockState().getValue(HeaterBlock.FACING);
-		TileEntity te = level.getBlockEntity(worldPosition.relative(d));
-		if(te instanceof AbstractFurnaceTileEntity)
-			cache = (AbstractFurnaceTileEntity) te;
+		BlockEntity te = level.getBlockEntity(worldPosition.relative(d));
+		if(te instanceof AbstractFurnaceBlockEntity)
+			cache = (AbstractFurnaceBlockEntity) te;
 		else
 			cache = null;
 		isFurnaceEngine = hasFurnaceEngine();
@@ -146,18 +146,18 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	}
 	
 	@Override
-	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
 		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
 		
-		tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent("block.createaddition.heater.info").withStyle(TextFormatting.WHITE)));
+		tooltip.add(new TextComponent(spacing)
+				.append(new TranslatableComponent("block.createaddition.heater.info").withStyle(ChatFormatting.WHITE)));
 		
 		if(isFurnaceEngine && !ALLOW_ENGINE)
-			tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent("block.createaddition.heater.engine_heating_disabled").withStyle(TextFormatting.RED)));
+			tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("block.createaddition.heater.engine_heating_disabled").withStyle(ChatFormatting.RED)));
 		
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")).withStyle(TextFormatting.AQUA));
+		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Multimeter.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")).withStyle(ChatFormatting.AQUA));
 		return true;
 	}
 }

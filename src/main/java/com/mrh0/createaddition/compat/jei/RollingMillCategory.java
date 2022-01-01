@@ -3,7 +3,7 @@ package com.mrh0.createaddition.compat.jei;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
@@ -12,7 +12,7 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.ingredients.IIngredients;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 
@@ -51,12 +51,12 @@ public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 	}
 
 	@Override
-	public void draw(RollingRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-		AllGuiTextures.JEI_SLOT.draw(matrixStack, 14, 8);
-		AllGuiTextures.JEI_ARROW.draw(matrixStack, 85, 32);
-		AllGuiTextures.JEI_DOWN_ARROW.draw(matrixStack, 43, 4);
+	public void draw(RollingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+		AllGuiTextures.JEI_SLOT.render(matrixStack, 14, 8);
+		AllGuiTextures.JEI_ARROW.render(matrixStack, 85, 32);
+		AllGuiTextures.JEI_DOWN_ARROW.render(matrixStack, 43, 4);
 		rolling_mill.draw(matrixStack, 48, 27);
 
-		getRenderedSlot(recipe, 0).draw(matrixStack, 139, 27);
+		getRenderedSlot(recipe, 0).render(matrixStack, 139, 27);
 	}
 }

@@ -2,9 +2,9 @@ package com.mrh0.createaddition.recipe.crude_burning;
 
 import com.mrh0.createaddition.CreateAddition;
 
-import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.world.item.crafting.RecipeType;
 
-public class CrudeBurningRecipeType implements IRecipeType<CrudeBurningRecipe> {
+public class CrudeBurningRecipeType implements RecipeType<CrudeBurningRecipe> {
 	
 	@Override
 	public String toString() {

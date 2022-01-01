@@ -10,17 +10,18 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.foundation.utility.Lang;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -38,20 +39,20 @@ public class AlternatorTileEntity extends KineticTileEntity {
 		STRESS = Config.BASELINE_STRESS.get();
 	private static final double EFFICIENCY = Config.ALTERNATOR_EFFICIENCY.get();
 
-	public AlternatorTileEntity(TileEntityType<?> typeIn) {
-		super(typeIn);
+	public AlternatorTileEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
+		super(typeIn, pos, state);
 		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		lazyEnergy = LazyOptional.of(() -> energy);
 	}
 	
 	@Override
-	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
 		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.production").withStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
-				.withStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").withStyle(TextFormatting.DARK_GRAY)));
+		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Multimeter.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
+				.withStyle(ChatFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
 		added = true;
 		return added;
 	}
@@ -79,13 +80,13 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundNBT compound, boolean clientPacket) {
-		super.fromTag(state, compound, clientPacket);
+	public void read(CompoundTag compound, boolean clientPacket) {
+		super.read(compound, clientPacket);
 		energy.read(compound);
 	}
 	
 	@Override
-	public void write(CompoundNBT compound, boolean clientPacket) {
+	public void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
 		energy.write(compound);
 	}
@@ -147,7 +148,7 @@ public class AlternatorTileEntity extends KineticTileEntity {
 		if(level.isClientSide())
 			return;
 		for(Direction side : Direction.values()) {
-			TileEntity te = level.getBlockEntity(worldPosition.relative(side));
+			BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
 			if(te == null) {
 				setCache(side, LazyOptional.empty());
 				continue;
@@ -203,10 +204,5 @@ public class AlternatorTileEntity extends KineticTileEntity {
 				return escacheWest.orElse(null);
 		}
 		return null;
-	}
-
-	@Override
-	public World getWorld() {
-		return getLevel();
 	}
 }

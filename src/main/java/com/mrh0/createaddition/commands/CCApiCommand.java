@@ -2,29 +2,29 @@ package com.mrh0.createaddition.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.HoverEvent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
 
 public class CCApiCommand {
-	public static void register(CommandDispatcher<CommandSource> dispather) {
+	public static void register(CommandDispatcher<CommandSourceStack> dispather) {
 		dispather.register(Commands.literal("cca_api").requires(source -> source.hasPermission(0))
 			.executes(context -> {
-				PlayerEntity p =  context.getSource().getPlayerOrException();
+				Player p =  context.getSource().getPlayerOrException();
 				String link = "https://github.com/mrh0/createaddition/blob/main/COMPUTERCRAFT.md";
-				TextComponent text = new TranslationTextComponent("createaddition.command.cca_api.link");
+				MutableComponent text = new TranslatableComponent("createaddition.command.cca_api.link");
 				text.withStyle(style -> {
-					return style.applyFormats(TextFormatting.AQUA, TextFormatting.UNDERLINE)
-							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent(link)))
+					return style.applyFormats(ChatFormatting.AQUA, ChatFormatting.UNDERLINE)
+							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent(link)))
 							.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link));
 				});
-				p.sendMessage(text, PlayerEntity.createPlayerUUID(p.getGameProfile()));
+				p.sendMessage(text, Player.createPlayerUUID(p.getGameProfile()));
 				return 1;
 			}
 		));

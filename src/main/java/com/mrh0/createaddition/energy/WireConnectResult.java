@@ -1,33 +1,34 @@
 package com.mrh0.createaddition.energy;
 
-import net.minecraft.util.text.*;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public enum WireConnectResult {
 	
-	LINKED(new TranslationTextComponent("statusbar.createaddition.wire.linked")),
-	LINKED_IN(new TranslationTextComponent("statusbar.createaddition.wire.linked_in")),
-	LINKED_OUT(new TranslationTextComponent("statusbar.createaddition.wire.linked_out")),
+	LINKED(new TranslatableComponent("statusbar.createaddition.wire.linked")),
+	LINKED_IN(new TranslatableComponent("statusbar.createaddition.wire.linked_in")),
+	LINKED_OUT(new TranslatableComponent("statusbar.createaddition.wire.linked_out")),
 	
-	CONNECT(new TranslationTextComponent("statusbar.createaddition.wire.connect")),
-	CONNECT_IN(new TranslationTextComponent("statusbar.createaddition.wire.connect_in")),
-	CONNECT_OUT(new TranslationTextComponent("statusbar.createaddition.wire.connect_out")),
+	CONNECT(new TranslatableComponent("statusbar.createaddition.wire.connect")),
+	CONNECT_IN(new TranslatableComponent("statusbar.createaddition.wire.connect_in")),
+	CONNECT_OUT(new TranslatableComponent("statusbar.createaddition.wire.connect_out")),
 	
-	LONG(new TranslationTextComponent("statusbar.createaddition.wire.long")),
-	OBSTRUCTED(new TranslationTextComponent("statusbar.createaddition.wire.obstructed")),
-	COUNT(new TranslationTextComponent("statusbar.createaddition.wire.count")),
-	REMOVED(new TranslationTextComponent("statusbar.createaddition.wire.removed")),
-	EXISTS(new TranslationTextComponent("statusbar.createaddition.wire.exists")),
-	NO_CONNECTION(new TranslationTextComponent("statusbar.createaddition.wire.no_connection")),
-	INVALID(new TranslationTextComponent("statusbar.createaddition.wire.invalid"))
+	LONG(new TranslatableComponent("statusbar.createaddition.wire.long")),
+	OBSTRUCTED(new TranslatableComponent("statusbar.createaddition.wire.obstructed")),
+	COUNT(new TranslatableComponent("statusbar.createaddition.wire.count")),
+	REMOVED(new TranslatableComponent("statusbar.createaddition.wire.removed")),
+	EXISTS(new TranslatableComponent("statusbar.createaddition.wire.exists")),
+	NO_CONNECTION(new TranslatableComponent("statusbar.createaddition.wire.no_connection")),
+	INVALID(new TranslatableComponent("statusbar.createaddition.wire.invalid"))
 	;
 	
-	private final ITextComponent message;
+	private final Component message;
 	
-	private WireConnectResult(ITextComponent message) {
+	private WireConnectResult(Component message) {
 		this.message = message;
 	}
 	
-	public ITextComponent getMessage() {
+	public Component getMessage() {
 		return message;
 	}
 	

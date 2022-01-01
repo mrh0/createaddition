@@ -17,16 +17,17 @@ import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollVal
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour.StepContext;
 import com.simibubi.create.foundation.utility.Lang;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -52,8 +53,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	private boolean active = false;
 
-	public ElectricMotorTileEntity(TileEntityType<? extends ElectricMotorTileEntity> type) {
-		super(type);
+	public ElectricMotorTileEntity(BlockEntityType<? extends ElectricMotorTileEntity> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		lazyEnergy = LazyOptional.of(() -> energy);
 		if(CreateAddition.CC_ACTIVE) {
@@ -104,11 +105,11 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	@Override
-	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
-				.withStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").withStyle(TextFormatting.DARK_GRAY)));
+		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Multimeter.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
+				.withStyle(ChatFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
 		added = true;
 		return added;
 	}
@@ -161,14 +162,14 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundNBT compound, boolean clientPacket) {
-		super.fromTag(state, compound, clientPacket);
+	public void read(CompoundTag compound, boolean clientPacket) {
+		super.read(compound, clientPacket);
 		energy.read(compound);
 		active = compound.getBoolean("active");
 	}
 	
 	@Override
-	public void write(CompoundNBT compound, boolean clientPacket) {
+	public void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
 		energy.write(compound);
 		compound.putBoolean("active", active);
@@ -307,10 +308,5 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	public int getEnergyConsumption() {
 		return getEnergyConsumptionRate(generatedSpeed.getValue());
-	}
-
-	@Override
-	public World getWorld() {
-		return getLevel();
 	}
 }

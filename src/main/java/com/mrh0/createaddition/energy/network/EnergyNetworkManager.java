@@ -5,14 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.LevelAccessor;
+
 
 public class EnergyNetworkManager {
-	public static Map<IWorld, EnergyNetworkManager> instances = new HashMap<>();
+	public static Map<LevelAccessor, EnergyNetworkManager> instances = new HashMap<>();
 	
 	private List<EnergyNetwork> networks;
 	
-	public EnergyNetworkManager(IWorld world) {
+	public EnergyNetworkManager(LevelAccessor world) {
 		instances.put(world, this);
 		networks = new ArrayList<EnergyNetwork>();
 	}
@@ -35,7 +36,7 @@ public class EnergyNetworkManager {
 		networks = keep;
 	}
 	
-	public static void tickWorld(IWorld world) {
+	public static void tickWorld(LevelAccessor world) {
 		if(instances == null)
 			return;
 		if(instances.get(world) == null)

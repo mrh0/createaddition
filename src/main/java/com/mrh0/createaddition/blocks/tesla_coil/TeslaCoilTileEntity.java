@@ -20,15 +20,16 @@ import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemS
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -52,8 +53,8 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	
 	private static DamageSource dmgSource = new DamageSource("tesla_coil");
 	
-	public TeslaCoilTileEntity(TileEntityType<?> tileEntityTypeIn) {
-		super(tileEntityTypeIn, CAPACITY, MAX_IN, 0);
+	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, 0);
 	}
 	
 	public BeltProcessingBehaviour processingBehaviour;
@@ -92,10 +93,10 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			return 0f;
 		if (itemStack.getCapability(CapabilityEnergy.ENERGY).isPresent())
 			return getItemCharge(itemStack.getCapability(CapabilityEnergy.ENERGY).orElse(null));
-		if (itemStack.getItem() == CAItems.CHARGING_CHROMATIC_COMPOUND.get())
+		/*if (itemStack.getItem() == CAItems.CHARGING_CHROMATIC_COMPOUND.get())
 			return (float) ChargingChromaticCompound.getCharge(itemStack) * 90f;
 		if (itemStack.getItem() == CAItems.OVERCHARGED_ALLOY.get())
-			return 90f;
+			return 90f;*/
 		return 0f;
 	}
 	
@@ -131,18 +132,18 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	private void doDmg() {
 		energy.internalConsumeEnergy(HURT_ENERGY_REQUIRED);
 		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoil.FACING).getOpposite());
-		List<LivingEntity> ents = getWorld().getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(origin).inflate(HURT_RANGE));
+		List<LivingEntity> ents = getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(HURT_RANGE));
 		for(LivingEntity e : ents) {
 			int dmg = HURT_DMG_MOB;
 			int time = HURT_EFFECT_TIME_MOB;
-			if(e instanceof PlayerEntity) {
+			if(e instanceof Player) {
 				dmg = HURT_DMG_PLAYER;
 				time = HURT_EFFECT_TIME_PLAYER;
 			}
 			if(dmg > 0)
 				e.hurt(dmgSource, dmg);
 			if(time > 0)
-				e.addEffect(new EffectInstance(CAEffects.SHOCKING, time));
+				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING, time));
 		}
 	}
 	
@@ -153,7 +154,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		super.tick();
 		if(level.isClientSide())
 			return;
-		int signal = getWorld().getBestNeighborSignal(getBlockPos());
+		int signal = getLevel().getBestNeighborSignal(getBlockPos());
 		//System.out.println(signal + ":" + (energy.getEnergyStored() >= HURT_ENERGY_REQUIRED));
 		if(signal > 0 && energy.getEnergyStored() >= HURT_ENERGY_REQUIRED)
 			poweredTimer = 10;
@@ -181,10 +182,10 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		ItemStack stack = transported.stack;
 		if(stack == null)
 			return ProcessingResult.PASS;
-		if(stack.getItem() == AllItems.CHROMATIC_COMPOUND.get()) {
+		/*if(stack.getItem() == AllItems.CHROMATIC_COMPOUND.get()) {
 			TransportedItemStack res = new TransportedItemStack(new ItemStack(CAItems.CHARGING_CHROMATIC_COMPOUND.get(), stack.getCount()));
 			handler.handleProcessingOnItem(transported, TransportedResult.convertTo(res));
-		}
+		}*/
 		if(chargeStack(stack, transported, handler)) {
 			if(energy.getEnergyStored() >= stack.getCount())
 				poweredTimer = 10;
@@ -195,7 +196,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 				poweredTimer = 10;
 			return ProcessingResult.HOLD;
 		}
-		if (stack.getItem() == CAItems.CHARGING_CHROMATIC_COMPOUND.get()) {
+		/*if (stack.getItem() == CAItems.CHARGING_CHROMATIC_COMPOUND.get()) {
 			if(energy.getEnergyStored() >= stack.getCount())
 				poweredTimer = 10;
 			
@@ -208,20 +209,17 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 				handler.handleProcessingOnItem(transported, TransportedResult.convertTo(res));
 			}
 			return ProcessingResult.HOLD;
-		}
+		}*/
 		return ProcessingResult.PASS;
 	}
 	
 	protected boolean chargeStack(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
 			return false;
-		System.out.println("C1");
 		IEnergyStorage es = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
 		if(es.receiveEnergy(1, true) != 1)
 			return false;
-		System.out.println("C2");
 		int r = energy.internalConsumeEnergy(es.receiveEnergy(Math.min(getConsumption(), energy.getEnergyStored()), false));
-		System.out.println("C3 " + r);
 		return true;
 	}
 	
@@ -236,7 +234,8 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			TransportedItemStack left = transported.copy();
 			left.stack.shrink(1);
 			List<TransportedItemStack> r = new ArrayList<>();
-			AE2.getChargedCertusQuartz(1).ifPresent(is -> r.add(new TransportedItemStack(is)));
+			r.add(new TransportedItemStack(AE2.getChargedCertusQuartz(1)));
+			//.ifPresent(is -> r.add(new TransportedItemStack(is)));
 			handler.handleProcessingOnItem(transported, TransportedResult.convertToAndLeaveHeld(r, left));
 		}
 		return true;

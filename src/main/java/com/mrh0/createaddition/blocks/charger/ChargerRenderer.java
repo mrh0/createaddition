@@ -1,5 +1,5 @@
 package com.mrh0.createaddition.blocks.charger;
-
+/*
 import java.util.Random;
 
 import com.jozufozu.flywheel.util.transform.MatrixTransformStack;
@@ -28,12 +28,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 
-public class ChargerRenderer extends /*SafeTileEntityRenderer<ChargerTileEntity> */ TileEntityRenderer<ChargerTileEntity> {
+public class ChargerRenderer extends /*SafeTileEntityRenderer<ChargerTileEntity> *//* TileEntityRenderer<ChargerTileEntity> {
 
 	public ChargerRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
 		super(rendererDispatcherIn);
 	}
-	
+	*/
 	/*@Override
 	protected void renderSafe(ChargerTileEntity te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer,
 		int light, int overlay) {
@@ -151,7 +151,7 @@ public class ChargerRenderer extends /*SafeTileEntityRenderer<ChargerTileEntity>
 
 		ms.popPose();
 	}*/
-	
+	/*
 	private static final float u1 = 1f/16f;
 	private static final float scalar = 14f/16f;
 
@@ -174,3 +174,4 @@ public class ChargerRenderer extends /*SafeTileEntityRenderer<ChargerTileEntity>
 	}
 
 }
+*/
