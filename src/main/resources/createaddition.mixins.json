@@ -5,6 +5,7 @@
 	"compatibilityLevel": "JAVA_16",
 	"refmap": "createaddition.refmap.json",
 	"mixins": [
+		"AbstractFurnaceMixin",
 		"AbstractFurnaceMixinFix"
 	],
 	"minVersion": "0.8.5"
