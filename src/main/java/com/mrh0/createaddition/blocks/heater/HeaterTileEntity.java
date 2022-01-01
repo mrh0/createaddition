@@ -70,7 +70,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 			litState =  IEHeaterOptional.externalHeater(cache, energy);
 		}*/
 		
-		ContainerData data = cache.dataAccess;
+		ContainerData data = ((AbstractFurnaceMixin)cache).getDataAccess();
 		timeout--;
 		if(timeout < 0)
 			timeout = 0;
