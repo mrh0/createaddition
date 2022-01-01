@@ -2,11 +2,11 @@
 	"required": true,
 	"priority": 1000,
 	"package": "com.mrh0.createaddition.mixin",
-	"compatibilityLevel": "JAVA_17",
+	"compatibilityLevel": "JAVA_8",
 	"refmap": "createaddition.refmap.json",
 	"mixins": [
 		"AbstractFurnaceMixin",
 		"AbstractFurnaceMixinFix"
 	],
-	"minVersion": "0.8.5"
+	"minVersion": "0.8"
 }

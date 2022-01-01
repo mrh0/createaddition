@@ -2,30 +2,29 @@ package com.mrh0.createaddition.energy;
 
 import java.util.HashMap;
 
-import com.mojang.math.Vector3d;
-import com.mojang.math.Vector3f;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.util.Util;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.Containers;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.World;
 
 public interface IWireNode {
 	
 	public static final int MAX_LENGTH = Config.CONNECTOR_MAX_LENGTH.get();
 	
-	public Vec3 getNodeOffset(int node);
+	public Vector3f getNodeOffset(int node);
 	
-	public default int getNodeFromPos(Vec3 vector3d) {
+	public default int getNodeFromPos(Vector3d vector3d) {
 		return 0;
 	}
 	
@@ -33,11 +32,11 @@ public interface IWireNode {
 		return 1;
 	}
 	
-	public static boolean hasPos(CompoundTag nbt, int node) {
+	public static boolean hasPos(CompoundNBT nbt, int node) {
 		return nbt.contains("x"+node) && nbt.contains("y"+node) && nbt.contains("z"+node);
 	}
 	
-	public static boolean hasNode(CompoundTag nbt, int node) {
+	public static boolean hasNode(CompoundNBT nbt, int node) {
 		return hasPos(nbt, node) && nbt.contains("type"+node);
 	}
 	
@@ -49,7 +48,7 @@ public interface IWireNode {
 		return -1;
 	}
 	
-	public default CompoundTag writeNode(CompoundTag nbt, int node) {
+	public default CompoundNBT writeNode(CompoundNBT nbt, int node) {
 		BlockPos pos = getNodePos(node);
 		if(pos == null)
 			return  nbt;
@@ -64,7 +63,7 @@ public interface IWireNode {
 		return nbt;
 	}
 	
-	public default void readNode(CompoundTag nbt, int node) {
+	public default void readNode(CompoundNBT nbt, int node) {
 		if(!hasNode(nbt, node))
 			return;
 		BlockPos pos = new BlockPos(nbt.getInt("x"+node), nbt.getInt("y"+node), nbt.getInt("z"+node));
@@ -74,7 +73,7 @@ public interface IWireNode {
 		setNode(node, index, pos, type);
 	}
 	
-	public static void clearNode(CompoundTag nbt, int node) {
+	public static void clearNode(CompoundNBT nbt, int node) {
 		nbt.remove("x"+node);
 		nbt.remove("y"+node);
 		nbt.remove("z"+node);
@@ -125,11 +124,11 @@ public interface IWireNode {
 	public BlockPos getMyPos();
 	public IWireNode getNode(int node);
 	
-	public static WireConnectResult connect(Level world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
-		BlockEntity te1 = world.getBlockEntity(pos1);
+	public static WireConnectResult connect(World world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
+		TileEntity te1 = world.getBlockEntity(pos1);
 		if(te1 == null)
 			return WireConnectResult.INVALID;
-		BlockEntity te2 = world.getBlockEntity(pos2);
+		TileEntity te2 = world.getBlockEntity(pos2);
 		if(te2 == null)
 			return WireConnectResult.INVALID;
 		if(te1 == te2)
@@ -160,8 +159,8 @@ public interface IWireNode {
 		return WireConnectResult.getLink(wn2.isNodeInput(node2), wn2.isNodeOutput(node2));
 	}
 	
-	public static WireType getTypeOfConnection(Level world, BlockPos pos1, BlockPos pos2) {
-		BlockEntity te1 = world.getBlockEntity(pos1);
+	public static WireType getTypeOfConnection(World world, BlockPos pos1, BlockPos pos2) {
+		TileEntity te1 = world.getBlockEntity(pos1);
 		if(te1 == null)
 			return null;
 		if(!(te1 instanceof IWireNode))
@@ -176,11 +175,11 @@ public interface IWireNode {
 		return wn1.getNodeType(node1);
 	}
 	
-	public static WireConnectResult disconnect(Level world, BlockPos pos1, BlockPos pos2) {
-		BlockEntity te1 = world.getBlockEntity(pos1);
+	public static WireConnectResult disconnect(World world, BlockPos pos1, BlockPos pos2) {
+		TileEntity te1 = world.getBlockEntity(pos1);
 		if(te1 == null)
 			return WireConnectResult.INVALID;
-		BlockEntity te2 = world.getBlockEntity(pos2);
+		TileEntity te2 = world.getBlockEntity(pos2);
 		if(te2 == null)
 			return WireConnectResult.INVALID;
 		if(te1 == te2)
@@ -209,10 +208,10 @@ public interface IWireNode {
 		return WireConnectResult.REMOVED;
 	}
 	
-	public static IWireNode getWireNode(Level world, BlockPos pos) {
+	public static IWireNode getWireNode(World world, BlockPos pos) {
 		if(pos == null)
 			return null;
-		BlockEntity te = world.getBlockEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 		if(te == null)
 			return null;
 		if(!(te instanceof IWireNode))
@@ -228,11 +227,11 @@ public interface IWireNode {
 		return true;
 	}
 	
-	public static void dropWire(Level world, BlockPos pos, ItemStack stack) {
-		Containers.dropContents(world, pos, NonNullList.of(ItemStack.EMPTY, stack));
+	public static void dropWire(World world, BlockPos pos, ItemStack stack) {
+		InventoryHelper.dropContents(world, pos, NonNullList.of(ItemStack.EMPTY, stack));
 	}
 	
-	public default void dropWires(Level world) {
+	public default void dropWires(World world) {
 		NonNullList<ItemStack> stacks = NonNullList.withSize(WireType.values().length, ItemStack.EMPTY);
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
@@ -248,7 +247,7 @@ public interface IWireNode {
 		}
 	}
 	
-	public default void dropWires(Level world, Player player) {
+	public default void dropWires(World world, PlayerEntity player) {
 
 		NonNullList<ItemStack> stacks1 = NonNullList.withSize(WireType.values().length, ItemStack.EMPTY);
 		NonNullList<ItemStack> stacks2 = NonNullList.withSize(WireType.values().length, ItemStack.EMPTY);
@@ -256,7 +255,7 @@ public interface IWireNode {
 			if(getNodeType(i) == null)
 				continue;
 			int n = getNodeType(i).getIndex();
-			ItemStack spools = Util.findStack(CAItems.SPOOL.get().asItem(), player.getInventory());
+			ItemStack spools = Util.findStack(CAItems.SPOOL.get().getItem(), player.inventory);
 			if(spools.getCount() > 0) {
 				if(stacks1.get(n).isEmpty())
 					stacks1.set(n, getNodeType(i).getSourceDrop());
@@ -273,11 +272,11 @@ public interface IWireNode {
 		}
 		for(ItemStack stack : stacks1) {
 			if(!stack.isEmpty())
-				dropWire(world, getMyPos(), player.getInventory().add(stack) ? ItemStack.EMPTY : stack);
+				dropWire(world, getMyPos(), player.inventory.add(stack) ? ItemStack.EMPTY : stack);
 		}
 		for(ItemStack stack : stacks2) {
 			if(!stack.isEmpty())
-				dropWire(world, getMyPos(), player.getInventory().add(stack) ? ItemStack.EMPTY : stack);
+				dropWire(world, getMyPos(), player.inventory.add(stack) ? ItemStack.EMPTY : stack);
 		}
 	}
 	
@@ -287,7 +286,7 @@ public interface IWireNode {
 		return true;
 	}
 	
-	public default boolean awakeNetwork(Level world) {
+	public default boolean awakeNetwork(World world) {
 		boolean b = false;
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(!isNetworkValid(i)) {

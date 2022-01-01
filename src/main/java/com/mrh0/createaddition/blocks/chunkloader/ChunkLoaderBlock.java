@@ -1,10 +1,13 @@
 package com.mrh0.createaddition.blocks.chunkloader;
-/*
+
 import com.simibubi.create.foundation.block.ITE;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockReader;
+
+import net.minecraft.block.AbstractBlock.Properties;
 
 public class ChunkLoaderBlock extends Block implements ITE<ChunkLoaderTileEntity> {
 	
@@ -13,8 +16,13 @@ public class ChunkLoaderBlock extends Block implements ITE<ChunkLoaderTileEntity
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return super.createTileEntity(state, world);
+	}
+	
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return super.hasTileEntity(state);
 	}
 
 	@Override
@@ -22,4 +30,3 @@ public class ChunkLoaderBlock extends Block implements ITE<ChunkLoaderTileEntity
 		return ChunkLoaderTileEntity.class;
 	}
 }
-*/

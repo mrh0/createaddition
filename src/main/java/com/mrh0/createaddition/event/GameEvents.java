@@ -1,9 +1,12 @@
 package com.mrh0.createaddition.event;
 
 import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
+import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.network.ObservePacket;
 
+import net.minecraft.potion.Effect;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

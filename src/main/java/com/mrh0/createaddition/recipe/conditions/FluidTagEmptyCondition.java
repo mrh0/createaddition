@@ -2,12 +2,11 @@ package com.mrh0.createaddition.recipe.conditions;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.SerializationTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.tags.ITag;
+import net.minecraft.tags.TagCollectionManager;
+import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
 
@@ -34,7 +33,7 @@ public class FluidTagEmptyCondition implements ICondition {
 
 	@Override
 	public boolean test() {
-		Tag<Fluid> tag = SerializationTags.getInstance().getOrEmpty(Registry.FLUID_REGISTRY).getTag(tag_name);//TagCollectionManager.getInstance().getFluids().getTag(tag_name);
+		ITag<Fluid> tag = TagCollectionManager.getInstance().getFluids().getTag(tag_name);
 		//System.out.println("fluidTag:" + tag_name + ":" + (tag == null || tag.getValues().isEmpty()));
 		return tag == null || tag.getValues().isEmpty();
 	}
@@ -54,7 +53,7 @@ public class FluidTagEmptyCondition implements ICondition {
 
 		@Override
 		public FluidTagEmptyCondition read(JsonObject json) {
-			return new FluidTagEmptyCondition(new ResourceLocation(GsonHelper.getAsString(json, "fluidTag")));
+			return new FluidTagEmptyCondition(new ResourceLocation(JSONUtils.getAsString(json, "fluidTag")));
 		}
 
 		@Override

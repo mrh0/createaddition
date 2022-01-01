@@ -6,20 +6,21 @@ import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition.Builder;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
+
+import net.minecraft.block.AbstractBlock.Properties;
 
 public class HeaterBlock extends Block implements ITE<HeaterTileEntity>, IWrenchable {
 	
@@ -34,7 +35,7 @@ public class HeaterBlock extends Block implements ITE<HeaterTileEntity>, IWrench
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return HEATER_SHAPE.get(state.getValue(FACING).getOpposite());
 	}
 
@@ -44,8 +45,13 @@ public class HeaterBlock extends Block implements ITE<HeaterTileEntity>, IWrench
 	}
 	
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.HEATER.create(pos, state);
+	public boolean hasTileEntity(BlockState state) {
+		return true;
+	}
+	
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return CATileEntities.HEATER.create();
 	}
 	
 	@Override
@@ -54,24 +60,19 @@ public class HeaterBlock extends Block implements ITE<HeaterTileEntity>, IWrench
 	}
 	
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext c) {
+	public BlockState getStateForPlacement(BlockItemUseContext c) {
 		return this.defaultBlockState().setValue(FACING, c.getClickedFace().getOpposite());
 	}
 	
 	@Override
-	public void onNeighborChange(BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor) {
+	public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor) {
 		super.onNeighborChange(state, world, pos, neighbor);
-		BlockEntity te = world.getBlockEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 		if(te == null)
 			return;
 		if(!(te instanceof HeaterTileEntity))
 			return;
 		HeaterTileEntity hte = (HeaterTileEntity) te;
 		hte.refreshCache();
-	}
-
-	@Override
-	public BlockEntityType<? extends HeaterTileEntity> getTileEntityType() {
-		return CATileEntities.HEATER.get();
 	}
 }

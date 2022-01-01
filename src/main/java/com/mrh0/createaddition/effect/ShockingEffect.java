@@ -2,14 +2,13 @@ package com.mrh0.createaddition.effect;
 
 import com.mrh0.createaddition.CreateAddition;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectType;
+import net.minecraft.util.ResourceLocation;
 
-
-public class ShockingEffect extends MobEffect {
+public class ShockingEffect extends Effect {
 	public ShockingEffect() {
-		super(MobEffectCategory.HARMFUL, 15453236);
+		super(EffectType.HARMFUL, 15453236);
 		setRegistryName(new ResourceLocation(CreateAddition.MODID, "shocking"));
 	}
 }

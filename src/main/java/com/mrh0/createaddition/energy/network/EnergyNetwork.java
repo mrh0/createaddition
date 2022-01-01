@@ -6,9 +6,8 @@ import java.util.Map;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class EnergyNetwork {
 	
@@ -26,7 +25,7 @@ public class EnergyNetwork {
 	
 	private static int MAX_BUFF = Math.max(Config.CONNECTOR_MAX_INPUT.get(), Config.CONNECTOR_MAX_OUTPUT.get());
 	
-	public EnergyNetwork(Level world) {
+	public EnergyNetwork(World world) {
 		this.inBuff = 0;
 		this.outBuff = 0;
 		this.outBuffRetained = 0;
@@ -110,7 +109,7 @@ public class EnergyNetwork {
 		return en;
 	}*/
 	
-	public static EnergyNetwork nextNode(Level world, EnergyNetwork en, Map<String, IWireNode> visited, IWireNode current, int index) {
+	public static EnergyNetwork nextNode(World world, EnergyNetwork en, Map<String, IWireNode> visited, IWireNode current, int index) {
 		if(visited.containsKey(posKey(current.getMyPos(), index)))
 			return null; // should never matter?
 		current.setNetwork(index, en);

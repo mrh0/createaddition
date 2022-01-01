@@ -2,25 +2,25 @@ package com.mrh0.createaddition.recipe.rolling;
 
 import com.mrh0.createaddition.CreateAddition;
 
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public class RollingRecipe implements Recipe<RecipeWrapper> {
+public class RollingRecipe implements IRecipe<RecipeWrapper> {
 
 	protected final ItemStack output;
 	protected final ResourceLocation id;
 	protected final Ingredient ingredient;
 	
-	public static RecipeType<RollingRecipe> TYPE = new RollingRecipeType();
+	public static IRecipeType<RollingRecipe> TYPE = new RollingRecipeType();
 	@SuppressWarnings("deprecation")
-	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "rolling"));
+	public static IRecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "rolling"));
 
 	protected RollingRecipe(Ingredient ingredient, ItemStack output, ResourceLocation id) {
 		this.output = output;
@@ -33,7 +33,7 @@ public class RollingRecipe implements Recipe<RecipeWrapper> {
 	}
 	
 	@Override
-	public boolean matches(RecipeWrapper inv, Level worldIn) {
+	public boolean matches(RecipeWrapper inv, World worldIn) {
 		if (inv.isEmpty())
 			return false;
 		return ingredient.test(inv.getItem(0));
@@ -60,13 +60,13 @@ public class RollingRecipe implements Recipe<RecipeWrapper> {
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public IRecipeSerializer<?> getSerializer() {
 		
 		return SERIALIZER;
 	}
 
 	@Override
-	public RecipeType<?> getType() {
+	public IRecipeType<?> getType() {
 		return TYPE;
 	}
 	

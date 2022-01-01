@@ -1,12 +1,13 @@
 package com.mrh0.createaddition.recipe;
 
-import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraftforge.fluids.FluidStack;
 
-public class FluidRecipeWrapper implements Container {
+public class FluidRecipeWrapper implements IInventory {
 
 	public FluidStack fluid;
 	
@@ -53,7 +54,7 @@ public class FluidRecipeWrapper implements Container {
 	}
 
 	@Override
-	public boolean stillValid(Player p_70300_1_) {
+	public boolean stillValid(PlayerEntity p_70300_1_) {
 		return true;
 	}
 

@@ -2,9 +2,9 @@ package com.mrh0.createaddition.recipe.rolling;
 
 import com.mrh0.createaddition.CreateAddition;
 
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.item.crafting.IRecipeType;
 
-public class RollingRecipeType implements RecipeType<RollingRecipe> {
+public class RollingRecipeType implements IRecipeType<RollingRecipe> {
 
 	@Override
 	public String toString() {

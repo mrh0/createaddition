@@ -6,41 +6,44 @@ import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.foundation.block.ITE;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Containers;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.AbstractFurnaceBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+
+import net.minecraft.block.AbstractBlock.Properties;
 
 public class FurnaceBurner extends AbstractFurnaceBlock implements ITE<FurnaceBurnerTileEntity> {
 
 	public FurnaceBurner(Properties props) {
 		super(props);
 	}
+
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.FURNACE_BURNER.create(pos, state);
+	public TileEntity newBlockEntity(IBlockReader world) {
+		return CATileEntities.FURNACE_BURNER.create();
 	}
 
 	@Override
-	protected void openContainer(Level world, BlockPos pos, Player player) {
+	protected void openContainer(World world, BlockPos pos, PlayerEntity player) {
 		if(world.isClientSide())
 			return;
-		BlockEntity tileentity = world.getBlockEntity(pos);
+		TileEntity tileentity = world.getBlockEntity(pos);
 		if (tileentity instanceof FurnaceBurnerTileEntity) {
 			FurnaceBurnerTileEntity fbte = (FurnaceBurnerTileEntity) tileentity;
 			ItemStack currentStack = fbte.getItem(FurnaceBurnerTileEntity.FUEL_SLOT);
 			if(player.isShiftKeyDown()) {
 				if(currentStack.getCount() > 0) {
-					Containers.dropItemStack(world, player.position().x, player.position().y, player.position().z, currentStack.copy());
+					InventoryHelper.dropItemStack(world, player.position().x, player.position().y, player.position().z, currentStack.copy());
 					fbte.removeItemNoUpdate(FurnaceBurnerTileEntity.FUEL_SLOT);
 				}
 				
@@ -82,7 +85,7 @@ public class FurnaceBurner extends AbstractFurnaceBlock implements ITE<FurnaceBu
 
 	}
 
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
 		if (!world.isClientSide())
 			return;
 		if (state.getValue(LIT)) {
@@ -90,7 +93,7 @@ public class FurnaceBurner extends AbstractFurnaceBlock implements ITE<FurnaceBu
 			double d1 = (double) pos.getY();
 			double d2 = (double) pos.getZ() + 0.5D;
 			if (rand.nextDouble() < 0.1D)
-				world.playLocalSound(d0, d1, d2, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F,
+				world.playLocalSound(d0, d1, d2, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F,
 						false);
 
 			Direction direction = state.getValue(FACING);
@@ -108,9 +111,5 @@ public class FurnaceBurner extends AbstractFurnaceBlock implements ITE<FurnaceBu
 	@Override
 	public Class<FurnaceBurnerTileEntity> getTileEntityClass() {
 		return FurnaceBurnerTileEntity.class;
-	}
-	@Override
-	public BlockEntityType<? extends FurnaceBurnerTileEntity> getTileEntityType() {
-		return CATileEntities.FURNACE_BURNER.get();
 	}
 }

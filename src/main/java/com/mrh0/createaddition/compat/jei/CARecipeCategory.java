@@ -3,12 +3,11 @@ package com.mrh0.createaddition.compat.jei;
 import com.mrh0.createaddition.CreateAddition;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import mezz.jei.api.gui.drawable.IDrawable;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 
-public abstract class CARecipeCategory<T extends Recipe<?>> extends CreateRecipeCategory<T> {
+public abstract class CARecipeCategory<T extends IRecipe<?>> extends CreateRecipeCategory<T> {
 
 	public CARecipeCategory(IDrawable icon, IDrawable background) {
 		super(icon, background);
@@ -21,7 +20,7 @@ public abstract class CARecipeCategory<T extends Recipe<?>> extends CreateRecipe
 	}
 	
 	@Override
-	public Component getTitle() {
-		return new TranslatableComponent( CreateAddition.MODID + ".recipe." + name);
+	public String getTitle() {
+		return new TranslationTextComponent( CreateAddition.MODID + ".recipe." + name).getString(Integer.MAX_VALUE);
 	}
 }
