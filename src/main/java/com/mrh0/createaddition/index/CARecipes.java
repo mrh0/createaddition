@@ -7,14 +7,15 @@ import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipeSerializer
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipeSerializer;
 
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.tags.TagCollectionManager;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 
 public class CARecipes {
-	public static void register(RegistryEvent.Register<RecipeSerializer<?>> event) {
+	public static void register(RegistryEvent.Register<IRecipeSerializer<?>> event) {
 		event.getRegistry()
 			.register(new RollingRecipeSerializer().setRegistryName(new ResourceLocation(CreateAddition.MODID, "rolling")));
 		Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(CreateAddition.MODID, "rolling"), RollingRecipe.TYPE);

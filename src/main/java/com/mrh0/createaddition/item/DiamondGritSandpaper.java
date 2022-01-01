@@ -1,17 +1,11 @@
 package com.mrh0.createaddition.item;
 
-import java.util.function.Consumer;
-
 import com.mrh0.createaddition.config.Config;
 import com.simibubi.create.content.curiosities.tools.SandPaperItem;
-import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer;
-import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraft.item.ItemStack;
 
+import net.minecraft.item.Item.Properties;
 
 public class DiamondGritSandpaper extends SandPaperItem {
 
@@ -24,11 +18,5 @@ public class DiamondGritSandpaper extends SandPaperItem {
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 		return USES;
-	}
-	
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(SimpleCustomRenderer.create(this, new SandPaperItemRenderer()));
 	}
 }

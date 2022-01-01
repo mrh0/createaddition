@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
@@ -15,10 +15,10 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 
 public class CrudeBurningCategory extends CARecipeCategory<CrudeBurningRecipe> {
@@ -60,13 +60,13 @@ public class CrudeBurningCategory extends CARecipeCategory<CrudeBurningRecipe> {
 	}
 
 	@Override
-	public void draw(CrudeBurningRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+	public void draw(CrudeBurningRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
 		//AllGuiTextures.JEI_SLOT.draw(matrixStack, 14, 8);
 		//AllGuiTextures.JEI_ARROW.draw(matrixStack, 85, 32);
 		//AllGuiTextures.JEI_DOWN_ARROW.draw(matrixStack, 43, 4);
 
-		AllGuiTextures.JEI_SLOT.render(matrixStack, 80, 6);
+		AllGuiTextures.JEI_SLOT.draw(matrixStack, 80, 6);
 
-		Minecraft.getInstance().font.draw(matrixStack, new TranslatableComponent("createaddition.recipe.crude_burning.burn_time").getString(Integer.MAX_VALUE) + ": " + ((double)recipe.getBurnTime()/20d)+"s", 9, 34, 4210752);
+		Minecraft.getInstance().font.draw(matrixStack, new TranslationTextComponent("createaddition.recipe.crude_burning.burn_time").getString(Integer.MAX_VALUE) + ": " + ((double)recipe.getBurnTime()/20d)+"s", 9, 34, 4210752);
 	}
 }

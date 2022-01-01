@@ -1,27 +1,27 @@
 package com.mrh0.createaddition.ponder;
 
-import com.mojang.math.Vector3d;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.ponder.ElementLink;
-import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
-import com.simibubi.create.foundation.ponder.element.InputWindowElement;
+import com.simibubi.create.foundation.ponder.content.PonderPalette;
+import com.simibubi.create.foundation.ponder.elements.BeltItemElement;
+import com.simibubi.create.foundation.ponder.elements.InputWindowElement;
 import com.simibubi.create.foundation.utility.Pointing;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LeverBlock;
-import net.minecraft.world.level.block.state.properties.AttachFace;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-
+import net.minecraft.block.AbstractFurnaceBlock;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.LeverBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.properties.AttachFace;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 
 public class PonderScenes {
 	public static void electricMotor(SceneBuilder scene, SceneBuildingUtil util) {
@@ -47,9 +47,9 @@ public class PonderScenes {
 		scene.rotateCameraY(90);
 		scene.idle(20);
 
-		Vec3 blockSurface = util.vector.blockSurface(motor, Direction.EAST);
-		AABB point = new AABB(blockSurface, blockSurface);
-		AABB expanded = point.inflate(1 / 16f, 1 / 5f, 1 / 5f);
+		Vector3d blockSurface = util.vector.blockSurface(motor, Direction.EAST);
+		AxisAlignedBB point = new AxisAlignedBB(blockSurface, blockSurface);
+		AxisAlignedBB expanded = point.inflate(1 / 16f, 1 / 5f, 1 / 5f);
 
 		scene.overlay.chaseBoundingBoxOutline(PonderPalette.WHITE, blockSurface, point, 1);
 		scene.idle(1);
@@ -289,7 +289,7 @@ public class PonderScenes {
 		scene.idle(5);
 		scene.world.showSection(util.select.position(2, 3, 2), Direction.DOWN);
 		scene.idle(5);
-		Vec3 topOf = util.vector.topOf(depotPos);
+		Vector3d topOf = util.vector.topOf(depotPos);
 		scene.overlay.showText(50)
 			.attachKeyFrame()
 			.text("Tesla Coil will charge Items below it")

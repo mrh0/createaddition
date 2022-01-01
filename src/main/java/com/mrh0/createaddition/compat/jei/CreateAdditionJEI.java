@@ -14,9 +14,13 @@ import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.Create;
 import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
+import com.simibubi.create.content.contraptions.components.deployer.DeployerApplicationRecipe;
+import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder;
+
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -24,11 +28,13 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.IItemProvider;
+import net.minecraft.util.ResourceLocation;
 
 @JeiPlugin
 public class CreateAdditionJEI implements IModPlugin {
@@ -65,9 +71,21 @@ public class CreateAdditionJEI implements IModPlugin {
 		ALL.forEach(c -> c.recipes.forEach(s -> registration.addRecipes(s.get(), c.getUid())));
 		
 		List<ConversionRecipe> r1 = new ArrayList<>();
-		//r1.add(ConversionRecipe.create(AllItems.CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
-
+		r1.add(ConversionRecipe.create(AllItems.CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
+		//r.add(ConversionRecipe.create(CAItems.CHARGING_CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
 		registration.addRecipes(r1, new ResourceLocation("create:mystery_conversion"));
+		
+		//registration.addRecipes(DeployerApplicationRecipe.convert(findRecipesByType(AllRecipeTypes.SANDPAPER_POLISHING.getType())), AllRecipeTypes.DEPLOYING.getId());
+		
+		/*List<DeployerApplicationRecipe> r2 = new ArrayList<>();
+		r2.add(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, Create.asResource("polishing_using_deployer"))
+			.require(Ingredient.of(new ItemStack(AllItems.ROSE_QUARTZ.get())))
+			.require(ItemTags.ACACIA_LOGS)//Ingredient.of(AllItems.SAND_PAPER.get(), AllItems.RED_SAND_PAPER.get(), CAItems.DIAMOND_GRIT_SANDPAPER.get())
+			.output(new ItemStack(AllItems.POLISHED_ROSE_QUARTZ.get()))
+			.build());
+		registration.addRecipes(r2, AllRecipeTypes.DEPLOYING.getId());*/
+		
+		
 	}
 
 	@Override
@@ -78,11 +96,11 @@ public class CreateAdditionJEI implements IModPlugin {
 		//registration.addRecipeCatalyst(new ItemStack(CAItems.DIAMOND_GRIT_SANDPAPER.get()), new ResourceLocation(Create.ID, "deploying"));
 	}
 	
-	private <T extends Recipe<?>> CategoryBuilder<T> register(String name, Supplier<CreateRecipeCategory<T>> supplier) {
+	private <T extends IRecipe<?>> CategoryBuilder<T> register(String name, Supplier<CreateRecipeCategory<T>> supplier) {
 		return new CategoryBuilder<T>(name, supplier);
 	}
 	
-	private class CategoryBuilder<T extends Recipe<?>> {
+	private class CategoryBuilder<T extends IRecipe<?>> {
 		CreateRecipeCategory<T> category;
 
 		CategoryBuilder(String name, Supplier<CreateRecipeCategory<T>> category) {
@@ -90,7 +108,7 @@ public class CreateAdditionJEI implements IModPlugin {
 			this.category.setCategoryId(name);
 		}
 
-		CategoryBuilder<T> catalyst(Supplier<ItemLike> supplier) {
+		CategoryBuilder<T> catalyst(Supplier<IItemProvider> supplier) {
 			return catalystStack(() -> new ItemStack(supplier.get()
 				.asItem()));
 		}
@@ -100,7 +118,7 @@ public class CreateAdditionJEI implements IModPlugin {
 			return this;
 		}
 
-		CategoryBuilder<T> recipes(RecipeType<?> recipeTypeEntry) {
+		CategoryBuilder<T> recipes(IRecipeType<?> recipeTypeEntry) {
 			category.recipes.add(() -> findRecipesByType(recipeTypeEntry));
 			return this;
 		}
@@ -111,12 +129,12 @@ public class CreateAdditionJEI implements IModPlugin {
 		}
 	}
 	
-	static List<Recipe<?>> findRecipesByType(RecipeType<?> type) {
+	static List<IRecipe<?>> findRecipesByType(IRecipeType<?> type) {
 		return findRecipes(r -> r.getType() == type);
 	}
 	
 	@SuppressWarnings("resource")
-	static List<Recipe<?>> findRecipes(Predicate<Recipe<?>> predicate) {
+	static List<IRecipe<?>> findRecipes(Predicate<IRecipe<?>> predicate) {
 		return Minecraft.getInstance().level.getRecipeManager()
 			.getRecipes()
 			.stream()

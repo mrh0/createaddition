@@ -7,32 +7,31 @@ import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.Iterate;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Entity.RemovalReason;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Direction.Axis;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.minecraft.block.AbstractBlock.Properties;
 
 public class RollingMillBlock extends HorizontalKineticBlock implements ITE<RollingMillTileEntity> {
 
@@ -41,10 +40,10 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 	public RollingMillBlock(Properties properties) {
 		super(properties);
 	}
-	
+
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.ROLLING_MILL.create(pos, state);
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return CATileEntities.ROLLING_MILL.create();
 	}
 	
 	@Override
@@ -53,16 +52,16 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return ROLLING_MILL_SHAPE;
 	}
 	
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (!player.getItemInHand(handIn).isEmpty())
-			return InteractionResult.PASS;
+			return ActionResultType.PASS;
 		if (worldIn.isClientSide)
-			return InteractionResult.SUCCESS;
+			return ActionResultType.SUCCESS;
 
 		withTileEntityDo(worldIn, pos, rollingMill -> {
 			boolean emptyOutput = true;
@@ -71,14 +70,14 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 				ItemStack stackInSlot = inv.getStackInSlot(slot);
 				if (!stackInSlot.isEmpty())
 					emptyOutput = false;
-				player.getInventory().placeItemBackInInventory(stackInSlot);
+				player.inventory.placeItemBackInInventory(worldIn, stackInSlot);
 				inv.setStackInSlot(slot, ItemStack.EMPTY);
 			}
 
 			if (emptyOutput) {
 				inv = rollingMill.inputInv;
 				for (int slot = 0; slot < inv.getSlots(); slot++) {
-					player.getInventory().placeItemBackInInventory(inv.getStackInSlot(slot));
+					player.inventory.placeItemBackInInventory(worldIn, inv.getStackInSlot(slot));
 					inv.setStackInSlot(slot, ItemStack.EMPTY);
 				}
 			}
@@ -87,11 +86,11 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 			rollingMill.sendData();
 		});
 
-		return InteractionResult.SUCCESS;
+		return ActionResultType.SUCCESS;
 	}
 
 	@Override
-	public void updateEntityAfterFallOn(BlockGetter worldIn, Entity entityIn) {
+	public void updateEntityAfterFallOn(IBlockReader worldIn, Entity entityIn) {
 		super.updateEntityAfterFallOn(worldIn, entityIn);
 
 		if (entityIn.level.isClientSide)
@@ -115,14 +114,14 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 
 		ItemStack remainder = capability.orElse(new ItemStackHandler()).insertItem(0, itemEntity.getItem(), false);
 		if (remainder.isEmpty())
-			itemEntity.remove(RemovalReason.KILLED);
+			itemEntity.remove();
 		if (remainder.getCount() < itemEntity.getItem().getCount())
 			itemEntity.setItem(remainder);
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.hasBlockEntity() && state.getBlock() != newState.getBlock()) {
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
 			withTileEntityDo(worldIn, pos, te -> {
 				ItemHelper.dropContents(worldIn, pos, te.inputInv);
 				ItemHelper.dropContents(worldIn, pos, te.outputInv);
@@ -133,7 +132,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context) {
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		Direction prefferedSide = getPreferredHorizontalFacing(context);
 		if (prefferedSide != null)
 			return defaultBlockState().setValue(HORIZONTAL_FACING, prefferedSide);
@@ -147,13 +146,8 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 	}
 
 	@Override
-	public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
+	public boolean hasShaftTowards(IWorldReader world, BlockPos pos, BlockState state, Direction face) {
 		return face.getAxis() == state.getValue(HORIZONTAL_FACING)
 			.getAxis();
-	}
-
-	@Override
-	public BlockEntityType<? extends RollingMillTileEntity> getTileEntityType() {
-		return CATileEntities.ROLLING_MILL.get();
 	}
 }

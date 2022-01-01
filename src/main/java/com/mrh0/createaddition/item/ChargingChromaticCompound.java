@@ -2,12 +2,11 @@ package com.mrh0.createaddition.item;
 
 import com.mrh0.createaddition.config.Config;
 
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.NonNullList;
 
 public class ChargingChromaticCompound extends Item {
 
@@ -17,7 +16,7 @@ public class ChargingChromaticCompound extends Item {
 		super(props);
 	}
 	
-	/*@Override
+	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 		return 1d - getCharge(stack);
 	}
@@ -25,20 +24,15 @@ public class ChargingChromaticCompound extends Item {
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 		return true;
-	}*/
-	
-	@Override
-	public boolean isBarVisible(ItemStack p_150899_) {
-		return true;
 	}
 	
-	public static boolean hasKey(CompoundTag nbt){
+	public static boolean hasKey(CompoundNBT nbt){
 		if(nbt == null)
 			return false;
     	return nbt.contains("charge");
     }
 	
-	public static int getEnergy(CompoundTag nbt){
+	public static int getEnergy(CompoundNBT nbt){
 		if(nbt == null)
 			return 0;
 		if(!hasKey(nbt))
@@ -55,7 +49,7 @@ public class ChargingChromaticCompound extends Item {
     }
 	
 	public static int charge(ItemStack stack, int in) {
-		CompoundTag nbt = new CompoundTag();
+		CompoundNBT nbt = new CompoundNBT();
 		int c = getEnergy(stack.getTag());
 		int n = Math.min(c + in, MAX_CHARGE);
 		nbt.putInt("charge", n);
@@ -65,8 +59,8 @@ public class ChargingChromaticCompound extends Item {
 	}
 	
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> list) {
-		if (group != CreativeModeTab.TAB_SEARCH)
+	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> list) {
+		if (group != ItemGroup.TAB_SEARCH)
 			return;
 		super.fillItemCategory(group, list);
 	}

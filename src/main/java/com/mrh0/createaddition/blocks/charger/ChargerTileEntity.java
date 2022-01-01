@@ -1,5 +1,5 @@
 package com.mrh0.createaddition.blocks.charger;
-/*
+
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
@@ -180,4 +180,4 @@ public class ChargerTileEntity extends BaseElectricTileEntity implements ICompar
 
 		return true;
 	}
-}*/
+}

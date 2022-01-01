@@ -2,13 +2,13 @@ package com.mrh0.createaddition.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.tileentity.AbstractFurnaceTileEntity;
+import net.minecraft.util.Direction;
 
-@Mixin(AbstractFurnaceBlockEntity.class)
+@Mixin(AbstractFurnaceTileEntity.class)
 public abstract class AbstractFurnaceMixinFix {
 	public boolean canExtractItem(int index, ItemStack stack, Direction dir) {
 		if (dir == Direction.DOWN && index == 1) {

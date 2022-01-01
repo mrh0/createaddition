@@ -6,21 +6,20 @@ import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition.Builder;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 
 public class TeslaCoil extends Block implements ITE<TeslaCoilTileEntity>, IWrenchable {
 	public TeslaCoil(Properties props) {
@@ -33,7 +32,7 @@ public class TeslaCoil extends Block implements ITE<TeslaCoilTileEntity>, IWrenc
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return TESLA_COIL_SHAPE.get(state.getValue(FACING).getOpposite());
 	}
 	
@@ -41,10 +40,10 @@ public class TeslaCoil extends Block implements ITE<TeslaCoilTileEntity>, IWrenc
 	public Class<TeslaCoilTileEntity> getTileEntityClass() {
 		return TeslaCoilTileEntity.class;
 	}
-
+	
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.TESLA_COIL.create(pos, state);
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return CATileEntities.TESLA_COIL.create();
 	}
 	
 	@Override
@@ -53,21 +52,21 @@ public class TeslaCoil extends Block implements ITE<TeslaCoilTileEntity>, IWrenc
 	}
 	
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext c) {
+	public boolean hasTileEntity(BlockState state) {
+		return true;
+	}
+	
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext c) {
 		return this.defaultBlockState().setValue(FACING, c.isSecondaryUseActive() ? c.getClickedFace() : c.getClickedFace().getOpposite());
 	}
 	
-	public void setPowered(Level world, BlockPos pos, boolean powered) {
+	public void setPowered(World world, BlockPos pos, boolean powered) {
 		world.setBlock(pos, defaultBlockState().setValue(FACING, world.getBlockState(pos).getValue(FACING)).setValue(POWERED, powered), 3);
 	}
 	
 	@Override
-	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
 		return true;
-	}
-
-	@Override
-	public BlockEntityType<? extends TeslaCoilTileEntity> getTileEntityType() {
-		return CATileEntities.TESLA_COIL.get();
 	}
 }

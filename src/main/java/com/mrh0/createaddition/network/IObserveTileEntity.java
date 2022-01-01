@@ -1,7 +1,7 @@
 package com.mrh0.createaddition.network;
 
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 public interface IObserveTileEntity {
-	public void onObserved(ServerPlayer player, ObservePacket pack);
+	public void onObserved(ServerPlayerEntity player, ObservePacket pack);
 }
