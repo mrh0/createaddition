@@ -236,7 +236,6 @@ public abstract class AbstractBurnerBlockEntity extends BaseContainerBlockEntity
 	   }
 
 	   public static void serverTick(Level p_155014_, BlockPos p_155015_, BlockState p_155016_, AbstractBurnerBlockEntity p_155017_) {
-		   System.out.println("tick");
 	      boolean flag = p_155017_.isLit();
 	      boolean flag1 = false;
 	      if (p_155017_.isLit()) {

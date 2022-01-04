@@ -23,7 +23,7 @@ public abstract class CARecipeSerializer <R extends Recipe<?>> extends ForgeRegi
 
 	protected ItemStack readOutput(JsonElement outputObject) {
 		if(outputObject.isJsonObject() && outputObject.getAsJsonObject().has("item"))
-			return new ItemStack(ShapedRecipe.itemFromJson(outputObject.getAsJsonObject()));
+			return ShapedRecipe.itemStackFromJson(outputObject.getAsJsonObject());
 		return null;
 	}
 
