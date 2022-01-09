@@ -46,7 +46,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			HURT_EFFECT_TIME_MOB = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get(),
 			HURT_EFFECT_TIME_PLAYER = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get(),
 			HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();
-		private static final float CERTUS_QUARTZ_CHANCE = (float)(double)Config.CERTUS_QUARTZ_CHARGE_CHANCE.get();
+	private static final float CERTUS_QUARTZ_CHANCE = (float)(double)Config.CERTUS_QUARTZ_CHARGE_CHANCE.get();
 	
 	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
@@ -70,7 +70,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 
 	@Override
 	public boolean isEnergyInput(Direction side) {
-		return side != getBlockState().getValue(TeslaCoil.FACING);
+		return side != getBlockState().getValue(TeslaCoil.FACING).getOpposite();
 	}
 
 	@Override
@@ -164,16 +164,16 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			doDmg();
 		
 		if(poweredTimer > 0) {
-			if(!shouldPower(signal))
+			if(!isPoweredState())
 				CABlocks.TESLA_COIL.get().setPowered(level, getBlockPos(), true);
 			poweredTimer--;
 		}
 		else
-			if(shouldPower(signal))
+			if(isPoweredState())
 				CABlocks.TESLA_COIL.get().setPowered(level, getBlockPos(), false);
 	}
 	
-	public boolean shouldPower(int signal) {
+	public boolean isPoweredState() {
 		return getBlockState().getValue(TeslaCoil.POWERED);
 	}
 	
@@ -187,11 +187,10 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			handler.handleProcessingOnItem(transported, TransportedResult.convertTo(res));
 		}*/
 		if(chargeStack(stack, transported, handler)) {
-			if(energy.getEnergyStored() >= stack.getCount())
-				poweredTimer = 10;
+			poweredTimer = 10;
 			return ProcessingResult.HOLD;
 		}
-		if(chargeAE2(stack, transported, handler)) {
+		else if(chargeAE2(stack, transported, handler)) {
 			if(energy.getEnergyStored() >= CHARGE_RATE)
 				poweredTimer = 10;
 			return ProcessingResult.HOLD;
@@ -218,6 +217,8 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			return false;
 		IEnergyStorage es = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
 		if(es.receiveEnergy(1, true) != 1)
+			return false;
+		if(energy.getEnergyStored() < stack.getCount())
 			return false;
 		int r = energy.internalConsumeEnergy(es.receiveEnergy(Math.min(getConsumption(), energy.getEnergyStored()), false));
 		return true;
