@@ -16,6 +16,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -23,67 +25,57 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
 public class FurnaceBurner extends AbstractBurnerBlock implements ITE<FurnaceBurnerTileEntity> {
 
 	public FurnaceBurner(Properties props) {
 		super(props);
 	}
+
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return CATileEntities.FURNACE_BURNER.create(pos, state);
 	}
 
 	@Override
-	protected void openContainer(Level world, BlockPos pos, Player player) {
-		if(world.isClientSide())
-			return;
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
+			BlockHitResult hit) {
+		if (world.isClientSide())
+			return InteractionResult.SUCCESS;
 		BlockEntity tileentity = world.getBlockEntity(pos);
 		if (tileentity instanceof FurnaceBurnerTileEntity) {
 			FurnaceBurnerTileEntity fbte = (FurnaceBurnerTileEntity) tileentity;
-			ItemStack currentStack = fbte.getItem(FurnaceBurnerTileEntity.FUEL_SLOT);
-			if(player.isShiftKeyDown()) {
-				if(currentStack.getCount() > 0) {
-					Containers.dropItemStack(world, player.position().x, player.position().y, player.position().z, currentStack.copy());
-					fbte.removeItemNoUpdate(FurnaceBurnerTileEntity.FUEL_SLOT);
+			ItemStack currentStack = fbte.getItem(FurnaceBurnerTileEntity.SLOT_FUEL);
+			if (player.isShiftKeyDown()) {
+				if (currentStack.getCount() > 0) {
+					Containers.dropItemStack(world, player.position().x, player.position().y, player.position().z,
+							currentStack.copy());
+					fbte.removeItemNoUpdate(FurnaceBurnerTileEntity.SLOT_FUEL);
 				}
-				
-				/*int i = currentStack.getCount();
-				for(int slot = 0; slot < player.inventory.getSizeInventory(); slot++) {
-					if(i <= 0)
-						return;
-					ItemStack slotStack = player.inventory.getStackInSlot(slot);
-					if(slotStack.getItem() == currentStack.getItem()) {
-						int x = Math.min(slotStack.getMaxStackSize() - slotStack.getCount(), currentStack.getCount());
-						player.inventory.setInventorySlotContents(slot, new ItemStack(slotStack.getItem(), slotStack.getCount() + x));
-						i-=x;
-					}
-				}
-				if(i > 0)
-					InventoryHelper.spawnItemStack(world, player.getPositionVec().x, player.getPositionVec().y, player.getPositionVec().z, new ItemStack(currentStack.getItem(), i));
-				*/
-				return;
+				return InteractionResult.CONSUME;
 			}
-			
-			ItemStack heald = player.getMainHandItem();
-			if(!fbte.canPlaceItem(FurnaceBurnerTileEntity.FUEL_SLOT, heald))
-				return;
-			
-			if(currentStack.isEmpty()) {
-				fbte.setItem(FurnaceBurnerTileEntity.FUEL_SLOT, heald.copy());
-				heald.setCount(0);
-				return;
-			}
-			
-			if(heald.getItem() != currentStack.getItem())
-				return;
-			
-			ItemStack newStack = new ItemStack(currentStack.getItem(), Math.min(currentStack.getCount() + heald.getCount(), currentStack.getMaxStackSize()));
-			heald.setCount(Util.getMergeRest(heald, currentStack));
-			
-			fbte.setItem(FurnaceBurnerTileEntity.FUEL_SLOT, newStack);
-		}
 
+			ItemStack heald = player.getMainHandItem();
+			if (!fbte.canPlaceItem(FurnaceBurnerTileEntity.SLOT_FUEL, heald))
+				return InteractionResult.CONSUME;
+
+			if (currentStack.isEmpty()) {
+				fbte.setItem(FurnaceBurnerTileEntity.SLOT_FUEL, heald.copy());
+				heald.setCount(0);
+				return InteractionResult.CONSUME;
+			}
+
+			if (heald.getItem() != currentStack.getItem())
+				return InteractionResult.CONSUME;
+
+			ItemStack newStack = new ItemStack(currentStack.getItem(),
+					Math.min(currentStack.getCount() + heald.getCount(), currentStack.getMaxStackSize()));
+			heald.setCount(Util.getMergeRest(heald, currentStack));
+
+			fbte.setItem(FurnaceBurnerTileEntity.SLOT_FUEL, newStack);
+		}
+		return InteractionResult.CONSUME;
 	}
 
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
@@ -99,7 +91,7 @@ public class FurnaceBurner extends AbstractBurnerBlock implements ITE<FurnaceBur
 
 			Direction direction = state.getValue(FACING);
 			Direction.Axis direction$axis = direction.getAxis();
-			//double d3 = 0.52D;
+			// double d3 = 0.52D;
 			double d4 = rand.nextDouble() * 0.6D - 0.3D;
 			double d5 = direction$axis == Direction.Axis.X ? (double) direction.getStepX() * 0.52D : d4;
 			double d6 = rand.nextDouble() * 6.0D / 16.0D;
@@ -113,20 +105,28 @@ public class FurnaceBurner extends AbstractBurnerBlock implements ITE<FurnaceBur
 	public Class<FurnaceBurnerTileEntity> getTileEntityClass() {
 		return FurnaceBurnerTileEntity.class;
 	}
-	
+
 	@Override
 	public BlockEntityType<? extends FurnaceBurnerTileEntity> getTileEntityType() {
 		return CATileEntities.FURNACE_BURNER.get();
 	}
-	
+
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_,
 			BlockEntityType<T> p_153214_) {
 		return createBurnerTicker(p_153212_, p_153214_, CATileEntities.FURNACE_BURNER.get());
 	}
-	
+
 	@Nullable
-	protected static <T extends BlockEntity> BlockEntityTicker<T> createBurnerTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<? extends AbstractBurnerBlockEntity> p_151990_) {
-		return p_151988_.isClientSide ? null : createTickerHelper(p_151989_, p_151990_, FurnaceBurnerTileEntity::serverTick);
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
+			BlockEntityType<A> p_152133_, BlockEntityType<E> p_152134_, BlockEntityTicker<? super E> p_152135_) {
+		return p_152134_ == p_152133_ ? (BlockEntityTicker<A>) p_152135_ : null;
+	}
+
+	@Nullable
+	protected static <T extends BlockEntity> BlockEntityTicker<T> createBurnerTicker(Level p_151988_,
+			BlockEntityType<T> p_151989_, BlockEntityType<? extends AbstractBurnerBlockEntity> p_151990_) {
+		return p_151988_.isClientSide ? null
+				: createTickerHelper(p_151989_, p_151990_, FurnaceBurnerTileEntity::serverTick);
 	}
 }

@@ -52,7 +52,7 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.18.1_v0.4b,)"
+    versionRange="[mc1.18.1_v0.4c,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]

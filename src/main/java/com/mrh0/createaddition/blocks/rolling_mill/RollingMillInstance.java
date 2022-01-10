@@ -1,13 +1,13 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
 import com.jozufozu.flywheel.api.MaterialManager;
-import com.jozufozu.flywheel.api.instance.IDynamicInstance;
+import com.jozufozu.flywheel.api.instance.DynamicInstance;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.flwdata.RotatingData;
 import com.simibubi.create.content.contraptions.relays.elementary.ShaftBlock;
 import com.simibubi.create.content.contraptions.relays.encased.ShaftInstance;
 
-public class RollingMillInstance extends ShaftInstance implements IDynamicInstance {
+public class RollingMillInstance extends ShaftInstance implements DynamicInstance {
 
     private final RotatingData shaft;
 

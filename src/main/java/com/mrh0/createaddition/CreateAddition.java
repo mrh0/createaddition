@@ -27,6 +27,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mrh0.createaddition.blocks.crude_burner.CrudeBurner;
+import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
@@ -43,7 +45,8 @@ import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineModifiers;
+import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineInteractions;
+import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineInteractions.HeatSource;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.util.NonNullLazyValue;
 import net.minecraftforge.registries.IRegistryDelegate;
@@ -130,8 +133,15 @@ public class CreateAddition {
         Network.registerMessage(i++, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
         Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
         
-        FurnaceEngineModifiers.INSTANCE.register(CABlocks.FURNACE_BURNER.get().delegate, (float)(double)Config.FURNACE_BURNER_ENGINE_SPEED.get());
-        FurnaceEngineModifiers.INSTANCE.register(CABlocks.CRUDE_BURNER.get().delegate, (float)(double)Config.CRUDE_BURNER_ENGINE_SPEED.get());
+        
+        
+        FurnaceEngineInteractions.registerHandler(CABlocks.FURNACE_BURNER.get().delegate, FurnaceEngineInteractions.InteractionHandler.of(
+       		 s -> s.getBlock() instanceof FurnaceBurner && s.hasProperty(FurnaceBurner.LIT) ? 
+       		 (s.getValue(FurnaceBurner.LIT) ? HeatSource.ACTIVE : HeatSource.VALID) : HeatSource.EMPTY, s -> (float)(double)Config.FURNACE_BURNER_ENGINE_SPEED.get()));
+        
+        FurnaceEngineInteractions.registerHandler(CABlocks.CRUDE_BURNER.get().delegate, FurnaceEngineInteractions.InteractionHandler.of(
+          		 s -> s.getBlock() instanceof CrudeBurner && s.hasProperty(CrudeBurner.LIT) ? 
+          	       		 (s.getValue(CrudeBurner.LIT) ? HeatSource.ACTIVE : HeatSource.VALID) : HeatSource.EMPTY, s -> (float)(double)Config.CRUDE_BURNER_ENGINE_SPEED.get()));
         
     	System.out.println("Create Crafts & Addition Initialized!");
     }

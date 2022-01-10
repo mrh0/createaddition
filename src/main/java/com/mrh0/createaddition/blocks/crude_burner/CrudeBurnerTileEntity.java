@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
@@ -14,20 +14,13 @@ import com.simibubi.create.foundation.fluid.SmartFluidTank;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -39,9 +32,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class CrudeBurnerTileEntity extends AbstractFurnaceBlockEntity implements IHaveGoggleInformation {
-
-	static final int _litTime = 0, _litDuration = 1, _cookingProgress = 2, _cookingTotalTime = 3;
+public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements IHaveGoggleInformation {
 	
 	private static final int[] SLOTS = new int[] { };
 	protected LazyOptional<IFluidHandler> fluidCapability;
@@ -53,7 +44,7 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceBlockEntity implements
 	private boolean changed = true;
 
 	public CrudeBurnerTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-		super(type, pos, state, RecipeType.SMELTING);
+		super(type, pos, state);
 		tankInventory = createInventory();
 		fluidCapability = LazyOptional.of(() -> tankInventory);
 	}
@@ -77,75 +68,59 @@ public class CrudeBurnerTileEntity extends AbstractFurnaceBlockEntity implements
 		changed = true;
 	}
 
-	@Override
-	protected Component getDefaultName() {
-		return new TranslatableComponent("");
-	}
-
-	@Override
-	protected AbstractContainerMenu createMenu(int window, Inventory inv) {
-		return null;
-	}
-
-	/*@Override
-	public boolean canBurn(Recipe<?> recipe, NonNullList<ItemStack> list, int i) {
-		return true;
-	}*/
-	
-	
-
 	private boolean burning() {
-		return this.dataAccess.get(_litTime) > 0; //this.litTime > 0;
+		return this.litTime > 0; //this.litTime > 0;
 	}
 	
 	public int getBurnTime(FluidStack fluid) {
 		return recipeCache.isPresent() ? recipeCache.get().getBurnTime() / 10 : 0;
 	}
 	
-	boolean first = true;
+	public boolean first = true;
 
-	public void tick() {
+	public static void crudeServerTick(Level level, BlockPos pos, BlockState state,
+			CrudeBurnerTileEntity be) {
 		if(level.isClientSide())
 			return;
-		if(first)
-			update(tankInventory.getFluid());
-		first = false;
-		updateTimeout--;
-		if(updateTimeout < 0)
-			updateTimeout = 0;
-		if(updateTimeout == 0 && changed) {
+		if(be.first)
+			be.update(be.tankInventory.getFluid());
+		be.first = false;
+		be.updateTimeout--;
+		if(be.updateTimeout < 0)
+			be.updateTimeout = 0;
+		if(be.updateTimeout == 0 && be.changed) {
 			if (!level.isClientSide) {
-				setChanged();
+				be.setChanged();
 				if (level != null)
-					level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2 | 4 | 16);
-				changed = false;
+					level.sendBlockUpdated(pos, state, state, 2 | 4 | 16);
+				be.changed = false;
 			}
-			updateTimeout = 10;
+			be.updateTimeout = 10;
 		}
-		boolean flag = this.burning();
+		boolean flag = be.burning();
 		boolean flag1 = false;
-		if (this.burning())
-			this.dataAccess.set(_litTime, this.dataAccess.get(_litTime));//--this.litTime;
+		if (be.burning())
+			--be.litTime;
 
-		if (!this.level.isClientSide()) {
-			if (!this.burning()) {
+		if (!be.level.isClientSide()) {
+			if (!be.burning()) {
 				
-				this.dataAccess.set(_litTime, getBurnTime(tankInventory.getFluid()));//this.litTime = getBurnTime(tankInventory.getFluid());
-				if (this.burning()) {
+				be.litTime = be.getBurnTime(be.tankInventory.getFluid());
+				if (be.burning()) {
 					flag1 = true;
-					updateTimeout = 0;
-					tankInventory.drain(100, FluidAction.EXECUTE);
+					be.updateTimeout = 0;
+					be.tankInventory.drain(100, FluidAction.EXECUTE);
 				}
 			}
 
-			if (flag != this.burning()) {
+			if (flag != be.burning()) {
 				flag1 = true;
-				this.level.setBlock(this.worldPosition, this.level.getBlockState(this.worldPosition).setValue(AbstractFurnaceBlock.LIT,
-						Boolean.valueOf(this.burning())), 3);
+				level.setBlock(pos, be.level.getBlockState(pos).setValue(AbstractFurnaceBlock.LIT,
+						Boolean.valueOf(be.burning())), 3);
 			}
 
 			if (flag1)
-				this.setChanged();
+				be.setChanged();
 		}
 	}
 
