@@ -9,7 +9,7 @@ modLoader="javafml" #mandatory
 loaderVersion="[39,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
-license="MIT License, Copyright 2021 MRH0"
+license="MIT License, Copyright 2022 MRH0"
 # A URL to refer people to when problems occur with this mod
 issueTrackerURL="https://github.com/mrh0/createaddition/issues" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
@@ -58,7 +58,7 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
 [[dependencies.createaddition]]
     modId="flywheel"
     mandatory=true
-    versionRange="[1.18-0.5.0,1.18-0.6.0)"
+    versionRange="[1.18-0.5.1,1.18-0.6.0)"
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.createaddition]]

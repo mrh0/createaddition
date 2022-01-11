@@ -72,7 +72,7 @@ public abstract class AbstractBurnerBlockEntity extends BlockEntity
 					if (itemstack.hasContainerItem())
 						be.items.set(0, itemstack.getContainerItem());
 					else if (!itemstack.isEmpty()) {
-						itemstack.shrink(0);
+						itemstack.shrink(1);
 						if (itemstack.isEmpty()) {
 							be.items.set(0, itemstack.getContainerItem());
 						}
