@@ -2,8 +2,6 @@ package com.mrh0.createaddition.blocks.connector;
 
 import java.util.List;
 
-import com.mojang.math.Vector3d;
-import com.mojang.math.Vector3f;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
