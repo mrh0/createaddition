@@ -6,7 +6,7 @@
     "php"
   ],
   "key": {
-    "p": { "tag": "forge:plates/steel" },
+    "p": { "tag": "c:plates/steel" },
     "b": { "item": "immersiveengineering:circuit_board" },
     "w": { "item": "immersiveengineering:wirecoil_steel" },
     "c": { "item": "immersiveengineering:coil_hv" },
@@ -16,14 +16,13 @@
     "item": "simplyjetpacks:thruster_ie3",
     "count": 1
   },
-  "conditions": [
+  "fabric:load_conditions": [
     {
-    	"type": "forge:mod_loaded",
-    	"modid": "immersiveengineering"
-  	},
-  	{
-    	"type": "forge:mod_loaded",
-    	"modid": "simplyjetpacks"
-  	}
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "immersiveengineering",
+        "simplyjetpacks"
+      ]
+    }
   ]
 }

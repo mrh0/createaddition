@@ -4,11 +4,13 @@ import java.util.function.Supplier;
 
 import com.mrh0.createaddition.CreateAddition;
 
+import com.simibubi.create.foundation.networking.SimplePacketBase;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 
 public class ConsProdSyncPacket {
 	private BlockPos pos;
@@ -24,10 +26,12 @@ public class ConsProdSyncPacket {
 		this.production = production;
 	}
 	
-	public static void encode(ConsProdSyncPacket packet, FriendlyByteBuf tag) {
-        tag.writeBlockPos(packet.pos);
-        tag.writeInt(packet.consumption);
-        tag.writeInt(packet.production);
+	public FriendlyByteBuf encode() {
+		FriendlyByteBuf tag = PacketByteBufs.create();
+        tag.writeBlockPos(pos);
+        tag.writeInt(consumption);
+        tag.writeInt(production);
+		return tag;
     }
 	
 	public static ConsProdSyncPacket decode(FriendlyByteBuf buf) {
@@ -35,16 +39,14 @@ public class ConsProdSyncPacket {
         return scp;
     }
 	
-	public static void handle(ConsProdSyncPacket pkt, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
+	public static void handle(ConsProdSyncPacket pkt, Minecraft client) {
+		client.execute(() -> {
 			try {
 				updateClientCache(pkt.pos, pkt.consumption, pkt.production);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
-		
-		ctx.get().setPacketHandled(true);
 	}
 	
 	private static void updateClientCache(BlockPos pos, int consumption, int production) {
@@ -53,6 +55,6 @@ public class ConsProdSyncPacket {
     }
 	
 	public static void send(BlockPos pos, int consumption, int production, ServerPlayer player) {
-		CreateAddition.Network.send(PacketDistributor.PLAYER.with(() -> player), new ConsProdSyncPacket(pos, consumption, production));
+		ServerPlayNetworking.send(player, CANetwork.CONS_PROD_SYNC, new ConsProdSyncPacket(pos, consumption, production).encode());
 	}
 }

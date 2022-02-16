@@ -1,53 +1,54 @@
 package com.mrh0.createaddition.energy;
 
+import com.simibubi.create.lib.util.LazyOptional;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
+import team.reborn.energy.api.EnergyStorage;
 
-public class CreativeEnergyStorage implements IEnergyStorage {
+public class CreativeEnergyStorage implements EnergyStorage {
+
 
 	@Override
-	public int receiveEnergy(int maxReceive, boolean simulate) {
+	public long insert(long maxAmount, TransactionContext transaction) {
 		return 0;
 	}
 
 	@Override
-	public int extractEnergy(int maxExtract, boolean simulate) {
-		return maxExtract;
+	public long extract(long maxAmount, TransactionContext transaction) {
+		return maxAmount;
 	}
 
 	@Override
-	public int getEnergyStored() {
-		return Integer.MAX_VALUE;
+	public long getAmount() {
+		return Long.MAX_VALUE;
 	}
 
 	@Override
-	public int getMaxEnergyStored() {
-		return Integer.MAX_VALUE;
+	public long getCapacity() {
+		return Long.MAX_VALUE;
 	}
 
 	@Override
-	public boolean canExtract() {
+	public boolean supportsExtraction() {
 		return true;
 	}
 
 	@Override
-	public boolean canReceive() {
+	public boolean supportsInsertion() {
 		return false;
 	}
 
 	public void outputToSide(Level world, BlockPos pos, Direction side) {
-    	BlockEntity te = world.getBlockEntity(pos.relative(side));
-		if(te == null)
-			return;
-		LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
-		IEnergyStorage ies = opt.orElse(null);
+		LazyOptional<EnergyStorage> opt = LazyOptional.ofObject(EnergyStorage.SIDED.find(world, pos.relative(side), side.getOpposite()));
+		EnergyStorage ies = opt.orElse(null);
 		if(ies == null)
 			return;
-		ies.receiveEnergy(Integer.MAX_VALUE, false);
+		try(Transaction t = Transaction.openOuter()) {
+			ies.insert(Integer.MAX_VALUE, t);
+			t.commit();
+		}
     }
 }

@@ -5,9 +5,9 @@
       "item": "createaddition:cake_base_baked"
     },
     {
-      "fluidTag": "forge:honey",
+      "fluidTag": "c:honey",
       "nbt": {},
-      "amount": 500
+      "amount": 40500
     }
   ],
   "results": [

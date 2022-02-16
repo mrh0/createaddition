@@ -1,4 +1,4 @@
-package com.mrh0.createaddition.compat.jei;
+package com.mrh0.createaddition.compat.rei;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +13,16 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
-import com.simibubi.create.compat.jei.ConversionRecipe;
-import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.runtime.IIngredientManager;
+import com.simibubi.create.compat.rei.ConversionRecipe;
+import com.simibubi.create.compat.rei.CreateREI;
+import com.simibubi.create.compat.rei.category.CreateRecipeCategory;
+import com.simibubi.create.compat.rei.display.CreateDisplay;
+import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
+import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
+import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -30,18 +30,8 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
 
-@JeiPlugin
-public class CreateAdditionJEI implements IModPlugin {
+public class CreateAdditionREI implements REIClientPlugin {
 
-	private static final ResourceLocation ID = new ResourceLocation(CreateAddition.MODID, "jei_plugin");
-
-	@Override
-	@Nonnull
-	public ResourceLocation getPluginUid() {
-		return ID;
-	}
-	
-	public IIngredientManager ingredientManager;
 	final List<CreateRecipeCategory<?>> ALL = new ArrayList<>();
 	
 	final CreateRecipeCategory<?> rolling = register("rolling", RollingMillCategory::new)
@@ -53,29 +43,32 @@ public class CreateAdditionJEI implements IModPlugin {
 			.recipes(CrudeBurningRecipe.TYPE)
 			.catalyst(CABlocks.CRUDE_BURNER::get)
 			.build();
-	
+
 	@Override
-	public void registerCategories(IRecipeCategoryRegistration registration) {
-		ALL.forEach(registration::addRecipeCategories);
+	public void registerCategories(CategoryRegistry registry) {
+		ALL.forEach(c -> {
+			registry.add(c);
+			c.recipeCatalysts.forEach(s -> registry.addWorkstations(c.getCategoryIdentifier(), EntryIngredients.of(s.get())));
+		});
+
+		registry.addWorkstations(CategoryIdentifier.of(new ResourceLocation(Create.ID, "sandpaper_polishing")), EntryIngredients.of(CAItems.DIAMOND_GRIT_SANDPAPER.get()));
+//		registry.addWorkstations(CategoryIdentifier.of(new ResourceLocation(Create.ID, "deploying")), EntryIngredients.of(CAItems.DIAMOND_GRIT_SANDPAPER.get()));
 	}
 
 	@Override
-	public void registerRecipes(IRecipeRegistration registration) {
-		ingredientManager = registration.getIngredientManager();
-		ALL.forEach(c -> c.recipes.forEach(s -> registration.addRecipes(s.get(), c.getUid())));
-		
+	public void registerDisplays(DisplayRegistry registry) {
+		ALL.forEach(c -> c.recipes.forEach(s -> {
+			for (Recipe<?> recipe : s.get()) {
+				registry.add(new CreateDisplay<>(recipe, c.getCategoryIdentifier()), recipe);
+			}
+		}));
+
 		List<ConversionRecipe> r1 = new ArrayList<>();
 		//r1.add(ConversionRecipe.create(AllItems.CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
 
-		registration.addRecipes(r1, new ResourceLocation("create:mystery_conversion"));
-	}
-
-	@Override
-	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-		ALL.forEach(c -> c.recipeCatalysts.forEach(s -> registration.addRecipeCatalyst(s.get(), c.getUid())));
-		
-		registration.addRecipeCatalyst(new ItemStack(CAItems.DIAMOND_GRIT_SANDPAPER.get()), new ResourceLocation(Create.ID, "sandpaper_polishing"));
-		//registration.addRecipeCatalyst(new ItemStack(CAItems.DIAMOND_GRIT_SANDPAPER.get()), new ResourceLocation(Create.ID, "deploying"));
+		for(ConversionRecipe recipe : r1) {
+			registry.add(new CreateDisplay<>(recipe, CategoryIdentifier.of("create", "mystery_conversion")));
+		}
 	}
 	
 	private <T extends Recipe<?>> CategoryBuilder<T> register(String name, Supplier<CreateRecipeCategory<T>> supplier) {

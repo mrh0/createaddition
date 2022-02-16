@@ -1,11 +1,11 @@
 package com.mrh0.createaddition.event;
 
 import com.mrh0.createaddition.CreateAddition;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = CreateAddition.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class ClientEventHandler {
 	
 	// Old Wiring renderer

@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.energy.IWireNode;
 
+import com.simibubi.create.lib.util.LazyOptional;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,9 +25,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 public class Multimeter extends Item {
 
@@ -38,8 +37,8 @@ public class Multimeter extends Item {
 	public InteractionResult useOn(UseOnContext c) {
 		BlockEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
 		if(te != null && !c.getLevel().isClientSide()) {
-			LazyOptional<IEnergyStorage> cap;
-			cap = te.getCapability(CapabilityEnergy.ENERGY, c.getClickedFace());
+			LazyOptional<EnergyStorage> cap;
+			cap = LazyOptional.ofObject(EnergyStorage.SIDED.find(c.getLevel(), c.getClickedPos(), c.getClickedFace()));
 			
 			if(te instanceof IWireNode) {
 				IWireNode wn = (IWireNode) te;
@@ -48,24 +47,24 @@ public class Multimeter extends Item {
 			}
 			
 			if(cap != null) {
-				IEnergyStorage energy = cap.orElse(null);
+				EnergyStorage energy = cap.orElse(null);
 				String measur = new TranslatableComponent("item."+CreateAddition.MODID+".multimeter.measuring").getString(Integer.MAX_VALUE);
 				CompoundTag tag = c.getItemInHand().getTag();
 				if(tag == null)
 					tag = new CompoundTag();
 				if(hasPos(tag)) {
 					if(posEquals(tag, c.getClickedPos(), c.getClickedFace())) {
-						int de = getDeltaEnergy(tag, energy != null ? energy.getEnergyStored() : 0);
+						long de = getDeltaEnergy(tag, energy != null ? energy.getAmount() : 0);
 						long dt = getDeltaTime(tag, c.getLevel().getGameTime());
 						measur = " ["+(dt > 0 ? de/dt : 0) + "fe/t ("+(dt)+(new TranslatableComponent("item."+CreateAddition.MODID+".multimeter.ticks").getString(Integer.MAX_VALUE))+")]";
 						clearPos(tag);
 					}
 					else {
-						setContent(tag, c.getClickedPos(), c.getClickedFace(), c.getLevel().getGameTime(), energy != null ? energy.getEnergyStored() : 0);
+						setContent(tag, c.getClickedPos(), c.getClickedFace(), c.getLevel().getGameTime(), energy != null ? energy.getAmount() : 0);
 					}
 				}
 				else {
-					setContent(tag, c.getClickedPos(), c.getClickedFace(), c.getLevel().getGameTime(), energy != null ? energy.getEnergyStored() : 0);
+					setContent(tag, c.getClickedPos(), c.getClickedFace(), c.getLevel().getGameTime(), energy != null ? energy.getAmount() : 0);
 				}
 				
 				c.getItemInHand().setTag(tag);
@@ -80,17 +79,17 @@ public class Multimeter extends Item {
 		return InteractionResult.PASS;
 	}
 	
-	public static Component getTextComponent(IEnergyStorage ies, String nan, String unit) {
+	public static Component getTextComponent(EnergyStorage ies, String nan, String unit) {
 		if(ies == null)
 			return new TextComponent(nan);
-		return new TextComponent(format(ies.getEnergyStored())+unit).withStyle(ChatFormatting.AQUA).append(new TextComponent(" / ").withStyle(ChatFormatting.GRAY)).append(new TextComponent(format(ies.getMaxEnergyStored())+unit));
+		return new TextComponent(format(ies.getAmount())+unit).withStyle(ChatFormatting.AQUA).append(new TextComponent(" / ").withStyle(ChatFormatting.GRAY)).append(new TextComponent(format(ies.getCapacity())+unit));
 	}
 	
-	public static Component getTextComponent(IEnergyStorage ies) {
+	public static Component getTextComponent(EnergyStorage ies) {
 		return getTextComponent(ies, "NaN", "fe");
 	}
 	
-	public static String format(int n) {
+	public static String format(long n) {
 		if(n > 1000000)
 			return Math.round((double)n/100000d)/10d + "M";
 		if(n > 1000)
@@ -119,10 +118,10 @@ public class Multimeter extends Item {
     	return new BlockPos(nbt.getInt("x"), nbt.getInt("y"), nbt.getInt("z"));
     }
 	
-	public static int getDeltaEnergy(CompoundTag nbt, int now){
+	public static long getDeltaEnergy(CompoundTag nbt, long now){
 		if(nbt == null)
 			return 0;
-		int r = now - nbt.getInt("start");
+		long r = now - nbt.getLong("start");
     	return r;
     }
 	
@@ -152,7 +151,7 @@ public class Multimeter extends Item {
     	nbt.remove("start");
     }
 	
-	public static CompoundTag setContent(CompoundTag nbt, BlockPos pos, Direction dir, long tick, int energy){
+	public static CompoundTag setContent(CompoundTag nbt, BlockPos pos, Direction dir, long tick, long energy){
 		if(nbt == null)
 			return new CompoundTag();
     	nbt.putInt("x", pos.getX());
@@ -160,7 +159,7 @@ public class Multimeter extends Item {
     	nbt.putInt("z", pos.getZ());
     	nbt.putInt("side", dir.get3DDataValue());
     	nbt.putLong("tick", tick);
-    	nbt.putInt("start", energy);
+    	nbt.putLong("start", energy);
     	return nbt;
     }
 }

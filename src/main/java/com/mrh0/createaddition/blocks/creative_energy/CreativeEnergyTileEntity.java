@@ -1,34 +1,28 @@
 package com.mrh0.createaddition.blocks.creative_energy;
 
 import com.mrh0.createaddition.energy.CreativeEnergyStorage;
+import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.content.logistics.block.inventories.CrateTileEntity;
 
+import com.simibubi.create.lib.util.LazyOptional;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.EnergyStorage;
 
-public class CreativeEnergyTileEntity extends CrateTileEntity {
+public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyTransferable {
 
 	protected final CreativeEnergyStorage energy;
-	private LazyOptional<IEnergyStorage> lazyEnergy;
+	private LazyOptional<EnergyStorage> lazyEnergy;
 	
 	public CreativeEnergyTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 		energy = new CreativeEnergyStorage();
 		lazyEnergy = LazyOptional.of(() -> energy);
-	}
-	
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY)// && !level.isClientSide
-			return lazyEnergy.cast();
-		return super.getCapability(cap, side);
 	}
 	
 	private boolean firstTickState = true;
@@ -43,10 +37,13 @@ public class CreativeEnergyTileEntity extends CrateTileEntity {
 		firstTickState = false;
 		
 		for(Direction d : Direction.values()) {
-			IEnergyStorage ies = getCachedEnergy(d);
+			EnergyStorage ies = getCachedEnergy(d);
 			if(ies == null)
 				continue;
-			int r = ies.receiveEnergy(Integer.MAX_VALUE, false);
+			try(Transaction t = Transaction.openOuter()) {
+				long r = ies.insert(Integer.MAX_VALUE, t);
+				t.commit();
+			}
 		}
 	}
 	
@@ -69,20 +66,20 @@ public class CreativeEnergyTileEntity extends CrateTileEntity {
 				setCache(side, LazyOptional.empty());
 				continue;
 			}
-			LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+			LazyOptional<EnergyStorage> le = LazyOptional.ofObject(EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite()));
 			setCache(side, le);
 			
 		}
 	}
 	
-	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheNorth = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheEast = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheSouth = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheWest = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheUp = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheDown = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheNorth = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheEast = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheSouth = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheWest = LazyOptional.empty();
 	
-	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
+	public void setCache(Direction side, LazyOptional<EnergyStorage> storage) {
 		switch(side) {
 			case DOWN:
 				escacheDown = storage;
@@ -105,7 +102,7 @@ public class CreativeEnergyTileEntity extends CrateTileEntity {
 		}
 	}
 	
-	public IEnergyStorage getCachedEnergy(Direction side) {
+	public EnergyStorage getCachedEnergy(Direction side) {
 		switch(side) {
 			case DOWN:
 				return escacheDown.orElse(null);
@@ -121,5 +118,10 @@ public class CreativeEnergyTileEntity extends CrateTileEntity {
 				return escacheWest.orElse(null);
 		}
 		return null;
+	}
+
+	@Override
+	public EnergyStorage getEnergyStorage(@Nullable Direction direction) {
+		return energy;
 	}
 }

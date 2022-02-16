@@ -9,11 +9,11 @@
 	{
 		"R":
 		{
-			"tag": "forge:dusts/redstone"
+			"tag": "c:dusts/redstone"
 		},
 		"S":
 		{
-			"tag": "forge:stone"
+			"tag": "c:stone"
 		},
 		"C":
 		{

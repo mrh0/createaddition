@@ -2,7 +2,7 @@
 	"type":"mekanism:metallurgic_infusing",
 	"itemInput":{
 		"ingredient":{
-			"tag":"forge:gems/quartz"
+			"tag":"c:gems/quartz"
 		}
 	},
 	"infusionInput":{
@@ -12,10 +12,12 @@
 	"output":{
 		"item":"create:rose_quartz"
 	},
-	"conditions": [ 
-  	{
-      "type": "forge:mod_loaded",
-      "modid": "mekanism"
+	"fabric:load_conditions": [
+		{
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+      	"mekanism"
+	  ]
   	} 
   ]
 }

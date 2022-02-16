@@ -6,6 +6,7 @@ import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
+import com.simibubi.create.lib.block.ConnectableRedstoneBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -22,7 +23,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class TeslaCoil extends Block implements ITE<TeslaCoilTileEntity>, IWrenchable {
+public class TeslaCoil extends Block implements ITE<TeslaCoilTileEntity>, IWrenchable, ConnectableRedstoneBlock {
 	public TeslaCoil(Properties props) {
 		super(props);
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH).setValue(POWERED, false));

@@ -1,34 +1,34 @@
 package com.mrh0.createaddition.energy;
 
+import com.simibubi.create.lib.util.LazyOptional;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
-import net.minecraftforge.energy.IEnergyStorage;
+import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class InternalEnergyStorage extends EnergyStorage {
-	public InternalEnergyStorage(int capacity) {
-        super(capacity, capacity, capacity, 0);
+public class InternalEnergyStorage extends SimpleEnergyStorage {
+	public InternalEnergyStorage(long capacity) {
+        super(capacity, capacity, capacity);
     }
 
-    public InternalEnergyStorage(int capacity, int maxTransfer) {
-        super(capacity, maxTransfer, maxTransfer, 0);
+    public InternalEnergyStorage(long capacity, long maxTransfer) {
+        super(capacity, maxTransfer, maxTransfer);
     }
 
-    public InternalEnergyStorage(int capacity, int maxReceive, int maxExtract) {
-        super(capacity, maxReceive, maxExtract, 0);
+    public InternalEnergyStorage(long capacity, long maxReceive, long maxExtract) {
+        super(capacity, maxReceive, maxExtract);
     }
 
-    public InternalEnergyStorage(int capacity, int maxReceive, int maxExtract, int energy) {
-        super(capacity, maxReceive, maxExtract, energy);
+    public InternalEnergyStorage(long capacity, long maxReceive, long maxExtract, long energy) {
+        super(capacity, maxReceive, maxExtract);
+        this.amount = energy;
     }
     
     public CompoundTag write(CompoundTag nbt) {
-    	nbt.putInt("energy", energy);
+    	nbt.putLong("energy", amount);
     	return nbt;
     }
     
@@ -37,55 +37,55 @@ public class InternalEnergyStorage extends EnergyStorage {
     }
     
     public CompoundTag write(CompoundTag nbt, String name) {
-    	nbt.putInt("energy_"+name, energy);
+    	nbt.putLong("energy_"+name, amount);
     	return nbt;
     }
     
     public void read(CompoundTag nbt, String name) {
     	setEnergy(nbt.getInt("energy_"+name));
     }
-    
+
     @Override
-    public boolean canExtract() {
-    	return true;
+    public boolean supportsExtraction() {
+        return true;
     }
-    
+
     @Override
-    public boolean canReceive() {
-    	return true;
+    public boolean supportsInsertion() {
+        return true;
+    }
+
+    public long internalConsumeEnergy(long consume) {
+        long oenergy = amount;
+        amount = Math.max(0, amount - consume);
+        return oenergy - amount;
+    }
+
+    public long internalProduceEnergy(long produce) {
+        long oenergy = amount;
+        amount = Math.min(capacity, amount + produce);
+        return oenergy - amount;
     }
     
-    public int internalConsumeEnergy(int consume) {
-    	int oenergy = energy;
-        energy = Math.max(0, energy - consume);
-        return oenergy - energy;
-    }
-    
-    public int internalProduceEnergy(int produce) {
-    	int oenergy = energy;
-        energy = Math.min(capacity, energy + produce);
-        return oenergy - energy;
-    }
-    
-    public void setEnergy(int energy) {
-    	this.energy = energy;
+    public void setEnergy(long energy) {
+    	this.amount = energy;
     }
     
     @Deprecated
     public void outputToSide(Level world, BlockPos pos, Direction side, int max) {
-    	BlockEntity te = world.getBlockEntity(pos.relative(side));
-		if(te == null)
-			return;
-		LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
-		IEnergyStorage ies = opt.orElse(null);
+		LazyOptional<EnergyStorage> opt = LazyOptional.ofObject(EnergyStorage.SIDED.find(world, pos.relative(side), side.getOpposite()));
+		EnergyStorage ies = opt.orElse(null);
 		if(ies == null)
 			return;
-		int ext = this.extractEnergy(max, false);
-		this.receiveEnergy(ext - ies.receiveEnergy(ext, false), false);
+        try(Transaction t = Transaction.openOuter()) {
+            long ext = this.extract(max, t);
+            this.insert(ext - ies.insert(ext, t), t);
+            t.commit();
+        }
     }
     
     @Override
     public String toString() {
-    	return getEnergyStored() + "/" + getMaxEnergyStored();
+    	return getAmount() + "/" + getCapacity();
     }
 }

@@ -20,8 +20,8 @@ import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.repack.registrate.util.entry.ItemEntry;
 
+import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 
@@ -40,7 +40,7 @@ public class CAItems {
 			.register();
 	
 	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER = REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new)
-			//.transform(CreateRegistrate.customRenderedItem(() -> SandPaperItemRenderer::new))
+			.transform(CreateRegistrate.customRenderedItem(() -> SandPaperItemRenderer::new))
 			.onRegister(s -> TooltipHelper.referTo(s, AllItems.SAND_PAPER))
 			.register();
 	

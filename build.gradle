@@ -1,151 +1,37 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
-        jcenter()
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${forgegradle_version}", changing: true
-        classpath "org.spongepowered:mixingradle:${mixingradle_version}"
-
-    }
+plugins {
+    id 'fabric-loom' version '0.11-SNAPSHOT'
+    id 'eclipse'
+    id 'maven-publish'
+    id 'io.github.juuxel.loom-quiltflower' version '1.+'
+    id 'org.quiltmc.quilt-mappings-on-loom' version '4.+'
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
+// Mojang ships Java 16 to end users in 1.17+ instead of Java 8 in 1.16 or lower, so your mod should target Java 16.
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
-apply plugin: 'org.spongepowered.mixin'
-
-mixin {
-    add sourceSets.main, "createaddition.refmap.json"
-}
+//mixin {
+//    add sourceSets.main, "createaddition.refmap.json"
+//}
 
 
 version = '1.18.1-20220125a'
 group = 'com.mrh0.createaddition' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createaddition'
 
-// Mojang ships Java 16 to end users in 1.17+ instead of Java 8 in 1.16 or lower, so your mod should target Java 16.
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-minecraft {
-    // The mappings can be changed at any time and must be in the following format.
-    // Channel:   Version:
-    // snapshot   YYYYMMDD   Snapshot are built nightly.
-    // stable     #          Stables are built at the discretion of the MCP team.
-    // official   MCVersion  Official field/method names from Mojang mapping files
-    //
-    // You must be aware of the Mojang license when using the 'official' mappings.
-    // See more information here: https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
-    //
-    // Use non-default mappings at your own risk. They may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'official', version: '1.18.1'
-
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
-
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
-    runs {
-        client {
-            workingDirectory project.file('run')
-			
-			arg '-mixin.config=create.mixins.json'
-            arg '-mixin.config=flywheel.mixins.json'
-            property 'forge.logging.console.level', 'info'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-			
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                createaddition {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-
-			arg '-mixin.config=create.mixins.json'
-            property 'forge.logging.console.level', 'info'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                createaddition {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-
-			property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            property 'forge.logging.console.level', 'debug'
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'createaddition', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                createaddition {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
-}
 
 // Include resources generated by data generators.
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+loom {
+    sourceSets.main.resources { srcDir 'src/generated/resources' }
+    accessWidenerPath = file("src/main/resources/ca.accesswidener")
+}
 
 repositories {
     maven {
-        // Location of the maven that hosts JEI files (and TiC)
-        name 'Progwml6 maven'
-        url 'https://dvs1.progwml6.com/files/maven'
+        // Location of the maven that hosts REI files
+        name 'Shedman maven'
+        url 'https://maven.shedaniel.me/'
     }
     /*maven {
         // Location of a maven mirror for JEI files, as a fallback
@@ -157,24 +43,38 @@ repositories {
         name 'blamejared'
         url 'https://maven.blamejared.com'
     }
-    maven {
-        // Location of the maven for mixed mappings, Registrate, and Flywheel
-        name 'tterrag maven'
-        url 'https://maven.tterrag.com'
-    }
+    maven { url = "https://api.modrinth.com/maven" }
+    maven { url = "https://maven.devos.community/releases/" }
+    maven { url = "https://maven.devos.community/snapshots/" }
+    maven { url = "https://maven.tterrag.com/" }
     maven {
         url 'https://www.cursemaven.com'
         content {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        url = "https://maven.jamieswhiteshirt.com/libs-release"
+        content {
+            includeGroup("com.jamieswhiteshirt")
+        }
+    }
+    maven { url = "https://maven.terraformersmc.com/" }
+    maven { url = "https://maven.cafeteria.dev" }
 }
 
 dependencies {
-    // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.59'
+    minecraft("com.mojang:minecraft:${project.minecraft_version}")
+    // THIS IS SO CURSED I LOVE IT
+    // names of mojmap with the docs and params of parchment, then docs and params of QM as fallback
+    mappings loom.layered {
+        it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:1.18.1-rc3+build.4:v2")) // https://maven.quiltmc.org/#browse/browse:release
+        it.parchment("org.parchmentmc.data:parchment-1.18.1:BLEEDING-20211212.174449-1@zip") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
+        it.officialMojangMappings {
+            setNameSyntheticMembers(false)
+        }
+    }
+    modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -183,23 +83,27 @@ dependencies {
 
     // Examples using mod jars from ./libs
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
-	
-	
-	compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
-    implementation fg.deobf("curse.maven:create-328085:3623348")
-    implementation fg.deobf("curse.maven:flywheel-486392:3623314")
-	//implementation fg.deobf("curse.maven:immersive-engineering-231951:3579169")
-    implementation fg.deobf("curse.maven:cc-tweaked-282001:3579699")
-	implementation fg.deobf("curse.maven:applied-energistics-2-223794:3582631")
-	
-	//runtimeOnly fg.deobf("curse.maven:tinkers-construct-74072:3389377")
-	//runtimeOnly fg.deobf("curse.maven:mantle-74924:3412365")
-	
-	//runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3203659")
-	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-	
+
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { transitive = false }
+    modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
+    modImplementation("dev.architectury:architectury-fabric:${project.architectury_version}")
+
+    modImplementation("com.simibubi:Create:mc1.18.1_v0.4d+403")
+    //implementation fg.deobf("curse.maven:immersive-engineering-231951:3579169")
+    modImplementation("curse.maven:cc-restitched-462672:3622569")
+    modImplementation("curse.maven:applied-energistics-2-223794:3630573")
+
+    include modApi('teamreborn:energy:2.2.0') {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    //runtimeOnly fg.deobf("curse.maven:tinkers-construct-74072:3389377")
+    //runtimeOnly fg.deobf("curse.maven:mantle-74924:3412365")
+
+    //runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3203659")
+    //annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
@@ -207,23 +111,12 @@ dependencies {
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
-jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "createaddition",
-                "Specification-Vendor"    : "createaddition",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "createaddition",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
-}
 
 // Example configuration to allow publishing using the maven-publish plugin
 // This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar')
+java {
+    withSourcesJar()
+}
 // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
 // publish.dependsOn('reobfJar')
 

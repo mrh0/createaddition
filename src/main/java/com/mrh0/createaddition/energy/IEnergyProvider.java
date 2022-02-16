@@ -1,7 +1,7 @@
 package com.mrh0.createaddition.energy;
 
-import net.minecraftforge.energy.IEnergyStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 public interface IEnergyProvider {
- public IEnergyStorage getEnergyStorage();
+ public EnergyStorage getEnergyStorage();
 }

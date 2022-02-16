@@ -7,6 +7,8 @@ import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
 
+import com.simibubi.create.lib.transfer.item.*;
+import com.simibubi.create.lib.util.LazyOptional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -19,15 +21,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.CombinedInvWrapper;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import org.jetbrains.annotations.Nullable;
 
-public class RollingMillTileEntity extends KineticTileEntity {
+public class RollingMillTileEntity extends KineticTileEntity implements ItemTransferable {
 
 	public ItemStackHandler inputInv;
 	public ItemStackHandler outputInv;
@@ -94,7 +90,7 @@ public class RollingMillTileEntity extends KineticTileEntity {
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
-		capability.invalidate();
+//		capability.invalidate();
 	}
 	
 	private void process() {
@@ -152,11 +148,18 @@ public class RollingMillTileEntity extends KineticTileEntity {
 		return Mth.clamp((int) Math.abs(getSpeed() / 16f), 1, 512);
 	}
 
+//	@Override
+//	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+//		if (isItemHandlerCap(cap))
+//			return capability.cast();
+//		return super.getCapability(cap, side);
+//	}
+
+
+	@Nullable
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (isItemHandlerCap(cap))
-			return capability.cast();
-		return super.getCapability(cap, side);
+	public IItemHandler getItemHandler(@Nullable Direction direction) {
+		return capability.getValueUnsafer();
 	}
 
 	private boolean canProcess(ItemStack stack) {

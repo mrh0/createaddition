@@ -14,6 +14,7 @@ import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,7 +26,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.energy.IEnergyStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation {
 
@@ -41,7 +42,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	public static Vec3 OFFSET_SOUTH = new Vec3(0f, 0f, 3f/16f);
 	public static Vec3 OFFSET_EAST = new Vec3(3f/16f, 0f, 0f);
 	
-	public static final int CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
+	public static final long CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
 	
 	public ConnectorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
@@ -219,7 +220,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			node.invalidateNodeCache();
 		}
 		invalidateNodeCache();
-		invalidateCaps();
+//		invalidateCaps();
 		// Invalidate
 		if(network != null)
 			network.invalidate();
@@ -255,7 +256,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		this.network = network;
 	}
 	
-	private int demand = 0;
+	private long demand = 0;
 	private void networkTick(EnergyNetwork en) {
 		if(level.isClientSide())
 			return;
@@ -265,21 +266,26 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		//if(te == null)
 		//	return;
 		//IEnergyStorage ies = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite()).orElse(null);
-		IEnergyStorage ies = getCachedEnergy(d);
+		EnergyStorage ies = getCachedEnergy(d);
 		if(ies == null)
 			return;
 		
-		int pull = en.pull(demand);
-		ies.receiveEnergy(pull, false);
-		
-		int testExtract = energy.extractEnergy(Integer.MAX_VALUE, true);
-		int testInsert = ies.receiveEnergy(MAX_OUT, true);
-		
-		demand = en.demand(testInsert);
-		
-		
-		int push = en.push(testExtract);
-		int ext = energy.internalConsumeEnergy(push);
+		long pull = en.pull(demand);
+		try(Transaction t = Transaction.openOuter()) {
+			ies.insert(pull, t);
+
+			long testExtract, testInsert;
+			try(Transaction nested = Transaction.openNested(t)) {
+				testExtract = energy.extract(Long.MAX_VALUE, nested);
+				testInsert = ies.insert(MAX_OUT, nested);
+			}
+			demand = en.demand(testInsert);
+
+
+			long push = en.push(testExtract);
+			long ext = energy.internalConsumeEnergy(push);
+			t.commit();
+		}
 	}
 
 	@Override

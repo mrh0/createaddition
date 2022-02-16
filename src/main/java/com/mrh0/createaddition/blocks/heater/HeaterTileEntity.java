@@ -9,6 +9,7 @@ import com.mrh0.createaddition.item.Multimeter;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,7 +32,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	public static final boolean ALLOW_ENGINE = Config.HEATER_FURNACE_ENGINE_ENABLED.get();
 	private boolean litState = false;
 	
-	private static final int 
+	private static final long
 	MAX_IN = Config.HEATER_MAX_INPUT.get(),
 	MAX_OUT = 0,
 	CAPACITY = Config.HEATER_CAPACITY.get();
@@ -85,7 +86,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 		}
 		
 		// Old Lazy
-		if(hasEnoughEnergy())
+		if (hasEnoughEnergy())
 			energy.internalConsumeEnergy(getConsumption());
 	}
 	
@@ -102,7 +103,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	public boolean hasEnoughEnergy() {
 		if(!ALLOW_ENGINE && isFurnaceEngine)
 			return false;
-		return energy.getEnergyStored() > getConsumption();
+		return energy.getAmount() > getConsumption();
 	}
 	
 	public boolean hasFurnaceEngine() {

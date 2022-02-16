@@ -7,23 +7,26 @@
   ],
   "key": {
     "i": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "c": {
-      "tag": "forge:ingots/copper"
+      "tag": "c:ingots/copper"
     },
     "l": {
       "item": "immersiveengineering:coil_lv"
     },
     "r": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "result": {
     "item": "createaddition:heater"
   },
-  "conditions": [ {
-    "type": "forge:mod_loaded",
-    "modid": "immersiveengineering"
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:fluid_tags_populated",
+      "values": [
+        "immersiveengineering"
+        ]
   } ]
 }

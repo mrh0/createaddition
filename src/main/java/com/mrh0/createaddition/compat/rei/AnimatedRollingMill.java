@@ -1,8 +1,8 @@
-package com.mrh0.createaddition.compat.jei;
+package com.mrh0.createaddition.compat.rei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrh0.createaddition.index.CABlocks;
-import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
+import com.simibubi.create.compat.rei.category.animations.AnimatedKinetics;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 

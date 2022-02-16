@@ -1,14 +1,17 @@
 {
 	"type":"createaddition:rolling",
 	"input": {
-      	"tag": "forge:ingots/steel"
+      	"tag": "c:ingots/steel"
 	},
 	"result": {
 		"item": "immersiveengineering:stick_steel",
 		"count": 2
 	},
-	"conditions": [ {
-		"type": "forge:mod_loaded",
-		"modid": "immersiveengineering"
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:fluid_tags_populated",
+			"values": [
+				"immersiveengineering"
+			]
     } ]
 }

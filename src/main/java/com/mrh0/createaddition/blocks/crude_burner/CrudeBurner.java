@@ -1,18 +1,14 @@
 package com.mrh0.createaddition.blocks.crude_burner;
 
-import java.util.Optional;
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import com.mrh0.createaddition.blocks.base.AbstractBurnerBlock;
-import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
-import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurnerTileEntity;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.repack.registrate.util.nullness.NonnullType;
-
+import com.simibubi.create.lib.transfer.TransferUtil;
+import com.simibubi.create.lib.transfer.fluid.FluidStack;
+import com.simibubi.create.lib.transfer.fluid.IFluidHandler;
+import com.simibubi.create.lib.transfer.fluid.IFluidHandlerItem;
+import com.simibubi.create.lib.util.LazyOptional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,19 +21,15 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+
+import javax.annotation.Nullable;
+import java.util.Optional;
+import java.util.Random;
 
 public class CrudeBurner extends AbstractBurnerBlock implements ITE<CrudeBurnerTileEntity> {
 
@@ -61,8 +53,7 @@ public class CrudeBurner extends AbstractBurnerBlock implements ITE<CrudeBurnerT
 			ItemStack held = player.getMainHandItem();
 			if (!(held.getItem() instanceof BucketItem))
 				return InteractionResult.CONSUME;
-			LazyOptional<IFluidHandlerItem> cap = held
-					.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+			LazyOptional<IFluidHandlerItem> cap = TransferUtil.getFluidHandlerItem(held);
 			if (!cap.isPresent())
 				return InteractionResult.CONSUME;
 			IFluidHandlerItem handler = cap.orElse(null);
@@ -73,13 +64,13 @@ public class CrudeBurner extends AbstractBurnerBlock implements ITE<CrudeBurnerT
 			if (!recipe.isPresent())
 				return InteractionResult.CONSUME;
 
-			LazyOptional<IFluidHandler> tecap = cbte.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+			LazyOptional<IFluidHandler> tecap = TransferUtil.getFluidHandler(cbte);
 			if (!tecap.isPresent())
 				return InteractionResult.CONSUME;
 			IFluidHandler tehandler = tecap.orElse(null);
 			if (tehandler.getTankCapacity(0) - tehandler.getFluidInTank(0).getAmount() < 1000)
 				return InteractionResult.CONSUME;
-			tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), FluidAction.EXECUTE);
+			tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), false);
 			if (!player.isCreative())
 				player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
 			player.playSound(SoundEvents.BUCKET_EMPTY, 1f, 1f);

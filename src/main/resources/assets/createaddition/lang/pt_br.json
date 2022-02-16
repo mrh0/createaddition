@@ -45,5 +45,5 @@
 	"block.createaddition.creative_energy": "Gerador Criativo",
 	"block.createaddition.rolling_mill": "Laminadora",
 	
-	"itemGroup.createaddition:main":"Create Crafts & Additions"
+	"itemGroup.createaddition.main":"Create Crafts & Additions"
 }

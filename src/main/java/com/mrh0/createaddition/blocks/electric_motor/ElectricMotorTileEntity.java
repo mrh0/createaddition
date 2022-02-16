@@ -9,6 +9,7 @@ import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
 import com.simibubi.create.foundation.config.ConfigBase;
@@ -19,6 +20,8 @@ import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollVal
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour.StepContext;
 import com.simibubi.create.foundation.utility.Lang;
 
+import com.simibubi.create.lib.util.LazyOptional;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,28 +33,29 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
+import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.EnergyStorage;
 
-public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
+public class ElectricMotorTileEntity extends GeneratingKineticTileEntity implements EnergyTransferable {
 	
 	protected ScrollValueBehaviour generatedSpeed;
 	protected final InternalEnergyStorage energy;
-	private LazyOptional<net.minecraftforge.energy.IEnergyStorage> lazyEnergy;
+	private LazyOptional<EnergyStorage> lazyEnergy;
 	private LazyOptional<ElectricMotorPeripheral> lazyPeripheral = null;
 	
 	private boolean cc_update_rpm = false;
 	private int cc_new_rpm = 32;
 	
-	private static final Integer 
+	private static final Integer
 		RPM_RANGE = Config.ELECTRIC_MOTOR_RPM_RANGE.get(),
 		DEFAULT_SPEED = 32,
-		MAX_IN = Config.ELECTRIC_MOTOR_MAX_INPUT.get(),
 		MIN_CONSUMPTION = Config.ELECTRIC_MOTOR_MINIMUM_CONSUMPTION.get(),
-		MAX_OUT = 0,
-		CAPACITY = Config.ELECTRIC_MOTOR_CAPACITY.get(),
 		STRESS = Config.BASELINE_STRESS.get();
+
+	private static Long
+			MAX_IN = Config.ELECTRIC_MOTOR_MAX_INPUT.get(),
+			MAX_OUT = 0L,
+			CAPACITY = Config.ELECTRIC_MOTOR_CAPACITY.get();
 	
 	private boolean active = false;
 
@@ -143,18 +147,17 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	public InternalEnergyStorage getEnergyStorage() {
 		return energy;
 	}
-	
+
+	@Nullable
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)))// && !level.isClientSide
-			return lazyEnergy.cast();
-		if(CreateAddition.CC_ACTIVE) {
-			if(Peripherals.isPeripheral(cap))
-				return lazyPeripheral.cast();
-		}
-		return super.getCapability(cap, side);
+	public EnergyStorage getEnergyStorage(@Nullable Direction side) {
+		if((isEnergyInput(side) || isEnergyOutput(side)))
+			return lazyEnergy.getValueUnsafer();
+		if(CreateAddition.CC_ACTIVE)
+			Peripherals.isPeripheral(getLevel(), getBlockPos(), side);
+		return null;
 	}
-	
+
 	public boolean isEnergyInput(Direction side) {
 		return side != getBlockState().getValue(ElectricMotorBlock.FACING);
 	}
@@ -220,14 +223,14 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 			return;
 		int con = getEnergyConsumptionRate(generatedSpeed.getValue());
 		if(!active) {
-			if(energy.getEnergyStored() > con * 2) {
+			if(energy.getAmount() > con * 2) {
 				active = true;
 				updateGeneratedRotation();
 			}
 		}
 		else {
-			int ext = energy.internalConsumeEnergy(con);
-			if(ext < con) {
+			long ext = energy.internalConsumeEnergy(con);
+			if (ext < con) {
 				active = false;
 				updateGeneratedRotation();
 			}

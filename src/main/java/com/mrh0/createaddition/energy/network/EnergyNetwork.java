@@ -13,18 +13,18 @@ import net.minecraft.world.level.Level;
 public class EnergyNetwork {
 	
 	// Input
-	private int inBuff;
-	private int inDemand;
+	private long inBuff;
+	private long inDemand;
 	// Output
-	private int outBuff;
-	private int outBuffRetained;
-	private int outDemand;
+	private long outBuff;
+	private long outBuffRetained;
+	private long outDemand;
 	private boolean valid;
 	
 	private int pulled = 0;
 	private int pushed = 0;
 	
-	private static int MAX_BUFF = Math.max(Config.CONNECTOR_MAX_INPUT.get(), Config.CONNECTOR_MAX_OUTPUT.get());
+	private static long MAX_BUFF = Math.max(Config.CONNECTOR_MAX_INPUT.get(), Config.CONNECTOR_MAX_OUTPUT.get());
 	
 	public EnergyNetwork(Level world) {
 		this.inBuff = 0;
@@ -40,7 +40,7 @@ public class EnergyNetwork {
 	
 	public void tick() {
 		//System.out.println("NetTick: " + getBuff() + "/" + getDemand() + " " + pulled + "/" + pushed);
-		int t = outBuff;
+		long t = outBuff;
 		outBuff = inBuff;
 		outBuffRetained = outBuff;
 		inBuff = t;
@@ -52,11 +52,11 @@ public class EnergyNetwork {
 		//saturation = outDemand > 0 ? saturation : 0;
 	}
 	
-	public int getBuff() {
+	public long getBuff() {
 		return outBuffRetained;
 	}
 	
-	public int push(int energy) {
+	public long push(long energy) {
 		energy = Math.min(MAX_BUFF - inBuff, energy);
 		energy = energy > 0 ? energy : 0;
 		inBuff += energy;
@@ -64,12 +64,12 @@ public class EnergyNetwork {
 		return energy;
 	}
 	
-	public int demand(int demand) {
+	public long demand(long demand) {
 		this.inDemand += demand;
 		return demand;
 	}
 	
-	public int getDemand() {
+	public long getDemand() {
 		return outDemand;
 	}
 	
@@ -81,7 +81,7 @@ public class EnergyNetwork {
 		return pushed;
 	}
 	
-	public int pull(int max) {
+	public long pull(long max) {
 		int r = (int) ( (double) Math.max(Math.min(max, outBuff), 0) );
 		outBuff -= r;
 		pulled += r;

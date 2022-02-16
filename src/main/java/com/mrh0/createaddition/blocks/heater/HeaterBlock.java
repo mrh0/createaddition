@@ -6,6 +6,7 @@ import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
+import com.simibubi.create.lib.block.NeighborChangeListeningBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class HeaterBlock extends Block implements ITE<HeaterTileEntity>, IWrenchable {
+public class HeaterBlock extends Block implements ITE<HeaterTileEntity>, IWrenchable, NeighborChangeListeningBlock {
 	
 	public static final VoxelShaper HEATER_SHAPE = CAShapes.shape(4, 0, 4, 12, 13, 12).add(3, 0, 3, 13, 2, 13).add(5, 0, 5, 11, 16, 11)
 			.add(3, 3, 3, 13, 7, 13).add(3, 8, 3, 13, 12, 13).forDirectional();
@@ -60,7 +61,6 @@ public class HeaterBlock extends Block implements ITE<HeaterTileEntity>, IWrench
 	
 	@Override
 	public void onNeighborChange(BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor) {
-		super.onNeighborChange(state, world, pos, neighbor);
 		BlockEntity te = world.getBlockEntity(pos);
 		if(te == null)
 			return;

@@ -181,7 +181,7 @@
 	
 	"block.createaddition.seed_oil": "Aceite de semillas",
 	
-	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	"itemGroup.createaddition.main":"Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "Haga clic aquí para abrir la documentación de la API",
 	

@@ -9,15 +9,15 @@
 	{
 		"P":
 		{
-			"tag": "forge:plates/copper"
+			"tag": "c:plates/copper"
 		},
 		"I":
 		{
-			"tag": "forge:rods/iron"
+			"tag": "c:rods/iron"
 		},
 		"B":
 		{
-			"tag": "forge:ingots/brass"
+			"tag": "c:ingots/brass"
 		},
 		"C":
 		{

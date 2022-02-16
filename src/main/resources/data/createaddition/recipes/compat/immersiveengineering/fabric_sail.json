@@ -10,15 +10,18 @@
       "item": "create:sail_frame"
     },
     "F": {
-      "tag": "forge:fabric_hemp"
+      "tag": "c:fabric_hemp"
     }
   },
   "result": {
     "item": "create:white_sail",
     "count": 8
   },
-  "conditions": [ {
-    "type": "forge:mod_loaded",
-    "modid": "immersiveengineering"
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:fluid_tags_populated",
+      "values": [
+          "immersiveengineering"
+        ]
   } ]
 }

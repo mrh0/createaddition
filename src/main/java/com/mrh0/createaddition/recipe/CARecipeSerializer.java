@@ -3,20 +3,19 @@ package com.mrh0.createaddition.recipe;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
-public abstract class CARecipeSerializer <R extends Recipe<?>> extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<R> {
+public abstract class CARecipeSerializer <R extends Recipe<?>> implements RecipeSerializer<R> {
 	public abstract ItemStack getIcon();
 
 	@Override
 	public final R fromJson(ResourceLocation recipeId, JsonObject json) {
-		if(CraftingHelper.processConditions(json, "conditions"))
+		if(ResourceConditions.objectMatchesConditions(json))
 			return readFromJson(recipeId, json);
 		return readFromJson(recipeId, json);
 	}

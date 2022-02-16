@@ -180,7 +180,7 @@
 	
 	"block.createaddition.seed_oil": "Растительное масло",
 	
-	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	"itemGroup.createaddition.main":"Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "Click here to open API documentation",
 	

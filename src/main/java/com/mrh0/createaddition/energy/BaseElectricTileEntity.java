@@ -2,29 +2,29 @@ package com.mrh0.createaddition.energy;
 
 import java.util.List;
 
+import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 
+import com.simibubi.create.lib.util.LazyOptional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.EnergyStorage;
 
-public abstract class BaseElectricTileEntity extends SmartTileEntity {
+public abstract class BaseElectricTileEntity extends SmartTileEntity implements EnergyTransferable {
 
 	protected final InternalEnergyStorage energy;
-	protected LazyOptional<IEnergyStorage> lazyEnergy;
+	protected LazyOptional<EnergyStorage> lazyEnergy;
 	
 	private boolean firstTickState = true;
-	protected final int CAPACITY, MAX_IN, MAX_OUT;
+	protected final long CAPACITY, MAX_IN, MAX_OUT;
 	
-	public BaseElectricTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state, int CAPACITY, int MAX_IN, int MAX_OUT) {
+	public BaseElectricTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state, long CAPACITY, long MAX_IN, long MAX_OUT) {
 		super(tileEntityTypeIn, pos, state);
 		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		this.CAPACITY = CAPACITY;
@@ -36,13 +36,22 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 
 	@Override
 	public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
-	
+
+	@Nullable
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)))// && !level.isClientSide
-			return lazyEnergy.cast();
-		return super.getCapability(cap, side);
+	public EnergyStorage getEnergyStorage(@Nullable Direction side) {
+		if(isEnergyInput(side) || isEnergyOutput(side)) {
+			return lazyEnergy.getValueUnsafer();
+		}
+		return null;
 	}
+
+	//	@Override
+//	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+//		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)))// && !level.isClientSide
+//			return lazyEnergy.cast();
+//		return super.getCapability(cap, side);
+//	}
 	
 	public abstract boolean isEnergyInput(Direction side);
 
@@ -97,19 +106,19 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 				setCache(side, LazyOptional.empty());
 				continue;
 			}
-			LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+			LazyOptional<EnergyStorage> le = LazyOptional.ofObject(EnergyStorage.SIDED.find(te.getLevel(), te.getBlockPos(), side.getOpposite()));
 			setCache(side, le);
 		}
 	}
 	
-	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheNorth = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheEast = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheSouth = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheWest = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheUp = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheDown = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheNorth = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheEast = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheSouth = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheWest = LazyOptional.empty();
 	
-	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
+	public void setCache(Direction side, LazyOptional<EnergyStorage> storage) {
 		switch(side) {
 			case DOWN:
 				escacheDown = storage;
@@ -132,7 +141,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		}
 	}
 	
-	public IEnergyStorage getCachedEnergy(Direction side) {
+	public EnergyStorage getCachedEnergy(Direction side) {
 		switch(side) {
 			case DOWN:
 				return escacheDown.orElse(null);

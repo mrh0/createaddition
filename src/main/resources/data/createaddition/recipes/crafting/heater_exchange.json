@@ -9,8 +9,11 @@
 		"item": "createaddition:heater",
 		"count": 1
 	},
-    "conditions": [ {
-        "type": "forge:mod_loaded",
-        "modid": "immersiveengineering"
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:fluid_tags_populated",
+			"values": [
+        		"immersiveengineering"
+			]
     } ]
 }
