@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
+import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.AllBlockPartials;
@@ -18,7 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class RollingMillRenderer  extends KineticTileEntityRenderer {
+public class RollingMillRenderer extends KineticTileEntityRenderer {
 
 	public RollingMillRenderer(Context dispatcher) {
 		super(dispatcher);
@@ -33,6 +34,7 @@ public class RollingMillRenderer  extends KineticTileEntityRenderer {
 	protected void renderSafe(KineticTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer,
 			int light, int overlay) {
 		super.renderSafe(te, partialTicks, ms, buffer, light, overlay);
+		if(Backend.canUseInstancing(te.getLevel())) return;
 		BlockState blockState = te.getBlockState();
 		BlockPos pos = te.getBlockPos();
 		
