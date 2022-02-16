@@ -9,11 +9,11 @@
 	{
 		"W":
 		{
-			"tag": "forge:wires/copper"
+			"tag": "c:wires/copper"
 		},
 		"P":
 		{
-			"tag": "forge:plates/iron"
+			"tag": "c:plates/iron"
 		},
 		"C":
 		{

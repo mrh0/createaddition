@@ -6,10 +6,13 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.foundation.utility.Lang;
 
+import com.simibubi.create.lib.util.LazyOptional;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,17 +25,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.EnergyStorageUtil;
 
-public class AlternatorTileEntity extends KineticTileEntity {
+public class AlternatorTileEntity extends KineticTileEntity implements EnergyTransferable {
 	
 	protected final InternalEnergyStorage energy;
-	private LazyOptional<IEnergyStorage> lazyEnergy;
+	private LazyOptional<EnergyStorage> lazyEnergy;
 	
-	private static final int 
+	private static final long
 		MAX_IN = 0,
 		MAX_OUT = Config.ALTERNATOR_MAX_OUTPUT.get(),
 		CAPACITY = Config.ALTERNATOR_CAPACITY.get(),
@@ -62,13 +64,6 @@ public class AlternatorTileEntity extends KineticTileEntity {
 		float impact = STRESS/256f;
 		this.lastStressApplied = impact;
 		return impact;
-	}
-	
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)))// && !level.isClientSide
-			return lazyEnergy.cast();
-		return super.getCapability(cap, side);
 	}
 	
 	public boolean isEnergyInput(Direction side) {
@@ -101,11 +96,11 @@ public class AlternatorTileEntity extends KineticTileEntity {
 		if(firstTickState)
 			firstTick();
 		firstTickState = false;
+
+		if (Math.abs(getSpeed()) > 0 && isSpeedRequirementFulfilled())
+			energy.internalProduceEnergy(getEnergyProductionRate((int) getSpeed()));
 		
-		if(Math.abs(getSpeed()) > 0 && isSpeedRequirementFulfilled())
-			energy.internalProduceEnergy(getEnergyProductionRate((int)getSpeed()));
-		
-		//System.out.println(energy.getEnergyStored());
+		//System.out.println(energy.getAmount());
 		
 		for(Direction d : Direction.values()) {
 			if(!isEnergyOutput(d))
@@ -115,11 +110,13 @@ public class AlternatorTileEntity extends KineticTileEntity {
 				continue;
 			LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite());
 			IEnergyStorage ies = opt.orElse(null);*/
-			IEnergyStorage ies = getCachedEnergy(d);
+			EnergyStorage ies = getCachedEnergy(d);
 			if(ies == null)
 				continue;
-			int ext = energy.extractEnergy(ies.receiveEnergy(MAX_OUT, true), false);
-			int rec = ies.receiveEnergy(ext, false);
+			try(Transaction t = Transaction.openOuter()) {
+				EnergyStorageUtil.move(energy, ies, MAX_OUT, t);
+				t.commit();
+			}
 			//System.out.println(ext + ":" + getEnergyProductionRate((int)getSpeed()) + ":" + rec + ":" + d);
 		}
 	}
@@ -153,19 +150,19 @@ public class AlternatorTileEntity extends KineticTileEntity {
 				setCache(side, LazyOptional.empty());
 				continue;
 			}
-			LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+			LazyOptional<EnergyStorage> le = LazyOptional.ofObject(EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite()));
 			setCache(side, le);
 		}
 	}
 	
-	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheNorth = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheEast = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheSouth = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheWest = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheUp = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheDown = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheNorth = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheEast = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheSouth = LazyOptional.empty();
+	private LazyOptional<EnergyStorage> escacheWest = LazyOptional.empty();
 	
-	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
+	public void setCache(Direction side, LazyOptional<EnergyStorage> storage) {
 		switch(side) {
 			case DOWN:
 				escacheDown = storage;
@@ -188,7 +185,7 @@ public class AlternatorTileEntity extends KineticTileEntity {
 		}
 	}
 	
-	public IEnergyStorage getCachedEnergy(Direction side) {
+	public EnergyStorage getCachedEnergy(Direction side) {
 		switch(side) {
 			case DOWN:
 				return escacheDown.orElse(null);
@@ -203,6 +200,14 @@ public class AlternatorTileEntity extends KineticTileEntity {
 			case WEST:
 				return escacheWest.orElse(null);
 		}
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public EnergyStorage getEnergyStorage(@Nullable Direction side) {
+		if((isEnergyInput(side) || isEnergyOutput(side)))
+			return lazyEnergy.getValueUnsafer();
 		return null;
 	}
 }

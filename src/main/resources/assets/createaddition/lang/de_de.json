@@ -151,7 +151,7 @@
 	
 	"block.createaddition.seed_oil": "Samen-Öl",
 	
-	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	"itemGroup.createaddition.main":"Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "Klick hier für eine Api Dokumentation",
 	

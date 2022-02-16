@@ -184,7 +184,7 @@
 	
 	"block.createaddition.tesla_coil": "特斯拉线圈",
 
-	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	"itemGroup.createaddition.main":"Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "点击这里打开 API 文档。",
 	

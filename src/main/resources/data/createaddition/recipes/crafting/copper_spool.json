@@ -9,7 +9,7 @@
 	{
 		"W":
 		{
-			"tag": "forge:wires/copper"
+			"tag": "c:wires/copper"
 		},
 		"S":
 		{

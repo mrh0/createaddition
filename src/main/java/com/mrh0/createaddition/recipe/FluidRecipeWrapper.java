@@ -1,10 +1,10 @@
 package com.mrh0.createaddition.recipe;
 
+import com.simibubi.create.lib.transfer.fluid.FluidStack;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.fluids.FluidStack;
 
 public class FluidRecipeWrapper implements Container {
 

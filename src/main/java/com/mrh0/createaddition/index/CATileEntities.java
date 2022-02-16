@@ -17,10 +17,23 @@ import com.mrh0.createaddition.blocks.rolling_mill.*;
 import com.mrh0.createaddition.blocks.accumulator.*;
 import com.mrh0.createaddition.blocks.connector.*;
 import com.mrh0.createaddition.blocks.redstone_relay.*;
+import com.mrh0.createaddition.transfer.EnergyTransferable;
+import com.simibubi.create.AllTileEntities;
 import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
-import com.simibubi.create.repack.registrate.util.entry.BlockEntityEntry;
 
+import com.simibubi.create.lib.transfer.TransferUtil;
+import com.simibubi.create.lib.transfer.fluid.FluidTransferable;
+import com.simibubi.create.lib.transfer.item.ItemTransferable;
+import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import team.reborn.energy.api.EnergyStorage;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public class CATileEntities {
 	public static final BlockEntityEntry<ElectricMotorTileEntity> ELECTRIC_MOTOR = CreateAddition.registrate()
@@ -95,4 +108,36 @@ public class CATileEntities {
 			.register();
 	
 	public static void register() {}
+
+	public static void registerStorages() {
+		for (Field field : CATileEntities.class.getDeclaredFields()) {
+			field.setAccessible(true);
+			if (Modifier.isStatic(field.getModifiers())) {
+				try {
+					Object obj = field.get(null);
+					if (obj instanceof BlockEntityEntry entry) {
+						BlockEntityType<?> bet = (BlockEntityType<?>) entry.get();
+						BlockEntity be = bet.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
+						if (be instanceof FluidTransferable) {
+							TransferUtil.registerFluidStorage(bet);
+						}
+						if (be instanceof ItemTransferable) {
+							TransferUtil.registerItemStorage(bet);
+						}
+						if(be instanceof EnergyTransferable) {
+							EnergyStorage.SIDED.registerForBlockEntities(CATileEntities::registerEnergyStorage, bet);
+						}
+					}
+				} catch (IllegalAccessException e) {
+					throw new RuntimeException("Failure during BlockEntity registration", e);
+				}
+			}
+		}
+	}
+
+	public static EnergyStorage registerEnergyStorage(BlockEntity be, Direction direction) {
+		if(be instanceof EnergyTransferable transferable)
+			return transferable.getEnergyStorage(direction);
+		return null;
+	}
 }

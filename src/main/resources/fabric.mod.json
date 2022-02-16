@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "createaddition",
+  "version": "${version}",
+
+  "name": "Create Crafts & Additions",
+  "description": "Create Crafts & Additions extends Create and acts as a bridge between electricity and kinetic energy from Create by adding an Electric Motor which generates kinetic energy from Forge energy and an Alternator which does the opposite.\nJoin the Discord: https://discord.gg/mRbNnyKTEu",
+  "authors": [
+    "MRH0",
+    "AlphaMode"
+  ],
+  "contact": {
+    "issues": "https://github.com/mrh0/createaddition/issues",
+    "sources": "https://github.com/mrh0/createaddition"
+  },
+
+  "license": "MIT",
+  "icon": "META-INF/createaddition.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.mrh0.createaddition.CreateAddition"
+    ],
+    "client": [
+      "com.mrh0.createaddition.CreateAdditionClient"
+    ],
+    "rei": [
+      "com.mrh0.createaddition.compat.rei.CreateAdditionREI"
+    ]
+  },
+  "accessWidener": "ca.accesswidener",
+
+  "depends": {
+    "fabricloader": ">=0.13.1",
+    "fabric": ">=0.46.0",
+    "minecraft": ">=1.18.1",
+    "registrate-fabric": "*",
+    "flywheel": "*"
+  }
+}

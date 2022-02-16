@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:rolling",
 	"input": {
-      	"tag": "forge:ingots/brass"
+      	"tag": "c:ingots/brass"
 	},
 	"result": {
 		"item": "createaddition:brass_rod",

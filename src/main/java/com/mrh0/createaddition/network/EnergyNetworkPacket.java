@@ -4,12 +4,13 @@ import java.util.function.Supplier;
 
 import com.mrh0.createaddition.CreateAddition;
 
+import com.simibubi.create.foundation.networking.SimplePacketBase;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
-
 
 public class EnergyNetworkPacket {
 	private BlockPos pos;
@@ -26,10 +27,12 @@ public class EnergyNetworkPacket {
 		this.buff = buff;
 	}
 	
-	public static void encode(EnergyNetworkPacket packet, FriendlyByteBuf tag) {
-        tag.writeBlockPos(packet.pos);
-        tag.writeInt(packet.demand);
-        tag.writeInt(packet.buff);
+	public FriendlyByteBuf encode() {
+		FriendlyByteBuf tag = PacketByteBufs.create();
+        tag.writeBlockPos(pos);
+        tag.writeInt(demand);
+        tag.writeInt(buff);
+		return tag;
     }
 	
 	public static EnergyNetworkPacket decode(FriendlyByteBuf buf) {
@@ -37,16 +40,14 @@ public class EnergyNetworkPacket {
         return scp;
     }
 	
-	public static void handle(EnergyNetworkPacket pkt, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
+	public static void handle(EnergyNetworkPacket pkt, Minecraft client) {
+		client.execute(() -> {
 			try {
 				updateClientCache(pkt.pos, pkt.demand, pkt.buff);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
-		
-		ctx.get().setPacketHandled(true);
 	}
 	
 	private static void updateClientCache(BlockPos pos, int demand, int buff) {
@@ -56,6 +57,6 @@ public class EnergyNetworkPacket {
     }
 	
 	public static void send(BlockPos pos, int demand, int buff, ServerPlayer player) {
-		CreateAddition.Network.send(PacketDistributor.PLAYER.with(() -> player), new EnergyNetworkPacket(pos, demand, buff));
+		ServerPlayNetworking.send(player, CANetwork.ENERGY_NETWORK, new EnergyNetworkPacket(pos, demand, buff).encode());
 	}
 }

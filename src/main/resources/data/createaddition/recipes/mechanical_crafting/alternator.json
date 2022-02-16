@@ -11,10 +11,10 @@
       "item": "createaddition:capacitor"
     },
     "I": {
-      "tag": "forge:plates/iron"
+      "tag": "c:plates/iron"
     },
     "R": {
-      "tag": "forge:rods/iron"
+      "tag": "c:rods/iron"
     },
     "S": {
       "item": "createaddition:copper_spool"

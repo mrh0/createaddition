@@ -2,6 +2,12 @@ package com.mrh0.createaddition.blocks.base;
 
 import javax.annotation.Nullable;
 
+import com.mrh0.createaddition.transfer.SidedInvWrapper;
+import com.simibubi.create.lib.transfer.fluid.FluidTransferable;
+import com.simibubi.create.lib.transfer.fluid.IFluidHandler;
+import com.simibubi.create.lib.transfer.item.IItemHandler;
+import com.simibubi.create.lib.util.BurnUtil;
+import com.simibubi.create.lib.util.LazyOptional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -20,7 +26,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class AbstractBurnerBlockEntity extends BlockEntity
-		implements WorldlyContainer {
+		implements WorldlyContainer, FluidTransferable {
 	public static final int SLOT_FUEL = 0;
 	public static final int DATA_LIT_TIME = 0;
 	private static final int[] SLOTS = new int[] { 0 };
@@ -69,12 +75,12 @@ public abstract class AbstractBurnerBlockEntity extends BlockEntity
 				be.litDuration = be.litTime;
 				if (be.isLit()) {
 					flag1 = true;
-					if (itemstack.hasContainerItem())
-						be.items.set(0, itemstack.getContainerItem());
+					if (itemstack.getItem().hasCraftingRemainingItem())
+						be.items.set(0, new ItemStack(itemstack.getItem().getCraftingRemainingItem()));
 					else if (!itemstack.isEmpty()) {
 						itemstack.shrink(1);
 						if (itemstack.isEmpty()) {
-							be.items.set(0, itemstack.getContainerItem());
+							be.items.set(0, new ItemStack(itemstack.getItem().getCraftingRemainingItem()));
 						}
 					}
 				}
@@ -97,12 +103,12 @@ public abstract class AbstractBurnerBlockEntity extends BlockEntity
 		if (stack.isEmpty()) {
 			return 0;
 		} else {
-			return net.minecraftforge.common.ForgeHooks.getBurnTime(stack, null);
+			return BurnUtil.getBurnTime(stack);
 		}
 	}
 	
 	public static boolean isFuel(ItemStack stack) {
-		return net.minecraftforge.common.ForgeHooks.getBurnTime(stack, null) > 0;
+		return BurnUtil.getBurnTime(stack) > 0;
 	}
 
 	public int[] getSlotsForFace(Direction dir) {
@@ -151,7 +157,7 @@ public abstract class AbstractBurnerBlockEntity extends BlockEntity
 
 	public boolean canPlaceItem(int index, ItemStack stack) {
 		ItemStack itemstack = this.items.get(0);
-		return net.minecraftforge.common.ForgeHooks.getBurnTime(stack, null) > 0
+		return BurnUtil.getBurnTime(stack) > 0
 				|| stack.is(Items.BUCKET) && !itemstack.is(Items.BUCKET);
 	}
 
@@ -159,33 +165,41 @@ public abstract class AbstractBurnerBlockEntity extends BlockEntity
 		this.items.clear();
 	}
 
-	net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers = net.minecraftforge.items.wrapper.SidedInvWrapper
+	LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper
 			.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
 
+	@org.jetbrains.annotations.Nullable
 	@Override
-	public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(
-			net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
-		if (!this.remove && facing != null
-				&& capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return handlers[0].cast();
+	public IFluidHandler getFluidHandler(@org.jetbrains.annotations.Nullable Direction facing) {
+		if (!this.remove && facing != null) {
+			return (IFluidHandler) handlers[0].cast().getValueUnsafer();
 		}
-		return super.getCapability(capability, facing);
+		return null;
 	}
 
-	@Override
+//	@Override
+//	public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(
+//			net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
+//		if (!this.remove && facing != null
+//				&& capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+//			return handlers[0].cast();
+//		}
+//		return super.getCapability(capability, facing);
+//	}
+
+//	@Override
 	public void invalidateCaps() {
-		super.invalidateCaps();
+//		super.invalidateCaps();
 		for (int x = 0; x < handlers.length; x++)
 			handlers[x].invalidate();
 	}
 
 	@Override
-	public void reviveCaps() {
-		super.reviveCaps();
-		this.handlers = net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN,
-				Direction.NORTH);
+	public void setRemoved() {
+		super.setRemoved();
+		invalidateCaps();
 	}
-	
+
 	@Override
 	public boolean stillValid(Player player) {
 		return false;

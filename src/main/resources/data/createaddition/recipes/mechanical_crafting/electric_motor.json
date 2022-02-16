@@ -14,10 +14,10 @@
       "item": "createaddition:capacitor"
     },
     "B": {
-      "tag": "forge:plates/brass"
+      "tag": "c:plates/brass"
     },
     "R": {
-      "tag": "forge:rods/iron"
+      "tag": "c:rods/iron"
     },
     "S": {
       "item": "createaddition:copper_spool"

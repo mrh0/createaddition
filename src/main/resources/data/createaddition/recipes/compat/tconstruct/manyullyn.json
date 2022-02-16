@@ -2,16 +2,16 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "tag": "forge:ingots/cobalt"
+      "tag": "c:ingots/cobalt"
     },
     {
-      "tag": "forge:ingots/cobalt"
+      "tag": "c:ingots/cobalt"
     },
     {
-      "tag": "forge:ingots/cobalt"
+      "tag": "c:ingots/cobalt"
     },
     {
-      "tag": "forge:ingots/netherite_scrap"
+      "tag": "c:ingots/netherite_scrap"
     }
   ],
   "results": [
@@ -21,10 +21,12 @@
     }
   ],
   "heatRequirement": "superheated",
-  "conditions": [
+  "fabric:load_conditions": [
     {
-    	"type": "forge:mod_loaded",
-    	"modid": "tconstruct"
-  	}
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "tconstruct"
+      ]
+    }
   ]
 }

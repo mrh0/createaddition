@@ -9,15 +9,15 @@
 	{
 		"Z":
 		{
-			"tag": "forge:plates/zinc"
+			"tag": "c:plates/zinc"
 		},
 		"C":
 		{
-			"tag": "forge:plates/copper"
+			"tag": "c:plates/copper"
 		},
 		"I":
 		{
-			"tag": "forge:plates/iron"
+			"tag": "c:plates/iron"
 		},
 		"T":
 		{

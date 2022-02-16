@@ -2,10 +2,10 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "tag": "forge:ingots/gold"
+      "tag": "c:ingots/gold"
     },
     {
-      "tag": "forge:ingots/silver"
+      "tag": "c:ingots/silver"
     }
   ],
   "results": [
@@ -15,10 +15,12 @@
     }
   ],
   "heatRequirement": "heated",
-  "conditions": [
+  "fabric:load_conditions": [
     {
-    	"type": "forge:mod_loaded",
-    	"modid": "immersiveengineering"
+      "condition": "fabric:fluid_tags_populated",
+      "values": [
+    	"immersiveengineering"
+      ]
   	}
   ]
 }

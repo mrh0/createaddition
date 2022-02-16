@@ -5,9 +5,9 @@
       "item": "createaddition:cake_base_baked"
     },
     {
-      "fluidTag": "forge:milk",
+      "fluidTag": "c:milk",
       "nbt": {},
-      "amount": 1000
+      "amount": 81000
     }
   ],
   "results": [

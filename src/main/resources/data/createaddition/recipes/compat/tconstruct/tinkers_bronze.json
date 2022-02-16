@@ -2,16 +2,16 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "tag": "forge:ingots/copper"
+      "tag": "c:ingots/copper"
     },
     {
-      "tag": "forge:ingots/copper"
+      "tag": "c:ingots/copper"
     },
     {
-      "tag": "forge:ingots/copper"
+      "tag": "c:ingots/copper"
     },
     {
-      "tag": "forge:glass"
+      "tag": "c:glass"
     }
   ],
   "results": [
@@ -21,10 +21,12 @@
     }
   ],
   "heatRequirement": "heated",
-  "conditions": [
+  "fabric:load_conditions": [
     {
-    	"type": "forge:mod_loaded",
-    	"modid": "tconstruct"
-  	}
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "tconstruct"
+      ]
+    }
   ]
 }

@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:rolling",
 	"input": {
-      	"tag": "forge:plates/iron"
+      	"tag": "c:plates/iron"
 	},
 	"result": {
 		"item": "createaddition:iron_wire",

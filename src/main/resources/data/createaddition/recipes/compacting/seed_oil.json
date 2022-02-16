@@ -2,7 +2,7 @@
   "type": "create:compacting",
   "ingredients": [
     {
-      "tag": "forge:seeds"
+      "tag": "c:seeds"
     }
   ],
   "results": [

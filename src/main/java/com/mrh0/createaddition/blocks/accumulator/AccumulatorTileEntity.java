@@ -16,6 +16,7 @@ import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -42,7 +43,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public static Vec3 OFFSET_SOUTH = new Vec3(	0f, 	9f/16f, 	5f/16f);
 	public static Vec3 OFFSET_EAST = new Vec3(	5f/16f, 	9f/16f, 	0f);
 	
-	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
+	public static final long CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
 	public AccumulatorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
@@ -260,8 +261,8 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		networkTick();
 	}
 	
-	private int demandOut = 0;
-	private int demandIn = 0;
+	private long demandOut = 0;
+	private long demandIn = 0;
 	private void networkTick() {
 		if(awakeNetwork(level)) {
 			//EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, 0);//EnergyNetwork.buildNetwork(world, this);
@@ -272,14 +273,22 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			return;
 		}
 		
-		
-		energy.extractEnergy(networkOut.push(energy.extractEnergy(demandOut, true)), false);
-		
-		/*energy.receiveEnergy(networkOut.push(energy.extractEnergy(demandOut, false)), false);*/
-		demandOut = networkOut.getDemand();
-		energy.receiveEnergy(networkIn.pull(Math.min(demandIn, energy.receiveEnergy(MAX_IN, true))), false);
-		demandIn = networkIn.demand(energy.receiveEnergy(MAX_IN, true));
-		
+		try(Transaction t = Transaction.openOuter()) {
+			long demand, pull;
+			try(Transaction nested = Transaction.openNested(t)) {
+				demand = networkOut.push(energy.extract(demandOut, nested));
+
+				/*energy.receiveEnergy(networkOut.push(energy.extractEnergy(demandOut, false)), false);*/
+				pull = networkIn.pull(Math.min(demandIn, energy.insert(MAX_IN, nested)));
+
+				demandIn = networkIn.demand(energy.insert(MAX_IN, nested));
+			}
+			energy.extract(demand, t);
+
+			demandOut = networkOut.getDemand();
+			energy.insert(pull, t);
+			t.commit();
+		}
 	}
 	
 	@Override
@@ -294,7 +303,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			node.invalidateNodeCache();
 		}
 		invalidateNodeCache();
-		invalidateCaps();
+//		invalidateCaps();
 		super.setRemoved();
 		// Invalidate
 		if(networkIn != null)
@@ -331,7 +340,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 
 	@Override
 	public int getComparetorOverride() {
-		return (int)((double)energy.getEnergyStored() / (double)energy.getMaxEnergyStored() * 15d);
+		return (int)((double)energy.getAmount() / (double)energy.getCapacity() * 15d);
 	}
 	
 	@Override

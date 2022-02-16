@@ -1,17 +1,16 @@
 {
 	"type":"createaddition:crude_burning",
 	"input": {
-      	"fluidTag": "forge:crude_oil",
-      	"amount": 1000
+      	"fluidTag": "c:crude_oil",
+      	"amount": 81000
 	},
 	"burnTime": 1600,
-	"conditions": [
-	    {
-	      "value": {
-	        "fluidTag": "forge:crude_oil",
-	        "type": "createaddition:fluidtag_empty"
-	      },
-	      "type": "forge:not"
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:fluid_tags_populated",
+			"values": [
+	        	"c:crude_oil"
+	 		]
 	    }
 	]
 }

@@ -4,14 +4,17 @@ import java.util.function.Supplier;
 
 import com.mrh0.createaddition.CreateAddition;
 
+import com.simibubi.create.foundation.networking.SimplePacketBase;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkEvent;
 
 public class ObservePacket {
 	private BlockPos pos;
@@ -22,9 +25,11 @@ public class ObservePacket {
 		this.node = node;
 	}
 	
-	public static void encode(ObservePacket packet, FriendlyByteBuf tag) {
-        tag.writeBlockPos(packet.pos);
-        tag.writeInt(packet.node);
+	public FriendlyByteBuf encode() {
+		FriendlyByteBuf tag = PacketByteBufs.create();
+        tag.writeBlockPos(pos);
+        tag.writeInt(node);
+		return tag;
     }
 	
 	public static ObservePacket decode(FriendlyByteBuf buf) {
@@ -32,11 +37,9 @@ public class ObservePacket {
         return scp;
     }
 	
-	public static void handle(ObservePacket pkt, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
+	public static void handle(ObservePacket pkt, MinecraftServer server, ServerPlayer player) {
+		server.execute(() -> {
 			try {
-				ServerPlayer player = ctx.get().getSender();
-				
 				if (player != null) {
 					sendUpdate(pkt, player);
 				}
@@ -45,8 +48,6 @@ public class ObservePacket {
 				e.printStackTrace();
 			}
 		});
-		
-		ctx.get().setPacketHandled(true);
 	}
 	
 	private static void sendUpdate(ObservePacket pkt, ServerPlayer player) {
@@ -73,7 +74,7 @@ public class ObservePacket {
 		if(cooldown > 0)
 			return;
 		cooldown = 10;
-		CreateAddition.Network.sendToServer(new ObservePacket(pos, node));
+		ClientPlayNetworking.send(CANetwork.OBSERVE_PACKET, new ObservePacket(pos, node).encode());
 	}
 	
 	public BlockPos getPos() {

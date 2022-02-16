@@ -1,8 +1,8 @@
 {
 	"type":"createaddition:crude_burning",
 	"input": {
-      	"fluidTag": "forge:plantoil",
-      	"amount": 1000
+      	"fluidTag": "c:plantoil",
+      	"amount": 81000
 	},
 	"burnTime": 600
 }

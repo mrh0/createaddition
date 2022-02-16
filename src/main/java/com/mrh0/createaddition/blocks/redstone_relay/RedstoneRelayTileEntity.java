@@ -56,7 +56,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	public static Vec3 OUT_VERTICAL_OFFSET_SOUTH = new Vec3(	5f/16f, 	0f, 	1f/16f);
 	public static Vec3 OUT_VERTICAL_OFFSET_EAST = new Vec3(	1f/16f, 	0f, 	-5f/16f);
 	
-	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
+	public static final long CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
 	public RedstoneRelayTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
@@ -303,7 +303,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		}
 	}*/
 	
-	private int demand = 0;
+	private long demand = 0;
 	private void networkTick() {
 		if(awakeNetwork(level)) {
 			//EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, 0);//EnergyNetwork.buildNetwork(world, this);
@@ -330,7 +330,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 			node.invalidateNodeCache();
 		}
 		invalidateNodeCache();
-		invalidateCaps();
+//		invalidateCaps();
 		// Invalidate
 		if(networkIn != null)
 			networkIn.invalidate();

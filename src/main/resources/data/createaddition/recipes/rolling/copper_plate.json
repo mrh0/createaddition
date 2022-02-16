@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:rolling",
 	"input": {
-      	"tag": "forge:plates/copper"
+      	"tag": "c:plates/copper"
 	},
 	"result": {
 		"item": "createaddition:copper_wire",
