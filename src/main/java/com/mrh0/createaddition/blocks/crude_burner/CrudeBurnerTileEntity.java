@@ -145,6 +145,8 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 	
 	@Override
 	public void load(CompoundTag nbt) {
+		if(nbt == null)
+			nbt = new CompoundTag();
 		super.load(nbt);
 		tankInventory.readFromNBT(nbt.getCompound("TankContent"));
 	}
