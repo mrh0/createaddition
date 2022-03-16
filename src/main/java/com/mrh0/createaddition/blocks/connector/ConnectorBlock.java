@@ -123,4 +123,15 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	public BlockEntityType<? extends ConnectorTileEntity> getTileEntityType() {
 		return CATileEntities.CONNECTOR.get();
 	}
+	
+	@Override
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
+		if(world.isClientSide())
+			return;
+		BlockEntity be = world.getBlockEntity(pos);
+		if(be == null)
+			return;
+		if(be instanceof ConnectorTileEntity)
+			((ConnectorTileEntity)be).onBlockRemoved();
+	}
 }

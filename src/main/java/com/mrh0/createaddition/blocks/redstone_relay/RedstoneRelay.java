@@ -2,6 +2,7 @@ package com.mrh0.createaddition.blocks.redstone_relay;
 
 import java.util.Random;
 
+import com.mrh0.createaddition.blocks.accumulator.AccumulatorTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
@@ -254,5 +255,16 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	@Override
 	public BlockEntityType<? extends RedstoneRelayTileEntity> getTileEntityType() {
 		return CATileEntities.REDSTONE_RELAY.get();
+	}
+	
+	@Override
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
+		if(world.isClientSide())
+			return;
+		BlockEntity be = world.getBlockEntity(pos);
+		if(be == null)
+			return;
+		if(be instanceof RedstoneRelayTileEntity)
+			((RedstoneRelayTileEntity)be).onBlockRemoved();
 	}
 }

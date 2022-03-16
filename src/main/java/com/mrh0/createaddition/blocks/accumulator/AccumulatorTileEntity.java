@@ -13,6 +13,7 @@ import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
@@ -282,16 +283,17 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		
 	}
 	
-	@Override
-	public void setRemoved() {
+	public void onBlockRemoved() {
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
 				continue;
 			IWireNode node = getNode(i);
 			if(node == null)
 				break;
-			node.removeNode(getOtherNodeIndex(i));
+			int other = getOtherNodeIndex(i);
+			node.removeNode(other);
 			node.invalidateNodeCache();
+			RemoveConnectorPacket.send(node.getMyPos(), other, level);
 		}
 		invalidateNodeCache();
 		invalidateCaps();
@@ -301,7 +303,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			networkIn.invalidate();
 		if(networkOut != null)
 			networkOut.invalidate();
-		super.setRemoved();
+		setRemoved();
 	}
 			
 	private EnergyNetwork networkIn;

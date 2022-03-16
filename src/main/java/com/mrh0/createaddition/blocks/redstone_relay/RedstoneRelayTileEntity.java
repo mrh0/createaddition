@@ -13,6 +13,7 @@ import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
@@ -318,16 +319,17 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		}
 	}
 	
-	@Override
-	public void setRemoved() {
+	public void onBlockRemoved() {
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
 				continue;
 			IWireNode node = getNode(i);
 			if(node == null)
 				break;
-			node.removeNode(getOtherNodeIndex(i));
+			int other = getOtherNodeIndex(i);
+			node.removeNode(other);
 			node.invalidateNodeCache();
+			RemoveConnectorPacket.send(node.getMyPos(), other, level);
 		}
 		invalidateNodeCache();
 		invalidateCaps();
@@ -337,6 +339,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		if(networkOut != null)
 			networkOut.invalidate();
 		super.setRemoved();
+		setRemoved();
 	}
 	
 	private EnergyNetwork networkIn;

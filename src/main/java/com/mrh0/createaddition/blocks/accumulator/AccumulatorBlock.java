@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
+import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.util.IComparatorOverride;
@@ -129,5 +130,16 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	@Override
 	public BlockEntityType<? extends AccumulatorTileEntity> getTileEntityType() {
 		return null;
+	}
+	
+	@Override
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
+		if(world.isClientSide())
+			return;
+		BlockEntity be = world.getBlockEntity(pos);
+		if(be == null)
+			return;
+		if(be instanceof AccumulatorTileEntity)
+			((AccumulatorTileEntity)be).onBlockRemoved();
 	}
 }
