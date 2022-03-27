@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
-import java.util.HashMap;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
@@ -66,7 +65,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		//energyBufferOut = new InternalEnergyStorage(ConnectorTileEntity.CAPACITY, MAX_IN, MAX_OUT);
 		
 		//setLazyTickRate(20);
-		
+		System.out.println("New");
 		connectionPos = new BlockPos[getNodeCount()];
 		connectionIndecies = new int[getNodeCount()];
 		connectionTypes = new WireType[getNodeCount()];
@@ -319,7 +318,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		}
 	}
 	
-	public void onBlockRemoved() {
+	public void onBlockRemoved(boolean set) {
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
 				continue;
@@ -338,8 +337,8 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 			networkIn.invalidate();
 		if(networkOut != null)
 			networkOut.invalidate();
-		super.setRemoved();
-		setRemoved();
+		if(set)
+			setRemoved();
 	}
 	
 	private EnergyNetwork networkIn;
@@ -393,7 +392,13 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
-		if(isNetworkValid(0))
+		if(isNetworkValid(pack.getNode()))
 			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
+	}
+	
+	@Override
+	protected void setRemovedNotDueToChunkUnload() {
+		super.setRemovedNotDueToChunkUnload();
+		onBlockRemoved(false);
 	}
 }

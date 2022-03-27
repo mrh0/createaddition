@@ -297,7 +297,6 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		}
 		invalidateNodeCache();
 		invalidateCaps();
-		super.setRemoved();
 		// Invalidate
 		if(networkIn != null)
 			networkIn.invalidate();

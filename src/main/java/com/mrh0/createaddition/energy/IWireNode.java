@@ -302,7 +302,10 @@ public interface IWireNode {
 	public void setNetwork(int node, EnergyNetwork network);
 	
 	public default boolean isNetworkValid(int node) {
-		return getNetwork(node) == null ? false :  getNetwork(node).isValid();
+		if(getNetwork(node) == null) 
+			return false;
+		else 
+			return getNetwork(node).isValid();
 	}
 	
 	/*public default boolean isNetworkValid() {
