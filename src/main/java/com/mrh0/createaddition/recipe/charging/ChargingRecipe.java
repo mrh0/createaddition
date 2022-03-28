@@ -14,10 +14,8 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> {
 
-	static int counter = 0;
-
 	public static ChargingRecipe create(ItemStack from, ItemStack to) {
-		ResourceLocation recipeId = new ResourceLocation(CreateAddition.MODID, "charging_" + counter++);
+		ResourceLocation recipeId = new ResourceLocation(CreateAddition.MODID, "charging");
 		return new ProcessingRecipeBuilder<>(ChargingRecipe::new, recipeId)
 			.withItemIngredients(Ingredient.of(from))
 			.withSingleItemOutput(to)

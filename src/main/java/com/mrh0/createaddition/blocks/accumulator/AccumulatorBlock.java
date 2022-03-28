@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
+import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.util.IComparatorOverride;
@@ -139,7 +140,8 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 		BlockEntity be = world.getBlockEntity(pos);
 		if(be == null)
 			return;
-		if(be instanceof AccumulatorTileEntity)
-			((AccumulatorTileEntity)be).onBlockRemoved();
+		if(!(newState.getBlock() instanceof AccumulatorBlock))
+			if(be instanceof AccumulatorTileEntity)
+				((AccumulatorTileEntity)be).onBlockRemoved();
 	}
 }

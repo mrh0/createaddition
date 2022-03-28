@@ -3,6 +3,7 @@ package com.mrh0.createaddition.blocks.electric_motor;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.compat.computercraft.ElectricMotorPeripheral;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.config.Config;
@@ -220,14 +221,14 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 			return;
 		int con = getEnergyConsumptionRate(generatedSpeed.getValue());
 		if(!active) {
-			if(energy.getEnergyStored() > con * 2) {
+			if(energy.getEnergyStored() > con * 2 && !getBlockState().getValue(ElectricMotorBlock.POWERED)) {
 				active = true;
 				updateGeneratedRotation();
 			}
 		}
 		else {
 			int ext = energy.internalConsumeEnergy(con);
-			if(ext < con) {
+			if(ext < con || getBlockState().getValue(ElectricMotorBlock.POWERED)) {
 				active = false;
 				updateGeneratedRotation();
 			}
@@ -310,5 +311,9 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	public int getEnergyConsumption() {
 		return getEnergyConsumptionRate(generatedSpeed.getValue());
+	}
+	
+	public boolean isPoweredState() {
+		return getBlockState().getValue(TeslaCoil.POWERED);
 	}
 }

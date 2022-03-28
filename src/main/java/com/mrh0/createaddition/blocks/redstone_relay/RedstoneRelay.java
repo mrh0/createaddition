@@ -264,7 +264,8 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 		BlockEntity be = world.getBlockEntity(pos);
 		if(be == null)
 			return;
-		if(be instanceof RedstoneRelayTileEntity)
-			((RedstoneRelayTileEntity)be).onBlockRemoved(true);
+		if(!(newState.getBlock() instanceof RedstoneRelay))
+			if(be instanceof RedstoneRelayTileEntity)
+				((RedstoneRelayTileEntity)be).onBlockRemoved(true);
 	}
 }

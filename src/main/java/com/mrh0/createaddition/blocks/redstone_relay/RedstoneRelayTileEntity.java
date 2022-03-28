@@ -65,7 +65,6 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		//energyBufferOut = new InternalEnergyStorage(ConnectorTileEntity.CAPACITY, MAX_IN, MAX_OUT);
 		
 		//setLazyTickRate(20);
-		System.out.println("New");
 		connectionPos = new BlockPos[getNodeCount()];
 		connectionIndecies = new int[getNodeCount()];
 		connectionTypes = new WireType[getNodeCount()];
@@ -398,7 +397,8 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	
 	@Override
 	protected void setRemovedNotDueToChunkUnload() {
-		super.setRemovedNotDueToChunkUnload();
 		onBlockRemoved(false);
+		super.setRemovedNotDueToChunkUnload();
+		
 	}
 }

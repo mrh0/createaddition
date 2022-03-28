@@ -32,6 +32,21 @@ public class CAFluids {
 					.build()
 					.register();
 	
+	public static final FluidEntry<ForgeFlowingFluid.Flowing> BIOETHANOL =
+			REGISTRATE.fluid("bioethanol", new ResourceLocation("createaddition","fluid/bioethanol_still"), new ResourceLocation("createaddition","fluid/bioethanol_flow"),
+					NoColorFluidAttributes::new)
+					.attributes(b -> b.viscosity(2500)
+							.density(1600))
+					.properties(p -> p.levelDecreasePerBlock(2)
+							.tickRate(15)
+							.slopeFindDistance(6)
+							.explosionResistance(100f))
+					.source(ForgeFlowingFluid.Source::new)
+					.bucket()
+					.properties(p -> p.stacksTo(1))
+					.build()
+					.register();
+	
 	private static class NoColorFluidAttributes extends FluidAttributes {
 		protected NoColorFluidAttributes(Builder builder, Fluid fluid) {
 			super(builder, fluid);
