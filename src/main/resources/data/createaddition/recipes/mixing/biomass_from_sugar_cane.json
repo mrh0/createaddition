@@ -1,0 +1,28 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:sugar_cane"
+    },
+	{
+      "item": "minecraft:sugar_cane"
+    },
+    {
+      "item": "minecraft:sugar_cane"
+    },
+    {
+      "item": "minecraft:sugar_cane"
+    },
+    {
+      "fluidTag": "forge:plantoil",
+      "amount": 150
+    }
+  ],
+  "results": [
+    {
+      "item": "createaddition:biomass",
+      "count": 3
+    }
+  ],
+  "heatRequirement": "heated"
+}

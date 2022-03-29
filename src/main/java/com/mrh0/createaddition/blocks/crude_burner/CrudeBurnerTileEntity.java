@@ -7,6 +7,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
+import com.mrh0.createaddition.network.EnergyNetworkPacket;
+import com.mrh0.createaddition.network.IObserveTileEntity;
+import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
@@ -18,6 +21,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
@@ -168,10 +172,21 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 	
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		//ObservePacket.send(worldPosition, 0);
 		return containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
 	}
 	
 	public Optional<CrudeBurningRecipe> find(FluidStack stack, Level world) {
 		return world.getRecipeManager().getRecipeFor(CrudeBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
 	}
+
+	/*public void causeBlockUpdate() {
+		if (level != null)
+			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 1);
+	}
+	
+	@Override
+	public void onObserved(ServerPlayer player, ObservePacket pack) {
+		causeBlockUpdate();
+	}*/
 }

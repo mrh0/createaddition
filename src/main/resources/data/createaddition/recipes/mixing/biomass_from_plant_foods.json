@@ -1,0 +1,28 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:sugar"
+    },
+	{
+      "tag": "createaddition:plant_foods"
+    },
+    {
+      "tag": "createaddition:plant_foods"
+    },
+    {
+      "tag": "createaddition:plant_foods"
+    },
+    {
+      "fluidTag": "forge:plantoil",
+      "amount": 100
+    }
+  ],
+  "results": [
+    {
+      "item": "createaddition:biomass",
+      "count": 4
+    }
+  ],
+  "heatRequirement": "heated"
+}

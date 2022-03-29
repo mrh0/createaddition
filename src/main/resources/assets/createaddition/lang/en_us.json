@@ -74,6 +74,9 @@
 	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
 	"item.createaddition.bioethanol_bucket": "Bucket of Bioethanol",
 	
+	"item.createaddition.biomass": "Biomass",
+	"item.createaddition.biomass_pellet": "Biomass Pellets",
+	
 	"item.createaddition.charging_chromatic_compound": "Charging Chromatic Compound",
 	"item.createaddition.overcharged_alloy": "Overcharged Alloy",
 	"item.createaddition.overcharged_alloy.tooltip": "OVERCHARGED ALLOY",

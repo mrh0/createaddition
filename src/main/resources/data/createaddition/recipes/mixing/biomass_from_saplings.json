@@ -1,0 +1,28 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "tag": "minecraft:saplings"
+    },
+    {
+      "tag": "minecraft:saplings"
+    },
+    {
+      "tag": "minecraft:saplings"
+    },
+    {
+      "fluidTag": "forge:plantoil",
+      "amount": 150
+    }
+  ],
+  "results": [
+    {
+      "item": "createaddition:biomass",
+      "count": 4
+    }
+  ],
+  "heatRequirement": "heated"
+}
