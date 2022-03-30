@@ -2,9 +2,6 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "item": "minecraft:sugar"
-    },
-    {
       "item": "minecraft:stick"
     },
     {

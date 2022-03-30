@@ -1,9 +1,6 @@
 {
   "type": "create:mixing",
   "ingredients": [
-    {
-      "item": "minecraft:sugar"
-    },
 	{
       "tag": "createaddition:plant_foods"
     },
