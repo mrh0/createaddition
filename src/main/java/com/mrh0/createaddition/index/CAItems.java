@@ -127,6 +127,8 @@ public class CAItems {
 		Create.registrate().addToSection(COPPER_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(GOLD_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(SPOOL, AllSections.MATERIALS);
+		
+		Create.registrate().addToSection(BIOMASS_PELLET, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
 		

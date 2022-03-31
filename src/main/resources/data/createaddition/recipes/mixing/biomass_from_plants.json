@@ -12,13 +12,13 @@
     },
     {
       "fluidTag": "forge:plantoil",
-      "amount": 150
+      "amount": 100
     }
   ],
   "results": [
     {
       "item": "createaddition:biomass",
-      "count": 4
+      "count": 2
     }
   ],
   "heatRequirement": "heated"
