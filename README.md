@@ -23,7 +23,6 @@ Create Crafts & Additions extends Create and acts as a bridge between electricit
 - Rolling Mill.
 - Creative Generator.
 - Diamond Grit Sandpaper.
-- Multimeter.
 And more!
 
 # License
