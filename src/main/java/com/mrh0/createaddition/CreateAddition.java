@@ -51,7 +51,8 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineInteractions;
 import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineInteractions.HeatSource;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.repack.registrate.util.NonNullLazyValue;
+import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
+
 import net.minecraftforge.registries.IRegistryDelegate;
 
 @Mod(CreateAddition.MODID)
@@ -64,7 +65,7 @@ public class CreateAddition {
     public static boolean CC_ACTIVE = false;
     public static boolean AE2_ACTIVE = false;
     
-    private static final NonNullLazyValue<CreateRegistrate> registrate = CreateRegistrate.lazy(CreateAddition.MODID);
+    private static final NonNullSupplier<CreateRegistrate> registrate = CreateRegistrate.lazy(CreateAddition.MODID);
     
     private static final String PROTOCOL = "1";
 	public static final SimpleChannel Network = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(MODID, "main"))

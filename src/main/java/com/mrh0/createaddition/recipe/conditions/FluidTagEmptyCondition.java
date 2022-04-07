@@ -4,12 +4,15 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.SerializationTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
+import net.minecraftforge.common.data.ForgeFluidTagsProvider;
 
 public class FluidTagEmptyCondition implements ICondition {
 	private static final ResourceLocation NAME = new ResourceLocation("createaddition", "fluidtag_empty");
@@ -34,7 +37,7 @@ public class FluidTagEmptyCondition implements ICondition {
 
 	@Override
 	public boolean test() {
-		Tag<Fluid> tag = SerializationTags.getInstance().getOrEmpty(Registry.FLUID_REGISTRY).getTag(tag_name);//TagCollectionManager.getInstance().getFluids().getTag(tag_name);
+		TagKey<Fluid> tag = TagKey.//SerializationTags.getInstance().getOrEmpty(Registry.FLUID_REGISTRY).getTag(tag_name);//TagCollectionManager.getInstance().getFluids().getTag(tag_name);
 		//System.out.println("fluidTag:" + tag_name + ":" + (tag == null || tag.getValues().isEmpty()));
 		return tag == null || tag.getValues().isEmpty();
 	}

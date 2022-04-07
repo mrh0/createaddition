@@ -23,6 +23,7 @@ run
 
 # Files from Forge MDK
 forge*changelog.txt
-
-.factorypath
 server
+Minecraft
+changelog.txt
+CREDITS.txt
