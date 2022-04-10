@@ -12,6 +12,7 @@ import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -210,12 +211,15 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		return worldPosition;
 	}
 	
-	@Override
+	/*@Override
 	public void setRemoved() {
+		System.out.println("SETREMOVED");
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
 				continue;
 			IWireNode node = getNode(i);
+			if(node == null)
+				continue;
 			node.removeNode(getOtherNodeIndex(i));
 			node.invalidateNodeCache();
 		}
@@ -225,8 +229,29 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		if(network != null)
 			network.invalidate();
 		super.setRemoved();
+	}*/
+	
+	public void onBlockRemoved() {
+		for(int i = 0; i < getNodeCount(); i++) {
+			if(getNodeType(i) == null)
+				continue;
+			IWireNode node = getNode(i);
+			if(node == null)
+				continue;
+			int other = getOtherNodeIndex(i);
+			node.removeNode(other);
+			node.invalidateNodeCache();
+			RemoveConnectorPacket.send(node.getMyPos(), other, level);
+		}
+		invalidateNodeCache();
+		invalidateCaps();
+		// Invalidate
+		if(network != null)
+			network.invalidate();
+		setRemoved();
 	}
 	
+	@Override
 	public void invalidateNodeCache() {
 		for(int i = 0; i < getNodeCount(); i++)
 			nodeCache[i] = null;

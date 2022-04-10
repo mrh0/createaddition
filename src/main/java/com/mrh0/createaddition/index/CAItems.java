@@ -5,25 +5,17 @@ import static com.simibubi.create.AllTags.AllItemTags.PLATES;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.item.WireSpool;
-import com.mrh0.createaddition.item.ChargingChromaticCompound;
+import com.mrh0.createaddition.item.BiomassPellet;
 import com.mrh0.createaddition.item.DiamondGritSandpaper;
-import com.mrh0.createaddition.item.Multimeter;
-import com.mrh0.createaddition.item.OverchargedAlloy;
-import com.mrh0.createaddition.item.hammer.HammerRenderer;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
-import com.simibubi.create.content.curiosities.ChromaticCompoundColor;
-import com.simibubi.create.content.curiosities.symmetry.client.SymmetryWandModel;
-import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer;
-import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.simibubi.create.foundation.item.TooltipHelper;
 
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
 
 
 public class CAItems {
@@ -47,6 +39,15 @@ public class CAItems {
 	public static final ItemEntry<Item> ZINC_SHEET =
 			REGISTRATE.item("zinc_sheet", Item::new)
 			.tag(forgeItemTag("plates/zinc"), PLATES.tag)
+			.register();
+	
+	public static final ItemEntry<Item> BIOMASS =
+			REGISTRATE.item("biomass", Item::new)
+			.properties(p -> p.stacksTo(16))
+			.register();
+	
+	public static final ItemEntry<BiomassPellet> BIOMASS_PELLET =
+			REGISTRATE.item("biomass_pellet", BiomassPellet::new)
 			.register();
 	
 	/*public static final ItemEntry<Multimeter> MULTIMETER =
@@ -126,6 +127,8 @@ public class CAItems {
 		Create.registrate().addToSection(COPPER_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(GOLD_SPOOL, AllSections.MATERIALS);
 		Create.registrate().addToSection(SPOOL, AllSections.MATERIALS);
+		
+		Create.registrate().addToSection(BIOMASS_PELLET, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
 		

@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.connector;
 
+import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
@@ -122,5 +123,17 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	@Override
 	public BlockEntityType<? extends ConnectorTileEntity> getTileEntityType() {
 		return CATileEntities.CONNECTOR.get();
+	}
+	
+	@Override
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
+		if(world.isClientSide())
+			return;
+		BlockEntity be = world.getBlockEntity(pos);
+		if(be == null)
+			return;
+		if(!(newState.getBlock() instanceof ConnectorBlock))
+			if(be instanceof ConnectorTileEntity)
+				((ConnectorTileEntity)be).onBlockRemoved();
 	}
 }

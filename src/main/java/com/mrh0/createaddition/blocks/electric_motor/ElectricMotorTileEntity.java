@@ -3,6 +3,7 @@ package com.mrh0.createaddition.blocks.electric_motor;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.compat.computercraft.ElectricMotorPeripheral;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.config.Config;
@@ -56,7 +57,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 			MAX_IN = Config.ELECTRIC_MOTOR_MAX_INPUT.get(),
 			MAX_OUT = 0L,
 			CAPACITY = Config.ELECTRIC_MOTOR_CAPACITY.get();
-	
+
 	private boolean active = false;
 
 	public ElectricMotorTileEntity(BlockEntityType<? extends ElectricMotorTileEntity> type, BlockPos pos, BlockState state) {
@@ -223,14 +224,14 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 			return;
 		int con = getEnergyConsumptionRate(generatedSpeed.getValue());
 		if(!active) {
-			if(energy.getAmount() > con * 2) {
+			if(energy.getAmount() > con * 2 && !getBlockState().getValue(ElectricMotorBlock.POWERED)) {
 				active = true;
 				updateGeneratedRotation();
 			}
 		}
 		else {
 			long ext = energy.internalConsumeEnergy(con);
-			if (ext < con) {
+			if (ext < con || getBlockState().getValue(ElectricMotorBlock.POWERED)) {
 				active = false;
 				updateGeneratedRotation();
 			}
@@ -313,5 +314,9 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 	
 	public int getEnergyConsumption() {
 		return getEnergyConsumptionRate(generatedSpeed.getValue());
+	}
+
+	public boolean isPoweredState() {
+		return getBlockState().getValue(TeslaCoil.POWERED);
 	}
 }

@@ -46,11 +46,13 @@ public abstract class AbstractBurnerBlockEntity extends BlockEntity
 		return this.litTime > 0;
 	}
 
-	public void load(CompoundTag p_155025_) {
-		super.load(p_155025_);
+	public void load(CompoundTag nbt) {
+		if(nbt == null)
+			nbt = new CompoundTag();
+		super.load(nbt);
 		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-		ContainerHelper.loadAllItems(p_155025_, this.items);
-		this.litTime = p_155025_.getInt("BurnTime");
+		ContainerHelper.loadAllItems(nbt, this.items);
+		this.litTime = nbt.getInt("BurnTime");
 		this.litDuration = this.getBurnDuration(this.items.get(0));
 	}
 

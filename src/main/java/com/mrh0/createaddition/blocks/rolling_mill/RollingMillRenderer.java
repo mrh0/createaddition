@@ -19,7 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class RollingMillRenderer  extends KineticTileEntityRenderer {
+public class RollingMillRenderer extends KineticTileEntityRenderer {
 
 	public RollingMillRenderer(Context dispatcher) {
 		super(dispatcher);

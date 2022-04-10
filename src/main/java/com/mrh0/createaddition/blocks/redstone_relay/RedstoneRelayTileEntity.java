@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
-import java.util.HashMap;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
@@ -13,6 +12,7 @@ import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
@@ -65,7 +65,6 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		//energyBufferOut = new InternalEnergyStorage(ConnectorTileEntity.CAPACITY, MAX_IN, MAX_OUT);
 		
 		//setLazyTickRate(20);
-		
 		connectionPos = new BlockPos[getNodeCount()];
 		connectionIndecies = new int[getNodeCount()];
 		connectionTypes = new WireType[getNodeCount()];
@@ -318,16 +317,17 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		}
 	}
 	
-	@Override
-	public void setRemoved() {
+	public void onBlockRemoved(boolean set) {
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
 				continue;
 			IWireNode node = getNode(i);
 			if(node == null)
 				break;
-			node.removeNode(getOtherNodeIndex(i));
+			int other = getOtherNodeIndex(i);
+			node.removeNode(other);
 			node.invalidateNodeCache();
+			RemoveConnectorPacket.send(node.getMyPos(), other, level);
 		}
 		invalidateNodeCache();
 //		invalidateCaps();
@@ -336,7 +336,8 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 			networkIn.invalidate();
 		if(networkOut != null)
 			networkOut.invalidate();
-		super.setRemoved();
+		if(set)
+			setRemoved();
 	}
 	
 	private EnergyNetwork networkIn;
@@ -390,7 +391,14 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
-		if(isNetworkValid(0))
+		if(isNetworkValid(pack.getNode()))
 			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
+	}
+	
+	@Override
+	protected void setRemovedNotDueToChunkUnload() {
+		onBlockRemoved(false);
+		super.setRemovedNotDueToChunkUnload();
+		
 	}
 }

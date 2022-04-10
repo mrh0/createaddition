@@ -2,8 +2,6 @@ package com.mrh0.createaddition.energy;
 
 import java.util.HashMap;
 
-import com.mojang.math.Vector3d;
-import com.mojang.math.Vector3f;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CAItems;
@@ -56,6 +54,8 @@ public interface IWireNode {
 		int index = getOtherNodeIndex(node);
 		//System.out.println("WRITE: " + node + "->" + index);
 		WireType type = getNodeType(node);
+		if(type == null)
+			return nbt;
 		nbt.putInt("x"+node, pos.getX());
 		nbt.putInt("y"+node, pos.getY());
 		nbt.putInt("z"+node, pos.getZ());
@@ -302,7 +302,10 @@ public interface IWireNode {
 	public void setNetwork(int node, EnergyNetwork network);
 	
 	public default boolean isNetworkValid(int node) {
-		return getNetwork(node) == null ? false :  getNetwork(node).isValid();
+		if(getNetwork(node) == null) 
+			return false;
+		else 
+			return getNetwork(node).isValid();
 	}
 	
 	/*public default boolean isNetworkValid() {
@@ -314,4 +317,9 @@ public interface IWireNode {
 		}
 		return true;
 	}*/
+	
+	public default void preformRemoveOfNode(int node) {
+		removeNode(node);
+		invalidateNodeCache();
+	}
 }

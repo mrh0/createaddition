@@ -1,11 +1,10 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
 import com.jozufozu.flywheel.api.MaterialManager;
-import com.jozufozu.flywheel.api.instance.DynamicInstance;
 import com.simibubi.create.content.contraptions.base.flwdata.RotatingData;
 import com.simibubi.create.content.contraptions.relays.encased.ShaftInstance;
 
-public class RollingMillInstance extends ShaftInstance implements DynamicInstance {
+public class RollingMillInstance extends ShaftInstance {
 
     private RotatingData shaft;
 
@@ -41,7 +40,7 @@ public class RollingMillInstance extends ShaftInstance implements DynamicInstanc
     @Override
     public void updateLight() {
         super.updateLight();
-        
+
         relight(pos, shaft);
     }
 
@@ -49,10 +48,5 @@ public class RollingMillInstance extends ShaftInstance implements DynamicInstanc
     public void remove() {
         super.remove();
         shaft.delete();
-    }
-
-    @Override
-    public void beginFrame() {
-
     }
 }

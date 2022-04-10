@@ -1,6 +1,9 @@
 package com.mrh0.createaddition.blocks.crude_burner;
 
 import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
+import com.mrh0.createaddition.network.EnergyNetworkPacket;
+import com.mrh0.createaddition.network.IObserveTileEntity;
+import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
@@ -17,6 +20,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
@@ -143,9 +147,11 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 //			return fluidCapability.cast();
 //		return super.getCapability(cap, side);
 //	}
-	
+
 	@Override
 	public void load(CompoundTag nbt) {
+		if(nbt == null)
+			nbt = new CompoundTag();
 		super.load(nbt);
 		tankInventory.readFromNBT(nbt.getCompound("TankContent"));
 	}
@@ -168,10 +174,21 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 	
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		//ObservePacket.send(worldPosition, 0);
 		return containedFluidTooltip(tooltip, isPlayerSneaking, TransferUtil.getFluidHandler(this));
 	}
 	
 	public Optional<CrudeBurningRecipe> find(FluidStack stack, Level world) {
 		return world.getRecipeManager().getRecipeFor(CrudeBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
 	}
+
+	/*public void causeBlockUpdate() {
+		if (level != null)
+			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 1);
+	}
+
+	@Override
+	public void onObserved(ServerPlayer player, ObservePacket pack) {
+		causeBlockUpdate();
+	}*/
 }

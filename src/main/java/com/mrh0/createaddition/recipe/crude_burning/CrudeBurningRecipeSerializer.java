@@ -15,7 +15,7 @@ public class CrudeBurningRecipeSerializer extends CARecipeSerializer<CrudeBurnin
 
 	public CrudeBurningRecipeSerializer() {
 		// TODO: Should move
-		TagFactory.FLUID.create(new ResourceLocation("c:plantoil"));
+		FluidTags.create(new ResourceLocation("c:plantoil"));
 	}
 	
 	@Override
