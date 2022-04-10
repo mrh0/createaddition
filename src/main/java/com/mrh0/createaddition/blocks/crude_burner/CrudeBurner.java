@@ -4,11 +4,15 @@ import com.mrh0.createaddition.blocks.base.AbstractBurnerBlock;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.lib.transfer.TransferUtil;
-import com.simibubi.create.lib.transfer.fluid.FluidStack;
-import com.simibubi.create.lib.transfer.fluid.IFluidHandler;
-import com.simibubi.create.lib.transfer.fluid.IFluidHandlerItem;
-import com.simibubi.create.lib.util.LazyOptional;
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -53,24 +57,33 @@ public class CrudeBurner extends AbstractBurnerBlock implements ITE<CrudeBurnerT
 			ItemStack held = player.getMainHandItem();
 			if (!(held.getItem() instanceof BucketItem))
 				return InteractionResult.CONSUME;
-			LazyOptional<IFluidHandlerItem> cap = TransferUtil.getFluidHandlerItem(held);
-			if (!cap.isPresent())
+			Storage<FluidVariant> handler = ContainerItemContext.withInitial(held).find(FluidStorage.ITEM);
+			if (handler == null)
 				return InteractionResult.CONSUME;
-			IFluidHandlerItem handler = cap.orElse(null);
-			if (handler.getFluidInTank(0).isEmpty())
+			if (TransferUtil.getFirstFluid(handler).isEmpty())
 				return InteractionResult.CONSUME;
-			FluidStack stack = handler.getFluidInTank(0);
+			FluidStack stack = TransferUtil.getFirstFluid(handler);
 			Optional<CrudeBurningRecipe> recipe = cbte.find(stack, world);
 			if (!recipe.isPresent())
 				return InteractionResult.CONSUME;
 
-			LazyOptional<IFluidHandler> tecap = TransferUtil.getFluidHandler(cbte);
-			if (!tecap.isPresent())
+			Storage<FluidVariant> tehandler = TransferUtil.getFluidStorage(cbte);
+			if (tehandler == null)
 				return InteractionResult.CONSUME;
-			IFluidHandler tehandler = tecap.orElse(null);
-			if (tehandler.getTankCapacity(0) - tehandler.getFluidInTank(0).getAmount() < 1000)
-				return InteractionResult.CONSUME;
-			tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), false);
+			try(Transaction t = TransferUtil.getTransaction()) {
+				for (StorageView<FluidVariant> view : tehandler.iterable(t)) {
+					if (view.getCapacity() - view.getAmount() < FluidConstants.BUCKET) {
+						t.abort();
+						return InteractionResult.CONSUME;
+					}
+					System.out.println(view.getResource().getFluid());
+					tehandler.insert(view.getResource(), FluidConstants.BUCKET, t);
+					t.commit();
+					break;
+				}
+
+
+			}
 			if (!player.isCreative())
 				player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
 			player.playSound(SoundEvents.BUCKET_EMPTY, 1f, 1f);

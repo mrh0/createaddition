@@ -1,13 +1,12 @@
 package com.mrh0.createaddition.blocks.base;
 
-import javax.annotation.Nullable;
-
-import com.mrh0.createaddition.transfer.SidedInvWrapper;
-import com.simibubi.create.lib.transfer.fluid.FluidTransferable;
-import com.simibubi.create.lib.transfer.fluid.IFluidHandler;
-import com.simibubi.create.lib.transfer.item.IItemHandler;
-import com.simibubi.create.lib.util.BurnUtil;
-import com.simibubi.create.lib.util.LazyOptional;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemTransferable;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -15,8 +14,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
-import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -25,8 +22,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
+@SuppressWarnings("UnstableApiUsage")
 public abstract class AbstractBurnerBlockEntity extends BlockEntity
-		implements WorldlyContainer, FluidTransferable {
+		implements WorldlyContainer, ItemTransferable {
 	public static final int SLOT_FUEL = 0;
 	public static final int DATA_LIT_TIME = 0;
 	private static final int[] SLOTS = new int[] { 0 };
@@ -105,12 +106,12 @@ public abstract class AbstractBurnerBlockEntity extends BlockEntity
 		if (stack.isEmpty()) {
 			return 0;
 		} else {
-			return BurnUtil.getBurnTime(stack);
+			return FuelRegistry.INSTANCE.get(stack.getItem());
 		}
 	}
 	
 	public static boolean isFuel(ItemStack stack) {
-		return BurnUtil.getBurnTime(stack) > 0;
+		return FuelRegistry.INSTANCE.get(stack.getItem()) > 0;
 	}
 
 	public int[] getSlotsForFace(Direction dir) {
@@ -159,7 +160,7 @@ public abstract class AbstractBurnerBlockEntity extends BlockEntity
 
 	public boolean canPlaceItem(int index, ItemStack stack) {
 		ItemStack itemstack = this.items.get(0);
-		return BurnUtil.getBurnTime(stack) > 0
+		return FuelRegistry.INSTANCE.get(stack.getItem()) > 0
 				|| stack.is(Items.BUCKET) && !itemstack.is(Items.BUCKET);
 	}
 
@@ -167,39 +168,19 @@ public abstract class AbstractBurnerBlockEntity extends BlockEntity
 		this.items.clear();
 	}
 
-	LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper
-			.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
+	InventoryStorage[] handlers = new InventoryStorage[] {
+			InventoryStorage.of(this, Direction.UP),
+			InventoryStorage.of(this, Direction.DOWN),
+			InventoryStorage.of(this, Direction.NORTH)
+	};
 
-	@org.jetbrains.annotations.Nullable
+	@Nullable
 	@Override
-	public IFluidHandler getFluidHandler(@org.jetbrains.annotations.Nullable Direction facing) {
+	public Storage<ItemVariant> getItemStorage(@Nullable Direction facing) {
 		if (!this.remove && facing != null) {
-			return (IFluidHandler) handlers[0].cast().getValueUnsafer();
+			return handlers[0];
 		}
 		return null;
-	}
-
-//	@Override
-//	public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(
-//			net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
-//		if (!this.remove && facing != null
-//				&& capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-//			return handlers[0].cast();
-//		}
-//		return super.getCapability(capability, facing);
-//	}
-
-//	@Override
-	public void invalidateCaps() {
-//		super.invalidateCaps();
-		for (int x = 0; x < handlers.length; x++)
-			handlers[x].invalidate();
-	}
-
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-		invalidateCaps();
 	}
 
 	@Override

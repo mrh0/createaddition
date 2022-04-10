@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.11-SNAPSHOT'
+    id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'eclipse'
     id 'maven-publish'
     id 'io.github.juuxel.loom-quiltflower' version '1.+'
@@ -47,6 +47,7 @@ repositories {
     maven { url = "https://mvn.devos.one/releases/" }
     maven { url = "https://mvn.devos.one/snapshots/" }
     maven { url = "https://maven.tterrag.com/" }
+    maven { url = "https://jitpack.io/" }
     maven {
         url 'https://www.cursemaven.com'
         content {
@@ -68,8 +69,8 @@ dependencies {
     // THIS IS SO CURSED I LOVE IT
     // names of mojmap with the docs and params of parchment, then docs and params of QM as fallback
     mappings loom.layered {
-        it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:1.18.1-rc3+build.4:v2")) // https://maven.quiltmc.org/#browse/browse:release
-        it.parchment("org.parchmentmc.data:parchment-1.18.1:BLEEDING-20211212.174449-1@zip") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
+        it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:1.18.2+build.21:v2")) // https://maven.quiltmc.org/#browse/browse:release
+        it.parchment("org.parchmentmc.data:parchment-1.18.2:${project.parchment_version}") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
         it.officialMojangMappings {
             setNameSyntheticMembers(false)
         }
@@ -89,10 +90,10 @@ dependencies {
     modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
     modImplementation("dev.architectury:architectury-fabric:${project.architectury_version}")
 
-    modImplementation("com.simibubi:Create:mc1.18.1_v0.4d+403")
+    modImplementation("com.simibubi:Create:${project.create_version}")
     //implementation fg.deobf("curse.maven:immersive-engineering-231951:3579169")
-    modImplementation("curse.maven:cc-restitched-462672:3622569")
-    modImplementation("curse.maven:applied-energistics-2-223794:3630573")
+    modImplementation("curse.maven:cc-restitched-462672:3723736")
+    modImplementation("curse.maven:applied-energistics-2-223794:3735901")
 
     include modApi('teamreborn:energy:2.2.0') {
         exclude(group: "net.fabricmc.fabric-api")

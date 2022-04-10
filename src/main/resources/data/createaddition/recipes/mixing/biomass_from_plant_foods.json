@@ -8,8 +8,8 @@
       "tag": "createaddition:plant_foods"
     },
     {
-      "fluidTag": "forge:plantoil",
-      "amount": 100
+      "fluidTag": "c:plantoil",
+      "amount": 9000
     }
   ],
   "results": [

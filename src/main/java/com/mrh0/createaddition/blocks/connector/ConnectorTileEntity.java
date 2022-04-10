@@ -244,7 +244,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			RemoveConnectorPacket.send(node.getMyPos(), other, level);
 		}
 		invalidateNodeCache();
-		invalidateCaps();
+//		invalidateCaps();
 		// Invalidate
 		if(network != null)
 			network.invalidate();

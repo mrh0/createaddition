@@ -1,17 +1,16 @@
 package com.mrh0.createaddition.network;
 
-import java.util.function.Supplier;
-
-import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.util.ClientMinecraftWrapper;
-
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 
 public class RemoveConnectorPacket {
 	private BlockPos pos;
@@ -22,9 +21,11 @@ public class RemoveConnectorPacket {
 		this.node = node;
 	}
 	
-	public static void encode(RemoveConnectorPacket packet, FriendlyByteBuf tag) {
-        tag.writeBlockPos(packet.pos);
-        tag.writeInt(packet.node);
+	public FriendlyByteBuf encode() {
+		FriendlyByteBuf tag = PacketByteBufs.create();
+        tag.writeBlockPos(this.pos);
+        tag.writeInt(this.node);
+		return tag;
     }
 	
 	public static RemoveConnectorPacket decode(FriendlyByteBuf buf) {
@@ -32,8 +33,8 @@ public class RemoveConnectorPacket {
         return scp;
     }
 	
-	public static void handle(RemoveConnectorPacket pkt, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
+	public static void handle(RemoveConnectorPacket pkt, Minecraft client) {
+		client.execute(() -> {
 			try {
 				
 				handleData(pkt);
@@ -41,8 +42,6 @@ public class RemoveConnectorPacket {
 				e.printStackTrace();
 			}
 		});
-		
-		ctx.get().setPacketHandled(true);
 	}
 	
 	private static void handleData(RemoveConnectorPacket pkt) {
@@ -56,6 +55,6 @@ public class RemoveConnectorPacket {
     }
 	
 	public static void send(BlockPos pos, int node, Level level) {
-		CreateAddition.Network.send(PacketDistributor.DIMENSION.with(() -> level.dimension()), new RemoveConnectorPacket(pos, node));
+		PlayerLookup.world((ServerLevel) level).forEach(serverPlayer -> ServerPlayNetworking.send(serverPlayer, CANetwork.REMOVE_CONNECTOR, new RemoveConnectorPacket(pos, node).encode()));
 	}
 }

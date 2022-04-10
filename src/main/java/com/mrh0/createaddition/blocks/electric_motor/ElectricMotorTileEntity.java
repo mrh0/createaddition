@@ -1,7 +1,5 @@
 package com.mrh0.createaddition.blocks.electric_motor;
 
-import java.util.List;
-
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.compat.computercraft.ElectricMotorPeripheral;
@@ -13,16 +11,12 @@ import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
-import com.simibubi.create.foundation.config.ConfigBase;
-import com.simibubi.create.foundation.config.ui.ConfigHelper.ConfigChange;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour.StepContext;
 import com.simibubi.create.foundation.utility.Lang;
-
-import com.simibubi.create.lib.util.LazyOptional;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,12 +24,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
+
+import java.util.List;
 
 public class ElectricMotorTileEntity extends GeneratingKineticTileEntity implements EnergyTransferable {
 	

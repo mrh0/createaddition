@@ -1,26 +1,24 @@
 package com.mrh0.createaddition.blocks.crude_burner;
 
 import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
-import com.mrh0.createaddition.network.EnergyNetworkPacket;
-import com.mrh0.createaddition.network.IObserveTileEntity;
-import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
-import com.simibubi.create.lib.block.CustomDataPacketHandlingBlockEntity;
-import com.simibubi.create.lib.transfer.TransferUtil;
-import com.simibubi.create.lib.transfer.fluid.FluidStack;
-import com.simibubi.create.lib.transfer.fluid.FluidTank;
-import com.simibubi.create.lib.transfer.fluid.IFluidHandler;
-import com.simibubi.create.lib.util.LazyOptional;
+import io.github.fabricators_of_create.porting_lib.block.CustomDataPacketHandlingBlockEntity;
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
@@ -28,13 +26,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements IHaveGoggleInformation, CustomDataPacketHandlingBlockEntity {
+public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements IHaveGoggleInformation, CustomDataPacketHandlingBlockEntity, FluidTransferable {
 	
 	private static final int[] SLOTS = new int[] { };
-	protected LazyOptional<IFluidHandler> fluidCapability;
 	protected FluidTank tankInventory;
 	
 	private Optional<CrudeBurningRecipe> recipeCache = Optional.empty();
@@ -45,11 +43,10 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 	public CrudeBurnerTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		tankInventory = createInventory();
-		fluidCapability = LazyOptional.of(() -> tankInventory);
 	}
 	
 	protected SmartFluidTank createInventory() {
-		return new SmartFluidTank(4000, this::onFluidStackChanged);
+		return new SmartFluidTank(FluidConstants.BUCKET * 4, this::onFluidStackChanged);
 	}
 
 	protected void onFluidStackChanged(FluidStack newFluidStack) {
@@ -108,7 +105,7 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 				if (be.burning()) {
 					flag1 = true;
 					be.updateTimeout = 0;
-					be.tankInventory.drain(100, false);
+					TransferUtil.extractAnyFluid(be.tankInventory, FluidConstants.INGOT);
 				}
 			}
 
@@ -135,18 +132,11 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 		return false;
 	}
 
-	@org.jetbrains.annotations.Nullable
+	@Nullable
 	@Override
-	public IFluidHandler getFluidHandler(@org.jetbrains.annotations.Nullable Direction direction) {
-		return fluidCapability.getValueUnsafer();
+	public Storage<FluidVariant> getFluidStorage(@Nullable Direction face) {
+		return tankInventory;
 	}
-
-//	@Override
-//	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-//		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-//			return fluidCapability.cast();
-//		return super.getCapability(cap, side);
-//	}
 
 	@Override
 	public void load(CompoundTag nbt) {
@@ -175,7 +165,7 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		//ObservePacket.send(worldPosition, 0);
-		return containedFluidTooltip(tooltip, isPlayerSneaking, TransferUtil.getFluidHandler(this));
+		return containedFluidTooltip(tooltip, isPlayerSneaking, TransferUtil.getFluidStorage(this));
 	}
 	
 	public Optional<CrudeBurningRecipe> find(FluidStack stack, Level world) {

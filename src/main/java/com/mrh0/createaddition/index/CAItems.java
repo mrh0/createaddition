@@ -10,6 +10,7 @@ import com.mrh0.createaddition.item.DiamondGritSandpaper;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
+import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.simibubi.create.foundation.item.TooltipHelper;

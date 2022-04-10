@@ -1,62 +1,26 @@
 package com.mrh0.createaddition;
 
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.commands.CommandSource;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.RegistryEvent.Register;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.mojang.brigadier.CommandDispatcher;
 import com.mrh0.createaddition.blocks.crude_burner.CrudeBurner;
 import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.config.Config;
+import com.mrh0.createaddition.event.GameEvents;
 import com.mrh0.createaddition.groups.ModGroup;
-import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.index.CAEffects;
-import com.mrh0.createaddition.index.CAEntities;
-import com.mrh0.createaddition.index.CAFluids;
-import com.mrh0.createaddition.index.CAItemProperties;
-import com.mrh0.createaddition.index.CAItems;
-import com.mrh0.createaddition.index.CAPonder;
-import com.mrh0.createaddition.index.CAPotatoCannonProjectiles;
-import com.mrh0.createaddition.index.CARecipes;
-import com.mrh0.createaddition.index.CATileEntities;
-import com.mrh0.createaddition.network.EnergyNetworkPacket;
-import com.mrh0.createaddition.network.ObservePacket;
-import com.mrh0.createaddition.network.RemoveConnectorPacket;
-import com.simibubi.create.AllBlocks;
+import com.mrh0.createaddition.index.*;
+import com.mrh0.createaddition.network.CANetwork;
 import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineInteractions;
 import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineInteractions.HeatSource;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraftforge.api.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import net.minecraftforge.registries.IRegistryDelegate;
-
-@Mod(CreateAddition.MODID)
-public class CreateAddition {
+public class CreateAddition implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     
     public static final String MODID = "createaddition";
@@ -66,100 +30,48 @@ public class CreateAddition {
     public static boolean AE2_ACTIVE = false;
     
     private static final NonNullSupplier<CreateRegistrate> registrate = CreateRegistrate.lazy(CreateAddition.MODID);
-    
-    private static final String PROTOCOL = "1";
-	public static final SimpleChannel Network = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(MODID, "main"))
-            .clientAcceptedVersions(PROTOCOL::equals)
-            .serverAcceptedVersions(PROTOCOL::equals)
-            .networkProtocolVersion(() -> PROTOCOL)
-            .simpleChannel();
 
-    public CreateAddition() {
-    	
-        // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        // Register the enqueueIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-        // Register the processIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
-        // Register the doClientStuff method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-        
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
-        
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(MobEffect.class, CreateAddition::onRegisterEffectEvent);
-        
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, CARecipes::register);
-        //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeType.class, CARecipes::register);
-        
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
+    @Override
+    public void onInitialize() {
+        CARecipes.register();
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
-        Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("createaddition-common.toml"));
+        ModLoadingContext.registerConfig(CreateAddition.MODID, ModConfig.Type.COMMON, Config.COMMON_CONFIG);
+        Config.loadConfig(Config.COMMON_CONFIG, FabricLoader.getInstance().getConfigDir().resolve("createaddition-common.toml"));
         
-        IE_ACTIVE = ModList.get().isLoaded("immersiveengineering");
-        CC_ACTIVE = ModList.get().isLoaded("computercraft");
-        AE2_ACTIVE = ModList.get().isLoaded("appliedenergistics2");
+        IE_ACTIVE = FabricLoader.getInstance().isModLoaded("immersiveengineering");
+        CC_ACTIVE = FabricLoader.getInstance().isModLoaded("computercraft");
+        AE2_ACTIVE = FabricLoader.getInstance().isModLoaded("appliedenergistics2");
         
-        new ModGroup("main");
+        new ModGroup();
         
         CABlocks.register();
         CATileEntities.register();
         CAItems.register();
         CAFluids.register();
+        CAEffects.register();
         //CAEntities.register();
+        CAPotatoCannonProjectiles.register();
+        CommandRegistrationCallback.EVENT.register(CCApiCommand::register);
+        registrate.get().register();
+        GameEvents.initCommon();
+        postInit();
     }
 
-    private void setup(final FMLCommonSetupEvent event) {
-    	CAPotatoCannonProjectiles.register();
-    }
-
-    private void doClientStuff(final FMLClientSetupEvent event) {
-    	event.enqueueWork(CAPonder::register);
-        //CAEntities.registerRenderers();
-        event.enqueueWork(CAItemProperties::register);
-        
-        RenderType cutout = RenderType.cutoutMipped();       
-		
-        ItemBlockRenderTypes.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
-    }
-
-    private void enqueueIMC(final InterModEnqueueEvent event) {
-
-    }
-
-    private void processIMC(final InterModProcessEvent event) {
-    	
-    }
-    
-    public void postInit(FMLLoadCompleteEvent evt) {
+    public void postInit() {
     	int i = 0;
-        Network.registerMessage(i++, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
-        Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
-        Network.registerMessage(i++, RemoveConnectorPacket.class, RemoveConnectorPacket::encode, RemoveConnectorPacket::decode, RemoveConnectorPacket::handle);
+        CANetwork.initServer();
         
         
         
-        FurnaceEngineInteractions.registerHandler(CABlocks.FURNACE_BURNER.get().delegate, FurnaceEngineInteractions.InteractionHandler.of(
+        FurnaceEngineInteractions.registerHandler(CABlocks.FURNACE_BURNER.get(), FurnaceEngineInteractions.InteractionHandler.of(
        		 s -> s.getBlock() instanceof FurnaceBurner && s.hasProperty(FurnaceBurner.LIT) ? 
        		 (s.getValue(FurnaceBurner.LIT) ? HeatSource.ACTIVE : HeatSource.VALID) : HeatSource.EMPTY, s -> (float)(double)Config.FURNACE_BURNER_ENGINE_SPEED.get()));
         
-        FurnaceEngineInteractions.registerHandler(CABlocks.CRUDE_BURNER.get().delegate, FurnaceEngineInteractions.InteractionHandler.of(
+        FurnaceEngineInteractions.registerHandler(CABlocks.CRUDE_BURNER.get(), FurnaceEngineInteractions.InteractionHandler.of(
           		 s -> s.getBlock() instanceof CrudeBurner && s.hasProperty(CrudeBurner.LIT) ? 
           	       		 (s.getValue(CrudeBurner.LIT) ? HeatSource.ACTIVE : HeatSource.VALID) : HeatSource.EMPTY, s -> (float)(double)Config.CRUDE_BURNER_ENGINE_SPEED.get()));
         
     	System.out.println("Create Crafts & Addition Initialized!");
-    }
-    
-    @SubscribeEvent
-    public void onRegisterCommandEvent(RegisterCommandsEvent event) {
-    	CommandDispatcher<CommandSourceStack> dispather = event.getDispatcher();
-    	CCApiCommand.register(dispather);
-    }
-    
-    public static void onRegisterEffectEvent(Register<MobEffect> event) {
-    	CAEffects.register(event.getRegistry());
     }
     
     public static CreateRegistrate registrate() {

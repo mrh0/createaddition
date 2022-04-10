@@ -11,8 +11,8 @@
       "tag": "minecraft:saplings"
     },
     {
-      "fluidTag": "forge:plantoil",
-      "amount": 150
+      "fluidTag": "c:plantoil",
+      "amount": 12150
     }
   ],
   "results": [

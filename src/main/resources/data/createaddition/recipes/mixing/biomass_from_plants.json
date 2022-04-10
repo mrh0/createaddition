@@ -11,8 +11,8 @@
       "tag": "createaddition:plants"
     },
     {
-      "fluidTag": "forge:plantoil",
-      "amount": 100
+      "fluidTag": "c:plantoil",
+      "amount": 9000
     }
   ],
   "results": [

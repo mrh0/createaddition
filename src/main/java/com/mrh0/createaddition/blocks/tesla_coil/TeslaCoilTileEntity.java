@@ -20,7 +20,7 @@ import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemS
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
 
-import com.simibubi.create.lib.mixin.common.accessor.DamageSourceAccessor;
+import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.DamageSourceAccessor;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
@@ -53,7 +53,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
 	
-	private static DamageSource dmgSource = DamageSourceAccessor.create$init("tesla_coil");
+	private static DamageSource dmgSource = DamageSourceAccessor.port_lib$init("tesla_coil");
 	
 	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, 0);

@@ -305,7 +305,6 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			RemoveConnectorPacket.send(node.getMyPos(), other, level);
 		}
 		invalidateNodeCache();
-		invalidateCaps();
 		// Invalidate
 		if(networkIn != null)
 			networkIn.invalidate();

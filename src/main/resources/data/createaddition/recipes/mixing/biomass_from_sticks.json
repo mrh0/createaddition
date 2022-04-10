@@ -20,8 +20,8 @@
       "item": "minecraft:stick"
     },
     {
-      "fluidTag": "forge:plantoil",
-      "amount": 200
+      "fluidTag": "c:plantoil",
+      "amount": 18000
     }
   ],
   "results": [
