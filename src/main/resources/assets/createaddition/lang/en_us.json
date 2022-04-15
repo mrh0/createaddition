@@ -257,5 +257,6 @@
 	
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",
-  	"death.attack.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s"
+  	"death.attack.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",
+  	"effect.createaddition.shocking.description": "Causes severely reduced movement speed"
 }

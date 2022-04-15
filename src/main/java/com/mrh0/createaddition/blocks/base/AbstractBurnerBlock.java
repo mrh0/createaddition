@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Block;
@@ -71,5 +72,10 @@ public abstract class AbstractBurnerBlock extends Block {
 
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_48725_) {
 		p_48725_.add(FACING, LIT);
+	}
+	
+	@Override
+	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+		return state.getValue(LIT) ? 12 : 0;
 	}
 }

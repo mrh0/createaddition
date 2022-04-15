@@ -100,14 +100,14 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		return 0f;
 	}
 	
-	public String getChargeString() {
+	/*public String getChargeString() {
 		float c = Math.round(getCharge(chargedStackCache) * 100);
 		if(c >= 9000)
 			return "OVER9000% ";
 		return Math.round(getCharge(chargedStackCache) * 100) + "% ";
 	}
 	
-	/*@Override
+	@Override
 	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
 		tooltip.add(new StringTextComponent(spacing).append(
 				new TranslationTextComponent("block.createaddition.charger.info").withStyle(TextFormatting.WHITE)));

@@ -100,7 +100,7 @@ public class CreateAddition {
         
         IE_ACTIVE = ModList.get().isLoaded("immersiveengineering");
         CC_ACTIVE = ModList.get().isLoaded("computercraft");
-        AE2_ACTIVE = ModList.get().isLoaded("appliedenergistics2");
+        AE2_ACTIVE = ModList.get().isLoaded("ae2");
         
         new ModGroup("main");
         
