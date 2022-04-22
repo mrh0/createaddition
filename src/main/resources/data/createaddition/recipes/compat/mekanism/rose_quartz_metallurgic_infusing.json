@@ -5,17 +5,18 @@
 			"tag":"forge:gems/quartz"
 		}
 	},
-	"infusionInput":{
+	"chemicalInput":{
 		"amount":80,
 		"tag":"mekanism:redstone"
 	},
 	"output":{
 		"item":"create:rose_quartz"
 	},
-	"conditions": [ 
+	"conditions": [
   	{
-      "type": "forge:mod_loaded",
-      "modid": "mekanism"
-  	} 
-  ]
+		"type": "forge:mod_loaded",
+		"modid": "mekanism"
+	}
+	]
 }
+
