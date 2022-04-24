@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
+import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.AllItems;
@@ -50,10 +51,15 @@ public class CreateAdditionJEI implements IModPlugin {
 		.build();
 	
 	final CreateRecipeCategory<?> crude_burning = register("crude_burning", CrudeBurningCategory::new)
-			.recipes(CrudeBurningRecipe.TYPE)
-			.catalyst(CABlocks.CRUDE_BURNER::get)
-			.build();
+		.recipes(CrudeBurningRecipe.TYPE)
+		.catalyst(CABlocks.CRUDE_BURNER::get)
+		.build();
 	
+	final CreateRecipeCategory<?> charging = register("charging", ChargingCategory::new)
+		.recipes(ChargingRecipe.TYPE)
+		.catalyst(CABlocks.TESLA_COIL::get)
+		.build();
+
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration) {
 		ALL.forEach(registration::addRecipeCategories);

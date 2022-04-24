@@ -61,6 +61,7 @@ public class Config {
 	
 	public static ForgeConfigSpec.IntValue TESLA_COIL_MAX_INPUT;
 	public static ForgeConfigSpec.IntValue TESLA_COIL_CHARGE_RATE;
+	public static ForgeConfigSpec.IntValue TESLA_COIL_RECIPE_CHARGE_RATE;
 	public static ForgeConfigSpec.IntValue TESLA_COIL_CAPACITY;
 	public static ForgeConfigSpec.IntValue TESLA_COIL_HURT_ENERGY_REQUIRED;
 	public static ForgeConfigSpec.IntValue TESLA_COIL_HURT_DMG_MOB;
@@ -214,11 +215,14 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Tesla Coil").push(CATAGORY_TESLA_COIL);
 		
-		TESLA_COIL_MAX_INPUT = COMMON_BUILDER.comment("Charger max input in FE/t (Energy transfer).")
+		TESLA_COIL_MAX_INPUT = COMMON_BUILDER.comment("Tesla Coil max input in FE/t (Energy transfer).")
 				.defineInRange("tesla_coil_max_input", 8192, 0, Integer.MAX_VALUE);
 		
-		TESLA_COIL_CHARGE_RATE = COMMON_BUILDER.comment("Charger charge rate in FE/t.")
-				.defineInRange("tesla_coil_charge_rate", 8192, 0, Integer.MAX_VALUE);
+		TESLA_COIL_CHARGE_RATE = COMMON_BUILDER.comment("Tesla Coil charge rate in FE/t.")
+				.defineInRange("tesla_coil_charge_rate", 4096, 0, Integer.MAX_VALUE);
+		
+		TESLA_COIL_RECIPE_CHARGE_RATE = COMMON_BUILDER.comment("Tesla Coil charge rate in FE/t for recipes.")
+				.defineInRange("tesla_coil_recipe_charge_rate", 1024, 0, Integer.MAX_VALUE);
 		
 		TESLA_COIL_CAPACITY = COMMON_BUILDER.comment("Charger internal capacity in FE.")
 				.defineInRange("tesla_coil_capacity", 32000, 0, Integer.MAX_VALUE);

@@ -50,8 +50,9 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	private int chargeAccumulator;
 	
 	private static final int 
-			MAX_IN = Config.TESLA_COIL_MAX_INPUT.get(), 
+			MAX_IN = Config.TESLA_COIL_MAX_INPUT.get(),
 			CHARGE_RATE = Config.TESLA_COIL_CHARGE_RATE.get(),
+			CHARGE_RATE_RECIPE = Config.TESLA_COIL_RECIPE_CHARGE_RATE.get(),
 			CAPACITY = Math.max(Config.TESLA_COIL_CAPACITY.get(), CHARGE_RATE), 
 			HURT_ENERGY_REQUIRED = Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get(), 
 			HURT_DMG_MOB = Config.TESLA_COIL_HURT_DMG_MOB.get(),
@@ -197,7 +198,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		}
 		if(recipeCache.isPresent()) {
 			ChargingRecipe recipe = recipeCache.get();
-			int energyRemoved = energy.internalConsumeEnergy(Math.min(getConsumption(), recipe.getEnergy() - chargeAccumulator));
+			int energyRemoved = energy.internalConsumeEnergy(Math.min(CHARGE_RATE_RECIPE, recipe.getEnergy() - chargeAccumulator));
 			chargeAccumulator += energyRemoved;
 			if(chargeAccumulator >= recipe.getEnergy()) {
 				TransportedItemStack left = transported.copy();
