@@ -244,7 +244,7 @@
 	"createaddition.ponder.cc_electric_motor.header": "Использование ComputerCraft для управления электродвигателем",
 	"createaddition.ponder.cc_electric_motor.text_1": "Электродвигателем можно управлять с помощью ComputerCraft",
 	"createaddition.ponder.cc_electric_motor.text_2": "Подсоедините к двигателю с помощью периферийного устройства (сбоку)",
-	"createaddition.ponder.cc_electric_motor.text_3": "Получить документацию по API, введя в чате команду /cca_api"
+	"createaddition.ponder.cc_electric_motor.text_3": "Получить документацию по API, введя в чате команду /cca_api",
 
 	"createaddition.ponder.tesla_coil.header": "Использование катушки Теслы для зарядки предметов",
 	"createaddition.ponder.tesla_coil.text_1": "Катушка Теслы будет заряжать предметы под ней",
