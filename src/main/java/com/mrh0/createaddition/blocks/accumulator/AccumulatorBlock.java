@@ -135,13 +135,12 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	
 	@Override
 	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
-		if(world.isClientSide())
-			return;
-		BlockEntity be = world.getBlockEntity(pos);
-		if(be == null)
-			return;
-		if(!(newState.getBlock() instanceof AccumulatorBlock))
-			if(be instanceof AccumulatorTileEntity)
-				((AccumulatorTileEntity)be).onBlockRemoved();
+		if(!world.isClientSide()) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if(be != null && !(newState.getBlock() instanceof AccumulatorBlock))
+				if(be instanceof AccumulatorTileEntity)
+					((AccumulatorTileEntity) be).onBlockRemoved();
+		}
+		super.onRemove(state, world, pos, newState, b);
 	}
 }
