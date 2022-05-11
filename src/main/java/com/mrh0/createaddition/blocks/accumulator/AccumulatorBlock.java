@@ -116,7 +116,6 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 		cte.dropWires(c.getLevel(), c.getPlayer());
 		return IWrenchable.super.onSneakWrenched(state, c);
 	}
-
 	
 	@Override
 	public boolean hasAnalogOutputSignal(BlockState state) {

@@ -5,9 +5,9 @@ import java.util.Arrays;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.item.Multimeter;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
 import mezz.jei.api.constants.VanillaTypes;
@@ -61,7 +61,7 @@ public class ChargingCategory extends CARecipeCategory<ChargingRecipe> {
 		AllGuiTextures.JEI_DOWN_ARROW.render(matrixStack, 43, 4);
 		tesla_coil.draw(matrixStack, 48, 27);
 		
-		Minecraft.getInstance().font.draw(matrixStack, Multimeter.format(recipe.energy) + "fe", 86, 9, 4210752);
+		Minecraft.getInstance().font.draw(matrixStack, Util.format(recipe.energy) + "fe", 86, 9, 4210752);
 
 		getRenderedSlot(recipe, 0).render(matrixStack, 139, 27);
 	}

@@ -6,6 +6,7 @@ import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.cake.Cake;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
+import com.mrh0.createaddition.blocks.connector.ConnectorMovementBehaviour;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.crude_burner.CrudeBurner;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
@@ -17,6 +18,7 @@ import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.Create;
+import com.simibubi.create.AllMovementBehaviours;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.contraptions.base.CasingBlock;
@@ -68,6 +70,7 @@ public class CABlocks {
 	
 	public static final BlockEntry<ConnectorBlock> CONNECTOR_COPPER = REGISTRATE.block("connector",  ConnectorBlock::new)
 			.initialProperties(SharedProperties::stone)
+			.onRegister(AllMovementBehaviours.addMovementBehaviour(new ConnectorMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
 			.register();

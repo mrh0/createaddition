@@ -7,7 +7,7 @@ import com.mrh0.createaddition.blocks.base.AbstractBurnerBlock;
 import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
-import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
@@ -181,7 +181,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 			tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("block.createaddition.heater.engine_heating_disabled").withStyle(ChatFormatting.RED)));
 		
 		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Multimeter.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")).withStyle(ChatFormatting.AQUA));
+		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Util.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")).withStyle(ChatFormatting.AQUA));
 		return true;
 	}
 }

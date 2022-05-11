@@ -8,7 +8,7 @@ import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
-import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
@@ -41,6 +41,8 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	public static Vec3 OFFSET_WEST = new Vec3(-3f/16f, 0f, 0f);
 	public static Vec3 OFFSET_SOUTH = new Vec3(0f, 0f, 3f/16f);
 	public static Vec3 OFFSET_EAST = new Vec3(3f/16f, 0f, 0f);
+	
+	public static final int NODE_COUNT = 4;
 	
 	public static final int CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
 	
@@ -99,7 +101,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	
 	@Override
 	public int getNodeCount() {
-		return 4;
+		return NODE_COUNT;
 	}
 	
 	@Override
@@ -323,7 +325,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(" ")
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
+				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		
 		/*tooltip.add(new StringTextComponent(spacing)
 				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.demand").formatted(TextFormatting.GRAY)));
