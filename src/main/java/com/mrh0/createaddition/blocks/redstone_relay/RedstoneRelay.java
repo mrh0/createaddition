@@ -22,10 +22,13 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -255,6 +258,25 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	@Override
 	public BlockEntityType<? extends RedstoneRelayTileEntity> getTileEntityType() {
 		return CATileEntities.REDSTONE_RELAY.get();
+	}
+	
+	private BlockState fromRotation(BlockState state, Direction dir) {
+		return state.setValue(HORIZONTAL_FACING, dir);
+	}
+	
+	@Override
+	public BlockState rotate(BlockState state, Rotation direction) {
+		return fromRotation(state, direction.rotate(state.getValue(HORIZONTAL_FACING)));
+	}
+	
+	@Override
+	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
+		return rotate(state, direction);
+	}
+	
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return fromRotation(state, mirror.mirror(state.getValue(HORIZONTAL_FACING)));
 	}
 	
 	@Override

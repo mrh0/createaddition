@@ -3,6 +3,7 @@ package com.mrh0.createaddition.index;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
+import com.mrh0.createaddition.blocks.accumulator.AccumulatorMovementBehaviour;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.cake.Cake;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
@@ -13,6 +14,7 @@ import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.blocks.heater.HeaterBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
+import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayMovementBehaviour;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.config.Config;
@@ -83,6 +85,7 @@ public class CABlocks {
 	
 	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = REGISTRATE.block("accumulator",  AccumulatorBlock::new)
 			.initialProperties(SharedProperties::stone)
+			.onRegister(AllMovementBehaviours.addMovementBehaviour(new AccumulatorMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
 			.register();
@@ -95,6 +98,7 @@ public class CABlocks {
 	
 	public static final BlockEntry<RedstoneRelay> REDSTONE_RELAY = REGISTRATE.block("redstone_relay",  RedstoneRelay::new)
 			.initialProperties(SharedProperties::stone)
+			.onRegister(AllMovementBehaviours.addMovementBehaviour(new RedstoneRelayMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
 			.register();

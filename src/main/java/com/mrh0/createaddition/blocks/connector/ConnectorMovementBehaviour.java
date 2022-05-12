@@ -10,9 +10,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class ConnectorMovementBehaviour implements MovementBehaviour {
-	@Override
-	public void startMoving(MovementContext c) {
-		for(int i = 0; i < ConnectorTileEntity.NODE_COUNT; i++) {
+	public static void connectorStartMoving(MovementContext c, int nodeCount) {
+		for(int i = 0; i < nodeCount; i++) {
 			BlockPos pos = IWireNode.readNodeBlockPos(c.tileData, i);
 			WireType type = IWireNode.readNodeWireType(c.tileData, i);
 			int index = IWireNode.readNodeIndex(c.tileData, i);
@@ -26,7 +25,13 @@ public class ConnectorMovementBehaviour implements MovementBehaviour {
 			wn.preformRemoveOfNode(index);
 			RemoveConnectorPacket.send(pos, index, c.world);
 			IWireNode.clearNode(c.tileData, i);
-			System.out.println("REMOVED! " + index + ":" + type);
+			IWireNode.dropWire(c.world, pos, type.getDrop());
+			System.out.println("REMOVED! " + pos.toString() + ":" + index + ":" + be.toString());
 		}
+	}
+	
+	@Override
+	public void startMoving(MovementContext c) {
+		connectorStartMoving(c, ConnectorTileEntity.NODE_COUNT);
 	}
 }

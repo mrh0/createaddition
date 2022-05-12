@@ -43,6 +43,8 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public static Vec3 OFFSET_SOUTH = new Vec3(	0f, 	9f/16f, 	5f/16f);
 	public static Vec3 OFFSET_EAST = new Vec3(	5f/16f, 	9f/16f, 	0f);
 	
+	public static final int NODE_COUNT = 8;
+	
 	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
 	public AccumulatorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
@@ -217,7 +219,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	
 	@Override
 	public int getNodeCount() {
-		return 8;
+		return NODE_COUNT;
 	}
 
 	@Override

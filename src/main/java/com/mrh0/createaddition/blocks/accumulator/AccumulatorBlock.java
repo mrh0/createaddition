@@ -20,7 +20,10 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -130,6 +133,21 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	@Override
 	public BlockEntityType<? extends AccumulatorTileEntity> getTileEntityType() {
 		return null;
+	}
+	
+	@Override
+	public BlockState rotate(BlockState state, Rotation direction) {
+		return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
+	}
+	
+	@Override
+	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
+		return rotate(state, direction);
+	}
+	
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
 	
 	@Override
