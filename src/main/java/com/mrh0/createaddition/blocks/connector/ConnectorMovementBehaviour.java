@@ -17,16 +17,23 @@ public class ConnectorMovementBehaviour implements MovementBehaviour {
 			int index = IWireNode.readNodeIndex(c.tileData, i);
 			
 			BlockEntity be = c.world.getBlockEntity(pos);
+			
 			if(be == null)
 				continue;
 			if(!(be instanceof IWireNode))
+				continue;
+			System.out.println("1REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(be.getTileData(), index));
+			if(IWireNode.readNodeWireType(be.getTileData(), index) == null)
+				continue;
+			if(IWireNode.readNodeWireType(c.tileData, i) == null)
 				continue;
 			IWireNode wn = (IWireNode)be;
 			wn.preformRemoveOfNode(index);
 			RemoveConnectorPacket.send(pos, index, c.world);
 			IWireNode.clearNode(c.tileData, i);
+			IWireNode.clearNode(be.getTileData(), index);
 			IWireNode.dropWire(c.world, pos, type.getDrop());
-			System.out.println("REMOVED! " + pos.toString() + ":" + index + ":" + be.toString());
+			System.out.println("2REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(be.getTileData(), index));
 		}
 	}
 	

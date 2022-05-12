@@ -281,13 +281,12 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	
 	@Override
 	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
-		if(world.isClientSide())
-			return;
-		BlockEntity be = world.getBlockEntity(pos);
-		if(be == null)
-			return;
-		if(!(newState.getBlock() instanceof RedstoneRelay))
-			if(be instanceof RedstoneRelayTileEntity)
-				((RedstoneRelayTileEntity)be).onBlockRemoved(true);
+		if(!world.isClientSide()) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if(be != null && !(newState.getBlock() instanceof RedstoneRelay))
+				if(be instanceof RedstoneRelayTileEntity)
+					((RedstoneRelayTileEntity) be).onBlockRemoved(true);
+		}
+		super.onRemove(state, world, pos, newState, b);
 	}
 }

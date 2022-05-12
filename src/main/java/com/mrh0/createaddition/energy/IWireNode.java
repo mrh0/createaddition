@@ -87,10 +87,14 @@ public interface IWireNode {
 	}
 	
 	public static void clearNode(CompoundTag nbt, int node) {
-		nbt.remove("x"+node);
+		nbt.putInt("node"+node, -1);
+		nbt.putInt("type"+node, -1);
+		
+		/*nbt.remove("x"+node);
 		nbt.remove("y"+node);
 		nbt.remove("z"+node);
-		nbt.remove("type"+node);
+		nbt.remove("node"+node);
+		nbt.remove("type"+node);*/
 	}
 	
 	public void setNode(int node, int other, BlockPos pos, WireType type);
