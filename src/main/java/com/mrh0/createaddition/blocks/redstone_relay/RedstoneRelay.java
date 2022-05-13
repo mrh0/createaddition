@@ -23,10 +23,13 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -258,15 +261,33 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 		return CATileEntities.REDSTONE_RELAY.get();
 	}
 	
+	private BlockState fromRotation(BlockState state, Direction dir) {
+		return state.setValue(HORIZONTAL_FACING, dir);
+	}
+	
+	@Override
+	public BlockState rotate(BlockState state, Rotation direction) {
+		return fromRotation(state, direction.rotate(state.getValue(HORIZONTAL_FACING)));
+	}
+	
+	@Override
+	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
+		return rotate(state, direction);
+	}
+	
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return fromRotation(state, mirror.mirror(state.getValue(HORIZONTAL_FACING)));
+	}
+	
 	@Override
 	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
-		if(world.isClientSide())
-			return;
-		BlockEntity be = world.getBlockEntity(pos);
-		if(be == null)
-			return;
-		if(!(newState.getBlock() instanceof RedstoneRelay))
-			if(be instanceof RedstoneRelayTileEntity)
-				((RedstoneRelayTileEntity)be).onBlockRemoved(true);
+		if(!world.isClientSide()) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if(be != null && !(newState.getBlock() instanceof RedstoneRelay))
+				if(be instanceof RedstoneRelayTileEntity)
+					((RedstoneRelayTileEntity) be).onBlockRemoved(true);
+		}
+		super.onRemove(state, world, pos, newState, b);
 	}
 }

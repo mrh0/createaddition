@@ -40,7 +40,7 @@ public class CreateAddition implements ModInitializer {
         
         IE_ACTIVE = FabricLoader.getInstance().isModLoaded("immersiveengineering");
         CC_ACTIVE = FabricLoader.getInstance().isModLoaded("computercraft");
-        AE2_ACTIVE = FabricLoader.getInstance().isModLoaded("appliedenergistics2");
+        AE2_ACTIVE = FabricLoader.getInstance().isModLoaded("ae2");
         
         new ModGroup();
         

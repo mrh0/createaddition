@@ -60,7 +60,7 @@
 	
 	"item.createaddition.gold_spool": "Carrete de oro",
 	"item.createaddition.gold_spool.tooltip": "CARRETE",
-	"item.createaddition.gold_spool.tooltip.summary": "Al hacer click derecho en doso _Conectores_ creará un enlace de cable entre ellos y devolverá un _Carrete vacío_.",
+	"item.createaddition.gold_spool.tooltip.summary": "Al hacer click derecho en dos _Conectores_ creará un enlace de cable entre ellos y devolverá un _Carrete vacío_.",
 	
 	"item.createaddition.gold_wire": "Alambre de oro",
 	"item.createaddition.gold_rod": "Vara de oro",
@@ -72,6 +72,17 @@
 	"item.createaddition.cake_base_baked": "Base de tarta cocinada",
 	
 	"item.createaddition.seed_oil_bucket": "Cubo de aceite de semillas",
+	"item.createaddition.seed_oil_bucket.tooltip": "CUBO_ACEITE_SEMILLAS",
+	"item.createaddition.seed_oil_bucket.tooltip.summary": "Un simple _líquido inflamable_ que puede alimentar un _Quemador Crudo_.",
+	
+	"item.createaddition.bioethanol_bucket": "Cubo de Bioetanol",
+	"item.createaddition.bioethanol_bucket.tooltip": "CUBO_BIOETANOL",
+	"item.createaddition.bioethanol_bucket.tooltip.summary": "Un eficiente _líquido inflamable_ que puede alimentar un _Quemador Crudo_.",
+	
+	"item.createaddition.biomass": "Biomasa",
+	"item.createaddition.biomass_pellet": "Pellets de biomasa",
+	"item.createaddition.biomass_pellet.tooltip": "PELLETS_BIOMASA",
+	"item.createaddition.biomass_pellet.tooltip.summary": "Un _combustible sólido_ que puede fundir _6 items_ en un _Horno_ .",
 	
 	"item.createaddition.charging_chromatic_compound": "Compuesto cromático de carga",
 	"item.createaddition.overcharged_alloy": "Aleación sobrecargada",
@@ -99,8 +110,7 @@
 	"statusbar.createaddition.wire.obstructed": "La ruta del cable está obstruida",
 	"statusbar.createaddition.wire.count": "Este conector está lleno",
 	"statusbar.createaddition.wire.removed": "Cable eliminado",
-
-	"statusbar.createaddition.wire.exists": "La conexión entre estos conectorees ya existe",
+    "statusbar.createaddition.wire.exists": "La conexión entre estos conectores ya existe",
 	"statusbar.createaddition.wire.no_connection": "El cable no está conectado aquí",
 	"statusbar.createaddition.wire.invalid": "Conexión inválida",
 	
@@ -144,6 +154,18 @@
 	"block.createaddition.connector.tooltip.control1": "Click derecho",
 	"block.createaddition.connector.tooltip.action1": "Con un _carrete de cobre_ o un _carrete de oro_ para crear un _vínculo de cables_ entre dos _conectores_.",
 	
+	"block.createaddition.connector_copper": "Conector de cobre",
+	"block.createaddition.connector_copper.tooltip": "CONECTOR",
+	"block.createaddition.connector_copper.tooltip.summary": "Conecta bloques compatibles de Forge Energy con _cables_ para transferir _FE_.",
+	"block.createaddition.connector_copper.tooltip.control1": "Click derecho",
+	"block.createaddition.connector_copper.tooltip.action1": "Con un a _Carrete de cobre_ para crear un _vínculo de cables_ entre dos _conectores_.",
+	
+	"block.createaddition.connector_gold": "Gold Connector",
+	"block.createaddition.connector_gold.tooltip": "CONNECTOR",
+	"block.createaddition.connector_gold.tooltip.summary": "Conecta bloques compatibles de Forge Energy con _cables_ para transferir _FE_.",
+	"block.createaddition.connector_gold.tooltip.control1": "Click derecho",
+	"block.createaddition.connector_gold.tooltip.action1": "Con un a _Carrete de oroo_ para crear un _vínculo de cables_ entre dos _conectores_.",
+	
 	"block.createaddition.redstone_relay": "Relé de redstone",
 	"block.createaddition.redstone_relay.tooltip": "RELÉ_DE_REDSTONE",
 	"block.createaddition.redstone_relay.tooltip.summary": "Permite que la _FE_ pase del _conector de entrada_ al _conector de salida_ al recibir una _señal de redstone_.",
@@ -180,6 +202,11 @@
 	"block.createaddition.honey_cake": "Tarta de miel",
 	
 	"block.createaddition.seed_oil": "Aceite de semillas",
+    "block.createaddition.bioethanol": "Bioetanol",
+	
+	"block.createaddition.overcharged_casing": "Revestidor sobrecargada",
+	
+	"block.createaddition.tesla_coil": "Bobina de Tesla",
 	
 	"itemGroup.createaddition.main":"Create Crafts & Additions",
 	
@@ -217,5 +244,19 @@
 	"createaddition.ponder.cc_electric_motor.header": "Usando ComputerCraft para controlar un motor eléctrico",
 	"createaddition.ponder.cc_electric_motor.text_1": "El motor eléctrico se puede controlar mediante ComputerCraft",
 	"createaddition.ponder.cc_electric_motor.text_2": "Conecte al motor usando 'peripheral.wrap(side)'",
-	"createaddition.ponder.cc_electric_motor.text_3": "Acceda a la documentación de la API usando el comando '/cca_api' en el chat"
+	"createaddition.ponder.cc_electric_motor.text_3": "Acceda a la documentación de la API usando el comando '/cca_api' en el chat",
+	
+	"createaddition.ponder.tesla_coil.header": "Usando una bobina de Tesla para cargar artículos",
+	"createaddition.ponder.tesla_coil.text_1": "La bobina de Tesla cargará los elementos debajo de ella",
+	"createaddition.ponder.tesla_coil.text_2": "¡Cargará cualquier artículo de FE y más!",
+	
+	"createaddition.ponder.tesla_coil_hurt.header": "Las bobinas de Tesla son peligrosas",
+	"createaddition.ponder.tesla_coil_hurt.text_1": "La bobina de Tesla puede infligir daño a los jugadores y también a los mobs cercanos.",
+	"createaddition.ponder.tesla_coil_hurt.text_2": "La bobina se puede activar con una señal de Redstone",
+	"createaddition.ponder.tesla_coil_hurt.text_3": "¡Prepárate para ser electrocutado!",
+	
+	"effect.createaddition.shocking":"Electrocutado",
+	"death.attack.tesla_coil": "%1$s recibió una descarga eléctrica letal",
+  	"death.attack.tesla_coil.player": "%1$s recibió una descarga eléctrica letal mientras luchaba %2$s",
+  	"effect.createaddition.shocking.description": "Causa una velocidad de movimiento severamente reducida"
 }

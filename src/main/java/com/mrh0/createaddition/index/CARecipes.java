@@ -1,6 +1,9 @@
 package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
+import com.mrh0.createaddition.recipe.charging.ChargingRecipeSerializer;
+import com.mrh0.createaddition.recipe.conditions.FluidTagEmptyCondition;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipeSerializer;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
@@ -18,5 +21,11 @@ public class CARecipes {
 		Registry
 			.register(Registry.RECIPE_SERIALIZER , new ResourceLocation(CreateAddition.MODID, "crude_burning"), new CrudeBurningRecipeSerializer());
 		Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(CreateAddition.MODID, "crude_burning"), CrudeBurningRecipe.TYPE);
+		
+		event.getRegistry()
+		.register(new ChargingRecipeSerializer().setRegistryName(new ResourceLocation(CreateAddition.MODID, "charging")));
+		Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(CreateAddition.MODID, "charging"), ChargingRecipe.TYPE);
+
+		CraftingHelper.register(FluidTagEmptyCondition.Serializer.INSTANCE);
 	}
 }

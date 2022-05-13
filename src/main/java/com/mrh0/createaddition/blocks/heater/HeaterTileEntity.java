@@ -3,9 +3,11 @@ package com.mrh0.createaddition.blocks.heater;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.base.AbstractBurnerBlock;
+import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
-import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
@@ -25,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
 	
-	public AbstractFurnaceBlockEntity cache;
+	public BlockEntity cache;
 	private boolean isFurnaceEngine = false;
 	public static final int CONSUMPTION = Config.HEATER_NORMAL_CONSUMPTION.get(),
 			CONSUMPTION_ENGINE = Config.HEATER_FURNACE_ENGINE_CONSUMPTION.get();
@@ -70,21 +72,40 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 			litState =  IEHeaterOptional.externalHeater(cache, energy);
 		}*/
 		
-		ContainerData data = cache.dataAccess;
 		timeout--;
 		if(timeout < 0)
 			timeout = 0;
-		if(hasEnoughEnergy()) {
-			data.set(0, Math.min(200, data.get(0)+2));
-			if(!litState)
-				if(timeout <= 0)
-					updateState(true);
-		}
-		else if(litState && data.get(0) < 1) {
-			if(timeout <= 0)
-				updateState(false);
-		}
 		
+		if(cache instanceof AbstractFurnaceBlockEntity) {
+			AbstractFurnaceBlockEntity furnace = (AbstractFurnaceBlockEntity) cache;
+			ContainerData data = furnace.dataAccess;
+			
+			if(hasEnoughEnergy()) {
+				data.set(0, Math.min(200, data.get(0)+2));
+				if(!litState)
+					if(timeout <= 0)
+						updateState(true);
+			}
+			else if(litState && data.get(0) < 1) {
+				if(timeout <= 0)
+					updateState(false);
+			}
+		}
+		else if(cache instanceof AbstractBurnerBlockEntity) {
+			AbstractBurnerBlockEntity burner = (AbstractBurnerBlockEntity) cache;
+			
+			if(hasEnoughEnergy()) {
+				burner.litTime = Math.min(200, burner.litTime+2);
+				if(!litState)
+					if(timeout <= 0)
+						updateState(true);
+			}
+			else if(litState && burner.litTime < 1) {
+				if(timeout <= 0)
+					updateState(false);
+			}
+		}
+
 		// Old Lazy
 		if (hasEnoughEnergy())
 			energy.internalConsumeEnergy(getConsumption());
@@ -93,8 +114,8 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	public void refreshCache() {
 		Direction d = getBlockState().getValue(HeaterBlock.FACING);
 		BlockEntity te = level.getBlockEntity(worldPosition.relative(d));
-		if(te instanceof AbstractFurnaceBlockEntity)
-			cache = (AbstractFurnaceBlockEntity) te;
+		if(te instanceof AbstractFurnaceBlockEntity || te instanceof AbstractBurnerBlockEntity)
+			cache = te;
 		else
 			cache = null;
 		isFurnaceEngine = hasFurnaceEngine();
@@ -135,6 +156,10 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 			if(state.getValue(AbstractFurnaceBlock.LIT) != lit)
 				level.setBlockAndUpdate(worldPosition.relative(d), state.setValue(AbstractFurnaceBlock.LIT, lit));
 		}
+		if(state.getBlock() instanceof AbstractBurnerBlock) {
+			if(state.getValue(AbstractBurnerBlock.LIT) != lit)
+				level.setBlockAndUpdate(worldPosition.relative(d), state.setValue(AbstractBurnerBlock.LIT, lit));
+		}
 		causeBlockUpdate();
 		litState = lit;
 	}
@@ -157,7 +182,7 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 			tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("block.createaddition.heater.engine_heating_disabled").withStyle(ChatFormatting.RED)));
 		
 		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Multimeter.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")).withStyle(ChatFormatting.AQUA));
+		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Util.format(hasEnoughEnergy() ? getConsumption() : 0) + "fe/t ")).withStyle(ChatFormatting.AQUA));
 		return true;
 	}
 }

@@ -17,6 +17,7 @@
 	"createaddition.recipe.rolling": "Rolling",
 	"createaddition.recipe.crude_burning": "Crude Burning",
 	"createaddition.recipe.crude_burning.burn_time": "Burn time",
+	"createaddition.recipe.charging": "Charging",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
 	
@@ -257,5 +258,6 @@
 	
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",
-  	"death.attack.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s"
+  	"death.attack.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",
+  	"effect.createaddition.shocking.description": "Causes severely reduced movement speed"
 }

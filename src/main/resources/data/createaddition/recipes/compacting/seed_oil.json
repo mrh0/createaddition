@@ -2,13 +2,13 @@
   "type": "create:compacting",
   "ingredients": [
     {
-      "tag": "c:seeds"
+      "tag": "forge:seeds"
     }
   ],
   "results": [
     {
       "fluid": "createaddition:seed_oil",
-      "amount": 6480
+      "amount": 100
     }
   ]
 }

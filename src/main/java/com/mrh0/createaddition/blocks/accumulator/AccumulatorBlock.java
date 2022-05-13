@@ -20,7 +20,10 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -116,7 +119,6 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 		cte.dropWires(c.getLevel(), c.getPlayer());
 		return IWrenchable.super.onSneakWrenched(state, c);
 	}
-
 	
 	@Override
 	public boolean hasAnalogOutputSignal(BlockState state) {
@@ -134,14 +136,28 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	}
 	
 	@Override
+	public BlockState rotate(BlockState state, Rotation direction) {
+		return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
+	}
+	
+	@Override
+	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
+		return rotate(state, direction);
+	}
+	
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
+	}
+	
+	@Override
 	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
-		if(world.isClientSide())
-			return;
-		BlockEntity be = world.getBlockEntity(pos);
-		if(be == null)
-			return;
-		if(!(newState.getBlock() instanceof AccumulatorBlock))
-			if(be instanceof AccumulatorTileEntity)
-				((AccumulatorTileEntity)be).onBlockRemoved();
+		if(!world.isClientSide()) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if(be != null && !(newState.getBlock() instanceof AccumulatorBlock))
+				if(be instanceof AccumulatorTileEntity)
+					((AccumulatorTileEntity) be).onBlockRemoved();
+		}
+		super.onRemove(state, world, pos, newState, b);
 	}
 }

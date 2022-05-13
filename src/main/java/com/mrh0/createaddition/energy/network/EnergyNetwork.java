@@ -24,7 +24,7 @@ public class EnergyNetwork {
 	private int pulled = 0;
 	private int pushed = 0;
 	
-	private static long MAX_BUFF = Math.max(Config.CONNECTOR_MAX_INPUT.get(), Config.CONNECTOR_MAX_OUTPUT.get());
+	private static long MAX_BUFF = 10000;//Math.max(Config.CONNECTOR_MAX_INPUT.get(), Config.CONNECTOR_MAX_OUTPUT.get());
 	
 	public EnergyNetwork(Level world) {
 		this.inBuff = 0;
