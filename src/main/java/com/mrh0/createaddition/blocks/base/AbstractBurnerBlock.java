@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.base;
 
+import io.github.fabricators_of_create.porting_lib.block.LightEmissiveBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
-public abstract class AbstractBurnerBlock extends Block {
+public abstract class AbstractBurnerBlock extends Block implements LightEmissiveBlock {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 	public static final BooleanProperty LIT = AbstractFurnaceBlock.LIT;
 

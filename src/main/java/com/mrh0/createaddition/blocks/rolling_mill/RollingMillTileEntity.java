@@ -1,19 +1,23 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
+import com.simibubi.create.content.contraptions.components.millstone.MillstoneTileEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
 
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import io.github.fabricators_of_create.porting_lib.transfer.ViewOnlyWrappedStorageView;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemTransferable;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
@@ -31,6 +35,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("UnstableApiUsage")
 public class RollingMillTileEntity extends KineticTileEntity implements ItemTransferable {
 
 	public ItemStackHandler inputInv;
@@ -200,6 +205,40 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 		@Override
 		public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
 			return outputInv.extract(resource, maxAmount, transaction);
+		}
+
+		@Override
+		public Iterator<StorageView<ItemVariant>> iterator(TransactionContext transaction) {
+			return new RollingMillInventoryHandlerIterator(transaction);
+		}
+
+		private class RollingMillInventoryHandlerIterator implements Iterator<StorageView<ItemVariant>> {
+			private final TransactionContext ctx;
+			private boolean open = true;
+			private boolean output = true;
+			private Iterator<StorageView<ItemVariant>> wrapped;
+
+			public RollingMillInventoryHandlerIterator(TransactionContext ctx) {
+				this.ctx = ctx;
+				ctx.addCloseCallback((t, r) -> open = false);
+				wrapped = outputInv.iterator(ctx);
+			}
+
+			@Override
+			public boolean hasNext() {
+				return open && wrapped.hasNext();
+			}
+
+			@Override
+			public StorageView<ItemVariant> next() {
+				StorageView<ItemVariant> view = wrapped.next();
+				if (!output) view = new ViewOnlyWrappedStorageView<>(view);
+				if (output && !hasNext()) {
+					wrapped = inputInv.iterator(ctx);
+					output = false;
+				}
+				return view;
+			}
 		}
 	}
 

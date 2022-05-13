@@ -3,7 +3,7 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'io.github.juuxel.loom-quiltflower' version '1.+'
-    id 'org.quiltmc.quilt-mappings-on-loom' version '4.+'
+    id 'org.quiltmc.quilt-mappings-on-loom' version '4.2.+'
 }
 
 // Mojang ships Java 16 to end users in 1.17+ instead of Java 8 in 1.16 or lower, so your mod should target Java 16.
@@ -70,7 +70,7 @@ dependencies {
     // names of mojmap with the docs and params of parchment, then docs and params of QM as fallback
     mappings loom.layered {
         it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:1.18.2+build.21:v2")) // https://maven.quiltmc.org/#browse/browse:release
-        it.parchment("org.parchmentmc.data:parchment-1.18.2:${project.parchment_version}") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
+        //it.parchment("org.parchmentmc.data:parchment-1.18.2:BLEEDING-20220313.132143-1@zip") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
         it.officialMojangMappings {
             setNameSyntheticMembers(false)
         }

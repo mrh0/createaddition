@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
-import net.minecraftforge.energy.IEnergyStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 public class Util {
 	public static int min(int...v) {
@@ -53,7 +53,7 @@ public class Util {
 		return new ItemStack(to.isEmpty()?add.getItem():to.getItem(), to.getCount() + add.getCount());
 	}
 	
-	public static String format(int n) {
+	public static String format(long n) {
 		if(n > 1000000)
 			return Math.round((double)n/100000d)/10d + "M";
 		if(n > 1000)
@@ -61,13 +61,13 @@ public class Util {
 		return n + "";
 	}
 	
-	public static Component getTextComponent(IEnergyStorage ies, String nan, String unit) {
+	public static Component getTextComponent(EnergyStorage ies, String nan, String unit) {
 		if(ies == null)
 			return new TextComponent(nan);
-		return new TextComponent(format(ies.getEnergyStored())+unit).withStyle(ChatFormatting.AQUA).append(new TextComponent(" / ").withStyle(ChatFormatting.GRAY)).append(new TextComponent(format(ies.getMaxEnergyStored())+unit));
+		return new TextComponent(format(ies.getAmount())+unit).withStyle(ChatFormatting.AQUA).append(new TextComponent(" / ").withStyle(ChatFormatting.GRAY)).append(new TextComponent(format(ies.getCapacity())+unit));
 	}
 	
-	public static Component getTextComponent(IEnergyStorage ies) {
+	public static Component getTextComponent(EnergyStorage ies) {
 		return getTextComponent(ies, "NaN", "fe");
 	}
 }

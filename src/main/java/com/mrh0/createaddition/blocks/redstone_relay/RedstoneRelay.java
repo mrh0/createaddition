@@ -271,11 +271,6 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	}
 	
 	@Override
-	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
-		return rotate(state, direction);
-	}
-	
-	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return fromRotation(state, mirror.mirror(state.getValue(HORIZONTAL_FACING)));
 	}

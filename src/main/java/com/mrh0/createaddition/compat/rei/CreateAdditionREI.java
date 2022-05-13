@@ -44,10 +44,11 @@ public class CreateAdditionREI implements REIClientPlugin {
 			.recipes(CrudeBurningRecipe.TYPE)
 			.catalyst(CABlocks.CRUDE_BURNER::get)
 			.build();
-final CreateRecipeCategory<?> charging = register("charging", ChargingCategory::new)
-		.recipes(ChargingRecipe.TYPE)
-		.catalyst(CABlocks.TESLA_COIL::get)
-		.build();
+
+	final CreateRecipeCategory<?> charging = register("charging", ChargingCategory::new)
+			.recipes(ChargingRecipe.TYPE)
+			.catalyst(CABlocks.TESLA_COIL::get)
+			.build();
 
 	@Override
 	public void registerCategories(CategoryRegistry registry) {

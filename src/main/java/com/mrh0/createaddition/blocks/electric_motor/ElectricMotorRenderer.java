@@ -19,7 +19,7 @@ public class ElectricMotorRenderer extends KineticTileEntityRenderer {
 
 	@Override
 	protected SuperByteBuffer getRotatedModel(KineticTileEntity te, BlockState state) {
-		return CachedBufferer.partial(AllBlockPartials.SHAFT_HALF, state);
+		return CachedBufferer.partialFacing(AllBlockPartials.SHAFT_HALF, state);
 	}
 }
 

@@ -60,9 +60,9 @@ public class CrudeBurner extends AbstractBurnerBlock implements ITE<CrudeBurnerT
 			Storage<FluidVariant> handler = ContainerItemContext.withInitial(held).find(FluidStorage.ITEM);
 			if (handler == null)
 				return InteractionResult.CONSUME;
-			if (TransferUtil.getFirstFluid(handler).isEmpty())
-				return InteractionResult.CONSUME;
 			FluidStack stack = TransferUtil.getFirstFluid(handler);
+			if (stack != null && stack.isEmpty())
+				return InteractionResult.CONSUME;
 			Optional<CrudeBurningRecipe> recipe = cbte.find(stack, world);
 			if (!recipe.isPresent())
 				return InteractionResult.CONSUME;
@@ -70,19 +70,19 @@ public class CrudeBurner extends AbstractBurnerBlock implements ITE<CrudeBurnerT
 			Storage<FluidVariant> tehandler = TransferUtil.getFluidStorage(cbte);
 			if (tehandler == null)
 				return InteractionResult.CONSUME;
+			FluidStack beFluid = TransferUtil.getFirstFluid(tehandler);
+			if (beFluid != null && !TransferUtil.getFirstFluid(tehandler).isFluidEqual(stack))
+				return InteractionResult.CONSUME;
 			try(Transaction t = TransferUtil.getTransaction()) {
 				for (StorageView<FluidVariant> view : tehandler.iterable(t)) {
 					if (view.getCapacity() - view.getAmount() < FluidConstants.BUCKET) {
 						t.abort();
 						return InteractionResult.CONSUME;
 					}
-					System.out.println(view.getResource().getFluid());
-					tehandler.insert(view.getResource(), FluidConstants.BUCKET, t);
+					tehandler.insert(stack.getType(), FluidConstants.BUCKET, t);
 					t.commit();
 					break;
 				}
-
-
 			}
 			if (!player.isCreative())
 				player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));

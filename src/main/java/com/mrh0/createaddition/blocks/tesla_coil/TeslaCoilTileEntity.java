@@ -18,6 +18,9 @@ import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBe
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
 
 import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.DamageSourceAccessor;
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
@@ -32,8 +35,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import team.reborn.energy.api.EnergyStorage;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
 
@@ -166,16 +167,19 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}
 	
 	protected boolean chargeStack(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		EnergyStorage es = EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
-		if(es != null)
+		EnergyStorage es = ContainerItemContext.withInitial(stack).find(EnergyStorage.ITEM);
+		if(es == null)
 			return false;
-		try(Transaction t = Transaction.openOuter()) {
+		try (Transaction t = TransferUtil.getTransaction()) {
 			if (es.insert(1, t) != 1)
 				return false;
 		}
 		if(energy.getAmount() < stack.getCount())
 			return false;
-		energy.internalConsumeEnergy(es.receiveEnergy(Math.min(getConsumption(), energy.getEnergyStored()), false));
+		try (Transaction t = TransferUtil.getTransaction()) {
+			energy.internalConsumeEnergy(es.insert(Math.min(getConsumption(), energy.getAmount()), t));
+			t.commit();
+		}
 		return true;
 	}
 	

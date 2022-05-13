@@ -133,11 +133,6 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	}
 	
 	@Override
-	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
-		return rotate(state, direction);
-	}
-	
-	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}

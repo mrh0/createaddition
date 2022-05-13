@@ -141,11 +141,6 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	}
 	
 	@Override
-	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
-		return rotate(state, direction);
-	}
-	
-	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}

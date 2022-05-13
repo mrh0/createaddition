@@ -52,10 +52,10 @@ public class Config {
 	public static ForgeConfigSpec.LongValue ACCUMULATOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.LongValue ACCUMULATOR_CAPACITY;
 	
-	public static ForgeConfigSpec.IntValue TESLA_COIL_MAX_INPUT;
-	public static ForgeConfigSpec.IntValue TESLA_COIL_CHARGE_RATE;
-	public static ForgeConfigSpec.IntValue TESLA_COIL_RECIPE_CHARGE_RATE;
-	public static ForgeConfigSpec.IntValue TESLA_COIL_CAPACITY;
+	public static ForgeConfigSpec.LongValue TESLA_COIL_MAX_INPUT;
+	public static ForgeConfigSpec.LongValue TESLA_COIL_CHARGE_RATE;
+	public static ForgeConfigSpec.LongValue TESLA_COIL_RECIPE_CHARGE_RATE;
+	public static ForgeConfigSpec.LongValue TESLA_COIL_CAPACITY;
 	public static ForgeConfigSpec.IntValue TESLA_COIL_HURT_ENERGY_REQUIRED;
 	public static ForgeConfigSpec.IntValue TESLA_COIL_HURT_DMG_MOB;
 	public static ForgeConfigSpec.IntValue TESLA_COIL_HURT_DMG_PLAYER;
@@ -135,13 +135,13 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Wires").push(CATAGORY_WIRES);
 		CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Connector max input in FE/t (Energy transfer).")
-				.defineInRange("connector_max_input", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_max_input", 1024L, 0, Long.MAX_VALUE);
 		
 		CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Connector max output in FE/t (Energy transfer).")
-				.defineInRange("connector_max_output", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_max_output", 1024L, 0, Long.MAX_VALUE);
 		
 		CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Connector internal input buffer in FE.")
-				.defineInRange("connector_input_capacity", 2048, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_input_capacity", 2048L, 0, Long.MAX_VALUE);
 		
 		CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Max wire length in blocks.")
 				.defineInRange("wire_length", 12, 0, 256);
@@ -156,22 +156,22 @@ public class Config {
 				.defineInRange("accumulator_max_output", 512L, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_CAPACITY = COMMON_BUILDER.comment("Accumulator internal capacity in FE.")
-				.defineInRange("accumulator_capacity", 4196000, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_capacity", 4196000L, 0, Long.MAX_VALUE);
 		COMMON_BUILDER.pop();
 		
 		
 		COMMON_BUILDER.comment("Tesla Coil").push(CATAGORY_TESLA_COIL);
 		TESLA_COIL_MAX_INPUT = COMMON_BUILDER.comment("Tesla Coil max input in FE/t (Energy transfer).")
-				.defineInRange("tesla_coil_max_input", 8192L, 0, Integer.MAX_VALUE);
+				.defineInRange("tesla_coil_max_input", 8192L, 0, Long.MAX_VALUE);
 		
 		TESLA_COIL_CHARGE_RATE = COMMON_BUILDER.comment("Tesla Coil charge rate in FE/t.")
-				.defineInRange("tesla_coil_charge_rate", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("tesla_coil_charge_rate", 4096L, 0, Long.MAX_VALUE);
 
 		TESLA_COIL_RECIPE_CHARGE_RATE = COMMON_BUILDER.comment("Tesla Coil charge rate in FE/t for recipes.")
-				.defineInRange("tesla_coil_recipe_charge_rate", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("tesla_coil_recipe_charge_rate", 1024L, 0, Long.MAX_VALUE);
 		
 		TESLA_COIL_CAPACITY = COMMON_BUILDER.comment("Charger internal capacity in FE.")
-				.defineInRange("tesla_coil_capacity", 32000L, 0, Integer.MAX_VALUE);
+				.defineInRange("tesla_coil_capacity", 32000L, 0, Long.MAX_VALUE);
 		
 		TESLA_COIL_HURT_ENERGY_REQUIRED = COMMON_BUILDER.comment("Energy consumed when Tesla Coil is fired (in FE).")
 				.defineInRange("tesla_coil_hurt_energy_required", 1024, 0, Integer.MAX_VALUE);

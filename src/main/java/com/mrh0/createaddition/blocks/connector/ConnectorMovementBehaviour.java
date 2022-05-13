@@ -6,6 +6,7 @@ import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
 
+import io.github.fabricators_of_create.porting_lib.extensions.BlockEntityExtensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -22,8 +23,9 @@ public class ConnectorMovementBehaviour implements MovementBehaviour {
 				continue;
 			if(!(be instanceof IWireNode))
 				continue;
-			System.out.println("1REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(be.getTileData(), index));
-			if(IWireNode.readNodeWireType(be.getTileData(), index) == null)
+			BlockEntityExtensions beExtension = (BlockEntityExtensions) be;
+			System.out.println("1REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(beExtension.getExtraCustomData(), index));
+			if(IWireNode.readNodeWireType(beExtension.getExtraCustomData(), index) == null)
 				continue;
 			if(IWireNode.readNodeWireType(c.tileData, i) == null)
 				continue;
@@ -31,9 +33,9 @@ public class ConnectorMovementBehaviour implements MovementBehaviour {
 			wn.preformRemoveOfNode(index);
 			RemoveConnectorPacket.send(pos, index, c.world);
 			IWireNode.clearNode(c.tileData, i);
-			IWireNode.clearNode(be.getTileData(), index);
+			IWireNode.clearNode(beExtension.getExtraCustomData(), index);
 			IWireNode.dropWire(c.world, pos, type.getDrop());
-			System.out.println("2REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(be.getTileData(), index));
+			System.out.println("2REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(beExtension.getExtraCustomData(), index));
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.recipe.charging;
 
 import com.mrh0.createaddition.CreateAddition;
+import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
