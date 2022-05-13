@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.event;
 
+import com.mrh0.createaddition.blocks.connector.ConnectorMovementManager;
 import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
 import com.mrh0.createaddition.network.ObservePacket;
 
@@ -18,6 +19,7 @@ public class GameEvents {
 		if(evt.phase == Phase.END)
 			return;
 		EnergyNetworkManager.tickWorld(evt.world);
+		ConnectorMovementManager.tickWorld(evt.world);
 	}
 	
 	@SubscribeEvent
@@ -32,5 +34,6 @@ public class GameEvents {
 		if(evt.getWorld().isClientSide())
 			return;
 		new EnergyNetworkManager(evt.getWorld());
+		new ConnectorMovementManager(evt.getWorld());
 	}
 }

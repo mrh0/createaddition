@@ -22,12 +22,16 @@ public class ConnectorMovementBehaviour implements MovementBehaviour {
 				continue;
 			if(!(be instanceof IWireNode))
 				continue;
-			System.out.println("1REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(be.getTileData(), index));
+			System.out.println("1REMOVED! " + c.position);
 			if(IWireNode.readNodeWireType(be.getTileData(), index) == null)
 				continue;
 			if(IWireNode.readNodeWireType(c.tileData, i) == null)
 				continue;
 			IWireNode wn = (IWireNode)be;
+			
+			if(ConnectorMovementManager.isUpdated(c.world, new BlockPos(c.position)))
+				continue;
+			ConnectorMovementManager.setUpdated(c.world, new BlockPos(c.position));
 			wn.preformRemoveOfNode(index);
 			RemoveConnectorPacket.send(pos, index, c.world);
 			IWireNode.clearNode(c.tileData, i);
@@ -39,6 +43,8 @@ public class ConnectorMovementBehaviour implements MovementBehaviour {
 	
 	@Override
 	public void startMoving(MovementContext c) {
-		connectorStartMoving(c, ConnectorTileEntity.NODE_COUNT);
+		MovementBehaviour.super.startMoving(c);
+		System.out.println("TEST: " + c.position);
+		//connectorStartMoving(c, ConnectorTileEntity.NODE_COUNT);
 	}
 }
