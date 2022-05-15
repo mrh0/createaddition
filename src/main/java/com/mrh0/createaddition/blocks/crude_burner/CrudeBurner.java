@@ -10,6 +10,7 @@ import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
 import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurnerTileEntity;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
+import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.repack.registrate.util.nullness.NonnullType;
 
@@ -79,6 +80,8 @@ public class CrudeBurner extends AbstractBurnerBlock implements ITE<CrudeBurnerT
 			IFluidHandler tehandler = tecap.orElse(null);
 			if (tehandler.getTankCapacity(0) - tehandler.getFluidInTank(0).getAmount() < 1000)
 				return InteractionResult.CONSUME;
+			if (!tehandler.getFluidInTank(0).isFluidEqual(stack) && !tehandler.getFluidInTank(0).isEmpty())
+				return InteractionResult.CONSUME;
 			tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), FluidAction.EXECUTE);
 			if (!player.isCreative())
 				player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
@@ -134,5 +137,15 @@ public class CrudeBurner extends AbstractBurnerBlock implements ITE<CrudeBurnerT
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
 			BlockEntityType<T> type) {
 		return createBurnerTicker(level, type, CATileEntities.CRUDE_BURNER.get());
+	}
+	
+	@Override
+	public boolean hasAnalogOutputSignal(BlockState state) {
+		return true;
+	}
+	
+	@Override
+	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
+		return IComparatorOverride.getComparetorOverride(worldIn, pos);
 	}
 }
