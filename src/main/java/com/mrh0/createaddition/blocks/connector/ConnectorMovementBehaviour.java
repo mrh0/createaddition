@@ -23,24 +23,33 @@ public class ConnectorMovementBehaviour implements MovementBehaviour {
 				continue;
 			if(!(be instanceof IWireNode))
 				continue;
-			BlockEntityExtensions beExtension = (BlockEntityExtensions) be;
-			System.out.println("1REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(beExtension.getExtraCustomData(), index));
-			if(IWireNode.readNodeWireType(beExtension.getExtraCustomData(), index) == null)
+
+			/*if(IWireNode.readNodeWireType(be.getTileData(), index) == null)
 				continue;
 			if(IWireNode.readNodeWireType(c.tileData, i) == null)
-				continue;
+				continue;*/
 			IWireNode wn = (IWireNode)be;
+			/*BlockPos myPos = IWireNode.readNodeBlockPos(be.getTileData(), 0);
+			System.out.println("1REMOVED " + pos + ":" + myPos);
+
+			if(ConnectorMovementManager.isUpdated(c.world, myPos)) {
+				System.out.println("2REMOVED");
+				continue;
+			}
+			ConnectorMovementManager.setUpdated(c.world, myPos);*/
 			wn.preformRemoveOfNode(index);
 			RemoveConnectorPacket.send(pos, index, c.world);
 			IWireNode.clearNode(c.tileData, i);
 			IWireNode.clearNode(beExtension.getExtraCustomData(), index);
-			IWireNode.dropWire(c.world, pos, type.getDrop());
-			System.out.println("2REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(beExtension.getExtraCustomData(), index));
+			//IWireNode.dropWire(c.world, pos, type.getDrop());
+			//System.out.println("2REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(beExtension.getExtraCustomData(), index));
 		}
 	}
 	
 	@Override
 	public void startMoving(MovementContext c) {
+		MovementBehaviour.super.startMoving(c);
+		//System.out.println("TEST: " + c.position);
 		connectorStartMoving(c, ConnectorTileEntity.NODE_COUNT);
 	}
 }

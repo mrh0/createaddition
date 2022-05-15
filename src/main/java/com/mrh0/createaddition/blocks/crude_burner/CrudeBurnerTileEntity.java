@@ -3,6 +3,7 @@ package com.mrh0.createaddition.blocks.crude_burner;
 import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
+import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import io.github.fabricators_of_create.porting_lib.block.CustomDataPacketHandlingBlockEntity;
@@ -26,15 +27,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
-
-public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements IHaveGoggleInformation, CustomDataPacketHandlingBlockEntity, FluidTransferable {
+public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements IHaveGoggleInformation, IComparatorOverride {
 	
 	private static final int[] SLOTS = new int[] { };
 	protected FluidTank tankInventory;
-	
+	public static final int capacity = 4000;
+
 	private Optional<CrudeBurningRecipe> recipeCache = Optional.empty();
 	private Fluid lastFluid = null;
 	private int updateTimeout = 10;
@@ -46,7 +44,7 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 	}
 	
 	protected SmartFluidTank createInventory() {
-		return new SmartFluidTank(FluidConstants.BUCKET * 4, this::onFluidStackChanged);
+		return new SmartFluidTank(capacity, this::onFluidStackChanged);
 	}
 
 	protected void onFluidStackChanged(FluidStack newFluidStack) {
@@ -139,15 +137,16 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 	}
 
 	@Override
-	public void load(CompoundTag nbt) {
+	public void read(CompoundTag nbt, boolean clientPacket) {
 		if(nbt == null)
 			nbt = new CompoundTag();
-		super.load(nbt);
+		super.read(nbt, clientPacket);
 		tankInventory.readFromNBT(nbt.getCompound("TankContent"));
 	}
 	
 	@Override
-	public void saveAdditional(CompoundTag nbt) {
+	public void write(CompoundTag nbt, boolean clientPacket) {
+		super.write(nbt, clientPacket);
 		nbt.put("TankContent", tankInventory.writeToNBT(new CompoundTag()));
 	}
 	
@@ -158,8 +157,7 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		CompoundTag tag = pkt.getTag();
-		load(tag == null ? new CompoundTag() : tag);
+		read(pkt.getTag(), true);
 	}
 	
 	@Override
@@ -172,13 +170,13 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 		return world.getRecipeManager().getRecipeFor(CrudeBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
 	}
 
-	/*public void causeBlockUpdate() {
-		if (level != null)
-			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 1);
-	}
-
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
 		causeBlockUpdate();
-	}*/
+	}
+
+	@Override
+	public int getComparetorOverride() {
+		return (int)((double)tankInventory.getFluidAmount() / (double)capacity * 15d);
+	}
 }

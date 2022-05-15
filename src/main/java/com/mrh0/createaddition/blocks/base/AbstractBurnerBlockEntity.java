@@ -1,12 +1,13 @@
 package com.mrh0.createaddition.blocks.base;
 
-import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
-import io.github.fabricators_of_create.porting_lib.transfer.item.ItemTransferable;
-import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import com.mrh0.createaddition.network.IObserveTileEntity;
+import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
+import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -26,8 +27,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
-public abstract class AbstractBurnerBlockEntity extends BlockEntity
-		implements WorldlyContainer, ItemTransferable {
+public abstract class AbstractBurnerBlockEntity extends SmartTileEntity implements IObserveTileEntity, WorldlyContainer, ItemTransferable {
 	public static final int SLOT_FUEL = 0;
 	public static final int DATA_LIT_TIME = 0;
 	private static final int[] SLOTS = new int[] { 0 };
@@ -43,24 +43,31 @@ public abstract class AbstractBurnerBlockEntity extends BlockEntity
 		super(p_154991_, p_154992_, p_154993_);
 	}
 
+
+	@Override
+	public void addBehaviours(List<TileEntityBehaviour> arg0) {
+	}
+
 	public boolean isLit() {
 		return this.litTime > 0;
 	}
 
-	public void load(CompoundTag nbt) {
+	@Override
+	public void read(CompoundTag nbt, boolean clientPacket) {
 		if(nbt == null)
 			nbt = new CompoundTag();
-		super.load(nbt);
+		super.read(nbt, clientPacket);
 		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		ContainerHelper.loadAllItems(nbt, this.items);
 		this.litTime = nbt.getInt("BurnTime");
 		this.litDuration = this.getBurnDuration(this.items.get(0));
 	}
 
-	protected void saveAdditional(CompoundTag p_187452_) {
-		super.saveAdditional(p_187452_);
-		p_187452_.putInt("BurnTime", this.litTime);
-		ContainerHelper.saveAllItems(p_187452_, this.items);
+	@Override
+	protected void write(CompoundTag nbt, boolean clientPacket) {
+		super.write(nbt, clientPacket);
+		nbt.putInt("BurnTime", this.litTime);
+		ContainerHelper.saveAllItems(nbt, this.items);
 	}
 
 	public static void serverTick(Level world, BlockPos pos, BlockState state,
@@ -78,8 +85,9 @@ public abstract class AbstractBurnerBlockEntity extends BlockEntity
 				be.litDuration = be.litTime;
 				if (be.isLit()) {
 					flag1 = true;
-					if (itemstack.getItem().hasCraftingRemainingItem())
+					if (itemstack.getItem().hasCraftingRemainingItem()) {
 						be.items.set(0, new ItemStack(itemstack.getItem().getCraftingRemainingItem()));
+					}
 					else if (!itemstack.isEmpty()) {
 						itemstack.shrink(1);
 						if (itemstack.isEmpty()) {
