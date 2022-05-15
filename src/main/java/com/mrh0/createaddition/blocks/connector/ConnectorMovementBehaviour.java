@@ -22,29 +22,33 @@ public class ConnectorMovementBehaviour implements MovementBehaviour {
 				continue;
 			if(!(be instanceof IWireNode))
 				continue;
-			System.out.println("1REMOVED! " + c.position);
-			if(IWireNode.readNodeWireType(be.getTileData(), index) == null)
+			
+			/*if(IWireNode.readNodeWireType(be.getTileData(), index) == null)
 				continue;
 			if(IWireNode.readNodeWireType(c.tileData, i) == null)
-				continue;
+				continue;*/
 			IWireNode wn = (IWireNode)be;
+			/*BlockPos myPos = IWireNode.readNodeBlockPos(be.getTileData(), 0);
+			System.out.println("1REMOVED " + pos + ":" + myPos);
 			
-			if(ConnectorMovementManager.isUpdated(c.world, new BlockPos(c.position)))
+			if(ConnectorMovementManager.isUpdated(c.world, myPos)) {
+				System.out.println("2REMOVED");
 				continue;
-			ConnectorMovementManager.setUpdated(c.world, new BlockPos(c.position));
+			}
+			ConnectorMovementManager.setUpdated(c.world, myPos);*/
 			wn.preformRemoveOfNode(index);
 			RemoveConnectorPacket.send(pos, index, c.world);
 			IWireNode.clearNode(c.tileData, i);
 			IWireNode.clearNode(be.getTileData(), index);
-			IWireNode.dropWire(c.world, pos, type.getDrop());
-			System.out.println("2REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(be.getTileData(), index));
+			//IWireNode.dropWire(c.world, pos, type.getDrop());
+			//System.out.println("2REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(be.getTileData(), index));
 		}
 	}
 	
 	@Override
 	public void startMoving(MovementContext c) {
 		MovementBehaviour.super.startMoving(c);
-		System.out.println("TEST: " + c.position);
-		//connectorStartMoving(c, ConnectorTileEntity.NODE_COUNT);
+		//System.out.println("TEST: " + c.position);
+		connectorStartMoving(c, ConnectorTileEntity.NODE_COUNT);
 	}
 }
