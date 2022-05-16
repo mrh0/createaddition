@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.blocks.crude_burner;
 
 import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
+import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.mrh0.createaddition.util.IComparatorOverride;
@@ -20,6 +21,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
@@ -27,11 +29,16 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 
-public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements IHaveGoggleInformation, IComparatorOverride {
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Optional;
+
+@SuppressWarnings("UnstableApiUsage")
+public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements IHaveGoggleInformation, IComparatorOverride, FluidTransferable {
 	
 	private static final int[] SLOTS = new int[] { };
 	protected FluidTank tankInventory;
-	public static final int capacity = 4000;
+	public static final long capacity = FluidConstants.BUCKET;
 
 	private Optional<CrudeBurningRecipe> recipeCache = Optional.empty();
 	private Fluid lastFluid = null;
@@ -130,7 +137,6 @@ public class CrudeBurnerTileEntity extends AbstractBurnerBlockEntity implements 
 		return false;
 	}
 
-	@Nullable
 	@Override
 	public Storage<FluidVariant> getFluidStorage(@Nullable Direction face) {
 		return tankInventory;

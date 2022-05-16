@@ -40,7 +40,7 @@ public class ConnectorMovementBehaviour implements MovementBehaviour {
 			wn.preformRemoveOfNode(index);
 			RemoveConnectorPacket.send(pos, index, c.world);
 			IWireNode.clearNode(c.tileData, i);
-			IWireNode.clearNode(beExtension.getExtraCustomData(), index);
+			IWireNode.clearNode(((BlockEntityExtensions)be).getExtraCustomData(), index);
 			//IWireNode.dropWire(c.world, pos, type.getDrop());
 			//System.out.println("2REMOVED! " + pos.toString() + ":" + index + ":" + be.toString() + ":" + IWireNode.readNodeWireType(beExtension.getExtraCustomData(), index));
 		}

@@ -19,7 +19,6 @@ public class GameEvents {
 	public static void initCommon() {
 		ServerTickEvents.START_WORLD_TICK.register(GameEvents::worldTickEvent);
 		ServerWorldEvents.LOAD.register(GameEvents::loadEvent);
-		ConnectorMovementManager.tickWorld(evt.world);
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -29,6 +28,7 @@ public class GameEvents {
 
 	public static void worldTickEvent(ServerLevel world) {
 		EnergyNetworkManager.tickWorld(world);
+		ConnectorMovementManager.tickWorld(world);
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -38,6 +38,6 @@ public class GameEvents {
 
 	public static void loadEvent(MinecraftServer server, ServerLevel level) {
 		new EnergyNetworkManager(level);
-		new ConnectorMovementManager(evt.getWorld());
+		new ConnectorMovementManager(level);
 	}
 }
