@@ -7,11 +7,10 @@ import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.Iterate;
 
-import com.simibubi.create.lib.transfer.TransferUtil;
-import com.simibubi.create.lib.transfer.item.IItemHandler;
-import com.simibubi.create.lib.transfer.item.IItemHandlerModifiable;
-import com.simibubi.create.lib.transfer.item.ItemStackHandler;
-import com.simibubi.create.lib.util.LazyOptional;
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -66,7 +65,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 
 		withTileEntityDo(worldIn, pos, rollingMill -> {
 			boolean emptyOutput = true;
-			IItemHandlerModifiable inv = rollingMill.outputInv;
+			ItemStackHandler inv = rollingMill.outputInv;
 			for (int slot = 0; slot < inv.getSlots(); slot++) {
 				ItemStack stackInSlot = inv.getStackInSlot(slot);
 				if (!stackInSlot.isEmpty())
@@ -109,11 +108,12 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 			return;
 
 		ItemEntity itemEntity = (ItemEntity) entityIn;
-		LazyOptional<IItemHandler> capability = TransferUtil.getItemHandler(rollingMill);
-		if (!capability.isPresent())
+		Storage<ItemVariant> storage = TransferUtil.getItemStorage(rollingMill);
+		if (storage == null)
 			return;
 
-		ItemStack remainder = capability.orElse(new ItemStackHandler()).insertItem(0, itemEntity.getItem(), false);
+		ItemStack remainder = itemEntity.getItem().copy();
+		remainder.setCount((int) TransferUtil.insertItem(storage, itemEntity.getItem()));
 		if (remainder.isEmpty())
 			itemEntity.remove(RemovalReason.KILLED);
 		if (remainder.getCount() < itemEntity.getItem().getCount())

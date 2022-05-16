@@ -1,0 +1,22 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+	{
+      "tag": "minecraft:flowers"
+    },
+    {
+      "tag": "minecraft:flowers"
+    },
+    {
+      "fluidTag": "c:plantoil",
+      "amount": 9000
+    }
+  ],
+  "results": [
+    {
+      "item": "createaddition:biomass",
+      "count": 2
+    }
+  ],
+  "heatRequirement": "heated"
+}

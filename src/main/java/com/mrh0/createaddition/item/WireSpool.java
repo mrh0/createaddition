@@ -145,6 +145,4 @@ public class WireSpool extends Item {
 	public static boolean isRemover(Item item) {
 		return item == CAItems.SPOOL.get();
 	}
-	
-	
 }

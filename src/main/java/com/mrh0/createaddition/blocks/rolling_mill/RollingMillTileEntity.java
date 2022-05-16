@@ -1,14 +1,26 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
+import com.simibubi.create.content.contraptions.components.millstone.MillstoneTileEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
 
-import com.simibubi.create.lib.transfer.item.*;
-import com.simibubi.create.lib.util.LazyOptional;
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import io.github.fabricators_of_create.porting_lib.transfer.ViewOnlyWrappedStorageView;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemTransferable;
+import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -23,11 +35,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("UnstableApiUsage")
 public class RollingMillTileEntity extends KineticTileEntity implements ItemTransferable {
 
 	public ItemStackHandler inputInv;
 	public ItemStackHandler outputInv;
-	public LazyOptional<IItemHandler> capability;
+	public Storage<ItemVariant> storage;
 	public int timer;
 	private RollingRecipe lastRecipe;
 	
@@ -39,7 +52,7 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 		super(type, pos, state);
 		inputInv = new ItemStackHandler(1);
 		outputInv = new ItemStackHandler(9);
-		capability = LazyOptional.of(RollingMillInventoryHandler::new);
+		storage = new RollingMillInventoryHandler();
 	}
 
 	@Override
@@ -104,7 +117,10 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 		}
 
 		ItemStack result = lastRecipe.assemble(inventoryIn).copy();
-		ItemHandlerHelper.insertItemStacked(outputInv, result, false);
+		try(Transaction t = TransferUtil.getTransaction()) {
+			outputInv.insert(ItemVariant.of(result), result.getCount(), t);
+			t.commit();
+		}
 		ItemStack stackInSlot = inputInv.getStackInSlot(0);
 		stackInSlot.shrink(1);
 		inputInv.setStackInSlot(0, stackInSlot);
@@ -158,8 +174,8 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 
 	@Nullable
 	@Override
-	public IItemHandler getItemHandler(@Nullable Direction direction) {
-		return capability.getValueUnsafer();
+	public Storage<ItemVariant> getItemStorage(@javax.annotation.Nullable Direction face) {
+		return storage;
 	}
 
 	private boolean canProcess(ItemStack stack) {
@@ -173,35 +189,57 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 			.isPresent();
 	}
 
-	private class RollingMillInventoryHandler extends CombinedInvWrapper {
+	private class RollingMillInventoryHandler extends CombinedStorage<ItemVariant, ItemStackHandler> {
 
 		public RollingMillInventoryHandler() {
-			super(inputInv, outputInv);
+			super(List.of(inputInv, outputInv));
 		}
 
 		@Override
-		public boolean isItemValid(int slot, ItemStack stack) {
-			if (outputInv == getHandlerFromIndex(getIndexForSlot(slot)))
-				return false;
-			return canProcess(stack) && super.isItemValid(slot, stack);
+		public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction) {
+			if (canProcess(resource.toStack()))
+				return inputInv.insert(resource, maxAmount, transaction);
+			return 0;
 		}
 
 		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if (outputInv == getHandlerFromIndex(getIndexForSlot(slot)))
-				return stack;
-			if (!isItemValid(slot, stack))
-				return stack;
-			return super.insertItem(slot, stack, simulate);
+		public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
+			return outputInv.extract(resource, maxAmount, transaction);
 		}
 
 		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if (inputInv == getHandlerFromIndex(getIndexForSlot(slot)))
-				return ItemStack.EMPTY;
-			return super.extractItem(slot, amount, simulate);
+		public Iterator<StorageView<ItemVariant>> iterator(TransactionContext transaction) {
+			return new RollingMillInventoryHandlerIterator(transaction);
 		}
 
+		private class RollingMillInventoryHandlerIterator implements Iterator<StorageView<ItemVariant>> {
+			private final TransactionContext ctx;
+			private boolean open = true;
+			private boolean output = true;
+			private Iterator<StorageView<ItemVariant>> wrapped;
+
+			public RollingMillInventoryHandlerIterator(TransactionContext ctx) {
+				this.ctx = ctx;
+				ctx.addCloseCallback((t, r) -> open = false);
+				wrapped = outputInv.iterator(ctx);
+			}
+
+			@Override
+			public boolean hasNext() {
+				return open && wrapped.hasNext();
+			}
+
+			@Override
+			public StorageView<ItemVariant> next() {
+				StorageView<ItemVariant> view = wrapped.next();
+				if (!output) view = new ViewOnlyWrappedStorageView<>(view);
+				if (output && !hasNext()) {
+					wrapped = inputInv.iterator(ctx);
+					output = false;
+				}
+				return view;
+			}
+		}
 	}
 
 	public Optional<RollingRecipe> find(RecipeWrapper inv, Level world) {

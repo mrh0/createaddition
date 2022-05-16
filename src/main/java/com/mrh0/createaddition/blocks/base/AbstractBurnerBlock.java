@@ -1,11 +1,13 @@
 package com.mrh0.createaddition.blocks.base;
 
+import io.github.fabricators_of_create.porting_lib.block.LightEmissiveBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Block;
@@ -20,7 +22,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
-public abstract class AbstractBurnerBlock extends Block {
+public abstract class AbstractBurnerBlock extends Block implements LightEmissiveBlock {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 	public static final BooleanProperty LIT = AbstractFurnaceBlock.LIT;
 
@@ -71,5 +73,10 @@ public abstract class AbstractBurnerBlock extends Block {
 
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_48725_) {
 		p_48725_.add(FACING, LIT);
+	}
+	
+	@Override
+	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+		return state.getValue(LIT) ? 12 : 0;
 	}
 }

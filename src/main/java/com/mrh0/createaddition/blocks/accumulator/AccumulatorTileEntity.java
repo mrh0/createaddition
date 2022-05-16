@@ -9,10 +9,11 @@ import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
@@ -43,6 +44,8 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public static Vec3 OFFSET_SOUTH = new Vec3(	0f, 	9f/16f, 	5f/16f);
 	public static Vec3 OFFSET_EAST = new Vec3(	5f/16f, 	9f/16f, 	0f);
 	
+	public static final int NODE_COUNT = 8;
+
 	public static final long CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
 	public AccumulatorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
@@ -217,7 +220,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	
 	@Override
 	public int getNodeCount() {
-		return 8;
+		return NODE_COUNT;
 	}
 
 	@Override
@@ -291,26 +294,25 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		}
 	}
 	
-	@Override
-	public void setRemoved() {
+	public void onBlockRemoved() {
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
 				continue;
 			IWireNode node = getNode(i);
 			if(node == null)
 				break;
-			node.removeNode(getOtherNodeIndex(i));
+			int other = getOtherNodeIndex(i);
+			node.removeNode(other);
 			node.invalidateNodeCache();
+			RemoveConnectorPacket.send(node.getMyPos(), other, level);
 		}
 		invalidateNodeCache();
-//		invalidateCaps();
-		super.setRemoved();
 		// Invalidate
 		if(networkIn != null)
 			networkIn.invalidate();
 		if(networkOut != null)
 			networkOut.invalidate();
-		super.setRemoved();
+		setRemoved();
 	}
 			
 	private EnergyNetwork networkIn;
@@ -358,7 +360,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
-				.append(Multimeter.getTextComponent(energy)));
+				.append(Util.getTextComponent(energy)));
 		
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(ChatFormatting.GRAY)));
@@ -368,7 +370,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(" ")
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
+				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		
 		return true;
 	}

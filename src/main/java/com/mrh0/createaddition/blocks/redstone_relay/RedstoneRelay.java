@@ -2,6 +2,7 @@ package com.mrh0.createaddition.blocks.redstone_relay;
 
 import java.util.Random;
 
+import com.mrh0.createaddition.blocks.accumulator.AccumulatorTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
@@ -9,7 +10,7 @@ import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
-import com.simibubi.create.lib.block.ConnectableRedstoneBlock;
+import io.github.fabricators_of_create.porting_lib.block.ConnectableRedstoneBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -22,10 +23,13 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -255,5 +259,30 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	@Override
 	public BlockEntityType<? extends RedstoneRelayTileEntity> getTileEntityType() {
 		return CATileEntities.REDSTONE_RELAY.get();
+	}
+	
+	private BlockState fromRotation(BlockState state, Direction dir) {
+		return state.setValue(HORIZONTAL_FACING, dir);
+	}
+	
+	@Override
+	public BlockState rotate(BlockState state, Rotation direction) {
+		return fromRotation(state, direction.rotate(state.getValue(HORIZONTAL_FACING)));
+	}
+	
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return fromRotation(state, mirror.mirror(state.getValue(HORIZONTAL_FACING)));
+	}
+	
+	@Override
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
+		if(!world.isClientSide()) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if(be != null && !(newState.getBlock() instanceof RedstoneRelay))
+				if(be instanceof RedstoneRelayTileEntity)
+					((RedstoneRelayTileEntity) be).onBlockRemoved(true);
+		}
+		super.onRemove(state, world, pos, newState, b);
 	}
 }

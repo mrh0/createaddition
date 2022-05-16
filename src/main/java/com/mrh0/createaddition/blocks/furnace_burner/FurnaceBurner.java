@@ -53,6 +53,8 @@ public class FurnaceBurner extends AbstractBurnerBlock implements ITE<FurnaceBur
 							currentStack.copy());
 					fbte.removeItemNoUpdate(FurnaceBurnerTileEntity.SLOT_FUEL);
 				}
+				System.out.println("UPDATE");
+				fbte.setChanged();
 				return InteractionResult.CONSUME;
 			}
 
@@ -63,6 +65,7 @@ public class FurnaceBurner extends AbstractBurnerBlock implements ITE<FurnaceBur
 			if (currentStack.isEmpty()) {
 				fbte.setItem(FurnaceBurnerTileEntity.SLOT_FUEL, heald.copy());
 				heald.setCount(0);
+				fbte.setChanged();
 				return InteractionResult.CONSUME;
 			}
 
@@ -74,6 +77,7 @@ public class FurnaceBurner extends AbstractBurnerBlock implements ITE<FurnaceBur
 			heald.setCount(Util.getMergeRest(heald, currentStack));
 
 			fbte.setItem(FurnaceBurnerTileEntity.SLOT_FUEL, newStack);
+			fbte.setChanged();
 		}
 		return InteractionResult.CONSUME;
 	}

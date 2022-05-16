@@ -1,13 +1,11 @@
 package com.mrh0.createaddition.compat.applied_energistics;
 
-import java.util.Optional;
-
 import appeng.core.definitions.AEItems;
 import net.minecraft.world.item.ItemStack;
 
 public class AE2 {
 	public static boolean isCertusQuartz(ItemStack stack) {
-		return AEItems.CERTUS_QUARTZ_CRYSTAL.asItem().asItem() == stack.getItem();
+		return AEItems.CERTUS_QUARTZ_CRYSTAL.isSameAs(stack);//AEItems.CERTUS_QUARTZ_CRYSTAL.asItem().asItem() == stack.getItem();
 	}
 	
 	public static ItemStack getChargedCertusQuartz(int count) {

@@ -2,8 +2,6 @@ package com.mrh0.createaddition.energy;
 
 import java.util.HashMap;
 
-import com.mojang.math.Vector3d;
-import com.mojang.math.Vector3f;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CAItems;
@@ -56,6 +54,8 @@ public interface IWireNode {
 		int index = getOtherNodeIndex(node);
 		//System.out.println("WRITE: " + node + "->" + index);
 		WireType type = getNodeType(node);
+		if(type == null)
+			return nbt;
 		nbt.putInt("x"+node, pos.getX());
 		nbt.putInt("y"+node, pos.getY());
 		nbt.putInt("z"+node, pos.getZ());
@@ -64,21 +64,37 @@ public interface IWireNode {
 		return nbt;
 	}
 	
+	public static BlockPos readNodeBlockPos(CompoundTag nbt, int node) {
+		return new BlockPos(nbt.getInt("x"+node), nbt.getInt("y"+node), nbt.getInt("z"+node));
+	}
+	
+	public static WireType readNodeWireType(CompoundTag nbt, int node) {
+		return WireType.fromIndex(nbt.getInt("type"+node));
+	}
+	
+	public static int readNodeIndex(CompoundTag nbt, int node) {
+		return nbt.getInt("node"+node);
+	}
+	
 	public default void readNode(CompoundTag nbt, int node) {
 		if(!hasNode(nbt, node))
 			return;
-		BlockPos pos = new BlockPos(nbt.getInt("x"+node), nbt.getInt("y"+node), nbt.getInt("z"+node));
-		WireType type =  WireType.fromIndex(nbt.getInt("type"+node));
-		int index = nbt.getInt("node"+node);
+		BlockPos pos = readNodeBlockPos(nbt, node);
+		WireType type =  readNodeWireType(nbt, node);
+		int index = readNodeIndex(nbt, node);
 		//System.out.println("READ: " + node + "->" + index);
 		setNode(node, index, pos, type);
 	}
 	
 	public static void clearNode(CompoundTag nbt, int node) {
-		nbt.remove("x"+node);
+		nbt.putInt("node"+node, -1);
+		nbt.putInt("type"+node, -1);
+		
+		/*nbt.remove("x"+node);
 		nbt.remove("y"+node);
 		nbt.remove("z"+node);
-		nbt.remove("type"+node);
+		nbt.remove("node"+node);
+		nbt.remove("type"+node);*/
 	}
 	
 	public void setNode(int node, int other, BlockPos pos, WireType type);
@@ -302,7 +318,10 @@ public interface IWireNode {
 	public void setNetwork(int node, EnergyNetwork network);
 	
 	public default boolean isNetworkValid(int node) {
-		return getNetwork(node) == null ? false :  getNetwork(node).isValid();
+		if(getNetwork(node) == null) 
+			return false;
+		else 
+			return getNetwork(node).isValid();
 	}
 	
 	/*public default boolean isNetworkValid() {
@@ -314,4 +333,9 @@ public interface IWireNode {
 		}
 		return true;
 	}*/
+	
+	public default void preformRemoveOfNode(int node) {
+		removeNode(node);
+		invalidateNodeCache();
+	}
 }

@@ -5,17 +5,17 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.CARecipeSerializer;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
-import net.fabricmc.fabric.api.tag.TagFactory;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 
 public class CrudeBurningRecipeSerializer extends CARecipeSerializer<CrudeBurningRecipe>{
 
 	public CrudeBurningRecipeSerializer() {
 		// TODO: Should move
-		TagFactory.FLUID.create(new ResourceLocation("c:plantoil"));
+		TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation("c:plantoil"));
 	}
 	
 	@Override

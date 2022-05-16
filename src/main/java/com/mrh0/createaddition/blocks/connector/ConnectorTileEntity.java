@@ -8,10 +8,11 @@ import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
-import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -42,11 +43,12 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	public static Vec3 OFFSET_SOUTH = new Vec3(0f, 0f, 3f/16f);
 	public static Vec3 OFFSET_EAST = new Vec3(3f/16f, 0f, 0f);
 	
+	public static final int NODE_COUNT = 4;
+
 	public static final long CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
 	
 	public ConnectorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
-		//setLazyTickRate(20);
 		
 		connectionPos = new BlockPos[getNodeCount()];
 		connectionIndecies = new int[getNodeCount()];
@@ -99,7 +101,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	
 	@Override
 	public int getNodeCount() {
-		return 4;
+		return NODE_COUNT;
 	}
 	
 	@Override
@@ -169,64 +171,33 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		if(network != null)
 			network.invalidate();
 	}
-	
-	/*@Override
-	public void lazyTick() {
-		super.lazyTick();
-		
-		// Shitty code:
-		for(int i = 0; i < getNodeCount(); i++) {
-			if(getNodeType(i) == null)
-				continue;
-			IWireNode n = getNode(i);
-			if(n == null)
-				continue;
-			if(!isNodeOutput(i))
-				continue;
-			if(!n.isNodeInput(getNodeIndex(i)))
-				continue;
-			
-			IEnergyStorage es = n.getNodeEnergyStorage(getNodeIndex(i));
-			
-			int ext = energy.getEnergyStored()-es.getEnergyStored();
-			ext = energy.extractEnergy(ext, false);
-			es.receiveEnergy(Math.max(ext, 0), false);
-		}
-		
-		Direction d = getBlockState().get(ConnectorBlock.FACING);
-		TileEntity te = world.getTileEntity(pos.offset(d));
-		if(te == null)
-			return;
-		LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite());
-		IEnergyStorage ies = opt.orElse(null);
-		if(ies == null)
-			return;
-		int ext = energy.extractEnergy(ies.receiveEnergy(MAX_OUT, true), false);
-		ies.receiveEnergy(ext, false);
-	}*/
 
 	@Override
 	public BlockPos getMyPos() {
 		return worldPosition;
 	}
-	
-	@Override
-	public void setRemoved() {
+
+	public void onBlockRemoved() {
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
 				continue;
 			IWireNode node = getNode(i);
-			node.removeNode(getOtherNodeIndex(i));
+			if(node == null)
+				continue;
+			int other = getOtherNodeIndex(i);
+			node.removeNode(other);
 			node.invalidateNodeCache();
+			RemoveConnectorPacket.send(node.getMyPos(), other, level);
 		}
 		invalidateNodeCache();
 //		invalidateCaps();
 		// Invalidate
 		if(network != null)
 			network.invalidate();
-		super.setRemoved();
+		setRemoved();
 	}
 	
+	@Override
 	public void invalidateNodeCache() {
 		for(int i = 0; i < getNodeCount(); i++)
 			nodeCache[i] = null;
@@ -304,18 +275,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(" ")
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
-		
-		/*tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.demand").formatted(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(" ")
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientDemand)).append("fe/t").formatted(TextFormatting.AQUA));*/
-		
-		
-		/*tooltip.add(new StringTextComponent(spacing)
-				.append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.saturation").formatted(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + (EnergyNetworkPacket.clientSaturation > 0 ? "+" : "")))
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientSaturation)).append("fe/t").formatted(TextFormatting.AQUA));*/
+				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		
 		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 	}

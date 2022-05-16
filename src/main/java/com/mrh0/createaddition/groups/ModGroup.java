@@ -11,6 +11,4 @@ import net.minecraft.world.item.ItemStack;
 
 public class ModGroup {
 	public static CreativeModeTab MAIN = FabricItemGroupBuilder.build(new ResourceLocation(CreateAddition.MODID, "main"), () -> new ItemStack(CABlocks.ELECTRIC_MOTOR.get()));
-
-	public static void init() {}
 }

@@ -17,6 +17,7 @@
 	"createaddition.recipe.rolling": "Rolling",
 	"createaddition.recipe.crude_burning": "Crude Burning",
 	"createaddition.recipe.crude_burning.burn_time": "Burn time",
+	"createaddition.recipe.charging": "Charging",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
 	
@@ -72,6 +73,17 @@
 	"item.createaddition.cake_base_baked": "Baked Cake Base",
 	
 	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
+	"item.createaddition.seed_oil_bucket.tooltip": "SEED_OIL_BUCKET",
+	"item.createaddition.seed_oil_bucket.tooltip.summary": "A simple _flammable liquid_ which can power the _Crude Burner_.",
+	
+	"item.createaddition.bioethanol_bucket": "Bucket of Bioethanol",
+	"item.createaddition.bioethanol_bucket.tooltip": "BIOETHANOL_BUCKET",
+	"item.createaddition.bioethanol_bucket.tooltip.summary": "An efficient _flammable liquid_ which can power the _Crude Burner_.",
+	
+	"item.createaddition.biomass": "Biomass",
+	"item.createaddition.biomass_pellet": "Biomass Pellet",
+	"item.createaddition.biomass_pellet.tooltip": "BIOMASS_PELLET",
+	"item.createaddition.biomass_pellet.tooltip.summary": "A _solid fuel_ which can smelt _6 items_ in a _Furnace_ .",
 	
 	"item.createaddition.charging_chromatic_compound": "Charging Chromatic Compound",
 	"item.createaddition.overcharged_alloy": "Overcharged Alloy",
@@ -183,7 +195,7 @@
 	
 	"block.createaddition.crude_burner": "Crude Burner",
 	"block.createaddition.crude_burner.tooltip": "CRUDE_BURNER",
-	"block.createaddition.crude_burner.tooltip.summary": "The _Crude Burner_ consume slow-burning _flammable liquids_ like _Seed Oil_ to power the _Furnace Engine_. The _liquid fuel_ can be inserted using _Fluid Pipes_.",
+	"block.createaddition.crude_burner.tooltip.summary": "The _Crude Burner_ consume slow-burning _flammable liquids_ like _Seed Oil_ or _Bioethanol_ to power the _Furnace Engine_. The _liquid fuel_ can be inserted using _Fluid Pipes_.",
 	"block.createaddition.crude_burner.tooltip.control1": "R-click",
 	"block.createaddition.crude_burner.tooltip.action1": "Inserts content of held _Bucket_.",
 	
@@ -191,6 +203,7 @@
 	"block.createaddition.honey_cake": "Honey Cake",
 	
 	"block.createaddition.seed_oil": "Seed Oil",
+	"block.createaddition.bioethanol": "Bioethanol",
 	
 	"block.createaddition.overcharged_casing": "Overcharged Casing",
 	
@@ -245,5 +258,6 @@
 	
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",
-  	"death.attack.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s"
+  	"death.attack.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",
+  	"effect.createaddition.shocking.description": "Causes severely reduced movement speed"
 }

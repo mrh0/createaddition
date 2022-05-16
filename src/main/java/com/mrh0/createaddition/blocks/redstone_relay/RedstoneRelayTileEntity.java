@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
-import java.util.HashMap;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
@@ -9,10 +8,11 @@ import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
@@ -56,6 +56,8 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	public static Vec3 OUT_VERTICAL_OFFSET_SOUTH = new Vec3(	5f/16f, 	0f, 	1f/16f);
 	public static Vec3 OUT_VERTICAL_OFFSET_EAST = new Vec3(	1f/16f, 	0f, 	-5f/16f);
 	
+	public static final int NODE_COUNT = 8;
+
 	public static final long CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
 	public RedstoneRelayTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
@@ -65,7 +67,6 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		//energyBufferOut = new InternalEnergyStorage(ConnectorTileEntity.CAPACITY, MAX_IN, MAX_OUT);
 		
 		//setLazyTickRate(20);
-		
 		connectionPos = new BlockPos[getNodeCount()];
 		connectionIndecies = new int[getNodeCount()];
 		connectionTypes = new WireType[getNodeCount()];
@@ -318,16 +319,17 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		}
 	}
 	
-	@Override
-	public void setRemoved() {
+	public void onBlockRemoved(boolean set) {
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(getNodeType(i) == null)
 				continue;
 			IWireNode node = getNode(i);
 			if(node == null)
 				break;
-			node.removeNode(getOtherNodeIndex(i));
+			int other = getOtherNodeIndex(i);
+			node.removeNode(other);
 			node.invalidateNodeCache();
+			RemoveConnectorPacket.send(node.getMyPos(), other, level);
 		}
 		invalidateNodeCache();
 //		invalidateCaps();
@@ -336,7 +338,8 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 			networkIn.invalidate();
 		if(networkOut != null)
 			networkOut.invalidate();
-		super.setRemoved();
+		if(set)
+			setRemoved();
 	}
 	
 	private EnergyNetwork networkIn;
@@ -383,14 +386,21 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(" ")
-				.append(Multimeter.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
+				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		
 		return true;
 	}
 
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
-		if(isNetworkValid(0))
+		if(isNetworkValid(pack.getNode()))
 			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
+	}
+	
+	@Override
+	protected void setRemovedNotDueToChunkUnload() {
+		onBlockRemoved(false);
+		super.setRemovedNotDueToChunkUnload();
+		
 	}
 }

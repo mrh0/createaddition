@@ -13,7 +13,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 
 public class CCApiCommand {
-	public static void register(CommandDispatcher<CommandSourceStack> dispather) {
+	public static void register(CommandDispatcher<CommandSourceStack> dispather, boolean isDedicated) {
 		dispather.register(Commands.literal("cca_api").requires(source -> source.hasPermission(0))
 			.executes(context -> {
 				Player p =  context.getSource().getPlayerOrException();

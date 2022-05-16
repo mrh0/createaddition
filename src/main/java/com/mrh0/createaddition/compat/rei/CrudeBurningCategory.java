@@ -6,7 +6,7 @@ import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.simibubi.create.compat.rei.display.CreateDisplay;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-import com.simibubi.create.lib.transfer.fluid.FluidStack;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import me.shedaniel.math.Point;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
@@ -29,16 +29,9 @@ public class CrudeBurningCategory extends CARecipeCategory<CrudeBurningRecipe> {
 		NonNullList<FluidIngredient> fluidIngredients = NonNullList.of(display.getRecipe().getFluidIngredient());
 
 		List<FluidStack> out = new ArrayList<>();
-
 		ingredients.add(basicSlot(origin.x + 81, origin.y + 7)
 				.markInput()
-				.entries(EntryIngredients.of(convertToREIFluid(display.getRecipe().getFluidIngredient().getMatchingFluidStacks()
-						.stream()
-						.map(fluid -> {
-							out.add(fluid);
-							return fluid;
-						})
-						.collect(Collectors.toList()).get(0)))));
+				.entry(createFluidEntryStack(display.getRecipe().getFluidIngredient().getMatchingFluidStacks().get(0))));
 
 		addFluidTooltip(ingredients, fluidIngredients, out);
 	}

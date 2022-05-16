@@ -1,0 +1,25 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "minecraft:saplings"
+    },
+    {
+      "tag": "minecraft:saplings"
+    },
+    {
+      "tag": "minecraft:saplings"
+    },
+    {
+      "fluidTag": "c:plantoil",
+      "amount": 12150
+    }
+  ],
+  "results": [
+    {
+      "item": "createaddition:biomass",
+      "count": 2
+    }
+  ],
+  "heatRequirement": "heated"
+}

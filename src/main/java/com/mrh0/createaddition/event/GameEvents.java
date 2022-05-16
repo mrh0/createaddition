@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.event;
 
+import com.mrh0.createaddition.blocks.connector.ConnectorMovementManager;
 import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
 import com.mrh0.createaddition.network.ObservePacket;
 
@@ -27,8 +28,9 @@ public class GameEvents {
 
 	public static void worldTickEvent(ServerLevel world) {
 		EnergyNetworkManager.tickWorld(world);
+		ConnectorMovementManager.tickWorld(world);
 	}
-	
+
 	@Environment(EnvType.CLIENT)
 	public static void clientTickEvent(Minecraft client) {
 		ObservePacket.tick();
@@ -36,5 +38,6 @@ public class GameEvents {
 
 	public static void loadEvent(MinecraftServer server, ServerLevel level) {
 		new EnergyNetworkManager(level);
+		new ConnectorMovementManager(level);
 	}
 }
