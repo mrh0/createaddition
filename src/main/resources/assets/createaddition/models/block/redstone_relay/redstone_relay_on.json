@@ -1,7 +1,8 @@
 {
+	"credit": "Made with Blockbench",
 	"textures": {
 		"1": "createaddition:block/connector/connector",
-		"2": "minecraft:block/smooth_stone",
+		"2": "createaddition:block/smooth_stone",
 		"3": "createaddition:block/redstone_relay/redstone_relay_stone_on",
 		"particle": "createaddition:block/redstone_relay/redstone_relay_stone_on"
 	},
@@ -11,12 +12,12 @@
 			"from": [0, 0, 0],
 			"to": [16, 2, 16],
 			"faces": {
-				"north": {"uv": [0, 9, 16, 11], "texture": "#3"},
-				"east": {"uv": [0, 5, 16, 7], "texture": "#3"},
-				"south": {"uv": [0, 9, 16, 11], "texture": "#3"},
-				"west": {"uv": [0, 5, 16, 7], "texture": "#3"},
+				"north": {"uv": [0, 9, 16, 11], "texture": "#3", "cullface": "north"},
+				"east": {"uv": [0, 5, 16, 7], "texture": "#3", "cullface": "east"},
+				"south": {"uv": [0, 9, 16, 11], "texture": "#3", "cullface": "south"},
+				"west": {"uv": [0, 5, 16, 7], "texture": "#3", "cullface": "west"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#3"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#2"}
+				"down": {"uv": [0, 0, 16, 16], "texture": "#2", "cullface": "down"}
 			}
 		},
 		{
@@ -29,8 +30,7 @@
 				"east": {"uv": [6, 0, 8, 4], "texture": "#1"},
 				"south": {"uv": [2, 0, 4, 4], "texture": "#1"},
 				"west": {"uv": [4, 0, 6, 4], "texture": "#1"},
-				"up": {"uv": [2, 0, 4, 2], "texture": "#1"},
-				"down": {"uv": [0, 0, 2, 2], "texture": "#1"}
+				"up": {"uv": [2, 0, 4, 2], "texture": "#1"}
 			}
 		},
 		{
@@ -43,8 +43,7 @@
 				"east": {"uv": [6, 0, 8, 4], "texture": "#1"},
 				"south": {"uv": [2, 0, 4, 4], "texture": "#1"},
 				"west": {"uv": [4, 0, 6, 4], "texture": "#1"},
-				"up": {"uv": [2, 0, 4, 2], "texture": "#1"},
-				"down": {"uv": [0, 0, 2, 2], "texture": "#1"}
+				"up": {"uv": [2, 0, 4, 2], "texture": "#1"}
 			}
 		},
 		{
@@ -57,8 +56,7 @@
 				"east": {"uv": [12, 4, 16, 6], "texture": "#1"},
 				"south": {"uv": [8, 4, 12, 6], "texture": "#1"},
 				"west": {"uv": [12, 4, 16, 6], "texture": "#1"},
-				"up": {"uv": [8, 8, 12, 12], "texture": "#1"},
-				"down": {"uv": [0, 0, 4, 4], "texture": "#1", "cullface": "down"}
+				"up": {"uv": [8, 8, 12, 12], "texture": "#1"}
 			}
 		},
 		{
@@ -71,8 +69,7 @@
 				"east": {"uv": [0, 4, 4, 6], "texture": "#1"},
 				"south": {"uv": [4, 4, 8, 6], "texture": "#1"},
 				"west": {"uv": [4, 4, 8, 6], "texture": "#1"},
-				"up": {"uv": [4, 8, 8, 12], "texture": "#1"},
-				"down": {"uv": [0, 0, 4, 4], "texture": "#1", "cullface": "down"}
+				"up": {"uv": [4, 8, 8, 12], "texture": "#1"}
 			}
 		},
 		{
