@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"1": "createaddition:block/connector/connector",
-		"2": "createaddition:block/smooth_stone",
+		"2": "block/smooth_stone",
 		"3": "createaddition:block/redstone_relay/redstone_relay_stone",
 		"particle": "createaddition:block/redstone_relay/redstone_relay_stone"
 	},
