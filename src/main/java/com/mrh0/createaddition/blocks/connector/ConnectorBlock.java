@@ -33,8 +33,8 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 
 	public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).forDirectional();
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
-	private static final VoxelShape boxwe = Block.box(0,8,7,8,10,9);
-	private static final VoxelShape boxsn = Block.box(7,8,0,9,10,8);
+	private static final VoxelShape boxwe = Block.box(0,7,7,10,9,9);
+	private static final VoxelShape boxsn = Block.box(7,7,0,9,9,10);
 
 	public ConnectorBlock(Properties properties) {
 		super(properties);
