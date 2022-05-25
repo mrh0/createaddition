@@ -113,7 +113,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 			return;
 
 		ItemStack remainder = itemEntity.getItem().copy();
-		remainder.setCount((int) TransferUtil.insertItem(storage, itemEntity.getItem()));
+		remainder.setCount((int) (remainder.getCount() - TransferUtil.insertItem(storage, itemEntity.getItem())));
 		if (remainder.isEmpty())
 			itemEntity.remove(RemovalReason.KILLED);
 		if (remainder.getCount() < itemEntity.getItem().getCount())
