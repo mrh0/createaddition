@@ -174,7 +174,7 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 
 	@Nullable
 	@Override
-	public Storage<ItemVariant> getItemStorage(@javax.annotation.Nullable Direction face) {
+	public Storage<ItemVariant> getItemStorage(@Nullable Direction face) {
 		return storage;
 	}
 
