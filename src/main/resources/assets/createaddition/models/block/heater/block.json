@@ -1,7 +1,8 @@
 {
+	"credit": "Made with Blockbench",
 	"textures": {
-		"main": "createaddition:block/heater/heater",
-		"particle": "createaddition:block/heater/heater"
+		"particle": "createaddition:block/heater/heater",
+		"main": "createaddition:block/heater/heater"
 	},
 	"elements": [
 		{
@@ -14,8 +15,7 @@
 				"east": {"uv": [6, 9.5, 10, 15], "texture": "#main"},
 				"south": {"uv": [6, 9.5, 10, 15], "texture": "#main"},
 				"west": {"uv": [6, 9.5, 10, 15], "texture": "#main"},
-				"up": {"uv": [11.5, 11.5, 15.5, 15.5], "texture": "#main"},
-				"down": {"uv": [4, 4, 12, 12], "texture": "#main", "cullface": "down"}
+				"up": {"uv": [11.5, 11.5, 15.5, 15.5], "texture": "#main"}
 			}
 		},
 		{
@@ -29,7 +29,7 @@
 				"south": {"uv": [5.5, 15, 10.5, 16], "texture": "#main"},
 				"west": {"uv": [5.5, 15, 10.5, 16], "texture": "#main"},
 				"up": {"uv": [11, 11, 16, 16], "texture": "#main"},
-				"down": {"uv": [11, 6, 16, 11], "texture": "#main"}
+				"down": {"uv": [11, 6, 16, 11], "texture": "#main", "cullface": "down"}
 			}
 		},
 		{
@@ -42,8 +42,7 @@
 				"east": {"uv": [0, 14.5, 3, 16], "texture": "#main"},
 				"south": {"uv": [0, 14.5, 3, 16], "texture": "#main"},
 				"west": {"uv": [0, 14.5, 3, 16], "texture": "#main"},
-				"up": {"uv": [0, 11.5, 3, 14.5], "texture": "#main"},
-				"down": {"uv": [0, 0, 6, 6], "texture": "#main"}
+				"up": {"uv": [0, 11.5, 3, 14.5], "texture": "#main"}
 			}
 		},
 		{
