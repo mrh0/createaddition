@@ -12,6 +12,6 @@ public class BiomassPellet extends Item {
 
 	@Override
 	public int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
-		return 1200;
+		return 1000;
 	}
 }
