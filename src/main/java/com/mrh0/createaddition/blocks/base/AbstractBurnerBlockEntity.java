@@ -116,7 +116,7 @@ public abstract class AbstractBurnerBlockEntity extends SmartTileEntity implemen
 	}
 
 	public int getBurnDuration(ItemStack stack) {
-		if (stack.isEmpty()) {
+		if (stack.isEmpty() || FuelRegistry.INSTANCE.get(stack.getItem()) == null) {
 			return 0;
 		} else {
 			return FuelRegistry.INSTANCE.get(stack.getItem());
@@ -173,7 +173,7 @@ public abstract class AbstractBurnerBlockEntity extends SmartTileEntity implemen
 
 	public boolean canPlaceItem(int index, ItemStack stack) {
 		ItemStack itemstack = this.items.get(0);
-		return FuelRegistry.INSTANCE.get(stack.getItem()) > 0
+		return FuelRegistry.INSTANCE.get(stack.getItem()) != null
 				|| stack.is(Items.BUCKET) && !itemstack.is(Items.BUCKET);
 	}
 
