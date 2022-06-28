@@ -5,7 +5,7 @@
 			"tag":"c:gems/quartz"
 		}
 	},
-	"infusionInput":{
+	"chemicalInput":{
 		"amount":80,
 		"tag":"mekanism:redstone"
 	},

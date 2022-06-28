@@ -33,10 +33,9 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 
 	public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).forDirectional();
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
-	private static final VoxelShape
-			boxwe = Block.box(0,7,7,10,9,9),
-			boxsn = Block.box(7,7,0,9,9,10);
-	
+	private static final VoxelShape boxwe = Block.box(0,7,7,10,9,9);
+	private static final VoxelShape boxsn = Block.box(7,7,0,9,9,10);
+
 	public ConnectorBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
@@ -135,7 +134,7 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	public BlockState rotate(BlockState state, Rotation direction) {
 		return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
 	}
-	
+
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));

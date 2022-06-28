@@ -13,6 +13,6 @@ public class BiomassPellet extends Item {
 	}
 
 	public int getBurnTime() {
-		return 1200;
+		return 1000;
 	}
 }
