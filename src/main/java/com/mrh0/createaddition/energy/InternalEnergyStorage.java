@@ -73,8 +73,7 @@ public class InternalEnergyStorage extends SimpleEnergyStorage {
     
     @Deprecated
     public void outputToSide(Level world, BlockPos pos, Direction side, int max) {
-		LazyOptional<EnergyStorage> opt = LazyOptional.ofObject(EnergyStorage.SIDED.find(world, pos.relative(side), side.getOpposite()));
-		EnergyStorage ies = opt.orElse(null);
+		EnergyStorage ies = EnergyStorage.SIDED.find(world, pos.relative(side), side.getOpposite());
 		if(ies == null)
 			return;
         try(Transaction t = Transaction.openOuter()) {

@@ -58,7 +58,7 @@ public class CrudeBurner extends AbstractBurnerBlock implements ITE<CrudeBurnerT
 			ItemStack held = player.getMainHandItem();
 			if (!(held.getItem() instanceof BucketItem))
 				return InteractionResult.CONSUME;
-			Storage<FluidVariant> handler = ContainerItemContext.withInitial(held).find(FluidStorage.ITEM);
+			Storage<FluidVariant> handler = ContainerItemContext.ofPlayerHand(player, hand).find(FluidStorage.ITEM);
 			if (handler == null)
 				return InteractionResult.CONSUME;
 			FluidStack stack = TransferUtil.getFirstFluid(handler);
