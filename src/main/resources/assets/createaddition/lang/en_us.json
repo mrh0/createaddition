@@ -149,7 +149,7 @@
 	"block.createaddition.accumulator.tooltip.condition2": "Input",
 	"block.createaddition.accumulator.tooltip.behaviour2": "Accepts _fe_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
 	
-	"block.createaddition.connector": "Copper Connector",
+	"block.createaddition.connector": "Connector",
 	"block.createaddition.connector.tooltip": "CONNECTOR",
 	"block.createaddition.connector.tooltip.summary": "Connects Forge Energy compatible blocks with _wires_ to transfer _fe_.",
 	"block.createaddition.connector.tooltip.control1": "R-click",

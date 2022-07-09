@@ -18,8 +18,6 @@ import com.mrh0.createaddition.blocks.redstone_relay.*;
 import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
 import com.simibubi.create.repack.registrate.util.entry.BlockEntityEntry;
 
-import net.minecraft.world.level.block.entity.BlockEntityType;
-
 public class CATileEntities {
 	public static final BlockEntityEntry<ElectricMotorTileEntity> ELECTRIC_MOTOR = CreateAddition.registrate()
 			.tileEntity("electric_motor", ElectricMotorTileEntity::new)
@@ -73,7 +71,6 @@ public class CATileEntities {
 	public static final BlockEntityEntry<TeslaCoilTileEntity> TESLA_COIL = CreateAddition.registrate()
 			.tileEntity("tesla_coil", TeslaCoilTileEntity::new)
 			.validBlocks(CABlocks.TESLA_COIL)
-			//.renderer(() -> ChargerRenderer::new)
 			.register();
 	
 	public static void register() {}
