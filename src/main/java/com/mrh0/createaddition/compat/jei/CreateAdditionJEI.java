@@ -14,7 +14,6 @@ import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
@@ -107,7 +106,7 @@ public class CreateAdditionJEI implements IModPlugin {
 		}
 
 		CategoryBuilder<T> recipes(RecipeType<?> recipeTypeEntry) {
-			category.recipes.add(() -> findRecipesByType(recipeTypeEntry));
+			category.recipes.add(() -> (List<T>) findRecipesByType(recipeTypeEntry));
 			return this;
 		}
 

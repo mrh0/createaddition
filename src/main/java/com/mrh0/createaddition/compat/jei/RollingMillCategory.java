@@ -8,11 +8,9 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
-import mezz.jei.api.ingredients.IIngredients;
-import net.minecraft.world.item.ItemStack;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 
 public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 
@@ -28,35 +26,22 @@ public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 	}
 
 	@Override
-	public void setIngredients(RollingRecipe recipe, IIngredients ingredients) {
-		ingredients.setInputIngredients(recipe.getIngredients());
-		ArrayList<ItemStack> stacks = new ArrayList<>();
-		stacks.add(recipe.getResultItem());
-		ingredients.setOutputs(VanillaTypes.ITEM, stacks);
-	}
+	public void setRecipe(IRecipeLayoutBuilder builder, RollingRecipe recipe, IFocusGroup focuses) {
+		builder
+				.addSlot(RecipeIngredientRole.INPUT, 15, 9)
+				.setBackground(getRenderedSlot(), -1, -1)
+				.addIngredients(recipe.getIngredient());
 
-	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, RollingRecipe recipe, IIngredients ingredients) {
-		IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
-		itemStacks.init(0, true, 14, 8);
-		itemStacks.set(0, Arrays.asList(recipe.getIngredient().getItems()));
-
-		ItemStack result = recipe.getResultItem();
-		int yOffset = (0 / 2) * -19;
-
-		itemStacks.init(1, false, 139, 27 + yOffset);
-		itemStacks.set(1, result);
-
-		//addStochasticTooltip(itemStacks, results);
+		builder
+				.addSlot(RecipeIngredientRole.OUTPUT, 140, 28)
+				.setBackground(getRenderedSlot(), -1, -1)
+				.addItemStack(recipe.getResultItem());
 	}
 
 	@Override
 	public void draw(RollingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-		AllGuiTextures.JEI_SLOT.render(matrixStack, 14, 8);
 		AllGuiTextures.JEI_ARROW.render(matrixStack, 85, 32);
 		AllGuiTextures.JEI_DOWN_ARROW.render(matrixStack, 43, 4);
 		rolling_mill.draw(matrixStack, 48, 27);
-
-		getRenderedSlot(recipe, 0).render(matrixStack, 139, 27);
 	}
 }

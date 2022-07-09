@@ -73,11 +73,11 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		CenteredSideValueBoxTransform slot =
 			new CenteredSideValueBoxTransform((motor, side) -> motor.getValue(ElectricMotorBlock.FACING) == side.getOpposite());
 
-		generatedSpeed = new ScrollValueBehaviour(Lang.translate("generic.speed"), this, slot);
+		generatedSpeed = new ScrollValueBehaviour(Lang.translateDirect("generic.speed"), this, slot);
 		generatedSpeed.between(-RPM_RANGE, RPM_RANGE);
 		generatedSpeed.value = DEFAULT_SPEED;
 		generatedSpeed.scrollableValue = DEFAULT_SPEED;
-		generatedSpeed.withUnit(i -> Lang.translate("generic.unit.rpm"));
+		generatedSpeed.withUnit(i -> Lang.translateDirect("generic.unit.rpm"));
 		generatedSpeed.withCallback(i -> this.updateGeneratedRotation(i));
 		generatedSpeed.withStepFunction(ElectricMotorTileEntity::step);
 		behaviours.add(generatedSpeed);
@@ -112,7 +112,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Util.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
-				.withStyle(ChatFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
+				.withStyle(ChatFormatting.AQUA)).append(Lang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
 		added = true;
 		return added;
 	}

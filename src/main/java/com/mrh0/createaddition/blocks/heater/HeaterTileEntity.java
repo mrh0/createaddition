@@ -8,7 +8,6 @@ import com.mrh0.createaddition.blocks.base.AbstractBurnerBlockEntity;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
 import net.minecraft.ChatFormatting;
@@ -129,9 +128,12 @@ public class HeaterTileEntity extends BaseElectricTileEntity implements IHaveGog
 	public boolean hasFurnaceEngine() {
 		Direction dir = getBlockState().getValue(HeaterBlock.FACING);
 		BlockPos origin = worldPosition.relative(dir);
+		// Furnace Engine no longer exists in 0.5
+		/*
 		for(Direction d : Direction.values())
 			if(level.getBlockState(origin.relative(d)).getBlock() == AllBlocks.FURNACE_ENGINE.get())
 				return true;
+		 */
 		return false;
 	}
 	
