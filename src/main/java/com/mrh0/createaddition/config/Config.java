@@ -68,9 +68,6 @@ public class Config {
 	
 	public static ForgeConfigSpec.IntValue DIAMOND_GRIT_SANDPAPER_USES;
 	
-	public static ForgeConfigSpec.DoubleValue FURNACE_BURNER_ENGINE_SPEED;
-	public static ForgeConfigSpec.DoubleValue CRUDE_BURNER_ENGINE_SPEED;
-	
 	static {
 		COMMON_BUILDER.comment("General Settings").push(CATAGORY_GENERAL);
 		FE_RPM = COMMON_BUILDER.comment("Forge Energy conversion rate (in FE/t at 256 RPM).")
@@ -202,11 +199,6 @@ public class Config {
 		DIAMOND_GRIT_SANDPAPER_USES = COMMON_BUILDER.comment("Diamond Grit Sandpaper durability (number of uses).")
 				.defineInRange("diamond_grit_sandpaper_uses", 1024, 3, Integer.MAX_VALUE);
 		
-		FURNACE_BURNER_ENGINE_SPEED = COMMON_BUILDER.comment("The relative speed of the Furnace Engine when powered by a Furnace Burner.")
-				.defineInRange("furnace_burner_engine_speed", 1d, 0d, 100d);
-		
-		CRUDE_BURNER_ENGINE_SPEED = COMMON_BUILDER.comment("The relative speed of the Furnace Engine when powered by a Crude Burner.")
-				.defineInRange("crude_burner_engine_speed", 2d, 0d, 100d);
 		COMMON_BUILDER.pop();
 		
 		COMMON_CONFIG = COMMON_BUILDER.build();

@@ -9,9 +9,7 @@ import com.mrh0.createaddition.blocks.cake.Cake;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorMovementBehaviour;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
-import com.mrh0.createaddition.blocks.crude_burner.CrudeBurner;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
-import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.blocks.heater.HeaterBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayMovementBehaviour;
@@ -103,24 +101,6 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
-	public static final BlockEntry<FurnaceBurner> FURNACE_BURNER = REGISTRATE.block("furnace_burner",  FurnaceBurner::new)
-			.initialProperties(SharedProperties::stone)
-			.item()
-			.transform(customItemModel())
-			.register();
-	
-	public static final BlockEntry<CrudeBurner> CRUDE_BURNER = REGISTRATE.block("crude_burner",  CrudeBurner::new)
-			.initialProperties(SharedProperties::stone)
-			.item()
-			.transform(customItemModel())
-			.register();
-	
-	/*public static final BlockEntry<Charger> CHARGER = REGISTRATE.block("charger",  Charger::new)
-			.initialProperties(SharedProperties::stone)
-			//.item()
-			//.transform(customItemModel())
-			.register();*/
-	
 	public static final BlockEntry<Cake> CHOCOLATE_CAKE = REGISTRATE.block("chocolate_cake",  Cake::new)
 			.initialProperties(Material.CAKE)
 			.properties(props -> props.sound(SoundType.WOOL).strength(0.5f))
@@ -141,26 +121,11 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
-	/*public static final BlockEntry<CasingBlock> OVERCHARGED_CASING =
-			REGISTRATE.block("overcharged_casing", CasingBlock::new)
-				.transform(BuilderTransformers.casing(CASpriteShifts.OVERCHARGED_CASING))
-				.properties(p -> p.lightLevel($ -> 4))
-				.register();*/
-	
 	public static void register() {
-		//Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
-		//Create.registrate().addToSection(ALTERNATOR, AllSections.KINETICS);
-		//Create.registrate().addToSection(ROLLING_MILL, AllSections.KINETICS);
-		//Create.registrate().addToSection(CHARGER, AllSections.KINETICS);
 		Create.registrate().addToSection(TESLA_COIL, AllSections.KINETICS);
-		Create.registrate().addToSection(FURNACE_BURNER, AllSections.KINETICS);
-		Create.registrate().addToSection(CRUDE_BURNER, AllSections.KINETICS);
 		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
 		Create.registrate().addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
-		//Create.registrate().addToSection(CONNECTOR_GOLD, AllSections.KINETICS);
 		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);
-		//Create.registrate().addToSection(HEATER, AllSections.KINETICS);
 		Create.registrate().addToSection(REDSTONE_RELAY, AllSections.KINETICS);
-		//Create.registrate().addToSection(OVERCHARGED_CASING, AllSections.MATERIALS);
 	}
 }

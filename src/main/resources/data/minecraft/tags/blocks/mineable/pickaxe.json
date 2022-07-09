@@ -9,8 +9,6 @@
     "createaddition:connector",
     "createaddition:heater",
     "createaddition:redstone_relay",
-    "createaddition:furnace_burner",
-    "createaddition:crude_burner",
     "createaddition:tesla_coil"
   ]
 }

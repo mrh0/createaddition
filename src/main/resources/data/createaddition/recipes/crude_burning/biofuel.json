@@ -1,8 +1,0 @@
-{
-	"type":"createaddition:crude_burning",
-	"input": {
-      	"fluidTag": "forge:biofuel",
-      	"amount": 1000
-	},
-	"burnTime": 2400
-}

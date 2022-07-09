@@ -43,6 +43,8 @@ import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.network.RemoveConnectorPacket;
+import com.simibubi.create.foundation.block.BlockStressValues;
+import com.simibubi.create.foundation.config.AllConfigs;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
 
@@ -104,6 +106,7 @@ public class CreateAddition {
 
     private void setup(final FMLCommonSetupEvent event) {
     	CAPotatoCannonProjectiles.register();
+    	BlockStressValues.registerProvider(MODID, AllConfigs.SERVER.kinetics.stressValues);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
