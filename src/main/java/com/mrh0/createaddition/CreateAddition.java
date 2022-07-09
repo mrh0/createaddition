@@ -2,7 +2,6 @@ package com.mrh0.createaddition;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
@@ -29,14 +28,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mrh0.createaddition.blocks.crude_burner.CrudeBurner;
-import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAEffects;
-import com.mrh0.createaddition.index.CAEntities;
 import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItemProperties;
 import com.mrh0.createaddition.index.CAItems;
@@ -47,13 +43,8 @@ import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.network.RemoveConnectorPacket;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineInteractions;
-import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineInteractions.HeatSource;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
-
-import net.minecraftforge.registries.IRegistryDelegate;
 
 @Mod(CreateAddition.MODID)
 public class CreateAddition {
@@ -139,8 +130,8 @@ public class CreateAddition {
         Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
         Network.registerMessage(i++, RemoveConnectorPacket.class, RemoveConnectorPacket::encode, RemoveConnectorPacket::decode, RemoveConnectorPacket::handle);
         
-        
-        
+        // Create 0.5 removed Furnace Engine
+        /*
         FurnaceEngineInteractions.registerHandler(CABlocks.FURNACE_BURNER.get().delegate, FurnaceEngineInteractions.InteractionHandler.of(
        		 s -> s.getBlock() instanceof FurnaceBurner && s.hasProperty(FurnaceBurner.LIT) ? 
        		 (s.getValue(FurnaceBurner.LIT) ? HeatSource.ACTIVE : HeatSource.VALID) : HeatSource.EMPTY, s -> (float)(double)Config.FURNACE_BURNER_ENGINE_SPEED.get()));
@@ -148,7 +139,7 @@ public class CreateAddition {
         FurnaceEngineInteractions.registerHandler(CABlocks.CRUDE_BURNER.get().delegate, FurnaceEngineInteractions.InteractionHandler.of(
           		 s -> s.getBlock() instanceof CrudeBurner && s.hasProperty(CrudeBurner.LIT) ? 
           	       		 (s.getValue(CrudeBurner.LIT) ? HeatSource.ACTIVE : HeatSource.VALID) : HeatSource.EMPTY, s -> (float)(double)Config.CRUDE_BURNER_ENGINE_SPEED.get()));
-        
+        */
     	System.out.println("Create Crafts & Addition Initialized!");
     }
     

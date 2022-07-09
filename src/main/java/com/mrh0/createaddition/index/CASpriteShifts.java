@@ -5,7 +5,7 @@ import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 import net.minecraft.resources.ResourceLocation;
 
 import static com.simibubi.create.foundation.block.connected.CTSpriteShifter.getCT;
-import static com.simibubi.create.foundation.block.connected.CTSpriteShifter.CTType.OMNIDIRECTIONAL;
+import static com.simibubi.create.foundation.block.connected.AllCTTypes.OMNIDIRECTIONAL;
 
 import com.mrh0.createaddition.CreateAddition;
 
