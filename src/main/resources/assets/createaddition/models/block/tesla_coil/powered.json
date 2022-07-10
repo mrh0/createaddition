@@ -9,8 +9,8 @@
 	"elements": [
 		{
 			"name": "coil",
-			"from": [2, 16, 2],
-			"to": [14, 20, 14],
+			"from": [2, 16.25, 2],
+			"to": [14, 20.25, 14],
 			"faces": {
 				"north": {"uv": [0, 0, 3, 1], "texture": "#0", "cullface": "up"},
 				"east": {"uv": [0, 0, 3, 1], "texture": "#0"},
@@ -59,8 +59,8 @@
 		},
 		{
 			"name": "sparks",
-			"from": [1, 15, 1],
-			"to": [15, 21, 15],
+			"from": [1, 15.25, 1],
+			"to": [15, 21.25, 15],
 			"faces": {
 				"north": {"uv": [1, 1, 15, 7], "texture": "#2", "cullface": "up"},
 				"east": {"uv": [1, 7, 15, 13], "texture": "#2", "cullface": "up"},

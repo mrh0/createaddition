@@ -8,8 +8,8 @@
 	"elements": [
 		{
 			"name": "coil",
-			"from": [2, 16, 2],
-			"to": [14, 20, 14],
+			"from": [2, 16.25, 2],
+			"to": [14, 20.25, 14],
 			"faces": {
 				"north": {"uv": [0, 0, 3, 1], "texture": "#0", "cullface": "up"},
 				"east": {"uv": [0, 0, 3, 1], "texture": "#0"},
