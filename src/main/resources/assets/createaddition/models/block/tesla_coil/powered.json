@@ -4,7 +4,7 @@
 	"textures": {
 		"0": "createaddition:block/tesla_coil/tesla_coil",
 		"2": "createaddition:block/tesla_coil/lightning_new",
-		"particle": "createaddition:block/tesla_coil/tesla_coil"
+		"particle": "create:block/brass_block"
 	},
 	"elements": [
 		{

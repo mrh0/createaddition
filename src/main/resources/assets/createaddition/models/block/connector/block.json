@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "createaddition:block/accumulator/accumulator",
-		"particle": "createaddition:block/accumulator/accumulator"
+		"particle": "block/deepslate"
 	},
 	"elements": [
 		{

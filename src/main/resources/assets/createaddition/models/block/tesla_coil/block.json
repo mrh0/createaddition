@@ -3,7 +3,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "createaddition:block/tesla_coil/tesla_coil",
-		"particle": "createaddition:block/tesla_coil/tesla_coil"
+		"particle": "create:block/brass_block"
 	},
 	"elements": [
 		{
