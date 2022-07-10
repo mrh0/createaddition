@@ -68,24 +68,12 @@ public class CreateAddition {
             .simpleChannel();
 
     public CreateAddition() {
-    	
-        // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        // Register the enqueueIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-        // Register the processIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
-        // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-        
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
-        
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(MobEffect.class, CreateAddition::onRegisterEffectEvent);
-        
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, CARecipes::register);
-        //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeType.class, CARecipes::register);
-        
-        // Register ourselves for server and other game events we are interested in
+
         MinecraftForge.EVENT_BUS.register(this);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
@@ -101,7 +89,6 @@ public class CreateAddition {
         CATileEntities.register();
         CAItems.register();
         CAFluids.register();
-        //CAEntities.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -111,20 +98,11 @@ public class CreateAddition {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
     	event.enqueueWork(CAPonder::register);
-        //CAEntities.registerRenderers();
         event.enqueueWork(CAItemProperties::register);
         
         RenderType cutout = RenderType.cutoutMipped();       
 		
         ItemBlockRenderTypes.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
-    }
-
-    private void enqueueIMC(final InterModEnqueueEvent event) {
-
-    }
-
-    private void processIMC(final InterModProcessEvent event) {
-    	
     }
     
     public void postInit(FMLLoadCompleteEvent evt) {
@@ -133,16 +111,6 @@ public class CreateAddition {
         Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
         Network.registerMessage(i++, RemoveConnectorPacket.class, RemoveConnectorPacket::encode, RemoveConnectorPacket::decode, RemoveConnectorPacket::handle);
         
-        // Create 0.5 removed Furnace Engine
-        /*
-        FurnaceEngineInteractions.registerHandler(CABlocks.FURNACE_BURNER.get().delegate, FurnaceEngineInteractions.InteractionHandler.of(
-       		 s -> s.getBlock() instanceof FurnaceBurner && s.hasProperty(FurnaceBurner.LIT) ? 
-       		 (s.getValue(FurnaceBurner.LIT) ? HeatSource.ACTIVE : HeatSource.VALID) : HeatSource.EMPTY, s -> (float)(double)Config.FURNACE_BURNER_ENGINE_SPEED.get()));
-        
-        FurnaceEngineInteractions.registerHandler(CABlocks.CRUDE_BURNER.get().delegate, FurnaceEngineInteractions.InteractionHandler.of(
-          		 s -> s.getBlock() instanceof CrudeBurner && s.hasProperty(CrudeBurner.LIT) ? 
-          	       		 (s.getValue(CrudeBurner.LIT) ? HeatSource.ACTIVE : HeatSource.VALID) : HeatSource.EMPTY, s -> (float)(double)Config.CRUDE_BURNER_ENGINE_SPEED.get()));
-        */
     	System.out.println("Create Crafts & Addition Initialized!");
     }
     

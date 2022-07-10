@@ -10,7 +10,6 @@ import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorMovementBehaviour;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
-import com.mrh0.createaddition.blocks.heater.HeaterBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayMovementBehaviour;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
@@ -31,7 +30,6 @@ import com.simibubi.create.repack.registrate.util.entry.BlockEntry;
 
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
-
 
 public class CABlocks {
 	
@@ -84,12 +82,6 @@ public class CABlocks {
 	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = REGISTRATE.block("accumulator",  AccumulatorBlock::new)
 			.initialProperties(SharedProperties::stone)
 			.onRegister(AllMovementBehaviours.addMovementBehaviour(new AccumulatorMovementBehaviour()))
-			.item()
-			.transform(customItemModel())
-			.register();
-	
-	public static final BlockEntry<HeaterBlock> HEATER = REGISTRATE.block("heater",  HeaterBlock::new)
-			.initialProperties(SharedProperties::stone)
 			.item()
 			.transform(customItemModel())
 			.register();

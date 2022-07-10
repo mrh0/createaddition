@@ -1,4 +1,4 @@
-package com.mrh0.createaddition.compat.applied_energistics;
+package com.mrh0.createaddition.compat.ae2;
 
 import appeng.core.definitions.AEItems;
 import net.minecraft.world.item.ItemStack;

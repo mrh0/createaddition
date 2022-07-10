@@ -4,7 +4,6 @@ import com.mrh0.createaddition.blocks.alternator.AlternatorTileEntity;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.*;
-import com.mrh0.createaddition.blocks.heater.HeaterTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillTileEntity;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilTileEntity;
@@ -49,11 +48,6 @@ public class CATileEntities {
 			.tileEntity("connector", ConnectorTileEntity::new)
 			.validBlocks(CABlocks.CONNECTOR_COPPER)
 			.renderer(() -> ConnectorRenderer::new)
-			.register();
-	
-	public static final BlockEntityEntry<HeaterTileEntity> HEATER = CreateAddition.registrate()
-			.tileEntity("heater", HeaterTileEntity::new)
-			.validBlocks(CABlocks.HEATER)
 			.register();
 	
 	public static final BlockEntityEntry<AccumulatorTileEntity> ACCUMULATOR = CreateAddition.registrate()
