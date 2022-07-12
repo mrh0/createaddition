@@ -68,7 +68,7 @@ public class CABlocks {
 	
 	public static final BlockEntry<ConnectorBlock> CONNECTOR_COPPER = REGISTRATE.block("connector",  ConnectorBlock::new)
 			.initialProperties(SharedProperties::stone)
-			.onRegister(AllMovementBehaviours.addMovementBehaviour(new ConnectorMovementBehaviour()))
+			.onRegister(AllMovementBehaviours.movementBehaviour(new ConnectorMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
 			.register();
@@ -81,14 +81,14 @@ public class CABlocks {
 	
 	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = REGISTRATE.block("accumulator",  AccumulatorBlock::new)
 			.initialProperties(SharedProperties::stone)
-			.onRegister(AllMovementBehaviours.addMovementBehaviour(new AccumulatorMovementBehaviour()))
+			.onRegister(AllMovementBehaviours.movementBehaviour(new AccumulatorMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
 			.register();
 	
 	public static final BlockEntry<RedstoneRelay> REDSTONE_RELAY = REGISTRATE.block("redstone_relay",  RedstoneRelay::new)
 			.initialProperties(SharedProperties::stone)
-			.onRegister(AllMovementBehaviours.addMovementBehaviour(new RedstoneRelayMovementBehaviour()))
+			.onRegister(AllMovementBehaviours.movementBehaviour(new RedstoneRelayMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
 			.register();
