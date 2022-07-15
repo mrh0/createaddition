@@ -30,6 +30,9 @@
 	"item.createaddition.copper_spool.tooltip": "SPOOL",
 	"item.createaddition.copper_spool.tooltip.summary": "R-Clicking two _Connectors_ will create a wire link between them and return an _Empty Spool_.",
 	
+	"item.createaddition.iron_wire": "Iron Wire",
+	"item.createaddition.iron_spool": "Iron Spool",
+	
 	"item.createaddition.copper_wire": "Copper Wire",
 	"item.createaddition.copper_rod": "Copper Rod",
 	
