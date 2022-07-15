@@ -15,6 +15,7 @@
 	"createaddition.tooltip.connector.info": "Connector Info:",
 	
 	"createaddition.recipe.rolling": "Rolling",
+	"createaddition.recipe.charging": "Charging",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
 	
@@ -47,16 +48,16 @@
 	
 	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
 	"item.createaddition.seed_oil_bucket.tooltip": "SEED_OIL_BUCKET",
-	"item.createaddition.seed_oil_bucket.tooltip.summary": "A simple _flammable liquid_ which can power the _Crude Burner_.",
+	"item.createaddition.seed_oil_bucket.tooltip.summary": "A simple _flammable liquid_.",
 	
 	"item.createaddition.bioethanol_bucket": "Bucket of Bioethanol",
 	"item.createaddition.bioethanol_bucket.tooltip": "BIOETHANOL_BUCKET",
-	"item.createaddition.bioethanol_bucket.tooltip.summary": "An efficient _flammable liquid_ which can power the _Crude Burner_.",
+	"item.createaddition.bioethanol_bucket.tooltip.summary": "An efficient _flammable liquid_.",
 	
 	"item.createaddition.biomass": "Biomass",
 	"item.createaddition.biomass_pellet": "Biomass Pellet",
 	"item.createaddition.biomass_pellet.tooltip": "BIOMASS_PELLET",
-	"item.createaddition.biomass_pellet.tooltip.summary": "A _solid fuel_ which can smelt _6 items_ in a _Furnace_ .",
+	"item.createaddition.biomass_pellet.tooltip.summary": "A _solid fuel_ which can smelt _5 items_ in a _Furnace_ .",
 	
 	"item.createaddition.spool": "Empty Spool",
 	"item.createaddition.spool.nbt": "Stores connection location.",
