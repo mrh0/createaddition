@@ -98,6 +98,10 @@ dependencies {
     //implementation fg.deobf("curse.maven:immersive-engineering-231951:3579169")
     modImplementation("curse.maven:cc-restitched-462672:3723736")
     modImplementation("curse.maven:applied-energistics-2-223794:3735901")
+     //Just so it doesnt crash
+    modApi("me.shedaniel.cloth:cloth-config-fabric:6.2.62") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 
     include modApi('teamreborn:energy:2.2.0') {
         exclude(group: "net.fabricmc.fabric-api")
