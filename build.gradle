@@ -62,6 +62,10 @@ repositories {
     }
     maven { url = "https://maven.terraformersmc.com/" }
     maven { url = "https://maven.cafeteria.dev" }
+    maven {
+        name = 'Ladysnake Mods'
+        url = 'https://ladysnake.jfrog.io/artifactory/mods'
+    }
 }
 
 dependencies {
@@ -69,7 +73,7 @@ dependencies {
     // THIS IS SO CURSED I LOVE IT
     // names of mojmap with the docs and params of parchment, then docs and params of QM as fallback
     mappings loom.layered {
-        it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:1.18.2+build.21:v2")) // https://maven.quiltmc.org/#browse/browse:release
+        it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:1.18.2+build.23:v2")) // https://maven.quiltmc.org/#browse/browse:release
         //it.parchment("org.parchmentmc.data:parchment-1.18.2:BLEEDING-20220313.132143-1@zip") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
         it.officialMojangMappings {
             setNameSyntheticMembers(false)
@@ -89,7 +93,7 @@ dependencies {
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { transitive = false }
     modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
     modImplementation("dev.architectury:architectury-fabric:${project.architectury_version}")
-
+    modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:3.3.1")
     modImplementation("com.simibubi:Create:${project.create_version}")
     //implementation fg.deobf("curse.maven:immersive-engineering-231951:3579169")
     modImplementation("curse.maven:cc-restitched-462672:3723736")
