@@ -57,7 +57,7 @@ public class CreateAdditionREI implements REIClientPlugin {
                         .catalyst(CABlocks.TESLA_COIL::get)
                         .itemIcon(CABlocks.TESLA_COIL.get())
                         .emptyBackground(177, 63)
-                        .build("charging", (CreateRecipeCategory.Factory<Recipe<?>>) new ChargingCategory((CreateRecipeCategory.Info<ChargingRecipe>) info)),
+                        .build("charging", (CreateRecipeCategory.Factory<Recipe<?>>) new ChargingCategory(info)),
 
                 rolling = builder(RollingMillCategory.class)
                         .addTypedRecipes((IRecipeTypeInfo) ChargingRecipe.TYPE)
