@@ -16,9 +16,10 @@ public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 
     private final AnimatedRollingMill rolling_mill = new AnimatedRollingMill();
 
-    public RollingMillCategory(Info<RollingRecipe> info, String name) {
-        super(info, name);
+    public RollingMillCategory(Info<?> info) {
+        super((Info<RollingRecipe>) info, "charging");
     }
+
 
     @Override
     public void addWidgets(CreateDisplay<RollingRecipe> display, List<Widget> ingredients, Point origin) {
