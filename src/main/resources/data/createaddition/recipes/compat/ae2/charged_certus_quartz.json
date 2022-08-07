@@ -8,11 +8,5 @@
 		"item": "ae2:charged_certus_quartz_crystal",
 		"count": 1
 	},
-	"energy": 10000,
-  	"fabric:load_conditions": [
-		{
-      		"condition": "fabric:all_mods_loaded",
-      		"values": [
-        		"appliedenergistics2"
-      ]}
-]}
+	"energy": 10000
+}
