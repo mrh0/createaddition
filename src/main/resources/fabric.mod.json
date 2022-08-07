@@ -24,9 +24,6 @@
     ],
     "client": [
       "com.mrh0.createaddition.CreateAdditionClient"
-    ],
-    "rei": [
-      "com.mrh0.createaddition.compat.rei.CreateAdditionREI"
     ]
   },
   "accessWidener": "ca.accesswidener",
