@@ -46,3 +46,4 @@ public class ChargingCategory extends CARecipeCategory<ChargingRecipe> {
 
         getRenderedSlot(recipe, 0).render(matrixStack, 139, 27);
     }
+}
