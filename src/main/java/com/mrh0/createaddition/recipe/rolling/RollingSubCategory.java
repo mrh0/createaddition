@@ -11,7 +11,7 @@ public class RollingSubCategory extends SequencedAssemblySubCategory {
 
     public RollingSubCategory() {
         super(20);
-        mill = new AnimatedRollingMill();
+        mill = new AnimatedRollingMill(false);
     }
 
     @Override

@@ -8,11 +8,22 @@ import com.simibubi.create.foundation.gui.element.GuiGameElement;
 
 public class AnimatedRollingMill extends AnimatedKinetics {
 
+	private boolean shadow = true;
+
+	public AnimatedRollingMill(boolean shadow) {
+		this.shadow = shadow;
+	}
+
+	public AnimatedRollingMill() {
+		shadow = true;
+	}
+
 	@Override
 	public void draw(PoseStack matrixStack, int xOffset, int yOffset) {
 		matrixStack.pushPose();
 		matrixStack.translate(xOffset, yOffset, 0);
-		AllGuiTextures.JEI_SHADOW.render(matrixStack, -16, 13);
+		if(shadow)
+			AllGuiTextures.JEI_SHADOW.render(matrixStack, -16, 13);
 		matrixStack.translate(-2, 18, 0);
 		int scale = 22;
 
