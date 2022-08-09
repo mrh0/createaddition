@@ -2,22 +2,19 @@ package com.mrh0.createaddition.recipe.rolling;
 
 import com.mrh0.createaddition.CreateAddition;
 
+import com.mrh0.createaddition.compat.jei.RollingMillAssemblySubCategory;
 import com.mrh0.createaddition.index.CABlocks;
 import com.simibubi.create.compat.jei.category.sequencedAssembly.SequencedAssemblySubCategory;
 import com.simibubi.create.content.contraptions.itemAssembly.IAssemblyRecipe;
 import com.simibubi.create.content.contraptions.processing.ProcessingOutput;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipe;
-import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder;
-import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
@@ -39,7 +36,7 @@ public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IA
 	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "rolling"));
 
 	protected RollingRecipe(Ingredient ingredient, ItemStack output, ResourceLocation id) {
-		super(new RollingRecipeInfo(id,SERIALIZER,TYPE),new RollingMillRecipeParams(id,ingredient,new ProcessingOutput(output,1f)));
+		super(new RollingRecipeInfo(id, (RollingRecipeSerializer) SERIALIZER,TYPE),new RollingMillRecipeParams(id,ingredient,new ProcessingOutput(output,1f)));
 		this.output = output;
 		this.id = id;
 		this.ingredient = ingredient;
@@ -126,6 +123,6 @@ public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IA
 
 	@Override
 	public Supplier<Supplier<SequencedAssemblySubCategory>> getJEISubCategory() {
-		return () -> RollingSubCategory::new;
+		return () -> RollingMillAssemblySubCategory::new;
 	}
 }
