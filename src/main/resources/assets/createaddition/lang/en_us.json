@@ -20,6 +20,9 @@
 	"createaddition.recipe.charging": "Charging",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
+
+	"fluid.createaddition.seed_oil": "Seed Oil",
+	"fluid.createaddition.bioethanol": "Bioethanol",
 	
 	"item.createaddition.capacitor": "Capacitor",
 	
@@ -259,5 +262,8 @@
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",
   	"death.attack.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",
-  	"effect.createaddition.shocking.description": "Causes severely reduced movement speed"
+  	"effect.createaddition.shocking.description": "Causes severely reduced movement speed",
+
+	"create.recipe.rolling": "Rolling",
+	"create.recipe.charging": "Charging"
 }

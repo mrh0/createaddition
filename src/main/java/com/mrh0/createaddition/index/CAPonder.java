@@ -21,7 +21,6 @@ public class CAPonder {
 		HELPER.addStoryBoard(CABlocks.ALTERNATOR, "alternator", PonderScenes::alternator, PonderTag.KINETIC_APPLIANCES, ELECTRIC);
 		HELPER.addStoryBoard(CABlocks.ROLLING_MILL, "rolling_mill", PonderScenes::rollingMill, PonderTag.KINETIC_APPLIANCES);
 		HELPER.addStoryBoard(CABlocks.ROLLING_MILL, "automate_rolling_mill", PonderScenes::automateRollingMill, PonderTag.KINETIC_APPLIANCES);
-		HELPER.addStoryBoard(CABlocks.HEATER, "heater", PonderScenes::heater, PonderTag.LOGISTICS, ELECTRIC);
 		HELPER.addStoryBoard(CABlocks.TESLA_COIL, "tesla_coil", PonderScenes::teslaCoil, PonderTag.LOGISTICS, ELECTRIC);
 		HELPER.addStoryBoard(CABlocks.TESLA_COIL, "tesla_coil_hurt", PonderScenes::teslaCoilHurt, PonderTag.LOGISTICS, ELECTRIC);
 		
@@ -37,13 +36,11 @@ public class CAPonder {
 			.add(CABlocks.ALTERNATOR);
 		
 		PonderRegistry.TAGS.forTag(PonderTag.LOGISTICS)
-			.add(CABlocks.HEATER)
 			.add(CABlocks.TESLA_COIL);
 		
 		PonderRegistry.TAGS.forTag(ELECTRIC)
 			.add(CABlocks.ELECTRIC_MOTOR)
 			.add(CABlocks.ALTERNATOR)
-			.add(CABlocks.HEATER)
 			.add(CABlocks.TESLA_COIL);
 
 		//PonderRegistry.endRegistration();

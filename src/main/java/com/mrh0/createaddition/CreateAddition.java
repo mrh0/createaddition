@@ -1,15 +1,11 @@
 package com.mrh0.createaddition;
 
-import com.mrh0.createaddition.blocks.crude_burner.CrudeBurner;
-import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurner;
 import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.event.GameEvents;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.*;
 import com.mrh0.createaddition.network.CANetwork;
-import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineInteractions;
-import com.simibubi.create.content.contraptions.components.flywheel.engine.FurnaceEngineInteractions.HeatSource;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.fabricmc.api.ModInitializer;
@@ -62,7 +58,7 @@ public class CreateAddition implements ModInitializer {
         CANetwork.initServer();
         
         
-        
+        /*
         FurnaceEngineInteractions.registerHandler(CABlocks.FURNACE_BURNER.get(), FurnaceEngineInteractions.InteractionHandler.of(
        		 s -> s.getBlock() instanceof FurnaceBurner && s.hasProperty(FurnaceBurner.LIT) ? 
        		 (s.getValue(FurnaceBurner.LIT) ? HeatSource.ACTIVE : HeatSource.VALID) : HeatSource.EMPTY, s -> (float)(double)Config.FURNACE_BURNER_ENGINE_SPEED.get()));
@@ -70,10 +66,10 @@ public class CreateAddition implements ModInitializer {
         FurnaceEngineInteractions.registerHandler(CABlocks.CRUDE_BURNER.get(), FurnaceEngineInteractions.InteractionHandler.of(
           		 s -> s.getBlock() instanceof CrudeBurner && s.hasProperty(CrudeBurner.LIT) ? 
           	       		 (s.getValue(CrudeBurner.LIT) ? HeatSource.ACTIVE : HeatSource.VALID) : HeatSource.EMPTY, s -> (float)(double)Config.CRUDE_BURNER_ENGINE_SPEED.get()));
-        
+        */
     	System.out.println("Create Crafts & Addition Initialized!");
     }
-    
+
     public static CreateRegistrate registrate() {
 		return registrate.get();
 	}

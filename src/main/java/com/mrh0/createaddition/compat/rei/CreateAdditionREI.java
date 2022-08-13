@@ -2,30 +2,31 @@ package com.mrh0.createaddition.compat.rei;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nonnull;
-
-import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.compat.rei.category.ChargingCategory;
+import com.mrh0.createaddition.compat.rei.category.RollingMillCategory;
 import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
-import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.Create;
 import com.simibubi.create.compat.rei.ConversionRecipe;
 import com.simibubi.create.compat.rei.CreateREI;
+import com.simibubi.create.compat.rei.EmptyBackground;
+import com.simibubi.create.compat.rei.ItemIcon;
 import com.simibubi.create.compat.rei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.rei.display.CreateDisplay;
+import com.simibubi.create.foundation.utility.Lang;
+import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -33,93 +34,147 @@ import net.minecraft.world.level.ItemLike;
 
 public class CreateAdditionREI implements REIClientPlugin {
 
-	final List<CreateRecipeCategory<?>> ALL = new ArrayList<>();
-	
-	final CreateRecipeCategory<?> rolling = register("rolling", RollingMillCategory::new)
-		.recipes(RollingRecipe.TYPE)
-		.catalyst(CABlocks.ROLLING_MILL::get)
-		.build();
-	
-	final CreateRecipeCategory<?> crude_burning = register("crude_burning", CrudeBurningCategory::new)
-			.recipes(CrudeBurningRecipe.TYPE)
-			.catalyst(CABlocks.CRUDE_BURNER::get)
-			.build();
+    final List<CreateRecipeCategory<?>> ALL = new ArrayList<>();
 
-	final CreateRecipeCategory<?> charging = register("charging", ChargingCategory::new)
-			.recipes(ChargingRecipe.TYPE)
-			.catalyst(CABlocks.TESLA_COIL::get)
-			.build();
+    private void loadCategories() {
+        ALL.clear();
 
-	@Override
-	public void registerCategories(CategoryRegistry registry) {
-		ALL.forEach(c -> {
-			registry.add(c);
-			c.recipeCatalysts.forEach(s -> registry.addWorkstations(c.getCategoryIdentifier(), EntryIngredients.of(s.get())));
-		});
+        CreateRecipeCategory<?>
 
-		registry.addWorkstations(CategoryIdentifier.of(new ResourceLocation(Create.ID, "sandpaper_polishing")), EntryIngredients.of(CAItems.DIAMOND_GRIT_SANDPAPER.get()));
-//		registry.addWorkstations(CategoryIdentifier.of(new ResourceLocation(Create.ID, "deploying")), EntryIngredients.of(CAItems.DIAMOND_GRIT_SANDPAPER.get()));
-	}
+        rolling = builder(RollingRecipe.class)
+                .addTypedRecipes(RollingRecipe.TYPE)
+                .catalyst(CABlocks.ROLLING_MILL::get)
+                .itemIcon(CABlocks.ROLLING_MILL.get())
+                .emptyBackground(178, 63)
+                .build("rolling", RollingMillCategory::new),
 
-	@Override
-	public void registerDisplays(DisplayRegistry registry) {
-		ALL.forEach(c -> c.recipes.forEach(s -> {
-			for (Recipe<?> recipe : s.get()) {
-				registry.add(new CreateDisplay<>(recipe, c.getCategoryIdentifier()), recipe);
-			}
-		}));
+        charging = builder(ChargingRecipe.class)
+                .addTypedRecipes(ChargingRecipe.TYPE)
+                .catalyst(CABlocks.TESLA_COIL::get)
+                .itemIcon(CABlocks.TESLA_COIL.get())
+                .emptyBackground(178, 63)
+                .build("charging", ChargingCategory::new);
+    }
 
-		List<ConversionRecipe> r1 = new ArrayList<>();
-		//r1.add(ConversionRecipe.create(AllItems.CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
+    @Override
+    public void registerCategories(CategoryRegistry registry) {
+        loadCategories();
+        ALL.forEach(category -> {
+            registry.add(category);
+            category.registerCatalysts(registry);
+        });
+    }
 
-		for(ConversionRecipe recipe : r1) {
-			registry.add(new CreateDisplay<>(recipe, CategoryIdentifier.of("create", "mystery_conversion")));
-		}
-	}
-	
-	private <T extends Recipe<?>> CategoryBuilder<T> register(String name, Supplier<CreateRecipeCategory<T>> supplier) {
-		return new CategoryBuilder<T>(name, supplier);
-	}
-	
-	private class CategoryBuilder<T extends Recipe<?>> {
-		CreateRecipeCategory<T> category;
+    @Override
+    public void registerDisplays(DisplayRegistry registry) {
+        ALL.forEach(c -> c.registerRecipes(registry));
+        List<ConversionRecipe> r1 = new ArrayList<>();
+        for(ConversionRecipe recipe : r1) {
+            registry.add(new CreateDisplay<>(recipe, CategoryIdentifier.of("create", "mystery_conversion")));
+        }
+    }
 
-		CategoryBuilder(String name, Supplier<CreateRecipeCategory<T>> category) {
-			this.category = category.get();
-			this.category.setCategoryId(name);
-		}
+    private <T extends Recipe<?>> CategoryBuilder<T> builder(Class<T> recipeClass) {
+        return new CategoryBuilder<T>(recipeClass);
+    }
 
-		CategoryBuilder<T> catalyst(Supplier<ItemLike> supplier) {
-			return catalystStack(() -> new ItemStack(supplier.get()
-				.asItem()));
-		}
+    private class CategoryBuilder<T extends Recipe<?>> {
+        Class<? extends T> recipeClass;
+        CreateRecipeCategory<T> category;
+        private final List<Supplier<? extends ItemStack>> catalysts = new ArrayList<>();
+        private final List<Consumer<List<T>>> recipeListConsumers = new ArrayList<>();
 
-		CategoryBuilder<T> catalystStack(Supplier<ItemStack> supplier) {
-			category.recipeCatalysts.add(supplier);
-			return this;
-		}
+        private Renderer background;
+        private Renderer icon;
 
-		CategoryBuilder<T> recipes(RecipeType<?> recipeTypeEntry) {
-			category.recipes.add(() -> findRecipesByType(recipeTypeEntry));
-			return this;
-		}
+        private int width;
+        private int height;
+        public CategoryBuilder(Class<? extends T> recipeClass) {
+            this.recipeClass = recipeClass;
+        }
 
-		CreateRecipeCategory<T> build() {
-			ALL.add(category);
-			return category;
-		}
-	}
-	
-	static List<Recipe<?>> findRecipesByType(RecipeType<?> type) {
-		return findRecipes(r -> r.getType() == type);
-	}
-	
-	@SuppressWarnings("resource")
-	static List<Recipe<?>> findRecipes(Predicate<Recipe<?>> predicate) {
-		return Minecraft.getInstance().level.getRecipeManager()
-			.getRecipes()
-			.stream()
-			.filter(predicate)
-			.collect(Collectors.toList());
-	}
+        private Function<T, ? extends CreateDisplay<T>> displayFactory;
+        CategoryBuilder(Supplier<CreateRecipeCategory<T>> category) {
+            this.category = category.get();
+        }
+
+        CategoryBuilder<T> catalyst(Supplier<ItemLike> supplier) {
+            return catalystStack(() -> new ItemStack(supplier.get()
+                    .asItem()));
+        }
+
+        CategoryBuilder<T> catalystStack(Supplier<ItemStack> supplier) {
+            catalysts.add(supplier);
+            return this;
+        }
+
+
+        public CategoryBuilder<T> addRecipeListConsumer(Consumer<List<T>> consumer) {
+            recipeListConsumers.add(consumer);
+            return this;
+        }
+
+        public CategoryBuilder<T> addTypedRecipes(RecipeType<? extends T> recipeType) {
+            return addRecipeListConsumer(recipes -> CreateREI.<T>consumeTypedRecipes(recipes::add, recipeType));
+        }
+
+
+        public void background(Renderer background) {
+            this.background = background;
+        }
+        public CategoryBuilder<T> emptyBackground(int width, int height) {
+            background(new EmptyBackground(width, height));
+            dimensions(width, height);
+            return this;
+        }
+        public void width(int width) {
+            this.width = width;
+        }
+
+        public void height(int height) {
+            this.height = height;
+        }
+
+        public void dimensions(int width, int height) {
+            width(width);
+            height(height);
+        }
+        public void icon(Renderer icon) {
+            this.icon = icon;
+        }
+        public CategoryBuilder<T> itemIcon(ItemLike item) {
+            icon(new ItemIcon(() -> new ItemStack(item)));
+            return this;
+        }
+        CreateRecipeCategory<T> build(String name, CreateRecipeCategory.Factory<T> factory) {
+            Supplier<List<T>> recipesSupplier;
+            recipesSupplier = () -> {
+                List<T> recipes = new ArrayList<>();
+                    for (Consumer<List<T>> consumer : recipeListConsumers)
+                        consumer.accept(recipes);
+                return recipes;
+                };
+            CreateRecipeCategory.Info<T> info = new CreateRecipeCategory.Info<>(
+                    CategoryIdentifier.of(Create.asResource(name)),
+                    Lang.translateDirect("recipe." + name), background, icon, recipesSupplier, catalysts, width, height, displayFactory == null ? (recipe) -> new CreateDisplay<>(recipe, CategoryIdentifier.of(Create.asResource(name))) : displayFactory);
+            CreateRecipeCategory<T> category = factory.create(info);
+            ALL.add(category);
+            return category;
+        }
+    }
+
+    static List<Recipe<?>> findRecipesByType(RecipeType<?> type) {
+        return findRecipes(r -> r.getType() == type);
+    }
+
+    static List<Recipe<?>> findRecipes(Predicate<Recipe<?>> predicate) {
+        return Minecraft.getInstance().level.getRecipeManager()
+                .getRecipes()
+                .stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
+    }
+     //Build() needs a Factory to create an instance of info. some recipe fixes. 
+    //String name needs to be carried along as well through the class extensions.
+    //Then pray this shit fucking works
 }

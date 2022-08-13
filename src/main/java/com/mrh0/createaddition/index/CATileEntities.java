@@ -8,11 +8,8 @@ import com.mrh0.createaddition.blocks.alternator.AlternatorTileEntity;
 import com.mrh0.createaddition.blocks.connector.ConnectorRenderer;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
-import com.mrh0.createaddition.blocks.crude_burner.CrudeBurnerTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorRenderer;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
-import com.mrh0.createaddition.blocks.furnace_burner.FurnaceBurnerTileEntity;
-import com.mrh0.createaddition.blocks.heater.HeaterTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayRenderer;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillInstance;
@@ -22,18 +19,8 @@ import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilTileEntity;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
-import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
-import io.github.fabricators_of_create.porting_lib.transfer.item.ItemTransferable;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import team.reborn.energy.api.EnergyStorage;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 public class CATileEntities {
 	public static final BlockEntityEntry<ElectricMotorTileEntity> ELECTRIC_MOTOR = CreateAddition.registrate()
@@ -68,11 +55,6 @@ public class CATileEntities {
 			.renderer(() -> ConnectorRenderer::new)
 			.register();
 	
-	public static final BlockEntityEntry<HeaterTileEntity> HEATER = CreateAddition.registrate()
-			.tileEntity("heater", HeaterTileEntity::new)
-			.validBlocks(CABlocks.HEATER)
-			.register();
-	
 	public static final BlockEntityEntry<AccumulatorTileEntity> ACCUMULATOR = CreateAddition.registrate()
 			.tileEntity("accumulator", AccumulatorTileEntity::new)
 			.validBlocks(CABlocks.ACCUMULATOR)
@@ -84,22 +66,6 @@ public class CATileEntities {
 			.validBlocks(CABlocks.REDSTONE_RELAY)
 			.renderer(() -> RedstoneRelayRenderer::new)
 			.register();
-	
-	public static final BlockEntityEntry<FurnaceBurnerTileEntity> FURNACE_BURNER = CreateAddition.registrate()
-			.tileEntity("furnace_burner", FurnaceBurnerTileEntity::new)
-			.validBlocks(CABlocks.FURNACE_BURNER)
-			.register();
-	
-	public static final BlockEntityEntry<CrudeBurnerTileEntity> CRUDE_BURNER = CreateAddition.registrate()
-			.tileEntity("crude_burner", CrudeBurnerTileEntity::new)
-			.validBlocks(CABlocks.CRUDE_BURNER)
-			.register();
-	
-	/*public static final TileEntityEntry<ChargerTileEntity> CHARGER = CreateAddition.registrate()
-			.tileEntity("charger", ChargerTileEntity::new)
-			.validBlocks(CABlocks.CHARGER)
-			.renderer(() -> ChargerRenderer::new)
-			.register();*/
 	
 	public static final BlockEntityEntry<TeslaCoilTileEntity> TESLA_COIL = CreateAddition.registrate()
 			.tileEntity("tesla_coil", TeslaCoilTileEntity::new)

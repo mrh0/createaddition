@@ -3,8 +3,6 @@ package com.mrh0.createaddition.index;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipeSerializer;
-import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipe;
-import com.mrh0.createaddition.recipe.crude_burning.CrudeBurningRecipeSerializer;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipeSerializer;
 
@@ -16,11 +14,7 @@ public class CARecipes {
 		Registry
 			.register(Registry.RECIPE_SERIALIZER, new ResourceLocation(CreateAddition.MODID, "rolling"), new RollingRecipeSerializer());
 		Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(CreateAddition.MODID, "rolling"), RollingRecipe.TYPE);
-		
-		Registry
-			.register(Registry.RECIPE_SERIALIZER, new ResourceLocation(CreateAddition.MODID, "crude_burning"), new CrudeBurningRecipeSerializer());
-		Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(CreateAddition.MODID, "crude_burning"), CrudeBurningRecipe.TYPE);
-		
+
 		Registry
 			.register(Registry.RECIPE_SERIALIZER, new ResourceLocation(CreateAddition.MODID, "charging"), new ChargingRecipeSerializer());
 		Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(CreateAddition.MODID, "charging"), ChargingRecipe.TYPE);
