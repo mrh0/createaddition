@@ -1,15 +1,21 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
+import com.mrh0.createaddition.recipe.rolling.RollingRecipeType;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
+import com.simibubi.create.content.contraptions.itemAssembly.SequencedAssemblyRecipe;
+import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import com.simibubi.create.foundation.tileEntity.behaviour.belt.DirectBeltInputBehaviour;
 import com.simibubi.create.foundation.utility.VecHelper;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -47,6 +53,12 @@ public class RollingMillTileEntity extends KineticTileEntity {
 	}
 
 	@Override
+	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+		super.addBehaviours(behaviours);
+		behaviours.add(new DirectBeltInputBehaviour(this));
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 
@@ -68,6 +80,49 @@ public class RollingMillTileEntity extends KineticTileEntity {
 				process();
 			return;
 		}
+
+		//Note: this code below is taken and adapted from the Create repo, specifically:
+		//https://github.com/Creators-of-Create/Create/blob/a92855254c9a7b85ba28781e2e3ce7169549cbf7/src/main/java/com/simibubi/create/content/contraptions/components/saw/SawTileEntity.java#L190,
+		var ejectDirection = getEjectDirection();
+		for (int slot = 0; slot < outputInv.getSlots(); slot++) {
+			var stack = outputInv.getStackInSlot(slot);
+			if(stack.isEmpty())
+				continue;
+			ItemStack tryExport = getBehaviour(DirectBeltInputBehaviour.TYPE).tryExportingToBeltFunnel(stack,ejectDirection,false);
+			if(tryExport != null) {
+				if(tryExport.getCount() != stack.getCount()) {
+					outputInv.setStackInSlot(slot,tryExport);
+					setChanged();
+					sendData();
+				}
+			}
+		}
+
+		var step = new Vec3i(ejectDirection.getStepX(),ejectDirection.getStepY(),ejectDirection.getStepZ());
+		BlockPos nextPos = getBlockPos().offset(step);
+		DirectBeltInputBehaviour behaviour = TileEntityBehaviour.get(level,nextPos,DirectBeltInputBehaviour.TYPE);
+		if(behaviour != null) {
+			boolean changed = false;
+			if(!behaviour.canInsertFromSide(ejectDirection))
+				return;
+			if(level.isClientSide && !isVirtual())
+				return;
+			for (int slot = 0; slot < outputInv.getSlots(); slot++) {
+				var stack = outputInv.getStackInSlot(slot);
+				if(stack.isEmpty())
+					continue;
+				ItemStack rest = behaviour.handleInsertion(stack,ejectDirection,false);
+				if(rest.equals(stack,false))
+					continue;
+				outputInv.setStackInSlot(slot,rest);
+				changed = true;
+			}
+			if(changed) {
+				setChanged();
+				sendData();
+			}
+		}
+		//end of copied code
 
 		if (inputInv.getStackInSlot(0)
 			.isEmpty())
@@ -91,6 +146,23 @@ public class RollingMillTileEntity extends KineticTileEntity {
 		sendData();
 	}
 
+	private Direction getEjectDirection() {
+		var block = ((RollingMillBlock) getBlockState().getBlock());
+		var speed = getSpeed();
+		block.getRotationAxis(getBlockState());
+		boolean rotation = speed >= 0;
+		Direction ejectDirection = Direction.UP;
+		switch (block.getRotationAxis(getBlockState())) {
+			case X -> {
+				ejectDirection = rotation ? Direction.SOUTH : Direction.NORTH;
+			}
+			case Z -> {
+				ejectDirection = rotation ? Direction.WEST : Direction.EAST;
+			}
+		}
+		return ejectDirection;
+	}
+
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
@@ -99,6 +171,22 @@ public class RollingMillTileEntity extends KineticTileEntity {
 	
 	private void process() {
 		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
+
+		var sequenced = SequencedAssemblyRecipe.getRecipe(level,inventoryIn.getItem(0), RollingRecipe.TYPE,RollingRecipe.class);
+		if(sequenced.isPresent()) {
+			var recipe = sequenced.get();
+			var results = recipe.rollResults();
+			if(!results.isEmpty()) {
+				var result = results.get(0);
+				ItemHandlerHelper.insertItemStacked(outputInv, result, false);
+				ItemStack stackInSlot = inputInv.getStackInSlot(0);
+				stackInSlot.shrink(1);
+				inputInv.setStackInSlot(0, stackInSlot);
+				sendData();
+				setChanged();
+				return;
+			}
+		}
 
 		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
 			Optional<RollingRecipe> recipe = find(inventoryIn, level);
@@ -164,6 +252,11 @@ public class RollingMillTileEntity extends KineticTileEntity {
 		tester.setStackInSlot(0, stack);
 		RecipeWrapper inventoryIn = new RecipeWrapper(tester);
 
+		var sequenced = SequencedAssemblyRecipe.getRecipe(level,stack,RollingRecipe.TYPE,RollingRecipe.class);
+		if(sequenced.isPresent()) {
+			return true;
+		}
+
 		if (lastRecipe != null && lastRecipe.matches(inventoryIn, level))
 			return true;
 		return find(inventoryIn, level)
@@ -200,8 +293,11 @@ public class RollingMillTileEntity extends KineticTileEntity {
 		}
 
 	}
-
 	public Optional<RollingRecipe> find(RecipeWrapper inv, Level world) {
+		var sequenced = SequencedAssemblyRecipe.getRecipe(level,inv.getItem(0), new RollingRecipeType(),RollingRecipe.class);
+		if(sequenced.isPresent()) {
+			return sequenced;
+		}
 		return world.getRecipeManager().getRecipeFor(RollingRecipe.TYPE, inv, world);
 	}
 	

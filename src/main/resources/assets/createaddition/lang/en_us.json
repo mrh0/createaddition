@@ -15,6 +15,7 @@
 	"createaddition.tooltip.connector.info": "Connector Info:",
 	
 	"createaddition.recipe.rolling": "Rolling",
+	"createaddition.recipe.rolling.sequence": "Rolling in Mill",
 	"createaddition.recipe.charging": "Charging",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
