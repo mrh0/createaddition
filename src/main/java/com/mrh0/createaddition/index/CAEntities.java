@@ -6,8 +6,8 @@ import com.simibubi.create.content.contraptions.components.structureMovement.glu
 import com.simibubi.create.foundation.data.CreateEntityBuilder;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.repack.registrate.util.entry.EntityEntry;
-import com.simibubi.create.repack.registrate.util.entry.RegistryEntry;
+import com.tterrag.registrate.util.entry.EntityEntry;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -17,9 +17,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityType.Builder;
 import net.minecraft.world.entity.EntityType.EntityFactory;
 import net.minecraft.world.entity.MobCategory;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullConsumer;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullFunction;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
+import com.tterrag.registrate.util.nullness.NonNullConsumer;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 public class CAEntities {
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate();

@@ -15,7 +15,7 @@ import com.mrh0.createaddition.blocks.accumulator.*;
 import com.mrh0.createaddition.blocks.connector.*;
 import com.mrh0.createaddition.blocks.redstone_relay.*;
 import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
-import com.simibubi.create.repack.registrate.util.entry.BlockEntityEntry;
+import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class CATileEntities {
 	public static final BlockEntityEntry<ElectricMotorTileEntity> ELECTRIC_MOTOR = CreateAddition.registrate()

@@ -5,7 +5,7 @@ import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.repack.registrate.util.entry.FluidEntry;
+import com.tterrag.registrate.util.entry.FluidEntry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

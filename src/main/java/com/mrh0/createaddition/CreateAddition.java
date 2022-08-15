@@ -46,7 +46,7 @@ import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.simibubi.create.foundation.block.BlockStressValues;
 import com.simibubi.create.foundation.config.AllConfigs;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 @Mod(CreateAddition.MODID)
 public class CreateAddition {
@@ -127,4 +127,8 @@ public class CreateAddition {
     public static CreateRegistrate registrate() {
 		return registrate.get();
 	}
+
+    public static ResourceLocation asResource(String path) {
+        return new ResourceLocation(MODID, path);
+    }
 }

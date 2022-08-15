@@ -58,7 +58,7 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
 [[dependencies.createaddition]]
     modId="flywheel"
     mandatory=true
-    versionRange="[1.18-0.6.2,1.18-0.7.0)"
+    versionRange="[0.6,0.7)"
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.createaddition]]

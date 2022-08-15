@@ -16,13 +16,8 @@ public class ChargingCategory extends CARecipeCategory<ChargingRecipe> {
 
 	private AnimatedTeslaCoil tesla_coil = new AnimatedTeslaCoil();
 
-	public ChargingCategory() {
-		super(itemIcon(CABlocks.TESLA_COIL.get()), emptyBackground(177, 53));
-	}
-
-	@Override
-	public Class<? extends ChargingRecipe> getRecipeClass() {
-		return ChargingRecipe.class;
+	public ChargingCategory(Info<ChargingRecipe> info) {
+		super(info);
 	}
 
 	@Override
