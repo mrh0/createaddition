@@ -16,13 +16,8 @@ public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 
 	private AnimatedRollingMill rolling_mill = new AnimatedRollingMill();
 
-	public RollingMillCategory() {
-		super(itemIcon(CABlocks.ROLLING_MILL.get()), emptyBackground(177, 53));
-	}
-
-	@Override
-	public Class<? extends RollingRecipe> getRecipeClass() {
-		return RollingRecipe.class;
+	public RollingMillCategory(Info<RollingRecipe> info) {
+		super(info);
 	}
 
 	@Override
