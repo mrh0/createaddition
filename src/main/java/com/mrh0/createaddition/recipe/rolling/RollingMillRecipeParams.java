@@ -32,4 +32,20 @@ public class RollingMillRecipeParams extends ProcessingRecipeBuilder.ProcessingR
         requiredHeat = HeatCondition.NONE;
         keepHeldItem = false;
     }
+
+    public NonNullList<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public NonNullList<ProcessingOutput> getResults() {
+        return results;
+    }
+
+    public int getProcessingDuration() {
+        return processingDuration;
+    }
+
+    public ResourceLocation getID() {
+        return id;
+    }
 }

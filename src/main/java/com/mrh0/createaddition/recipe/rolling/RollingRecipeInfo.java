@@ -8,10 +8,10 @@ import net.minecraft.world.item.crafting.RecipeType;
 public class RollingRecipeInfo implements IRecipeTypeInfo {
 
     private ResourceLocation id;
-    private RollingRecipeSerializer serializer;
+    private SequencedAssemblyRollingRecipeSerializer serializer;
     private RecipeType<RollingRecipe> type;
 
-    public RollingRecipeInfo(ResourceLocation id, RollingRecipeSerializer serializer, RecipeType<RollingRecipe> type) {
+    public RollingRecipeInfo(ResourceLocation id, SequencedAssemblyRollingRecipeSerializer serializer, RecipeType<RollingRecipe> type) {
         this.id = id;
         this.serializer = serializer;
         this.type = type;
