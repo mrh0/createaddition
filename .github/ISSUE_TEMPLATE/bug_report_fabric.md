@@ -2,7 +2,7 @@
 name: Fabric Bug report
 about: Create bug template
 title: ''
-labels: bug fabric
+labels: bug, fabric
 assignees: ''
 
 ---
