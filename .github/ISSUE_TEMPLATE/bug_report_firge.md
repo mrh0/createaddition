@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: Forge Bug report
 about: Create bug template
 title: ''
 labels: bug
