@@ -2,7 +2,7 @@
 name: Forge Bug report
 about: Create bug template
 title: ''
-labels: bug
+labels: bug, forge
 assignees: ''
 
 ---
