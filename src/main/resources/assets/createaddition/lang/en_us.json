@@ -29,7 +29,7 @@
 	
 	"item.createaddition.copper_spool": "Copper Spool",
 	"item.createaddition.copper_spool.tooltip": "SPOOL",
-	"item.createaddition.copper_spool.tooltip.summary": "R-Clicking two _Connectors_ will create a wire link between them and return an _Empty Spool_.",
+	"item.createaddition.copper_spool.tooltip.summary": "R-Clicking two _Connectors_ will create a wire link between them and return an _Empty Spool_. Max length: 12 blocks",
 	
 	"item.createaddition.iron_wire": "Iron Wire",
 	"item.createaddition.iron_spool": "Iron Spool",
@@ -40,7 +40,7 @@
 	
 	"item.createaddition.gold_spool": "Gold Spool",
 	"item.createaddition.gold_spool.tooltip": "SPOOL",
-	"item.createaddition.gold_spool.tooltip.summary": "R-Clicking two _Connectors_ will create a wire link between them and return an _Empty Spool_.",
+	"item.createaddition.gold_spool.tooltip.summary": "R-Clicking two _Connectors_ will create a wire link between them and return an _Empty Spool_. Max length: 12 blocks",
 	
 	"item.createaddition.gold_wire": "Gold Wire",
 	"item.createaddition.gold_rod": "Gold Rod",
