@@ -103,8 +103,6 @@ public class RollingMillTileEntity extends KineticTileEntity {
 		DirectBeltInputBehaviour behaviour = TileEntityBehaviour.get(level,nextPos,DirectBeltInputBehaviour.TYPE);
 		if(behaviour != null) {
 			boolean changed = false;
-			if(!behaviour.canInsertFromSide(ejectDirection))
-				return;
 			if(level.isClientSide && !isVirtual())
 				return;
 			for (int slot = 0; slot < outputInv.getSlots(); slot++) {
