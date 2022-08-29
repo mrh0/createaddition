@@ -17,8 +17,12 @@ import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemS
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
 
+import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -118,12 +122,18 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}
 	
 	int dmgTick = 0;
+	int soundTimeout = 0;
 	
 	@Override
 	public void tick() {
 		super.tick();
-		if(level.isClientSide())
+		if(level.isClientSide()) {
+			if(isPoweredState() && soundTimeout++ > 20) {
+				//level.playLocalSound(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), SoundEvents.BEE_LOOP, SoundSource.BLOCKS, 1f, 16f, false);
+				soundTimeout = 0;
+			}
 			return;
+		}
 		int signal = getLevel().getBestNeighborSignal(getBlockPos());
 		//System.out.println(signal + ":" + (energy.getEnergyStored() >= HURT_ENERGY_REQUIRED));
 		if(signal > 0 && energy.getEnergyStored() >= HURT_ENERGY_REQUIRED)
