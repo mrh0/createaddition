@@ -397,10 +397,10 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
 	}
 	
-	@Override
+	/*@Override
 	protected void setRemovedNotDueToChunkUnload() {
 		onBlockRemoved(false);
 		super.setRemovedNotDueToChunkUnload();
 		
-	}
+	}*/
 }
