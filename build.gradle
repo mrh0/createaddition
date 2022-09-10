@@ -61,30 +61,17 @@ dependencies {
     mappings loom.officialMojangMappings()
 
     modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
 
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { transitive = false }
     modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
     modImplementation("dev.architectury:architectury-fabric:${project.architectury_version}")
-    modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:4.2.0")
+    modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:3.3.1")
+    modImplementation("com.simibubi:Create:${project.create_version}")
     modImplementation("curse.maven:cc-restitched-462672:3723736")
     modImplementation("curse.maven:applied-energistics-2-223794:3735901")
     modApi("me.shedaniel.cloth:cloth-config-fabric:6.2.62") {
         exclude(group: "net.fabricmc.fabric-api")
     }
-    
-    //General create dependencies and setup
-    modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_version}") { transitive = false }
-	modImplementation("io.github.fabricators_of_create:Porting-Lib:${project.port_lib_version}+${project.minecraft_version}-dev.${project.port_lib_hash}")
-	modImplementation("me.alphamode:ForgeTags:${project.forge_tags_version}")
-	modImplementation("com.electronwill.night-config:core:${project.night_config_core_version}")
-	modImplementation("com.electronwill.night-config:toml:${project.night_config_toml_version}")
-	modImplementation("curse.maven:forge-config-api-port-fabric-547434:${project.config_api_id}") { transitive = false }
-	modImplementation("com.tterrag.registrate:Registrate:${project.registrate_version}")
-	modImplementation("com.jozufozu.flywheel:flywheel-fabric-${flywheel_minecraft_version}:${project.flywheel_version}")
-	modImplementation("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}")
-	modImplementation("io.github.tropheusj:milk-lib:${project.milk_lib_version}")
-	implementation("com.google.code.findbugs:jsr305:${project.jsr305_version}")
 
     include modApi('teamreborn:energy:2.2.0') {
         exclude(group: "net.fabricmc.fabric-api")
