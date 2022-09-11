@@ -27,6 +27,9 @@
     ],
     "rei": [
       "com.mrh0.createaddition.compat.rei.CreateAdditionREI"
+    ],
+    "jei_mod_plugin": [
+      "com.mrh0.createaddition.compat.jei.CreateAdditionJEI"
     ]
   },
   "accessWidener": "ca.accesswidener",
