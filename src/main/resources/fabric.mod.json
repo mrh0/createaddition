@@ -28,7 +28,7 @@
     "rei": [
       "com.mrh0.createaddition.compat.rei.CreateAdditionREI"
     ],
-    "jei": [
+    "jei_mod_plugin": [
       "com.mrh0.createaddition.compat.jei.CreateAdditionJEI"
     ]
   },
