@@ -1,10 +1,10 @@
 package com.mrh0.createaddition.energy;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
@@ -27,21 +27,21 @@ public class InternalEnergyStorage extends EnergyStorage {
         super(capacity, maxReceive, maxExtract, energy);
     }
     
-    public CompoundNBT write(CompoundNBT nbt) {
+    public CompoundTag write(CompoundTag nbt) {
     	nbt.putInt("energy", energy);
     	return nbt;
     }
     
-    public void read(CompoundNBT nbt) {
+    public void read(CompoundTag nbt) {
     	setEnergy(nbt.getInt("energy"));
     }
     
-    public CompoundNBT write(CompoundNBT nbt, String name) {
+    public CompoundTag write(CompoundTag nbt, String name) {
     	nbt.putInt("energy_"+name, energy);
     	return nbt;
     }
     
-    public void read(CompoundNBT nbt, String name) {
+    public void read(CompoundTag nbt, String name) {
     	setEnergy(nbt.getInt("energy_"+name));
     }
     
@@ -72,8 +72,8 @@ public class InternalEnergyStorage extends EnergyStorage {
     }
     
     @Deprecated
-    public void outputToSide(World world, BlockPos pos, Direction side, int max) {
-    	TileEntity te = world.getBlockEntity(pos.relative(side));
+    public void outputToSide(Level world, BlockPos pos, Direction side, int max) {
+    	BlockEntity te = world.getBlockEntity(pos.relative(side));
 		if(te == null)
 			return;
 		LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());

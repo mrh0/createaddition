@@ -1,84 +1,127 @@
 package com.mrh0.createaddition.recipe.rolling;
 
 import com.mrh0.createaddition.CreateAddition;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
+import com.mrh0.createaddition.compat.jei.RollingMillAssemblySubCategory;
+import com.mrh0.createaddition.index.CABlocks;
+import com.simibubi.create.compat.jei.category.sequencedAssembly.SequencedAssemblySubCategory;
+import com.simibubi.create.content.contraptions.itemAssembly.IAssemblyRecipe;
+import com.simibubi.create.content.contraptions.processing.ProcessingOutput;
+import com.simibubi.create.content.contraptions.processing.ProcessingRecipe;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public class RollingRecipe implements IRecipe<RecipeWrapper> {
+import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
 
-	protected final ItemStack output;
-	protected final ResourceLocation id;
-	protected final Ingredient ingredient;
-	
-	public static IRecipeType<RollingRecipe> TYPE = new RollingRecipeType();
-	@SuppressWarnings("deprecation")
-	public static IRecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "rolling"));
+public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IAssemblyRecipe {
 
-	protected RollingRecipe(Ingredient ingredient, ItemStack output, ResourceLocation id) {
-		this.output = output;
-		this.id = id;
-		this.ingredient = ingredient;
-	}
-	
-	public Ingredient getIngredient() {
-		return ingredient;
-	}
-	
-	@Override
-	public boolean matches(RecipeWrapper inv, World worldIn) {
-		if (inv.isEmpty())
-			return false;
-		return ingredient.test(inv.getItem(0));
-	}
+    public static RecipeType<RollingRecipe> TYPE = new RollingRecipeType();
+    @SuppressWarnings("deprecation")
+    public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "rolling"));
+    protected final ItemStack output;
+    protected final ResourceLocation id;
+    protected final Ingredient ingredient;
+
+    protected RollingRecipe(Ingredient ingredient, ItemStack output, ResourceLocation id) {
+        super(new RollingRecipeInfo(id, (SequencedAssemblyRollingRecipeSerializer) SERIALIZER, TYPE), new RollingMillRecipeParams(id, ingredient, new ProcessingOutput(output, 1f)));
+        this.output = output;
+        this.id = id;
+        this.ingredient = ingredient;
+    }
+
+    public static void register() {
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    @Override
+    public boolean matches(RecipeWrapper inv, Level worldIn) {
+        if (inv.isEmpty())
+            return false;
+        return ingredient.test(inv.getItem(0));
+    }
+
+    @Override
+    protected int getMaxInputCount() {
+        return 1;
+    }
+
+    @Override
+    protected int getMaxOutputCount() {
+        return 1;
+    }
+
+    @Override
+    public ItemStack assemble(RecipeWrapper inv) {
+        return this.output;
+    }
+
+    @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return width * height > 0;
+    }
+
+    @Override
+    public ItemStack getResultItem() {
+        return this.output;
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return this.id;
+    }
+
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+
+        return SERIALIZER;
+    }
+
+    @Override
+    public RecipeType<?> getType() {
+        return TYPE;
+    }
+
+    @Override
+    public ItemStack getToastSymbol() {
+        return this.output;
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
 
 	@Override
-	public ItemStack assemble(RecipeWrapper inv) {
-		return this.output;
-	}
+    public Component getDescriptionForAssembly() {
+        return new TranslatableComponent("createaddition.recipe.rolling.sequence").withStyle(ChatFormatting.DARK_GREEN);
+    }
 
-	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height > 0;
-	}
+    @Override
+    public void addRequiredMachines(Set<ItemLike> set) {
+        set.add(CABlocks.ROLLING_MILL.get());
+    }
 
-	@Override
-	public ItemStack getResultItem() {
-		return this.output;
-	}
+    @Override
+    public void addAssemblyIngredients(List<Ingredient> list) {
 
-	@Override
-	public ResourceLocation getId() {
-		return this.id;
-	}
+    }
 
-	@Override
-	public IRecipeSerializer<?> getSerializer() {
-		
-		return SERIALIZER;
-	}
-
-	@Override
-	public IRecipeType<?> getType() {
-		return TYPE;
-	}
-	
-	@Override
-	public ItemStack getToastSymbol() {
-		return this.output;
-	}
-	
-	@Override
-	public boolean isSpecial() {
-		return true;
-	}
-	
-	public static void register() {};
+    @Override
+    public Supplier<Supplier<SequencedAssemblySubCategory>> getJEISubCategory() {
+        return () -> RollingMillAssemblySubCategory::new;
+    }
 }

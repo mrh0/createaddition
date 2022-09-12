@@ -1,14 +1,23 @@
 package com.mrh0.createaddition.recipe.conditions;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.gson.JsonObject;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.TagCollectionManager;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
+import net.minecraftforge.common.data.ForgeFluidTagsProvider;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITag;
 
 public class FluidTagEmptyCondition implements ICondition {
 	private static final ResourceLocation NAME = new ResourceLocation("createaddition", "fluidtag_empty");
@@ -33,9 +42,11 @@ public class FluidTagEmptyCondition implements ICondition {
 
 	@Override
 	public boolean test() {
-		ITag<Fluid> tag = TagCollectionManager.getInstance().getFluids().getTag(tag_name);
+		//TagKey<Fluid> tag = TagKey.//	//TagCollectionManager.getInstance().getFluids().getTag(tag_name);
+		
+		@NotNull ITag<Fluid> tag = ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(tag_name));
 		//System.out.println("fluidTag:" + tag_name + ":" + (tag == null || tag.getValues().isEmpty()));
-		return tag == null || tag.getValues().isEmpty();
+		return tag == null || tag.isEmpty();
 	}
 
 	@Override
@@ -53,7 +64,7 @@ public class FluidTagEmptyCondition implements ICondition {
 
 		@Override
 		public FluidTagEmptyCondition read(JsonObject json) {
-			return new FluidTagEmptyCondition(new ResourceLocation(JSONUtils.getAsString(json, "fluidTag")));
+			return new FluidTagEmptyCondition(new ResourceLocation(GsonHelper.getAsString(json, "fluidTag")));
 		}
 
 		@Override

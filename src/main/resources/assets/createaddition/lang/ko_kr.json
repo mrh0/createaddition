@@ -1,0 +1,261 @@
+{
+	"createaddition.tooltip.energy.stored": "저장된 에너지:",
+	"createaddition.tooltip.energy.consumption": "에너지 사용량:",
+	"createaddition.tooltip.energy.production": "에너지 생산량:",
+	"createaddition.tooltip.energy.charged": "충전됨",
+	"createaddition.tooltip.energy.usage": "네트워크 사용량:",
+	"createaddition.tooltip.energy.demand": "네트워크 필요량:",
+	"createaddition.tooltip.energy.supply": "네트워크 생산량:",
+	"createaddition.tooltip.energy.selected": "선택한 단자:",
+	"createaddition.tooltip.energy.input": "입력",
+	"createaddition.tooltip.energy.output": "출력",
+
+	"createaddition.tooltip.accumulator.info": "축전지 정보:",
+	"createaddition.tooltip.relay.info": "계전기 정보:",
+	"createaddition.tooltip.connector.info": "단자 정보:",
+
+	"createaddition.recipe.rolling": "압연",
+	"createaddition.recipe.crude_burning": "원유 연소",
+	"createaddition.recipe.crude_burning.burn_time": "연소 시간",
+
+	"desc.immersiveengineering.info.mineral.sphalerite": "섬아연석",
+
+	"item.createaddition.capacitor": "축전기",
+
+	"item.createaddition.multimeter": "멀티미터",
+	"item.createaddition.multimeter.title":"[멀티미터]:",
+	"item.createaddition.multimeter.measuring":"[측정 중..]",
+	"item.createaddition.multimeter.ticks":"틱",
+	"item.createaddition.multimeter.no_capability":"이 면에는 포지 에너지를 사용할 수 없습니다.",
+	"item.createaddition.multimeter.tooltip": "멀티미터",
+	"item.createaddition.multimeter.tooltip.summary": "해당 면의 _포지 에너지 입출력 여부_와 _힘_을 측정합니다.",
+
+	"item.createaddition.zinc_sheet": "아연 판",
+	"item.createaddition.diamond_grit": "다이아몬드 그릿",
+	"item.createaddition.diamond_grit_sandpaper": "다이아몬드 그릿 사포",
+	"item.createaddition.diamond_grit_sandpaper.tooltip": "다이아몬드 그릿 사포",
+
+	"item.createaddition.copper_spool": "구리 전선 타래",
+	"item.createaddition.copper_spool.tooltip": "전선_타래",
+	"item.createaddition.copper_spool.tooltip.summary": "두 개의 _단자_를 우클릭해 전선을 연결하고 _빈 실타래_를 돌려받을 수 있습니다.",
+
+	"item.createaddition.copper_wire": "구리 실",
+	"item.createaddition.copper_rod": "구리 봉",
+
+	"item.createaddition.iron_spool": "철 전선 타래",
+	"item.createaddition.iron_wire": "철 실",
+	"item.createaddition.iron_rod": "철 봉",
+
+	"item.createaddition.steel_spool": "강철 전선 타래",
+	"item.createaddition.steel_wire": "강철 실",
+	"item.createaddition.steel_rod": "강철 봉",
+
+	"item.createaddition.electrum_spool": "일렉트럼 전선 타래",
+	"item.createaddition.electrum_wire": "일렉트럼 실",
+	"item.createaddition.electrum_rod": "일렉트럼 봉",
+
+	"item.createaddition.aluminum_spool": "알루미늄 전선 타래",
+	"item.createaddition.aluminum_wire": "알루미늄 실",
+	"item.createaddition.aluminum_rod": "알루미늄 봉",
+
+	"item.createaddition.gold_spool": "금 전선 타래",
+	"item.createaddition.gold_spool.tooltip": "전선_타래",
+	"item.createaddition.gold_spool.tooltip.summary": "두 개의 _단자_를 우클릭해 전선을 연결하고 _빈 실타래_를 돌려받을 수 있습니다.",
+
+	"item.createaddition.gold_wire": "금 실",
+	"item.createaddition.gold_rod": "금 봉",
+
+	"item.createaddition.brass_rod": "황동 봉",
+	"item.createaddition.bronze_rod": "청동 봉",
+
+	"item.createaddition.cake_base": "케이크 기반",
+	"item.createaddition.cake_base_baked": "구운 케이크 기반",
+
+	"item.createaddition.seed_oil_bucket": "종자유가 든 양동이",
+	"item.createaddition.seed_oil_bucket.tooltip": "종자유가_든_양동이",
+	"item.createaddition.seed_oil_bucket.tooltip.summary": "_원유 연소기_를 가동할 수 있는 간단한 _연소성 액체_.",
+
+	"item.createaddition.bioethanol_bucket": "바이오에탄올이 든 양동이",
+	"item.createaddition.bioethanol_bucket.tooltip": "바이오에탄올이_든_양동이",
+	"item.createaddition.bioethanol_bucket.tooltip.summary": "_원유 연소기_를 가동할 수 있는 효과적인 _연소성 액체_.",
+
+	"item.createaddition.biomass": "바이오매스",
+	"item.createaddition.biomass_pellet": "바이오매스 알갱이",
+	"item.createaddition.biomass_pellet.tooltip": "바이오매스_알갱이",
+	"item.createaddition.biomass_pellet.tooltip.summary": "_화로_에서 아이템 _6 개_를 구울 수 있는 _고체 연료_.",
+
+	"item.createaddition.charging_chromatic_compound": "충전 중인 크로마틱 화합물",
+	"item.createaddition.overcharged_alloy": "과충전 합금",
+	"item.createaddition.overcharged_alloy.tooltip": "과충전 합금",
+	"item.createaddition.overcharged_alloy.tooltip.summary": "_전류_로 생산해낸 크로마틱 물질",
+
+	"item.createaddition.overcharged_hammer": "과충전된 망치",
+	"item.createaddition.overcharged_hammer.tooltip": "과충전된 망치",
+	"item.createaddition.overcharged_hammer.tooltip.summary": "이 믿음직한 _망치_는 _전류_의 힘이 불어넣어졌습니다",
+
+	"item.createaddition.spool": "빈 실타래",
+	"item.createaddition.spool.nbt": "연결 위치 정보 저장 중.",
+	"item.createaddition.spool.tooltip": "전선_타래",
+	"item.createaddition.spool.tooltip.summary": "전선이 이어진 두 개의 _단자_를 우클릭해 전선을 제거하고 전선이 감긴 _타래_를 돌려받을 수 있습니다.",
+
+	"statusbar.createaddition.wire.linked": "노드 연결됨",
+	"statusbar.createaddition.wire.linked_in": "입력 노드 연결됨",
+	"statusbar.createaddition.wire.linked_out": "출력 노드 연결됨",
+
+	"statusbar.createaddition.wire.connect": "전선 단자 선택됨",
+	"statusbar.createaddition.wire.connect_in": "전선 입력 단자 선택됨",
+	"statusbar.createaddition.wire.connect_out": "전선 출력 단자 선택됨",
+
+	"statusbar.createaddition.wire.long": "전선이 너무 깁니다",
+	"statusbar.createaddition.wire.obstructed": "전선 경로가 막혀 있습니다",
+	"statusbar.createaddition.wire.count": "전선 노드를 전부 사용했습니다",
+	"statusbar.createaddition.wire.removed": "전선을 제거했습니다",
+	"statusbar.createaddition.wire.exists": "이미 연결된 전선입니다",
+	"statusbar.createaddition.wire.no_connection": "여기 전선이 연결되어있지 않습니다",
+	"statusbar.createaddition.wire.invalid": "허용할 수 없는 연결입니다",
+
+	"block.createaddition.electric_motor": "전자 모터",
+	"deprecated.block.createaddition.electric_motor.tooltip": "전자 모터",
+	"deprecated.block.createaddition.electric_motor.tooltip.summary": "_fe_로부터 _su_를 생산합니다. 회전 속도를 설정할 수 있으며 설정된 _회전 속도_에 따라 에너지 사용량이 정해집니다.",
+
+	"block.createaddition.alternator": "교류발전기",
+	"deprecated.block.createaddition.alternator.tooltip": "교류발전기",
+	"deprecated.block.createaddition.alternator.tooltip.summary": "_su_로부터 _fe_를 생산합니다. _회전 속도_에 따라 에너지 생산량이 정해집니다.",
+
+	"block.createaddition.creative_energy": "건축 모드 발전기",
+	"block.createaddition.creative_energy.tooltip": "건축_모드_발전기",
+	"block.createaddition.creative_energy.tooltip.summary": "무한대의 _fe_를 생산합니다.",
+
+	"block.createaddition.rolling_mill": "압연기",
+	"deprecated.block.createaddition.rolling_mill.tooltip": "압연기",
+	"deprecated.block.createaddition.rolling_mill.tooltip.summary": "투입한 _자재_를 _압연_하는 데에 적합한 기기. 측면의 축에 연결해 가동할 수 있습니다. 완성된 결과는 기기로부터 추출해야 합니다.",
+	"deprecated.block.createaddition.rolling_mill.tooltip.condition1": "동력으로 회전될 때",
+	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour1": "해당 블록의 위 또는 측면에서 삽입한 아이템을 _압연 제작_하기 시작합니다.",
+	"deprecated.block.createaddition.rolling_mill.tooltip.condition2": "우클릭했을 때",
+	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "수동으로 완성품을 수거합니다.",
+
+	"block.createaddition.heater": "인덕션 히터",
+	"block.createaddition.heater.info": "인덕션 히터 정보:",
+	"block.createaddition.heater.engine_heating_disabled": "화로 엔진을 가동하는 것은 설정에서 해제되어 있습니다.",
+	"deprecated.block.createaddition.heater.tooltip": "인덕션 히터",
+	"deprecated.block.createaddition.heater.tooltip.summary": "_화로_에 연결해 윗부분에 _fe_를 가하면 _화로_를 작동시킵니다. 설정에서 _선택_하지 않는 한 _화로 엔진_을 작동시킬 수 없습니다.",
+
+	"block.createaddition.accumulator": "축전지",
+	"block.createaddition.accumulator.tooltip": "축전지",
+	"block.createaddition.accumulator.tooltip.summary": "전기를 저장합니다.",
+	"block.createaddition.accumulator.tooltip.condition1": "출력",
+	"block.createaddition.accumulator.tooltip.behaviour1": "위를 향한 화살표가 그려진 _단자_에 부착된 _전선_에 _fe_를 내보냅니다.",
+	"block.createaddition.accumulator.tooltip.condition2": "입력",
+	"block.createaddition.accumulator.tooltip.behaviour2": "아래를 향한 화살표가 그려진 _단자_에 부착된 _전선_으로부터 _fe_를 받습니다.",
+
+	"block.createaddition.connector": "구리 단자",
+	"block.createaddition.connector.tooltip": "단자",
+	"block.createaddition.connector.tooltip.summary": "_전선_을 통해 포지 에너지를 사용하는 블록에게 _fe_를 전송합니다.",
+	"block.createaddition.connector.tooltip.control1": "우클릭했을 때",
+	"block.createaddition.connector.tooltip.action1": "_구리 전선 타래_ 혹은 _금 전선 타래_를 든 상태로 우클릭해 두 개의 _단자_ 사이를 _전선으로 연결_할 수 있습니다.",
+
+	"block.createaddition.connector_copper": "구리 단자",
+	"block.createaddition.connector_copper.tooltip": "단자",
+	"block.createaddition.connector_copper.tooltip.summary": "_전선_을 통해 포지 에너지를 사용하는 블록에게 _fe_를 전송합니다.",
+	"block.createaddition.connector_copper.tooltip.control1": "우클릭했을 때",
+	"block.createaddition.connector_copper.tooltip.action1": "_구리 전선 타래_를 든 상태로 우클릭해 두 개의 _단자_ 사이를 _전선으로 연결_할 수 있습니다.",
+
+	"block.createaddition.connector_gold": "금 단자",
+	"block.createaddition.connector_gold.tooltip": "단자",
+	"block.createaddition.connector_gold.tooltip.summary": "_전선_을 통해 포지 에너지를 사용하는 블록에게 _fe_를 전송합니다.",
+	"block.createaddition.connector_gold.tooltip.control1": "우클릭했을 때",
+	"block.createaddition.connector_gold.tooltip.action1": "_금 전선 타래_를 든 상태로 우클릭해 두 개의 _단자_ 사이를 _전선으로 연결_할 수 있습니다.",
+
+	"block.createaddition.redstone_relay": "레드스톤 계전기",
+	"block.createaddition.redstone_relay.tooltip": "레드스톤_계전기",
+	"block.createaddition.redstone_relay.tooltip.summary": "_레드스톤 신호_를 줄 경우 _입력 단자_에서 _출력 단자_로 _fe_를 흘려보냅니다.",
+	"block.createaddition.redstone_relay.tooltip.condition1": "출력",
+	"block.createaddition.redstone_relay.tooltip.behaviour1": "위를 향한 화살표가 그려진 _단자_에 부착된 _전선_에 _fe_를 내보냅니다.",
+	"block.createaddition.redstone_relay.tooltip.condition2": "입력",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "아래를 향한 화살표가 그려진 _단자_에 부착된 _전선_으로부터 _fe_를 받습니다.",
+
+	"block.createaddition.furnace_burner": "화로 연소기",
+	"block.createaddition.furnace_burner.tooltip": "화로_연소기",
+	"block.createaddition.furnace_burner.tooltip.summary": "이 _화로_는 아이템을 구울 수 없지만, 구울 아이템을 투입할 필요 없이 _화로 엔진_을 가동시킬 수 있습니다. _깔때기_ 등의 방법을 이용해 연료를 투입할 수 있습니다.",
+	"block.createaddition.furnace_burner.tooltip.control1": "우클릭했을 때",
+	"block.createaddition.furnace_burner.tooltip.action1": "손에 들고 있는 _연료_를 투입합니다.",
+	"block.createaddition.furnace_burner.tooltip.control2": "웅크린 상태로 우클릭했을 때",
+	"block.createaddition.furnace_burner.tooltip.action2": "저장된 _연료_를 회수합니다.",
+
+	"block.createaddition.charger": "충전소",
+	"block.createaddition.charger.info": "충전소 정보:",
+	"block.createaddition.charger.empty": "비어 있음",
+	"block.createaddition.charger.tooltip": "충전소",
+	"block.createaddition.charger.tooltip.summary": "_fe_를 이용해 _전기_ 물품을 충전합니다.",
+	"block.createaddition.charger.tooltip.control1": "충전 가능한 아이템을 들고 우클릭했을 때",
+	"block.createaddition.charger.tooltip.action1": "_충전기_에 아이템을 넣습니다.",
+	"block.createaddition.charger.tooltip.control2": "빈 손으로 우클릭했을 때",
+	"block.createaddition.charger.tooltip.action2": "_충전기_에서 아이템을 회수합니다.",
+
+	"block.createaddition.crude_burner": "원유 연소기",
+	"block.createaddition.crude_burner.tooltip": "원유_연소기",
+	"block.createaddition.crude_burner.tooltip.summary": "_원유 연소기_는 _종자유_ 혹은 _바이오에탄올_과 같이 느리게 타는 _연소성 액체_를 소모해 _화로 엔진_을 가동시킬 수 있습니다. _액체 연료_는 _액체 파이프_를 통해 삽입될 수 있습니다.",
+	"block.createaddition.crude_burner.tooltip.control1": "우클랙했을 때",
+	"block.createaddition.crude_burner.tooltip.action1": "손에 들고 있는 _양동이_에 든 액체를 삽입합니다.",
+
+	"block.createaddition.chocolate_cake": "초콜릿 케이크",
+	"block.createaddition.honey_cake": "꿀 케이크",
+
+	"block.createaddition.seed_oil": "종자유",
+	"block.createaddition.bioethanol": "바이오에탄올",
+
+	"block.createaddition.overcharged_casing": "과충전된 케이스",
+
+	"block.createaddition.tesla_coil": "테슬라 코일",
+
+	"itemGroup.createaddition:main":"Create Crafts & Additions",
+
+	"createaddition.command.cca_api.link": "여기를 클릭해 API 문서를 열 수 있습니다",
+
+	"createaddition.ponder.tag.electric": "전자 기기",
+	"createaddition.ponder.tag.electric.description": "전기를 사용하는 기기",
+
+	"createaddition.ponder.electric_motor.header": "전자 모터를 이용해 회전력 생산하기",
+	"createaddition.ponder.electric_motor.text_1": "전자 모터는 조정 가능한 회전력을 생산할 수 있는 간결한 수단입니다.",
+	"createaddition.ponder.electric_motor.text_2": "후방의 패널을 보고 스크롤해 모터의 분당 회전율을 바꿀 수 있습니다.",
+	"createaddition.ponder.electric_motor.text_3": "전자 모터는 에너지(fe)를 필요로 합니다.",
+	"createaddition.ponder.electric_motor.text_4": "모터의 에너지 소모량은 분당 회전율에 따라 정해집니다.",
+
+	"createaddition.ponder.alternator.header": "교류발전기를 이용해 전력 생산하기",
+	"createaddition.ponder.alternator.text_1": "교류발전기는 최소 32 RPM으로 가동되어야만 작동합니다.",
+	"createaddition.ponder.alternator.text_2": "교류발전기는 회전력을 통해 전기 에너지(fe)를 생산합니다.",
+	"createaddition.ponder.alternator.text_3": "교류발전기의 에너지 생산량은 입력된 분당 회전률에 따라 정해집니다.",
+
+	"createaddition.ponder.rolling_mill.header": "금속을 봉과 전선으로 압연하기",
+	"createaddition.ponder.rolling_mill.text_1": "압연기는 회전력을 사용해 금속을 봉과 전선으로 압연합니다.",
+	"createaddition.ponder.rolling_mill.text_2": "수동으로 아이템을 투입하려면 주괴 혹은 판을 압연기 위에 던져넣으세요.",
+	"createaddition.ponder.rolling_mill.text_3": "수동으로 아이템을 회수하려면 압연기를 우클릭하세요.",
+
+	"createaddition.ponder.automated_rolling_mill.header": "압연기 자동화",
+	"createaddition.ponder.automated_rolling_mill.text_1": "압연기는 컨베이어 벨트와 두 개의 퍼널들을 이용해 자동화될 수 있습니다.",
+	"createaddition.ponder.automated_rolling_mill.text_2": "입력 퍼널",
+	"createaddition.ponder.automated_rolling_mill.text_3": "출력 퍼널",
+
+	"createaddition.ponder.heater.header": "전기 에너지로 화로 때기",
+	"createaddition.ponder.heater.text_1": "히터는 화로를 향해 어떤 면에서든 설치할 수 있습니다.",
+	"createaddition.ponder.heater.text_2": "충분한 전기 에너지(fe)를 받을 경우, 히터는 화로를 땝니다.",
+	"createaddition.ponder.heater.text_3": "화로는 에너지가 공급되는 한 계속 때집니다.",
+
+	"createaddition.ponder.cc_electric_motor.header": "ComputerCraft를 사용해 전자 모터 제어하기",
+	"createaddition.ponder.cc_electric_motor.text_1": "전자 모터는 ComputerCraft를 이용해 제어할 수 있습니다.",
+	"createaddition.ponder.cc_electric_motor.text_2": "'peripheral.wrap(side)'를 사용해 모터에 연결하세요.",
+	"createaddition.ponder.cc_electric_motor.text_3": "명령어 '/cca_api'를 대화 창에 입력해 API 문서를 확인해보세요.",
+
+	"createaddition.ponder.tesla_coil.header": "테슬라 코일로 아이템 충전하기",
+	"createaddition.ponder.tesla_coil.text_1": "테슬라 코일은 아래에 있는 아이템을 충접합니다.",
+	"createaddition.ponder.tesla_coil.text_2": "테슬라 코일은 포지 에너지를 사용하는 아이템을 포함한 여러가지 아이템을 충전할 수 있습니다!",
+
+	"createaddition.ponder.tesla_coil_hurt.header": "위험한 테슬라 코일",
+	"createaddition.ponder.tesla_coil_hurt.text_1": "테슬라 코일은 근처 플레이어와 몹에게 피해를 입힐 수도 있습니다.",
+	"createaddition.ponder.tesla_coil_hurt.text_2": "이 기능은 레드스톤 신호로 활성화될 수 있습니다.",
+	"createaddition.ponder.tesla_coil_hurt.text_3": "전율을 느낄 준비 하세요!",
+
+	"effect.createaddition.shocking":"쇼크",
+	"death.attack.tesla_coil": "%1$s이(가) 치명적인 전기 충격을 받았습니다",
+  	"death.attack.tesla_coil.player": "%1$s이(가) %2$s와(과) 싸우던 도중 치명적인 전기 충격을 받았습니다"
+}

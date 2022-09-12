@@ -6,10 +6,10 @@
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader="javafml" #mandatory
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[35,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[40,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
-license="MIT License, Copyright 2021 MRH0"
+license="MIT License, Copyright 2022 MRH0"
 # A URL to refer people to when problems occur with this mod
 issueTrackerURL="https://github.com/mrh0/createaddition/issues" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
@@ -44,7 +44,7 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[35,)" #mandatory
+    versionRange="[40,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -52,19 +52,19 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.16.5_v0.3.2f,)"
+    versionRange="[0.5a,0.6)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
     modId="flywheel"
     mandatory=true
-    versionRange="[1.16-0.2.4,1.16-0.3)"
+    versionRange="[0.6,0.7)"
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.createaddition]]
     modId="immersiveengineering"
     mandatory=false
-    versionRange="[1.16.4-4.1.1-128,)"
+    versionRange="[1.18,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
@@ -76,13 +76,13 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
 [[dependencies.createaddition]]
     modId="appliedenergistics2"
     mandatory=false
-    versionRange="[8.4.0,)"
+    versionRange="[10.0.0,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.16.5,1.17)"
+    versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"

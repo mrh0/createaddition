@@ -1,12 +1,10 @@
 package com.mrh0.createaddition.event;
 
+import com.mrh0.createaddition.blocks.connector.ConnectorMovementManager;
 import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
-import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.network.ObservePacket;
 
-import net.minecraft.potion.Effect;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,6 +19,7 @@ public class GameEvents {
 		if(evt.phase == Phase.END)
 			return;
 		EnergyNetworkManager.tickWorld(evt.world);
+		ConnectorMovementManager.tickWorld(evt.world);
 	}
 	
 	@SubscribeEvent
@@ -35,5 +34,6 @@ public class GameEvents {
 		if(evt.getWorld().isClientSide())
 			return;
 		new EnergyNetworkManager(evt.getWorld());
+		new ConnectorMovementManager(evt.getWorld());
 	}
 }

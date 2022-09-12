@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 
 import com.mrh0.createaddition.CreateAddition;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 public class ConsProdSyncPacket {
 	private BlockPos pos;
@@ -24,13 +24,13 @@ public class ConsProdSyncPacket {
 		this.production = production;
 	}
 	
-	public static void encode(ConsProdSyncPacket packet, PacketBuffer tag) {
+	public static void encode(ConsProdSyncPacket packet, FriendlyByteBuf tag) {
         tag.writeBlockPos(packet.pos);
         tag.writeInt(packet.consumption);
         tag.writeInt(packet.production);
     }
 	
-	public static ConsProdSyncPacket decode(PacketBuffer buf) {
+	public static ConsProdSyncPacket decode(FriendlyByteBuf buf) {
 		ConsProdSyncPacket scp = new ConsProdSyncPacket(buf.readBlockPos(), buf.readInt(), buf.readInt());
         return scp;
     }
@@ -52,7 +52,7 @@ public class ConsProdSyncPacket {
 		clientProduction = production;
     }
 	
-	public static void send(BlockPos pos, int consumption, int production, ServerPlayerEntity player) {
+	public static void send(BlockPos pos, int consumption, int production, ServerPlayer player) {
 		CreateAddition.Network.send(PacketDistributor.PLAYER.with(() -> player), new ConsProdSyncPacket(pos, consumption, production));
 	}
 }

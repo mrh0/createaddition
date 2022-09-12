@@ -4,11 +4,12 @@ import java.util.function.Supplier;
 
 import com.mrh0.createaddition.CreateAddition;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
+
 
 public class EnergyNetworkPacket {
 	private BlockPos pos;
@@ -25,13 +26,13 @@ public class EnergyNetworkPacket {
 		this.buff = buff;
 	}
 	
-	public static void encode(EnergyNetworkPacket packet, PacketBuffer tag) {
+	public static void encode(EnergyNetworkPacket packet, FriendlyByteBuf tag) {
         tag.writeBlockPos(packet.pos);
         tag.writeInt(packet.demand);
         tag.writeInt(packet.buff);
     }
 	
-	public static EnergyNetworkPacket decode(PacketBuffer buf) {
+	public static EnergyNetworkPacket decode(FriendlyByteBuf buf) {
 		EnergyNetworkPacket scp = new EnergyNetworkPacket(buf.readBlockPos(), buf.readInt(), buf.readInt());
         return scp;
     }
@@ -54,7 +55,7 @@ public class EnergyNetworkPacket {
 		clientSaturation = buff - demand;
     }
 	
-	public static void send(BlockPos pos, int demand, int buff, ServerPlayerEntity player) {
+	public static void send(BlockPos pos, int demand, int buff, ServerPlayer player) {
 		CreateAddition.Network.send(PacketDistributor.PLAYER.with(() -> player), new EnergyNetworkPacket(pos, demand, buff));
 	}
 }
