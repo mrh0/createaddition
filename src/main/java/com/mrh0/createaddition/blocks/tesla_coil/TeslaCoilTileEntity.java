@@ -196,11 +196,13 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			int energyRemoved = energy.internalConsumeEnergy(Math.min(CHARGE_RATE_RECIPE, recipe.getEnergy() - chargeAccumulator));
 			chargeAccumulator += energyRemoved;
 			if(chargeAccumulator >= recipe.getEnergy()) {
-				TransportedItemStack left = transported.copy();
-				left.stack.shrink(1);
-				List<TransportedItemStack> r = new ArrayList<>();
-				r.add(new TransportedItemStack(recipe.getResultItem().copy()));
-				handler.handleProcessingOnItem(transported, TransportedResult.convertToAndLeaveHeld(r, left));
+				TransportedItemStack remainingStack = transported.copy();
+				TransportedItemStack result = transported.copy();
+				result.stack = recipe.getResultItem().copy();
+				remainingStack.stack.shrink(1);
+				List<TransportedItemStack> outList = new ArrayList<>();
+				outList.add(result);
+				handler.handleProcessingOnItem(transported, TransportedResult.convertToAndLeaveHeld(outList, remainingStack));
 				chargeAccumulator = 0;
 			}
 			return true;
