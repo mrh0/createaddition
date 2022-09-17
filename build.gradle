@@ -48,7 +48,7 @@ repositories {
         }
     }
     maven { url = "https://maven.terraformersmc.com/" }
-    maven { url = "https://maven.cafeteria.dev" }
+    maven { url = "https://maven.cafeteria.dev/releases" }
     maven {
         name = 'Ladysnake Mods'
         url = 'https://ladysnake.jfrog.io/artifactory/mods'
