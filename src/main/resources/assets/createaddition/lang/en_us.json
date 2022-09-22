@@ -264,6 +264,8 @@
   	"death.attack.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",
   	"effect.createaddition.shocking.description": "Causes severely reduced movement speed",
 
-	"emi.category.create.rolling": "Rolling",
-	"emi.category.create.charging": "Charging"
+	"create.recipe.rolling": "Rolling",
+	"create.recipe.charging": "Charging",
+	"emi.category.createaddition.rolling": "Rolling",
+	"emi.category.createaddition.charging": "Charging"
 }
