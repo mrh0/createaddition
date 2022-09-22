@@ -233,5 +233,8 @@
 	
 	"effect.createaddition.shocking":"触电",
 	"death.attack.tesla_coil": "%1$s 受到了致命电击",
-  	"death.attack.tesla_coil.player": "%1$s 在与 %2$s 的战斗中受到了致命电击"
+  	"death.attack.tesla_coil.player": "%1$s 在与 %2$s 的战斗中受到了致命电击",
+
+	"emi.category.createaddition.rolling": "轧制",
+	"emi.category.createaddition.charging": "充能"
 }
