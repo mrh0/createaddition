@@ -75,6 +75,8 @@ dependencies {
 
     modImplementation("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
 
+    modImplementation("dev.emi:emi:${project.emi_version}")
+
     modImplementation("dev.architectury:architectury-fabric:${project.architectury_version}")
 
     modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")

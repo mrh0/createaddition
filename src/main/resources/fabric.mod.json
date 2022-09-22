@@ -30,6 +30,9 @@
     ],
     "jei_mod_plugin": [
       "com.mrh0.createaddition.compat.jei.CreateAdditionJEI"
+    ],
+    "emi": [
+      "com.mrh0.createaddition.compat.emi.CreateAdditionEMI"
     ]
   },
   "accessWidener": "ca.accesswidener",
