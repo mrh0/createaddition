@@ -74,7 +74,7 @@ public class Config {
 				.defineInRange("fe_conversion", 240, 0, Integer.MAX_VALUE);
 		
 		BASELINE_STRESS = COMMON_BUILDER.comment("Max stress for the Alternator and Electric Motor (in SU at 256 RPM).")
-				.defineInRange("baseline_stress", 8192, 0, Integer.MAX_VALUE);
+				.defineInRange("baseline_stress", 8192, 0, 16383);
 		COMMON_BUILDER.pop();
 		
 		
