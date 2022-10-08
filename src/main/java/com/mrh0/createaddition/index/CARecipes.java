@@ -11,7 +11,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.event.RegistryEvent;
 
 public class CARecipes {
     public static void register(RegistryEvent.Register<RecipeSerializer<?>> event) {

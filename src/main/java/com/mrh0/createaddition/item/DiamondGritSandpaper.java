@@ -10,7 +10,7 @@ import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 
 public class DiamondGritSandpaper extends SandPaperItem {
@@ -28,7 +28,7 @@ public class DiamondGritSandpaper extends SandPaperItem {
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 		consumer.accept(SimpleCustomRenderer.create(this, new SandPaperItemRenderer()));
 	}
 }

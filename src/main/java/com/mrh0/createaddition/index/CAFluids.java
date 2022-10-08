@@ -5,13 +5,13 @@ import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.tterrag.registrate.builders.FluidBuilder;
 import com.tterrag.registrate.util.entry.FluidEntry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 public class CAFluids {
@@ -52,7 +52,7 @@ public class CAFluids {
 					.build()
 					.register();*/
 	
-	private static class NoColorFluidAttributes extends FluidAttributes {
+	private static class NoColorFluidAttributes implements FluidBuilder.FluidTypeFactory {
 		protected NoColorFluidAttributes(Builder builder, Fluid fluid) {
 			super(builder, fluid);
 		}

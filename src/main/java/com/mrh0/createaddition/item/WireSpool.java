@@ -13,7 +13,6 @@ import com.mrh0.createaddition.index.CAItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -131,7 +130,7 @@ public class WireSpool extends Item {
 		CompoundTag nbt = stack.getTag();
     	super.appendHoverText(stack, worldIn, tooltip, flagIn);
     	if(hasPos(nbt))
-    		tooltip.add(new TranslatableComponent("item."+CreateAddition.MODID+".spool.nbt"));
+    		tooltip.add(Component.translatable("item."+CreateAddition.MODID+".spool.nbt"));
     }
 	
 	public static WireType getWireType(Item item) {

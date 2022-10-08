@@ -6,20 +6,20 @@ import com.mrh0.createaddition.network.ObservePacket;
 
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class GameEvents {
 	@SubscribeEvent
-	public static void worldTickEvent(TickEvent.WorldTickEvent evt) {
-		if(evt.world.isClientSide())
+	public static void worldTickEvent(TickEvent.LevelTickEvent evt) {
+		if(evt.level.isClientSide())
 			return;
 		if(evt.phase == Phase.END)
 			return;
-		EnergyNetworkManager.tickWorld(evt.world);
-		ConnectorMovementManager.tickWorld(evt.world);
+		EnergyNetworkManager.tickWorld(evt.level);
+		ConnectorMovementManager.tickWorld(evt.level);
 	}
 	
 	@SubscribeEvent
@@ -30,10 +30,10 @@ public class GameEvents {
 	}
 	
 	@SubscribeEvent
-	public static void loadEvent(WorldEvent.Load evt) {
-		if(evt.getWorld().isClientSide())
+	public static void loadEvent(LevelEvent.Load evt) {
+		if(evt.getLevel().isClientSide())
 			return;
-		new EnergyNetworkManager(evt.getWorld());
-		new ConnectorMovementManager(evt.getWorld());
+		new EnergyNetworkManager(evt.getLevel());
+		new ConnectorMovementManager(evt.getLevel());
 	}
 }

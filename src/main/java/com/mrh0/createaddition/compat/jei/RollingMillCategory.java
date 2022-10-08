@@ -9,6 +9,7 @@ import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 
@@ -34,9 +35,10 @@ public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 	}
 
 	@Override
-	public void draw(RollingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-		AllGuiTextures.JEI_ARROW.render(matrixStack, 85, 32);
-		AllGuiTextures.JEI_DOWN_ARROW.render(matrixStack, 43, 4);
-		rolling_mill.draw(matrixStack, 48, 27);
+	public void draw(RollingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX,
+			double mouseY) {
+		AllGuiTextures.JEI_ARROW.render(stack, 85, 32);
+		AllGuiTextures.JEI_DOWN_ARROW.render(stack, 43, 4);
+		rolling_mill.draw(stack, 48, 27);
 	}
 }
