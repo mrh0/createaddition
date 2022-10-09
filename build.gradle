@@ -161,15 +161,15 @@ dependencies {
 	compileOnly(fg.deobf("mezz.jei:jei-${jei_minecraft_version}-forge-api:${jei_version}"))
 	// at runtime, use the full JEI jar for Forge
 	runtimeOnly(fg.deobf("mezz.jei:jei-${jei_minecraft_version}-forge:${jei_version}"))
-    runtimeOnly fg.deobf("curse.maven:immersive-engineering-231951:3964014")
+    //runtimeOnly fg.deobf("curse.maven:immersive-engineering-231951:3964014")
 
-    implementation fg.deobf("curse.maven:create-328085:4011414")
+    //implementation fg.deobf("curse.maven:create-328085:4011414")
     //implementation fg.deobf("curse.maven:flywheel-486392:3934664")
 	//implementation fg.deobf("curse.maven:immersive-engineering-231951:3579169")
     implementation fg.deobf("curse.maven:cc-tweaked-282001:4013870")
-	implementation fg.deobf("curse.maven:applied-energistics-2-223794:4013348")
+	//implementation fg.deobf("curse.maven:applied-energistics-2-223794:4013348")
 	
-	runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:3736071")
+	runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:3996391")
 	
 	//runtimeOnly fg.deobf("curse.maven:tinkers-construct-74072:3389377")
 	//runtimeOnly fg.deobf("curse.maven:mantle-74924:3412365")

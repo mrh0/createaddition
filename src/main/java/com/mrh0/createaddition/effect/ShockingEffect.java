@@ -10,6 +10,6 @@ import net.minecraft.world.effect.MobEffectCategory;
 public class ShockingEffect extends MobEffect {
 	public ShockingEffect() {
 		super(MobEffectCategory.HARMFUL, 15453236);
-		setRegistryName(new ResourceLocation(CreateAddition.MODID, "shocking"));
+		//setRegistryName(new ResourceLocation(CreateAddition.MODID, "shocking"));
 	}
 }

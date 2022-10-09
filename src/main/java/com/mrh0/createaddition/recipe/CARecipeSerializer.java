@@ -1,5 +1,7 @@
 package com.mrh0.createaddition.recipe;
 
+import javax.annotation.Nonnull;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -15,10 +17,16 @@ public abstract class CARecipeSerializer <R extends Recipe<?>> implements Recipe
 	public abstract ItemStack getIcon();
 
 	@Override
-	public final R fromJson(ResourceLocation recipeId, JsonObject json) {
+	public final R fromJson(ResourceLocation recipeId, JsonObject json, IContext context) {
 		if(CraftingHelper.processConditions(json, "conditions", context))
-			return readFromJson(recipeId, json);
-		return readFromJson(recipeId, json);
+			return readFromJson(recipeId, json, context);
+		return null;
+	}
+	
+	@Override
+	public R fromJson(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject serializedRecipe)
+	{
+		return null;
 	}
 
 	protected ItemStack readOutput(JsonElement outputObject) {
@@ -27,5 +35,5 @@ public abstract class CARecipeSerializer <R extends Recipe<?>> implements Recipe
 		return null;
 	}
 
-	public abstract R readFromJson(ResourceLocation recipeId, JsonObject json);
+	public abstract R readFromJson(ResourceLocation recipeId, JsonObject json, IContext context);
 }

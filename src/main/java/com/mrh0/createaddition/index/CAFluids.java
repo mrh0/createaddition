@@ -3,6 +3,7 @@ package com.mrh0.createaddition.index;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.Create;
+import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.builders.FluidBuilder;
@@ -12,6 +13,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.fluids.FluidType.Properties;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 public class CAFluids {
@@ -19,56 +24,40 @@ public class CAFluids {
 			.creativeModeTab(() -> ModGroup.MAIN);
 	
 	public static FluidEntry<ForgeFlowingFluid.Flowing> SEED_OIL;
-	
-	/*public static final FluidEntry<ForgeFlowingFluid.Flowing> SEED_OIL =
-			REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition","fluid/seed_oil_still"), new ResourceLocation("createaddition","fluid/seed_oil_flow"),
-					NoColorFluidAttributes::new)//.standardFluid("seed_oil", NoColorFluidAttributes::new)
-					.attributes(b -> b.viscosity(2000)
-							.density(1400))
-					.properties(p -> p.levelDecreasePerBlock(2)
-							.tickRate(15)
-							.slopeFindDistance(6)
-							.explosionResistance(100f))
-					.source(ForgeFlowingFluid.Source::new)
-					.bucket()
-					.properties(p -> p.stacksTo(1))
-					.build()
-					.register();*/
-	
 	public static FluidEntry<ForgeFlowingFluid.Flowing> BIOETHANOL;
 	
-	/*public static final FluidEntry<ForgeFlowingFluid.Flowing> BIOETHANOL =
-			REGISTRATE.fluid("bioethanol", new ResourceLocation("createaddition","fluid/bioethanol_still"), new ResourceLocation("createaddition","fluid/bioethanol_flow"),
-					NoColorFluidAttributes::new)
-					.attributes(b -> b.viscosity(2500)
-							.density(1600))
-					.properties(p -> p.levelDecreasePerBlock(2)
-							.tickRate(15)
-							.slopeFindDistance(6)
-							.explosionResistance(100f))
-					.source(ForgeFlowingFluid.Source::new)
-					.bucket()
-					.properties(p -> p.stacksTo(1))
-					.build()
-					.register();*/
-	
-	private static class NoColorFluidAttributes implements FluidBuilder.FluidTypeFactory {
-		protected NoColorFluidAttributes(Builder builder, Fluid fluid) {
-			super(builder, fluid);
+
+	/**
+	 * (From Create)
+	 * Removing alpha from tint prevents optifine from forcibly applying biome
+	 * colors to modded fluids (Makes translucent fluids disappear)
+	 */
+	private static class NoColorFluidAttributes extends AllFluids.TintedFluidType {
+
+		public NoColorFluidAttributes(Properties properties, ResourceLocation stillTexture,
+			ResourceLocation flowingTexture) {
+			super(properties, stillTexture, flowingTexture);
 		}
 
 		@Override
-		public int getColor(BlockAndTintGetter world, BlockPos pos) {
+		protected int getTintColor(FluidStack stack) {
+			return NO_TINT;
+		}
+
+		@Override
+		public int getTintColor(FluidState state, BlockAndTintGetter world, BlockPos pos) {
 			return 0x00ffffff;
 		}
+
 	}
 	
 	public static void register() {
+		REGISTRATE.fluid();
 		var seedOil = REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition","fluid/seed_oil_still"), new ResourceLocation("createaddition","fluid/seed_oil_flow"),
-				NoColorFluidAttributes::new)//.standardFluid("seed_oil", NoColorFluidAttributes::new)
-				.attributes(b -> b.viscosity(2000)
+				NoColorFluidAttributes::new)
+				.properties(b -> b.viscosity(2000)
 						.density(1400))
-				.properties(p -> p.levelDecreasePerBlock(2)
+				.fluidProperties(p -> p.levelDecreasePerBlock(2)
 						.tickRate(15)
 						.slopeFindDistance(6)
 						.explosionResistance(100f))
@@ -81,9 +70,9 @@ public class CAFluids {
 		
 		var bioethanol = REGISTRATE.fluid("bioethanol", new ResourceLocation("createaddition","fluid/bioethanol_still"), new ResourceLocation("createaddition","fluid/bioethanol_flow"),
 				NoColorFluidAttributes::new)
-				.attributes(b -> b.viscosity(2500)
+				.properties(b -> b.viscosity(2500)
 						.density(1600))
-				.properties(p -> p.levelDecreasePerBlock(2)
+				.fluidProperties(p -> p.levelDecreasePerBlock(2)
 						.tickRate(15)
 						.slopeFindDistance(6)
 						.explosionResistance(100f))

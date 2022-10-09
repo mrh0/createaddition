@@ -8,6 +8,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.crafting.conditions.ICondition.IContext;
 
 public class RollingRecipeSerializer extends CARecipeSerializer<RollingRecipe>{
 
@@ -32,10 +33,9 @@ public class RollingRecipeSerializer extends CARecipeSerializer<RollingRecipe>{
 	}
 
 	@Override
-	public RollingRecipe readFromJson(ResourceLocation recipeId, JsonObject json) {
+	public RollingRecipe readFromJson(ResourceLocation recipeId, JsonObject json, IContext context) {
 		ItemStack output = readOutput(json.get("result"));
 		Ingredient input = Ingredient.fromJson(json.get("input"));
 		return new RollingRecipe(input, output, recipeId);
 	}
-
 }
