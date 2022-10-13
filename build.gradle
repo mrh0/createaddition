@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-version = '1.19.2-20221008a'
+version = '1.19.2-20221012a'
 group = 'com.mrh0.createaddition'
 archivesBaseName = 'createaddition'
 
