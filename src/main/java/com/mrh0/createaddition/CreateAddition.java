@@ -70,7 +70,6 @@ public class CreateAddition {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(MobEffect.class, CAEffects::register);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, CARecipes::register);
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -88,6 +87,7 @@ public class CreateAddition {
         CATileEntities.register();
         CAItems.register();
         CAFluids.register();
+        CAEffects.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {

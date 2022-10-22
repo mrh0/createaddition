@@ -1,4 +1,4 @@
-buildscript {
+/*buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
@@ -11,13 +11,14 @@ buildscript {
         classpath "org.spongepowered:mixingradle:${mixingradle_version}"
         classpath "org.parchmentmc:librarian:${librarian_version}"
     }
-}
+}*/
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply plugin: 'org.spongepowered.mixin'
+plugins {
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.+'
+}
+//apply plugin: 'org.spongepowered.mixin'
 
 version = '1.19.2-20221012a'
 group = 'com.mrh0.createaddition'
@@ -51,7 +52,7 @@ minecraft {
         client {
             workingDirectory project.file('run')
             
-            arg '-mixin.config=createaddition.mixins.json'
+            //arg '-mixin.config=createaddition.mixins.json'
 
             // Recommended logging data for a userdev environment
             // The markers can be added/remove as needed separated by commas.
@@ -78,7 +79,7 @@ minecraft {
         server {
             workingDirectory project.file('run')
             
-            arg '-mixin.config=createaddition.mixins.json'
+            //arg '-mixin.config=createaddition.mixins.json'
 
             property 'forge.logging.markers', 'REGISTRIES'
 
@@ -198,16 +199,16 @@ dependencies {
 	
 	//runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3203659")
 	
-	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+	//annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 }
 
-mixin {
+/*mixin {
     // add sourceSets.main, 'createaddition.refmap.json'
     config 'createaddition.mixins.json'
 
     debug.verbose = true
     debug.export = true
-}
+}*/
 
 // Example for how to get properties into the manifest for reading at runtime.
 jar {
