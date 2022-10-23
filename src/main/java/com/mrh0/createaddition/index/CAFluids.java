@@ -52,7 +52,6 @@ public class CAFluids {
 	}
 	
 	public static void register() {
-		REGISTRATE.fluid();
 		var seedOil = REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition","fluid/seed_oil_still"), new ResourceLocation("createaddition","fluid/seed_oil_flow"),
 				NoColorFluidAttributes::new)
 				.properties(b -> b.viscosity(2000)

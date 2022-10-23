@@ -1,26 +1,25 @@
-/*buildscript {
+buildscript {
     repositories {
+        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
-        jcenter()
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
         maven { url = 'https://maven.parchmentmc.org' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${forgegradle_version}", changing: false
-        classpath "org.spongepowered:mixingradle:${mixingradle_version}"
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${forgegradle_version}", changing: true
         classpath "org.parchmentmc:librarian:${librarian_version}"
+        classpath "org.spongepowered:mixingradle:${mixingradle_version}"
     }
-}*/
-
-plugins {
-    id 'eclipse'
-    id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
 }
-//apply plugin: 'org.spongepowered.mixin'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
 
-version = '1.19.2-20221012a'
+version = '1.19.2-20221023a'
 group = 'com.mrh0.createaddition'
 archivesBaseName = 'createaddition'
 
@@ -42,7 +41,7 @@ minecraft {
     //
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'official', version: '1.19.2'
+    mappings channel: 'parchment', version: "${parchment_version}-${minecraft_version}"
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -163,8 +162,8 @@ repositories {
         }
     }
     
-    maven { url = 'https://maven.parchmentmc.org' }
-    maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
+    //maven { url = 'https://maven.parchmentmc.org' }
+    //maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
 }
 
 dependencies {

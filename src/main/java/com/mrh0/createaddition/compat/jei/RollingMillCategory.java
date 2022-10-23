@@ -1,10 +1,6 @@
 package com.mrh0.createaddition.compat.jei;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
