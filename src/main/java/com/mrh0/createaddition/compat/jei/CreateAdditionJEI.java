@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.compat.jei.CreateJEI;
@@ -78,8 +79,10 @@ public class CreateAdditionJEI implements IModPlugin {
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		ALL.forEach(c -> c.registerCatalysts(registration));
 		
+		registration.getJeiHelpers().getRecipeType(new ResourceLocation("create", "sandpaper_polishing")).ifPresent(type -> {
+			registration.addRecipeCatalyst(new ItemStack(CAItems.DIAMOND_GRIT_SANDPAPER.get()), type);
+		});
 		
-		//registration.addRecipeCatalyst(new ItemStack(CAItems.DIAMOND_GRIT_SANDPAPER.get()), null);
 	}
 	
 	private <T extends Recipe<?>> CategoryBuilder<T> builder(Class<? extends T> recipeClass) {
