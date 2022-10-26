@@ -252,6 +252,8 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	
 	@Override
 	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+		if(pos == null || side == null || state == null || world == null)
+			return false;
 		return !state.getValue(VERTICAL).booleanValue() && side.getAxis() != state.getValue(HORIZONTAL_FACING).getAxis();
 	}
 
