@@ -4,6 +4,7 @@ import com.mrh0.createaddition.blocks.alternator.AlternatorTileEntity;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.*;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.*;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillTileEntity;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilTileEntity;
@@ -65,6 +66,12 @@ public class CATileEntities {
 	public static final BlockEntityEntry<TeslaCoilTileEntity> TESLA_COIL = CreateAddition.registrate()
 			.tileEntity("tesla_coil", TeslaCoilTileEntity::new)
 			.validBlocks(CABlocks.TESLA_COIL)
+			.register();
+	
+	public static final BlockEntityEntry<LiquidBlazeBurnerTileEntity> LIQUID_BLAZE_BURNER = CreateAddition.registrate()
+			.tileEntity("liquid_blaze_burner", LiquidBlazeBurnerTileEntity::new)
+			.validBlocks(CABlocks.LIQUID_BLAZE_BURNER)
+			.renderer(() -> LiquidBlazeBurnerRenderer::new)
 			.register();
 	
 	public static void register() {}

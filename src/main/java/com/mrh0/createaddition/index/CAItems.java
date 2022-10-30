@@ -114,12 +114,10 @@ public class CAItems {
 			REGISTRATE.item("cake_base_baked", HiddenIngredientItem::new)
 				.register();
 	
-	/*public static final ItemEntry<WireSpool> DEVTOOL =
-			REGISTRATE.item("devtool", WireSpool::new)
-				.properties((p) -> p.maxStackSize(1))
-				.register();*/
-	
-	
+	public static final ItemEntry<Item> STRAW =
+			REGISTRATE.item("straw", Item::new)
+			.properties(p -> p.stacksTo(16))
+			.register();
 	
 	public static void register() {
 		Create.registrate().addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);

@@ -27,6 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
 import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
@@ -42,6 +43,9 @@ import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.network.RemoveConnectorPacket;
+import com.simibubi.create.content.contraptions.fluids.tank.BoilerHeaters;
+import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.foundation.block.BlockStressValues;
 import com.simibubi.create.foundation.config.AllConfigs;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -95,6 +99,19 @@ public class CreateAddition {
     private void setup(final FMLCommonSetupEvent event) {
     	CAPotatoCannonProjectiles.register();
     	BlockStressValues.registerProvider(MODID, AllConfigs.SERVER.kinetics.stressValues);
+    	BoilerHeaters.registerHeater(CABlocks.LIQUID_BLAZE_BURNER.get(), (level, pos, state) -> {
+    		HeatLevel value = state.getValue(LiquidBlazeBurner.HEAT_LEVEL);
+			if (value == HeatLevel.NONE) {
+				return -1;
+			}
+			if (value == HeatLevel.SEETHING) {
+				return 2;
+			}
+			if (value.isAtLeast(HeatLevel.FADING)) {
+				return 1;
+			}
+			return 0;
+    	});
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
