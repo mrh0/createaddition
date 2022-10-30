@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.liquid_blaze_burner;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -10,6 +11,7 @@ import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
+import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.processing.BasinTileEntity;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
@@ -17,6 +19,7 @@ import com.simibubi.create.foundation.block.ITE;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -197,7 +200,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 		return res.getResult() == InteractionResult.SUCCESS ? InteractionResult.SUCCESS : InteractionResult.PASS;*/
 	}
 
-	public static InteractionResultHolder<ItemStack> tryInsert(BlockState state, Level world, BlockPos pos,
+	/*public static InteractionResultHolder<ItemStack> tryInsert(BlockState state, Level world, BlockPos pos,
 		ItemStack stack, boolean doNotConsume, boolean forceOverflow, boolean simulate) {
 		if (!state.hasBlockEntity())
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
@@ -223,7 +226,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 			return InteractionResultHolder.success(container);
 		}
 		return InteractionResultHolder.success(ItemStack.EMPTY);
-	}
+	}*/
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {

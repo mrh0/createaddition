@@ -36,6 +36,7 @@ import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItemProperties;
 import com.mrh0.createaddition.index.CAItems;
+import com.mrh0.createaddition.index.CAPartials;
 import com.mrh0.createaddition.index.CAPonder;
 import com.mrh0.createaddition.index.CAPotatoCannonProjectiles;
 import com.mrh0.createaddition.index.CARecipes;
@@ -121,6 +122,7 @@ public class CreateAddition {
         RenderType cutout = RenderType.cutoutMipped();       
 		
         ItemBlockRenderTypes.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
+        CAPartials.init();
     }
     
     public void postInit(FMLLoadCompleteEvent evt) {

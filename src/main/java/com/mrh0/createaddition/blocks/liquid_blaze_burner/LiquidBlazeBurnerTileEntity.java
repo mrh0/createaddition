@@ -6,12 +6,15 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.mrh0.createaddition.network.IObserveTileEntity;
+import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags.AllItemTags;
 import com.simibubi.create.content.contraptions.fluids.tank.FluidTankBlock;
+import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
@@ -28,6 +31,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -46,9 +51,10 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
+public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IObserveTileEntity {
 	public static final int MAX_HEAT_CAPACITY = 10000;
 
 	protected FuelType activeFuel;
@@ -72,6 +78,9 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
 
 		headAngle.startWithValue((AngleHelper.horizontalAngle(state.getOptionalValue(LiquidBlazeBurner.FACING)
 			.orElse(Direction.SOUTH)) + 180) % 360);
+		
+		tankInventory = createInventory();
+		fluidCapability = LazyOptional.of(() -> tankInventory);
 	}
 	
 	
@@ -114,6 +123,42 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
 		return super.getCapability(cap, side);
 	}
 	
+	public boolean first = true;
+	public void burningTick() {
+		if(level.isClientSide())
+			return;
+		
+		if(first)
+			update(tankInventory.getFluid());
+		first = false;
+		
+		if(remainingBurnTime < 1)
+		
+		if(recipeCache.isEmpty())
+			return;
+		
+		if(tankInventory.getFluidAmount() < 100)
+			return;
+		if(remainingBurnTime > MAX_HEAT_CAPACITY)
+			return;
+		
+		remainingBurnTime += recipeCache.get().getBurnTime() / 10;
+		tankInventory.drain(100, FluidAction.EXECUTE);
+		activeFuel = FuelType.NORMAL;
+
+		HeatLevel prev = getHeatLevelFromBlock();
+		//playSound();
+		//updateBlockState();
+
+		if (prev != getHeatLevelFromBlock()) {
+			level.playSound(null, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
+				.125f + level.random.nextFloat() * .125f, 1.15f - level.random.nextFloat() * .25f);
+			
+			spawnParticleBurst(activeFuel == FuelType.SPECIAL);
+		}
+
+	}
+	
 
 	public FuelType getActiveFuel() {
 		return activeFuel;
@@ -137,6 +182,8 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
 				spawnParticles(getHeatLevelFromBlock(), 1);
 			return;
 		}
+		
+		burningTick();
 
 		if (isCreative)
 			return;
@@ -241,7 +288,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
 	 * @return true if the heater updated its burn time and an item should be
 	 *         consumed
 	 */
-	protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate) {
+	/*protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate) {
 		if (isCreative)
 			return false;
 
@@ -316,7 +363,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
 
 	public boolean isCreativeFuel(ItemStack stack) {
 		return AllItems.CREATIVE_BLAZE_CAKE.isIn(stack);
-	}
+	}*/
 
 	public boolean isValidBlockAbove() {
 		BlockState blockState = level.getBlockState(worldPosition.above());
@@ -401,4 +448,14 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
 		NONE, NORMAL, SPECIAL
 	}
 
+	@Override
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		ObservePacket.send(worldPosition, 0);
+		return containedFluidTooltip(tooltip, isPlayerSneaking, this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
+	}
+
+	@Override
+	public void onObserved(ServerPlayer player, ObservePacket pack) {
+		causeBlockUpdate();
+	}
 }
