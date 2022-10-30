@@ -68,12 +68,12 @@ public class LiquidBlazeBurnerRenderer extends SafeTileEntityRenderer<LiquidBlaz
 		Level level = context.world;
 		float horizontalAngle = AngleHelper.rad(headAngle.getValue(AnimationTickHolder.getPartialTicks(level)));
 		boolean drawGoggles = context.tileData.contains("Goggles");
-		boolean drawHat = conductor || context.tileData.contains("TrainHat");
+		//boolean drawHat = conductor || context.tileData.contains("TrainHat");
 		int hashCode = context.hashCode();
 
 		renderShared(matrices.getViewProjection(), matrices.getModel(), bufferSource,
 			level, state, heatLevel, 0, horizontalAngle,
-			false, drawGoggles, drawHat, hashCode);
+			false, drawGoggles, true, hashCode);
 	}
 
 	private static void renderShared(PoseStack ms, @Nullable PoseStack modelTransform, MultiBufferSource bufferSource,
@@ -153,7 +153,7 @@ public class LiquidBlazeBurnerRenderer extends SafeTileEntityRenderer<LiquidBlaz
 		}
 
 		if (drawHat) {
-			SuperByteBuffer hatBuffer = CachedBufferer.partial(AllBlockPartials.TRAIN_HAT, blockState);
+			SuperByteBuffer hatBuffer = CachedBufferer.partial(AllBlockPartials.PECULIAR_BELL, blockState);
 			if (modelTransform != null)
 				hatBuffer.transform(modelTransform);
 			hatBuffer.translate(0, headY, 0);

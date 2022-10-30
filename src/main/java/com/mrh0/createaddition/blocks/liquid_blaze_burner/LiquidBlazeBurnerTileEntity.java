@@ -1,13 +1,20 @@
 package com.mrh0.createaddition.blocks.liquid_blaze_burner;
 
 import java.util.List;
+import java.util.Optional;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
+import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags.AllItemTags;
 import com.simibubi.create.content.contraptions.fluids.tank.FluidTankBlock;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.utility.AngleHelper;
@@ -26,12 +33,20 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
 	public static final int MAX_HEAT_CAPACITY = 10000;
@@ -43,6 +58,8 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
 	protected boolean isCreative;
 	protected boolean goggles;
 	protected boolean hat;
+	
+	
 
 	public LiquidBlazeBurnerTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -56,6 +73,47 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
 		headAngle.startWithValue((AngleHelper.horizontalAngle(state.getOptionalValue(LiquidBlazeBurner.FACING)
 			.orElse(Direction.SOUTH)) + 180) % 360);
 	}
+	
+	
+	// Custom fluid handling
+	protected LazyOptional<IFluidHandler> fluidCapability;
+	protected FluidTank tankInventory;
+	
+	private Optional<LiquidBurningRecipe> recipeCache = Optional.empty();
+	private Fluid lastFluid = null;
+	private int updateTimeout = 10;
+	private boolean changed = true;
+	
+	protected SmartFluidTank createInventory() {
+		return new SmartFluidTank(4000, this::onFluidStackChanged);
+	}
+
+	protected void onFluidStackChanged(FluidStack newFluidStack) {
+		if (!hasLevel())
+			return;
+		update(newFluidStack);
+	}
+	
+	private void update(FluidStack stack) {
+		if(level.isClientSide())
+			return;
+		if(stack.getFluid() != lastFluid)
+			recipeCache = find(stack, level);
+		lastFluid = stack.getFluid();
+		changed = true;
+	}
+	
+	public Optional<LiquidBurningRecipe> find(FluidStack stack, Level world) {
+		return world.getRecipeManager().getRecipeFor(LiquidBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
+	}
+	
+	@Override
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+			return fluidCapability.cast();
+		return super.getCapability(cap, side);
+	}
+	
 
 	public FuelType getActiveFuel() {
 		return activeFuel;
@@ -148,6 +206,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
 			compound.putBoolean("Goggles", true);
 		if (hat)
 			compound.putBoolean("TrainHat", true);
+		compound.put("TankContent", tankInventory.writeToNBT(new CompoundTag()));
 		super.write(compound, clientPacket);
 	}
 
@@ -158,6 +217,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity {
 		isCreative = compound.getBoolean("isCreative");
 		goggles = compound.contains("Goggles");
 		hat = compound.contains("TrainHat");
+		tankInventory.readFromNBT(compound.getCompound("TankContent"));
 		super.read(compound, clientPacket);
 	}
 

@@ -1,34 +1,34 @@
 package com.mrh0.createaddition.blocks.liquid_blaze_burner;
 
+import java.util.Optional;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
 import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.processing.BasinTileEntity;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.FlintAndSteelItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -45,6 +45,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE<LiquidBlazeBurnerTileEntity>, IWrenchable {
 
@@ -102,7 +108,44 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
 		BlockHitResult blockRayTraceResult) {
-		ItemStack heldItem = player.getItemInHand(hand);
+		
+		
+		if (world.isClientSide())
+			return InteractionResult.CONSUME;
+		BlockEntity tileentity = world.getBlockEntity(pos);
+		if (tileentity instanceof LiquidBlazeBurnerTileEntity) {
+			LiquidBlazeBurnerTileEntity cbte = (LiquidBlazeBurnerTileEntity) tileentity;
+			ItemStack held = player.getMainHandItem();
+			if (!(held.getItem() instanceof BucketItem))
+				return InteractionResult.SUCCESS;
+			LazyOptional<IFluidHandlerItem> cap = held
+					.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+			if (!cap.isPresent())
+				return InteractionResult.SUCCESS;
+			IFluidHandlerItem handler = cap.orElse(null);
+			if (handler.getFluidInTank(0).isEmpty())
+				return InteractionResult.CONSUME;
+			FluidStack stack = handler.getFluidInTank(0);
+			Optional<LiquidBurningRecipe> recipe = cbte.find(stack, world);
+			if (!recipe.isPresent())
+				return InteractionResult.SUCCESS;
+
+			LazyOptional<IFluidHandler> tecap = cbte.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+			if (!tecap.isPresent())
+				return InteractionResult.SUCCESS;
+			IFluidHandler tehandler = tecap.orElse(null);
+			if (tehandler.getTankCapacity(0) - tehandler.getFluidInTank(0).getAmount() < 1000)
+				return InteractionResult.SUCCESS;
+			tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), FluidAction.EXECUTE);
+			if (!player.isCreative())
+				player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
+			player.playSound(SoundEvents.BUCKET_EMPTY, 1f, 1f);
+		}
+		return InteractionResult.PASS;
+		
+		
+		
+		/*ItemStack heldItem = player.getItemInHand(hand);
 		HeatLevel heat = state.getValue(HEAT_LEVEL);
 
 		if (AllItems.GOGGLES.isIn(heldItem) && heat != HeatLevel.NONE)
@@ -151,7 +194,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 			}
 		}
 
-		return res.getResult() == InteractionResult.SUCCESS ? InteractionResult.SUCCESS : InteractionResult.PASS;
+		return res.getResult() == InteractionResult.SUCCESS ? InteractionResult.SUCCESS : InteractionResult.PASS;*/
 	}
 
 	public static InteractionResultHolder<ItemStack> tryInsert(BlockState state, Level world, BlockPos pos,
