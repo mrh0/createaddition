@@ -17,6 +17,7 @@
 	"createaddition.recipe.rolling": "Rolling",
 	"createaddition.recipe.rolling.sequence": "Rolling in Mill",
 	"createaddition.recipe.charging": "Charging",
+	"createaddition.recipe.liquid_burning": "Liquid Burning",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
 	
@@ -50,6 +51,8 @@
 	
 	"item.createaddition.cake_base": "Cake Base",
 	"item.createaddition.cake_base_baked": "Baked Cake Base",
+	
+	"item.createaddition.straw": "Straw",
 	
 	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
 	"item.createaddition.seed_oil_bucket.tooltip": "SEED_OIL_BUCKET",
@@ -146,6 +149,8 @@
 	
 	"block.createaddition.seed_oil": "Seed Oil",
 	"block.createaddition.bioethanol": "Bioethanol",
+	
+	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
 	
 	"block.createaddition.tesla_coil": "Tesla Coil",
 	

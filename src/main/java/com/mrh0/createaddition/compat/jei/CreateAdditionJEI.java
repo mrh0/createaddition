@@ -13,7 +13,9 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
+import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.compat.jei.CreateJEI;
 import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.compat.jei.EmptyBackground;
@@ -65,6 +67,13 @@ public class CreateAdditionJEI implements IModPlugin {
 				.itemIcon(CABlocks.TESLA_COIL.get())
 				.emptyBackground(177, 53)
 				.build("charging", ChargingCategory::new));
+		
+		ALL.add(builder(LiquidBurningRecipe.class)
+				.addTypedRecipes(() -> LiquidBurningRecipe.TYPE)
+				.catalyst(AllBlocks.BLAZE_BURNER::get)
+				.itemIcon(AllBlocks.BLAZE_BURNER.get())
+				.emptyBackground(177, 53)
+				.build("liquid_burning", LiquidBurningCategory::new));
 		
 		ALL.forEach(registration::addRecipeCategories);
 	}

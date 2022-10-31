@@ -4,6 +4,7 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipeSerializer;
 import com.mrh0.createaddition.recipe.conditions.FluidTagEmptyCondition;
+import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipeSerializer;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipeProcessingFactory;
 import com.mrh0.createaddition.recipe.rolling.SequencedAssemblyRollingRecipeSerializer;
@@ -28,6 +29,9 @@ public class CARecipes {
 	
 	static RegistryObject<RecipeSerializer<?>> CHARGING = TYPES.register("charging", () ->
 		new ChargingRecipeSerializer());
+	
+	static RegistryObject<RecipeSerializer<?>> LIQUID_BURNING = TYPES.register("liquid_burning", () ->
+	new LiquidBurningRecipeSerializer());
 	
     public static void register(IEventBus event) {
     	

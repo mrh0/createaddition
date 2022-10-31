@@ -113,7 +113,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 		BlockHitResult blockRayTraceResult) {
 		
 		
-		if (world.isClientSide())
+		/*if (world.isClientSide())
 			return InteractionResult.CONSUME;
 		BlockEntity tileentity = world.getBlockEntity(pos);
 		if (tileentity instanceof LiquidBlazeBurnerTileEntity) {
@@ -144,11 +144,11 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 				player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
 			player.playSound(SoundEvents.BUCKET_EMPTY, 1f, 1f);
 		}
-		return InteractionResult.PASS;
+		return InteractionResult.PASS;*/
 		
 		
 		
-		/*ItemStack heldItem = player.getItemInHand(hand);
+		ItemStack heldItem = player.getItemInHand(hand);
 		HeatLevel heat = state.getValue(HEAT_LEVEL);
 
 		if (AllItems.GOGGLES.isIn(heldItem) && heat != HeatLevel.NONE)
@@ -197,10 +197,10 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 			}
 		}
 
-		return res.getResult() == InteractionResult.SUCCESS ? InteractionResult.SUCCESS : InteractionResult.PASS;*/
+		return res.getResult() == InteractionResult.SUCCESS ? InteractionResult.SUCCESS : InteractionResult.PASS;
 	}
 
-	/*public static InteractionResultHolder<ItemStack> tryInsert(BlockState state, Level world, BlockPos pos,
+	public static InteractionResultHolder<ItemStack> tryInsert(BlockState state, Level world, BlockPos pos,
 		ItemStack stack, boolean doNotConsume, boolean forceOverflow, boolean simulate) {
 		if (!state.hasBlockEntity())
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
@@ -226,7 +226,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 			return InteractionResultHolder.success(container);
 		}
 		return InteractionResultHolder.success(ItemStack.EMPTY);
-	}*/
+	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {

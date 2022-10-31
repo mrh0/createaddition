@@ -171,6 +171,28 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	public boolean isCreative() {
 		return isCreative;
 	}
+	
+	protected void applyCreativeFuel() {
+		activeFuel = FuelType.NONE;
+		remainingBurnTime = 0;
+		isCreative = true;
+
+		HeatLevel next = getHeatLevelFromBlock().nextActiveLevel();
+
+		if (level.isClientSide) {
+			spawnParticleBurst(next.isAtLeast(HeatLevel.SEETHING));
+			return;
+		}
+
+		playSound();
+		if (next == HeatLevel.FADING)
+			next = next.nextActiveLevel();
+		setBlockHeat(next);
+	}
+
+	public boolean isCreativeFuel(ItemStack stack) {
+		return AllItems.CREATIVE_BLAZE_CAKE.isIn(stack);
+	}
 
 	@Override
 	public void tick() {
