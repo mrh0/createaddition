@@ -37,6 +37,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -52,6 +53,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IObserveTileEntity {
@@ -171,28 +173,6 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	public boolean isCreative() {
 		return isCreative;
 	}
-	
-	protected void applyCreativeFuel() {
-		activeFuel = FuelType.NONE;
-		remainingBurnTime = 0;
-		isCreative = true;
-
-		HeatLevel next = getHeatLevelFromBlock().nextActiveLevel();
-
-		if (level.isClientSide) {
-			spawnParticleBurst(next.isAtLeast(HeatLevel.SEETHING));
-			return;
-		}
-
-		playSound();
-		if (next == HeatLevel.FADING)
-			next = next.nextActiveLevel();
-		setBlockHeat(next);
-	}
-
-	public boolean isCreativeFuel(ItemStack stack) {
-		return AllItems.CREATIVE_BLAZE_CAKE.isIn(stack);
-	}
 
 	@Override
 	public void tick() {
@@ -306,17 +286,47 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		notifyUpdate();
 	}
 
+	private boolean tryUpdateLiquid(ItemStack itemStack) {
+		LazyOptional<IFluidHandlerItem> cap = itemStack
+				.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+		if (!cap.isPresent())
+			return false;
+		IFluidHandlerItem handler = cap.orElse(null);
+		if (handler.getFluidInTank(0).isEmpty())
+			return false;
+		FluidStack stack = handler.getFluidInTank(0);
+		Optional<LiquidBurningRecipe> recipe = find(stack, level);
+		if (!recipe.isPresent())
+			return false;
+
+		LazyOptional<IFluidHandler> tecap = getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+		if (!tecap.isPresent())
+			return false;
+		IFluidHandler tehandler = tecap.orElse(null);
+		if (tehandler.getTankCapacity(0) - tehandler.getFluidInTank(0).getAmount() < 1000)
+			return false;
+		tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), FluidAction.EXECUTE);
+		//if (!player.isCreative())
+		//	player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
+		level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
+		return true;
+	}
+	
 	/**
 	 * @return true if the heater updated its burn time and an item should be
 	 *         consumed
 	 */
-	/*protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate) {
+	protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate) {
 		if (isCreative)
 			return false;
 
 		FuelType newFuel = FuelType.NONE;
 		int newBurnTime;
 
+		// Liquid Fluid Logic
+		if(tryUpdateLiquid(itemStack))
+			return true;
+		
 		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
 			newBurnTime = 1000;
 			newFuel = FuelType.SPECIAL;
@@ -385,7 +395,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 
 	public boolean isCreativeFuel(ItemStack stack) {
 		return AllItems.CREATIVE_BLAZE_CAKE.isIn(stack);
-	}*/
+	}
 
 	public boolean isValidBlockAbove() {
 		BlockState blockState = level.getBlockState(worldPosition.above());

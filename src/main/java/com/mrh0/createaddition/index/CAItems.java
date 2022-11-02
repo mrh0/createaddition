@@ -130,6 +130,6 @@ public class CAItems {
 		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
 		
-		
+		Create.registrate().addToSection(STRAW, AllSections.MATERIALS);
 	}
 }

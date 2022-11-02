@@ -1,12 +1,11 @@
 package com.mrh0.createaddition.ponder;
 
-import com.mojang.math.Vector3d;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.foundation.ponder.ElementLink;
+import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
@@ -15,7 +14,7 @@ import com.simibubi.create.foundation.utility.Pointing;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -205,7 +204,7 @@ public class PonderScenes {
 		scene.idle(40);*/
 	}
 	
-	public static void heater(SceneBuilder scene, SceneBuildingUtil util) {
+	/*public static void heater(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("heater", "Using electric energy to heat a furnace");
 		scene.configureBasePlate(0, 0, 5);
 		scene.world.showSection(util.select.layer(0), Direction.UP);
@@ -240,7 +239,7 @@ public class PonderScenes {
 		.placeNearTarget()
 		.pointAt(util.vector.blockSurface(furnace, Direction.NORTH));
 		scene.idle(60);
-	}
+	}*/
 	
 	public static void ccMotor(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("cc_electric_motor", "Using Computercraft to control an Electric Motor");
@@ -347,5 +346,38 @@ public class PonderScenes {
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(teslacoil));
 		scene.idle(80);
+	}
+	
+	public static void liquidBlazeBurner(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("liquid_blaze_burner", "Liquid Fuel Burning");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+		scene.idle(5);
+		//scene.world.setBlock(util.grid.at(3, 2, 2), Blocks.WATER.defaultBlockState(), false);
+
+		BlockPos burner = util.grid.at(2, 1, 2);
+		BlockPos[] blocks = {
+				util.grid.at(1, 1, 2),
+				util.grid.at(0, 1, 2),
+				util.grid.at(0, 2, 2),
+				util.grid.at(0, 3, 2)
+		};
+		scene.world.showSection(util.select.position(burner), Direction.DOWN);
+		scene.idle(5);
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(burner), Pointing.DOWN).rightClick()
+				.withItem(new ItemStack(CAItems.STRAW.get())), 15);
+		scene.world.setBlock(burner, CABlocks.LIQUID_BLAZE_BURNER.getDefaultState().setValue(LiquidBlazeBurner.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), false);
+		scene.overlay.showText(70)
+			.attachKeyFrame()
+			.text("The Tesla Coil is also able to Shock nearby Players and Mobs")
+			.placeNearTarget()
+			.pointAt(util.vector.topOf(burner));
+		scene.idle(80);
+		
+		for (int i = 0; i < blocks.length; i++) {
+			scene.idle(5);
+			scene.world.showSection(util.select.position(blocks[i]), Direction.EAST);
+		}
+		
 	}
 }
