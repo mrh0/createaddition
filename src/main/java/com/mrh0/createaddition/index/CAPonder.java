@@ -16,8 +16,6 @@ public class CAPonder {
 	static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(CreateAddition.MODID);
 	
 	public static void register() {
-		//PonderRegistry..(CreateAddition.MODID);
-
 		HELPER.addStoryBoard(CABlocks.ELECTRIC_MOTOR, "electric_motor", PonderScenes::electricMotor, PonderTag.KINETIC_SOURCES, ELECTRIC);
 		HELPER.addStoryBoard(CABlocks.ALTERNATOR, "alternator", PonderScenes::alternator, PonderTag.KINETIC_APPLIANCES, ELECTRIC);
 		HELPER.addStoryBoard(CABlocks.ROLLING_MILL, "rolling_mill", PonderScenes::rollingMill, PonderTag.KINETIC_APPLIANCES);
@@ -45,7 +43,5 @@ public class CAPonder {
 			.add(CABlocks.ELECTRIC_MOTOR)
 			.add(CABlocks.ALTERNATOR)
 			.add(CABlocks.TESLA_COIL);
-
-		//PonderRegistry.endRegistration();
 	}
 }
