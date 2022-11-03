@@ -3,6 +3,7 @@ package com.mrh0.createaddition.ponder;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
@@ -364,20 +365,36 @@ public class PonderScenes {
 		};
 		scene.world.showSection(util.select.position(burner), Direction.DOWN);
 		scene.idle(5);
+		scene.overlay.showText(50)
+		.attachKeyFrame()
+		.text("Giving the Blaze Burner a Straw")
+		.placeNearTarget()
+		.pointAt(util.vector.topOf(burner));
+		scene.idle(10);
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(burner), Pointing.DOWN).rightClick()
-				.withItem(new ItemStack(CAItems.STRAW.get())), 15);
+				.withItem(new ItemStack(CAItems.STRAW.get())), 40);
 		scene.world.setBlock(burner, CABlocks.LIQUID_BLAZE_BURNER.getDefaultState().setValue(LiquidBlazeBurner.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), false);
-		scene.overlay.showText(70)
+		scene.idle(60);
+		scene.overlay.showText(50)
 			.attachKeyFrame()
-			.text("The Tesla Coil is also able to Shock nearby Players and Mobs")
+			.text("will allow it to accept liquid fuels by Buckets,")
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(burner));
-		scene.idle(80);
+		scene.idle(10);
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(burner), Pointing.DOWN).rightClick()
+				.withItem(new ItemStack(CAFluids.BIOETHANOL.getBucket().get())), 40);
+		scene.idle(60);
+		scene.overlay.showText(50)
+			.attachKeyFrame()
+			.text("- or by pipes.")
+			.placeNearTarget()
+			.pointAt(util.vector.topOf(burner));
+		scene.idle(10);
 		
 		for (int i = 0; i < blocks.length; i++) {
 			scene.idle(5);
 			scene.world.showSection(util.select.position(blocks[i]), Direction.EAST);
 		}
-		
+		scene.idle(20);
 	}
 }

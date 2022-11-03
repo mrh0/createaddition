@@ -196,6 +196,11 @@
 	"createaddition.ponder.tesla_coil_hurt.text_2": "This can be activated with a Redstone signal",
 	"createaddition.ponder.tesla_coil_hurt.text_3": "Prepare to be Shocked!",
 	
+	"createaddition.ponder.liquid_blaze_burner.header": "Liquid Fuel Burning",
+	"createaddition.ponder.liquid_blaze_burner.text_1": "Giving the Blaze Burner a Straw",
+	"createaddition.ponder.liquid_blaze_burner.text_2": "will allow it to accept liquid fuels by Buckets",
+	"createaddition.ponder.liquid_blaze_burner.text_3": "- or by pipes.",
+	
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",
   	"death.attack.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",

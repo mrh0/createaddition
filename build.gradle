@@ -19,7 +19,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.19.2-20221024a'
+version = '1.19.2-20221103a'
 group = 'com.mrh0.createaddition'
 archivesBaseName = 'createaddition'
 
