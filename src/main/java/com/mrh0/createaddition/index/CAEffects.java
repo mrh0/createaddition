@@ -13,10 +13,8 @@ import com.mrh0.createaddition.effect.ShockingEffect;
 
 
 public class CAEffects {
-	public static MobEffect SHOCKING;
-	
 	public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, CreateAddition.MODID);
-	public static final RegistryObject<MobEffect> FLIGHT_EFFECT = EFFECTS.register("shocking", () -> new ShockingEffect()
+	public static final RegistryObject<MobEffect> SHOCKING = EFFECTS.register("shocking", () -> new ShockingEffect()
 			.addAttributeModifier(Attributes.MOVEMENT_SPEED, "6ed2d177-af97-423c-84f5-1f80c364639f", (double)-100f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 	
 	public static void register(IEventBus bus) {

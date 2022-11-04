@@ -108,6 +108,8 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoil.FACING).getOpposite());
 		List<LivingEntity> ents = getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(HURT_RANGE));
 		for(LivingEntity e : ents) {
+			if(e == null)
+				return;
 			int dmg = HURT_DMG_MOB;
 			int time = HURT_EFFECT_TIME_MOB;
 			if(e instanceof Player) {
@@ -117,7 +119,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			if(dmg > 0)
 				e.hurt(dmgSource, dmg);
 			if(time > 0)
-				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING, time));
+				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), time));
 		}
 	}
 	
