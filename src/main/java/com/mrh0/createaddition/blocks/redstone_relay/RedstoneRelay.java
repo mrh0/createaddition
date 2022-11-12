@@ -1,8 +1,5 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
-import java.util.Random;
-
-import com.mrh0.createaddition.blocks.accumulator.AccumulatorTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
@@ -14,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -80,26 +78,6 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 		return axis == Axis.X ? HORIZONTAL_SHAPE_X : HORIZONTAL_SHAPE_Z;
 	}
 	
-	/*@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-		return getShape(state, world, pos, context);
-	}
-	
-	@Override
-	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos) {
-		return getShape(state, world, pos, null);
-	}
-	
-	@Override
-	public VoxelShape getSidesShape(BlockState state, IBlockReader world, BlockPos pos) {
-		return getShape(state, world, pos, null);
-	}
-	
-	@Override
-	public VoxelShape getRaytraceShape(BlockState state, IBlockReader world, BlockPos pos) {
-		return getShape(state, world, pos, null);
-	}*/
-	
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return CATileEntities.REDSTONE_RELAY.create(pos, state);
@@ -117,8 +95,9 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 		else
 			return defaultBlockState().setValue(HORIZONTAL_FACING, c.getClickedFace().getOpposite()).setValue(VERTICAL, true);
 	}
-	
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+
+	@Override
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
 		boolean flag = state.getValue(POWERED);
 		boolean flag1 = this.shouldBePowered(worldIn, pos, state);
 		if (flag && !flag1) {
@@ -126,7 +105,7 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 		} 
 		else if (!flag) {
 			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(true)), 2);
-		}
+		} 
 	}
 	
 	@Override

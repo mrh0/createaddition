@@ -95,6 +95,7 @@ public class CreateAddition {
         CAFluids.register();
         CAEffects.register(eventBus);
         CARecipes.register(eventBus);
+        CAPartials.init();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -122,7 +123,7 @@ public class CreateAddition {
         RenderType cutout = RenderType.cutoutMipped();       
 		
         ItemBlockRenderTypes.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
-        CAPartials.init();
+        //CAPartials.init();
     }
     
     public void postInit(FMLLoadCompleteEvent evt) {
