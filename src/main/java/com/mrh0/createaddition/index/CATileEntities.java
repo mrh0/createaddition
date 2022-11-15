@@ -10,6 +10,8 @@ import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorRenderer;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerRenderer;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayRenderer;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillInstance;
@@ -23,6 +25,11 @@ import team.reborn.energy.api.EnergyStorage;
 
 
 public class CATileEntities {
+	public static final BlockEntityEntry<LiquidBlazeBurnerTileEntity> LIQUID_BLAZE_BURNER = CreateAddition.registrate()
+			.tileEntity("liquid_blaze_burner", LiquidBlazeBurnerTileEntity::new)
+			.validBlocks(CABlocks.LIQUID_BLAZE_BURNER)
+			.renderer(() -> LiquidBlazeBurnerRenderer::new)
+			.register();
 	public static final BlockEntityEntry<ElectricMotorTileEntity> ELECTRIC_MOTOR = CreateAddition.registrate()
 			.tileEntity("electric_motor", ElectricMotorTileEntity::new)
 			.instance(() -> HalfShaftInstance::new)
