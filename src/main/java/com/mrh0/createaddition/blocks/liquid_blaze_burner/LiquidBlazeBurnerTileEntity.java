@@ -21,6 +21,8 @@ import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -139,7 +141,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			return;
 		
 		remainingBurnTime += recipeCache.get().getBurnTime() / 10;
-		tankInventory.drain(100, FluidAction.EXECUTE);
+		tankInventory.setFluid(new FluidStack(tankInventory.getFluid(), tankInventory.getFluidAmount()-100));
 		activeFuel = FuelType.NORMAL;
 
 		HeatLevel prev = getHeatLevelFromBlock();
@@ -228,7 +230,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		updateBlockState();
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	private void tickAnimation() {
 		boolean active = getHeatLevelFromBlock().isAtLeast(HeatLevel.FADING) && isValidBlockAbove();
 
