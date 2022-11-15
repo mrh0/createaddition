@@ -1,0 +1,10 @@
+{
+	"type":"createaddition:rolling",
+	"input": {
+      	"tag": "c:plates/copper"
+	},
+	"result": {
+		"item": "createaddition:copper_wire",
+		"count": 2
+	}
+}

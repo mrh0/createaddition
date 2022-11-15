@@ -1,0 +1,36 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "createaddition:block/electric_motor/coil",
+		"1": "create:block/depot_top",
+		"particle": "createaddition:block/electric_motor/coil"
+	},
+	"elements": [
+		{
+			"name": "coil",
+			"from": [0, 0, 2],
+			"to": [16, 16, 14],
+			"faces": {
+				"north": {"uv": [1, 0, 15, 14], "texture": "#1"},
+				"east": {"uv": [2, 0, 14, 16], "rotation": 180, "texture": "#0", "cullface": "east"},
+				"south": {"uv": [1, 0, 15, 14], "texture": "#1"},
+				"west": {"uv": [2, 0, 14, 16], "texture": "#0", "cullface": "west"},
+				"up": {"uv": [2, 0, 14, 16], "rotation": 90, "texture": "#0", "cullface": "up"},
+				"down": {"uv": [2, 0, 14, 16], "rotation": 270, "texture": "#0", "cullface": "down"}
+			}
+		},
+		{
+			"name": "housing",
+			"from": [1, 1, 1],
+			"to": [15, 15, 15],
+			"faces": {
+				"north": {"uv": [1, 0, 15, 14], "texture": "#1"},
+				"east": {"uv": [1, 0, 15, 14], "texture": "#1"},
+				"south": {"uv": [1, 0, 15, 14], "texture": "#1"},
+				"west": {"uv": [1, 0, 15, 14], "texture": "#1"},
+				"up": {"uv": [1, 0, 15, 14], "texture": "#1"},
+				"down": {"uv": [1, 0, 15, 14], "texture": "#1"}
+			}
+		}
+	]
+}

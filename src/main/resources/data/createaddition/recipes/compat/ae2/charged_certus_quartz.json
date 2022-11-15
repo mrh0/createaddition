@@ -1,0 +1,12 @@
+{
+	"type":"createaddition:charging",
+	"input": {
+      	"item": "ae2:certus_quartz_crystal",
+		"count": 1
+	},
+	"result": {
+		"item": "ae2:charged_certus_quartz_crystal",
+		"count": 1
+	},
+	"energy": 10000
+}

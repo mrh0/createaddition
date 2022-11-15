@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "createaddition:cake_base_baked"
+    },
+    {
+      "fluidTag": "c:milk",
+      "nbt": {},
+      "amount": 81000
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:cake"
+    }
+  ]
+}

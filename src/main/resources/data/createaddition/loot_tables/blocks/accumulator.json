@@ -1,0 +1,43 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "name": "createaddition:accumulator",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "createaddition:accumulator",
+                    "functions": [
+                        {
+                            "function": "minecraft:copy_nbt",
+                            "source": "block_entity",
+                            "ops": [
+                                {
+                                    "source": "energy",
+                                    "target": "energy",
+                                    "op": "replace"
+                                },
+                                {
+                                    "source": "energy_buffIn",
+                                    "target": "energy_buffIn",
+                                    "op": "replace"
+                                },
+                                {
+                                    "source": "energy_buffOut",
+                                    "target": "energy_buffOut",
+                                    "op": "replace"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "conditions": [
+                {
+                    "condition": "minecraft:survives_explosion"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createaddition:block/electric_motor/block",
+      "x": 270, "y": 90
+    },
+    "facing=up": {
+      "model": "createaddition:block/electric_motor/block",
+      "x": 90, "y": 90
+    },
+    "facing=north": {
+      "model": "createaddition:block/electric_motor/block",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "createaddition:block/electric_motor/block",
+      "y": 0
+    },
+    "facing=west": {
+      "model": "createaddition:block/electric_motor/block",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "createaddition:block/electric_motor/block",
+      "y": 270
+    }
+  }
+}

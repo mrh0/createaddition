@@ -1,0 +1,29 @@
+{
+  "type": "create:mechanical_crafting",
+  "pattern": [
+  	"  A  ",
+    " BSB ",
+    "BSRSB",
+    " BCB "
+  ],
+  "key": {
+  	"A": {
+      "item": "create:andesite_alloy"
+    },
+    "C": {
+      "item": "createaddition:capacitor"
+    },
+    "B": {
+      "tag": "c:plates/brass"
+    },
+    "R": {
+      "tag": "c:rods/iron"
+    },
+    "S": {
+      "item": "createaddition:copper_spool"
+    }
+  },
+  "result": {
+    "item": "createaddition:electric_motor"
+  }
+}

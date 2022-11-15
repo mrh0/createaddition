@@ -1,0 +1,17 @@
+{
+	"type":"createaddition:rolling",
+	"input": {
+      	"tag": "c:ingots/aluminum"
+	},
+	"result": {
+		"item": "immersiveengineering:stick_aluminum",
+		"count": 2
+	},
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:fluid_tags_populated",
+			"values": [
+				"immersiveengineering"
+			]
+    } ]
+}

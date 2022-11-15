@@ -1,0 +1,17 @@
+{
+	"type":"createaddition:rolling",
+	"input": {
+      	"tag": "c:plates/electrum"
+	},
+	"result": {
+		"item": "immersiveengineering:wire_electrum",
+		"count": 2
+	},
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:fluid_tags_populated",
+			"values": [
+				"immersiveengineering"
+			]
+    } ]
+}

@@ -1,0 +1,36 @@
+{
+  "type": "immersiveengineering:mineral_mix",
+  "ores": [
+    {
+      "chance": 0.6,
+      "output": {
+        "tag": "c:ores/zinc"
+      }
+    },
+    {
+      "chance": 0.2,
+      "output": {
+        "tag": "c:dusts/sulfur"
+      }
+    },
+    {
+      "chance": 0.2,
+      "output": {
+        "tag": "c:ores/iron"
+      }
+    }
+  ],
+  "dimensions": [
+    "minecraft:overworld"
+  ],
+  "weight": 15,
+  "fail_chance": 0.05,
+  "fabric:load_conditions": [
+		{
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "immersiveengineering"
+      ]
+  	} 
+  ]
+}

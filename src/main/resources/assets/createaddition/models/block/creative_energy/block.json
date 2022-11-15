@@ -1,0 +1,38 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "create:block/crate_creative",
+		"1": "create:block/creative_fluid_tank",
+		"particle": "create:block/crate_creative"
+	},
+	"elements": [
+		{
+			"name": "Outer",
+			"from": [0, 2, 0],
+			"to": [16, 14, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 8]},
+			"faces": {
+				"north": {"uv": [0, 3, 16, 15], "texture": "#1", "cullface": "north"},
+				"east": {"uv": [0, 3, 16, 15], "texture": "#1", "cullface": "east"},
+				"south": {"uv": [0, 3, 16, 15], "texture": "#1", "cullface": "south"},
+				"west": {"uv": [0, 3, 16, 15], "texture": "#1", "cullface": "west"},
+				"up": {"uv": [8.5, 8.5, 15.5, 15.5], "texture": "#0"},
+				"down": {"uv": [8.5, 8.5, 15.5, 15.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Inner",
+			"from": [1, 0, 1],
+			"to": [15, 16, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 8, 9]},
+			"faces": {
+				"north": {"uv": [0.5, 8.5, 7.5, 15.5], "texture": "#0"},
+				"east": {"uv": [0.5, 8.5, 7.5, 15.5], "texture": "#0"},
+				"south": {"uv": [0.5, 8.5, 7.5, 15.5], "texture": "#0"},
+				"west": {"uv": [0.5, 8.5, 7.5, 15.5], "texture": "#0"},
+				"up": {"uv": [8.5, 8.5, 15.5, 15.5], "texture": "#0", "cullface": "up"},
+				"down": {"uv": [8.5, 8.5, 15.5, 15.5], "texture": "#0", "cullface": "down"}
+			}
+		}
+	]
+}

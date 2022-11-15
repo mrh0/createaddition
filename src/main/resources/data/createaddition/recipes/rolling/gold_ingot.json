@@ -1,0 +1,10 @@
+{
+	"type":"createaddition:rolling",
+	"input": {
+      	"tag": "c:ingots/gold"
+	},
+	"result": {
+		"item": "createaddition:gold_rod",
+		"count": 2
+	}
+}

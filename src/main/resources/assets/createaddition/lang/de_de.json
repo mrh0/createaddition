@@ -1,0 +1,191 @@
+{
+	"createaddition.tooltip.energy.stored": "Gelagerte Energie:",
+	"createaddition.tooltip.energy.consumption": "Energie Nutzung:",
+	"createaddition.tooltip.energy.production": "Energie Generiert:",
+	"createaddition.recipe.rolling": "Walzen",
+	
+	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerit",
+	
+	"item.createaddition.capacitor": "Kondensator",
+	
+	"item.createaddition.multimeter": "Multimeter",
+	"item.createaddition.multimeter.title":"[Multimeter]:",
+	"item.createaddition.multimeter.measuring":"[misst..]",
+	"item.createaddition.multimeter.ticks":"ticks",
+	"item.createaddition.multimeter.no_capability":"Keine Forge Energy Leitungs auf dieser Seite.",
+	"item.createaddition.multimeter.tooltip": "MULTIMETER",
+	"item.createaddition.multimeter.tooltip.summary": "Misst _Leitungsfähigkeit_ und _Eingabe/Ausgabe_ auf jeder Seite mit einer _FE Leitungsfähigkeit_.",
+		
+	"item.createaddition.zinc_sheet": "Zink Platte",
+	"item.createaddition.diamond_grit": "Diamanten Splitter",
+	"item.createaddition.diamond_grit_sandpaper": "Diamant Splitter Schleifpapier",
+	"item.createaddition.diamond_grit_sandpaper.tooltip": "DIAMANTEN SPLITTER SCHLEIFPAPIER",
+	
+	"item.createaddition.copper_spool": "Kupfer Spule",
+	"item.createaddition.copper_spool.tooltip": "SPULE",
+	"item.createaddition.copper_spool.tooltip.summary": "R-Klicke 2 _Verbinder_ damit eine Drahtverbindung zwischen denen existiert und gibt _Leere Spule_ zurück.",
+	
+	"item.createaddition.copper_wire": "Kupfer Draht",
+	"item.createaddition.copper_rod": "Kupfer Stab",
+	
+	"item.createaddition.iron_spool": "Eisen Spule",
+	"item.createaddition.iron_wire": "Eisne Draht",
+	"item.createaddition.iron_rod": "Eisen Stab",
+	
+	"item.createaddition.steel_spool": "Stahl Spule",
+	"item.createaddition.steel_wire": "Stahl Draht",
+	"item.createaddition.steel_rod": "Stahl Stab",
+	
+	"item.createaddition.electrum_spool": "Elektron Spule",
+	"item.createaddition.electrum_wire": "Elektron Draht",
+	"item.createaddition.electrum_rod": "Elektron Stab",
+	
+	"item.createaddition.aluminum_spool": "Aluminum Spule",
+	"item.createaddition.aluminum_wire": "Aluminum Draht",
+	"item.createaddition.aluminum_rod": "Aluminum Stab",
+	
+	"item.createaddition.gold_spool": "Gold Spule",
+	"item.createaddition.gold_spool.tooltip": "SPULE",
+	"item.createaddition.gold_spool.tooltip.summary": "R-Klicke 2 _Verbinder_ damit eine Drahtverbindung zwischen denen existiert und gibt _Leere Spule_ zurück.",
+	
+	"item.createaddition.gold_wire": "Gold Draht",
+	"item.createaddition.gold_rod": "Gold Stab",
+	
+	"item.createaddition.brass_rod": "Messing Stab",
+	"item.createaddition.bronze_rod": "Bronze Stab",
+		
+	"item.createaddition.cake_base": "Kuchen basis",
+	"item.createaddition.cake_base_baked": "Gebackene Kuchen basis",
+	
+	"item.createaddition.seed_oil_bucket": "Samen-Öleimer",
+	
+	
+	"item.createaddition.spool": "Leere Spule",
+	"item.createaddition.spool.nbt": "Stores connection location.",
+	"item.createaddition.spool.tooltip": "SPULE",
+	"item.createaddition.spool.tooltip.summary": "R-Klicke 2 _Verbinder_ damit eine Drahtverbindung zwischen denen existiert und gibt _Leere Spule_ zurück.",
+	
+	"statusbar.createaddition.wire.linked": "Knoten verbunden",
+	"statusbar.createaddition.wire.linked_in": "Draht verbunden zum Eingang",
+	"statusbar.createaddition.wire.linked_out": "Draht verbunden zum Ausgang",
+	
+	"statusbar.createaddition.wire.connect": "Drahtverbinder ausgewählt",
+	"statusbar.createaddition.wire.connect_in": "Drahtverbinder Eingang ausgewählt",
+	"statusbar.createaddition.wire.connect_out": "Drahtverbinder Ausgang ausgewählt",
+	
+	"statusbar.createaddition.wire.long": "Draht ist zu lang!",
+	"statusbar.createaddition.wire.obstructed": "Drahtweg ist blockiert",
+	"statusbar.createaddition.wire.count": "Drahtknoten ist besetzt",
+	"statusbar.createaddition.wire.removed": "Draht entfernt",
+	"statusbar.createaddition.wire.exists": "Drahtverbindung existiert",
+	"statusbar.createaddition.wire.no_connection": "Draht kann nicht angebracht werden",
+	"statusbar.createaddition.wire.invalid": "Ungültige Verbindung",
+	
+	"block.createaddition.electric_motor": "Elektrischer Motor",
+	"deprecated.block.createaddition.electric_motor.tooltip": "ELEKTRISCHER MOTOR",
+	"deprecated.block.createaddition.electric_motor.tooltip.summary": "Generiert _SE_ von _FE_ und hat eine einstellbare _Geschwindigkeit_. Der Energie verbrauch ist von der _RpM_ abhängig.",
+	
+	"block.createaddition.alternator": "Wechselstromgenerator",
+	"deprecated.block.createaddition.alternator.tooltip": "WECHSELSTROMGENERATOR",
+	"deprecated.block.createaddition.alternator.tooltip.summary": "Generiert _FE_ von _SE_. Die Anzahl von Energie produziert ist abhängig von der _RpM_.",
+	
+	"block.createaddition.creative_energy": "Kreativer Generator",
+	"block.createaddition.creative_energy.tooltip": "WECHSELSTROMGENERATOR",
+	"block.createaddition.creative_energy.tooltip.summary": "Generiert unendlich _FE_.",
+	
+	"block.createaddition.rolling_mill": "Walzwerk",
+	"deprecated.block.createaddition.rolling_mill.tooltip": "WALZWERK",
+	"deprecated.block.createaddition.rolling_mill.tooltip.summary": "Eine kinetische Komponente geeignet für _Walzbare_ hinzugefügte _Materialien_. Kann in Gang gestzt werden by connecting to the shaft at the sides. Results have to be extracted from the component.",
+	"deprecated.block.createaddition.rolling_mill.tooltip.condition1": "Wenn von Kinetik angetrieben",
+	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour1": "Startet Anwendung von _Walz-Rezepten_ mit alle Gegenstände, die von der Seite oder der Oberseite des Blocks eingefügt wurden.",
+	"deprecated.block.createaddition.rolling_mill.tooltip.condition2": "Wenn R-Klick",
+	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "Sammelt die Produkte manuell ein.",
+	
+	"block.createaddition.heater": "Induktions Erhitzer",
+	"deprecated.block.createaddition.heater.tooltip": "INDUKTIONS ERHITZER",
+	"deprecated.block.createaddition.heater.tooltip.summary": "Wenn angebracht an einen _Ofen_ und  wird mit _fe_ from the top will heat the _Furnace_. Will not power a _Furnace Engine_ unless _enabled_ in the _configs_",
+	
+	"block.createaddition.accumulator": "Akkumulator",
+	"block.createaddition.accumulator.tooltip": "AKKUMULATOR",
+	"block.createaddition.accumulator.tooltip.summary": "Akkumuliert elektrische Ladung. ",
+	"block.createaddition.accumulator.tooltip.condition1": "Ausgabe",
+	"block.createaddition.accumulator.tooltip.behaviour1": "Stellt _FE_ für alle _Drähte_ bereit, die mit den _Verbinder_ markiert in _weiß_.",
+	"block.createaddition.accumulator.tooltip.condition2": "Eingabe",
+	"block.createaddition.accumulator.tooltip.behaviour2": "Abzeptiert _FE_ auf jeder seite außer der oberseite und von jenen _Drähte_, die verbunden mit den unmarkierten _Verbinder_.",
+	
+	"block.createaddition.connector": "Verbinder",
+	"block.createaddition.connector.tooltip": "VERBINDER",
+	"block.createaddition.connector.tooltip.summary": "verbindet _FE_ Blöcke mit _Draht_ um _fe_ zu transportieren. R-Click two _Connectors_ with a _Copper Spool_ or _Gold Spool_ to create a _wire link_.",
+	
+	"block.createaddition.redstone_relay": "Redstone Relais",
+	"block.createaddition.redstone_relay.tooltip": "REDSTONE_RELAIS",
+	"block.createaddition.redstone_relay.tooltip.summary": "Erlaubt _FE_ durch den _Eingabe Verbinder_ zu den _Ausgabe Verbinder_ zu Passieren wenn es ein _Redstone Signal_ erhält.",
+	"block.createaddition.redstone_relay.tooltip.condition1": "Ausgabe",
+	"block.createaddition.redstone_relay.tooltip.behaviour1": "Stellt _FE_ für alle _Drähte_ bereit, die mit den _Verbinder_ markiert in _weiß_.",
+	"block.createaddition.redstone_relay.tooltip.condition2": "Eingabe",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "Abzeptiert _FE_ auf jeder seite außer der oberseite und von jenen _Drähte_, die verbunden mit den unmarkierten _Verbinder_.",
+		
+	"block.createaddition.furnace_burner": "Ofenbrenner",
+	"block.createaddition.furnace_burner.tooltip": "OFENBRENNER",
+	"block.createaddition.furnace_burner.tooltip.summary": "Dieser _Ofen_ Wird keine Gegenstände verarbeiten, aber es kann genutzt werden um einen _Ofen-Motor_ befeuern ohne etwas herzustellen. _Treibstoff_ kann zum beispiel durch einen _Trichter_ Eingefügt werden.",
+	"block.createaddition.furnace_burner.tooltip.control1": "Rechtsklick",
+	"block.createaddition.furnace_burner.tooltip.action1": "Gibt gehaltenen _Treibstoff_ ein.",
+	"block.createaddition.furnace_burner.tooltip.control2": "Rechtsklick während man schleicht",
+	"block.createaddition.furnace_burner.tooltip.action2": "Holt gelagerten _Treibstoff_ ab.",
+	
+	"block.createaddition.charger": "Ladestation",
+	"block.createaddition.charger.tooltip": "LADESTATION",
+	"block.createaddition.charger.tooltip.summary": "Lädt _elektrische_ Gegenstände mit _FE_ auf.",
+	"block.createaddition.charger.tooltip.control1": "Rechtsklick mit aufladbaren Gegenstand",
+	"block.createaddition.charger.tooltip.action1": "Legt Gegenstand auf dem _Ladebereich_.",
+	"block.createaddition.charger.tooltip.control2": "Rechtsklick mit leerer Hand",
+	"block.createaddition.charger.tooltip.action2": "Holt Gegenstand vom _Ladebereich_ ab.",
+	
+	"block.createaddition.crude_burner": "Ölbrenner",
+	"block.createaddition.crude_burner.tooltip": "ÖLBRENNER",
+	"block.createaddition.crude_burner.tooltip.summary": "Der _Ölbrenner_ komsumiert langbrennene _brennbare Flüssigkeiten_ wie _Samen-Öl_ um einen _Ofen-Motor_ zu befeuern. Der _Flüssiger Treibstoff_ kann durch _Flüssigkeiten-Röhren_ eingefügt werden.",
+	"block.createaddition.crude_burner.tooltip.control1": "Rechtsklick",
+	"block.createaddition.crude_burner.tooltip.action1": "Gibt inhalt vom gehaltenen _Eimer_.",
+	
+	"block.createaddition.chocolate_cake": "Schokoladenkuchen",
+	
+	"block.createaddition.seed_oil": "Samen-Öl",
+	
+	"itemGroup.createaddition.main":"Create Crafts & Additions",
+	
+	"createaddition.command.cca_api.link": "Klick hier für eine Api Dokumentation",
+	
+	"createaddition.ponder.tag.electric": "Elektrische Geräte",
+	"createaddition.ponder.tag.electric.description": "Komponente die Strom nutzen",
+
+	"createaddition.ponder.electric_motor.header": "Generation von Rotation durch die benuzung von Elektrischer Motoren",
+	"createaddition.ponder.electric_motor.text_1": "Elektrischer Motoren sind eine kompakte und konfigurierbare quelle für Rotations energie",
+	"createaddition.ponder.electric_motor.text_2": "Durch Scrollen auf der Rückseite wird die Drehzahl des Motors geändert",
+	"createaddition.ponder.electric_motor.text_3": "Der Motor benötigt eine Energiequelle (fe)",
+	"createaddition.ponder.electric_motor.text_4": "Der Energieverbrauch des Motors wird durch die eingestellte Drehzahl bestimmt",
+	
+	"createaddition.ponder.alternator.header": "Erzeugung elektrischer Energie mithilfe eines Wechselstromgenerators",
+	"createaddition.ponder.alternator.text_1": "Der Wechselstromgenerator benötigt mindestens 32 RPM um strom zu erzeugen",
+	"createaddition.ponder.alternator.text_2": "Der Wechselstromgenerator erzeugt elektrische (fe) Energie aus Rotationskraft",
+	"createaddition.ponder.alternator.text_3": "Die Energieerzeugung wird durch die Eingangsdrehzahl bestimmt",
+	
+	"createaddition.ponder.rolling_mill.header": "Walzen von Metallen zu Stangen und Drähten",
+	"createaddition.ponder.rolling_mill.text_1": "Die Walze verwendet Rotationskraft, um Metalle in Stangen und Drähte zu rollen",
+	"createaddition.ponder.rolling_mill.text_2": "Um Elemente manuell einzugeben, legen sie Barren oder Platten oben auf die Walze",
+	"createaddition.ponder.rolling_mill.text_3": "Klicken Sie mit der rechten Maustaste auf die Mühle, um die Ausgabeelemente manuell herauszunehmen",
+	
+	"createaddition.ponder.automated_rolling_mill.header": "Automatisierung der Walze",
+	"createaddition.ponder.automated_rolling_mill.text_1": "Die Walze kann mit einem Band und zwei Trichtern automatisiert werden",
+	"createaddition.ponder.automated_rolling_mill.text_2": "Eingangs Trichter",
+	"createaddition.ponder.automated_rolling_mill.text_3": "Ausgabe Trichter",
+	
+	"createaddition.ponder.heater.header": "Mit elektrischer Energie einen Ofen erhitzen",
+	"createaddition.ponder.heater.text_1": "Der Induktions Erhitzer kann auf jeder dem Ofen zugewandten Seite aufgestellt werden",
+	"createaddition.ponder.heater.text_2": "Bei Anschluss an eine ausreichende elektrische Energiequelle (fe) zündet der Induktions Erhitzer den Ofen an",
+	"createaddition.ponder.heater.text_3": "Der Ofen bleibt entzündet, solange genügend Energie zur Verfügung steht",
+
+	"createaddition.ponder.cc_electric_motor.header": "Man kann ComputerCraft nutzen um einen Elektrischer Motor kontrollieren",
+	"createaddition.ponder.cc_electric_motor.text_1": "Der Elektrische Motor kann durch ComputerCraft kontrolliert werden",
+	"createaddition.ponder.cc_electric_motor.text_2": "Verbinde den Motor mit 'peripheral.wrap(side)'",
+	"createaddition.ponder.cc_electric_motor.text_3": "Um an die API Dokumentation zu kommen Schreibt man den Befehl: '/cca_api' in den chat"
+}

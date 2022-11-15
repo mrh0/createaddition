@@ -1,0 +1,29 @@
+{
+  "type": "create:mechanical_crafting",
+  "pattern": [
+  	"  A  ",
+  	" ISI ",
+    "ISRSI",
+    " ICI "
+  ],
+  "key": {
+    "C": {
+      "item": "createaddition:capacitor"
+    },
+    "I": {
+      "tag": "c:plates/iron"
+    },
+    "R": {
+      "tag": "c:rods/iron"
+    },
+    "S": {
+      "item": "createaddition:copper_spool"
+    },
+    "A": {
+      "item": "create:andesite_alloy"
+    }
+  },
+  "result": {
+    "item": "createaddition:alternator"
+  }
+}

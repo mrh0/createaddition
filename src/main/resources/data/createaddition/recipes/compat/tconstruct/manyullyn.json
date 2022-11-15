@@ -1,0 +1,32 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "c:ingots/cobalt"
+    },
+    {
+      "tag": "c:ingots/cobalt"
+    },
+    {
+      "tag": "c:ingots/cobalt"
+    },
+    {
+      "tag": "c:ingots/netherite_scrap"
+    }
+  ],
+  "results": [
+    {
+      "item": "tconstruct:manyullyn_ingot",
+      "count": 4
+    }
+  ],
+  "heatRequirement": "superheated",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "tconstruct"
+      ]
+    }
+  ]
+}

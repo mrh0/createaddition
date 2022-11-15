@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "createaddition:block/accumulator/block",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "createaddition:block/accumulator/block",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "createaddition:block/accumulator/block",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "createaddition:block/accumulator/block",
+      "y": 180
+    }
+  }
+}

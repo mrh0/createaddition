@@ -1,0 +1,31 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern":
+	[" R ",
+	 "CEC",
+	 "SSS"],
+	"key":
+	{
+		"R":
+		{
+			"tag": "c:dusts/redstone"
+		},
+		"S":
+		{
+			"tag": "c:stone"
+		},
+		"C":
+		{
+			"item": "createaddition:connector"
+		},
+		"E":
+		{
+			"item": "create:electron_tube"
+		}
+	},
+	"result":{
+		"item": "createaddition:redstone_relay",
+		"count": 1
+	}
+}

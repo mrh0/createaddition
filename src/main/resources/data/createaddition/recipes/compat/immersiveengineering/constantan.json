@@ -1,0 +1,26 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "c:ingots/nickel"
+    },
+    {
+      "tag": "c:ingots/copper"
+    }
+  ],
+  "results": [
+    {
+      "item": "immersiveengineering:ingot_constantan",
+      "count": 2
+    }
+  ],
+  "heatRequirement": "heated",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:fluid_tags_populated",
+      "values": [
+    	  "immersiveengineering"
+        ]
+  	}
+  ]
+}
