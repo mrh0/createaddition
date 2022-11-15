@@ -1,20 +1,11 @@
 package com.mrh0.createaddition.compat.rei;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import com.mrh0.createaddition.compat.rei.category.ChargingCategory;
 import com.mrh0.createaddition.compat.rei.category.RollingMillCategory;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.Create;
-import com.simibubi.create.compat.rei.ConversionRecipe;
 import com.simibubi.create.compat.rei.CreateREI;
 import com.simibubi.create.compat.rei.EmptyBackground;
 import com.simibubi.create.compat.rei.ItemIcon;
@@ -26,16 +17,22 @@ import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 public class CreateAdditionREI implements REIClientPlugin {
 
     final List<CreateRecipeCategory<?>> ALL = new ArrayList<>();
 
+    @SuppressWarnings("unused")
     private void loadCategories() {
         ALL.clear();
 
@@ -68,19 +65,14 @@ public class CreateAdditionREI implements REIClientPlugin {
     @Override
     public void registerDisplays(DisplayRegistry registry) {
         ALL.forEach(c -> c.registerRecipes(registry));
-        List<ConversionRecipe> r1 = new ArrayList<>();
-        for(ConversionRecipe recipe : r1) {
-            registry.add(new CreateDisplay<>(recipe, CategoryIdentifier.of("create", "mystery_conversion")));
-        }
     }
 
     private <T extends Recipe<?>> CategoryBuilder<T> builder(Class<T> recipeClass) {
-        return new CategoryBuilder<T>(recipeClass);
+        return new CategoryBuilder<>(recipeClass);
     }
 
     private class CategoryBuilder<T extends Recipe<?>> {
         Class<? extends T> recipeClass;
-        CreateRecipeCategory<T> category;
         private final List<Supplier<? extends ItemStack>> catalysts = new ArrayList<>();
         private final List<Consumer<List<T>>> recipeListConsumers = new ArrayList<>();
 
@@ -93,10 +85,9 @@ public class CreateAdditionREI implements REIClientPlugin {
             this.recipeClass = recipeClass;
         }
 
+        @SuppressWarnings("unused")
         private Function<T, ? extends CreateDisplay<T>> displayFactory;
-        CategoryBuilder(Supplier<CreateRecipeCategory<T>> category) {
-            this.category = category.get();
-        }
+
 
         CategoryBuilder<T> catalyst(Supplier<ItemLike> supplier) {
             return catalystStack(() -> new ItemStack(supplier.get()
@@ -163,18 +154,7 @@ public class CreateAdditionREI implements REIClientPlugin {
         }
     }
 
-    static List<Recipe<?>> findRecipesByType(RecipeType<?> type) {
-        return findRecipes(r -> r.getType() == type);
-    }
-
-    static List<Recipe<?>> findRecipes(Predicate<Recipe<?>> predicate) {
-        return Minecraft.getInstance().level.getRecipeManager()
-                .getRecipes()
-                .stream()
-                .filter(predicate)
-                .collect(Collectors.toList());
-    }
-     //Build() needs a Factory to create an instance of info. some recipe fixes. 
+    //Build() needs a Factory to create an instance of info. some recipe fixes.
     //String name needs to be carried along as well through the class extensions.
     //Then pray this shit fucking works
 }
