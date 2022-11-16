@@ -41,7 +41,8 @@ public class CAFluids {
 						.tickRate(15)
 						.flowSpeed(6)
 						.blastResistance(100f))
-				.fluidAttributes(() -> new CreateAdditionsAttributeHandler("fluid.bioethanol_oil", 2000, 1400))
+				.fluidAttributes(() -> new CreateAdditionsAttributeHandler("fluid.bioethanol", 2000, 1400))
+				.lang("Bioethanol")
 				.onRegisterAfter(Registry.ITEM_REGISTRY, chocolate -> {
 					Fluid source = chocolate.getSource();
 					FluidStorage.combinedItemApiProvider(source.getBucket()).register(context ->
@@ -59,6 +60,7 @@ public class CAFluids {
 						.flowSpeed(6)
 						.blastResistance(100f))
 				.fluidAttributes(() -> new CreateAdditionsAttributeHandler("fluid.seed_oil", 2500, 1600))
+				.lang("Seed Oil")
 				.onRegisterAfter(Registry.ITEM_REGISTRY, chocolate -> {
 					Fluid source = chocolate.getSource();
 					FluidStorage.combinedItemApiProvider(source.getBucket()).register(context ->

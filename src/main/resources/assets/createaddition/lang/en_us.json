@@ -76,13 +76,11 @@
 	"item.createaddition.cake_base_baked": "Baked Cake Base",
 	
 	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
-	"item.createaddition.seed_oil_bucket.tooltip": "SEED_OIL_BUCKET",
-	"item.createaddition.seed_oil_bucket.tooltip.summary": "A simple _flammable liquid_ which can power the _Crude Burner_.",
-	
+	"fluid.seed_oil": "Seed Oil",
+
 	"item.createaddition.bioethanol_bucket": "Bucket of Bioethanol",
-	"item.createaddition.bioethanol_bucket.tooltip": "BIOETHANOL_BUCKET",
-	"item.createaddition.bioethanol_bucket.tooltip.summary": "An efficient _flammable liquid_ which can power the _Crude Burner_.",
-	
+	"fluid.bioethanol": "Bioethanol",
+
 	"item.createaddition.biomass": "Biomass",
 	"item.createaddition.biomass_pellet": "Biomass Pellet",
 	"item.createaddition.biomass_pellet.tooltip": "BIOMASS_PELLET",
@@ -204,9 +202,6 @@
 	
 	"block.createaddition.chocolate_cake": "Chocolate Cake",
 	"block.createaddition.honey_cake": "Honey Cake",
-	
-	"block.createaddition.seed_oil": "Seed Oil",
-	"block.createaddition.bioethanol": "Bioethanol",
 	
 	"block.createaddition.overcharged_casing": "Overcharged Casing",
 	

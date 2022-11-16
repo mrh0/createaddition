@@ -153,8 +153,4 @@ public class CreateAdditionREI implements REIClientPlugin {
             return category;
         }
     }
-
-    //Build() needs a Factory to create an instance of info. some recipe fixes.
-    //String name needs to be carried along as well through the class extensions.
-    //Then pray this shit fucking works
 }
