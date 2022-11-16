@@ -297,7 +297,7 @@ public class PonderScenes {
 		scene.world.setBlock(util.grid.at(2, 3, 2), CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.UP).setValue(TeslaCoil.POWERED, true), false);
 		scene.overlay.showText(70)
 			.attachKeyFrame()
-			.text("It will charge any Forge Energy Items and more!")
+			.text("It will charge items such as Certus Quartz from ae2 & more")
 			.placeNearTarget()
 			.pointAt(topOf);
 		scene.idle(80);
