@@ -25,11 +25,6 @@ import team.reborn.energy.api.EnergyStorage;
 
 
 public class CATileEntities {
-	public static final BlockEntityEntry<LiquidBlazeBurnerTileEntity> LIQUID_BLAZE_BURNER = CreateAddition.registrate()
-			.tileEntity("liquid_blaze_burner", LiquidBlazeBurnerTileEntity::new)
-			.validBlocks(CABlocks.LIQUID_BLAZE_BURNER)
-			.renderer(() -> LiquidBlazeBurnerRenderer::new)
-			.register();
 	public static final BlockEntityEntry<ElectricMotorTileEntity> ELECTRIC_MOTOR = CreateAddition.registrate()
 			.tileEntity("electric_motor", ElectricMotorTileEntity::new)
 			.instance(() -> HalfShaftInstance::new)
@@ -78,6 +73,11 @@ public class CATileEntities {
 			.tileEntity("tesla_coil", TeslaCoilTileEntity::new)
 			.validBlocks(CABlocks.TESLA_COIL)
 			//.renderer(() -> ChargerRenderer::new)
+			.register();
+	public static final BlockEntityEntry<LiquidBlazeBurnerTileEntity> LIQUID_BLAZE_BURNER = CreateAddition.registrate()
+			.tileEntity("liquid_blaze_burner", LiquidBlazeBurnerTileEntity::new)
+			.validBlocks(CABlocks.LIQUID_BLAZE_BURNER)
+			.renderer(() -> LiquidBlazeBurnerRenderer::new)
 			.register();
 	
 	public static void register() {

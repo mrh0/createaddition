@@ -371,7 +371,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
 		if(isNetworkValid(0))
-			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
+			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.node()).getPulled(), getNetwork(pack.node()).getPushed(), player);
 		causeBlockUpdate();
 	}
 }

@@ -52,10 +52,9 @@ public class LiquidBlazeBurnerRenderer extends SafeTileEntityRenderer<LiquidBlaz
 			level, blockState, heatLevel, animation, horizontalAngle,
 			canDrawFlame, drawGoggles, hashCode);
 	}
-
 	@SuppressWarnings("unused")
-	public static void renderInContraption(MovementContext context, VirtualRenderWorld ignoredRenderWorld,
-										   ContraptionMatrices matrices, MultiBufferSource bufferSource, LerpedFloat headAngle, boolean ignoredConductor) {
+	public static void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld,
+										   ContraptionMatrices matrices, MultiBufferSource bufferSource, LerpedFloat headAngle, boolean conductor) {
 		BlockState state = context.state;
 		HeatLevel heatLevel = BlazeBurnerBlock.getHeatLevelOf(state);
 		if (heatLevel == HeatLevel.NONE)
