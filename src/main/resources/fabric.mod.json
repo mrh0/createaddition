@@ -7,7 +7,8 @@
   "description": "Create Crafts & Additions extends Create and acts as a bridge between electricity and kinetic energy from Create by adding an Electric Motor which generates kinetic energy from Forge energy and an Alternator which does the opposite.\nJoin the Discord: https://discord.gg/mRbNnyKTEu",
   "authors": [
     "MRH0",
-    "AlphaMode"
+    "AlphaMode",
+    "Fluffy Bumblebee"
   ],
   "contact": {
     "issues": "https://github.com/mrh0/createaddition/issues",
