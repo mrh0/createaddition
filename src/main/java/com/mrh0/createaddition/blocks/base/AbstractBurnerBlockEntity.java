@@ -1,13 +1,8 @@
 package com.mrh0.createaddition.blocks.base;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemTransferable;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
@@ -24,14 +19,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-@SuppressWarnings("UnstableApiUsage")
+@SuppressWarnings({"UnstableApiUsage", "unused"})
 public abstract class AbstractBurnerBlockEntity extends SmartTileEntity implements IObserveTileEntity, WorldlyContainer, ItemTransferable {
 	public static final int SLOT_FUEL = 0;
 	public static final int DATA_LIT_TIME = 0;
@@ -105,7 +100,7 @@ public abstract class AbstractBurnerBlockEntity extends SmartTileEntity implemen
 
 		if (flag != be.isLit()) {
 			flag1 = true;
-			state = state.setValue(AbstractFurnaceBlock.LIT, Boolean.valueOf(be.isLit()));
+			state = state.setValue(AbstractFurnaceBlock.LIT, be.isLit());
 			world.setBlock(pos, state, 3);
 		}
 
@@ -127,15 +122,15 @@ public abstract class AbstractBurnerBlockEntity extends SmartTileEntity implemen
 		return FuelRegistry.INSTANCE.get(stack.getItem()) > 0;
 	}
 
-	public int[] getSlotsForFace(Direction dir) {
+	public int[] getSlotsForFace(@NotNull Direction dir) {
 		return SLOTS;
 	}
 
-	public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction dir) {
+	public boolean canPlaceItemThroughFace(int index, @NotNull ItemStack stack, @Nullable Direction dir) {
 		return this.canPlaceItem(index, stack);
 	}
 
-	public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction dir) {
+	public boolean canTakeItemThroughFace(int index, @NotNull ItemStack stack, @NotNull Direction dir) {
 		return true;
 	}
 
@@ -164,7 +159,7 @@ public abstract class AbstractBurnerBlockEntity extends SmartTileEntity implemen
 		return ContainerHelper.takeItem(this.items, index);
 	}
 
-	public void setItem(int index, ItemStack stack) {
+	public void setItem(int index, @NotNull ItemStack stack) {
 		this.items.set(index, stack);
 		if (stack.getCount() > this.getMaxStackSize()) {
 			stack.setCount(this.getMaxStackSize());
@@ -197,7 +192,7 @@ public abstract class AbstractBurnerBlockEntity extends SmartTileEntity implemen
 	}
 
 	@Override
-	public boolean stillValid(Player player) {
+	public boolean stillValid(@NotNull Player player) {
 		return false;
 	}
 }

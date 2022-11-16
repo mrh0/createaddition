@@ -32,8 +32,6 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 	public boolean matches(@NotNull FluidRecipeWrapper wrapper, @NotNull Level world) {
 		if(fluidIngredients == null)
 			return false;
-		if(wrapper == null)
-			return false;
 		if(wrapper.fluid == null)
 			return false;
 		return fluidIngredients.test(wrapper.fluid);
@@ -69,6 +67,7 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 		return TYPE;
 	}
 
+	@SuppressWarnings("unused")
 	public FluidIngredient getFluidIngredient() {
 		return fluidIngredients;
 	}
