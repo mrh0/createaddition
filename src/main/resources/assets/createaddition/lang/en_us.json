@@ -14,7 +14,7 @@
 	"createaddition.tooltip.relay.info": "Relay Info:",
 	"createaddition.tooltip.connector.info": "Connector Info:",
 	
-	"createaddition.recipe.rolling": "Rolling",
+	"create.recipe.rolling": "Rolling",
 	"createaddition.recipe.rolling.sequence": "Rolling in Mill",
 	"createaddition.recipe.charging": "Charging",
 	

@@ -5,19 +5,13 @@
       "tag": "forge:ingots/copper"
     },
     {
-      "tag": "forge:ingots/copper"
-    },
-    {
-      "tag": "forge:ingots/copper"
-    },
-    {
-      "tag": "forge:glass"
+      "item": "minecraft:amethyst_shard"
     }
   ],
   "results": [
     {
-      "item": "tconstruct:tinkers_bronze_ingot",
-      "count": 3
+      "item": "tconstruct:amethyst_bronze_ingot",
+      "count": 1
     }
   ],
   "heatRequirement": "heated",
