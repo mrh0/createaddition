@@ -3,24 +3,18 @@ package com.mrh0.createaddition.recipe.liquid_burning;
 import com.google.gson.JsonObject;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.CARecipeSerializer;
-import com.simibubi.create.content.contraptions.processing.HeatCondition;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.crafting.conditions.ICondition.IContext;
+import org.jetbrains.annotations.NotNull;
 
 public class LiquidBurningRecipeSerializer extends CARecipeSerializer<LiquidBurningRecipe>{
-
-	public LiquidBurningRecipeSerializer() {
-		// TODO: Should move
-		//FluidTags.bind("forge:plantoil");
-	}
 	
 	@Override
-	public LiquidBurningRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+	public LiquidBurningRecipe fromNetwork(@NotNull ResourceLocation recipeId, FriendlyByteBuf buffer) {
 		int burnTime = buffer.readInt();
 		FluidIngredient fluid = FluidIngredient.read(buffer);
 		return new LiquidBurningRecipe(recipeId, fluid, burnTime);
@@ -38,12 +32,12 @@ public class LiquidBurningRecipeSerializer extends CARecipeSerializer<LiquidBurn
 	}
 
 	@Override
-	public LiquidBurningRecipe readFromJson(ResourceLocation recipeId, JsonObject json, IContext context) {
+	public LiquidBurningRecipe readFromJson(ResourceLocation recipeId, JsonObject json) {
 		int burnTime = GsonHelper.getAsInt(json, "burnTime");
 		FluidIngredient fluid = FluidIngredient.deserialize(json.get("input"));
-		
+
 		//HeatCondition.deserialize(GsonHelper.getAsString(json, "heatProduced"));
-		
+
 		return new LiquidBurningRecipe(recipeId, fluid, burnTime);
 	}
 }

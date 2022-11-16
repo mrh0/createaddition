@@ -32,6 +32,7 @@ import static com.simibubi.create.AllTags.pickaxeOnly;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 
 
+@SuppressWarnings("CommentedOutCode")
 public class CABlocks {
 	
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()

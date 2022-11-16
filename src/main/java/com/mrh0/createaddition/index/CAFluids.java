@@ -3,8 +3,8 @@ package com.mrh0.createaddition.index;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.builders.FluidBuilder;
 import com.tterrag.registrate.fabric.SimpleFlowableFluid;
+import com.tterrag.registrate.util.entry.FluidEntry;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -28,9 +28,9 @@ public class CAFluids {
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
 			.creativeModeTab(() -> ModGroup.MAIN);
 
+	public static final FluidEntry<SimpleFlowableFluid.Flowing> BIOETHANOL;
+	public static final FluidEntry<SimpleFlowableFluid.Flowing> SEED_OIL;
 
-	public static final FluidBuilder<SimpleFlowableFluid.Flowing, CreateRegistrate> BIOETHANOL;
-	public static final FluidBuilder<SimpleFlowableFluid.Flowing, CreateRegistrate> SEED_OIL;
 	static  {
 		BIOETHANOL = REGISTRATE
 				.fluid("bioethanol",
@@ -48,7 +48,7 @@ public class CAFluids {
 							new FullItemFluidStorage(context, bucket -> ItemVariant.of(BUCKET), FluidVariant.of(source), FluidConstants.BUCKET));
 					FluidStorage.combinedItemApiProvider(BUCKET).register(context ->
 							new EmptyItemFluidStorage(context, bucket -> ItemVariant.of(source.getBucket()), source, FluidConstants.BUCKET));
-				});
+				}).register();
 		SEED_OIL = REGISTRATE
 				.fluid("seed_oil",
 						new ResourceLocation(CreateAddition.MODID, "fluid/seed_oil_still"),
@@ -65,7 +65,7 @@ public class CAFluids {
 							new FullItemFluidStorage(context, bucket -> ItemVariant.of(BUCKET), FluidVariant.of(source), FluidConstants.BUCKET));
 					FluidStorage.combinedItemApiProvider(BUCKET).register(context ->
 							new EmptyItemFluidStorage(context, bucket -> ItemVariant.of(source.getBucket()), source, FluidConstants.BUCKET));
-				});
+				}).register();
 	}
 
 

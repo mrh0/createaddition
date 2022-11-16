@@ -14,6 +14,6 @@ public class CAEffects {
 	
 	public static MobEffect SHOCKING;
 	public static void register() {
-		SHOCKING = Registry.register(Registry.MOB_EFFECT, new ResourceLocation(CreateAddition.MODID, "shocking"), new ShockingEffect().addAttributeModifier(Attributes.MOVEMENT_SPEED, "6ed2d177-af97-423c-84f5-1f80c364639f", (double)-100f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+		SHOCKING = Registry.register(Registry.MOB_EFFECT, new ResourceLocation(CreateAddition.MODID, "shocking"), new ShockingEffect().addAttributeModifier(Attributes.MOVEMENT_SPEED, "6ed2d177-af97-423c-84f5-1f80c364639f", -100f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 	}
 }

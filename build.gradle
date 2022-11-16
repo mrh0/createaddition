@@ -89,9 +89,9 @@ dependencies {
 
     modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_version}")
 
-    modImplementation("curse.maven:cc-restitched-462672:3723736")
+    modCompileOnly("curse.maven:cc-restitched-462672:3723736")
 
-    modImplementation("curse.maven:applied-energistics-2-223794:3735901")
+    modImplementation("appeng:appliedenergistics2-fabric:${project.ae2_version}")
 
     modImplementation("com.tterrag.registrate_fabric:Registrate:${project.registrate_version}-MC${project.minecraft_version}")
 

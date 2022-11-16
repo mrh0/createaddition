@@ -3,11 +3,9 @@ package com.mrh0.createaddition.event;
 import com.mrh0.createaddition.blocks.connector.ConnectorMovementManager;
 import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
 import com.mrh0.createaddition.network.ObservePacket;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.client.Minecraft;
