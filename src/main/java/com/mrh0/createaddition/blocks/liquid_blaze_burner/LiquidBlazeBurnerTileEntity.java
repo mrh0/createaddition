@@ -162,6 +162,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		return isCreative;
 	}
 	
+	@SuppressWarnings("unused")
 	protected void applyCreativeFuel() {
 		activeFuel = FuelType.NONE;
 		remainingBurnTime = 0;
@@ -181,6 +182,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		setBlockHeat(next);
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isCreativeFuel(ItemStack stack) {
 		return AllItems.CREATIVE_BLAZE_CAKE.isIn(stack);
 	}
@@ -303,6 +305,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	 * @return true if the heater updated its burn time and an item should be
 	 *         consumed
 	 */
+	@SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
 	protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate) {
 		if (isCreative)
 			return false;
@@ -479,4 +482,5 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
 		causeBlockUpdate();
 	}
+
 }

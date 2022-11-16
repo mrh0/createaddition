@@ -74,6 +74,8 @@
 	
 	"item.createaddition.cake_base": "Cake Base",
 	"item.createaddition.cake_base_baked": "Baked Cake Base",
+
+	"item.createaddition.straw": "Straw",
 	
 	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
 	"fluid.seed_oil": "Seed Oil",

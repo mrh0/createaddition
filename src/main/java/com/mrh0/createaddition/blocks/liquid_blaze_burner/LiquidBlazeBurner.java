@@ -8,7 +8,6 @@ import com.simibubi.create.content.contraptions.processing.BasinTileEntity;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
-import dev.cafeteria.fakeplayerapi.server.FakeServerPlayer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
@@ -17,10 +16,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.FlintAndSteelItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -39,9 +37,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Random;
 
-@SuppressWarnings({"deprecation", "CommentedOutCode"})
+@SuppressWarnings({"deprecation"})
 public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE<LiquidBlazeBurnerTileEntity>, IWrenchable {
 
 	public static final EnumProperty<HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", HeatLevel.class);
@@ -95,9 +94,11 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, @NotNull Level world, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand,
+	public InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand,
 								 @NotNull BlockHitResult blockRayTraceResult) {
-		
+		if (player.getItemInHand(hand).getItem() instanceof BucketItem)
+			Objects.requireNonNull(this.getTileEntity(world, pos)).tryUpdateFuel(player.getItemInHand(hand), false, true);
+		return InteractionResult.SUCCESS;
 		
 		/*if (world.isClientSide())
 			return InteractionResult.CONSUME;
@@ -130,10 +131,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 				player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
 			player.playSound(SoundEvents.BUCKET_EMPTY, 1f, 1f);
 		}
-		return InteractionResult.PASS;*/
-		
-		
-		
+		return InteractionResult.PASS;
 		ItemStack heldItem = player.getItemInHand(hand);
 		HeatLevel heat = state.getValue(HEAT_LEVEL);
 
@@ -210,7 +208,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 			}
 			return InteractionResultHolder.success(container);
 		}
-		return InteractionResultHolder.success(ItemStack.EMPTY);
+		return InteractionResultHolder.success(ItemStack.EMPTY);*/
 	}
 
 	@Override
