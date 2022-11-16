@@ -20,9 +20,9 @@ import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
-import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -42,8 +42,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,14 +71,12 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		headAngle.startWithValue((AngleHelper.horizontalAngle(state.getOptionalValue(LiquidBlazeBurner.FACING)
 			.orElse(Direction.SOUTH)) + 180) % 360);
 		
-		tankInventory = createInventory();
-		fluidCapability = LazyOptional.of(() -> tankInventory);
+		fluidTank = createInventory();
 	}
 	
 	
 	// Custom fluid handling
-	protected LazyOptional<FluidTank> fluidCapability;
-	protected FluidTank tankInventory;
+	protected FluidTank fluidTank;
 	
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	private Optional<LiquidBurningRecipe> recipeCache = Optional.empty();
@@ -114,13 +110,6 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		return world.getRecipeManager().getRecipeFor(LiquidBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
 	}
 	
-	@Override
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-			return fluidCapability.cast();
-		return super.getCapability(cap, side);
-	}
-	
 	public boolean first = true;
 	public void burningTick() {
 		assert level != null;
@@ -128,20 +117,20 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			return;
 		
 		if(first)
-			update(tankInventory.getFluid());
+			update(fluidTank.getFluid());
 		first = false;
 		
 
 		if(recipeCache.isEmpty() && remainingBurnTime < 1)
 			return;
 		
-		if(tankInventory.getFluidAmount() < 100)
+		if(fluidTank.getFluidAmount() < 100)
 			return;
 		if(remainingBurnTime > MAX_HEAT_CAPACITY)
 			return;
 		
 		remainingBurnTime += recipeCache.get().getBurnTime() / 10;
-		tankInventory.setFluid(new FluidStack(tankInventory.getFluid(), tankInventory.getFluidAmount()-100));
+		fluidTank.setFluid(new FluidStack(fluidTank.getFluid(), fluidTank.getFluidAmount()-100));
 		activeFuel = FuelType.NORMAL;
 
 		HeatLevel prev = getHeatLevelFromBlock();
@@ -278,7 +267,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			compound.putBoolean("Goggles", true);
 		if (hat)
 			compound.putBoolean("TrainHat", true);
-		compound.put("TankContent", tankInventory.writeToNBT(new CompoundTag()));
+		compound.put("TankContent", fluidTank.writeToNBT(new CompoundTag()));
 		super.write(compound, clientPacket);
 	}
 
@@ -289,7 +278,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		isCreative = compound.getBoolean("isCreative");
 		goggles = compound.contains("Goggles");
 		hat = compound.contains("TrainHat");
-		tankInventory.readFromNBT(compound.getCompound("TankContent"));
+		fluidTank.readFromNBT(compound.getCompound("TankContent"));
 		super.read(compound, clientPacket);
 	}
 
@@ -319,13 +308,15 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			return false;
 
 		FuelType newFuel = FuelType.NONE;
-		int newBurnTime;
+		Integer newBurnTime;
 
 		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
 			newBurnTime = 1000;
 			newFuel = FuelType.SPECIAL;
 		} else {
-			newBurnTime = ForgeHooks.getBurnTime(itemStack, null);
+			FuelRegistry registry = FuelRegistry.INSTANCE;
+			newBurnTime = registry.get(itemStack.getItem());
+			if (newBurnTime == null) newBurnTime = 0;
 			if (newBurnTime > 0)
 				newFuel = FuelType.NORMAL;
 			else if (AllItemTags.BLAZE_BURNER_FUEL_REGULAR.matches(itemStack)) {
@@ -481,7 +472,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
-		return containedFluidTooltip(tooltip, isPlayerSneaking, this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
+		return containedFluidTooltip(tooltip, isPlayerSneaking, fluidTank);
 	}
 
 	@Override

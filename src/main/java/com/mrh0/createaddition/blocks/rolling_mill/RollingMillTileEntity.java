@@ -165,10 +165,10 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 	}
 
 //	@Override
-//	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+//	public <T> LazyOptional<T> getStorage(Capability<T> cap, Direction side) {
 //		if (isItemHandlerCap(cap))
 //			return capability.cast();
-//		return super.getCapability(cap, side);
+//		return super.getStorage(cap, side);
 //	}
 
 

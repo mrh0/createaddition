@@ -108,7 +108,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 			if (!(held.getItem() instanceof BucketItem))
 				return InteractionResult.SUCCESS;
 			LazyOptional<IFluidHandlerItem> cap = held
-					.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+					.getStorage(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
 			if (!cap.isPresent())
 				return InteractionResult.SUCCESS;
 			IFluidHandlerItem handler = cap.orElse(null);
@@ -119,7 +119,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 			if (!recipe.isPresent())
 				return InteractionResult.SUCCESS;
 
-			LazyOptional<IFluidHandler> tecap = cbte.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+			LazyOptional<IFluidHandler> tecap = cbte.getStorage(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
 			if (!tecap.isPresent())
 				return InteractionResult.SUCCESS;
 			IFluidHandler tehandler = tecap.orElse(null);

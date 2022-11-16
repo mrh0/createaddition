@@ -1,7 +1,5 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
-import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
-import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.util.IComparatorOverride;
@@ -20,7 +18,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -127,7 +124,7 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	
 	@Override
 	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-		return IComparatorOverride.getComparetorOverride(worldIn, pos);
+		return IComparatorOverride.getComparatorOverride(worldIn, pos);
 	}
 
 	@Override

@@ -362,7 +362,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	}
 
 	@Override
-	public boolean isNodeIndeciesConnected(int in, int other) {
+	public boolean isNodeIndicesConnected(int in, int other) {
 		return isNodeInput(in) == isNodeInput(other);
 	}
 
