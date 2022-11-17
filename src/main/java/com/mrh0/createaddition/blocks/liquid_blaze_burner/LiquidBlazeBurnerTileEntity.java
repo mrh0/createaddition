@@ -21,11 +21,10 @@ import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
-import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -38,6 +37,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -295,50 +295,76 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		notifyUpdate();
 	}
 
-	private boolean tryUpdateLiquid(ItemStack itemStack) {
+	private boolean tryUpdateLiquid(ItemStack itemStack, Player player) {
 		Item bioethanol = CAFluids.BIOETHANOL.get().getBucket();
 		Item seedOil = CAFluids.SEED_OIL.get().getBucket();
-		if (itemStack.is(seedOil) || itemStack.is(bioethanol)) {
-			LazyOptional<FluidVariant> cap = LazyOptional.ofObject(fluidTank.variant);
-		if (!cap.isPresent())
-			return false;
-		FluidVariant handler = cap.orElse(FluidVariant.blank());
-		int fluidAmount = handler.getFluid().getAmount(cap.getValueUnsafer().getFluid().defaultFluidState());
-		if (fluidAmount == 0)
-			return false;
-		FluidStack stack = new FluidStack(cap.getValueUnsafer().getFluid(), fluidAmount);
-		assert level != null;
-		Optional<LiquidBurningRecipe> recipe = find(stack, level);
-		if (recipe.isEmpty())
-			return false;
+		Item currentItem = itemStack.getItem();
+		if (currentItem == seedOil || currentItem == bioethanol) {
+			assert level != null;
+			if (!Transaction.isOpen()) {
+				try (Transaction transaction = Transaction.openOuter()) {
+					if (currentItem == seedOil) {
+						fluidTank.insert(new FluidStack(CAFluids.BIOETHANOL.get().getSource(), 1000).getType(), 1000, transaction);
+					} else
+						fluidTank.insert(new FluidStack(CAFluids.SEED_OIL.get().getSource(), 1000).getType(), 1000, transaction);
+					transaction.commit();
+				}
+			}
+			if (fluidTank.getFluidAmount() > 0) {
+				remainingBurnTime = (int) fluidTank.getFluidAmount();
+				activeFuel = FuelType.NORMAL;
+			}
+			level.playSound(player, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
+			if (level.isClientSide) {
+				spawnParticleBurst(activeFuel == FuelType.SPECIAL);
+			}
+			playSound();
+			updateBlockState();
+			level.playSound(player, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
+					.125f + level.random.nextFloat() * .125f, 1.15f - level.random.nextFloat() * .25f);
+			return true;
+			/*
+			LazyOptional<IFluidHandlerItem> cap = itemStack
+				.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+			if (!cap.isPresent())
+				return false;
+			IFluidHandlerItem handler = cap.orElse(null);
+			if (handler.getFluidInTank(0).isEmpty())
+				return false;
+			FluidStack stack = handler.getFluidInTank(0);
+			Optional<LiquidBurningRecipe> recipe = find(stack, level);
+			if (!recipe.isPresent())
+				return false;
 
-		if (!cap.isPresent())
-			return false;
-		if (stack.getAmount() < 1000)
-			return false;
-		this.fluidTank.setFluid(stack);
-		this.fluidTank.getFluid().setAmount(1000);
-		//if (!player.isCreative())
-		//	player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
-		level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
-		return true;
-	}
+			LazyOptional<IFluidHandler> tecap = getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+			if (!tecap.isPresent())
+				return false;
+			IFluidHandler tehandler = tecap.orElse(null);
+			if (tehandler.getTankCapacity(0) - tehandler.getFluidInTank(0).getAmount() < 1000)
+				return false;
+			tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), FluidAction.EXECUTE);
+				//  if (!player.isCreative())
+				//		player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
+			level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
+			return true;
+			*/
+		}
 		return  false;
-}
+	}
 
 	/**
 	 * @return true if the heater updated its burn time and an item should be
 	 *         consumed
 	 */
 	@SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
-	protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate) {
+	protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate, Player player) {
 		if (isCreative)
 			return false;
 
 		FuelType newFuel = FuelType.NONE;
 		Integer newBurnTime;
 
-		if(tryUpdateLiquid(itemStack))
+		if(tryUpdateLiquid(itemStack, player))
 			return true;
 
 		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {

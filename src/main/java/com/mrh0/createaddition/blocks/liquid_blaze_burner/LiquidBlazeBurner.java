@@ -58,8 +58,16 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 		super.createBlockStateDefinition(builder);
 		builder.add(HEAT_LEVEL, FACING);
 	}
-	public static InteractionResultHolder<ItemStack> tryInsert(BlockState state, Level world, BlockPos pos,
-															   ItemStack stack, boolean doNotConsume, boolean forceOverflow, boolean simulate) {
+	public static InteractionResultHolder<ItemStack> tryInsert(
+			BlockState state,
+			Level world,
+			BlockPos pos,
+			ItemStack stack,
+			boolean doNotConsume,
+			boolean forceOverflow,
+			boolean simulate,
+			Player player
+	) {
 		if (!state.hasBlockEntity())
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 
@@ -72,7 +80,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 				burnerTE.applyCreativeFuel();
 			return InteractionResultHolder.success(ItemStack.EMPTY);
 		}
-		if (!burnerTE.tryUpdateFuel(stack, forceOverflow, simulate))
+		if (!burnerTE.tryUpdateFuel(stack, forceOverflow, simulate, player))
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 
 		if (!doNotConsume) {
@@ -132,7 +140,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 		boolean doNotConsume = player.isCreative();
 		boolean forceOverflow = !(player instanceof FakeServerPlayer);
 		InteractionResultHolder<ItemStack> res =
-				tryInsert(state, world, pos, heldItem, doNotConsume, forceOverflow, false);
+				tryInsert(state, world, pos, heldItem, doNotConsume, forceOverflow, false, player);
 		ItemStack leftover = res.getObject();
 		if (!world.isClientSide && !doNotConsume && !leftover.isEmpty()) {
 			if (heldItem.isEmpty()) {
