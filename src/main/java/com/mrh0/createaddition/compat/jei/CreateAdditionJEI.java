@@ -16,6 +16,7 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
+import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.Create;
 import com.simibubi.create.compat.jei.ConversionRecipe;
@@ -37,6 +38,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -70,6 +72,13 @@ public class CreateAdditionJEI implements IModPlugin {
 		.itemIcon(CABlocks.TESLA_COIL.get())
 		.emptyBackground(177, 53)
 		.build("charging", ChargingCategory::new);
+	
+	final CreateRecipeCategory<?> liquidBurning = builder(LiquidBurningRecipe.class)
+		.addTypedRecipes(() -> LiquidBurningRecipe.TYPE)
+		.catalyst(CABlocks.LIQUID_BLAZE_BURNER::get)
+		.itemIcon(CABlocks.LIQUID_BLAZE_BURNER.get())
+		.emptyBackground(177, 53)
+		.build("liquid_burning", LiquidBurningCategory::new);
 
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration) {
@@ -247,7 +256,7 @@ public class CreateAdditionJEI implements IModPlugin {
 
 			CreateRecipeCategory.Info<T> info = new CreateRecipeCategory.Info<>(
 					new mezz.jei.api.recipe.RecipeType<>(CreateAddition.asResource(name), recipeClass),
-					Lang.translateDirect("recipe." + name), background, icon, recipesSupplier, catalysts);
+					new TranslatableComponent(CreateAddition.MODID + ".recipe." + name), background, icon, recipesSupplier, catalysts);
 			CreateRecipeCategory<T> category = factory.create(info);
 			ALL.add(category);
 			return category;

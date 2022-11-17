@@ -80,26 +80,6 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 		return axis == Axis.X ? HORIZONTAL_SHAPE_X : HORIZONTAL_SHAPE_Z;
 	}
 	
-	/*@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-		return getShape(state, world, pos, context);
-	}
-	
-	@Override
-	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos) {
-		return getShape(state, world, pos, null);
-	}
-	
-	@Override
-	public VoxelShape getSidesShape(BlockState state, IBlockReader world, BlockPos pos) {
-		return getShape(state, world, pos, null);
-	}
-	
-	@Override
-	public VoxelShape getRaytraceShape(BlockState state, IBlockReader world, BlockPos pos) {
-		return getShape(state, world, pos, null);
-	}*/
-	
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return CATileEntities.REDSTONE_RELAY.create(pos, state);
@@ -252,6 +232,8 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	
 	@Override
 	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+		if(pos == null || side == null || state == null || world == null)
+			return false;
 		return !state.getValue(VERTICAL).booleanValue() && side.getAxis() != state.getValue(HORIZONTAL_FACING).getAxis();
 	}
 

@@ -50,6 +50,11 @@ public class CAItems {
 			REGISTRATE.item("biomass_pellet", BiomassPellet::new)
 			.register();
 	
+	public static final ItemEntry<Item> STRAW =
+			REGISTRATE.item("straw", Item::new)
+			.properties(p -> p.stacksTo(16))
+			.register();
+	
 	/*public static final ItemEntry<Multimeter> MULTIMETER =
 		REGISTRATE.item("multimeter", Multimeter::new)
 			.properties((p) -> p.stacksTo(1))
@@ -131,6 +136,7 @@ public class CAItems {
 		Create.registrate().addToSection(BIOMASS_PELLET, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
+		Create.registrate().addToSection(STRAW, AllSections.MATERIALS);
 		
 		
 	}

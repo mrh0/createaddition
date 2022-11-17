@@ -14,7 +14,8 @@
 	"createaddition.tooltip.relay.info": "Relay Info:",
 	"createaddition.tooltip.connector.info": "Connector Info:",
 	
-	"create.recipe.rolling": "Rolling",
+	"createaddition.recipe.rolling": "Rolling",
+	"createaddition.recipe.liquid_burning": "Liquid Burning",
 	"createaddition.recipe.rolling.sequence": "Rolling in Mill",
 	"createaddition.recipe.charging": "Charging",
 	
@@ -51,13 +52,17 @@
 	"item.createaddition.cake_base": "Cake Base",
 	"item.createaddition.cake_base_baked": "Baked Cake Base",
 	
+	"item.createaddition.straw": "Straw",
+	
 	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
 	"item.createaddition.seed_oil_bucket.tooltip": "SEED_OIL_BUCKET",
 	"item.createaddition.seed_oil_bucket.tooltip.summary": "A simple _flammable liquid_.",
+	"fluid.createaddition.seed_oil": "Seed Oil",
 	
 	"item.createaddition.bioethanol_bucket": "Bucket of Bioethanol",
 	"item.createaddition.bioethanol_bucket.tooltip": "BIOETHANOL_BUCKET",
 	"item.createaddition.bioethanol_bucket.tooltip.summary": "An efficient _flammable liquid_.",
+	"fluid.createaddition.bioethanol": "Bioethanol",
 	
 	"item.createaddition.biomass": "Biomass",
 	"item.createaddition.biomass_pellet": "Biomass Pellet",
@@ -145,6 +150,8 @@
 	"block.createaddition.seed_oil": "Seed Oil",
 	"block.createaddition.bioethanol": "Bioethanol",
 	
+	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
+	
 	"block.createaddition.tesla_coil": "Tesla Coil",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
@@ -188,6 +195,11 @@
 	"createaddition.ponder.tesla_coil_hurt.text_1": "The Tesla Coil is also able to inflict damage on nearby Players and Mobs",
 	"createaddition.ponder.tesla_coil_hurt.text_2": "This can be activated with a Redstone signal",
 	"createaddition.ponder.tesla_coil_hurt.text_3": "Prepare to be Shocked!",
+	
+	"createaddition.ponder.liquid_blaze_burner.header": "Liquid Fuel Burning",
+	"createaddition.ponder.liquid_blaze_burner.text_1": "Giving the Blaze Burner a Straw",
+	"createaddition.ponder.liquid_blaze_burner.text_2": "will allow it to accept liquid fuels by Buckets",
+	"createaddition.ponder.liquid_blaze_burner.text_3": "- or by pipes.",
 	
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",
