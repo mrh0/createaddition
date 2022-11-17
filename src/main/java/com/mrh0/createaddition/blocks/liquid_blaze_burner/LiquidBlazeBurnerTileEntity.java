@@ -144,7 +144,13 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		if(remainingBurnTime > MAX_HEAT_CAPACITY)
 			return;
 		
-		remainingBurnTime += recipeCache.get().getBurnTime() / 10;
+		// Added try catch because this crashes for some reason for a minority of players, very strange.
+		try {
+			remainingBurnTime += recipeCache.get().getBurnTime() / 10;
+		}
+		catch(Exception e) {
+			return;
+		}
 		tankInventory.drain(100, FluidAction.EXECUTE);
 		activeFuel = FuelType.NORMAL;
 
