@@ -15,8 +15,11 @@
 	"createaddition.tooltip.connector.info": "连接器信息：",
 
 	"createaddition.recipe.rolling": "轧制",
+	"createaddition.recipe.liquid_burning": "液体燃料燃烧",
+	"createaddition.recipe.rolling.sequence": "轧机轧制",
+	"createaddition.recipe.charging": "充能",
 	
-	"desc.immersiveengineering.info.mineral.sphalerite": "闪锌",
+	"desc.immersiveengineering.info.mineral.sphalerite": "闪锌矿",
 
 	"item.createaddition.capacitor": "电容",
 
@@ -29,11 +32,12 @@
 	"item.createaddition.copper_spool.tooltip": "线轴",
 	"item.createaddition.copper_spool.tooltip.summary": "右击两个_连接器_来产生连接它们之间的线缆并返还一个_空线轴_。",
 
+	"item.createaddition.iron_wire": "铁线",
+	"item.createaddition.iron_spool": "铁线轴",
+	"item.createaddition.iron_rod": "铁棒",
+	
 	"item.createaddition.copper_wire": "铜线",
 	"item.createaddition.copper_rod": "铜棒",
-
-	"item.createaddition.iron_wire": "铁线",
-	"item.createaddition.iron_rod": "铁棒",
 		
 	"item.createaddition.gold_spool": "金线轴",
 	"item.createaddition.gold_spool.tooltip": "线轴",
@@ -48,13 +52,17 @@
 	"item.createaddition.cake_base": "蛋糕底座",
 	"item.createaddition.cake_base_baked": "烘焙蛋糕底座",
 	
+	"item.createaddition.straw": "吸管",
+	
 	"item.createaddition.seed_oil_bucket": "种子油桶",
 	"item.createaddition.seed_oil_bucket.tooltip": "种子油桶",
 	"item.createaddition.seed_oil_bucket.tooltip.summary": "一种简单的_可以驱动_原油炉_的易燃液体_。",
+	"fluid.createaddition.seed_oil": "种子油",
 
 	"item.createaddition.bioethanol_bucket": "生物乙醇桶",
 	"item.createaddition.bioethanol_bucket.tooltip": "生物乙醇桶",
 	"item.createaddition.bioethanol_bucket.tooltip.summary": "一种高效的_可以驱动_原油炉_的易燃液体_。",
+	"fluid.createaddition.bioethanol": "生物乙醇",
 	
 	"item.createaddition.biomass": "生物质",
 	"item.createaddition.biomass_pellet": "生物质颗粒",
@@ -142,6 +150,8 @@
 	"block.createaddition.seed_oil": "种子油",
 	"block.createaddition.bioethanol": "生物乙醇",
 	
+	"createaddition.recipe.liquid_burning.burn_time": "燃烧时间",
+	
 	"block.createaddition.tesla_coil": "特斯拉线圈",
 
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
@@ -185,6 +195,11 @@
 	"createaddition.ponder.tesla_coil_hurt.text_1": "特斯拉线圈也能对附近的玩家和生物造成伤害。",
 	"createaddition.ponder.tesla_coil_hurt.text_2": "此功能可以用红石信号来激活",
 	"createaddition.ponder.tesla_coil_hurt.text_3": "准备好触电吧！",
+	
+	"createaddition.ponder.liquid_blaze_burner.header": "燃烧液体燃料",
+	"createaddition.ponder.liquid_blaze_burner.text_1": "对烈焰人燃烧室使用吸管",
+	"createaddition.ponder.liquid_blaze_burner.text_2": "可以让它能够使用桶装燃料燃烧",
+	"createaddition.ponder.liquid_blaze_burner.text_3": "-或者通过管道。",
 	
 	"effect.createaddition.shocking":"触电",
 	"death.attack.tesla_coil": "%1$s 受到了致命电击",
