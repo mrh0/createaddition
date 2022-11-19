@@ -21,9 +21,12 @@ import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilTileEntity;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import team.reborn.energy.api.EnergyStorage;
 
 
+@SuppressWarnings("UnstableApiUsage")
 public class CATileEntities {
 	public static final BlockEntityEntry<ElectricMotorTileEntity> ELECTRIC_MOTOR = CreateAddition.registrate()
 			.tileEntity("electric_motor", ElectricMotorTileEntity::new)
@@ -84,6 +87,11 @@ public class CATileEntities {
 		EnergyStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
 			if(blockEntity instanceof EnergyTransferable transferable)
 				return transferable.getEnergyStorage(context);
+			return null;
+		});
+		FluidStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
+			if (blockEntity instanceof FluidTransferable transferable)
+				return transferable.getFluidStorage(context);
 			return null;
 		});
 	}

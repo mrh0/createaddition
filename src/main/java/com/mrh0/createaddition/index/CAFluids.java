@@ -43,8 +43,8 @@ public class CAFluids {
 						.blastResistance(100f))
 				.fluidAttributes(() -> new CreateAdditionsAttributeHandler("fluid.bioethanol", 2000, 1400))
 				.lang("Bioethanol")
-				.onRegisterAfter(Registry.ITEM_REGISTRY, chocolate -> {
-					Fluid source = chocolate.getSource();
+				.onRegisterAfter(Registry.ITEM_REGISTRY, fluid -> {
+					Fluid source = fluid.getSource();
 					FluidStorage.combinedItemApiProvider(source.getBucket()).register(context ->
 							new FullItemFluidStorage(context, bucket -> ItemVariant.of(BUCKET), FluidVariant.of(source), FluidConstants.BUCKET));
 					FluidStorage.combinedItemApiProvider(BUCKET).register(context ->
@@ -61,8 +61,8 @@ public class CAFluids {
 						.blastResistance(100f))
 				.fluidAttributes(() -> new CreateAdditionsAttributeHandler("fluid.seed_oil", 2500, 1600))
 				.lang("Seed Oil")
-				.onRegisterAfter(Registry.ITEM_REGISTRY, chocolate -> {
-					Fluid source = chocolate.getSource();
+				.onRegisterAfter(Registry.ITEM_REGISTRY, fluid -> {
+					Fluid source = fluid.getSource();
 					FluidStorage.combinedItemApiProvider(source.getBucket()).register(context ->
 							new FullItemFluidStorage(context, bucket -> ItemVariant.of(BUCKET), FluidVariant.of(source), FluidConstants.BUCKET));
 					FluidStorage.combinedItemApiProvider(BUCKET).register(context ->
