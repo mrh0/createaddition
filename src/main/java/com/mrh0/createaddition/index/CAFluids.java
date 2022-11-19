@@ -5,6 +5,7 @@ import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.fabric.SimpleFlowableFluid;
 import com.tterrag.registrate.util.entry.FluidEntry;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -30,6 +31,8 @@ public class CAFluids {
 
 	public static final FluidEntry<SimpleFlowableFluid.Flowing> BIOETHANOL;
 	public static final FluidEntry<SimpleFlowableFluid.Flowing> SEED_OIL;
+	public static final FluidStack BIOETHANOL_FLUID_STACK;
+	public static final FluidStack SEED_OIL_FLUID_STACK;
 
 	static  {
 		BIOETHANOL = REGISTRATE
@@ -50,6 +53,7 @@ public class CAFluids {
 					FluidStorage.combinedItemApiProvider(BUCKET).register(context ->
 							new EmptyItemFluidStorage(context, bucket -> ItemVariant.of(source.getBucket()), source, FluidConstants.BUCKET));
 				}).register();
+
 		SEED_OIL = REGISTRATE
 				.fluid("seed_oil",
 						new ResourceLocation(CreateAddition.MODID, "fluid/seed_oil_still"),
@@ -68,6 +72,9 @@ public class CAFluids {
 					FluidStorage.combinedItemApiProvider(BUCKET).register(context ->
 							new EmptyItemFluidStorage(context, bucket -> ItemVariant.of(source.getBucket()), source, FluidConstants.BUCKET));
 				}).register();
+
+		BIOETHANOL_FLUID_STACK = new FluidStack(BIOETHANOL.getSource().getSource(), 81000);
+		SEED_OIL_FLUID_STACK = new FluidStack(BIOETHANOL.getSource().getSource(), 81000);
 	}
 
 

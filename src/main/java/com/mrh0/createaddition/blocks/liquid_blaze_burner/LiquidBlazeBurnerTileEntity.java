@@ -311,10 +311,10 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		if (bl) {
 			assert level != null;
 			if (currentItem == seedOilBucket) {
-				fluidTank.setFluid(new FluidStack(seedOil, 81000));
+				fluidTank.setFluid(CAFluids.SEED_OIL_FLUID_STACK);
 			}
 			if (currentItem == bioethanolBucket) {
-				fluidTank.setFluid(new FluidStack(bioethanol, 81000));
+				fluidTank.setFluid(CAFluids.BIOETHANOL_FLUID_STACK);
 			}
 			level.playSound(player, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
 			if (level.isClientSide) {
