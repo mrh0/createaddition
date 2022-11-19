@@ -145,6 +145,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		return AllItems.CREATIVE_BLAZE_CAKE.isIn(stack);
 	}
 
+
 	@Override
 	public void tick() {
 		super.tick();
@@ -161,7 +162,14 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 
 		if (isCreative)
 			return;
-		if (fluidTank.getFluidAmount() >= 8100 && remainingBurnTime <= 200 && !Transaction.isOpen()) {
+		if (	!Transaction.isOpen() &&
+				fluidTank.getFluidAmount() >= 8100 &&
+				remainingBurnTime <= 200 &&
+				(
+						fluidTank.getFluid().isFluidEqual(new FluidStack(CAFluids.BIOETHANOL.getSource()).getType()) ||
+						fluidTank.getFluid().isFluidEqual(new FluidStack(CAFluids.SEED_OIL.getSource()).getType())
+				)
+		) {
 			Transaction transaction = Transaction.openOuter();
 			fluidTank.extract(fluidTank.variant, 8100, transaction);
 			transaction.commit();
@@ -311,10 +319,10 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		if (bl) {
 			assert level != null;
 			if (currentItem == seedOilBucket) {
-				fluidTank.setFluid(CAFluids.SEED_OIL_FLUID_STACK);
+				fluidTank.setFluid(new FluidStack(CAFluids.SEED_OIL.getSource().getSource(), 1000));
 			}
 			if (currentItem == bioethanolBucket) {
-				fluidTank.setFluid(CAFluids.BIOETHANOL_FLUID_STACK);
+				fluidTank.setFluid(new FluidStack(CAFluids.BIOETHANOL.getSource().getSource(), 1000));
 			}
 			level.playSound(player, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
 			if (level.isClientSide) {
