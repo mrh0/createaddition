@@ -171,7 +171,7 @@
 	
 	"block.createaddition.seed_oil": "種油",
 	
-	"itemGroup.createaddition.main":"Create Crafts & Additions",
+	"itemGroup.createaddition:main":"Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "クリックしてオープンAPIドキュメントを開く",
 	

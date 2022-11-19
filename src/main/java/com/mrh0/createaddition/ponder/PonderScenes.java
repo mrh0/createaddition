@@ -349,7 +349,6 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(teslacoil));
 		scene.idle(80);
 	}
-	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	public static void liquidBlazeBurner(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("liquid_blaze_burner", "Liquid Fuel Burning");
 		scene.configureBasePlate(0, 0, 5);
@@ -382,8 +381,10 @@ public class PonderScenes {
 				.placeNearTarget()
 				.pointAt(util.vector.topOf(burner));
 		scene.idle(10);
-		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(burner), Pointing.DOWN).rightClick()
-				.withItem(new ItemStack(CAFluids.BIOETHANOL.getBucket().get())), 40);
+		if (CAFluids.BIOETHANOL.getBucket().isPresent()) {
+			scene.overlay.showControls(new InputWindowElement(util.vector.topOf(burner), Pointing.DOWN).rightClick()
+					.withItem(new ItemStack(CAFluids.BIOETHANOL.getBucket().get())), 40);
+		}
 		scene.idle(60);
 		scene.overlay.showText(50)
 				.attachKeyFrame()

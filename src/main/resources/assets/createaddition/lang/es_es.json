@@ -208,7 +208,7 @@
 	
 	"block.createaddition.tesla_coil": "Bobina de Tesla",
 	
-	"itemGroup.createaddition.main":"Create Crafts & Additions",
+	"itemGroup.createaddition:main":"Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "Haga clic aquí para abrir la documentación de la API",
 	

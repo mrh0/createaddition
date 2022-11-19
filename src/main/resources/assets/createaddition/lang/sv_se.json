@@ -97,7 +97,7 @@
 	"block.createaddition.redstone_relay.tooltip.condition2": "Utgång",
 	"block.createaddition.redstone_relay.tooltip.behaviour2": "Tar in _fe_ från _trådar_ kopplade till den _nod_ som inte är _vit_ markerad.",
 
-	"itemGroup.createaddition.main": "Create Crafts & Additions",
+	"itemGroup.createaddition: main": "Create Crafts & Additions",
 	
 	"createaddition.ponder.electric_motor.header": "Att generera kinetisk kraft med elektrisitet",
 	"createaddition.ponder.electric_motor.text_1": "Electric Motors are a compact and configurable source of Rotational Force",
