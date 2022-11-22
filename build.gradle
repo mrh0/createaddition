@@ -1,3 +1,4 @@
+//file:noinspection GroovyUnusedAssignment
 plugins {
     id 'fabric-loom' version '1.0-SNAPSHOT'
     id 'eclipse'
@@ -61,12 +62,19 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
+    maven {
+        name = 'ParchmentMC'
+        url = 'https://maven.parchmentmc.org'
+    }
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
 
-    mappings loom.officialMojangMappings()
+    mappings loom.layered {
+        it.officialMojangMappings()
+        it.parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}")
+    }
 
     modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 
@@ -81,13 +89,13 @@ dependencies {
 
     modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_version}")
 
-    modImplementation("curse.maven:cc-restitched-462672:3723736")
+    modCompileOnly("curse.maven:cc-restitched-462672:3723736")
 
-    modImplementation("curse.maven:applied-energistics-2-223794:3735901")
+    modImplementation("appeng:appliedenergistics2-fabric:${project.ae2_version}")
 
-    modImplementation("com.tterrag.registrate:Registrate:${project.registrate_version}")
+    modImplementation("com.tterrag.registrate_fabric:Registrate:${project.registrate_version}-MC${project.minecraft_version}")
 
-    modApi("me.shedaniel.cloth:cloth-config-fabric:6.2.62") {
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 

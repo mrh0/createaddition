@@ -1,32 +1,13 @@
 package com.mrh0.createaddition.util;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import team.reborn.energy.api.EnergyStorage;
 
 public class Util {
-	public static int min(int...v) {
-		int m = Integer.MAX_VALUE;
-		for(int i : v)
-			if(i < m)
-				m = i;
-		return m;
-	}
-	
-	public static int minIndex(int...v) {
-		int m = 0;
-		for(int i = 0; i < v.length; i++)
-			if(v[i] < v[m])
-				m = i;
-		return m;
-	}
 	
 	public static ItemStack findStack(Item item, Inventory inv) {
 		for(int i = 0; i < inv.getContainerSize(); i++) {
@@ -36,22 +17,7 @@ public class Util {
 		}
 		return ItemStack.EMPTY;
 	}
-	
-	public static boolean canStack(ItemStack add, ItemStack to){
-		return add.getCount() + to.getCount() <= to.getMaxStackSize() && (add.getItem() == to.getItem()) || to.isEmpty();
-	}
-	
-	public static int getMergeRest(ItemStack add, ItemStack to){
-		return Math.max(add.getCount() + to.getCount() - to.getMaxStackSize(), 0);
-	}
-	
-	public static int getSkyLight(Level world, BlockPos pos) {
-		return Math.max(world.getBrightness(LightLayer.SKY, pos) - world.getSkyDarken(), 0);
-	}
-	
-	public static ItemStack mergeStack(ItemStack add, ItemStack to) {
-		return new ItemStack(to.isEmpty()?add.getItem():to.getItem(), to.getCount() + add.getCount());
-	}
+
 	
 	public static String format(long n) {
 		if(n > 1000000)
@@ -63,8 +29,9 @@ public class Util {
 	
 	public static Component getTextComponent(EnergyStorage ies, String nan, String unit) {
 		if(ies == null)
-			return new TextComponent(nan);
-		return new TextComponent(format(ies.getAmount())+unit).withStyle(ChatFormatting.AQUA).append(new TextComponent(" / ").withStyle(ChatFormatting.GRAY)).append(new TextComponent(format(ies.getCapacity())+unit));
+			return Component.literal(nan);
+		return Component.literal(format(ies.getAmount())+unit).withStyle(ChatFormatting.AQUA).append(Component.literal(" / ").withStyle(ChatFormatting.GRAY))
+				.append(Component.literal(format(ies.getCapacity())+unit));
 	}
 	
 	public static Component getTextComponent(EnergyStorage ies) {

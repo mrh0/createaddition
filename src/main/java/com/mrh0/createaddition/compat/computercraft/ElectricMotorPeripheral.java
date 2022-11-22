@@ -1,15 +1,16 @@
 package com.mrh0.createaddition.compat.computercraft;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
-
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 
 public class ElectricMotorPeripheral implements IPeripheral {
 	protected final List<IComputerAccess> connected = new ArrayList<>();

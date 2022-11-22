@@ -3,6 +3,7 @@ package com.mrh0.createaddition;
 import com.mrh0.createaddition.event.GameEvents;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItemProperties;
+import com.mrh0.createaddition.index.CAPartials;
 import com.mrh0.createaddition.index.CAPonder;
 import com.mrh0.createaddition.network.CANetwork;
 import net.fabricmc.api.ClientModInitializer;
@@ -16,6 +17,7 @@ public class CreateAdditionClient implements ClientModInitializer {
         GameEvents.initClient();
         CAPonder.register();
         //CAEntities.registerRenderers();
+        CAPartials.initClass();
         CAItemProperties.register();
 
         RenderType cutout = RenderType.cutoutMipped();

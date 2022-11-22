@@ -1,12 +1,10 @@
 package com.mrh0.createaddition.index;
 
-import static com.simibubi.create.AllTags.forgeItemTag;
-import static com.simibubi.create.AllTags.AllItemTags.PLATES;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
-import com.mrh0.createaddition.item.WireSpool;
 import com.mrh0.createaddition.item.BiomassPellet;
 import com.mrh0.createaddition.item.DiamondGritSandpaper;
+import com.mrh0.createaddition.item.WireSpool;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
@@ -14,15 +12,22 @@ import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.simibubi.create.foundation.item.TooltipHelper;
-
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Item;
 
+import static com.simibubi.create.AllTags.AllItemTags.PLATES;
+import static com.simibubi.create.AllTags.forgeItemTag;
 
+
+@SuppressWarnings({"unused", "CommentedOutCode"})
 public class CAItems {
 
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
 		.creativeModeTab(() -> ModGroup.MAIN);
+	public static final ItemEntry<Item> STRAW =
+			REGISTRATE.item("straw", Item::new)
+					.properties(p -> p.stacksTo(16))
+					.register();
 	
 	public static final ItemEntry<Item> CAPACITOR =
 			REGISTRATE.item("capacitor", Item::new)

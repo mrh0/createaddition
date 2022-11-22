@@ -1,39 +1,36 @@
 package com.mrh0.createaddition.blocks.connector;
 
-import java.util.List;
-
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
-import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.network.RemoveConnectorPacket;
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import team.reborn.energy.api.EnergyStorage;
 
+import java.util.List;
+
 public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation {
 
-	private BlockPos[] connectionPos;
-	private int[] connectionIndecies;
-	private WireType[] connectionTypes;
+	private final BlockPos[] connectionPos;
+	private final int[] connectionIndices;
+	private final WireType[] connectionTypes;
 	public IWireNode[] nodeCache;
 	
 	public static Vec3 OFFSET_DOWN = new Vec3(0f, -3f/16f, 0f);
@@ -51,7 +48,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
 		
 		connectionPos = new BlockPos[getNodeCount()];
-		connectionIndecies = new int[getNodeCount()];
+		connectionIndices = new int[getNodeCount()];
 		connectionTypes = new WireType[getNodeCount()];
 		
 		nodeCache = new IWireNode[getNodeCount()];
@@ -128,13 +125,13 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	public int getOtherNodeIndex(int node) {
 		if(connectionPos[node] == null)
 			return -1;
-		return connectionIndecies[node];
+		return connectionIndices[node];
 	}
 	
 	@Override
 	public void setNode(int node, int other, BlockPos pos, WireType type) {
 		connectionPos[node] = pos; 
-		connectionIndecies[node] = other;
+		connectionIndices[node] = other;
 		connectionTypes[node] = type;
 		
 		// Invalidate
@@ -236,7 +233,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		//TileEntity te = world.getTileEntity(pos.offset(d));
 		//if(te == null)
 		//	return;
-		//IEnergyStorage ies = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite()).orElse(null);
+		//IEnergyStorage ies = te.getStorage(CapabilityEnergy.ENERGY, d.getOpposite()).orElse(null);
 		EnergyStorage ies = getCachedEnergy(d);
 		if(ies == null)
 			return;
@@ -268,13 +265,12 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.connector.info").withStyle(ChatFormatting.WHITE)));
 		
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.connector.info").withStyle(ChatFormatting.WHITE)));
-		
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(" ")
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(" ")
 				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		
 		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);

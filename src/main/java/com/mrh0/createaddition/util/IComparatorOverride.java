@@ -5,13 +5,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface IComparatorOverride {
-	public int getComparetorOverride();
+	public int getComparatorOverride();
 	
-	public static int getComparetorOverride(Level worldIn, BlockPos pos) {
+	public static int getComparatorOverride(Level worldIn, BlockPos pos) {
 		BlockEntity te = worldIn.getBlockEntity(pos);
 		if(te != null) {
 			if(te instanceof IComparatorOverride) {
-				return ((IComparatorOverride)te).getComparetorOverride();
+				return ((IComparatorOverride)te).getComparatorOverride();
 			}
 		}
 		return 5;

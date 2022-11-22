@@ -16,8 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,10 +26,11 @@ import team.reborn.energy.api.EnergyStorageUtil;
 
 import java.util.List;
 
+@SuppressWarnings({"CommentedOutCode", "UnstableApiUsage"})
 public class AlternatorTileEntity extends KineticTileEntity implements EnergyTransferable {
 	
 	protected final InternalEnergyStorage energy;
-	private LazyOptional<EnergyStorage> lazyEnergy;
+	private final LazyOptional<EnergyStorage> lazyEnergy;
 	
 	private static final long
 		MAX_IN = 0,
@@ -48,14 +47,13 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 	
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
 		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
-		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
+		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
 				.withStyle(ChatFormatting.AQUA)).append(Lang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
-		added = true;
-		return added;
+		return true;
 	}
 	
 	@Override
@@ -65,7 +63,7 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 		return impact;
 	}
 
-	public boolean isEnergyInput(Direction side) {
+	public boolean isEnergyInput(Direction ignoredSide) {
 		return false;
 	}
 
@@ -90,6 +88,7 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 	@Override
 	public void tick() {
 		super.tick();
+		assert level != null;
 		if(level.isClientSide())
 			return;
 		if(firstTickState)
@@ -107,7 +106,7 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 			/*TileEntity te = world.getTileEntity(pos.offset(d));
 			if(te == null)
 				continue;
-			LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite());
+			LazyOptional<IEnergyStorage> opt = te.getStorage(CapabilityEnergy.ENERGY, d.getOpposite());
 			IEnergyStorage ies = opt.orElse(null);*/
 			EnergyStorage ies = getCachedEnergy(d);
 			if(ies == null)
@@ -138,9 +137,10 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 	
 	public void firstTick() {
 		updateCache();
-	};
-	
+	}
+
 	public void updateCache() {
+		assert level != null;
 		if(level.isClientSide())
 			return;
 		for(Direction side : Direction.values()) {
@@ -162,44 +162,25 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 	private LazyOptional<EnergyStorage> escacheWest = LazyOptional.empty();
 	
 	public void setCache(Direction side, LazyOptional<EnergyStorage> storage) {
-		switch(side) {
-			case DOWN:
-				escacheDown = storage;
-				break;
-			case EAST:
-				escacheEast = storage;
-				break;
-			case NORTH:
-				escacheNorth = storage;
-				break;
-			case SOUTH:
-				escacheSouth = storage;
-				break;
-			case UP:
-				escacheUp = storage;
-				break;
-			case WEST:
-				escacheWest = storage;
-				break;
+		switch (side) {
+			case DOWN -> escacheDown = storage;
+			case EAST -> escacheEast = storage;
+			case NORTH -> escacheNorth = storage;
+			case SOUTH -> escacheSouth = storage;
+			case UP -> escacheUp = storage;
+			case WEST -> escacheWest = storage;
 		}
 	}
 	
 	public EnergyStorage getCachedEnergy(Direction side) {
-		switch(side) {
-			case DOWN:
-				return escacheDown.orElse(null);
-			case EAST:
-				return escacheEast.orElse(null);
-			case NORTH:
-				return escacheNorth.orElse(null);
-			case SOUTH:
-				return escacheSouth.orElse(null);
-			case UP:
-				return escacheUp.orElse(null);
-			case WEST:
-				return escacheWest.orElse(null);
-		}
-		return null;
+		return switch (side) {
+			case DOWN -> escacheDown.orElse(EnergyStorage.EMPTY);
+			case EAST -> escacheEast.orElse((EnergyStorage.EMPTY));
+			case NORTH -> escacheNorth.orElse((EnergyStorage.EMPTY));
+			case SOUTH -> escacheSouth.orElse((EnergyStorage.EMPTY));
+			case UP -> escacheUp.orElse((EnergyStorage.EMPTY));
+			case WEST -> escacheWest.orElse(EnergyStorage.EMPTY);
+		};
 	}
 
 	@Nullable

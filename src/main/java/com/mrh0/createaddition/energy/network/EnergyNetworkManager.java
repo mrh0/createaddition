@@ -1,11 +1,11 @@
 package com.mrh0.createaddition.energy.network;
 
+import net.minecraft.world.level.LevelAccessor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.minecraft.world.level.LevelAccessor;
 
 
 public class EnergyNetworkManager {
@@ -15,7 +15,7 @@ public class EnergyNetworkManager {
 	
 	public EnergyNetworkManager(LevelAccessor world) {
 		instances.put(world, this);
-		networks = new ArrayList<EnergyNetwork>();
+		networks = new ArrayList<>();
 	}
 	
 	public void add(EnergyNetwork network) {
@@ -23,10 +23,9 @@ public class EnergyNetworkManager {
 	}
 	
 	public void tick() {
-		List<EnergyNetwork> keep = new ArrayList<EnergyNetwork>();
-		for(int i = 0; i < networks.size(); i++) {
-			EnergyNetwork en = networks.get(i);
-			if(en.isValid()) {
+		List<EnergyNetwork> keep = new ArrayList<>();
+		for (EnergyNetwork en : networks) {
+			if (en.isValid()) {
 				en.tick();
 				keep.add(en);
 				continue;

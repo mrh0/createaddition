@@ -10,6 +10,8 @@ import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorRenderer;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerRenderer;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayRenderer;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillInstance;
@@ -19,9 +21,12 @@ import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilTileEntity;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import team.reborn.energy.api.EnergyStorage;
 
 
+@SuppressWarnings("UnstableApiUsage")
 public class CATileEntities {
 	public static final BlockEntityEntry<ElectricMotorTileEntity> ELECTRIC_MOTOR = CreateAddition.registrate()
 			.tileEntity("electric_motor", ElectricMotorTileEntity::new)
@@ -72,11 +77,21 @@ public class CATileEntities {
 			.validBlocks(CABlocks.TESLA_COIL)
 			//.renderer(() -> ChargerRenderer::new)
 			.register();
+	public static final BlockEntityEntry<LiquidBlazeBurnerTileEntity> LIQUID_BLAZE_BURNER = CreateAddition.registrate()
+			.tileEntity("liquid_blaze_burner", LiquidBlazeBurnerTileEntity::new)
+			.validBlocks(CABlocks.LIQUID_BLAZE_BURNER)
+			.renderer(() -> LiquidBlazeBurnerRenderer::new)
+			.register();
 	
 	public static void register() {
 		EnergyStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
 			if(blockEntity instanceof EnergyTransferable transferable)
 				return transferable.getEnergyStorage(context);
+			return null;
+		});
+		FluidStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
+			if (blockEntity instanceof FluidTransferable transferable)
+				return transferable.getFluidStorage(context);
 			return null;
 		});
 	}

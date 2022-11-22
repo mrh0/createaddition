@@ -1,42 +1,38 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
-import java.util.List;
-
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.network.RemoveConnectorPacket;
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
+
 import static com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay.*;
 
+@SuppressWarnings("CommentedOutCode")
 public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
 
-	//private final InternalEnergyStorage energyBufferIn;
-	//private final InternalEnergyStorage energyBufferOut;
 
 	private final BlockPos[] connectionPos;
 	private final int[] connectionIndices;
@@ -60,8 +56,9 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 
 	public static final int NODE_COUNT = 8;
 
-	public static final java.lang.Long CAPACITY = Config.ACCUMULATOR_CAPACITY.get();
+	@SuppressWarnings("unused")
 	public static final java.lang.Long MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get();
+	@SuppressWarnings("unused")
 	public static final java.lang.Long MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 
 	public RedstoneRelayTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
@@ -138,44 +135,29 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 
 	@Override
 	public int getNodeFromPos(Vec3 vec) {
+		assert level != null;
 		Direction dir = level.getBlockState(worldPosition).getValue(HORIZONTAL_FACING);
 		boolean vertical = level.getBlockState(worldPosition).getValue(VERTICAL);
 		boolean upper = true;
 		vec = vec.subtract(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
 		if(vertical) {
-			switch(dir) {
-				case NORTH:
-					upper = vec.x() < 0.5d;
-					break;
-				case WEST:
-					upper = vec.z() > 0.5d;
-					break;
-				case SOUTH:
-					upper = vec.x() > 0.5d;
-					break;
-				case EAST:
-					upper = vec.z() < 0.5d;
-					break;
-				default:
-					break;
+			switch (dir) {
+				case NORTH -> upper = vec.x() < 0.5d;
+				case WEST -> upper = vec.z() > 0.5d;
+				case SOUTH -> upper = vec.x() > 0.5d;
+				case EAST -> upper = vec.z() < 0.5d;
+				default -> {
+				}
 			}
 		}
 		else {
-			switch(dir) {
-				case NORTH:
-					upper = vec.z() < 0.5d;
-					break;
-				case WEST:
-					upper = vec.x() < 0.5d;
-					break;
-				case SOUTH:
-					upper = vec.z() > 0.5d;
-					break;
-				case EAST:
-					upper = vec.x() > 0.5d;
-					break;
-				default:
-					break;
+			switch (dir) {
+				case NORTH -> upper = vec.z() < 0.5d;
+				case WEST -> upper = vec.x() < 0.5d;
+				case SOUTH -> upper = vec.z() > 0.5d;
+				case EAST -> upper = vec.x() > 0.5d;
+				default -> {
+				}
 			}
 		}
 
@@ -269,6 +251,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	@Override
 	public void tick() {
 		super.tick();
+		assert level != null;
 		if(level.isClientSide())
 			return;
 		networkTick();
@@ -362,7 +345,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	}
 
 	@Override
-	public boolean isNodeIndeciesConnected(int in, int other) {
+	public boolean isNodeIndicesConnected(int in, int other) {
 		return isNodeInput(in) == isNodeInput(other);
 	}
 
@@ -371,7 +354,6 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		@SuppressWarnings("resource")
 		HitResult ray = Minecraft.getInstance().hitResult;
 		if(ray == null)
 			return false;
@@ -379,24 +361,24 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 
 		ObservePacket.send(worldPosition, node);
 
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.relay.info").withStyle(ChatFormatting.WHITE)));
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
-				.append(new TranslatableComponent(isNodeInput(node) ? "createaddition.tooltip.energy.input" : "createaddition.tooltip.energy.output").withStyle(ChatFormatting.AQUA)));
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.relay.info").withStyle(ChatFormatting.WHITE)));
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
+				.append(Component.translatable(isNodeInput(node) ? "createaddition.tooltip.energy.input" : "createaddition.tooltip.energy.output").withStyle(ChatFormatting.AQUA)));
 
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(" ")
-				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(" ")
+				.append(Util.format(EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 
 		return true;
 	}
 
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
-		if(isNetworkValid(pack.getNode()))
-			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
+		if(isNetworkValid(pack.node()))
+			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.node()).getPulled(), getNetwork(pack.node()).getPushed(), player);
 	}
 }

@@ -7,8 +7,8 @@ import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
@@ -22,8 +22,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,11 +30,12 @@ import team.reborn.energy.api.EnergyStorage;
 
 import java.util.List;
 
+@SuppressWarnings("CommentedOutCode")
 public class ElectricMotorTileEntity extends GeneratingKineticTileEntity implements EnergyTransferable {
 	
 	protected ScrollValueBehaviour generatedSpeed;
 	protected final InternalEnergyStorage energy;
-	private LazyOptional<EnergyStorage> lazyEnergy;
+	private final LazyOptional<EnergyStorage> lazyEnergy;
 	private LazyOptional<ElectricMotorPeripheral> lazyPeripheral = null;
 	
 	private boolean cc_update_rpm = false;
@@ -48,15 +47,15 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 		MIN_CONSUMPTION = Config.ELECTRIC_MOTOR_MINIMUM_CONSUMPTION.get(),
 		STRESS = Config.BASELINE_STRESS.get();
 
-	private static Long
-			MAX_IN = Config.ELECTRIC_MOTOR_MAX_INPUT.get(),
-			MAX_OUT = 0L,
-			CAPACITY = Config.ELECTRIC_MOTOR_CAPACITY.get();
+	private static final Long
+			MAX_IN = Config.ELECTRIC_MOTOR_MAX_INPUT.get();
+	private static final Long CAPACITY = Config.ELECTRIC_MOTOR_CAPACITY.get();
 
 	private boolean active = false;
 
 	public ElectricMotorTileEntity(BlockEntityType<? extends ElectricMotorTileEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
+		long MAX_OUT = 0L;
 		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		lazyEnergy = LazyOptional.of(() -> energy);
 		if(CreateAddition.CC_ACTIVE) {
@@ -77,7 +76,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 		generatedSpeed.value = DEFAULT_SPEED;
 		generatedSpeed.scrollableValue = DEFAULT_SPEED;
 		generatedSpeed.withUnit(i -> Lang.translateDirect("generic.unit.rpm"));
-		generatedSpeed.withCallback(i -> this.updateGeneratedRotation(i));
+		generatedSpeed.withCallback(this::updateGeneratedRotation);
 		generatedSpeed.withStepFunction(ElectricMotorTileEntity::step);
 		behaviours.add(generatedSpeed);
 	}
@@ -97,7 +96,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 				step *= 4;
 		}
 
-		return (int) step;
+		return step;
 	}
 	
 	public float calculateAddedStressCapacity() {
@@ -108,12 +107,11 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 	
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Util.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
+		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
 				.withStyle(ChatFormatting.AQUA)).append(Lang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
-		added = true;
-		return added;
+		return true;
 	}
 	
 	public void updateGeneratedRotation(int i) {
@@ -140,6 +138,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 		return AllBlocks.WATER_WHEEL.get();
 	}
 	
+	@SuppressWarnings("unused")
 	public InternalEnergyStorage getEnergyStorage() {
 		return energy;
 	}
@@ -158,7 +157,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 		return side != getBlockState().getValue(ElectricMotorBlock.FACING);
 	}
 
-	public boolean isEnergyOutput(Direction side) {
+	public boolean isEnergyOutput(Direction ignoredSide) {
 		return false;
 	}
 	
@@ -215,11 +214,12 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 		}
 		
 		//Old Lazy
+		assert level != null;
 		if(level.isClientSide())
 			return;
 		int con = getEnergyConsumptionRate(generatedSpeed.getValue());
 		if(!active) {
-			if(energy.getAmount() > con * 2 && !getBlockState().getValue(ElectricMotorBlock.POWERED)) {
+			if(energy.getAmount() > con * 2L && !getBlockState().getValue(ElectricMotorBlock.POWERED)) {
 				active = true;
 				updateGeneratedRotation();
 			}
@@ -311,6 +311,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 		return getEnergyConsumptionRate(generatedSpeed.getValue());
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isPoweredState() {
 		return getBlockState().getValue(TeslaCoil.POWERED);
 	}
