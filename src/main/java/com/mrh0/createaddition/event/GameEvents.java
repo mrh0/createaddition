@@ -48,18 +48,25 @@ public class GameEvents {
 	
 	@SubscribeEvent
     public static void interact(PlayerInteractEvent.RightClickBlock evt) {
-		BlockState state = evt.getWorld().getBlockState(evt.getPos());
-		if(evt.getItemStack().getItem() == CAItems.STRAW.get()) {
-			if(state.is(AllBlocks.BLAZE_BURNER.get())) {
-				BlockState newState = CABlocks.LIQUID_BLAZE_BURNER.getDefaultState()
-						.setValue(LiquidBlazeBurner.HEAT_LEVEL, HeatLevel.SMOULDERING/*state.getValue(BlazeBurnerBlock.HEAT_LEVEL)*/)
-						.setValue(LiquidBlazeBurner.FACING, state.getValue(BlazeBurnerBlock.FACING));
-				evt.getWorld().setBlockAndUpdate(evt.getPos(), newState);
-				//if(!evt.getEntity().isCreative())
-					evt.getItemStack().shrink(1);
-				evt.setCancellationResult(InteractionResult.SUCCESS);
-            	evt.setCanceled(true);
+		try {
+			if(evt.getWorld().isClientSide())
+				return;
+			BlockState state = evt.getWorld().getBlockState(evt.getPos());
+			if(evt.getItemStack().getItem() == CAItems.STRAW.get()) {
+				if(state.is(AllBlocks.BLAZE_BURNER.get())) {
+					BlockState newState = CABlocks.LIQUID_BLAZE_BURNER.getDefaultState()
+							.setValue(LiquidBlazeBurner.HEAT_LEVEL, HeatLevel.SMOULDERING/*state.getValue(BlazeBurnerBlock.HEAT_LEVEL)*/)
+							.setValue(LiquidBlazeBurner.FACING, state.getValue(BlazeBurnerBlock.FACING));
+					evt.getWorld().setBlockAndUpdate(evt.getPos(), newState);
+					//if(!evt.getEntity().isCreative())
+						evt.getItemStack().shrink(1);
+					evt.setCancellationResult(InteractionResult.SUCCESS);
+	            	evt.setCanceled(true);
+				}
 			}
+		}
+		catch(Exception e)  {
+			e.printStackTrace();
 		}
 	}
 }
