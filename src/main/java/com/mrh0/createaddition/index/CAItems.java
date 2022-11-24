@@ -128,15 +128,15 @@ public class CAItems {
 	
 	
 	public static void register() {
-		Create.registrate().addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
-		//Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
-		Create.registrate().addToSection(COPPER_SPOOL, AllSections.MATERIALS);
-		Create.registrate().addToSection(GOLD_SPOOL, AllSections.MATERIALS);
-		Create.registrate().addToSection(SPOOL, AllSections.MATERIALS);
+		Create.REGISTRATE.addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
+		//Create.REGISTRATE.addToSection(MULTIMETER, AllSections.KINETICS);
+		Create.REGISTRATE.addToSection(COPPER_SPOOL, AllSections.MATERIALS);
+		Create.REGISTRATE.addToSection(GOLD_SPOOL, AllSections.MATERIALS);
+		Create.REGISTRATE.addToSection(SPOOL, AllSections.MATERIALS);
 		
-		Create.registrate().addToSection(BIOMASS_PELLET, AllSections.MATERIALS);
-		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
-		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
+		Create.REGISTRATE.addToSection(BIOMASS_PELLET, AllSections.MATERIALS);
+		//Create.REGISTRATE.addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
+		//Create.REGISTRATE.addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
 		
 		
 	}
