@@ -130,10 +130,10 @@ public class CABlocks {
 				.register();*/
 	
 	public static void register() {
-		Create.registrate().addToSection(TESLA_COIL, AllSections.KINETICS);
-		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
-		Create.registrate().addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
-		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);
-		Create.registrate().addToSection(REDSTONE_RELAY, AllSections.KINETICS);
+		Create.REGISTRATE.addToSection(TESLA_COIL, AllSections.KINETICS);
+		Create.REGISTRATE.addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
+		Create.REGISTRATE.addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
+		Create.REGISTRATE.addToSection(ACCUMULATOR, AllSections.KINETICS);
+		Create.REGISTRATE.addToSection(REDSTONE_RELAY, AllSections.KINETICS);
 	}
 }
