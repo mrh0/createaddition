@@ -112,16 +112,16 @@ public class CABlocks {
 				.register();*/
 	
 	public static void register() {
-		//Create.registrate().addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
-		//Create.registrate().addToSection(ALTERNATOR, AllSections.KINETICS);
-		//Create.registrate().addToSection(ROLLING_MILL, AllSections.KINETICS);
-		//Create.registrate().addToSection(CHARGER, AllSections.KINETICS);
-		Create.registrate().addToSection(TESLA_COIL, AllSections.KINETICS);
-		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
-		Create.registrate().addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
-		//Create.registrate().addToSection(CONNECTOR_GOLD, AllSections.KINETICS);
-		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);
-		Create.registrate().addToSection(REDSTONE_RELAY, AllSections.KINETICS);
-		//Create.registrate().addToSection(OVERCHARGED_CASING, AllSections.MATERIALS);
+		//Create.REGISTRATE.addToSection(ELECTRIC_MOTOR, AllSections.KINETICS);
+		//Create.REGISTRATE.addToSection(ALTERNATOR, AllSections.KINETICS);
+		//Create.REGISTRATE.addToSection(ROLLING_MILL, AllSections.KINETICS);
+		//Create.REGISTRATE.addToSection(CHARGER, AllSections.KINETICS);
+		Create.REGISTRATE.addToSection(TESLA_COIL, AllSections.KINETICS);
+		Create.REGISTRATE.addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
+		Create.REGISTRATE.addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
+		//Create.REGISTRATE.addToSection(CONNECTOR_GOLD, AllSections.KINETICS);
+		Create.REGISTRATE.addToSection(ACCUMULATOR, AllSections.KINETICS);
+		Create.REGISTRATE.addToSection(REDSTONE_RELAY, AllSections.KINETICS);
+		//Create.REGISTRATE.addToSection(OVERCHARGED_CASING, AllSections.MATERIALS);
 	}
 }
