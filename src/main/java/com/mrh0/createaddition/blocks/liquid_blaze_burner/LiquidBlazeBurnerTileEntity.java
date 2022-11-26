@@ -1,18 +1,14 @@
 package com.mrh0.createaddition.blocks.liquid_blaze_burner;
 
-import com.mrh0.createaddition.index.CAFluids;
+import com.mrh0.createaddition.util.liquid_burning.FluidTagRecipeComparator;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
-import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
-import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllItems;
-import com.simibubi.create.AllTags.AllItemTags;
+import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.fluids.tank.FluidTankBlock;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
-import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.utility.AngleHelper;
@@ -20,13 +16,16 @@ import com.simibubi.create.foundation.utility.VecHelper;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
-import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -35,26 +34,28 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
-@SuppressWarnings({"CommentedOutCode", "UnstableApiUsage"})
-public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IObserveTileEntity, FluidTransferable {
+
+@SuppressWarnings({"UnstableApiUsage"})
+public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IObserveTileEntity, SidedStorageBlockEntity {
 	public static final int MAX_HEAT_CAPACITY = 10000;
 	protected FuelType activeFuel;
 	protected int remainingBurnTime;
@@ -64,9 +65,6 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	protected boolean goggles;
 	protected boolean hat;
 	protected FluidTank fluidTank;
-	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	private Optional<LiquidBurningRecipe> recipeCache = Optional.empty();
-	private Fluid lastFluid = null;
 
 	public LiquidBlazeBurnerTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -80,71 +78,8 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		headAngle.startWithValue((AngleHelper.horizontalAngle(state.getOptionalValue(LiquidBlazeBurner.FACING)
 				.orElse(Direction.SOUTH)) + 180) % 360);
 
-		fluidTank = createInventory();
+		fluidTank = new FluidTank(324000);
 	}
-	protected FluidTank createInventory() {
-		return new SmartFluidTank(324000, this::onFluidStackChanged);
-	}
-
-	protected void onFluidStackChanged(FluidStack newFluidStack) {
-		if (!hasLevel())
-			return;
-		update(newFluidStack);
-	}
-
-	private void update(FluidStack stack) {
-		assert level != null;
-		if (level.isClientSide())
-			return;
-		if (stack.getFluid() != lastFluid)
-			recipeCache = find(stack, level);
-		lastFluid = stack.getFluid();
-	}
-
-	public Optional<LiquidBurningRecipe> find(FluidStack stack, Level world) {
-		return world.getRecipeManager().getRecipeFor(LiquidBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
-	}
-
-	@SuppressWarnings("unused")
-	public FuelType getActiveFuel() {
-		return activeFuel;
-	}
-
-	@SuppressWarnings("unused")
-	public int getRemainingBurnTime() {
-		return remainingBurnTime;
-	}
-
-	@SuppressWarnings("unused")
-	public boolean isCreative() {
-		return isCreative;
-	}
-
-	@SuppressWarnings("unused")
-	protected void applyCreativeFuel() {
-		activeFuel = FuelType.NONE;
-		remainingBurnTime = 0;
-		isCreative = true;
-
-		HeatLevel next = getHeatLevelFromBlock().nextActiveLevel();
-
-		assert level != null;
-		if (level.isClientSide) {
-			spawnParticleBurst(next.isAtLeast(HeatLevel.SEETHING));
-			return;
-		}
-
-		playSound();
-		if (next == HeatLevel.FADING)
-			next = next.nextActiveLevel();
-		setBlockHeat(next);
-	}
-
-	@SuppressWarnings("unused")
-	public boolean isCreativeFuel(ItemStack stack) {
-		return AllItems.CREATIVE_BLAZE_CAKE.isIn(stack);
-	}
-
 
 	@Override
 	public void tick() {
@@ -154,7 +89,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		if (level.isClientSide) {
 			tickAnimation();
 			if (!isVirtual())
-				spawnParticles(getHeatLevelFromBlock(), 1);
+				spawnParticles(getHeatLevelFromBlock());
 			return;
 		}
 
@@ -162,26 +97,22 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 
 		if (isCreative)
 			return;
-		if (	!Transaction.isOpen() &&
-				fluidTank.getFluidAmount() >= 8100 &&
-				remainingBurnTime <= 200 &&
-				(
-						fluidTank.getFluid().isFluidEqual(new FluidStack(CAFluids.BIOETHANOL.getSource()).getType()) ||
-						fluidTank.getFluid().isFluidEqual(new FluidStack(CAFluids.SEED_OIL.getSource()).getType())
+
+		FluidTagRecipeComparator.argsToTag(fluidTank.getFluid().getFluid(), (tagProperties, tagKey) ->
+				setBurnTag(
+					tagKey,
+					tagProperties.asResource(),
+					tagProperties.getTime() / 100,
+					tagProperties.getDropletAmount() / 100
 				)
-		) {
-			Transaction transaction = Transaction.openOuter();
-			fluidTank.extract(fluidTank.variant, 8100, transaction);
-			transaction.commit();
-			remainingBurnTime = getRemainingBurnTime() + 100;
-			activeFuel = FuelType.NORMAL;
-		}
+		);
 
 		if (remainingBurnTime > 0)
 			remainingBurnTime--;
 
 		if (activeFuel == FuelType.NORMAL)
 			updateBlockState();
+
 		if (remainingBurnTime > 0)
 			return;
 
@@ -193,27 +124,35 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 
 		updateBlockState();
 	}
+	private boolean setBurnTag(TagKey<Fluid> tagKey, ResourceLocation burnableTagLocation, int time, int fluidDropletAmount) {
+		if (
+						tagKey.location().equals(burnableTagLocation) &&
+						!Transaction.isOpen() &&
+						fluidTank.getFluidAmount() >= fluidDropletAmount &&
+						remainingBurnTime <= 200
+		) {
+			Transaction transaction = Transaction.openOuter();
+			fluidTank.extract(fluidTank.variant, fluidDropletAmount, transaction);
+			transaction.commit();
+			remainingBurnTime = remainingBurnTime + time;
+			activeFuel = FuelType.NORMAL;
+			return true;
+		}
+		return false;
+	}
 
 	public void burningTick() {
 		assert level != null;
 		if (level.isClientSide())
 			return;
-
-		if (recipeCache.isPresent() && remainingBurnTime < 1)
-			return;
-		if (recipeCache.isEmpty())
+		if (remainingBurnTime < 1)
 			return;
 		if (remainingBurnTime > MAX_HEAT_CAPACITY)
 			return;
 
-		remainingBurnTime += recipeCache.get().getBurnTime() / 10;
 		activeFuel = FuelType.NORMAL;
 
-		HeatLevel prev = getHeatLevelFromBlock();
-		//playSound();
-		//updateBlockState();
-
-		if (prev != getHeatLevelFromBlock()) {
+		if (getHeatLevelFromBlock() != getHeatLevelFromBlock()) {
 			level.playSound(null, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
 					.125f + level.random.nextFloat() * .125f, 1.15f - level.random.nextFloat() * .25f);
 
@@ -303,36 +242,47 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		notifyUpdate();
 	}
 
-	private boolean tryUpdateLiquid(ItemStack itemStack, Player player) {
-		if (fluidTank.getFluidAmount() + 81000 >= fluidTank.getCapacity()) {
+	private boolean tryUpdateLiquid(ItemStack itemStack, Player player, InteractionHand hand) {
+		if (fluidTank.getFluidAmount() + 81000 > fluidTank.getCapacity()) {
 			return false;
 		}
 
-		Fluid bioethanol = CAFluids.BIOETHANOL.get();
-		Fluid seedOil = CAFluids.SEED_OIL.get();
+		Storage<FluidVariant> itemsFluidVariantStorage = FluidStorage.ITEM.find(
+				itemStack,
+				ContainerItemContext.forPlayerInteraction(player, hand)
+			);
 
-		Item currentItem = itemStack.getItem();
-		Item bioethanolBucket = bioethanol.getBucket();
-		Item seedOilBucket = seedOil.getBucket();
+		if (itemsFluidVariantStorage == null) {
+			return false;
+		}
+		if (level == null) {
+			return false;
+		}
 
-		boolean bl = currentItem == seedOilBucket || currentItem == bioethanolBucket;
-		if (bl) {
-			assert level != null;
-			if (currentItem == seedOilBucket) {
-				fluidTank.setFluid(new FluidStack(CAFluids.SEED_OIL.getSource().getSource(), 1000));
+		for (StorageView<FluidVariant> view : itemsFluidVariantStorage) {
+			Fluid itemsFluid = view.getResource().getFluid();
+			if (FluidTagRecipeComparator.argsToTag(itemsFluid, (tagProperties, tagKey) -> {
+
+				if (	tagKey.location().equals(tagProperties.asResource())
+						&& tagProperties.getTime() >= 100
+						&& (fluidTank.getAmount() == 0 || fluidTank.getFluid().getFluid() == itemsFluid)
+				) {
+					fluidTank.setFluid(new FluidStack(itemsFluid, fluidTank.getAmount() + tagProperties.getDropletAmount()));
+
+					level.playSound(player, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
+					if (level.isClientSide) {
+						spawnParticleBurst(activeFuel == FuelType.SPECIAL);
+					}
+					playSound();
+					level.playSound(player, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
+							.125f + level.random.nextFloat() * .125f, 1.15f - level.random.nextFloat() * .25f);
+
+					return true;
+				}
+				return null;
+			})) {
+				return true;
 			}
-			if (currentItem == bioethanolBucket) {
-				fluidTank.setFluid(new FluidStack(CAFluids.BIOETHANOL.getSource().getSource(), 1000));
-			}
-			level.playSound(player, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
-			if (level.isClientSide) {
-				spawnParticleBurst(activeFuel == FuelType.SPECIAL);
-			}
-			playSound();
-			updateBlockState();
-			level.playSound(player, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
-					.125f + level.random.nextFloat() * .125f, 1.15f - level.random.nextFloat() * .25f);
-			return true;
 		}
 		return  false;
 	}
@@ -341,18 +291,33 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	 * @return true if the heater updated its burn time and an item should be
 	 *         consumed
 	 */
-	@SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
-	protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate, Player player) {
+	protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate, Player player, InteractionHand hand) {
 		if (isCreative)
 			return false;
 
 		FuelType newFuel = FuelType.NONE;
 		Integer newBurnTime;
 
-		if(tryUpdateLiquid(itemStack, player))
+		if (tryUpdateLiquid(itemStack, player, hand))
 			return true;
 
-		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
+		Storage<FluidVariant> itemsFluidVariantStorage = FluidStorage.ITEM.find(
+				itemStack,
+				ContainerItemContext.forPlayerInteraction(player, hand)
+		);
+
+			if (itemsFluidVariantStorage == null) {
+			return false;
+		}
+
+		for (StorageView<FluidVariant> view : itemsFluidVariantStorage) {
+			Fluid fluid = view.getResource().getFluid();
+			if (fluid == Fluids.FLOWING_LAVA || fluid == Fluids.LAVA) {
+				return false;
+			}
+		}
+
+		if (AllTags.AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
 			newBurnTime = 1000;
 			newFuel = FuelType.SPECIAL;
 		} else {
@@ -361,7 +326,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			if (newBurnTime == null) newBurnTime = 0;
 			if (newBurnTime > 0)
 				newFuel = FuelType.NORMAL;
-			else if (AllItemTags.BLAZE_BURNER_FUEL_REGULAR.matches(itemStack)) {
+			else if (AllTags.AllItemTags.BLAZE_BURNER_FUEL_REGULAR.matches(itemStack)) {
 				newBurnTime = 1600; // Same as coal
 				newFuel = FuelType.NORMAL;
 			}
@@ -432,8 +397,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		return level;
 	}
 
-	@SuppressWarnings("SameParameterValue")
-	protected void spawnParticles(HeatLevel heatLevel, double ignoredBurstMult) {
+	protected void spawnParticles(HeatLevel heatLevel) {
 		if (level == null)
 			return;
 		if (heatLevel == HeatLevel.NONE)
