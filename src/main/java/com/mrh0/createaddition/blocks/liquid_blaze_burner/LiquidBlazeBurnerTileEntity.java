@@ -1,8 +1,8 @@
 package com.mrh0.createaddition.blocks.liquid_blaze_burner;
 
-import com.mrh0.createaddition.util.liquid_burning.FluidTagRecipeComparator;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.util.liquid_burning.FluidTagRecipeComparator;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.fluids.tank.FluidTankBlock;
@@ -16,6 +16,7 @@ import com.simibubi.create.foundation.utility.VecHelper;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -25,7 +26,6 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -40,7 +40,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -51,11 +50,13 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 
-@SuppressWarnings({"UnstableApiUsage"})
-public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IObserveTileEntity, SidedStorageBlockEntity {
+@SuppressWarnings({"UnstableApiUsage", "ConstantConditions"})
+public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IObserveTileEntity, FluidTransferable {
 	public static final int MAX_HEAT_CAPACITY = 10000;
 	protected FuelType activeFuel;
 	protected int remainingBurnTime;
@@ -242,49 +243,15 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		notifyUpdate();
 	}
 
-	private boolean tryUpdateLiquid(ItemStack itemStack, Player player, InteractionHand hand) {
+	private boolean tryUpdateLiquid(ItemStack ignoredItemStack, Player player, InteractionHand ignoredHand, Storage<FluidVariant> itemsFluidVariantStorage) {
 		if (fluidTank.getFluidAmount() + 81000 > fluidTank.getCapacity()) {
-			return false;
-		}
-
-		Storage<FluidVariant> itemsFluidVariantStorage = FluidStorage.ITEM.find(
-				itemStack,
-				ContainerItemContext.forPlayerInteraction(player, hand)
-			);
-
-		if (itemsFluidVariantStorage == null) {
 			return false;
 		}
 		if (level == null) {
 			return false;
 		}
 
-		for (StorageView<FluidVariant> view : itemsFluidVariantStorage) {
-			Fluid itemsFluid = view.getResource().getFluid();
-			if (FluidTagRecipeComparator.argsToTag(itemsFluid, (tagProperties, tagKey) -> {
-
-				if (	tagKey.location().equals(tagProperties.asResource())
-						&& tagProperties.getTime() >= 100
-						&& (fluidTank.getAmount() == 0 || fluidTank.getFluid().getFluid() == itemsFluid)
-				) {
-					fluidTank.setFluid(new FluidStack(itemsFluid, fluidTank.getAmount() + tagProperties.getDropletAmount()));
-
-					level.playSound(player, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
-					if (level.isClientSide) {
-						spawnParticleBurst(activeFuel == FuelType.SPECIAL);
-					}
-					playSound();
-					level.playSound(player, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
-							.125f + level.random.nextFloat() * .125f, 1.15f - level.random.nextFloat() * .25f);
-
-					return true;
-				}
-				return null;
-			})) {
-				return true;
-			}
-		}
-		return  false;
+		return parseTaggedFluid(itemsFluidVariantStorage, player);
 	}
 
 	/**
@@ -298,24 +265,20 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		FuelType newFuel = FuelType.NONE;
 		Integer newBurnTime;
 
-		if (tryUpdateLiquid(itemStack, player, hand))
-			return true;
-
 		Storage<FluidVariant> itemsFluidVariantStorage = FluidStorage.ITEM.find(
 				itemStack,
-				ContainerItemContext.forPlayerInteraction(player, hand)
+				ContainerItemContext.withInitial(itemStack)
 		);
 
-			if (itemsFluidVariantStorage == null) {
-			return false;
-		}
-
-		for (StorageView<FluidVariant> view : itemsFluidVariantStorage) {
-			Fluid fluid = view.getResource().getFluid();
-			if (fluid == Fluids.FLOWING_LAVA || fluid == Fluids.LAVA) {
+		if (itemsFluidVariantStorage != null) {
+			if (tryUpdateLiquid(itemStack, player, hand, itemsFluidVariantStorage)) {
+				return true;
+			}
+			if (doNotParseLava(itemsFluidVariantStorage)) {
 				return false;
 			}
 		}
+
 
 		if (AllTags.AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
 			newBurnTime = 1000;
@@ -367,6 +330,69 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 
 		return true;
 	}
+	@SuppressWarnings("deprecation")
+	private Transaction getTransaction() {
+		Transaction transaction;
+		if (!Transaction.isOpen()) {
+			transaction = Transaction.openOuter();
+		} else {
+			transaction = Transaction.getCurrentUnsafe().openNested();
+		}
+		return transaction;
+	}
+
+	private boolean doNotParseLava(Storage<FluidVariant> itemsFluidVariantStorage) {
+		Transaction transaction = getTransaction();
+		Iterator<? extends StorageView<FluidVariant>> iterator = itemsFluidVariantStorage.iterator(transaction);
+		while (iterator.hasNext()) {
+			Fluid fluid = iterator.next().getResource().getFluid();
+			if (fluid == Fluids.FLOWING_LAVA || fluid == Fluids.LAVA) {
+				transaction.commit();
+				transaction.close();
+				return true;
+			}
+		}
+		transaction.commit();
+		transaction.close();
+		return false;
+	}
+
+	private boolean parseTaggedFluid(Storage<FluidVariant> itemsFluidVariantStorage, Player player) {
+		Transaction transaction = getTransaction();
+
+		Iterator<? extends StorageView<FluidVariant>> iterator = itemsFluidVariantStorage.iterator(transaction);
+		while (iterator.hasNext()) {
+			StorageView<FluidVariant> view = iterator.next();
+			Fluid itemsFluid = view.getResource().getFluid();
+			if (FluidTagRecipeComparator.argsToTag(itemsFluid, (tagProperties, tagKey) -> {
+
+				if (tagKey.location().equals(tagProperties.asResource())
+						&& tagProperties.getTime() >= 100
+						&& (fluidTank.getAmount() == 0 || fluidTank.getFluid().getFluid() == itemsFluid)
+				) {
+					fluidTank.setFluid(new FluidStack(itemsFluid, fluidTank.getAmount() + tagProperties.getDropletAmount()));
+
+					level.playSound(player, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
+					if (level.isClientSide) {
+						spawnParticleBurst(activeFuel == FuelType.SPECIAL);
+					}
+					playSound();
+					level.playSound(player, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
+							.125f + level.random.nextFloat() * .125f, 1.15f - level.random.nextFloat() * .25f);
+
+					return true;
+				}
+				return null;
+			})) {
+				transaction.commit();
+				transaction.close();
+				return true;
+			}
+		}
+		transaction.commit();
+		transaction.close();
+		return false;
+	}
 
 	public boolean isValidBlockAbove() {
 		assert level != null;
@@ -403,7 +429,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		if (heatLevel == HeatLevel.NONE)
 			return;
 
-		RandomSource r = level.getRandom();
+		Random r = level.getRandom();
 
 		Vec3 c = VecHelper.getCenterOf(worldPosition);
 		Vec3 v = c.add(VecHelper.offsetRandomly(Vec3.ZERO, r, .125f)
@@ -435,7 +461,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	public void spawnParticleBurst(boolean soulFlame) {
 		Vec3 c = VecHelper.getCenterOf(worldPosition);
 		assert level != null;
-		RandomSource r = level.random;
+		Random r = level.random;
 		for (int i = 0; i < 20; i++) {
 			Vec3 offset = VecHelper.offsetRandomly(Vec3.ZERO, r, .5f)
 				.multiply(1, .25f, 1)

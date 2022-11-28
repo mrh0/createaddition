@@ -19,31 +19,30 @@ import javax.annotation.Nullable;
 public final class FluidTagRecipeComparator {
 
    public static boolean argsToTag(Fluid fluid, Args args) {
-        for (TagKey<Fluid> tagKey : fluid.defaultFluidState().getTags().toList()) {
-            int i;
-            boolean crashOnLow = true;
-            try {
-                i = Integer.parseInt(tagKey
-                        .toString()
-                        .replaceAll("[^0-9]+", " ")
-                        .trim()
-                );
-            } catch (NumberFormatException e) {
-                i = 0;
-                crashOnLow = false;
-            }
-            BurnableTagProperties tagProperties = new BurnableTagProperties(
-                    i,
-                    crashOnLow
-            );
-            Boolean bl = args.args(tagProperties, tagKey);
-            if (bl != null && bl && tagProperties.getTime() != 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+       for (TagKey<Fluid> tagKey : fluid.defaultFluidState().getTags().toList()) {
+           int i;
+           boolean crashOnLow = true;
+           try {
+               i = Integer.parseInt(tagKey
+                       .toString()
+                       .replaceAll("[^0-9]+", " ")
+                       .trim()
+               );
+           } catch (NumberFormatException e) {
+               i = 0;
+               crashOnLow = false;
+           }
+           BurnableTagProperties tagProperties = new BurnableTagProperties(
+                   i,
+                   crashOnLow
+           );
+           Boolean bl = args.args(tagProperties, tagKey);
+           if (bl != null && bl && tagProperties.getTime() != 0) {
+               return true;
+           }
+       }
+       return false;
+   }
 
     public interface Args {
         @Nullable Boolean args(BurnableTagProperties tagProperties, TagKey<Fluid> tagKey);

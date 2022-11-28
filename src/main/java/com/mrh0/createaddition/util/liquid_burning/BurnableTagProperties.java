@@ -10,6 +10,7 @@ public class BurnableTagProperties {
 
     public BurnableTagProperties(int timePerBucket, boolean crashOnLow) {
         this.tagResource = new ResourceLocation(CreateAddition.MODID ,"burnable_fuel_" + timePerBucket);
+
         if (timePerBucket < 200 && crashOnLow) {
             throw new RuntimeException("Burning Time cannot be less then 200! Change this to stop this crash " +
                     "\n[Conflicting Tag ---> " + tagResource + "]\n");

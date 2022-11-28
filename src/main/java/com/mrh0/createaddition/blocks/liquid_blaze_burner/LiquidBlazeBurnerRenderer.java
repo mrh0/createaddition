@@ -35,7 +35,7 @@ public class LiquidBlazeBurnerRenderer extends SafeTileEntityRenderer<LiquidBlaz
 
 	@Override
 	protected void renderSafe(LiquidBlazeBurnerTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource bufferSource,
-		int light, int overlay) {
+                              int light, int overlay) {
 		HeatLevel heatLevel = te.getHeatLevelFromBlock();
 		if (heatLevel == HeatLevel.NONE)
 			return;

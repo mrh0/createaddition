@@ -381,9 +381,9 @@ public class PonderScenes {
 				.placeNearTarget()
 				.pointAt(util.vector.topOf(burner));
 		scene.idle(10);
-		if (CAFluids.BIOETHANOL.getBucket().isPresent()) {
+		if (CAFluids.BIOETHANOL.get().getBucket() != null) {
 			scene.overlay.showControls(new InputWindowElement(util.vector.topOf(burner), Pointing.DOWN).rightClick()
-					.withItem(new ItemStack(CAFluids.BIOETHANOL.getBucket().get())), 40);
+					.withItem(new ItemStack(CAFluids.BIOETHANOL.get().getBucket())), 40);
 		}
 		scene.idle(60);
 		scene.overlay.showText(50)

@@ -2,6 +2,7 @@ package com.mrh0.createaddition.util;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -29,9 +30,9 @@ public class Util {
 	
 	public static Component getTextComponent(EnergyStorage ies, String nan, String unit) {
 		if(ies == null)
-			return Component.literal(nan);
-		return Component.literal(format(ies.getAmount())+unit).withStyle(ChatFormatting.AQUA).append(Component.literal(" / ").withStyle(ChatFormatting.GRAY))
-				.append(Component.literal(format(ies.getCapacity())+unit));
+			return new TextComponent(nan);
+		return new TextComponent(format(ies.getAmount())+unit).withStyle(ChatFormatting.AQUA).append(new TextComponent(" / ").withStyle(ChatFormatting.GRAY))
+				.append(new TextComponent(format(ies.getCapacity())+unit));
 	}
 	
 	public static Component getTextComponent(EnergyStorage ies) {

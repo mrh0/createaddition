@@ -18,6 +18,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,6 +28,7 @@ import team.reborn.energy.api.EnergyStorage;
 
 import java.util.List;
 
+@SuppressWarnings("UnstableApiUsage")
 public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation {
 
 	private final BlockPos[] connectionPos;
@@ -69,21 +72,14 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 
 	@Override
 	public Vec3 getNodeOffset(int node) {
-		switch(getBlockState().getValue(ConnectorBlock.FACING)) {
-			case DOWN:
-				return OFFSET_DOWN;
-			case UP:
-				return OFFSET_UP;
-			case NORTH:
-				return OFFSET_NORTH;
-			case WEST:
-				return OFFSET_WEST;
-			case SOUTH:
-				return OFFSET_SOUTH;
-			case EAST:
-				return OFFSET_EAST;
-		}
-		return OFFSET_DOWN;
+		return switch (getBlockState().getValue(ConnectorBlock.FACING)) {
+			case DOWN -> OFFSET_DOWN;
+			case UP -> OFFSET_UP;
+			case NORTH -> OFFSET_NORTH;
+			case WEST -> OFFSET_WEST;
+			case SOUTH -> OFFSET_SOUTH;
+			case EAST -> OFFSET_EAST;
+		};
 	}
 
 	@Override
@@ -203,8 +199,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	@Override
 	public void tick() {
 		super.tick();
-		if(level.isClientSide())
-			return;
+		if (level != null && level.isClientSide()) return;
 		if(awakeNetwork(level)) {
 			//EnergyNetwork.buildNetwork(world, this);
 			causeBlockUpdate();
@@ -226,14 +221,10 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	
 	private long demand = 0;
 	private void networkTick(EnergyNetwork en) {
-		if(level.isClientSide())
+		if(level != null && level.isClientSide())
 			return;
 		// TODO: Cache
 		Direction d = getBlockState().getValue(ConnectorBlock.FACING);
-		//TileEntity te = world.getTileEntity(pos.offset(d));
-		//if(te == null)
-		//	return;
-		//IEnergyStorage ies = te.getStorage(CapabilityEnergy.ENERGY, d.getOpposite()).orElse(null);
 		EnergyStorage ies = getCachedEnergy(d);
 		if(ies == null)
 			return;
@@ -251,7 +242,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 
 
 			long push = en.push(testExtract);
-			long ext = energy.internalConsumeEnergy(push);
+			energy.internalConsumeEnergy(push);
 			t.commit();
 		}
 	}
@@ -265,13 +256,13 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
-		tooltip.add(Component.literal(spacing)
-				.append(Component.translatable(CreateAddition.MODID + ".tooltip.connector.info").withStyle(ChatFormatting.WHITE)));
+		tooltip.add(new TextComponent(spacing)
+				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.connector.info").withStyle(ChatFormatting.WHITE)));
 		
-		tooltip.add(Component.literal(spacing)
-				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(Component.literal(spacing).append(" ")
-				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
+		tooltip.add(new TextComponent(spacing)
+				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(new TextComponent(spacing).append(" ")
+				.append(Util.format(EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		
 		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 	}

@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.base.FullItemFluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
@@ -37,11 +38,11 @@ public class CAFluids {
 						new ResourceLocation(CreateAddition.MODID, "fluid/bioethanol_still"),
 						new ResourceLocation(CreateAddition.MODID,"fluid/bioethanol_flow")
 				)
-				.fluidProperties(p -> p.levelDecreasePerBlock(2)
+				.properties(p -> p.levelDecreasePerBlock(2)
 						.tickRate(15)
 						.flowSpeed(6)
 						.blastResistance(100f))
-				.fluidAttributes(() -> new CreateAdditionsAttributeHandler("fluid.bioethanol", 2000, 1400))
+				.attributes((cons) -> new CreateAdditionsAttributeHandler("fluid.bioethanol", 2000, 1400))
 				.lang("Bioethanol")
 				.onRegisterAfter(Registry.ITEM_REGISTRY, fluid -> {
 					Fluid source = fluid.getSource();
@@ -56,11 +57,11 @@ public class CAFluids {
 						new ResourceLocation(CreateAddition.MODID, "fluid/seed_oil_still"),
 						new ResourceLocation(CreateAddition.MODID, "fluid/seed_oil_flow")
 				)
-				.fluidProperties(p -> p.levelDecreasePerBlock(2)
+				.properties(p -> p.levelDecreasePerBlock(2)
 						.tickRate(15)
 						.flowSpeed(6)
 						.blastResistance(100f))
-				.fluidAttributes(() -> new CreateAdditionsAttributeHandler("fluid.seed_oil", 2500, 1600))
+				.attributes((cons) -> new CreateAdditionsAttributeHandler("fluid.seed_oil", 2500, 1600))
 				.lang("Seed Oil")
 				.onRegisterAfter(Registry.ITEM_REGISTRY, fluid -> {
 					Fluid source = fluid.getSource();
@@ -74,7 +75,7 @@ public class CAFluids {
 
 	private record CreateAdditionsAttributeHandler(Component name, int viscosity, boolean lighterThanAir) implements FluidVariantAttributeHandler {
 		private CreateAdditionsAttributeHandler(String key, int viscosity, int density) {
-			this(Component.translatable(key), viscosity, density <= 0);
+			this(new TranslatableComponent(key), viscosity, density <= 0);
 		}
 
 		@Override

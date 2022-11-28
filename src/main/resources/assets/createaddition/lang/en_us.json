@@ -255,6 +255,8 @@
 	"createaddition.ponder.tesla_coil_hurt.text_1": "The Tesla Coil is also able to inflict damage on nearby Players and Mobs",
 	"createaddition.ponder.tesla_coil_hurt.text_2": "This can be activated with a Redstone signal",
 	"createaddition.ponder.tesla_coil_hurt.text_3": "Prepare to be Shocked!",
+
+	"block.createaddition.liquid_blaze_burner": "Liquid Blaze Burner",
 	
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",
