@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.blocks.liquid_blaze_burner;
 
-import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
@@ -10,14 +9,8 @@ import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlo
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import dev.cafeteria.fakeplayerapi.server.FakeServerPlayer;
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -41,9 +34,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
-@SuppressWarnings({"deprecation", "UnstableApiUsage"})
+@SuppressWarnings({"deprecation"})
 public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE<LiquidBlazeBurnerTileEntity>, IWrenchable {
 
 	public static final EnumProperty<HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", HeatLevel.class);
@@ -66,7 +58,8 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 			boolean doNotConsume,
 			boolean forceOverflow,
 			boolean simulate,
-			Player player
+			Player player,
+			InteractionHand hand
 	) {
 		if (!state.hasBlockEntity())
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
@@ -75,12 +68,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 		if (!(te instanceof LiquidBlazeBurnerTileEntity burnerTE))
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 
-		if (burnerTE.isCreativeFuel(stack)) {
-			if (!simulate)
-				burnerTE.applyCreativeFuel();
-			return InteractionResultHolder.success(ItemStack.EMPTY);
-		}
-		if (!burnerTE.tryUpdateFuel(stack, forceOverflow, simulate, player))
+		if (!burnerTE.tryUpdateFuel(stack, forceOverflow, simulate, player, hand))
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 
 		if (!doNotConsume) {
@@ -112,10 +100,6 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 	public InteractionResult use(BlockState state, @NotNull Level world, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand,
 								 @NotNull BlockHitResult blockRayTraceResult) {
 
-		LiquidBlazeBurnerTileEntity be = this.getTileEntity(world, pos);
-		FluidStack fluidStack = new FluidStack(FluidVariant.of(CAFluids.BIOETHANOL.get().getSource()), 1000);
-		assert be != null;
-		be.fluidTank.setFluid(fluidStack);
 		ItemStack heldItem = player.getItemInHand(hand);
 		HeatLevel heat = state.getValue(HEAT_LEVEL);
 
@@ -140,7 +124,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 		boolean doNotConsume = player.isCreative();
 		boolean forceOverflow = !(player instanceof FakeServerPlayer);
 		InteractionResultHolder<ItemStack> res =
-				tryInsert(state, world, pos, heldItem, doNotConsume, forceOverflow, false, player);
+				tryInsert(state, world, pos, heldItem, doNotConsume, forceOverflow, false, player, hand);
 		ItemStack leftover = res.getObject();
 		if (!world.isClientSide && !doNotConsume && !leftover.isEmpty()) {
 			if (heldItem.isEmpty()) {
@@ -208,18 +192,5 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 	public boolean isPathfindable(@NotNull BlockState state, @NotNull BlockGetter reader, @NotNull BlockPos pos, @NotNull PathComputationType type) {
 		return false;
 	}
-	
-	
 
-	@Environment(EnvType.CLIENT)
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
-		if (random.nextInt(10) != 0)
-			return;
-		if (!state.getValue(HEAT_LEVEL)
-			.isAtLeast(HeatLevel.SMOULDERING))
-			return;
-		world.playLocalSound((float) pos.getX() + 0.5F, (float) pos.getY() + 0.5F,
-				(float) pos.getZ() + 0.5F, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS,
-			0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
-	}
 }

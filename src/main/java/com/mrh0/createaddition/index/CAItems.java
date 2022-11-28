@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.index;
 
-import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.item.BiomassPellet;
 import com.mrh0.createaddition.item.DiamondGritSandpaper;
@@ -15,6 +14,7 @@ import com.simibubi.create.foundation.item.TooltipHelper;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Item;
 
+import static com.mrh0.createaddition.CreateAddition.registrate;
 import static com.simibubi.create.AllTags.AllItemTags.PLATES;
 import static com.simibubi.create.AllTags.forgeItemTag;
 
@@ -22,7 +22,7 @@ import static com.simibubi.create.AllTags.forgeItemTag;
 @SuppressWarnings({"unused", "CommentedOutCode"})
 public class CAItems {
 
-	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
+	private static final CreateRegistrate REGISTRATE = registrate()
 		.creativeModeTab(() -> ModGroup.MAIN);
 	public static final ItemEntry<Item> STRAW =
 			REGISTRATE.item("straw", Item::new)
@@ -129,14 +129,14 @@ public class CAItems {
 	
 	public static void register() {
 		Create.REGISTRATE.addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
-		//Create.REGISTRATE.addToSection(MULTIMETER, AllSections.KINETICS);
+		//Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
 		Create.REGISTRATE.addToSection(COPPER_SPOOL, AllSections.MATERIALS);
 		Create.REGISTRATE.addToSection(GOLD_SPOOL, AllSections.MATERIALS);
 		Create.REGISTRATE.addToSection(SPOOL, AllSections.MATERIALS);
-		
+
 		Create.REGISTRATE.addToSection(BIOMASS_PELLET, AllSections.MATERIALS);
-		//Create.REGISTRATE.addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
-		//Create.REGISTRATE.addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
+		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
+		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
 		
 		
 	}
