@@ -1,20 +1,17 @@
 package com.mrh0.createaddition.blocks.connector;
 
-import java.util.List;
-
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
-import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.network.RemoveConnectorPacket;
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -29,11 +26,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import team.reborn.energy.api.EnergyStorage;
 
+import java.util.List;
+
+@SuppressWarnings("UnstableApiUsage")
 public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation {
 
-	private BlockPos[] connectionPos;
-	private int[] connectionIndecies;
-	private WireType[] connectionTypes;
+	private final BlockPos[] connectionPos;
+	private final int[] connectionIndices;
+	private final WireType[] connectionTypes;
 	public IWireNode[] nodeCache;
 	
 	public static Vec3 OFFSET_DOWN = new Vec3(0f, -3f/16f, 0f);
@@ -51,7 +51,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
 		
 		connectionPos = new BlockPos[getNodeCount()];
-		connectionIndecies = new int[getNodeCount()];
+		connectionIndices = new int[getNodeCount()];
 		connectionTypes = new WireType[getNodeCount()];
 		
 		nodeCache = new IWireNode[getNodeCount()];
@@ -72,21 +72,14 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 
 	@Override
 	public Vec3 getNodeOffset(int node) {
-		switch(getBlockState().getValue(ConnectorBlock.FACING)) {
-			case DOWN:
-				return OFFSET_DOWN;
-			case UP:
-				return OFFSET_UP;
-			case NORTH:
-				return OFFSET_NORTH;
-			case WEST:
-				return OFFSET_WEST;
-			case SOUTH:
-				return OFFSET_SOUTH;
-			case EAST:
-				return OFFSET_EAST;
-		}
-		return OFFSET_DOWN;
+		return switch (getBlockState().getValue(ConnectorBlock.FACING)) {
+			case DOWN -> OFFSET_DOWN;
+			case UP -> OFFSET_UP;
+			case NORTH -> OFFSET_NORTH;
+			case WEST -> OFFSET_WEST;
+			case SOUTH -> OFFSET_SOUTH;
+			case EAST -> OFFSET_EAST;
+		};
 	}
 
 	@Override
@@ -128,13 +121,13 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	public int getOtherNodeIndex(int node) {
 		if(connectionPos[node] == null)
 			return -1;
-		return connectionIndecies[node];
+		return connectionIndices[node];
 	}
 	
 	@Override
 	public void setNode(int node, int other, BlockPos pos, WireType type) {
 		connectionPos[node] = pos; 
-		connectionIndecies[node] = other;
+		connectionIndices[node] = other;
 		connectionTypes[node] = type;
 		
 		// Invalidate
@@ -206,8 +199,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	@Override
 	public void tick() {
 		super.tick();
-		if(level.isClientSide())
-			return;
+		if (level != null && level.isClientSide()) return;
 		if(awakeNetwork(level)) {
 			//EnergyNetwork.buildNetwork(world, this);
 			causeBlockUpdate();
@@ -229,14 +221,10 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	
 	private long demand = 0;
 	private void networkTick(EnergyNetwork en) {
-		if(level.isClientSide())
+		if(level != null && level.isClientSide())
 			return;
 		// TODO: Cache
 		Direction d = getBlockState().getValue(ConnectorBlock.FACING);
-		//TileEntity te = world.getTileEntity(pos.offset(d));
-		//if(te == null)
-		//	return;
-		//IEnergyStorage ies = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite()).orElse(null);
 		EnergyStorage ies = getCachedEnergy(d);
 		if(ies == null)
 			return;
@@ -254,7 +242,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 
 
 			long push = en.push(testExtract);
-			long ext = energy.internalConsumeEnergy(push);
+			energy.internalConsumeEnergy(push);
 			t.commit();
 		}
 	}
@@ -268,14 +256,13 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
-		
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.connector.info").withStyle(ChatFormatting.WHITE)));
 		
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(" ")
-				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
+				.append(Util.format(EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		
 		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 	}

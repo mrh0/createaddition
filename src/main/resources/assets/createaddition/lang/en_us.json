@@ -74,15 +74,15 @@
 	
 	"item.createaddition.cake_base": "Cake Base",
 	"item.createaddition.cake_base_baked": "Baked Cake Base",
+
+	"item.createaddition.straw": "Straw",
 	
 	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
-	"item.createaddition.seed_oil_bucket.tooltip": "SEED_OIL_BUCKET",
-	"item.createaddition.seed_oil_bucket.tooltip.summary": "A simple _flammable liquid_ which can power the _Crude Burner_.",
-	
+	"fluid.seed_oil": "Seed Oil",
+
 	"item.createaddition.bioethanol_bucket": "Bucket of Bioethanol",
-	"item.createaddition.bioethanol_bucket.tooltip": "BIOETHANOL_BUCKET",
-	"item.createaddition.bioethanol_bucket.tooltip.summary": "An efficient _flammable liquid_ which can power the _Crude Burner_.",
-	
+	"fluid.bioethanol": "Bioethanol",
+
 	"item.createaddition.biomass": "Biomass",
 	"item.createaddition.biomass_pellet": "Biomass Pellet",
 	"item.createaddition.biomass_pellet.tooltip": "BIOMASS_PELLET",
@@ -205,9 +205,6 @@
 	"block.createaddition.chocolate_cake": "Chocolate Cake",
 	"block.createaddition.honey_cake": "Honey Cake",
 	
-	"block.createaddition.seed_oil": "Seed Oil",
-	"block.createaddition.bioethanol": "Bioethanol",
-	
 	"block.createaddition.overcharged_casing": "Overcharged Casing",
 	
 	"block.createaddition.tesla_coil": "Tesla Coil",
@@ -258,6 +255,8 @@
 	"createaddition.ponder.tesla_coil_hurt.text_1": "The Tesla Coil is also able to inflict damage on nearby Players and Mobs",
 	"createaddition.ponder.tesla_coil_hurt.text_2": "This can be activated with a Redstone signal",
 	"createaddition.ponder.tesla_coil_hurt.text_3": "Prepare to be Shocked!",
+
+	"block.createaddition.liquid_blaze_burner": "Liquid Blaze Burner",
 	
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",

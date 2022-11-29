@@ -1,9 +1,7 @@
 package com.mrh0.createaddition.energy.network;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 
 import net.minecraft.core.BlockPos;
@@ -95,7 +93,7 @@ public class EnergyNetwork {
 		Map<String, IWireNode> visited = new HashMap<>();
 		
 		for(int i = 0; i < root.getNodeCount(); i++) {
-			//if(!root.isNodeIndeciesConnected(i-1, i))
+			//if(!root.isNodeIndicesConnected(i-1, i))
 			//	en = new EnergyNetwork(world);
 			//nextNode(world, en, visited, root, i);
 			//System.out.println(root.getMyPos() + ":" + i);
@@ -120,7 +118,7 @@ public class EnergyNetwork {
 			IWireNode next = current.getNode(i);
 			if(next == null)
 				continue;
-			if(!current.isNodeIndeciesConnected(index, i)) {
+			if(!current.isNodeIndicesConnected(index, i)) {
 				/*if(current.getNetwork(i) == null) {
 					nextNode(world, new EnergyNetwork(world), new HashMap<String, IWireNode>(), current, i);
 					System.out.println(current.getMyPos() + ":" + i);

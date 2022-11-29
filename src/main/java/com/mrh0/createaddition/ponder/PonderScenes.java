@@ -1,8 +1,12 @@
 package com.mrh0.createaddition.ponder;
 
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAFluids;
+import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
@@ -10,6 +14,7 @@ import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.utility.Pointing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeverBlock;
@@ -18,6 +23,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 
+@SuppressWarnings("CommentedOutCode")
 public class PonderScenes {
 	public static void electricMotor(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("electric_motor", "Generating Rotational Force using Electric Motors");
@@ -131,7 +137,7 @@ public class PonderScenes {
 		scene.idle(60);
 
 		scene.overlay.showText(50)
-			.text("To manualy input items, drop Ingots or Plates on the top of the Mill")
+			.text("To manually input items, drop Ingots or Plates on the top of the Mill")
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(mill));
 		scene.idle(60);
@@ -139,7 +145,7 @@ public class PonderScenes {
 		
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(mill), Pointing.DOWN).rightClick(), 50);
 		scene.overlay.showText(50)
-		.text("Manualy retrieve the rolled output by R-clicking the Mill")
+		.text("manually retrieve the rolled output by R-clicking the Mill")
 		.placeNearTarget()
 		.pointAt(util.vector.topOf(mill));
 		scene.idle(60);
@@ -297,7 +303,7 @@ public class PonderScenes {
 		scene.world.setBlock(util.grid.at(2, 3, 2), CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.UP).setValue(TeslaCoil.POWERED, true), false);
 		scene.overlay.showText(70)
 			.attachKeyFrame()
-			.text("It will charge any Forge Energy Items and more!")
+			.text("It will charge items such as Certus Quartz from ae2 & more")
 			.placeNearTarget()
 			.pointAt(topOf);
 		scene.idle(80);
@@ -342,5 +348,55 @@ public class PonderScenes {
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(teslacoil));
 		scene.idle(80);
+	}
+	public static void liquidBlazeBurner(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("liquid_blaze_burner", "Liquid Fuel Burning");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+		scene.idle(5);
+		//scene.world.setBlock(util.grid.at(3, 2, 2), Blocks.WATER.defaultBlockState(), false);
+
+		BlockPos burner = util.grid.at(2, 1, 2);
+		BlockPos[] blocks = {
+				util.grid.at(1, 1, 2),
+				util.grid.at(0, 1, 2),
+				util.grid.at(0, 2, 2),
+				util.grid.at(0, 3, 2)
+		};
+		scene.world.showSection(util.select.position(burner), Direction.DOWN);
+		scene.idle(5);
+		scene.overlay.showText(50)
+				.attachKeyFrame()
+				.text("Giving the Blaze Burner a Straw")
+				.placeNearTarget()
+				.pointAt(util.vector.topOf(burner));
+		scene.idle(10);
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(burner), Pointing.DOWN).rightClick()
+				.withItem(new ItemStack(CAItems.STRAW.get())), 40);
+		scene.world.setBlock(burner, CABlocks.LIQUID_BLAZE_BURNER.getDefaultState().setValue(LiquidBlazeBurner.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), false);
+		scene.idle(60);
+		scene.overlay.showText(50)
+				.attachKeyFrame()
+				.text("will allow it to accept liquid fuels by Buckets,")
+				.placeNearTarget()
+				.pointAt(util.vector.topOf(burner));
+		scene.idle(10);
+		if (CAFluids.BIOETHANOL.get().getBucket() != null) {
+			scene.overlay.showControls(new InputWindowElement(util.vector.topOf(burner), Pointing.DOWN).rightClick()
+					.withItem(new ItemStack(CAFluids.BIOETHANOL.get().getBucket())), 40);
+		}
+		scene.idle(60);
+		scene.overlay.showText(50)
+				.attachKeyFrame()
+				.text("- or by pipes.")
+				.placeNearTarget()
+				.pointAt(util.vector.topOf(burner));
+		scene.idle(10);
+
+		for (BlockPos block : blocks) {
+			scene.idle(5);
+			scene.world.showSection(util.select.position(block), Direction.EAST);
+		}
+		scene.idle(20);
 	}
 }

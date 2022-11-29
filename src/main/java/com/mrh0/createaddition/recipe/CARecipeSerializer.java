@@ -9,12 +9,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class CARecipeSerializer <R extends Recipe<?>> implements RecipeSerializer<R> {
 	public abstract ItemStack getIcon();
 
 	@Override
-	public final R fromJson(ResourceLocation recipeId, JsonObject json) {
+	public final R fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
 		if(ResourceConditions.objectMatchesConditions(json))
 			return readFromJson(recipeId, json);
 		return readFromJson(recipeId, json);

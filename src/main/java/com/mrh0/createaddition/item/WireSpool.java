@@ -1,15 +1,10 @@
 package com.mrh0.createaddition.item;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireConnectResult;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.index.CAItems;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,7 +16,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.Objects;
+
+@SuppressWarnings("CommentedOutCode")
 public class WireSpool extends Item {
 
 	public WireSpool(Properties props) {
@@ -40,10 +40,9 @@ public class WireSpool extends Item {
 		BlockEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
 		if(te == null)
 			return InteractionResult.PASS;
-		if(!(te instanceof IWireNode))
+		if(!(te instanceof IWireNode node))
 			return InteractionResult.PASS;
-		IWireNode node = (IWireNode) te;
-		
+
 		/*if(c.getPlayer().isSneaking()) {
 			for(int i = 0; i < node.getNodeCount(); i++) {
 				int index = node.getNodeIndex(i);
@@ -52,7 +51,7 @@ public class WireSpool extends Item {
 			}
 			return ActionResultType.CONSUME;
 		}*/
-		
+
 		if(hasPos(nbt)) {
 			WireConnectResult result;
 			
@@ -65,9 +64,10 @@ public class WireSpool extends Item {
 
 			te.setChanged();
 			
-			if(!c.getPlayer().isCreative()) {
+			if(!Objects.requireNonNull(c.getPlayer()).isCreative()) {
 				if(result == WireConnectResult.REMOVED) {
 					c.getItemInHand().shrink(1);
+					assert connectionType != null;
 					ItemStack stack = connectionType.getSourceDrop();
 					boolean shouldDrop = !c.getPlayer().addItem(stack);
 					if(shouldDrop)
@@ -90,7 +90,7 @@ public class WireSpool extends Item {
 			if(index < 0)
 				return InteractionResult.PASS;
 			if(!isRemover(c.getItemInHand().getItem()))
-				c.getPlayer().displayClientMessage(WireConnectResult.getConnect(node.isNodeInput(index), node.isNodeOutput(index)).getMessage(), true);
+				Objects.requireNonNull(c.getPlayer()).displayClientMessage(WireConnectResult.getConnect(node.isNodeInput(index), node.isNodeOutput(index)).getMessage(), true);
 			c.getItemInHand().setTag(null);
 			c.getItemInHand().setTag(setContent(nbt, node.getMyPos(), index));
 		}
@@ -127,7 +127,7 @@ public class WireSpool extends Item {
     }
 	
 	@Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
 		CompoundTag nbt = stack.getTag();
     	super.appendHoverText(stack, worldIn, tooltip, flagIn);
     	if(hasPos(nbt))

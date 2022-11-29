@@ -1,12 +1,9 @@
 package com.mrh0.createaddition.index;
 
-import static com.simibubi.create.AllTags.forgeItemTag;
-import static com.simibubi.create.AllTags.AllItemTags.PLATES;
-import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
-import com.mrh0.createaddition.item.WireSpool;
 import com.mrh0.createaddition.item.BiomassPellet;
 import com.mrh0.createaddition.item.DiamondGritSandpaper;
+import com.mrh0.createaddition.item.WireSpool;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
@@ -14,15 +11,23 @@ import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.simibubi.create.foundation.item.TooltipHelper;
-
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Item;
 
+import static com.mrh0.createaddition.CreateAddition.registrate;
+import static com.simibubi.create.AllTags.AllItemTags.PLATES;
+import static com.simibubi.create.AllTags.forgeItemTag;
 
+
+@SuppressWarnings({"unused", "CommentedOutCode"})
 public class CAItems {
 
-	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
+	private static final CreateRegistrate REGISTRATE = registrate()
 		.creativeModeTab(() -> ModGroup.MAIN);
+	public static final ItemEntry<Item> STRAW =
+			REGISTRATE.item("straw", Item::new)
+					.properties(p -> p.stacksTo(16))
+					.register();
 	
 	public static final ItemEntry<Item> CAPACITOR =
 			REGISTRATE.item("capacitor", Item::new)
@@ -124,14 +129,14 @@ public class CAItems {
 	
 	public static void register() {
 		Create.REGISTRATE.addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
-		//Create.REGISTRATE.addToSection(MULTIMETER, AllSections.KINETICS);
+		//Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
 		Create.REGISTRATE.addToSection(COPPER_SPOOL, AllSections.MATERIALS);
 		Create.REGISTRATE.addToSection(GOLD_SPOOL, AllSections.MATERIALS);
 		Create.REGISTRATE.addToSection(SPOOL, AllSections.MATERIALS);
-		
+
 		Create.REGISTRATE.addToSection(BIOMASS_PELLET, AllSections.MATERIALS);
-		//Create.REGISTRATE.addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
-		//Create.REGISTRATE.addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
+		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
+		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
 		
 		
 	}

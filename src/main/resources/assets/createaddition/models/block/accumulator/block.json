@@ -3,7 +3,7 @@
 	"textures": {
 		"0": "createaddition:block/accumulator/accumulator",
 		"1": "createaddition:block/connector/connector",
-		"particle": "createaddition:block/accumulator/accumulator"
+		"particle": "create:block/brass_casing"
 	},
 	"elements": [
 		{

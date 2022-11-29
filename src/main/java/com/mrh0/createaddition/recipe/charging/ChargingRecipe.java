@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class ChargingRecipe implements Recipe<RecipeWrapper> {
 
@@ -19,7 +20,6 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	public int energy;
 
 	public static RecipeType<ChargingRecipe> TYPE = new ChargingRecipeType();
-	@SuppressWarnings("deprecation")
 	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "charging"));
 	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy) {
 		System.out.println("CHARGING " + id + " " + ingredient + " " + output + " " + energy);
@@ -31,10 +31,8 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 
 
 	@Override
-	public boolean matches(RecipeWrapper wrapper, Level world) {
+	public boolean matches(@NotNull RecipeWrapper wrapper, @NotNull Level world) {
 		if(ingredient == null)
-			return false;
-		if(wrapper == null)
 			return false;
 		if(wrapper.getItem(0) == null)
 			return false;
@@ -43,7 +41,7 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 
 
 	@Override
-	public ItemStack assemble(RecipeWrapper wrapper) {
+	public ItemStack assemble(@NotNull RecipeWrapper wrapper) {
 		return output;
 	}
 

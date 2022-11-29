@@ -47,10 +47,10 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity implements 
 	}
 
 	//	@Override
-//	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+//	public <T> LazyOptional<T> getStorage(Capability<T> cap, Direction side) {
 //		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)))// && !level.isClientSide
 //			return lazyEnergy.cast();
-//		return super.getCapability(cap, side);
+//		return super.getStorage(cap, side);
 //	}
 	
 	public abstract boolean isEnergyInput(Direction side);

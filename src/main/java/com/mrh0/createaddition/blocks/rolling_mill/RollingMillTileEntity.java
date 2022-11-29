@@ -1,23 +1,15 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
-import com.simibubi.create.content.contraptions.components.millstone.MillstoneTileEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
-
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
-import io.github.fabricators_of_create.porting_lib.transfer.ViewOnlyWrappedStorageView;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemTransferable;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
@@ -35,7 +27,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("UnstableApiUsage")
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+@SuppressWarnings({"UnstableApiUsage", "CommentedOutCode", "removal"})
 public class RollingMillTileEntity extends KineticTileEntity implements ItemTransferable {
 
 	public ItemStackHandler inputInv;
@@ -69,6 +65,7 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 		if (timer > 0) {
 			timer -= getProcessingSpeed();
 
+			assert level != null;
 			if (level.isClientSide) {
 				spawnParticles();
 				return;
@@ -83,9 +80,10 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 			return;
 
 		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
-		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
+		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, Objects.requireNonNull(level))) {
+			assert level != null;
 			Optional<RollingRecipe> recipe = find(inventoryIn, level);
-			if (!recipe.isPresent()) {
+			if (recipe.isEmpty()) {
 				timer = 100;
 				sendData();
 			} else {
@@ -109,9 +107,10 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 	private void process() {
 		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
 
-		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
+		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, Objects.requireNonNull(level))) {
+			assert level != null;
 			Optional<RollingRecipe> recipe = find(inventoryIn, level);
-			if (!recipe.isPresent())
+			if (recipe.isEmpty())
 				return;
 			lastRecipe = recipe.get();
 		}
@@ -134,6 +133,7 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 			return;
 
 		ItemParticleOption data = new ItemParticleOption(ParticleTypes.ITEM, stackInSlot);
+		assert level != null;
 		float angle = level.random.nextFloat() * 360;
 		Vec3 offset = new Vec3(0, 0, 0.5f);
 		offset = VecHelper.rotate(offset, angle, Axis.Y);
@@ -165,10 +165,10 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 	}
 
 //	@Override
-//	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+//	public <T> LazyOptional<T> getStorage(Capability<T> cap, Direction side) {
 //		if (isItemHandlerCap(cap))
 //			return capability.cast();
-//		return super.getCapability(cap, side);
+//		return super.getStorage(cap, side);
 //	}
 
 
@@ -183,8 +183,11 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 		tester.setStackInSlot(0, stack);
 		RecipeWrapper inventoryIn = new RecipeWrapper(tester);
 
-		if (lastRecipe != null && lastRecipe.matches(inventoryIn, level))
-			return true;
+		if (lastRecipe != null) {
+			assert level != null;
+			if (lastRecipe.matches(inventoryIn, level)) return true;
+		}
+		assert level != null;
 		return find(inventoryIn, level)
 			.isPresent();
 	}
@@ -206,50 +209,16 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 		public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
 			return outputInv.extract(resource, maxAmount, transaction);
 		}
-
-		@Override
-		public Iterator<StorageView<ItemVariant>> iterator(TransactionContext transaction) {
-			return new RollingMillInventoryHandlerIterator(transaction);
-		}
-
-		private class RollingMillInventoryHandlerIterator implements Iterator<StorageView<ItemVariant>> {
-			private final TransactionContext ctx;
-			private boolean open = true;
-			private boolean output = true;
-			private Iterator<StorageView<ItemVariant>> wrapped;
-
-			public RollingMillInventoryHandlerIterator(TransactionContext ctx) {
-				this.ctx = ctx;
-				ctx.addCloseCallback((t, r) -> open = false);
-				wrapped = outputInv.iterator(ctx);
-			}
-
-			@Override
-			public boolean hasNext() {
-				return open && wrapped.hasNext();
-			}
-
-			@Override
-			public StorageView<ItemVariant> next() {
-				StorageView<ItemVariant> view = wrapped.next();
-				if (!output) view = new ViewOnlyWrappedStorageView<>(view);
-				if (output && !hasNext()) {
-					wrapped = inputInv.iterator(ctx);
-					output = false;
-				}
-				return view;
-			}
-		}
 	}
 
 	public Optional<RollingRecipe> find(RecipeWrapper inv, Level world) {
 		return world.getRecipeManager().getRecipeFor(RollingRecipe.TYPE, inv, world);
 	}
-	
+
 	public static int getProcessingDuration() {
 		return DURATION;
 	}
-	
+
 	public float calculateStressApplied() {
 		float impact = STRESS;
 		this.lastStressApplied = impact;

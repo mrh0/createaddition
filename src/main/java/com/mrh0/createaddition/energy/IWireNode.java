@@ -299,7 +299,7 @@ public interface IWireNode {
 	
 	// Energy Network:
 	
-	public default boolean isNodeIndeciesConnected(int in, int other) {
+	public default boolean isNodeIndicesConnected(int in, int other) {
 		return true;
 	}
 	

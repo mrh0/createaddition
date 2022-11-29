@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public class RollingMillCategory extends CreateRecipeCategory<RollingRecipe> {
 	}
 
 	@Override
-	public void draw(@NotNull RollingRecipe recipe, @NotNull PoseStack matrixStack, double mouseX, double mouseY) {
+	public void draw(@NotNull RollingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack matrixStack, double mouseX, double mouseY) {
 		AllGuiTextures.JEI_ARROW.render(matrixStack, 85, 32);
 		AllGuiTextures.JEI_DOWN_ARROW.render(matrixStack, 43, 4);
 		rolling_mill.draw(matrixStack, 48, 27);
