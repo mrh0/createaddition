@@ -62,21 +62,9 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.createaddition]]
-    modId="immersiveengineering"
-    mandatory=false
-    versionRange="[1.18,)"
-    ordering="NONE"
-    side="BOTH"
-[[dependencies.createaddition]]
     modId="computercraft"
     mandatory=false
     versionRange="[0,)"
-    ordering="NONE"
-    side="BOTH"
-[[dependencies.createaddition]]
-    modId="appliedenergistics2"
-    mandatory=false
-    versionRange="[10.0.0,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
