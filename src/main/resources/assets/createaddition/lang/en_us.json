@@ -15,9 +15,9 @@
 	"createaddition.tooltip.connector.info": "Connector Info:",
 	
 	"createaddition.recipe.rolling": "Rolling",
-	"createaddition.recipe.crude_burning": "Crude Burning",
-	"createaddition.recipe.crude_burning.burn_time": "Burn time",
+	"createaddition.recipe.rolling.sequence": "Rolling in Mill",
 	"createaddition.recipe.charging": "Charging",
+	"createaddition.recipe.liquid_burning": "Liquid Burning",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
 
@@ -256,7 +256,10 @@
 	"createaddition.ponder.tesla_coil_hurt.text_2": "This can be activated with a Redstone signal",
 	"createaddition.ponder.tesla_coil_hurt.text_3": "Prepare to be Shocked!",
 
-	"block.createaddition.liquid_blaze_burner": "Liquid Blaze Burner",
+	"createaddition.ponder.liquid_blaze_burner.header": "Liquid Fuel Burning",
+	"createaddition.ponder.liquid_blaze_burner.text_1": "Giving the Blaze Burner a Straw",
+	"createaddition.ponder.liquid_blaze_burner.text_2": "will allow it to accept liquid fuels by Buckets",
+	"createaddition.ponder.liquid_blaze_burner.text_3": "- or by pipes.",
 	
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",
