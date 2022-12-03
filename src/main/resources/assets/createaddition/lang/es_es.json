@@ -15,20 +15,13 @@
 	"createaddition.tooltip.connector.info": "Información del conector:",
 	
 	"createaddition.recipe.rolling": "Laminación",
-	"createaddition.recipe.crude_burning": "Quemador crudo",
-	"createaddition.recipe.crude_burning.burn_time": "Tiempo de quemado:",
+	"createaddition.recipe.rolling.sequence": "Laminando en rodillo",
+	"createaddition.recipe.charging": "Cargando",
+	"createaddition.recipe.liquid_burning": "Quemador de líquidos",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Esfalerita",
 	
 	"item.createaddition.capacitor": "Condensador",
-	
-	"item.createaddition.multimeter": "Multímetro",
-	"item.createaddition.multimeter.title":"[Multímetro]:",
-	"item.createaddition.multimeter.measuring":"[Medición..]",
-	"item.createaddition.multimeter.ticks":"ticks",
-	"item.createaddition.multimeter.no_capability":"No hay capacidad de Forge Energy en este lado.",
-	"item.createaddition.multimeter.tooltip": "MULTÍMETRO",
-	"item.createaddition.multimeter.tooltip.summary": "Mide la _capacidad_ y _entrada/salida_ de cualquier lado con una capacidad de _Forge Energy_.",
 		
 	"item.createaddition.zinc_sheet": "Lámina de zinc",
 	"item.createaddition.diamond_grit": "Polvo de diamantes",
@@ -39,24 +32,12 @@
 	"item.createaddition.copper_spool.tooltip": "CARRETE",
 	"item.createaddition.copper_spool.tooltip.summary": "Al hacer click derecho en dos _Conectores_ creará un enlace de cable entre ellos y devolverá un _Carrete vacío_.",
 	
-	"item.createaddition.copper_wire": "Alambre de cobre",
-	"item.createaddition.copper_rod": "Vara de cobre",
-	
-	"item.createaddition.iron_spool": "Carrete de hierro",
 	"item.createaddition.iron_wire": "Alambre de hierro",
+	"item.createaddition.iron_spool": "Carrete de hierro",
 	"item.createaddition.iron_rod": "Vara de hierro",
 	
-	"item.createaddition.steel_spool": "Carrete de acero",
-	"item.createaddition.steel_wire": "Alambre de acero",
-	"item.createaddition.steel_rod": "Vara de acero",
-	
-	"item.createaddition.electrum_spool": "Carrete de Electrum",
-	"item.createaddition.electrum_wire": "Alambre de Electrum",
-	"item.createaddition.electrum_rod": "Vara de Electrum",
-	
-	"item.createaddition.aluminum_spool": "Carrete de aluminio",
-	"item.createaddition.aluminum_wire": "Alambre de aluminio",
-	"item.createaddition.aluminum_rod": "Vara de aluminio",
+	"item.createaddition.copper_wire": "Alambre de cobre",
+	"item.createaddition.copper_rod": "Vara de cobre",
 	
 	"item.createaddition.gold_spool": "Carrete de oro",
 	"item.createaddition.gold_spool.tooltip": "CARRETE",
@@ -71,27 +52,22 @@
 	"item.createaddition.cake_base": "Base de tarta",
 	"item.createaddition.cake_base_baked": "Base de tarta cocinada",
 	
+	"item.createaddition.straw": "Pajita",
+	
 	"item.createaddition.seed_oil_bucket": "Cubo de aceite de semillas",
 	"item.createaddition.seed_oil_bucket.tooltip": "CUBO_ACEITE_SEMILLAS",
 	"item.createaddition.seed_oil_bucket.tooltip.summary": "Un simple _líquido inflamable_ que puede alimentar un _Quemador Crudo_.",
+	"fluid.createaddition.seed_oil": "Aceite de semillas",
 	
 	"item.createaddition.bioethanol_bucket": "Cubo de Bioetanol",
 	"item.createaddition.bioethanol_bucket.tooltip": "CUBO_BIOETANOL",
 	"item.createaddition.bioethanol_bucket.tooltip.summary": "Un eficiente _líquido inflamable_ que puede alimentar un _Quemador Crudo_.",
+	"fluid.createaddition.bioethanol": "Bioetanol",
 	
 	"item.createaddition.biomass": "Biomasa",
 	"item.createaddition.biomass_pellet": "Pellets de biomasa",
 	"item.createaddition.biomass_pellet.tooltip": "PELLETS_BIOMASA",
 	"item.createaddition.biomass_pellet.tooltip.summary": "Un _combustible sólido_ que puede fundir _6 items_ en un _Horno_ .",
-	
-	"item.createaddition.charging_chromatic_compound": "Compuesto cromático de carga",
-	"item.createaddition.overcharged_alloy": "Aleación sobrecargada",
-	"item.createaddition.overcharged_alloy.tooltip": "ALEACIÓN SOBRECARGADA",
-	"item.createaddition.overcharged_alloy.tooltip.summary": "Un material cromático forjado por la _electricidad_",
-	
-	"item.createaddition.overcharged_hammer": "Martillo sobrecargado",
-	"item.createaddition.overcharged_hammer.tooltip": "MARTILLO SOBRECARGADO",
-	"item.createaddition.overcharged_hammer.tooltip.summary": "Este fiel _Martillo_ ha sido infundido con el poder de la _electricidad_",
 	
 	"item.createaddition.spool": "Carrete vacio",
 	"item.createaddition.spool.nbt": "Almacena la ubicación de la conexión.",
@@ -134,12 +110,6 @@
 	"deprecated.block.createaddition.rolling_mill.tooltip.condition2": "Cuando se le hace click derecho",
 	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "Recoger el resultado manualmente",
 	
-	"block.createaddition.heater": "Calentador de inducción",
-	"block.createaddition.heater.info": "Información del calentador de inducción:",
-	"deprecated.block.createaddition.heater.tooltip": "INDUCTION HEATER",
-	"block.createaddition.heater.engine_heating_disabled": "Los motores de los hornos de calefacción se han desactivado en las configuraciones.",
-	"deprecated.block.createaddition.heater.tooltip.summary": "Cuando se conecta a un _Horno_ y se alimenta con _FE_ desde la parte superior, calentará el _Horno_. No encenderá un _motor de horno_ a menos que _esté habilitado_ en las _configuraciones_.",
-	
 	"block.createaddition.accumulator": "Acumulador",
 	"block.createaddition.accumulator.tooltip": "ACUMULADOR",
 	"block.createaddition.accumulator.tooltip.summary": "Acumula carga eléctrica.",
@@ -174,37 +144,13 @@
 	"block.createaddition.redstone_relay.tooltip.condition2": "Entrada",
 	"block.createaddition.redstone_relay.tooltip.behaviour2": "Acepta _FE_ de _cables_ conectados al _conector_ marcado con una flecha hacia abajo.",
 	
-	"block.createaddition.furnace_burner": "Quemador de horno",
-	"block.createaddition.furnace_burner.tooltip": "QUEMADOR_DE_HORNO",
-	"block.createaddition.furnace_burner.tooltip.summary": "Este _horno_ no fundirá elementos, sino que se puede utilizar para alimentar un _motor de horno_ sin la necesidad de una receta de fundición. El _combustible_ se puede insertar utilizando, por ejemplo, una _tolva_.",
-	"block.createaddition.furnace_burner.tooltip.control1": "Click derecho",
-	"block.createaddition.furnace_burner.tooltip.action1": "Inserta combustible.",
-	"block.createaddition.furnace_burner.tooltip.control2": "Click derecho mientras te agachas",
-	"block.createaddition.furnace_burner.tooltip.action2": "Recupera el _combustible_ almacenado.",
-	
-	"block.createaddition.charger": "Estación de carga",
-	"block.createaddition.charger.info": "Información de la estación de carga:",
-	"block.createaddition.charger.empty": "Vacío",
-	"block.createaddition.charger.tooltip": "CARGADOR",
-	"block.createaddition.charger.tooltip.summary": "Carga artículos _eléctricos_ usando _FE_.",
-	"block.createaddition.charger.tooltip.control1": "Haga click derecho con el objeto recargable",
-	"block.createaddition.charger.tooltip.action1": "Pon el artículo en el _cargador_.",
-	"block.createaddition.charger.tooltip.control2": "Haga click derecho con la mano vacía",
-	"block.createaddition.charger.tooltip.action2": "Recupera el artículo del _cargador_.",
-	
-	"block.createaddition.crude_burner": "Quemador crudo",
-	"block.createaddition.crude_burner.tooltip": "QUEMADOR_CRUDO",
-	"block.createaddition.crude_burner.tooltip.summary": "El _quemador crudo_ consume líquidos inflamables de combustión lenta como el aceite de semillas para alimentar el _motor de horno_. El _combustible líquido_ se puede introducir mediante _tuberías de fluidos_.",
-	"block.createaddition.crude_burner.tooltip.control1": "Click derecho",
-	"block.createaddition.crude_burner.tooltip.action1": "Inserta el contenido del _cubo_.",
-	
 	"block.createaddition.chocolate_cake": "Tarta de chocolate",
 	"block.createaddition.honey_cake": "Tarta de miel",
 	
 	"block.createaddition.seed_oil": "Aceite de semillas",
     "block.createaddition.bioethanol": "Bioetanol",
 	
-	"block.createaddition.overcharged_casing": "Revestidor sobrecargada",
+	"createaddition.recipe.liquid_burning.burn_time": "Tiempo de quema",
 	
 	"block.createaddition.tesla_coil": "Bobina de Tesla",
 	
@@ -236,11 +182,6 @@
 	"createaddition.ponder.automated_rolling_mill.text_2": "Embudo de entrada",
 	"createaddition.ponder.automated_rolling_mill.text_3": "Embudo de salida",
 	
-	"createaddition.ponder.heater.header": "Usando energía eléctrica para calentar un horno",
-	"createaddition.ponder.heater.text_1": "El calentador se puede colocar en cualquier lado que mire hacia el horno.",
-	"createaddition.ponder.heater.text_2": "Cuando se conecta a una fuente suficiente de energía eléctrica (FE), el calentador encenderá el horno",
-	"createaddition.ponder.heater.text_3": "El horno permanecerá encendido siempre que se proporcione suficiente energía.",
-	
 	"createaddition.ponder.cc_electric_motor.header": "Usando ComputerCraft para controlar un motor eléctrico",
 	"createaddition.ponder.cc_electric_motor.text_1": "El motor eléctrico se puede controlar mediante ComputerCraft",
 	"createaddition.ponder.cc_electric_motor.text_2": "Conecte al motor usando 'peripheral.wrap(side)'",
@@ -254,6 +195,11 @@
 	"createaddition.ponder.tesla_coil_hurt.text_1": "La bobina de Tesla puede infligir daño a los jugadores y también a los mobs cercanos.",
 	"createaddition.ponder.tesla_coil_hurt.text_2": "La bobina se puede activar con una señal de Redstone",
 	"createaddition.ponder.tesla_coil_hurt.text_3": "¡Prepárate para ser electrocutado!",
+	
+	"createaddition.ponder.liquid_blaze_burner.header": "Quema de combustible líquido",
+	"createaddition.ponder.liquid_blaze_burner.text_1": "Dándole una pajita al quemador de Blaze",
+	"createaddition.ponder.liquid_blaze_burner.text_2": "le permitirá aceptar combustibles líquidos por cubos",
+	"createaddition.ponder.liquid_blaze_burner.text_3": "- o por tuberías.",
 	
 	"effect.createaddition.shocking":"Electrocutado",
 	"death.attack.tesla_coil": "%1$s recibió una descarga eléctrica letal",
