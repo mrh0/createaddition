@@ -10,40 +10,37 @@ import com.mrh0.createaddition.energy.WireConnectResult;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.index.CAItems;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-
-import net.minecraft.item.Item.Properties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class WireSpool extends Item {
 
 	public WireSpool(Properties props) {
 		super(props);
 	}
-
+	
 	@Override
-	public ActionResultType useOn(ItemUseContext c) {
+	public InteractionResult useOn(UseOnContext c) {
 		//if(c.getWorld().isRemote())
 		//	return ActionResultType.PASS;
 		
-		CompoundNBT nbt = c.getItemInHand().getTag();
+		CompoundTag nbt = c.getItemInHand().getTag();
 		if(nbt == null)
-			nbt = new CompoundNBT();
+			nbt = new CompoundTag();
 		
-		TileEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
+		BlockEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
 		if(te == null)
-			return ActionResultType.PASS;
+			return InteractionResult.PASS;
 		if(!(te instanceof IWireNode))
-			return ActionResultType.PASS;
+			return InteractionResult.PASS;
 		IWireNode node = (IWireNode) te;
 		
 		/*if(c.getPlayer().isSneaking()) {
@@ -90,37 +87,37 @@ public class WireSpool extends Item {
 		else {
 			int index = node.getNodeFromPos(c.getClickLocation());
 			if(index < 0)
-				return ActionResultType.PASS;
+				return InteractionResult.PASS;
 			if(!isRemover(c.getItemInHand().getItem()))
 				c.getPlayer().displayClientMessage(WireConnectResult.getConnect(node.isNodeInput(index), node.isNodeOutput(index)).getMessage(), true);
 			c.getItemInHand().setTag(null);
 			c.getItemInHand().setTag(setContent(nbt, node.getMyPos(), index));
 		}
 		
-		return ActionResultType.CONSUME;
+		return InteractionResult.CONSUME;
 	}
 	
-	public static boolean hasPos(CompoundNBT nbt) {
+	public static boolean hasPos(CompoundTag nbt) {
 		if(nbt == null)
 			return false;
     	return nbt.contains("x") && nbt.contains("y") && nbt.contains("z") && nbt.contains("node");
     }
 	
-	public static BlockPos getPos(CompoundNBT nbt){
+	public static BlockPos getPos(CompoundTag nbt){
 		if(nbt == null)
 			return null;
     	return new BlockPos(nbt.getInt("x"), nbt.getInt("y"), nbt.getInt("z"));
     }
 	
-	public static int getNode(CompoundNBT nbt){
+	public static int getNode(CompoundTag nbt){
 		if(nbt == null)
 			return -1;
     	return nbt.getInt("node");
     }
 	
-	public static CompoundNBT setContent(CompoundNBT nbt, BlockPos pos, int node){
+	public static CompoundTag setContent(CompoundTag nbt, BlockPos pos, int node){
 		if(nbt == null)
-			return new CompoundNBT();
+			return new CompoundTag();
     	nbt.putInt("x", pos.getX());
     	nbt.putInt("y", pos.getY());
     	nbt.putInt("z", pos.getZ());
@@ -129,11 +126,11 @@ public class WireSpool extends Item {
     }
 	
 	@Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-    	CompoundNBT nbt = stack.getTag();
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+		CompoundTag nbt = stack.getTag();
     	super.appendHoverText(stack, worldIn, tooltip, flagIn);
     	if(hasPos(nbt))
-    		tooltip.add(new TranslationTextComponent("item."+CreateAddition.MODID+".spool.nbt"));
+    		tooltip.add(Component.translatable("item."+CreateAddition.MODID+".spool.nbt"));
     }
 	
 	public static WireType getWireType(Item item) {
@@ -147,6 +144,4 @@ public class WireSpool extends Item {
 	public static boolean isRemover(Item item) {
 		return item == CAItems.SPOOL.get();
 	}
-	
-	
 }

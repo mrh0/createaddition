@@ -33,7 +33,7 @@
 	"item.createaddition.zinc_sheet": "Цинковый лист",
 	"item.createaddition.diamond_grit": "Алмазная пыль",
 	"item.createaddition.diamond_grit_sandpaper": "Наждачная бумага с алмазным напылением",
-	
+	"item.createaddition.diamond_grit_sandpaper.tooltip": "НАЖДАЧНАЯ БУМАГА С АЛМАЗНЫМ НАПЫЛЕНИЕМ",	
 	
 	"item.createaddition.copper_spool": "Медная катушка",
 	"item.createaddition.copper_spool.tooltip": "КАТУШКА",
@@ -72,7 +72,18 @@
 	"item.createaddition.cake_base_baked": "Испеченная основа торта",
 	
 	"item.createaddition.seed_oil_bucket": "Ведро масла из семян",
+	"item.createaddition.seed_oil_bucket.tooltip": "ВЕДРО_МАСЛА_ИЗ_СЕМЯН",
+	"item.createaddition.seed_oil_bucket.tooltip.summary": "Простая _горючая жидкость_, которая может питать _горелку_.",
 	
+	"item.createaddition.bioethanol_bucket": "Ведро биоэтанола",
+	"item.createaddition.bioethanol_bucket.tooltip": "ВЕДРО_БИОЭТАНОЛА",
+	"item.createaddition.bioethanol_bucket.tooltip.summary": "Эффективная _горючая жидкость_, которая может питать _горелку_.",
+	
+	"item.createaddition.biomass": "Биомасса",
+	"item.createaddition.biomass_pellet": "Гранула из биомассы",
+	"item.createaddition.biomass_pellet.tooltip": "ГРАНУЛА_ИЗ_БИОМАССЫ",
+	"item.createaddition.biomass_pellet.tooltip.summary": "_Твердое топливо_, на котором можно выплавить _6 предметов_ в _печи_ .",
+		
 	"item.createaddition.charging_chromatic_compound": "Зарядка хроматического компаунда",
 	"item.createaddition.overcharged_alloy": "Заряженный сплав",
 	"item.createaddition.overcharged_alloy.tooltip": "ЗАРЯЖЕННЫЙ СПЛАВ",
@@ -141,8 +152,20 @@
 	"block.createaddition.connector.tooltip": "КОННЕКТОР",
 	"block.createaddition.connector.tooltip.summary": "Соединяет блоки, совместимые с Forge Energy, _проводами_ для передачи _fe_.",
 	"block.createaddition.connector.tooltip.control1": "ПКМ",
-	"block.createaddition.connector.tooltip.action1": "держа медную катушку или золотую катушку, создайте проводную связь между двумя коннекторами.",
+	"block.createaddition.connector.tooltip.action1": "Держа _медную катушку_ или _золотую катушку_, создайте _проводную связь_ между двумя _коннекторами_.",
 	
+	"block.createaddition.connector_copper": "Медный коннектор",
+	"block.createaddition.connector_copper.tooltip": "КОННЕКТОР",
+	"block.createaddition.connector_copper.tooltip.summary": "Соединяет блоки, совместимые с Forge Energy, _проводами_ для передачи _fe_.",
+	"block.createaddition.connector_copper.tooltip.control1": "ПКМ",
+	"block.createaddition.connector_copper.tooltip.action1": "Держа _медную катушку_, создайте _проводную связь_ между двумя _коннекторами_.",
+
+	"block.createaddition.connector_gold": "Золотой коннектор",
+	"block.createaddition.connector_gold.tooltip": "КОННЕКТОР",
+	"block.createaddition.connector_gold.tooltip.summary": "Соединяет блоки, совместимые с Forge Energy, _проводами_ для передачи _fe_.",
+	"block.createaddition.connector_gold.tooltip.control1": "ПКМ",
+	"block.createaddition.connector_gold.tooltip.action1": "Держа _золотую катушку_, создайте _проводную связь_ между двумя _коннекторами_.",
+
 	"block.createaddition.redstone_relay": "Редстоун реле",
 	"block.createaddition.redstone_relay.tooltip": "РЕДСТОУН РЕЛЕ",
 	"block.createaddition.redstone_relay.tooltip.summary": "Позволяет _fe_ переходить от входного разъема к выходному при получении сигнала _редстоуна_.",
@@ -179,7 +202,12 @@
 	"block.createaddition.honey_cake": "Медовый торт",
 	
 	"block.createaddition.seed_oil": "Растительное масло",
+	"block.createaddition.bioethanol": "Биоэтанол",
 	
+	"block.createaddition.overcharged_casing": "Перезаряженный корпус",
+	
+	"block.createaddition.tesla_coil": "Катушка Теслы",
+
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "Click here to open API documentation",
@@ -216,5 +244,19 @@
 	"createaddition.ponder.cc_electric_motor.header": "Использование ComputerCraft для управления электродвигателем",
 	"createaddition.ponder.cc_electric_motor.text_1": "Электродвигателем можно управлять с помощью ComputerCraft",
 	"createaddition.ponder.cc_electric_motor.text_2": "Подсоедините к двигателю с помощью периферийного устройства (сбоку)",
-	"createaddition.ponder.cc_electric_motor.text_3": "Получить документацию по API, введя в чате команду /cca_api"
+	"createaddition.ponder.cc_electric_motor.text_3": "Получить документацию по API, введя в чате команду /cca_api",
+
+	"createaddition.ponder.tesla_coil.header": "Использование катушки Теслы для зарядки предметов",
+	"createaddition.ponder.tesla_coil.text_1": "Катушка Теслы будет заряжать предметы под ней",
+	"createaddition.ponder.tesla_coil.text_2": "Она заряжает любые предметы Forge Energy и многое другое!",
+	
+	"createaddition.ponder.tesla_coil_hurt.header": "Опасные катушки Теслы",
+	"createaddition.ponder.tesla_coil_hurt.text_1": "Катушка Теслы также способна наносить урон находящимся поблизости игрокам и мобам.",
+	"createaddition.ponder.tesla_coil_hurt.text_2": "Ее можно активировать с помощью сигнала редстоуна",
+	"createaddition.ponder.tesla_coil_hurt.text_3": "Приготовьтесь к шоку!",
+	
+	"effect.createaddition.shocking":"Электрошок",
+	"death.attack.tesla_coil": "%1$s получил смертельный удар током",
+  	"death.attack.tesla_coil.player": "%1$s получил смертельный удар током во время боя c %2$s",
+  	"effect.createaddition.shocking.description": "Приводит к сильному снижению скорости передвижения"
 }

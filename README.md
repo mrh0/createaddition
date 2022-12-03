@@ -6,7 +6,7 @@ Minecraft Forge Mod by MRH0
 
 # Download
 
-Minecraft 1.16.4+5
+Minecraft 1.16, 1.17, 1.18
 
 At: https://www.curseforge.com/minecraft/mc-mods/createaddition
 
@@ -16,14 +16,13 @@ Create Crafts & Additions extends Create and acts as a bridge between electricit
 
 # Content
 
-![Items](https://github.com/mrh0/createaddition/blob/main/2021-05-16_CC&A.png?raw=true)
+![Items](https://github.com/mrh0/createaddition/blob/1.18/createaddition_items_20220401a.png?raw=true)
 
 - Electric Motor.
 - Alternator.
 - Rolling Mill.
 - Creative Generator.
 - Diamond Grit Sandpaper.
-- Multimeter.
 And more!
 
 # Developer
@@ -35,7 +34,7 @@ Available under MIT the license more info at: https://tldrlegal.com/license/mit-
 
 MIT License
 
-Copyright 2021 MRH0
+Copyright 2022 MRH0
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

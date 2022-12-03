@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:rolling",
 	"input": {
-      	"tag": "forge:ingots/copper"
+      	"item": "minecraft:copper_ingot"
 	},
 	"result": {
 		"item": "createaddition:copper_rod",

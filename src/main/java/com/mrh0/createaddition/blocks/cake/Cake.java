@@ -1,18 +1,16 @@
 package com.mrh0.createaddition.blocks.cake;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CakeBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.CakeBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
 
 public class Cake extends CakeBlock {
 
@@ -21,20 +19,21 @@ public class Cake extends CakeBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult ray) {
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player,
+			InteractionHand hand, BlockHitResult ray) {
 		if (world.isClientSide) {
 			ItemStack itemstack = player.getItemInHand(hand);
-			if (this.tryEat(world, pos, state, player).consumesAction())
-				return ActionResultType.SUCCESS;
+			if (eat(world, pos, state, player).consumesAction())
+				return InteractionResult.SUCCESS;
 			if (itemstack.isEmpty())
-				return ActionResultType.CONSUME;
+				return InteractionResult.CONSUME;
 		}
-		return this.tryEat(world, pos, state, player);
+		return eat(world, pos, state, player);
 	}
-
-	private ActionResultType tryEat(IWorld world, BlockPos pos, BlockState state, PlayerEntity player) {
+	
+	protected static InteractionResult eat(LevelAccessor world, BlockPos pos, BlockState state, Player player) {
 		if (!player.canEat(false))
-			return ActionResultType.PASS;
+			return InteractionResult.PASS;
 		else {
 			player.awardStat(Stats.EAT_CAKE_SLICE);
 			player.getFoodData().eat(3, 0.3F);
@@ -43,7 +42,7 @@ public class Cake extends CakeBlock {
 				world.setBlock(pos, state.setValue(BITES, Integer.valueOf(i + 1)), 3);
 			else
 				world.removeBlock(pos, false);
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 	}
 }

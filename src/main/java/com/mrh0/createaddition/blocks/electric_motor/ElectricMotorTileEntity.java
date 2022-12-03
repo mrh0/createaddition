@@ -3,30 +3,32 @@ package com.mrh0.createaddition.blocks.electric_motor;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.compat.computercraft.ElectricMotorPeripheral;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.item.Multimeter;
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
+import com.simibubi.create.foundation.config.ConfigBase;
+import com.simibubi.create.foundation.config.ui.ConfigHelper.ConfigChange;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour.StepContext;
 import com.simibubi.create.foundation.utility.Lang;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -52,8 +54,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	private boolean active = false;
 
-	public ElectricMotorTileEntity(TileEntityType<? extends ElectricMotorTileEntity> type) {
-		super(type);
+	public ElectricMotorTileEntity(BlockEntityType<? extends ElectricMotorTileEntity> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		lazyEnergy = LazyOptional.of(() -> energy);
 		if(CreateAddition.CC_ACTIVE) {
@@ -69,11 +71,11 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		CenteredSideValueBoxTransform slot =
 			new CenteredSideValueBoxTransform((motor, side) -> motor.getValue(ElectricMotorBlock.FACING) == side.getOpposite());
 
-		generatedSpeed = new ScrollValueBehaviour(Lang.translate("generic.speed"), this, slot);
+		generatedSpeed = new ScrollValueBehaviour(Lang.translateDirect("generic.speed"), this, slot);
 		generatedSpeed.between(-RPM_RANGE, RPM_RANGE);
 		generatedSpeed.value = DEFAULT_SPEED;
 		generatedSpeed.scrollableValue = DEFAULT_SPEED;
-		generatedSpeed.withUnit(i -> Lang.translate("generic.unit.rpm"));
+		generatedSpeed.withUnit(i -> Lang.translateDirect("generic.unit.rpm"));
 		generatedSpeed.withCallback(i -> this.updateGeneratedRotation(i));
 		generatedSpeed.withStepFunction(ElectricMotorTileEntity::step);
 		behaviours.add(generatedSpeed);
@@ -104,11 +106,11 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	@Override
-	public boolean addToGoggleTooltip(List<ITextComponent> tooltip, boolean isPlayerSneaking) {
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(TextFormatting.GRAY)));
-		tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
-				.withStyle(TextFormatting.AQUA)).append(Lang.translate("gui.goggles.at_current_speed").withStyle(TextFormatting.DARK_GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
+				.withStyle(ChatFormatting.AQUA)).append(Lang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
 		added = true;
 		return added;
 	}
@@ -161,14 +163,14 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundNBT compound, boolean clientPacket) {
-		super.fromTag(state, compound, clientPacket);
+	public void read(CompoundTag compound, boolean clientPacket) {
+		super.read(compound, clientPacket);
 		energy.read(compound);
 		active = compound.getBoolean("active");
 	}
 	
 	@Override
-	public void write(CompoundNBT compound, boolean clientPacket) {
+	public void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
 		energy.write(compound);
 		compound.putBoolean("active", active);
@@ -217,14 +219,14 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 			return;
 		int con = getEnergyConsumptionRate(generatedSpeed.getValue());
 		if(!active) {
-			if(energy.getEnergyStored() > con * 2) {
+			if(energy.getEnergyStored() > con * 2 && !getBlockState().getValue(ElectricMotorBlock.POWERED)) {
 				active = true;
 				updateGeneratedRotation();
 			}
 		}
 		else {
 			int ext = energy.internalConsumeEnergy(con);
-			if(ext < con) {
+			if(ext < con || getBlockState().getValue(ElectricMotorBlock.POWERED)) {
 				active = false;
 				updateGeneratedRotation();
 			}
@@ -308,9 +310,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	public int getEnergyConsumption() {
 		return getEnergyConsumptionRate(generatedSpeed.getValue());
 	}
-
-	@Override
-	public World getWorld() {
-		return getLevel();
+	
+	public boolean isPoweredState() {
+		return getBlockState().getValue(TeslaCoil.POWERED);
 	}
 }

@@ -2,10 +2,10 @@ package com.mrh0.createaddition.index;
 
 import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import static com.simibubi.create.foundation.block.connected.CTSpriteShifter.getCT;
-import static com.simibubi.create.foundation.block.connected.CTSpriteShifter.CTType.OMNIDIRECTIONAL;
+import static com.simibubi.create.foundation.block.connected.AllCTTypes.OMNIDIRECTIONAL;
 
 import com.mrh0.createaddition.CreateAddition;
 

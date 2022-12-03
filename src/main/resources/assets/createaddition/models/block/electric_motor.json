@@ -1,4 +1,5 @@
 {
+	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "createaddition:block/electric_motor/coil",
 		"1": "create:block/depot_top",
@@ -11,11 +12,11 @@
 			"to": [16, 16, 14],
 			"faces": {
 				"north": {"uv": [1, 0, 15, 14], "texture": "#1"},
-				"east": {"uv": [2, 0, 14, 16], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [2, 0, 14, 16], "rotation": 180, "texture": "#0", "cullface": "east"},
 				"south": {"uv": [1, 0, 15, 14], "texture": "#1"},
-				"west": {"uv": [2, 0, 14, 16], "texture": "#0"},
-				"up": {"uv": [2, 0, 14, 16], "rotation": 90, "texture": "#0"},
-				"down": {"uv": [2, 0, 14, 16], "rotation": 270, "texture": "#0"}
+				"west": {"uv": [2, 0, 14, 16], "texture": "#0", "cullface": "west"},
+				"up": {"uv": [2, 0, 14, 16], "rotation": 90, "texture": "#0", "cullface": "up"},
+				"down": {"uv": [2, 0, 14, 16], "rotation": 270, "texture": "#0", "cullface": "down"}
 			}
 		},
 		{
