@@ -11,7 +11,7 @@
       "item": "createaddition:capacitor"
     },
     "I": {
-      "tag": "c:plates/iron"
+      "tag": "c:iron_plates"
     },
     "R": {
       "tag": "c:rods/iron"
