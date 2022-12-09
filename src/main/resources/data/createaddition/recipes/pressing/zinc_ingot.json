@@ -2,7 +2,7 @@
   "type": "create:pressing",
   "ingredients": [
     {
-      "tag": "c:ingots/zinc"
+      "tag": "c:zinc_ingots"
     }
   ],
   "results": [
