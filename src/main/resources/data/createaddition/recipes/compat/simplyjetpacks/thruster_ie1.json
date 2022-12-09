@@ -6,7 +6,7 @@
     "php"
   ],
   "key": {
-    "p": { "tag": "c:plates/iron" },
+    "p": { "tag": "c:iron_plates" },
     "m": { "item": "immersiveengineering:component_iron" },
     "w": { "item": "immersiveengineering:wirecoil_copper" },
     "c": { "item": "immersiveengineering:coil_lv" },
