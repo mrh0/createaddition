@@ -62,8 +62,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	}
 	
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void remove() {
 		lazyEnergy.invalidate();
 	}
 	

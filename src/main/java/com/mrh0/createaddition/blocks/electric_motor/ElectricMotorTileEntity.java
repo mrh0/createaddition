@@ -190,8 +190,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void remove() {
 		lazyEnergy.invalidate();
 		if(lazyPeripheral != null)
 			lazyPeripheral.invalidate();

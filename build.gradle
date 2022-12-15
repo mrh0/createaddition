@@ -26,7 +26,7 @@ mixin {
 }
 
 
-version = '1.18.2-20221122a'
+version = '1.18.2-20221215a'
 group = 'com.mrh0.createaddition' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createaddition'
 
@@ -195,11 +195,11 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
     runtimeOnly fg.deobf("curse.maven:immersive-engineering-231951:3964014")
 
-    implementation fg.deobf("curse.maven:create-328085:3934676")
-    implementation fg.deobf("curse.maven:flywheel-486392:3934664")
+    implementation fg.deobf("curse.maven:create-328085:4174329")
+    implementation fg.deobf("curse.maven:flywheel-486392:4174748")
 	//implementation fg.deobf("curse.maven:immersive-engineering-231951:3579169")
     implementation fg.deobf("curse.maven:cc-tweaked-282001:3709268")
-	implementation fg.deobf("curse.maven:applied-energistics-2-223794:3736294")
+	//implementation fg.deobf("curse.maven:applied-energistics-2-223794:3736294")
 	
 	runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:3736071")
 	

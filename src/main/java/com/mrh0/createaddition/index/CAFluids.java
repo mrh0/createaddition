@@ -93,7 +93,7 @@ public class CAFluids {
 			.register();
 		BIOETHANOL = bioethanol.register();
 		
-		Create.registrate().addToSection(seedOilBucket, AllSections.MATERIALS);
-		Create.registrate().addToSection(bioethanolBucket, AllSections.MATERIALS);
+		REGISTRATE.addToSection(seedOilBucket, AllSections.MATERIALS);
+		REGISTRATE.addToSection(bioethanolBucket, AllSections.MATERIALS);
 	}
 }
