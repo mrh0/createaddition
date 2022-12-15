@@ -62,11 +62,11 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	}
 	
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void invalidateCaps() {
+		super.invalidateCaps();
 		lazyEnergy.invalidate();
 	}
-	
+
 	@Deprecated
 	public void outputTick(int max) {
 		for(Direction side : Direction.values()) {

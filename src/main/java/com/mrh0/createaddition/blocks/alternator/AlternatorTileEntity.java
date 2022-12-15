@@ -133,10 +133,10 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	protected Block getStressConfigKey() {
 		return AllBlocks.MECHANICAL_MIXER.get();
 	}
-	
+
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void invalidateCaps() {
+		super.invalidateCaps();
 		lazyEnergy.invalidate();
 	}
 	

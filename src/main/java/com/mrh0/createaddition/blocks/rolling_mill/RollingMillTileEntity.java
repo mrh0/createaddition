@@ -162,8 +162,8 @@ public class RollingMillTileEntity extends KineticTileEntity {
 	}
 
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void invalidateCaps() {
+		super.invalidateCaps();
 		capability.invalidate();
 	}
 	

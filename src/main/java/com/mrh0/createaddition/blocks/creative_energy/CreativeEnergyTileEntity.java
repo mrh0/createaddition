@@ -49,10 +49,10 @@ public class CreativeEnergyTileEntity extends CrateTileEntity {
 			int r = ies.receiveEnergy(Integer.MAX_VALUE, false);
 		}
 	}
-	
+
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void invalidateCaps() {
+		super.invalidateCaps();
 		lazyEnergy.invalidate();
 	}
 	
