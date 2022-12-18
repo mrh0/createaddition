@@ -97,8 +97,8 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 		basin.notifyChangeOfContents();
 	}
 	@Override
-	public InteractionResult use(BlockState state, @NotNull Level world, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand,
-								 @NotNull BlockHitResult blockRayTraceResult) {
+	public @NotNull InteractionResult use(BlockState state, @NotNull Level world, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand,
+										  @NotNull BlockHitResult blockRayTraceResult) {
 
 		ItemStack heldItem = player.getItemInHand(hand);
 		HeatLevel heat = state.getValue(HEAT_LEVEL);
@@ -160,18 +160,18 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 	}
 	
 	@Override
-	public Item asItem() {
+	public @NotNull Item asItem() {
 		return AllBlocks.BLAZE_BURNER.get().asItem();
 	}
 
 	@Override
-	public VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter reader, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+	public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter reader, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return AllShapes.HEATER_BLOCK_SHAPE;
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(@NotNull BlockState p_220071_1_, @NotNull BlockGetter p_220071_2_, @NotNull BlockPos p_220071_3_,
-										@NotNull CollisionContext p_220071_4_) {
+	public @NotNull VoxelShape getCollisionShape(@NotNull BlockState p_220071_1_, @NotNull BlockGetter p_220071_2_, @NotNull BlockPos p_220071_3_,
+												 @NotNull CollisionContext p_220071_4_) {
 		if (p_220071_4_ == CollisionContext.empty())
 			return AllShapes.HEATER_BLOCK_SPECIAL_COLLISION_SHAPE;
 		return getShape(p_220071_1_, p_220071_2_, p_220071_3_, p_220071_4_);

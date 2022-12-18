@@ -13,6 +13,7 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -24,7 +25,7 @@ public class CreateAddition implements ModInitializer {
     public static boolean CC_ACTIVE = false;
     public static boolean AE2_ACTIVE = false;
     
-    private static final NonNullSupplier<CreateRegistrate> registrate = CreateRegistrate.lazy(CreateAddition.MODID);
+    private static final NonNullSupplier<CreateRegistrate> REGISTRATE = CreateRegistrate.lazy(CreateAddition.MODID);
 
     @Override
     public void onInitialize() {
@@ -37,7 +38,7 @@ public class CreateAddition implements ModInitializer {
         CC_ACTIVE = FabricLoader.getInstance().isModLoaded("computercraft");
         AE2_ACTIVE = FabricLoader.getInstance().isModLoaded("ae2");
 
-        BoilerHeaters.registerHeater(CABlocks.LIQUID_BLAZE_BURNER.get(), (level, pos, state) -> {
+        BoilerHeaters.registerHeater(new ResourceLocation(MODID, "liquid_blaze_burner"), (level, pos, state) -> {
             BlazeBurnerBlock.HeatLevel value = state.getValue(LiquidBlazeBurner.HEAT_LEVEL);
             if (value == BlazeBurnerBlock.HeatLevel.NONE) {
                 return -1;
@@ -60,7 +61,7 @@ public class CreateAddition implements ModInitializer {
         //CAEntities.register();
         CAPotatoCannonProjectiles.register();
         CommandRegistrationCallback.EVENT.register(CCApiCommand::register);
-        registrate.get().register();
+        REGISTRATE.get().register();
         GameEvents.initCommon();
         postInit();
     }
@@ -71,6 +72,6 @@ public class CreateAddition implements ModInitializer {
     }
 
     public static CreateRegistrate registrate() {
-		return registrate.get();
+		return REGISTRATE.get();
 	}
 }
