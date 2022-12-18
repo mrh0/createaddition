@@ -57,7 +57,7 @@ import java.util.Random;
 
 @SuppressWarnings({"UnstableApiUsage", "ConstantConditions"})
 public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IObserveTileEntity, FluidTransferable {
-	public static final int MAX_HEAT_CAPACITY = 10000;
+	public static final int MAX_HEAT_CAPACITY;
 	protected FuelType activeFuel;
 	protected int remainingBurnTime;
 	protected LerpedFloat headAnimation;
@@ -66,6 +66,10 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	protected boolean goggles;
 	protected boolean hat;
 	protected FluidTank fluidTank;
+
+	static {
+		MAX_HEAT_CAPACITY = 10000;
+	}
 
 	public LiquidBlazeBurnerTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -197,8 +201,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	}
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
-	}
+	public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
 
 	@Override
 	public void write(CompoundTag compound, boolean clientPacket) {
@@ -479,10 +482,6 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		return fluidTank;
 	}
 
-	public enum FuelType {
-		NONE, NORMAL, SPECIAL
-	}
-
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
@@ -494,4 +493,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		causeBlockUpdate();
 	}
 
+	public enum FuelType {
+		NONE, NORMAL, SPECIAL
+	}
 }

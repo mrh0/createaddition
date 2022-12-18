@@ -13,6 +13,7 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -39,6 +40,9 @@ public class CreateAddition implements ModInitializer {
         AE2_ACTIVE = FabricLoader.getInstance().isModLoaded("ae2");
 
         BoilerHeaters.registerHeater(CABlocks.LIQUID_BLAZE_BURNER.get(), (level, pos, state) -> {
+            if (state == Blocks.AIR.defaultBlockState() || state.getBlock() == Blocks.AIR) {
+                return 0;
+            }
             BlazeBurnerBlock.HeatLevel value = state.getValue(LiquidBlazeBurner.HEAT_LEVEL);
             if (value == BlazeBurnerBlock.HeatLevel.NONE) {
                 return -1;
