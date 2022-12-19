@@ -1,0 +1,14 @@
+{
+	"type":"createaddition:liquid_burning",
+	"input": {
+		"fluid": "tconstruct:blazing_blood",
+      	"amount": 1000
+	},
+	"burnTime": 6400,
+	"conditions": [
+    	{
+    		"type": "forge:mod_loaded",
+    		"modid": "tconstruct"
+  		}
+	]
+}

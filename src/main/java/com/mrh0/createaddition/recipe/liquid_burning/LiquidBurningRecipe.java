@@ -36,6 +36,8 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 			return false;
 		if(wrapper.fluid == null)
 			return false;
+		if(world == null)
+			return false;
 		return fluidIngredients.test(wrapper.fluid);
 	}
 

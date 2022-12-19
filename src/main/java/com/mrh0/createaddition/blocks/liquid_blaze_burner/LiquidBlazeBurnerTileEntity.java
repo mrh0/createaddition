@@ -115,6 +115,12 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	}
 
 	public Optional<LiquidBurningRecipe> find(FluidStack stack, Level world) {
+		if(stack == null)
+			return Optional.empty();
+		if(world == null)
+			return Optional.empty();
+		if(LiquidBurningRecipe.TYPE == null)
+			return Optional.empty();
 		return world.getRecipeManager().getRecipeFor(LiquidBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
 	}
 

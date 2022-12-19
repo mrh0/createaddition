@@ -176,8 +176,12 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 		ItemStack stack, boolean doNotConsume, boolean forceOverflow, boolean simulate) {
 		if (!state.hasBlockEntity())
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
-
+		if(stack == null)
+			return InteractionResultHolder.fail(ItemStack.EMPTY);
 		BlockEntity te = world.getBlockEntity(pos);
+		if(te == null)
+			return InteractionResultHolder.fail(ItemStack.EMPTY);
+		
 		if (!(te instanceof LiquidBlazeBurnerTileEntity))
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 		LiquidBlazeBurnerTileEntity burnerTE = (LiquidBlazeBurnerTileEntity) te;

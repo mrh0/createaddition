@@ -28,6 +28,14 @@ public class Util {
 		return m;
 	}
 	
+	public static int max(int...v) {
+		int m = Integer.MIN_VALUE;
+		for(int i : v)
+			if(i > m)
+				m = i;
+		return m;
+	}
+	
 	public static ItemStack findStack(Item item, Inventory inv) {
 		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
