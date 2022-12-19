@@ -1,0 +1,13 @@
+{
+	"type":"create:pressing",
+	"ingredients": [{
+      	"tag": "forge:ingots/silver"
+	}],
+	"results": [{
+		"item": "immersiveengineering:plate_silver"
+	}],
+	"conditions": [{
+		"type": "forge:mod_loaded",
+		"modid": "immersiveengineering"
+    }]
+}
