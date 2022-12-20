@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -107,7 +108,8 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 		}
 	}
 
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	@Override
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource pRandom) {
 		if (state.getValue(POWERED) && !world.hasNeighborSignal(pos))
 			world.setBlock(pos, state.cycle(POWERED), 2);
 	}

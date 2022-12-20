@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.connector;
 
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
@@ -30,6 +31,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, IWrenchable {
+	boolean IGNORE_FACE_CHECK = Config.CONNECTOR_IGNORE_FACE_CHECK.get();
 
 	public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).forDirectional();
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -122,7 +124,7 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 		return
 				!Shapes.joinIsNotEmpty(world.getBlockState(pos.relative(dir)).getBlockSupportShape(world,pos.relative(dir)).getFaceShape(dir.getOpposite()), boxwe, BooleanOp.ONLY_SECOND) ||
 				!Shapes.joinIsNotEmpty(world.getBlockState(pos.relative(dir)).getBlockSupportShape(world,pos.relative(dir)).getFaceShape(dir.getOpposite()), boxsn, BooleanOp.ONLY_SECOND) ||
-				world.getBlockState(pos.relative(dir)).isFaceSturdy(world, pos, dir.getOpposite(), SupportType.CENTER);
+				world.getBlockState(pos.relative(dir)).isFaceSturdy(world, pos, dir.getOpposite(), SupportType.CENTER) || IGNORE_FACE_CHECK;
 	}
 
 	@Override
