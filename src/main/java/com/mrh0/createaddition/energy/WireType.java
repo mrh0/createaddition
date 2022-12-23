@@ -8,6 +8,8 @@ public enum WireType {
 	COPPER(0, 256, 78, 37, 30, new ItemStack(CAItems.COPPER_WIRE.get(), 4), new ItemStack(CAItems.COPPER_SPOOL.get())),
 	GOLD(1, 1024, 98, 83, 29, new ItemStack(CAItems.GOLD_WIRE.get(), 4), new ItemStack(CAItems.GOLD_SPOOL.get())),
 	ELECTRUM(2, 8196, 0, 0, 0, ItemStack.EMPTY, ItemStack.EMPTY);
+	// Hanging lightbulbs?
+	// Festive lights?
 	
 	private final int ID, TRANSFER, CR, CG, CB;
 	private final ItemStack DROP;
