@@ -107,6 +107,9 @@ public class CAItems {
 	public static final ItemEntry<Item> BRASS_ROD =
 			REGISTRATE.item("brass_rod", Item::new).register();
 	
+	public static final ItemEntry<WireSpool> FESTIVE_SPOOL =
+			REGISTRATE.item("festive_spool", WireSpool::new).register();
+	
 	public static final ItemEntry<HiddenIngredientItem> CAKE_BASE =
 			REGISTRATE.item("cake_base", HiddenIngredientItem::new)
 				.register();
@@ -124,6 +127,7 @@ public class CAItems {
 		//Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
 		REGISTRATE.addToSection(COPPER_SPOOL, AllSections.MATERIALS);
 		REGISTRATE.addToSection(GOLD_SPOOL, AllSections.MATERIALS);
+		REGISTRATE.addToSection(FESTIVE_SPOOL, AllSections.MATERIALS);
 		REGISTRATE.addToSection(SPOOL, AllSections.MATERIALS);
 		
 		REGISTRATE.addToSection(BIOMASS_PELLET, AllSections.MATERIALS);

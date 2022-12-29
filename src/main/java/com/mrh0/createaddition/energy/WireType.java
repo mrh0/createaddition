@@ -7,7 +7,8 @@ import net.minecraft.world.item.ItemStack;;
 public enum WireType {
 	COPPER(0, 256, 78, 37, 30, new ItemStack(CAItems.COPPER_WIRE.get(), 4), new ItemStack(CAItems.COPPER_SPOOL.get())),
 	GOLD(1, 1024, 98, 83, 29, new ItemStack(CAItems.GOLD_WIRE.get(), 4), new ItemStack(CAItems.GOLD_SPOOL.get())),
-	ELECTRUM(2, 8196, 0, 0, 0, ItemStack.EMPTY, ItemStack.EMPTY);
+	ELECTRUM(2, 8196, 0, 0, 0, ItemStack.EMPTY, ItemStack.EMPTY),
+	FESTIVE(3, 256, 26, 94, 12, new ItemStack(CAItems.COPPER_WIRE.get(), 4), new ItemStack(CAItems.FESTIVE_SPOOL.get()));
 	// Hanging lightbulbs?
 	// Festive lights?
 	
@@ -33,6 +34,8 @@ public enum WireType {
 				return GOLD;
 			case 2:
 				return ELECTRUM;
+			case 3:
+				return FESTIVE;
 		}
 		return null;
 	}
@@ -63,5 +66,9 @@ public enum WireType {
 	
 	public int getBlue() {
 		return CB;
+	}
+	
+	public boolean isFestive( ) {
+		return this == FESTIVE;
 	}
 }
