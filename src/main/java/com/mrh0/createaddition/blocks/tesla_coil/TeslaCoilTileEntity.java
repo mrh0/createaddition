@@ -60,7 +60,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
 	
-	private static DamageSource dmgSource = new DamageSource("tesla_coil");
+	private static DamageSource DMG_SOURCE = new DamageSource("tesla_coil");
 	
 	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, 0);
@@ -104,7 +104,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}
 	
 	private void doDmg() {
-		energy.internalConsumeEnergy(HURT_ENERGY_REQUIRED);
+		localEnergy.internalConsumeEnergy(HURT_ENERGY_REQUIRED);
 		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoil.FACING).getOpposite());
 		List<LivingEntity> ents = getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(HURT_RANGE));
 		for(LivingEntity e : ents) {
@@ -117,7 +117,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 				time = HURT_EFFECT_TIME_PLAYER;
 			}
 			if(dmg > 0)
-				e.hurt(dmgSource, dmg);
+				e.hurt(DMG_SOURCE, dmg);
 			if(time > 0)
 				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), time));
 		}
@@ -138,11 +138,11 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		}
 		int signal = getLevel().getBestNeighborSignal(getBlockPos());
 		//System.out.println(signal + ":" + (energy.getEnergyStored() >= HURT_ENERGY_REQUIRED));
-		if(signal > 0 && energy.getEnergyStored() >= HURT_ENERGY_REQUIRED)
+		if(signal > 0 && localEnergy.getEnergyStored() >= HURT_ENERGY_REQUIRED)
 			poweredTimer = 10;
 		
 		dmgTick++;
-		if((dmgTick%=HURT_FIRE_COOLDOWN) == 0 && energy.getEnergyStored() >= HURT_ENERGY_REQUIRED && signal > 0)
+		if((dmgTick%=HURT_FIRE_COOLDOWN) == 0 && localEnergy.getEnergyStored() >= HURT_ENERGY_REQUIRED && signal > 0)
 			doDmg();
 		
 		if(poweredTimer > 0) {
@@ -181,9 +181,9 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		IEnergyStorage es = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
 		if(es.receiveEnergy(1, true) != 1)
 			return false;
-		if(energy.getEnergyStored() < stack.getCount())
+		if(localEnergy.getEnergyStored() < stack.getCount())
 			return false;
-		energy.internalConsumeEnergy(es.receiveEnergy(Math.min(getConsumption(), energy.getEnergyStored()), false));
+		localEnergy.internalConsumeEnergy(es.receiveEnergy(Math.min(getConsumption(), localEnergy.getEnergyStored()), false));
 		return true;
 	}
 	
@@ -195,7 +195,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		}
 		if(recipeCache.isPresent()) {
 			ChargingRecipe recipe = recipeCache.get();
-			int energyRemoved = energy.internalConsumeEnergy(Math.min(CHARGE_RATE_RECIPE, recipe.getEnergy() - chargeAccumulator));
+			int energyRemoved = localEnergy.internalConsumeEnergy(Math.min(CHARGE_RATE_RECIPE, recipe.getEnergy() - chargeAccumulator));
 			chargeAccumulator += energyRemoved;
 			if(chargeAccumulator >= recipe.getEnergy()) {
 				TransportedItemStack remainingStack = transported.copy();

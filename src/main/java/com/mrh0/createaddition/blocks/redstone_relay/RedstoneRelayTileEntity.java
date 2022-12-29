@@ -379,7 +379,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
-				.append(Component.translatable(isNodeInput(node) ? "createaddition.tooltip.energy.input" : "createaddition.tooltip.energy.output").withStyle(ChatFormatting.AQUA)));
+				.append(Component.translatable(isNodeInput(node) ? "createaddition.tooltip.energy.push" : "createaddition.tooltip.energy.pull").withStyle(ChatFormatting.AQUA)));
 		
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));

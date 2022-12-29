@@ -123,6 +123,7 @@ public class CreateAddition {
         RenderType cutout = RenderType.cutoutMipped();       
 		
         ItemBlockRenderTypes.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(CABlocks.BARBED_WIRE.get(), cutout);
         //CAPartials.init();
     }
     

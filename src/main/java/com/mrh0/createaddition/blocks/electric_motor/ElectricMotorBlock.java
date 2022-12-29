@@ -1,7 +1,5 @@
 package com.mrh0.createaddition.blocks.electric_motor;
 
-import java.util.Random;
-
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.contraptions.base.DirectionalKineticBlock;
@@ -96,6 +94,7 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 		return CATileEntities.ELECTRIC_MOTOR.get();
 	}
 
+	@Override
 	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos from, boolean b) {
 		if (!world.isClientSide) {
 			boolean flag = state.getValue(POWERED);

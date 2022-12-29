@@ -8,6 +8,7 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorMovementBehaviour;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
+import com.mrh0.createaddition.blocks.barbed_wire.BarbedWireBlock;
 import com.mrh0.createaddition.blocks.cake.Cake;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorMovementBehaviour;
@@ -41,6 +42,7 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -117,6 +119,13 @@ public class CABlocks {
 	public static final BlockEntry<Cake> HONEY_CAKE = REGISTRATE.block("honey_cake",  Cake::new)
 			.initialProperties(Material.CAKE)
 			.properties(props -> props.sound(SoundType.WOOL).strength(0.5f))
+			.item()
+			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<BarbedWireBlock> BARBED_WIRE = REGISTRATE.block("barbed_wire",  BarbedWireBlock::new)
+			.initialProperties(Material.WEB)
+			.properties(props -> props.noCollission().requiresCorrectToolForDrops().strength(4.0F))
 			.item()
 			.transform(customItemModel())
 			.register();
