@@ -10,6 +10,12 @@
 	"createaddition.tooltip.energy.input": "Entrada",
 	"createaddition.tooltip.energy.output": "Salida",
 	
+	"createaddition.tooltip.energy.mode": "Modo:",
+	"createaddition.tooltip.energy.push": "Empujar",
+	"createaddition.tooltip.energy.pull": "Tirar",
+	"createaddition.tooltip.energy.passive": "Pasivo",
+	"createaddition.tooltip.energy.none": "Ninguno",
+	
 	"createaddition.tooltip.accumulator.info": "Información del acumulador:",
 	"createaddition.tooltip.relay.info": "Información del relé:",
 	"createaddition.tooltip.connector.info": "Información del conector:",
@@ -30,8 +36,9 @@
 	
 	"item.createaddition.copper_spool": "Carrete de cobre",
 	"item.createaddition.copper_spool.tooltip": "CARRETE",
-	"item.createaddition.copper_spool.tooltip.summary": "Al hacer click derecho en dos _Conectores_ creará un enlace de cable entre ellos y devolverá un _Carrete vacío_.",
-	
+	"item.createaddition.copper_spool.tooltip.control1": "Al hacer click derecho entre dos conectores",
+	"item.createaddition.copper_spool.tooltip.action1": "Creará un enlace de cable entre ellos y devolverá un _carrete vacío_.",
+		
 	"item.createaddition.iron_wire": "Alambre de hierro",
 	"item.createaddition.iron_spool": "Carrete de hierro",
 	"item.createaddition.iron_rod": "Vara de hierro",
@@ -41,10 +48,16 @@
 	
 	"item.createaddition.gold_spool": "Carrete de oro",
 	"item.createaddition.gold_spool.tooltip": "CARRETE",
-	"item.createaddition.gold_spool.tooltip.summary": "Al hacer click derecho en dos _Conectores_ creará un enlace de cable entre ellos y devolverá un _Carrete vacío_.",
+	"item.createaddition.gold_spool.tooltip.control1": "Al hacer click derecho entre dos conectores",
+	"item.createaddition.gold_spool.tooltip.action1": "Creará un enlace de cable entre ellos y devolverá un _carrete vacío_.",
 	
 	"item.createaddition.gold_wire": "Alambre de oro",
 	"item.createaddition.gold_rod": "Vara de oro",
+	
+	"item.createaddition.festive_spool": "Carrete de luces festivas",
+	"item.createaddition.festive_spool.tooltip": "CARRETE",
+	"item.createaddition.festive_spool.tooltip.control1": "Al hacer click derecho entre dos conectores",
+	"item.createaddition.festive_spool.tooltip.action1": "Creará un enlace de cable entre ellos y devolverá un _carrete vacío_.",
 	
 	"item.createaddition.brass_rod": "Vara de latón",
 	"item.createaddition.bronze_rod": "Vara de bronce",
@@ -72,7 +85,8 @@
 	"item.createaddition.spool": "Carrete vacio",
 	"item.createaddition.spool.nbt": "Almacena la ubicación de la conexión.",
 	"item.createaddition.spool.tooltip": "CARRETE",
-	"item.createaddition.spool.tooltip.summary": "Al hacer click derecho en dos _Conectores_ enlazados por un cable eliminará el enlace del cable y devolverá un _carrete_ lleno.",
+	"item.createaddition.spool.tooltip.control1": "Al hacer click derecho entre dos conectores",
+	"item.createaddition.spool.tooltip.action1": "Creará un enlace de cable entre ellos y devolverá un _carrete vacío_.",
 	
 	"statusbar.createaddition.wire.linked": "Conectores vinculados",
 	"statusbar.createaddition.wire.linked_in": "Cable vinculado a la entrada",
@@ -123,6 +137,8 @@
 	"block.createaddition.connector.tooltip.summary": "Conecta bloques compatibles de Forge Energy con _cables_ para transferir _FE_.",
 	"block.createaddition.connector.tooltip.control1": "Click derecho",
 	"block.createaddition.connector.tooltip.action1": "Con un _carrete de cobre_ o un _carrete de oro_ para crear un _vínculo de cables_ entre dos _conectores_.",
+	"block.createaddition.connector.tooltip.control2": "Click derecho con llave inglesa",
+	"block.createaddition.connector.tooltip.action2": "Para alternar entre los modos _Empujar_, _Tirar_, _Pasivo_ y _Ninguno_.",
 	
 	"block.createaddition.connector_copper": "Conector de cobre",
 	"block.createaddition.connector_copper.tooltip": "CONECTOR",
@@ -149,6 +165,8 @@
 	
 	"block.createaddition.seed_oil": "Aceite de semillas",
     "block.createaddition.bioethanol": "Bioetanol",
+	
+	"block.createaddition.barbed_wire": "Alambre de púas",
 	
 	"createaddition.recipe.liquid_burning.burn_time": "Tiempo de quema",
 	
@@ -200,6 +218,9 @@
 	"createaddition.ponder.liquid_blaze_burner.text_1": "Dándole una pajita al quemador de Blaze",
 	"createaddition.ponder.liquid_blaze_burner.text_2": "le permitirá aceptar combustibles líquidos por cubos",
 	"createaddition.ponder.liquid_blaze_burner.text_3": "- o por tuberías.",
+	
+	"death.attack.barbed_wire": "%1$s trató de cruzar el alambre de púas",
+  	"death.attack.barbed_wire.player": "%1$s trató de cruzar el alambre de púas mientras luchaba con %2$s",
 	
 	"effect.createaddition.shocking":"Electrocutado",
 	"death.attack.tesla_coil": "%1$s recibió una descarga eléctrica letal",
