@@ -1,22 +1,23 @@
 package com.mrh0.createaddition.rendering;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
+import com.mrh0.createaddition.index.CAPartials;
+import com.simibubi.create.foundation.render.CachedBufferer;
+import com.simibubi.create.foundation.utility.Color;
 
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {//extends BlockEntityRenderer<T> {
@@ -98,25 +99,50 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 		int j = tileEntityIn.getLevel().getBrightness(LightLayer.BLOCK, blockpos2);
 		int k = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos1);
 		int l = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos2);
-		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.025F, o1, o2, type, dis);
-		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.0F, o1, o2, type, dis);
+		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.025F, o1, o2, type, dis, tileEntityIn.getBlockState(), matrix, 0);
+		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.0F, o1, o2, type, dis, tileEntityIn.getBlockState(), matrix, 1);
+		//light
 		//matrix.popPose();
 	}
 
 	public static void wirePart(VertexConsumer vertBuilder, Matrix4f matrix, float x, float y, float z, int l1, int l2,
-			int l3, int l4, float a, float b, float o1, float o2, WireType type, float dis) {
+			int l3, int l4, float a, float b, float o1, float o2, WireType type, float dis, BlockState state, PoseStack stack, int lightOffset) {
 		for (int j = 0; j < 24; ++j) {
 			float f = (float) j / 23.0F;
 			int k = (int) Mth.lerp(f, (float) l1, (float) l2);
 			int l = (int) Mth.lerp(f, (float) l3, (float) l4);
 			int light = LightTexture.pack(k, l);
-			wireVert(vertBuilder, matrix, light, x, y, z, a, b, 24, j, false, o1, o2, type, dis);
-			wireVert(vertBuilder, matrix, light, x, y, z, a, b, 24, j + 1, true, o1, o2, type, dis);
+			wireVert(vertBuilder, matrix, light, x, y, z, a, b, 24, j, false, o1, o2, type, dis, state, stack, lightOffset);
+			wireVert(vertBuilder, matrix, light, x, y, z, a, b, 24, j + 1, true, o1, o2, type, dis, state, stack, lightOffset+1);
+			
+		}
+		if (type.isFestive()) {
+			stack.pushPose();
+			boolean main = x + y + z > 0;
+			for (int j = 0; j < 24; ++j) {
+				lights(vertBuilder, x, y, z, a, b, 24, j + 1, o1, o2, type, dis, state, stack, lightOffset, main);
+			}
+			stack.popPose();
+		}
+	}
+	
+	static Color[] colors = {Color.RED, Color.GREEN, new Color(0f, 0f, 1f, 1f)};
+	static float LIGHT_Y_OFFSET = -0.03f;
+	
+	public static void lights(VertexConsumer vertBuilder,float x, float y, float z,
+			float a, float b, int count, int index, float o1, float o2, WireType type, float dis, BlockState state, PoseStack stack, int lightOffset, boolean main) {
+		float part = (float) index / (float) count;
+		float fx = x * part;
+		float fy = (y > 0.0F ? y * part * part : y - y * (1.0F - part) * (1.0F - part)) + hang(divf(index, count), dis) + LIGHT_Y_OFFSET;
+		float fz = z * part;
+		
+		if (index % 3 == 0 && index != 1 && index != count && lightOffset == 0) {
+			CachedBufferer.partial(CAPartials.SMALL_LIGHT, state).color(colors[(main ? 2-(index/3)%3 : (index/3)%3)]).light(255).translate(fx, fy, fz).renderInto(stack, vertBuilder);
 		}
 	}
 
 	public static void wireVert(VertexConsumer vertBuilder, Matrix4f matrix, int light, float x, float y, float z,
-			float a, float b, int count, int index, boolean sw, float o1, float o2, WireType type, float dis) {
+			float a, float b, int count, int index, boolean sw, float o1, float o2, WireType type, float dis, BlockState state, PoseStack stack, int lightOffset) {
 		int cr = type.getRed();
 		int cg = type.getGreen();
 		int cb = type.getBlue();
@@ -132,6 +158,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 		float fz = z * part;
 
 		//System.out.println((fx + o1) +":"+ (fy + n1 - n2) +":"+ (fz - o2));
+		
 		
 		if(Math.abs(x) + Math.abs(z) < Math.abs(y)) {
 			boolean p = b > 0;
@@ -157,52 +184,4 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 			}
 		}
 	}
-	
-	/*private void wireRender(BlockEntity tileEntityIn, BlockPos other, PoseStack stack, MultiBufferSource buffer, float x, float y, float z, WireType type, float dis) {
-		//BlockEntity tileEntityIn, BlockPos other, PoseStack matrix, MultiBufferSource buffer, float x, float y, float z, WireType type, float dis
-		
-		stack.pushPose();
-		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.leash());
-		Matrix4f matrix4f = stack.last().pose();
-		float f = Mth.fastInvSqrt(x * x + z * z) * 0.025F / 2.0F;
-		float o1 = z * f;
-		float o2 = x * f;
-		BlockPos blockpos1 = tileEntityIn.getBlockPos();//new BlockPos(tileEntityIn.getPos());
-		BlockPos blockpos2 = other;//new BlockPos(blockpos1.getX() + x, blockpos1.getY() + y, blockpos1.getZ() + z);
-		//System.out.println("Pos:" + blockpos1 + ":" + blockpos2);
-		int i = tileEntityIn.getLevel().getBrightness(LightLayer.BLOCK, blockpos1);
-		int j = tileEntityIn.getLevel().getBrightness(LightLayer.BLOCK, blockpos2);
-		int k = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos1);
-		int l = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos2);
-
-		for (int i1 = 0; i1 <= 24; ++i1) {
-			addVertexPair(vertexconsumer, matrix4f, x, y, z, i, j, k, l, 0.025F, 0.025F, o1, o2, i1, false);
-		}
-
-		for (int j1 = 24; j1 >= 0; --j1) {
-			addVertexPair(vertexconsumer, matrix4f, x, y, z, i, j, k, l, 0.025F, 0.0F, o1, o2, j1, true);
-		}
-
-		stack.popPose();
-	}
-
-	private static void addVertexPair(VertexConsumer verts, Matrix4f matrix, float p_174310_, float p_174311_,
-			float p_174312_, int p_174313_, int p_174314_, int p_174315_, int p_174316_, float p_174317_,
-			float p_174318_, float p_174319_, float p_174320_, int p_174321_, boolean p_174322_) {
-		float f = (float) p_174321_ / 24.0F;
-		int i = (int) Mth.lerp(f, (float) p_174313_, (float) p_174314_);
-		int j = (int) Mth.lerp(f, (float) p_174315_, (float) p_174316_);
-		int k = LightTexture.pack(i, j);
-		float f1 = p_174321_ % 2 == (p_174322_ ? 1 : 0) ? 0.7F : 1.0F;
-		float f2 = 0.5F * f1;
-		float f3 = 0.4F * f1;
-		float f4 = 0.3F * f1;
-		float f5 = p_174310_ * f;
-		float f6 = p_174311_ > 0.0F ? p_174311_ * f * f : p_174311_ - p_174311_ * (1.0F - f) * (1.0F - f);
-		float f7 = p_174312_ * f;
-		verts.vertex(matrix, f5 - p_174319_, f6 + p_174318_, f7 + p_174320_).color(f2, f3, f4, 1.0F).uv2(k)
-				.endVertex();
-		verts.vertex(matrix, f5 + p_174319_, f6 + p_174317_ - p_174318_, f7 - p_174320_).color(f2, f3, f4, 1.0F)
-				.uv2(k).endVertex();
-	}*/
 }

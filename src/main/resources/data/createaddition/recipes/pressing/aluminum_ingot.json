@@ -1,0 +1,13 @@
+{
+	"type":"create:pressing",
+	"ingredients": [{
+      	"tag": "forge:ingots/aluminum"
+	}],
+	"results": [{
+		"item": "immersiveengineering:plate_aluminum"
+	}],
+	"conditions": [{
+		"type": "forge:mod_loaded",
+		"modid": "immersiveengineering"
+    }]
+}

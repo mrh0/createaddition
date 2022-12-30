@@ -1,0 +1,110 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "createaddition:block/barbed_wire/block",
+		"particle": "createaddition:block/barbed_wire/block"
+	},
+	"elements": [
+		{
+			"name": "Plane",
+			"from": [0, 0, -2],
+			"to": [16, 18, -2],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [0, 0, -2]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Plane",
+			"from": [0, 0, 2],
+			"to": [16, 18, 2],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [0, 0, 2]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Plane",
+			"from": [0, 0, 6],
+			"to": [16, 18, 6],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [0, 0, 6]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Plane",
+			"from": [0, 0, 10],
+			"to": [16, 18, 10],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [0, 0, 10]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Plane",
+			"from": [0, 0, 6],
+			"to": [16, 18, 6],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [0, 0, 6]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Plane",
+			"from": [0, 0, 10],
+			"to": [16, 18, 10],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [0, 0, 10]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Plane",
+			"from": [0, 0, 14],
+			"to": [16, 18, 14],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [0, 0, 14]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Plane",
+			"from": [0, 0, 18],
+			"to": [16, 18, 18],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [0, 0, 18]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"thirdperson_lefthand": {
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"firstperson_righthand": {
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"firstperson_lefthand": {
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"ground": {
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, 45, 0],
+			"scale": [0.7, 0.7, 0.7]
+		}
+	}
+}

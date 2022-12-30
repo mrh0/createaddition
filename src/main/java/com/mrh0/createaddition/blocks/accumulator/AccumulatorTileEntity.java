@@ -274,12 +274,12 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		}
 		
 		
-		energy.extractEnergy(networkOut.push(energy.extractEnergy(demandOut, true)), false);
+		localEnergy.extractEnergy(networkOut.push(localEnergy.extractEnergy(demandOut, true)), false);
 		
 		/*energy.receiveEnergy(networkOut.push(energy.extractEnergy(demandOut, false)), false);*/
 		demandOut = networkOut.getDemand();
-		energy.receiveEnergy(networkIn.pull(Math.min(demandIn, energy.receiveEnergy(MAX_IN, true))), false);
-		demandIn = networkIn.demand(energy.receiveEnergy(MAX_IN, true));
+		localEnergy.receiveEnergy(networkIn.pull(Math.min(demandIn, localEnergy.receiveEnergy(MAX_IN, true))), false);
+		demandIn = networkIn.demand(localEnergy.receiveEnergy(MAX_IN, true));
 		
 	}
 	
@@ -327,12 +327,12 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 	
 	public void setEnergy(int energy) {
-		this.energy.setEnergy(energy);
+		this.localEnergy.setEnergy(energy);
 	}
 
 	@Override
 	public int getComparetorOverride() {
-		return (int)((double)energy.getEnergyStored() / (double)energy.getMaxEnergyStored() * 15d);
+		return (int)((double)localEnergy.getEnergyStored() / (double)localEnergy.getMaxEnergyStored() * 15d);
 	}
 	
 	@Override
@@ -350,12 +350,12 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
-				.append(Util.getTextComponent(energy)));
+				.append(Util.getTextComponent(localEnergy)));
 		
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
-				.append(Component.translatable(isNodeInput(node) ? "createaddition.tooltip.energy.input" : "createaddition.tooltip.energy.output").withStyle(ChatFormatting.AQUA)));
+				.append(Component.translatable(isNodeInput(node) ? "createaddition.tooltip.energy.push" : "createaddition.tooltip.energy.pull").withStyle(ChatFormatting.AQUA)));
 		
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));

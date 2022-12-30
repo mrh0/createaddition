@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 public class CAPartials {
 	
 	public static final PartialModel LIQUID_HAT = entity("liquid_hat");
+	public static final PartialModel SMALL_LIGHT = block("connector/small_light");
 	
 	private static PartialModel block(String path) {
 		return new PartialModel(new ResourceLocation(CreateAddition.MODID, "block/" + path));

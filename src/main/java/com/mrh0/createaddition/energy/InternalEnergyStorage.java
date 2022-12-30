@@ -47,12 +47,12 @@ public class InternalEnergyStorage extends EnergyStorage {
     
     @Override
     public boolean canExtract() {
-    	return true;
+    	return maxExtract > 0;
     }
     
     @Override
     public boolean canReceive() {
-    	return true;
+    	return maxReceive > 0;
     }
     
     public int internalConsumeEnergy(int consume) {

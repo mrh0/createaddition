@@ -8,6 +8,7 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorMovementBehaviour;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
+import com.mrh0.createaddition.blocks.barbed_wire.BarbedWireBlock;
 import com.mrh0.createaddition.blocks.cake.Cake;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorMovementBehaviour;
@@ -41,6 +42,7 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -121,6 +123,13 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
+	public static final BlockEntry<BarbedWireBlock> BARBED_WIRE = REGISTRATE.block("barbed_wire",  BarbedWireBlock::new)
+			.initialProperties(Material.WEB)
+			.properties(props -> props.noCollission().requiresCorrectToolForDrops().strength(4.0F))
+			.item()
+			.transform(customItemModel())
+			.register();
+	
 	public static final BlockEntry<TeslaCoil> TESLA_COIL = REGISTRATE.block("tesla_coil",  TeslaCoil::new)
 			.initialProperties(SharedProperties::stone)
 			.item(AssemblyOperatorBlockItem::new)
@@ -140,10 +149,10 @@ public class CABlocks {
 			.register();
 	
 	public static void register() {
-		Create.registrate().addToSection(TESLA_COIL, AllSections.KINETICS);
-		Create.registrate().addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
-		Create.registrate().addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
-		Create.registrate().addToSection(ACCUMULATOR, AllSections.KINETICS);
-		Create.registrate().addToSection(REDSTONE_RELAY, AllSections.KINETICS);
+		REGISTRATE.addToSection(TESLA_COIL, AllSections.KINETICS);
+		REGISTRATE.addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
+		REGISTRATE.addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
+		REGISTRATE.addToSection(ACCUMULATOR, AllSections.KINETICS);
+		REGISTRATE.addToSection(REDSTONE_RELAY, AllSections.KINETICS);
 	}
 }

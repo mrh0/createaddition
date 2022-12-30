@@ -176,11 +176,11 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	
 	public void onBlockRemoved() {
 		for(int i = 0; i < getNodeCount(); i++) {
-			if(getNodeType(i) == null)
-				continue;
+			if(getNodeType(i) == null) continue;
+			
 			IWireNode node = getNode(i);
-			if(node == null)
-				continue;
+			if(node == null) continue;
+			
 			int other = getOtherNodeIndex(i);
 			node.removeNode(other);
 			node.invalidateNodeCache();
@@ -202,13 +202,13 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	
 	@Override
 	public void tick() {
+		if (getMode() == ConnectorMode.None) return;
+
 		super.tick();
-		if(level.isClientSide())
-			return;
-		if(awakeNetwork(level)) {
-			//EnergyNetwork.buildNetwork(world, this);
-			causeBlockUpdate();
-		}
+
+		if(level.isClientSide()) return;
+		if(awakeNetwork(level)) causeBlockUpdate();
+		
 		networkTick(network);
 	}
 	
@@ -225,30 +225,32 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 	
 	private int demand = 0;
-	private void networkTick(EnergyNetwork en) {
+	private void networkTick(EnergyNetwork network) {
+		ConnectorMode mode = getMode();
 		if(level.isClientSide())
 			return;
-		// TODO: Cache
+
 		Direction d = getBlockState().getValue(ConnectorBlock.FACING);
-		//TileEntity te = world.getTileEntity(pos.offset(d));
-		//if(te == null)
-		//	return;
-		//IEnergyStorage ies = te.getCapability(CapabilityEnergy.ENERGY, d.getOpposite()).orElse(null);
 		IEnergyStorage ies = getCachedEnergy(d);
-		if(ies == null)
-			return;
+		if(ies == null) return;
 		
-		int pull = en.pull(demand);
-		ies.receiveEnergy(pull, false);
+		if (mode == ConnectorMode.Push || mode == ConnectorMode.Passive) {
+			int pull = network.pull(demand);
+			ies.receiveEnergy(pull, false);
+			
+			int testInsert = ies.receiveEnergy(MAX_OUT, true);
+			demand = network.demand(testInsert);
+		}
 		
-		int testExtract = energy.extractEnergy(Integer.MAX_VALUE, true);
-		int testInsert = ies.receiveEnergy(MAX_OUT, true);
-		
-		demand = en.demand(testInsert);
-		
-		
-		int push = en.push(testExtract);
-		int ext = energy.internalConsumeEnergy(push);
+		if (mode == ConnectorMode.Pull || mode == ConnectorMode.Passive) {
+			int testExtract = localEnergy.extractEnergy(Integer.MAX_VALUE, true);
+			int push = network.push(testExtract);
+			localEnergy.internalConsumeEnergy(push);
+		}
+	}
+	
+	public ConnectorMode getMode() {
+		return getBlockState().getValue(ConnectorBlock.MODE);
 	}
 
 	@Override
@@ -263,6 +265,11 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.connector.info").withStyle(ChatFormatting.WHITE)));
+		
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.mode").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
+				.append(getBlockState().getValue(ConnectorBlock.MODE).getTooltip().withStyle(ChatFormatting.AQUA)));
 		
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
