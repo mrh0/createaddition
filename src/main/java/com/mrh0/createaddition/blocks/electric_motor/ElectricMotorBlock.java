@@ -1,7 +1,5 @@
 package com.mrh0.createaddition.blocks.electric_motor;
 
-import java.util.Random;
-
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.contraptions.base.DirectionalKineticBlock;
@@ -12,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -95,6 +94,7 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 		return CATileEntities.ELECTRIC_MOTOR.get();
 	}
 
+	@Override
 	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos from, boolean b) {
 		if (!world.isClientSide) {
 			boolean flag = state.getValue(POWERED);
@@ -107,7 +107,8 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 		}
 	}
 
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	@Override
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource pRandom) {
 		if (state.getValue(POWERED) && !world.hasNeighborSignal(pos))
 			world.setBlock(pos, state.cycle(POWERED), 2);
 	}

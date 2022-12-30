@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.connector;
 
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
@@ -9,6 +10,8 @@ import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -24,21 +27,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, IWrenchable {
+	boolean IGNORE_FACE_CHECK = Config.CONNECTOR_IGNORE_FACE_CHECK.get();
 
 	public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).forDirectional();
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	public static final EnumProperty<ConnectorMode> MODE = EnumProperty.<ConnectorMode>create("mode", ConnectorMode.class);
 	private static final VoxelShape boxwe = Block.box(0,7,7,10,9,9);
 	private static final VoxelShape boxsn = Block.box(7,7,0,9,9,10);
 
 	public ConnectorBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
+		this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(MODE, ConnectorMode.Passive));
 	}
 	
 	@Override
@@ -58,12 +64,17 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING);
+		builder.add(FACING).add(MODE);
 	}
 	
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext c) {
-		return this.defaultBlockState().setValue(FACING, c.getClickedFace().getOpposite());
+		Direction dir = c.getClickedFace().getOpposite();
+		System.out.println("Clicked: " + c.getClickedPos().relative(dir));
+		
+		ConnectorMode mode = ConnectorMode.test(c.getLevel(), c.getClickedPos().relative(dir), c.getClickedFace());
+		
+		return this.defaultBlockState().setValue(FACING, dir).setValue(MODE, mode);
 	}
 	
 	@Override
@@ -79,6 +90,17 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 		IWireNode cte = (IWireNode) te;
 		
 		cte.dropWires(worldIn);
+	}
+	
+	
+	
+	@Override
+	public InteractionResult onWrenched(BlockState state, UseOnContext c) {
+		if (c.getLevel().isClientSide()) {
+			c.getLevel().playLocalSound(c.getClickedPos().getX(), c.getClickedPos().getY(), c.getClickedPos().getZ(), SoundEvents.BONE_BLOCK_HIT, SoundSource.BLOCKS, 1f, 1f, false);
+		}
+		c.getLevel().setBlockAndUpdate(c.getClickedPos(), state.setValue(MODE, state.getValue(MODE).getNext()));
+		return InteractionResult.SUCCESS;
 	}
 	
 	@Override
@@ -122,7 +144,7 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 		return
 				!Shapes.joinIsNotEmpty(world.getBlockState(pos.relative(dir)).getBlockSupportShape(world,pos.relative(dir)).getFaceShape(dir.getOpposite()), boxwe, BooleanOp.ONLY_SECOND) ||
 				!Shapes.joinIsNotEmpty(world.getBlockState(pos.relative(dir)).getBlockSupportShape(world,pos.relative(dir)).getFaceShape(dir.getOpposite()), boxsn, BooleanOp.ONLY_SECOND) ||
-				world.getBlockState(pos.relative(dir)).isFaceSturdy(world, pos, dir.getOpposite(), SupportType.CENTER);
+				world.getBlockState(pos.relative(dir)).isFaceSturdy(world, pos, dir.getOpposite(), SupportType.CENTER) || IGNORE_FACE_CHECK;
 	}
 
 	@Override

@@ -49,6 +49,7 @@ public class Config {
 	public static ForgeConfigSpec.IntValue CONNECTOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.IntValue CONNECTOR_CAPACITY;
 	public static ForgeConfigSpec.IntValue CONNECTOR_MAX_LENGTH;
+	public static ForgeConfigSpec.BooleanValue CONNECTOR_IGNORE_FACE_CHECK;
 	
 	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_INPUT;
 	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_OUTPUT;
@@ -69,6 +70,8 @@ public class Config {
 	public static ForgeConfigSpec.IntValue DIAMOND_GRIT_SANDPAPER_USES;
 	
 	static {
+		COMMON_BUILDER.comment("Make sure config changes are duplicated on both Clients and the Server when running a dedicated Server,")
+					.comment(" as the config isnt synced between Clients and Server.");
 		COMMON_BUILDER.comment("General Settings").push(CATAGORY_GENERAL);
 		FE_RPM = COMMON_BUILDER.comment("Forge Energy conversion rate (in FE/t at 256 RPM).")
 				.defineInRange("fe_conversion", 240, 0, Integer.MAX_VALUE);
@@ -144,6 +147,9 @@ public class Config {
 		
 		CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Max wire length in blocks.")
 				.defineInRange("wire_length", 12, 0, 256);
+		
+		CONNECTOR_IGNORE_FACE_CHECK = COMMON_BUILDER.comment("Ignore checking if block face can support connector.")
+				.define("connector_ignore_face_check", false);
 		COMMON_BUILDER.pop();
 		
 		

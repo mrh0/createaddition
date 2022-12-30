@@ -18,7 +18,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public abstract class BaseElectricTileEntity extends SmartTileEntity {
 
-	protected final InternalEnergyStorage energy;
+	protected final InternalEnergyStorage localEnergy;
 	protected LazyOptional<IEnergyStorage> lazyEnergy;
 	
 	private boolean firstTickState = true;
@@ -26,11 +26,11 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	
 	public BaseElectricTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state, int CAPACITY, int MAX_IN, int MAX_OUT) {
 		super(tileEntityTypeIn, pos, state);
-		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
+		localEnergy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		this.CAPACITY = CAPACITY;
 		this.MAX_IN = MAX_IN;
 		this.MAX_OUT = MAX_OUT;
-		lazyEnergy = LazyOptional.of(() -> energy);
+		lazyEnergy = LazyOptional.of(() -> localEnergy);
 		setLazyTickRate(20);
 	}
 
@@ -52,18 +52,17 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	@Override
 	protected void read(CompoundTag compound, boolean arg1) {
 		super.read(compound, arg1);
-		energy.read(compound);
+		localEnergy.read(compound);
 	}
 	
 	@Override
 	public void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
-		energy.write(compound);
+		localEnergy.write(compound);
 	}
 	
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void remove() {
 		lazyEnergy.invalidate();
 	}
 	
@@ -72,7 +71,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		for(Direction side : Direction.values()) {
 			if(!isEnergyOutput(side))
 				continue;
-			energy.outputToSide(level, worldPosition, side, max);
+			localEnergy.outputToSide(level, worldPosition, side, max);
 		}
 	}
 	

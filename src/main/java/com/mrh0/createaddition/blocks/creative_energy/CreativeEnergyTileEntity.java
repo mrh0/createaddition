@@ -51,8 +51,7 @@ public class CreativeEnergyTileEntity extends CrateTileEntity {
 	}
 	
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void remove() {
 		lazyEnergy.invalidate();
 	}
 	

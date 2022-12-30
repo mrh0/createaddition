@@ -44,6 +44,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(motor));
 		scene.idle(50);
 
+		
 		scene.rotateCameraY(90);
 		scene.idle(20);
 
@@ -57,6 +58,7 @@ public class PonderScenes {
 		scene.overlay.showControls(new InputWindowElement(blockSurface, Pointing.DOWN).scroll(), 60);
 		scene.idle(20);
 
+		scene.addKeyframe();
 		scene.overlay.showText(70)
 			.text("Scrolling on the back panel changes the RPM of the motors' rotational output")
 			.placeNearTarget()
@@ -66,6 +68,7 @@ public class PonderScenes {
 		scene.effects.rotationSpeedIndicator(motor);
 		scene.idle(70);
 		
+		scene.addKeyframe();
 		scene.overlay.showText(70)
 		.text("The Electric Motor requires a source of energy (fe)")
 		.placeNearTarget()
@@ -141,7 +144,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(mill));
 		scene.idle(60);
 
-		
+		scene.addKeyframe();
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(mill), Pointing.DOWN).rightClick(), 50);
 		scene.overlay.showText(50)
 		.text("Manualy retrieve the rolled output by R-clicking the Mill")
@@ -177,8 +180,7 @@ public class PonderScenes {
 		
 		scene.world.showSection(util.select.position(mill), Direction.DOWN);
 		
-		
-		
+		scene.addKeyframe();
 		scene.overlay.showText(50)
 		.text("The Rolling Mill can be automated using a Belt and two Funnels")
 		.placeNearTarget()
@@ -269,6 +271,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(computer));
 		scene.idle(60);
 		
+		scene.addKeyframe();
 		scene.idle(10);
 		scene.overlay.showText(150)
 			.text("Get to the API documentation by issuing the command '/cca_api' in the chat")
@@ -330,6 +333,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(teslacoil));
 		scene.idle(80);
 		scene.world.showSection(util.select.position(lever), Direction.SOUTH);
+		
 		scene.idle(5);
 		scene.overlay.showText(50)
 			.attachKeyFrame()
@@ -385,7 +389,6 @@ public class PonderScenes {
 				.withItem(new ItemStack(CAFluids.BIOETHANOL.getBucket().get())), 40);
 		scene.idle(60);
 		scene.overlay.showText(50)
-			.attachKeyFrame()
 			.text("- or by pipes.")
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(burner));

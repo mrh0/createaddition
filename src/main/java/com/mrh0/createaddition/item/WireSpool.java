@@ -138,6 +138,8 @@ public class WireSpool extends Item {
 			return WireType.COPPER;
 		if(item == CAItems.GOLD_SPOOL.get())
 			return WireType.GOLD;
+		if(item == CAItems.FESTIVE_SPOOL.get())
+			return WireType.FESTIVE;
 		return WireType.COPPER;
 	}
 	
