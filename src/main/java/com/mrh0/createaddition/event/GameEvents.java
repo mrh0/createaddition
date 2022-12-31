@@ -30,21 +30,16 @@ public class GameEvents {
 	public static void initCommon() {
 		ServerTickEvents.START_WORLD_TICK.register(GameEvents::worldTickEvent);
 		ServerWorldEvents.LOAD.register(GameEvents::loadEvent);
+		UseBlockCallback.EVENT.register(GameEvents::onBlockUseEvent);
 	}
 
 
 	@Environment(EnvType.CLIENT)
 	public static void initClient() {
 		ClientTickEvents.END_CLIENT_TICK.register(GameEvents::clientTickEvent);
-		UseBlockCallback.EVENT.register(GameEvents::onBlockUseEvent);
 	}
 
-	private static InteractionResult onBlockUseEvent(
-			Player player,
-			Level level,
-			InteractionHand interactionHand,
-			BlockHitResult blockHitResult
-	) {
+	private static InteractionResult onBlockUseEvent(Player player, Level level, InteractionHand interactionHand, BlockHitResult blockHitResult) {
 		BlockState state = level.getBlockState(blockHitResult.getBlockPos());
 		ItemStack playerItem = player.getItemInHand(player.getUsedItemHand());
 		if(playerItem.getItem() == CAItems.STRAW.get()) {
@@ -53,8 +48,9 @@ public class GameEvents {
 						.setValue(LiquidBlazeBurner.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING/*state.getValue(BlazeBurnerBlock.HEAT_LEVEL)*/)
 						.setValue(LiquidBlazeBurner.FACING, state.getValue(BlazeBurnerBlock.FACING));
 				level.setBlockAndUpdate(blockHitResult.getBlockPos(), newState);
-				if(!player.isCreative())
+				if(!player.isCreative()) {
 					playerItem.shrink(1);
+				}
 				return InteractionResult.SUCCESS;
 			}
 		}
