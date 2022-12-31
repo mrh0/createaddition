@@ -39,7 +39,12 @@ public class GameEvents {
 		ClientTickEvents.END_CLIENT_TICK.register(GameEvents::clientTickEvent);
 	}
 
-	private static InteractionResult onBlockUseEvent(Player player, Level level, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+	private static InteractionResult onBlockUseEvent(
+			Player player,
+			Level level,
+			InteractionHand interactionHand,
+			BlockHitResult blockHitResult
+	) {
 		BlockState state = level.getBlockState(blockHitResult.getBlockPos());
 		ItemStack playerItem = player.getItemInHand(player.getUsedItemHand());
 		if(playerItem.getItem() == CAItems.STRAW.get()) {
@@ -48,9 +53,8 @@ public class GameEvents {
 						.setValue(LiquidBlazeBurner.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING/*state.getValue(BlazeBurnerBlock.HEAT_LEVEL)*/)
 						.setValue(LiquidBlazeBurner.FACING, state.getValue(BlazeBurnerBlock.FACING));
 				level.setBlockAndUpdate(blockHitResult.getBlockPos(), newState);
-				if(!player.isCreative()) {
+				if(!player.isCreative())
 					playerItem.shrink(1);
-				}
 				return InteractionResult.SUCCESS;
 			}
 		}
