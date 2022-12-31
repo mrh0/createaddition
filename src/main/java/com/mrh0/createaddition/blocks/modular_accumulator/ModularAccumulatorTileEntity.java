@@ -39,6 +39,8 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity {
 
 	private static final int MAX_SIZE = 3;
+	private static final int MAX_INPUT = 1024*8;
+	private static final int MAX_OUTPUT = 1024*8;
 
 	protected LazyOptional<IEnergyStorage> energyCap;
 	protected InternalEnergyStorage energyStorage;
@@ -63,7 +65,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	}
 
 	protected InternalEnergyStorage createEnergyStorage() {
-		return new InternalEnergyStorage(getCapacityMultiplier()/*, this::onFluidStackChanged*/);
+		return new InternalEnergyStorage(getCapacityMultiplier(), MAX_INPUT, MAX_OUTPUT);
 	}
 
 	protected void updateConnectivity() {
@@ -246,7 +248,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 
 	private InternalEnergyStorage handlerForCapability() {
 		return isController() ? energyStorage
-			: (getControllerTE() != null ? getControllerTE().handlerForCapability() : new InternalEnergyStorage(getTotalAccumulatorSize() * getCapacityMultiplier()));
+			: (getControllerTE() != null ? getControllerTE().handlerForCapability() : createEnergyStorage());
 	}
 
 	@Override
