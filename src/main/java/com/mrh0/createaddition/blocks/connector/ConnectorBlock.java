@@ -70,7 +70,6 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext c) {
 		Direction dir = c.getClickedFace().getOpposite();
-		System.out.println("Clicked: " + c.getClickedPos().relative(dir));
 		
 		ConnectorMode mode = ConnectorMode.test(c.getLevel(), c.getClickedPos().relative(dir), c.getClickedFace());
 		
@@ -91,8 +90,6 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 		
 		cte.dropWires(worldIn);
 	}
-	
-	
 	
 	@Override
 	public InteractionResult onWrenched(BlockState state, UseOnContext c) {

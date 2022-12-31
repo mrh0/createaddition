@@ -4,6 +4,7 @@ import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
 import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.AllTags.pickaxeOnly;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
+import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorMovementBehaviour;
@@ -15,6 +16,8 @@ import com.mrh0.createaddition.blocks.connector.ConnectorMovementBehaviour;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
+import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlock;
+import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorCTBehaviour;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayMovementBehaviour;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
@@ -53,7 +56,7 @@ public class CABlocks {
 			.creativeModeTab(() -> ModGroup.MAIN);
 	
 	public static final BlockEntry<ElectricMotorBlock> ELECTRIC_MOTOR = REGISTRATE.block("electric_motor", ElectricMotorBlock::new)
-			.initialProperties(SharedProperties::stone)
+			.initialProperties(SharedProperties::softMetal)
 			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
 			.transform(BlockStressDefaults.setCapacity(Config.BASELINE_STRESS.get()/256))
 			.item()
@@ -61,7 +64,7 @@ public class CABlocks {
 			.register();
 	
 	public static final BlockEntry<AlternatorBlock> ALTERNATOR = REGISTRATE.block("alternator", AlternatorBlock::new)
-			.initialProperties(SharedProperties::stone)
+			.initialProperties(SharedProperties::softMetal)
 			.transform(BlockStressDefaults.setImpact(Config.BASELINE_STRESS.get()/256))
 			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
 			.item()
@@ -77,7 +80,7 @@ public class CABlocks {
 			.register();
 	
 	public static final BlockEntry<CreativeEnergyBlock> CREATIVE_ENERGY = REGISTRATE.block("creative_energy", CreativeEnergyBlock::new)
-			.initialProperties(SharedProperties::stone)
+			.initialProperties(SharedProperties::softMetal)
 			.item()
 			.transform(customItemModel())
 			.register();
@@ -96,7 +99,7 @@ public class CABlocks {
 			.register();*/
 	
 	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = REGISTRATE.block("accumulator",  AccumulatorBlock::new)
-			.initialProperties(SharedProperties::stone)
+			.initialProperties(SharedProperties::softMetal)
 			.onRegister(AllMovementBehaviours.movementBehaviour(new AccumulatorMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
@@ -131,8 +134,15 @@ public class CABlocks {
 			.register();
 	
 	public static final BlockEntry<TeslaCoil> TESLA_COIL = REGISTRATE.block("tesla_coil",  TeslaCoil::new)
-			.initialProperties(SharedProperties::stone)
+			.initialProperties(SharedProperties::softMetal)
 			.item(AssemblyOperatorBlockItem::new)
+			.transform(customItemModel())
+			.register();
+	
+	public static final BlockEntry<ModularAccumulatorBlock> MODULAR_ACCUMULATOR = REGISTRATE.block("modular_accumulator",  ModularAccumulatorBlock::regular)
+			.initialProperties(SharedProperties::softMetal)
+			.onRegister(connectedTextures(ModularAccumulatorCTBehaviour::new))
+			.item()
 			.transform(customItemModel())
 			.register();
 	

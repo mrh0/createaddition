@@ -91,14 +91,19 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		if(level.isClientSide())
 			return;
 		for(Direction side : Direction.values()) {
-			BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
-			if(te == null) {
-				setCache(side, LazyOptional.empty());
-				continue;
-			}
-			LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
-			setCache(side, le);
+			updateCache(side);
 		}
+	}
+	
+	public void updateCache(Direction side) {
+		BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
+		if(te == null) {
+			setCache(side, LazyOptional.empty());
+			return;
+		}
+		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		setCache(side, le);
+		le.addListener((es) -> updateCache(side));
 	}
 	
 	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
@@ -131,22 +136,22 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		}
 	}
 	
-	public IEnergyStorage getCachedEnergy(Direction side) {
+	public LazyOptional<IEnergyStorage> getCachedEnergy(Direction side) {
 		switch(side) {
 			case DOWN:
-				return escacheDown.orElse(null);
+				return escacheDown;
 			case EAST:
-				return escacheEast.orElse(null);
+				return escacheEast;
 			case NORTH:
-				return escacheNorth.orElse(null);
+				return escacheNorth;
 			case SOUTH:
-				return escacheSouth.orElse(null);
+				return escacheSouth;
 			case UP:
-				return escacheUp.orElse(null);
+				return escacheUp;
 			case WEST:
-				return escacheWest.orElse(null);
+				return escacheWest;
 		}
-		return null;
+		return LazyOptional.empty();
 	}
 	
 

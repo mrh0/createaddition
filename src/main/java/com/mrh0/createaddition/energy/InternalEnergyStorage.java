@@ -45,6 +45,10 @@ public class InternalEnergyStorage extends EnergyStorage {
     	setEnergy(nbt.getInt("energy_"+name));
     }
     
+    public int getSpace() {
+    	return Math.max(getMaxEnergyStored() - getEnergyStored(), 0);
+    }
+    
     @Override
     public boolean canExtract() {
     	return maxExtract > 0;
@@ -69,6 +73,10 @@ public class InternalEnergyStorage extends EnergyStorage {
     
     public void setEnergy(int energy) {
     	this.energy = energy;
+    }
+    
+    public void setCapacity(int capacity) {
+    	this.capacity = capacity;
     }
     
     @Deprecated

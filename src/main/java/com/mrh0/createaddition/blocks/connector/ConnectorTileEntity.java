@@ -231,7 +231,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			return;
 
 		Direction d = getBlockState().getValue(ConnectorBlock.FACING);
-		IEnergyStorage ies = getCachedEnergy(d);
+		IEnergyStorage ies = getCachedEnergy(d).orElse(null);
 		if(ies == null) return;
 		
 		if (mode == ConnectorMode.Push || mode == ConnectorMode.Passive) {
