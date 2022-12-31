@@ -114,8 +114,6 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<M
 
 		if (heldItem.isEmpty())
 			return InteractionResult.PASS;
-		if (!player.isCreative() && !creative)
-			return InteractionResult.PASS;
 
 		FluidExchange exchange = null;
 		ModularAccumulatorTileEntity te = ConnectivityHandler.partAt(getTileEntityType(), world, pos);
@@ -237,7 +235,7 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<M
 		return CATileEntities.MODULAR_ACCUMULATOR.get();
 	}
 
-	// Tanks are less noisy when placed in batch
+	// Blocks are less noisy when placed in batch
 	public static final SoundType SILENCED_METAL =
 		new ForgeSoundType(0.1F, 1.5F, () -> SoundEvents.METAL_BREAK, () -> SoundEvents.METAL_STEP,
 			() -> SoundEvents.METAL_PLACE, () -> SoundEvents.METAL_HIT, () -> SoundEvents.METAL_FALL);

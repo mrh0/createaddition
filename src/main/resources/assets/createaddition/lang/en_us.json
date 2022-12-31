@@ -1,5 +1,6 @@
 {
 	"createaddition.tooltip.energy.stored": "Stored Energy:",
+	"createaddition.tooltip.energy.capacity": "Capacity:",
 	"createaddition.tooltip.energy.consumption": "Energy Usage:",
 	"createaddition.tooltip.energy.production": "Energy Generated:",
 	"createaddition.tooltip.energy.charged": "Charged",
@@ -131,6 +132,8 @@
 	"block.createaddition.accumulator.tooltip.behaviour1": "Provides _FE_ to _wires_ connected to the _connector_ marked with a upwards arrow.",
 	"block.createaddition.accumulator.tooltip.condition2": "Push",
 	"block.createaddition.accumulator.tooltip.behaviour2": "Accepts _FE_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
+	
+	"block.createaddition.modular_accumulator": "Accumulator",
 	
 	"block.createaddition.connector": "Connector",
 	"block.createaddition.connector.tooltip": "CONNECTOR",

@@ -11,7 +11,7 @@ import static com.simibubi.create.foundation.block.connected.AllCTTypes.RECTANGL
 import com.mrh0.createaddition.CreateAddition;
 
 public class CASpriteShifts {
-	public static final CTSpriteShiftEntry OVERCHARGED_CASING = getCT(OMNIDIRECTIONAL,  new ResourceLocation(CreateAddition.MODID, "block/overcharged_casing/overcharged_casing"), new ResourceLocation(CreateAddition.MODID, "block/overcharged_casing/overcharged_casing_connected"));
+	//public static final CTSpriteShiftEntry OVERCHARGED_CASING = getCT(OMNIDIRECTIONAL,  new ResourceLocation(CreateAddition.MODID, "block/overcharged_casing/overcharged_casing"), new ResourceLocation(CreateAddition.MODID, "block/overcharged_casing/overcharged_casing_connected"));
 	public static final CTSpriteShiftEntry 
 		ACCUMULATOR = getCT(
 				RECTANGLE,

@@ -10,6 +10,7 @@
     "createaddition:redstone_relay",
     "createaddition:tesla_coil",
     "createaddition:liquid_blaze_burner",
-    "createaddition:barbed_wire"
+    "createaddition:barbed_wire",
+    "createaddition:modular_accumulator"
   ]
 }

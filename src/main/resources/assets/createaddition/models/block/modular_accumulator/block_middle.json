@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"1": "create:block/fluid_tank",
-		"particle": "create:block/fluid_tank"
+		"1": "createaddition:block/modular_accumulator/block",
+		"particle": "createaddition:block/modular_accumulator/block"
 	},
 	"elements": [
 		{

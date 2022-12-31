@@ -77,6 +77,9 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	
 	@Override
 	public void tick() {
+		updateBlocked--;
+		if(updateBlocked < 0)
+			updateBlocked = 0;
 		super.tick();
 		if(firstTickState)
 			firstTick();
@@ -95,7 +98,11 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		}
 	}
 	
+	int updateBlocked = 0;
+	
 	public void updateCache(Direction side) {
+		if(updateBlocked > 10) return;
+		updateBlocked++;
 		BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
 		if(te == null) {
 			setCache(side, LazyOptional.empty());

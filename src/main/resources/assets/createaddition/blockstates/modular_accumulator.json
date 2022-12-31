@@ -1,16 +1,16 @@
 {
   "variants": {
     "bottom=false,top=false": {
-      "model": "create:block/fluid_tank/block_middle"
+      "model": "createaddition:block/modular_accumulator/block_middle"
     },
     "bottom=true,top=false": {
-      "model": "create:block/fluid_tank/block_bottom"
+      "model": "createaddition:block/modular_accumulator/block_bottom"
     },
     "bottom=false,top=true": {
-      "model": "create:block/fluid_tank/block_top"
+      "model": "createaddition:block/modular_accumulator/block_top"
     },
     "bottom=true,top=true": {
-      "model": "create:block/fluid_tank/block_single"
+      "model": "createaddition:block/modular_accumulator/block_single"
     }
   }
 }

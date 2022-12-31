@@ -2,10 +2,10 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"0": "create:block/fluid_tank_top",
-		"1": "create:block/fluid_tank",
-		"4": "create:block/fluid_tank_inner",
-		"particle": "create:block/fluid_tank"
+		"0": "createaddition:block/modular_accumulator/block_top",
+		"1": "createaddition:block/modular_accumulator/block",
+		"4": "createaddition:block/modular_accumulator/block",
+		"particle": "createaddition:block/modular_accumulator/block"
 	},
 	"elements": [
 		{
