@@ -170,6 +170,8 @@
 	"block.createaddition.bioethanol": "Bioethanol",
 	
 	"block.createaddition.barbed_wire": "Barbed Wire",
+	"block.createaddition.barbed_wire.tooltip": "BARBED_WIRE",
+	"block.createaddition.barbed_wire.tooltip.summary": "Inflicts damage when walked through.",
 	
 	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
 	

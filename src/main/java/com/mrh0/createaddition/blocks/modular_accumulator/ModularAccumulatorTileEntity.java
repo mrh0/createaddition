@@ -248,7 +248,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 
 	private InternalEnergyStorage handlerForCapability() {
 		return isController() ? energyStorage
-			: (getControllerTE() != null ? getControllerTE().handlerForCapability() : createEnergyStorage());
+			: (getControllerTE() != null ? getControllerTE().handlerForCapability() : new InternalEnergyStorage(0));
 	}
 
 	@Override
@@ -350,6 +350,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 
 	@Override
 	public void invalidate() {
+		energyCap.invalidate();
 		super.invalidate();
 	}
 
@@ -367,6 +368,11 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 
 	public static int getMaxHeight() {
 		return 5;
+	}
+	
+	@Override
+	public int getMaxWidth() {
+		return MAX_SIZE;
 	}
 
 	@Override
@@ -395,11 +401,6 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		if (longAxis == Direction.Axis.Y)
 			return getMaxHeight();
 		return getMaxWidth();
-	}
-
-	@Override
-	public int getMaxWidth() {
-		return MAX_SIZE;
 	}
 
 	@Override

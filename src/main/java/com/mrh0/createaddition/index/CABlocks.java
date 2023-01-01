@@ -164,5 +164,6 @@ public class CABlocks {
 		REGISTRATE.addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
 		REGISTRATE.addToSection(ACCUMULATOR, AllSections.KINETICS);
 		REGISTRATE.addToSection(REDSTONE_RELAY, AllSections.KINETICS);
+		REGISTRATE.addToSection(BARBED_WIRE, AllSections.CURIOSITIES);
 	}
 }
