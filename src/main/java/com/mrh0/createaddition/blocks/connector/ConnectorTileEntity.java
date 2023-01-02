@@ -233,7 +233,6 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		Direction d = getBlockState().getValue(ConnectorBlock.FACING);
 		IEnergyStorage ies = getCachedEnergy(d).orElse(null);
 		if(ies == null) return;
-		System.out.println("Not Null");
 		
 		if (mode == ConnectorMode.Push || mode == ConnectorMode.Passive) {
 			int pull = network.pull(demand);
@@ -247,6 +246,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			int testExtract = localEnergy.extractEnergy(Integer.MAX_VALUE, true);
 			int push = network.push(testExtract);
 			localEnergy.internalConsumeEnergy(push);
+			System.out.println("Pull " + testExtract + ":" + push + ":" + localEnergy.canExtract() + ":" + localEnergy.canReceive());
 		}
 	}
 	

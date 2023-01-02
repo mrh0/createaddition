@@ -5,6 +5,7 @@ import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.*;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.*;
+import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorRenderer;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillTileEntity;
@@ -78,6 +79,7 @@ public class CATileEntities {
 	public static final BlockEntityEntry<ModularAccumulatorTileEntity> MODULAR_ACCUMULATOR = CreateAddition.registrate()
 			.tileEntity("modular_accumulator", ModularAccumulatorTileEntity::new)
 			.validBlocks(CABlocks.MODULAR_ACCUMULATOR)
+			.renderer(() -> ModularAccumulatorRenderer::new)
 			//.renderer(() -> LiquidBlazeBurnerRenderer::new)
 			.register();
 	

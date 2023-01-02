@@ -12,6 +12,7 @@ import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.util.Util;
+import com.simibubi.create.Create;
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
@@ -76,6 +77,8 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			return;
 		ConnectivityHandler.formMulti(this);
 	}
+	
+	public LerpedFloat gauge = LerpedFloat.linear();
 
 	@Override
 	public void tick() {
@@ -97,8 +100,14 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			updateConnectivity();
 		
 		// Tick Logic:
-		if (isController()) return;
-			
+		if (!isController()) return;
+		if (level.isClientSide()) {
+			gauge.tickChaser();
+			float current = gauge.getValue(1);
+			if (current > 1 && Create.RANDOM.nextFloat() < 1 / 2f)
+				gauge.setValueNoUpdate(current + Math.min(-(current - 1) * Create.RANDOM.nextFloat(), 0));
+			return;
+		}
 	}
 
 	@Override
@@ -248,7 +257,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 
 	private InternalEnergyStorage handlerForCapability() {
 		return isController() ? energyStorage
-			: (getControllerTE() != null ? getControllerTE().handlerForCapability() : new InternalEnergyStorage(0));
+			: (getControllerTE() != null ? getControllerTE().handlerForCapability() : new InternalEnergyStorage(0, MAX_INPUT, MAX_OUTPUT));
 	}
 
 	@Override
@@ -265,7 +274,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	}
 
 	@Nullable
-	public ModularAccumulatorTileEntity getOtherFluidTankTileEntity(Direction direction) {
+	public ModularAccumulatorTileEntity getOtherTileEntity(Direction direction) {
 		BlockEntity otherTE = level.getBlockEntity(worldPosition.relative(direction));
 		if (otherTE instanceof ModularAccumulatorTileEntity)
 			return (ModularAccumulatorTileEntity) otherTE;
@@ -364,6 +373,14 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 
 	public static int getCapacityMultiplier() {
 		return 40000;
+	}
+	
+	public static int getInputMultiplier() {
+		return 1000;
+	}
+	
+	public static int getOutputMultiplier() {
+		return 1000;
 	}
 
 	public static int getMaxHeight() {
