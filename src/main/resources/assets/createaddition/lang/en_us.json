@@ -15,9 +15,9 @@
 	"createaddition.tooltip.connector.info": "Connector Info:",
 	
 	"createaddition.recipe.rolling": "Rolling",
-	"createaddition.recipe.crude_burning": "Crude Burning",
-	"createaddition.recipe.crude_burning.burn_time": "Burn time",
+	"createaddition.recipe.rolling.sequence": "Rolling in Mill",
 	"createaddition.recipe.charging": "Charging",
+	"createaddition.recipe.liquid_burning": "Liquid Burning",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
 
@@ -201,7 +201,9 @@
 	"block.createaddition.crude_burner.tooltip.summary": "The _Crude Burner_ consume slow-burning _flammable liquids_ like _Seed Oil_ or _Bioethanol_ to power the _Furnace Engine_. The _liquid fuel_ can be inserted using _Fluid Pipes_.",
 	"block.createaddition.crude_burner.tooltip.control1": "R-click",
 	"block.createaddition.crude_burner.tooltip.action1": "Inserts content of held _Bucket_.",
-	
+
+	"block.createaddition.liquid_blaze_burner": "Liquid Blaze Burner",
+
 	"block.createaddition.chocolate_cake": "Chocolate Cake",
 	"block.createaddition.honey_cake": "Honey Cake",
 	
@@ -255,6 +257,11 @@
 	"createaddition.ponder.tesla_coil_hurt.text_1": "The Tesla Coil is also able to inflict damage on nearby Players and Mobs",
 	"createaddition.ponder.tesla_coil_hurt.text_2": "This can be activated with a Redstone signal",
 	"createaddition.ponder.tesla_coil_hurt.text_3": "Prepare to be Shocked!",
+
+	"createaddition.ponder.liquid_blaze_burner.header": "Liquid Fuel Burning",
+	"createaddition.ponder.liquid_blaze_burner.text_1": "Giving the Blaze Burner a Straw",
+	"createaddition.ponder.liquid_blaze_burner.text_2": "will allow it to accept liquid fuels by Buckets",
+	"createaddition.ponder.liquid_blaze_burner.text_3": "- or by pipes.",
 	
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",
