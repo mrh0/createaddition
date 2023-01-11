@@ -67,7 +67,7 @@
 	"item.createaddition.biomass": "生物质",
 	"item.createaddition.biomass_pellet": "生物质颗粒",
 	"item.createaddition.biomass_pellet.tooltip": "生物质颗粒",
-	"item.createaddition.biomass_pellet.tooltip.summary": "一种可以在_熔炉_中熔炼 _6 个物品_的_固体燃料_。",
+	"item.createaddition.biomass_pellet.tooltip.summary": "一种可以在_熔炉_中熔炼 _5 个物品_的_固体燃料_。",
 
 	"item.createaddition.spool": "空线轴",
 	"item.createaddition.spool.nbt": "存储连接地点",
