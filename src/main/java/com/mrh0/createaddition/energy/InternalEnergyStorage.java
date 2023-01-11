@@ -94,6 +94,6 @@ public class InternalEnergyStorage extends EnergyStorage {
     
     @Override
     public String toString() {
-    	return getEnergyStored() + "/" + getMaxEnergyStored();
+    	return getEnergyStored() + "/" + getMaxEnergyStored() + " <-" + maxExtract + " ->" + maxReceive;
     }
 }

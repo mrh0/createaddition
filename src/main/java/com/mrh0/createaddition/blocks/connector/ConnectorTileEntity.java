@@ -242,11 +242,15 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			demand = network.demand(testInsert);
 		}
 		
+		if (mode == ConnectorMode.Pull) {
+			int extracted = ies.extractEnergy(localEnergy.getSpace(), false);
+			localEnergy.internalProduceEnergy(extracted);
+		}
+		
 		if (mode == ConnectorMode.Pull || mode == ConnectorMode.Passive) {
 			int testExtract = localEnergy.extractEnergy(Integer.MAX_VALUE, true);
 			int push = network.push(testExtract);
 			localEnergy.internalConsumeEnergy(push);
-			System.out.println("Pull " + testExtract + ":" + push + ":" + localEnergy.canExtract() + ":" + localEnergy.canReceive());
 		}
 	}
 	

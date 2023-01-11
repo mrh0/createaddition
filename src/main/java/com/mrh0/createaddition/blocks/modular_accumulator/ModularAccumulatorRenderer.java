@@ -3,6 +3,7 @@ package com.mrh0.createaddition.blocks.modular_accumulator;
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mrh0.createaddition.index.CAPartials;
 import com.simibubi.create.AllBlockPartials;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.tileEntity.renderer.SafeTileEntityRenderer;
@@ -23,6 +24,7 @@ public class ModularAccumulatorRenderer extends SafeTileEntityRenderer<ModularAc
 	protected void renderSafe(ModularAccumulatorTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer,
 		int light, int overlay) {
 		if (!te.isController()) return;
+		if(te.width < 2) return;
 		renderDial(te, partialTicks, ms, buffer, light, overlay);
 	}
 
@@ -34,21 +36,16 @@ public class ModularAccumulatorRenderer extends SafeTileEntityRenderer<ModularAc
 		TransformStack msr = TransformStack.cast(ms);
 		msr.translate(te.width / 2f, te.height - 0.5f, te.width / 2f);
 
-		float dialPivot = 5.75f / 16;
+		float dialPivot = 0f;//5.75f / 16;
 		float progress = te.gauge.getValue(partialTicks);
 
 		for (Direction d : Iterate.horizontalDirections) {
-			
-			int i = te.getLevel().getBrightness(LightLayer.BLOCK, te.getBlockPos());
-			int k = te.getLevel().getBrightness(LightLayer.SKY, te.getBlockPos());
-			float l = ((float)Math.max(i, k))/16f * 255f;
-			
 			ms.pushPose();
-			CachedBufferer.partial(AllBlockPartials.BOILER_GAUGE, blockState)
+			CachedBufferer.partial(CAPartials.ACCUMULATOR_GUAGE, blockState)
 				.rotateY(d.toYRot())
 				.unCentre()
 				.translate(te.width / 2f - 6 / 16f, 0, 0)
-				.light((int)l)
+				.light(light)
 				.renderInto(ms, vb);
 			CachedBufferer.partial(AllBlockPartials.BOILER_GAUGE_DIAL, blockState)
 				.rotateY(d.toYRot())
@@ -57,7 +54,7 @@ public class ModularAccumulatorRenderer extends SafeTileEntityRenderer<ModularAc
 				.translate(0, dialPivot, dialPivot)
 				.rotateX(-90 * progress)
 				.translate(0, -dialPivot, -dialPivot)
-				.light((int)l)
+				.light(light)
 				.renderInto(ms, vb);
 			ms.popPose();
 		}

@@ -189,7 +189,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		return null;
 	}
 
-	public void applyFluidTankSize(int blocks) {
+	public void applySize(int blocks) {
 		energyStorage.setCapacity(blocks * getCapacityMultiplier());
 		int overflow = energyStorage.getEnergyStored() - energyStorage.getMaxEnergyStored();
 		if (overflow > 0)
@@ -201,7 +201,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			return;
 		updateConnectivity = true;
 		if (!keepFluids)
-			applyFluidTankSize(1);
+			applySize(1);
 		controller = null;
 		width = 1;
 		height = 1;
@@ -320,6 +320,9 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 				energyStorage.setCapacity(getCapacityMultiplier() * getTotalAccumulatorSize());
 			invalidateRenderBoundingBox();
 		}
+		
+		if (isController())
+			gauge.chase(getFillState(), 0.125f, Chaser.EXP);
 	}
 
 	public float getFillState() {

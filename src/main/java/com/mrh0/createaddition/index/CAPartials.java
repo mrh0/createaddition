@@ -9,6 +9,7 @@ public class CAPartials {
 	
 	public static final PartialModel LIQUID_HAT = entity("liquid_hat");
 	public static final PartialModel SMALL_LIGHT = block("connector/small_light");
+	public static final PartialModel ACCUMULATOR_GUAGE = block("modular_accumulator/guage");
 	
 	private static PartialModel block(String path) {
 		return new PartialModel(new ResourceLocation(CreateAddition.MODID, "block/" + path));

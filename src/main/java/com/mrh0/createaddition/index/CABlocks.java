@@ -141,7 +141,9 @@ public class CABlocks {
 	
 	public static final BlockEntry<ModularAccumulatorBlock> MODULAR_ACCUMULATOR = REGISTRATE.block("modular_accumulator",  ModularAccumulatorBlock::regular)
 			.initialProperties(SharedProperties::softMetal)
+			.properties(BlockBehaviour.Properties::noOcclusion)
 			.onRegister(connectedTextures(ModularAccumulatorCTBehaviour::new))
+			.addLayer(() -> RenderType::cutoutMipped)
 			.item()
 			.transform(customItemModel())
 			.register();
