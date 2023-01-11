@@ -201,7 +201,9 @@
 	"block.createaddition.crude_burner.tooltip.summary": "The _Crude Burner_ consume slow-burning _flammable liquids_ like _Seed Oil_ or _Bioethanol_ to power the _Furnace Engine_. The _liquid fuel_ can be inserted using _Fluid Pipes_.",
 	"block.createaddition.crude_burner.tooltip.control1": "R-click",
 	"block.createaddition.crude_burner.tooltip.action1": "Inserts content of held _Bucket_.",
-	
+
+	"block.createaddition.liquid_blaze_burner": "Liquid Blaze Burner",
+
 	"block.createaddition.chocolate_cake": "Chocolate Cake",
 	"block.createaddition.honey_cake": "Honey Cake",
 	

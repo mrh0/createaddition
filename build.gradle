@@ -12,7 +12,7 @@ targetCompatibility = JavaVersion.VERSION_17
 
 version = 'fabric-1.18.2-20221128a'
 group = 'com.mrh0.createaddition'
-archivesBaseName = "createaddition+${project.minecraft_version}"
+archivesBaseName = "createaddition"
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
