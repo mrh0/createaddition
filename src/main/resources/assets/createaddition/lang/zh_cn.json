@@ -1,6 +1,6 @@
 {
 	"createaddition.tooltip.energy.stored": "已存储的能量：",
-	"createaddition.tooltip.energy.capacity": "Capacity:",
+	"createaddition.tooltip.energy.capacity": "容量:",
 	"createaddition.tooltip.energy.consumption": "已使用的能量：",
 	"createaddition.tooltip.energy.production": "已产生的能量：",
 	"createaddition.tooltip.energy.charged": "已充能",
