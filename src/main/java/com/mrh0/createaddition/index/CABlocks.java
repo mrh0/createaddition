@@ -3,6 +3,7 @@ package com.mrh0.createaddition.index;
 import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
 import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.AllTags.pickaxeOnly;
+import static com.simibubi.create.content.logistics.block.display.AllDisplayBehaviours.assignDataBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
 import com.mrh0.createaddition.CreateAddition;
@@ -18,6 +19,7 @@ import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlock;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorCTBehaviour;
+import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorDisplaySource;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayMovementBehaviour;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
@@ -36,6 +38,7 @@ import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlo
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerInteractionBehaviour;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerMovementBehaviour;
 import com.simibubi.create.content.contraptions.processing.burner.LitBlazeBurnerBlock;
+import com.simibubi.create.content.logistics.block.display.source.ItemNameDisplaySource;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BuilderTransformers;
@@ -143,6 +146,7 @@ public class CABlocks {
 			.initialProperties(SharedProperties::softMetal)
 			.properties(BlockBehaviour.Properties::noOcclusion)
 			.onRegister(connectedTextures(ModularAccumulatorCTBehaviour::new))
+			.onRegister(assignDataBehaviour(new ModularAccumulatorDisplaySource(), "modular_accumulator"))
 			.addLayer(() -> RenderType::cutoutMipped)
 			.item()
 			.transform(customItemModel())

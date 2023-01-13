@@ -224,6 +224,10 @@
 	"createaddition.ponder.liquid_blaze_burner.text_2": "will allow it to accept liquid fuels by Buckets",
 	"createaddition.ponder.liquid_blaze_burner.text_3": "- or by pipes.",
 	
+	"createaddition.modular_accumulator.display_source.capacity": "Capacity",
+	"createaddition.modular_accumulator.display_source.stored": "Stored",
+	"createaddition.modular_accumulator.display_source.title": "Accumulator",
+	
 	"death.attack.barbed_wire": "%1$s tried to cross barbed wire",
   	"death.attack.barbed_wire.player": "%1$s tried to cross barbed wire shock while fighting %2$s",
 	

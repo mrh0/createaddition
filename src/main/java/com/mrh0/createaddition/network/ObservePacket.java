@@ -69,11 +69,12 @@ public class ObservePacket {
 			cooldown = 0;
 	}
 	
-	public static void send(BlockPos pos, int node) {
+	public static boolean send(BlockPos pos, int node) {
 		if(cooldown > 0)
-			return;
+			return false;
 		cooldown = 10;
 		CreateAddition.Network.sendToServer(new ObservePacket(pos, node));
+		return true;
 	}
 	
 	public BlockPos getPos() {

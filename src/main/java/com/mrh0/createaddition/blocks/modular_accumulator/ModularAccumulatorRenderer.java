@@ -24,8 +24,9 @@ public class ModularAccumulatorRenderer extends SafeTileEntityRenderer<ModularAc
 	protected void renderSafe(ModularAccumulatorTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer,
 		int light, int overlay) {
 		if (!te.isController()) return;
-		if(te.width < 2) return;
+		// if(te.width < 2) return;
 		renderDial(te, partialTicks, ms, buffer, light, overlay);
+		te.observe();
 	}
 
 	protected void renderDial(ModularAccumulatorTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer,
@@ -36,7 +37,8 @@ public class ModularAccumulatorRenderer extends SafeTileEntityRenderer<ModularAc
 		TransformStack msr = TransformStack.cast(ms);
 		msr.translate(te.width / 2f, te.height - 0.5f, te.width / 2f);
 
-		float dialPivot = 0f;//5.75f / 16;
+		float dialPivotY = 5f/16f;//5.75f / 16;
+		float dialPivotZ = 8f/16f;//5.75f / 16;
 		float progress = te.gauge.getValue(partialTicks);
 
 		for (Direction d : Iterate.horizontalDirections) {
@@ -47,13 +49,13 @@ public class ModularAccumulatorRenderer extends SafeTileEntityRenderer<ModularAc
 				.translate(te.width / 2f - 6 / 16f, 0, 0)
 				.light(light)
 				.renderInto(ms, vb);
-			CachedBufferer.partial(AllBlockPartials.BOILER_GAUGE_DIAL, blockState)
+			CachedBufferer.partial(CAPartials.ACCUMULATOR_DIAL, blockState)
 				.rotateY(d.toYRot())
 				.unCentre()
 				.translate(te.width / 2f - 6 / 16f, 0, 0)
-				.translate(0, dialPivot, dialPivot)
-				.rotateX(-90 * progress)
-				.translate(0, -dialPivot, -dialPivot)
+				.translate(0, dialPivotY, dialPivotZ)
+				.rotateX(-180 * progress)
+				.translate(0, -dialPivotY, -dialPivotZ)
 				.light(light)
 				.renderInto(ms, vb);
 			ms.popPose();

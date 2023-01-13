@@ -77,7 +77,7 @@ public class Config {
 				.defineInRange("fe_conversion", 240, 0, Integer.MAX_VALUE);
 		
 		BASELINE_STRESS = COMMON_BUILDER.comment("Max stress for the Alternator and Electric Motor (in SU at 256 RPM).")
-				.defineInRange("baseline_stress", 8192, 0, 16383);
+				.defineInRange("baseline_stress", 8192, 0, 16_383);
 		COMMON_BUILDER.pop();
 		
 		
@@ -89,7 +89,7 @@ public class Config {
 				.defineInRange("motor_min_consumption", 8, 0, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_MAX_INPUT = COMMON_BUILDER.comment("Electric Motor max input in FE (Energy transfer not consumption).")
-				.defineInRange("motor_max_input", 256, 0, Integer.MAX_VALUE);
+				.defineInRange("motor_max_input", 1024, 0, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_CAPACITY = COMMON_BUILDER.comment("Electric Motor internal capacity in FE.")
 				.defineInRange("motor_capacity", 2048, 0, Integer.MAX_VALUE);
@@ -98,7 +98,7 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Alternator").push(CATAGORY_ALTERNATOR);
 		ALTERNATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Alternator max input in FE (Energy transfer, not generation).")
-				.defineInRange("generator_max_output", 256, 0, Integer.MAX_VALUE);
+				.defineInRange("generator_max_output", 1024, 0, Integer.MAX_VALUE);
 		
 		ALTERNATOR_CAPACITY = COMMON_BUILDER.comment("Alternator internal capacity in FE.")
 				.defineInRange("generator_capacity", 2048, 0, Integer.MAX_VALUE);
@@ -114,24 +114,6 @@ public class Config {
 		
 		ROLLING_MILL_STRESS = COMMON_BUILDER.comment("Rolling Mill base stress impact.")
 				.defineInRange("rolling_mill_stress", 16, 0, 1024);
-		COMMON_BUILDER.pop();
-		
-		
-		COMMON_BUILDER.comment("Heater").push(CATAGORY_HEATER);
-		HEATER_MAX_INPUT = COMMON_BUILDER.comment("Induction Heater max input in FE (Energy transfer, not consumption).")
-				.defineInRange("heater_max_input", 256, 0, Integer.MAX_VALUE);
-		
-		HEATER_CAPACITY = COMMON_BUILDER.comment("Induction Heater internal capacity in FE.")
-				.defineInRange("heater_capacity", 2048, 0, Integer.MAX_VALUE);
-		
-		HEATER_NORMAL_CONSUMPTION = COMMON_BUILDER.comment("Induction Heater normal consumption rate in FE/t.")
-				.defineInRange("heater_normal_consumption", 96, 0, Integer.MAX_VALUE);
-		
-		HEATER_FURNACE_ENGINE_CONSUMPTION = COMMON_BUILDER.comment("Induction Heater when attached to a Furnace Engine consumption rate in FE/t.")
-				.defineInRange("heater_furnace_engine_consumption", 1024, 0, Integer.MAX_VALUE);
-		
-		HEATER_FURNACE_ENGINE_ENABLED = COMMON_BUILDER.comment("Enable Induction Heater when attached to a Furnace Engine.")
-				.define("heater_furnace_engine_enable", false);
 		COMMON_BUILDER.pop();
 		
 		
@@ -155,13 +137,13 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Accumulator").push(CATAGORY_ACCUMULATOR);
 		ACCUMULATOR_MAX_INPUT = COMMON_BUILDER.comment("Accumulator max input in FE/t (Energy transfer).")
-				.defineInRange("accumulator_max_input", 512, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_max_input", 1024, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Accumulator max output in FE/t (Energy transfer).")
-				.defineInRange("accumulator_max_output", 512, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_max_output", 1024, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_CAPACITY = COMMON_BUILDER.comment("Accumulator internal capacity in FE.")
-				.defineInRange("accumulator_capacity", 4196000, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_capacity", 4196_000, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 		
 		
@@ -175,8 +157,8 @@ public class Config {
 		TESLA_COIL_RECIPE_CHARGE_RATE = COMMON_BUILDER.comment("Tesla Coil charge rate in FE/t for recipes.")
 				.defineInRange("tesla_coil_recipe_charge_rate", 1024, 0, Integer.MAX_VALUE);
 		
-		TESLA_COIL_CAPACITY = COMMON_BUILDER.comment("Charger internal capacity in FE.")
-				.defineInRange("tesla_coil_capacity", 32000, 0, Integer.MAX_VALUE);
+		TESLA_COIL_CAPACITY = COMMON_BUILDER.comment("Tesla Coil internal capacity in FE.")
+				.defineInRange("tesla_coil_capacity", 32_000, 0, Integer.MAX_VALUE);
 		
 		TESLA_COIL_HURT_ENERGY_REQUIRED = COMMON_BUILDER.comment("Energy consumed when Tesla Coil is fired (in FE).")
 				.defineInRange("tesla_coil_hurt_energy_required", 1024, 0, Integer.MAX_VALUE);

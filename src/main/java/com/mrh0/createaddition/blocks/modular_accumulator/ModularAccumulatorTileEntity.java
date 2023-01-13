@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IMultiTileEnergyContainer;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
@@ -40,8 +41,9 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity {
 
 	private static final int MAX_SIZE = 3;
-	private static final int MAX_INPUT = 1024*8;
-	private static final int MAX_OUTPUT = 1024*8;
+	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(),
+			MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(),
+			MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 
 	protected LazyOptional<IEnergyStorage> energyCap;
 	protected InternalEnergyStorage energyStorage;
@@ -66,7 +68,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	}
 
 	protected InternalEnergyStorage createEnergyStorage() {
-		return new InternalEnergyStorage(getCapacityMultiplier(), MAX_INPUT, MAX_OUTPUT);
+		return new InternalEnergyStorage(getCapacityMultiplier(), MAX_IN, MAX_OUT);
 	}
 
 	protected void updateConnectivity() {
@@ -257,7 +259,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 
 	private InternalEnergyStorage handlerForCapability() {
 		return isController() ? energyStorage
-			: (getControllerTE() != null ? getControllerTE().handlerForCapability() : new InternalEnergyStorage(0, MAX_INPUT, MAX_OUTPUT));
+			: (getControllerTE() != null ? getControllerTE().handlerForCapability() : new InternalEnergyStorage(0, MAX_IN, MAX_OUT));
 	}
 
 	@Override
@@ -375,15 +377,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	}
 
 	public static int getCapacityMultiplier() {
-		return 40000;
-	}
-	
-	public static int getInputMultiplier() {
-		return 1000;
-	}
-	
-	public static int getOutputMultiplier() {
-		return 1000;
+		return CAPACITY;
 	}
 
 	public static int getMaxHeight() {
@@ -467,6 +461,11 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
 				.append(Util.format((int)controllerTE.energyStorage.getMaxEnergyStored())).append("fe/t").withStyle(ChatFormatting.AQUA));
 		return true;
+	}
+	
+	public void observe() {
+		if(!isController()) return;
+		ObservePacket.send(worldPosition, 0);
 	}
 
 	@Override
