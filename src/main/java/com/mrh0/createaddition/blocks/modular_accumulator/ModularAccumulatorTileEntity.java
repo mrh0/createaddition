@@ -465,7 +465,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	
 	public void observe() {
 		if(!isController()) return;
-		ObservePacket.send(worldPosition, 0);
+		// ObservePacket.send(worldPosition, 0);
 	}
 
 	@Override

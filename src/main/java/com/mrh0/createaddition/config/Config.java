@@ -143,7 +143,7 @@ public class Config {
 				.defineInRange("accumulator_max_output", 1024, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_CAPACITY = COMMON_BUILDER.comment("Accumulator internal capacity in FE.")
-				.defineInRange("accumulator_capacity", 4196_000, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_capacity", 2048_000, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 		
 		

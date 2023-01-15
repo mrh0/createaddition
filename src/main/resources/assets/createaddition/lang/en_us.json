@@ -224,9 +224,13 @@
 	"createaddition.ponder.liquid_blaze_burner.text_2": "will allow it to accept liquid fuels by Buckets",
 	"createaddition.ponder.liquid_blaze_burner.text_3": "- or by pipes.",
 	
-	"createaddition.modular_accumulator.display_source.capacity": "Capacity",
-	"createaddition.modular_accumulator.display_source.stored": "Stored",
-	"createaddition.modular_accumulator.display_source.title": "Accumulator",
+	"createaddition.display_source.modular_accumulator": "Accumulator",
+	"createaddition.display_source.accumulator.progress_bar": "Progress Bar",
+	"createaddition.display_source.accumulator.percent": "Percentage",
+	"createaddition.display_source.accumulator.current": "Energy Stored in FE",
+	"createaddition.display_source.accumulator.max": "Total Capacity",
+	"createaddition.display_source.accumulator.remaining": "Remaining FE",
+	"createaddition.display_source.accumulator.display": "Choose an Option:",
 	
 	"death.attack.barbed_wire": "%1$s tried to cross barbed wire",
   	"death.attack.barbed_wire.player": "%1$s tried to cross barbed wire shock while fighting %2$s",
