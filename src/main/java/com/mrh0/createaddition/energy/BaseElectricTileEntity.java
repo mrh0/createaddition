@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public abstract class BaseElectricTileEntity extends SmartTileEntity {
@@ -39,7 +39,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)))// && !level.isClientSide
+		if(cap == ForgeCapabilities.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)))// && !level.isClientSide
 			return lazyEnergy.cast();
 		return super.getCapability(cap, side);
 	}

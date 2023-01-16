@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -357,7 +358,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!energyCap.isPresent())
 			refreshCapability();
-		if (cap == CapabilityEnergy.ENERGY)
+		if (cap == ForgeCapabilities.ENERGY)
 			return energyCap.cast();
 		return super.getCapability(cap, side);
 	}
