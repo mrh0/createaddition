@@ -24,6 +24,7 @@ import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayMovementBehaviour;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
+import com.mrh0.createaddition.compat.forge.ForgeEnergyDisplaySource;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.Create;
@@ -146,7 +147,8 @@ public class CABlocks {
 			.initialProperties(SharedProperties::softMetal)
 			.properties(BlockBehaviour.Properties::noOcclusion)
 			.onRegister(connectedTextures(ModularAccumulatorCTBehaviour::new))
-			.onRegister(assignDataBehaviour(new ModularAccumulatorDisplaySource(), "modular_accumulator"))
+			//.onRegister(assignDataBehaviour(new ModularAccumulatorDisplaySource(), "modular_accumulator"))
+			.onRegister(assignDataBehaviour(ForgeEnergyDisplaySource.INSTANCE, "forge_energy"))
 			.addLayer(() -> RenderType::cutoutMipped)
 			.item()
 			.transform(customItemModel())

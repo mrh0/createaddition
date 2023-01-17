@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
 import com.mrh0.createaddition.commands.CCApiCommand;
+import com.mrh0.createaddition.compat.forge.ForgeEnergyDisplaySource;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.CABlocks;
@@ -96,6 +97,7 @@ public class CreateAddition {
         CAEffects.register(eventBus);
         CARecipes.register(eventBus);
         CAPartials.init();
+        ForgeEnergyDisplaySource.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {

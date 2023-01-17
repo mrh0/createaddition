@@ -200,15 +200,16 @@ dependencies {
 	//runtimeOnly fg.deobf("curse.maven:simply-jetpacks-2-251792:3203659")
 	
 	//annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+	annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 }
 
-/*mixin {
+mixin {
     // add sourceSets.main, 'createaddition.refmap.json'
     config 'createaddition.mixins.json'
 
     debug.verbose = true
     debug.export = true
-}*/
+}
 
 // Example for how to get properties into the manifest for reading at runtime.
 jar {

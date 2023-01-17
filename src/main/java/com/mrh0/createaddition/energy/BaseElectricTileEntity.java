@@ -2,6 +2,8 @@ package com.mrh0.createaddition.energy;
 
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 
@@ -108,7 +110,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 			setCache(side, LazyOptional.empty());
 			return;
 		}
-		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		LazyOptional<IEnergyStorage> le = te.getCapability(ForgeCapabilities.ENERGY, side.getOpposite());
 		setCache(side, le);
 		le.addListener((es) -> updateCache(side));
 	}
