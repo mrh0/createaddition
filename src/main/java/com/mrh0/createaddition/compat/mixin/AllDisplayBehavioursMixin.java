@@ -17,7 +17,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 @Mixin(value = AllDisplayBehaviours.class, remap = false)
 public class AllDisplayBehavioursMixin {
-	@Overwrite
+	/*@Overwrite
 	public static List<DisplaySource> sourcesOf(BlockEntity tileEntity) {
 		var sources = AllDisplayBehaviours.sourcesOf(tileEntity.getType());
 		if(!sources.isEmpty()) return sources;
@@ -27,15 +27,5 @@ public class AllDisplayBehavioursMixin {
 			return List.of(ForgeEnergyDisplaySource.INSTANCE);
 		}
 		return List.of();
-	}
-	
-	@Overwrite
-	public static DisplaySource getSource(ResourceLocation resourceLocation) {
-		DisplayBehaviour available = AllDisplayBehaviours.GATHERER_BEHAVIOURS.getOrDefault(resourceLocation, null);
-		System.out.println(resourceLocation.getPath().equals(ForgeEnergyDisplaySource.INSTANCE.id.getPath()));
-		if(resourceLocation.getPath().equals(ForgeEnergyDisplaySource.INSTANCE.id.getPath())) return ForgeEnergyDisplaySource.INSTANCE;
-		if (available instanceof DisplaySource source)
-			return source;
-		return null;
-	}
+	}*/
 }

@@ -41,6 +41,7 @@ public class LiquidBurningRecipeSerializer extends CARecipeSerializer<LiquidBurn
 	public LiquidBurningRecipe readFromJson(ResourceLocation recipeId, JsonObject json, IContext context) {
 		int burnTime = GsonHelper.getAsInt(json, "burnTime");
 		FluidIngredient fluid = FluidIngredient.deserialize(json.get("input"));
+		boolean superheated = GsonHelper.getAsBoolean(json, "superheated", false);
 		
 		//HeatCondition.deserialize(GsonHelper.getAsString(json, "heatProduced"));
 		

@@ -193,6 +193,7 @@ dependencies {
 	
 	runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:3996391")
 	runtimeOnly fg.deobf("curse.maven:immersive-engineering-231951:3963698")
+	//runtimeOnly fg.deobf("curse.maven:immersive-petroleum-268250:4314934")
 	
 	//runtimeOnly fg.deobf("curse.maven:tinkers-construct-74072:3389377")
 	//runtimeOnly fg.deobf("curse.maven:mantle-74924:3412365")
