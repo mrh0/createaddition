@@ -69,10 +69,10 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity implements 
 		super.write(compound, clientPacket);
 		energy.write(compound);
 	}
-	
+
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void invalidate() {
+		super.invalidate();
 		lazyEnergy.invalidate();
 	}
 	
