@@ -133,6 +133,7 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 
 	@Override
 	public void invalidate() {
+        super.invalidate();
 		lazyEnergy.invalidate();
 	}
 	
