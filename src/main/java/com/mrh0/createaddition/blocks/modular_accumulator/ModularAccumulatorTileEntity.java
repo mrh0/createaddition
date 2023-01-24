@@ -83,6 +83,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	
 	public LerpedFloat gauge = LerpedFloat.linear();
 
+	int lastEnergy = 0;
 	@Override
 	public void tick() {
 		super.tick();
@@ -104,6 +105,12 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		
 		// Tick Logic:
 		if (!isController()) return;
+		
+		if(Math.abs(lastEnergy - energyStorage.getEnergyStored()) > 256) {
+			lastEnergy = energyStorage.getEnergyStored();
+			onEnergyChanged();
+		}
+		
 		if (level.isClientSide()) {
 			gauge.tickChaser();
 			float current = gauge.getValue(1);
@@ -137,32 +144,18 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		lastKnownPos = worldPosition;
 	}
 
-	/*
-	protected void onFluidStackChanged(FluidStack newFluidStack) {
+	protected void onEnergyChanged() {
 		if (!hasLevel())
 			return;
 
-		FluidType attributes = newFluidStack.getFluid()
-			.getFluidType();
-		int luminosity = (int) (attributes.getLightLevel(newFluidStack) / 1.2f);
-		boolean reversed = attributes.isLighterThanAir();
-		int maxY = (int) ((getFillState() * height) + 1);
-
 		for (int yOffset = 0; yOffset < height; yOffset++) {
-			boolean isBright = reversed ? (height - yOffset <= maxY) : (yOffset < maxY);
-			int actualLuminosity = isBright ? luminosity : luminosity > 0 ? 1 : 0;
-
 			for (int xOffset = 0; xOffset < width; xOffset++) {
 				for (int zOffset = 0; zOffset < width; zOffset++) {
 					BlockPos pos = this.worldPosition.offset(xOffset, yOffset, zOffset);
-					FluidTankTileEntity tankAt = ConnectivityHandler.partAt(getType(), level, pos);
-					if (tankAt == null)
+					ModularAccumulatorTileEntity acc = ConnectivityHandler.partAt(getType(), level, pos);
+					if (acc == null)
 						continue;
-					level.updateNeighbourForOutputSignal(pos, tankAt.getBlockState()
-						.getBlock());
-					if (tankAt.luminosity == actualLuminosity)
-						continue;
-					tankAt.setLuminosity(actualLuminosity);
+					level.updateNeighbourForOutputSignal(pos, acc.getBlockState().getBlock());
 				}
 			}
 		}
@@ -171,15 +164,8 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			setChanged();
 			sendData();
 		}
-
-		if (isVirtual()) {
-			if (fluidLevel == null)
-				fluidLevel = LerpedFloat.linear()
-					.startWithValue(getFillState());
-			fluidLevel.chase(getFillState(), .5f, Chaser.EXP);
-		}
 	}
-	*/
+	
 
 	@SuppressWarnings("unchecked")
 	@Override
