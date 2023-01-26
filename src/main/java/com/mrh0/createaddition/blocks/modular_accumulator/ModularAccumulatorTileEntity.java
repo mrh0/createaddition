@@ -44,7 +44,9 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	private static final int MAX_SIZE = 3;
 	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(),
 			MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(),
-			MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
+			MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get(),
+			MAX_HEIGHT = Config.ACCUMULATOR_MAX_HEIGHT.get(),
+			MAX_WIDTH = Config.ACCUMULATOR_MAX_WIDTH.get();
 
 	protected LazyOptional<IEnergyStorage> energyCap;
 	protected InternalEnergyStorage energyStorage;
@@ -359,21 +361,17 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		return width * width * height;
 	}
 
-	public static int getMaxSize() {
-		return MAX_SIZE;
-	}
-
 	public static int getCapacityMultiplier() {
 		return CAPACITY;
 	}
 
 	public static int getMaxHeight() {
-		return 5;
+		return MAX_HEIGHT;
 	}
 	
 	@Override
 	public int getMaxWidth() {
-		return MAX_SIZE;
+		return MAX_WIDTH;
 	}
 
 	@Override

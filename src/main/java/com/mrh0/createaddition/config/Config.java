@@ -54,6 +54,8 @@ public class Config {
 	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_INPUT;
 	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.IntValue ACCUMULATOR_CAPACITY;
+	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_HEIGHT;
+	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_WIDTH;
 	
 	public static ForgeConfigSpec.IntValue TESLA_COIL_MAX_INPUT;
 	public static ForgeConfigSpec.IntValue TESLA_COIL_CHARGE_RATE;
@@ -142,8 +144,14 @@ public class Config {
 		ACCUMULATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Accumulator max output in FE/t (Energy transfer).")
 				.defineInRange("accumulator_max_output", 1024, 0, Integer.MAX_VALUE);
 		
-		ACCUMULATOR_CAPACITY = COMMON_BUILDER.comment("Accumulator internal capacity in FE.")
+		ACCUMULATOR_CAPACITY = COMMON_BUILDER.comment("Accumulator internal capacity per block in FE.")
 				.defineInRange("accumulator_capacity", 2048_000, 0, Integer.MAX_VALUE);
+		
+		ACCUMULATOR_MAX_HEIGHT = COMMON_BUILDER.comment("Accumulator max multiblock height.")
+				.defineInRange("accumulator_capacity", 5, 0, 8);
+		
+		ACCUMULATOR_MAX_WIDTH = COMMON_BUILDER.comment("Accumulator max multiblock width.")
+				.defineInRange("accumulator_capacity", 3, 0, 8);
 		COMMON_BUILDER.pop();
 		
 		

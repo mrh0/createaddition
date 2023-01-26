@@ -24,6 +24,7 @@ public class CAPonder {
 		HELPER.addStoryBoard(CABlocks.TESLA_COIL, "tesla_coil_hurt", PonderScenes::teslaCoilHurt, PonderTag.LOGISTICS, ELECTRIC);
 		HELPER.addStoryBoard(CAItems.STRAW, "liquid_blaze_burner", PonderScenes::liquidBlazeBurner, PonderTag.LOGISTICS);
 		HELPER.addStoryBoard(AllBlocks.BLAZE_BURNER, "liquid_blaze_burner", PonderScenes::liquidBlazeBurner, PonderTag.LOGISTICS);
+		HELPER.addStoryBoard(CABlocks.MODULAR_ACCUMULATOR, "accumulator", PonderScenes::modularAccumulator, PonderTag.LOGISTICS, ELECTRIC);
 		
 		
 		if(CreateAddition.CC_ACTIVE)
@@ -37,11 +38,13 @@ public class CAPonder {
 			.add(CABlocks.ALTERNATOR);
 		
 		PonderRegistry.TAGS.forTag(PonderTag.LOGISTICS)
-			.add(CABlocks.TESLA_COIL);
+			.add(CABlocks.TESLA_COIL)
+			.add(CABlocks.MODULAR_ACCUMULATOR);
 		
 		PonderRegistry.TAGS.forTag(ELECTRIC)
 			.add(CABlocks.ELECTRIC_MOTOR)
 			.add(CABlocks.ALTERNATOR)
-			.add(CABlocks.TESLA_COIL);
+			.add(CABlocks.TESLA_COIL)
+			.add(CABlocks.MODULAR_ACCUMULATOR);
 	}
 }

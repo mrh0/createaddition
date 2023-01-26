@@ -173,5 +173,6 @@ public class CABlocks {
 		REGISTRATE.addToSection(ACCUMULATOR, AllSections.KINETICS);
 		REGISTRATE.addToSection(REDSTONE_RELAY, AllSections.KINETICS);
 		REGISTRATE.addToSection(BARBED_WIRE, AllSections.CURIOSITIES);
+		REGISTRATE.addToSection(MODULAR_ACCUMULATOR, AllSections.KINETICS);
 	}
 }

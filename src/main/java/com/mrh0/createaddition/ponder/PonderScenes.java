@@ -1,5 +1,7 @@
 package com.mrh0.createaddition.ponder;
 
+import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
+import com.mrh0.createaddition.blocks.connector.ConnectorMode;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
 import com.mrh0.createaddition.index.CABlocks;
@@ -399,5 +401,41 @@ public class PonderScenes {
 			scene.world.showSection(util.select.position(blocks[i]), Direction.EAST);
 		}
 		scene.idle(20);
+	}
+	
+	
+	public static void modularAccumulator(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("modular_accumulator", "Accumulator");
+		scene.configureBasePlate(0, 0, 4);
+		scene.showBasePlate();
+		scene.idle(15);
+		
+		BlockPos cIn = new BlockPos(1, 3, 1);
+		BlockPos cOut = new BlockPos(2, 3, 2);
+		
+		scene.world.showSection(util.select.fromTo(1, 1, 1, 2, 2, 2), Direction.EAST);
+		scene.idle(15);
+		scene.idle(5);
+		scene.world.showSection(util.select.position(cIn), Direction.DOWN);
+		scene.idle(5);
+		scene.world.showSection(util.select.position(cOut), Direction.DOWN);
+		
+		scene.idle(15);
+		scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(cIn), Pointing.DOWN).rightClick()
+				.withItem(new ItemStack(AllItems.WRENCH.get())), 40);
+		scene.world.setBlock(cIn, CABlocks.CONNECTOR_COPPER.getDefaultState().setValue(ConnectorBlock.FACING, Direction.DOWN).setValue(ConnectorBlock.MODE, ConnectorMode.Push), false);
+		scene.overlay.showText(50)
+			.text("Configure an input connector,")
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(cIn));
+		
+		scene.idle(60);
+		scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(cOut), Pointing.DOWN).rightClick()
+				.withItem(new ItemStack(AllItems.WRENCH.get())), 40);
+		scene.world.setBlock(cOut, CABlocks.CONNECTOR_COPPER.getDefaultState().setValue(ConnectorBlock.FACING, Direction.DOWN).setValue(ConnectorBlock.MODE, ConnectorMode.Pull), false);
+		scene.overlay.showText(50)
+			.text("and an output connector.")
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(cOut));
 	}
 }
