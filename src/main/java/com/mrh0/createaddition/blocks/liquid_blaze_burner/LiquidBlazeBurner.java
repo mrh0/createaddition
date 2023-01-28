@@ -8,7 +8,7 @@ import com.simibubi.create.content.contraptions.processing.BasinTileEntity;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
-import dev.cafeteria.fakeplayerapi.server.FakeServerPlayer;
+import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.InteractionHand;
@@ -122,7 +122,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 			});
 
 		boolean doNotConsume = player.isCreative();
-		boolean forceOverflow = !(player instanceof FakeServerPlayer);
+		boolean forceOverflow = !(player instanceof FakePlayer);
 		InteractionResultHolder<ItemStack> res =
 				tryInsert(state, world, pos, heldItem, doNotConsume, forceOverflow, false, player, hand);
 		ItemStack leftover = res.getObject();

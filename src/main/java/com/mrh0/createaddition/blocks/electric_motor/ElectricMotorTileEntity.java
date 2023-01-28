@@ -187,10 +187,11 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 	public static int getEnergyConsumptionRate(int rpm) {
 		return Math.abs(rpm) > 0 ? (int)Math.max((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d), (double)MIN_CONSUMPTION) : 0;
 	}
-	
+
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void invalidate() {
+		super.invalidate();
+
 		lazyEnergy.invalidate();
 		if(lazyPeripheral != null)
 			lazyPeripheral.invalidate();

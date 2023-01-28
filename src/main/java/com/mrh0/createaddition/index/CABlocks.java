@@ -22,6 +22,7 @@ import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.SoundType;
@@ -41,7 +42,7 @@ public class CABlocks {
 			.initialProperties(SharedProperties::softMetal)
 			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
 			.properties(p -> p.lightLevel(BlazeBurnerBlock::getLight))
-			.transform(pickaxeOnly())
+			.transform(TagGen.pickaxeOnly())
 			.addLayer(() -> RenderType::cutoutMipped)
 			//.tag(AllBlockTags.FAN_TRANSPARENT.tag, AllBlockTags.PASSIVE_BOILER_HEATERS.tag)
 			.blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
