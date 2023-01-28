@@ -4,7 +4,7 @@
       	"fluidTag": "forge:crude_oil",
       	"amount": 1000
 	},
-	"burnTime": 3600,
+	"burnTime": 9600,
 	"conditions": [
 	    {
 	      "value": {

@@ -9,10 +9,12 @@ import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
+import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.utility.Pointing;
 
 import net.minecraft.core.BlockPos;
@@ -413,8 +415,15 @@ public class PonderScenes {
 		BlockPos cIn = new BlockPos(1, 3, 1);
 		BlockPos cOut = new BlockPos(2, 3, 2);
 		
-		scene.world.showSection(util.select.fromTo(1, 1, 1, 2, 2, 2), Direction.EAST);
-		scene.idle(15);
+		var accumulator = util.select.fromTo(1, 1, 1, 2, 2, 2);
+		scene.world.showSection(accumulator, Direction.EAST);
+		ElementLink<WorldSectionElement> accumulatorLink = scene.world.showIndependentSection(accumulator, Direction.NORTH);
+		scene.overlay.showOutline(PonderPalette.GREEN, accumulatorLink, accumulator, 50);
+		
+		scene.overlay.showText(50)
+			.text("The Accumulator is a multiblock")
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(cIn));
 		scene.idle(5);
 		scene.world.showSection(util.select.position(cIn), Direction.DOWN);
 		scene.idle(5);
