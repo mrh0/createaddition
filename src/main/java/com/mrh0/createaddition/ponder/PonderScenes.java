@@ -416,15 +416,16 @@ public class PonderScenes {
 		BlockPos cOut = new BlockPos(2, 3, 2);
 		
 		var accumulator = util.select.fromTo(1, 1, 1, 2, 2, 2);
-		scene.world.showSection(accumulator, Direction.EAST);
-		ElementLink<WorldSectionElement> accumulatorLink = scene.world.showIndependentSection(accumulator, Direction.NORTH);
+		//scene.world.showSection(accumulator, Direction.EAST);
+		ElementLink<WorldSectionElement> accumulatorLink = scene.world.showIndependentSection(accumulator, Direction.EAST);
+		scene.idle(15);
 		scene.overlay.showOutline(PonderPalette.GREEN, accumulatorLink, accumulator, 50);
 		
 		scene.overlay.showText(50)
 			.text("The Accumulator is a multiblock")
 			.placeNearTarget()
 			.pointAt(util.vector.centerOf(cIn));
-		scene.idle(5);
+		scene.idle(60);
 		scene.world.showSection(util.select.position(cIn), Direction.DOWN);
 		scene.idle(5);
 		scene.world.showSection(util.select.position(cOut), Direction.DOWN);
@@ -434,6 +435,7 @@ public class PonderScenes {
 				.withItem(new ItemStack(AllItems.WRENCH.get())), 40);
 		scene.world.setBlock(cIn, CABlocks.CONNECTOR_COPPER.getDefaultState().setValue(ConnectorBlock.FACING, Direction.DOWN).setValue(ConnectorBlock.MODE, ConnectorMode.Push), false);
 		scene.overlay.showText(50)
+			.attachKeyFrame()
 			.text("Configure an input connector,")
 			.placeNearTarget()
 			.pointAt(util.vector.centerOf(cIn));

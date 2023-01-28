@@ -224,6 +224,12 @@
 	"createaddition.ponder.liquid_blaze_burner.text_2": "will allow it to accept liquid fuels by Buckets",
 	"createaddition.ponder.liquid_blaze_burner.text_3": "- or by pipes.",
 	
+	"createaddition.ponder.modular_accumulator.header": "The Modular Accumulator",
+	"createaddition.ponder.modular_accumulator.text_1": "The Accumulator is a multi-block structure",
+	"createaddition.ponder.modular_accumulator.text_2": "Configure an input connector",
+	"createaddition.ponder.modular_accumulator.text_3": "and an output connector.",
+	"createaddition.ponder.modular_accumulator.text_4": "- or by pipes.",
+	
 	"createaddition.display_source.modular_accumulator": "Accumulator",
 	"createaddition.display_source.accumulator.progress_bar": "Progress Bar",
 	"createaddition.display_source.accumulator.percent": "Percentage",

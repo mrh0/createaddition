@@ -49,7 +49,7 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<M
 	@Override
 	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
 		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-		AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
+		// AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
 	}
 	
 	public static boolean isAccumulator(BlockState state) {
@@ -260,5 +260,4 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<M
 			.map(te -> ComparatorUtil.fractionToRedstoneLevel(te.getFillState()))
 			.orElse(0);
 	}
-
 }
