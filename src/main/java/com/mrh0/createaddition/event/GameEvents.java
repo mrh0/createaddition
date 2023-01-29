@@ -30,13 +30,13 @@ public class GameEvents {
 	public static void initCommon() {
 		ServerTickEvents.START_WORLD_TICK.register(GameEvents::worldTickEvent);
 		ServerWorldEvents.LOAD.register(GameEvents::loadEvent);
+		UseBlockCallback.EVENT.register(GameEvents::onBlockUseEvent);
 	}
 
 
 	@Environment(EnvType.CLIENT)
 	public static void initClient() {
 		ClientTickEvents.END_CLIENT_TICK.register(GameEvents::clientTickEvent);
-		UseBlockCallback.EVENT.register(GameEvents::onBlockUseEvent);
 	}
 
 	private static InteractionResult onBlockUseEvent(
@@ -67,7 +67,7 @@ public class GameEvents {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static void clientTickEvent(Minecraft client) {
+	public static void clientTickEvent(Minecraft ignoredClient) {
 		ObservePacket.tick();
 	}
 
