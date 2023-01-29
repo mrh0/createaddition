@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "createaddition:bioethanol",
-    "createaddition:flowing_bioethanol"
+    "createaddition:seed_oil",
+    "createaddition:flowing_seed_oil"
   ]
 }
