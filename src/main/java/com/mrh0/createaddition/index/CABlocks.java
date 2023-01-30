@@ -11,19 +11,20 @@ import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorMovementBehaviour;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.barbed_wire.BarbedWireBlock;
-import com.mrh0.createaddition.blocks.cake.Cake;
+import com.mrh0.createaddition.blocks.cake.CACakeBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorMovementBehaviour;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
-import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlock;
+import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlockItem;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorCTBehaviour;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorDisplaySource;
-import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
+import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayMovementBehaviour;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
-import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
+import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.AllMovementBehaviours;
@@ -98,21 +99,21 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
-	public static final BlockEntry<RedstoneRelay> REDSTONE_RELAY = REGISTRATE.block("redstone_relay",  RedstoneRelay::new)
+	public static final BlockEntry<RedstoneRelayBlock> REDSTONE_RELAY = REGISTRATE.block("redstone_relay",  RedstoneRelayBlock::new)
 			.initialProperties(SharedProperties::stone)
 			.onRegister(AllMovementBehaviours.movementBehaviour(new RedstoneRelayMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
 			.register();
 	
-	public static final BlockEntry<Cake> CHOCOLATE_CAKE = REGISTRATE.block("chocolate_cake",  Cake::new)
+	public static final BlockEntry<CACakeBlock> CHOCOLATE_CAKE = REGISTRATE.block("chocolate_cake",  CACakeBlock::new)
 			.initialProperties(Material.CAKE)
 			.properties(props -> props.sound(SoundType.WOOL).strength(0.5f))
 			.item()
 			.transform(customItemModel())
 			.register();
 	
-	public static final BlockEntry<Cake> HONEY_CAKE = REGISTRATE.block("honey_cake",  Cake::new)
+	public static final BlockEntry<CACakeBlock> HONEY_CAKE = REGISTRATE.block("honey_cake",  CACakeBlock::new)
 			.initialProperties(Material.CAKE)
 			.properties(props -> props.sound(SoundType.WOOL).strength(0.5f))
 			.item()
@@ -126,7 +127,7 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
-	public static final BlockEntry<TeslaCoil> TESLA_COIL = REGISTRATE.block("tesla_coil",  TeslaCoil::new)
+	public static final BlockEntry<TeslaCoilBlock> TESLA_COIL = REGISTRATE.block("tesla_coil",  TeslaCoilBlock::new)
 			.initialProperties(SharedProperties::softMetal)
 			.item(AssemblyOperatorBlockItem::new)
 			.transform(customItemModel())
@@ -139,11 +140,11 @@ public class CABlocks {
 			.onRegister(assignDataBehaviour(new ModularAccumulatorDisplaySource(), "modular_accumulator"))
 			//.onRegister(assignDataBehaviour(ForgeEnergyDisplaySource.INSTANCE, "forge_energy"))
 			.addLayer(() -> RenderType::cutoutMipped)
-			.item()
+			.item(ModularAccumulatorBlockItem::new)
 			.transform(customItemModel())
 			.register();
 	
-	public static final BlockEntry<LiquidBlazeBurner> LIQUID_BLAZE_BURNER = REGISTRATE.block("liquid_blaze_burner",  LiquidBlazeBurner::new)
+	public static final BlockEntry<LiquidBlazeBurnerBlock> LIQUID_BLAZE_BURNER = REGISTRATE.block("liquid_blaze_burner",  LiquidBlazeBurnerBlock::new)
 			.initialProperties(SharedProperties::softMetal)
 			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
 			.properties(p -> p.lightLevel(BlazeBurnerBlock::getLight))

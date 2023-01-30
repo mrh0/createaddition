@@ -41,11 +41,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 
-public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE<LiquidBlazeBurnerTileEntity>, IWrenchable {
+public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implements ITE<LiquidBlazeBurnerTileEntity>, IWrenchable {
 
 	public static final EnumProperty<HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", HeatLevel.class);
 
-	public LiquidBlazeBurner(Properties properties) {
+	public LiquidBlazeBurnerBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, HeatLevel.NONE));
 	}

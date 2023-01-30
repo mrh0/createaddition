@@ -1,7 +1,7 @@
 package com.mrh0.createaddition.event;
 
 import com.mrh0.createaddition.blocks.connector.ConnectorMovementManager;
-import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
@@ -50,8 +50,8 @@ public class GameEvents {
 			if(evt.getItemStack().getItem() == CAItems.STRAW.get()) {
 				if(state.is(AllBlocks.BLAZE_BURNER.get())) {
 					BlockState newState = CABlocks.LIQUID_BLAZE_BURNER.getDefaultState()
-							.setValue(LiquidBlazeBurner.HEAT_LEVEL, HeatLevel.SMOULDERING)
-							.setValue(LiquidBlazeBurner.FACING, state.getValue(BlazeBurnerBlock.FACING));
+							.setValue(LiquidBlazeBurnerBlock.HEAT_LEVEL, HeatLevel.SMOULDERING)
+							.setValue(LiquidBlazeBurnerBlock.FACING, state.getValue(BlazeBurnerBlock.FACING));
 					evt.getLevel().setBlockAndUpdate(evt.getPos(), newState);
 					if(!evt.getEntity().isCreative())
 						evt.getItemStack().shrink(1);

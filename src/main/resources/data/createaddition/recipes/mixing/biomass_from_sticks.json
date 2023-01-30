@@ -14,14 +14,8 @@
       "item": "minecraft:stick"
     },
     {
-      "item": "minecraft:stick"
-    },
-    {
-      "item": "minecraft:stick"
-    },
-    {
       "fluidTag": "forge:plantoil",
-      "amount": 200
+      "amount": 100
     }
   ],
   "results": [

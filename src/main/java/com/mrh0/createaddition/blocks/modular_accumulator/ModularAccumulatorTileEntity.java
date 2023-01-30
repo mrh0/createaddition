@@ -186,17 +186,17 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			energyStorage.extractEnergy(overflow, false);
 	}
 
-	public void removeController(boolean keepFluids) {
+	public void removeController(boolean keepEnergy) {
 		if (level.isClientSide)
 			return;
 		updateConnectivity = true;
-		if (!keepFluids)
+		if (!keepEnergy)
 			applySize(1);
 		controller = null;
 		width = 1;
 		height = 1;
 		//boiler.clear();
-		//onFluidStackChanged(energyStorage.getFluid());
+		onEnergyChanged();
 
 		BlockState state = getBlockState();
 		if (ModularAccumulatorBlock.isAccumulator(state)) {

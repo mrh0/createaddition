@@ -9,7 +9,7 @@ import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBe
 
 public class TeslaCoilBeltCallbacks {
 	public static ProcessingResult onItemReceived(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler, TeslaCoilTileEntity te) {
-		if(te.getBlockState().getValue(TeslaCoil.FACING) == Direction.UP) {
+		if(te.getBlockState().getValue(TeslaCoilBlock.FACING) == Direction.UP) {
 			return ProcessingResult.HOLD;
 		}
 		return ProcessingResult.PASS;

@@ -78,7 +78,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		isCreative = false;
 		goggles = false;
 
-		headAngle.startWithValue((AngleHelper.horizontalAngle(state.getOptionalValue(LiquidBlazeBurner.FACING)
+		headAngle.startWithValue((AngleHelper.horizontalAngle(state.getOptionalValue(LiquidBlazeBurnerBlock.FACING)
 			.orElse(Direction.SOUTH)) + 180) % 360);
 		
 		tankInventory = createInventory();
@@ -153,16 +153,16 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		// Added try catch because this crashes for some reason for a minority of players, very strange.
 		try {
 			remainingBurnTime += recipeCache.get().getBurnTime() / 10;
+			activeFuel = recipeCache.get().isSuperheated() ? FuelType.SPECIAL : FuelType.NORMAL;
 		}
 		catch(Exception e) {
 			return;
 		}
 		tankInventory.drain(100, FluidAction.EXECUTE);
-		activeFuel = FuelType.NORMAL;
 
 		HeatLevel prev = getHeatLevelFromBlock();
-		//playSound();
-		//updateBlockState();
+		playSound();
+		updateBlockState();
 
 		if (prev != getHeatLevelFromBlock()) {
 			level.playSound(null, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
@@ -170,7 +170,6 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			
 			spawnParticleBurst(activeFuel == FuelType.SPECIAL);
 		}
-
 	}
 	
 
@@ -244,7 +243,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			headAngle.chase(target, .25f, Chaser.exp(5));
 			headAngle.tickChaser();
 		} else {
-			headAngle.chase((AngleHelper.horizontalAngle(getBlockState().getOptionalValue(LiquidBlazeBurner.FACING)
+			headAngle.chase((AngleHelper.horizontalAngle(getBlockState().getOptionalValue(LiquidBlazeBurnerBlock.FACING)
 				.orElse(Direction.SOUTH)) + 180) % 360, .125f, Chaser.EXP);
 			headAngle.tickChaser();
 		}
@@ -294,7 +293,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		HeatLevel inBlockState = getHeatLevelFromBlock();
 		if (inBlockState == heat)
 			return;
-		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(LiquidBlazeBurner.HEAT_LEVEL, heat));
+		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(LiquidBlazeBurnerBlock.HEAT_LEVEL, heat));
 		notifyUpdate();
 	}
 

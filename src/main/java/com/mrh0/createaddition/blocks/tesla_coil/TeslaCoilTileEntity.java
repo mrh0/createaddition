@@ -80,7 +80,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 
 	@Override
 	public boolean isEnergyInput(Direction side) {
-		return side != getBlockState().getValue(TeslaCoil.FACING).getOpposite();
+		return side != getBlockState().getValue(TeslaCoilBlock.FACING).getOpposite();
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	
 	private void doDmg() {
 		localEnergy.internalConsumeEnergy(HURT_ENERGY_REQUIRED);
-		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoil.FACING).getOpposite());
+		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoilBlock.FACING).getOpposite());
 		List<LivingEntity> ents = getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(HURT_RANGE));
 		for(LivingEntity e : ents) {
 			if(e == null)
@@ -156,7 +156,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}
 	
 	public boolean isPoweredState() {
-		return getBlockState().getValue(TeslaCoil.POWERED);
+		return getBlockState().getValue(TeslaCoilBlock.POWERED);
 	}
 	
 	protected ProcessingResult chargeCompundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {

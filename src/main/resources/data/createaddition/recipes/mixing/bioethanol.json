@@ -4,6 +4,18 @@
     {
       "item": "minecraft:sugar"
     },
+    {
+      "item": "create:cinder_flour"
+    },
+	{
+      "item": "createaddition:biomass"
+    },
+	{
+      "item": "createaddition:biomass"
+    },
+	{
+      "item": "createaddition:biomass"
+    },
 	{
       "item": "createaddition:biomass"
     }

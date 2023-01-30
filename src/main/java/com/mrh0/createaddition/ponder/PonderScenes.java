@@ -2,8 +2,8 @@ package com.mrh0.createaddition.ponder;
 
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorMode;
-import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
-import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
+import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItems;
@@ -306,7 +306,7 @@ public class PonderScenes {
 
 		scene.world.createItemOnBeltLike(depotPos, Direction.NORTH, AllItems.CHROMATIC_COMPOUND.asStack());
 		scene.idle(10);
-		scene.world.setBlock(util.grid.at(2, 3, 2), CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.UP).setValue(TeslaCoil.POWERED, true), false);
+		scene.world.setBlock(util.grid.at(2, 3, 2), CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoilBlock.FACING, Direction.UP).setValue(TeslaCoilBlock.POWERED, true), false);
 		scene.overlay.showText(70)
 			.attachKeyFrame()
 			.text("It will charge any Forge Energy Items and more!")
@@ -347,7 +347,7 @@ public class PonderScenes {
 		scene.idle(60);
 		scene.world.setBlock(lever, Blocks.LEVER.defaultBlockState().setValue(LeverBlock.POWERED, true).setValue(LeverBlock.FACING, Direction.SOUTH).setValue(LeverBlock.FACE, AttachFace.FLOOR), false);
 		scene.idle(5);
-		scene.world.setBlock(teslacoil, CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.DOWN).setValue(TeslaCoil.POWERED, true), false);
+		scene.world.setBlock(teslacoil, CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoilBlock.FACING, Direction.DOWN).setValue(TeslaCoilBlock.POWERED, true), false);
 		scene.idle(5);
 		scene.overlay.showText(70)
 			.attachKeyFrame()
@@ -381,7 +381,7 @@ public class PonderScenes {
 		scene.idle(10);
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(burner), Pointing.DOWN).rightClick()
 				.withItem(new ItemStack(CAItems.STRAW.get())), 40);
-		scene.world.setBlock(burner, CABlocks.LIQUID_BLAZE_BURNER.getDefaultState().setValue(LiquidBlazeBurner.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), false);
+		scene.world.setBlock(burner, CABlocks.LIQUID_BLAZE_BURNER.getDefaultState().setValue(LiquidBlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), false);
 		scene.idle(60);
 		scene.overlay.showText(50)
 			.attachKeyFrame()
