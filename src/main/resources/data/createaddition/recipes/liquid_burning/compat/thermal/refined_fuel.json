@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:liquid_burning",
 	"input": {
-      	"fluidTag": "thermal:refined_fuel",
+      	"fluid": "thermal:refined_fuel",
       	"amount": 1000
 	},
 	"burnTime": 256000,

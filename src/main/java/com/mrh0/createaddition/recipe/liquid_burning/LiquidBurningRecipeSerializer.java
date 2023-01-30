@@ -21,13 +21,15 @@ public class LiquidBurningRecipeSerializer extends CARecipeSerializer<LiquidBurn
 	
 	@Override
 	public LiquidBurningRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+		boolean superheated = buffer.readBoolean();
 		int burnTime = buffer.readInt();
 		FluidIngredient fluid = FluidIngredient.read(buffer);
-		return new LiquidBurningRecipe(recipeId, fluid, burnTime);
+		return new LiquidBurningRecipe(recipeId, fluid, burnTime, superheated);
 	}
 
 	@Override
 	public void toNetwork(FriendlyByteBuf buffer, LiquidBurningRecipe recipe) {
+		buffer.writeBoolean(recipe.superheated);
 		buffer.writeInt(recipe.burnTime);
 		recipe.fluidIngredients.write(buffer);
 	}
@@ -45,6 +47,6 @@ public class LiquidBurningRecipeSerializer extends CARecipeSerializer<LiquidBurn
 		
 		//HeatCondition.deserialize(GsonHelper.getAsString(json, "heatProduced"));
 		
-		return new LiquidBurningRecipe(recipeId, fluid, burnTime);
+		return new LiquidBurningRecipe(recipeId, fluid, burnTime, superheated);
 	}
 }

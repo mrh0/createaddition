@@ -148,10 +148,10 @@ public class Config {
 				.defineInRange("accumulator_capacity", 2048_000, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_MAX_HEIGHT = COMMON_BUILDER.comment("Accumulator max multiblock height.")
-				.defineInRange("accumulator_capacity", 5, 0, 8);
+				.defineInRange("accumulator_max_height", 5, 1, 8);
 		
 		ACCUMULATOR_MAX_WIDTH = COMMON_BUILDER.comment("Accumulator max multiblock width.")
-				.defineInRange("accumulator_capacity", 3, 0, 8);
+				.defineInRange("accumulator_max_width", 3, 1, 8);
 		COMMON_BUILDER.pop();
 		
 		

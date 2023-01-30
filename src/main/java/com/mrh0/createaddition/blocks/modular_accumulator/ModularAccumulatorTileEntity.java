@@ -41,7 +41,6 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity {
 
-	private static final int MAX_SIZE = 3;
 	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(),
 			MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(),
 			MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get(),
@@ -71,7 +70,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	}
 
 	protected InternalEnergyStorage createEnergyStorage() {
-		return new InternalEnergyStorage(getCapacityMultiplier(), MAX_IN, MAX_OUT);
+		return new InternalEnergyStorage(getCapacityMultiplier(), Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get());
 	}
 
 	protected void updateConnectivity() {
@@ -362,7 +361,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	}
 
 	public static int getCapacityMultiplier() {
-		return CAPACITY;
+		return Config.ACCUMULATOR_CAPACITY.get();
 	}
 
 	public static int getMaxHeight() {

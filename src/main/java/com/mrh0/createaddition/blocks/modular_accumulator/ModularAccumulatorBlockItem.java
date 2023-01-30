@@ -1,4 +1,4 @@
-package com.mrh0.createaddition.blocks.accumulator;
+package com.mrh0.createaddition.blocks.modular_accumulator;
 
 import java.util.List;
 
@@ -14,8 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 public class ModularAccumulatorBlockItem extends BlockItem {
-	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get();
-
 	public ModularAccumulatorBlockItem(Block block, Properties props) {
 		super(block, props);
 	}
@@ -38,4 +36,6 @@ public class ModularAccumulatorBlockItem extends BlockItem {
 	public void appendHoverText(ItemStack stack, Level level, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(stack, level, list, flag);
 	}
+	
+	
 }

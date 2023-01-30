@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:liquid_burning",
 	"input": {
-      	"fluidTag": "thermal:tree_oil",
+      	"fluid": "thermal:tree_oil",
       	"amount": 1000
 	},
 	"burnTime": 4800,
