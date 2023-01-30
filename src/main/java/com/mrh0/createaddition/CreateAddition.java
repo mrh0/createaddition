@@ -4,11 +4,8 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.GenericEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -29,7 +26,6 @@ import org.apache.logging.log4j.Logger;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
 import com.mrh0.createaddition.commands.CCApiCommand;
-import com.mrh0.createaddition.compat.forge.ForgeEnergyDisplaySource;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.CABlocks;
@@ -46,7 +42,6 @@ import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.simibubi.create.content.contraptions.fluids.tank.BoilerHeaters;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.foundation.block.BlockStressValues;
 import com.simibubi.create.foundation.config.AllConfigs;
@@ -97,7 +92,6 @@ public class CreateAddition {
         CAEffects.register(eventBus);
         CARecipes.register(eventBus);
         CAPartials.init();
-        ForgeEnergyDisplaySource.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -135,7 +129,7 @@ public class CreateAddition {
         Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
         Network.registerMessage(i++, RemoveConnectorPacket.class, RemoveConnectorPacket::encode, RemoveConnectorPacket::decode, RemoveConnectorPacket::handle);
         
-    	System.out.println("Create Crafts & Addition Initialized!");
+    	System.out.println("Create Crafts & Additions Initialized!");
     }
     
     @SubscribeEvent

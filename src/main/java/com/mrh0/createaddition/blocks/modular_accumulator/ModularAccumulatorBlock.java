@@ -73,8 +73,8 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<M
 	}
 
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> p_206840_1_) {
-		p_206840_1_.add(TOP, BOTTOM);
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		builder.add(TOP, BOTTOM);
 	}
 
 	@Override

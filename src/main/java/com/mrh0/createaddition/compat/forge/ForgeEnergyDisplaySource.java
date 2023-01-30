@@ -1,5 +1,5 @@
 package com.mrh0.createaddition.compat.forge;
-
+/*
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
@@ -94,4 +94,4 @@ public class ForgeEnergyDisplaySource extends PercentOrProgressBarDisplaySource 
 	}
 	
 	public static void register() {}
-}
+}*/

@@ -426,6 +426,11 @@ public class PonderScenes {
 			.placeNearTarget()
 			.pointAt(util.vector.centerOf(cIn));
 		scene.idle(60);
+		scene.overlay.showText(50)
+			.text("It can store large amounts of energy")
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(cIn));
+		scene.idle(60);
 		scene.world.showSection(util.select.position(cIn), Direction.DOWN);
 		scene.idle(5);
 		scene.world.showSection(util.select.position(cOut), Direction.DOWN);

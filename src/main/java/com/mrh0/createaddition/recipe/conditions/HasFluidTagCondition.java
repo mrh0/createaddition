@@ -9,7 +9,7 @@ import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class HasFluidTagCondition implements ICondition {
-	private static final ResourceLocation NAME = new ResourceLocation("createaddition", "hasFluidTag");
+	private static final ResourceLocation NAME = new ResourceLocation("createaddition", "has_fluid_tag");
 	private final ResourceLocation tagName;
 
 	public HasFluidTagCondition(String location) {
@@ -31,7 +31,7 @@ public class HasFluidTagCondition implements ICondition {
 	
 	@Override
 	public String toString() {
-		return "hasFluidTag(\"" + tagName + "\")";
+		return "has_fluid_tag(\"" + tagName + "\")";
 	}
 
 	public static class Serializer implements IConditionSerializer<HasFluidTagCondition> {

@@ -24,25 +24,15 @@ import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayMovementBehaviour;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
-import com.mrh0.createaddition.compat.forge.ForgeEnergyDisplaySource;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
-import com.simibubi.create.Create;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.AllMovementBehaviours;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.AllSections;
-import com.simibubi.create.content.contraptions.base.CasingBlock;
 import com.simibubi.create.content.contraptions.components.AssemblyOperatorBlockItem;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlockItem;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerInteractionBehaviour;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerMovementBehaviour;
-import com.simibubi.create.content.contraptions.processing.burner.LitBlazeBurnerBlock;
-import com.simibubi.create.content.logistics.block.display.source.ItemNameDisplaySource;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.AssetLookup;
-import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -52,7 +42,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
 
 public class CABlocks {
 	

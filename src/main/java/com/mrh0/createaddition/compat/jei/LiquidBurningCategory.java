@@ -2,7 +2,11 @@ package com.mrh0.createaddition.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
+import com.mrh0.createaddition.util.ClientMinecraftWrapper;
+import com.simibubi.create.compat.jei.category.animations.AnimatedBlazeBurner;
+import com.simibubi.create.content.contraptions.processing.HeatCondition;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
+import com.simibubi.create.foundation.utility.Lang;
 
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -13,6 +17,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
 public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe> {
+	
+	private final AnimatedBlazeBurner heater = new AnimatedBlazeBurner();
 
 	public LiquidBurningCategory(Info<LiquidBurningRecipe> info) {
 		super(info);
@@ -21,7 +27,7 @@ public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe>
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, LiquidBurningRecipe recipe, IFocusGroup focuses) {
 		builder
-			.addSlot(RecipeIngredientRole.INPUT, 15, 9)
+			.addSlot(RecipeIngredientRole.INPUT, getBackground().getWidth() / 2 -16, 3)
 			.setBackground(getRenderedSlot(), -1, -1)
 			.addIngredients(ForgeTypes.FLUID_STACK, withImprovedVisibility(recipe.getFluidIngredient().getMatchingFluidStacks()))
 			.addTooltipCallback(addFluidTooltip(recipe.getFluidIngredient().getRequiredAmount()));
@@ -30,59 +36,27 @@ public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe>
 	@Override
 	public void draw(LiquidBurningRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX,
 			double mouseY) {
-		//AllGuiTextures.JEI_SLOT.render(stack, 14, 8);
-		//AllGuiTextures.JEI_ARROW.render(stack, 85, 32);
-		//AllGuiTextures.JEI_DOWN_ARROW.render(stack, 43, 4);
 
-		Minecraft.getInstance().font.draw(stack, Component.translatable("createaddition.recipe.liquid_burning.burn_time").getString(Integer.MAX_VALUE) + ": " + ((double)recipe.getBurnTime()/20d)+"s", 9, 34, 4210752);
+		ClientMinecraftWrapper.getFont().draw(stack, formatTime(recipe.getBurnTime()), getBackground().getWidth() / 2 + 48, 86 - 50, 4210752);
+		
+		
+		HeatCondition requiredHeat = recipe.isSuperheated() ? HeatCondition.SUPERHEATED : HeatCondition.HEATED;
+
+		AllGuiTextures.JEI_LIGHT.render(stack, 81, 58 + 30 - 50);
+
+		AllGuiTextures.JEI_HEAT_BAR.render(stack, 4, 80 - 50);
+		ClientMinecraftWrapper.getFont().draw(stack, Lang.translateDirect(requiredHeat.getTranslationKey()), 9,
+				86 - 50, requiredHeat.getColor());
+		
+		heater.withHeat(requiredHeat.visualizeAsBlazeBurner())
+			.draw(stack, getBackground().getWidth() / 2 + 3, 55 - 50);
+		
+		AllGuiTextures.JEI_DOWN_ARROW.render(stack, getBackground().getWidth() / 2 + 3, 8);
 	}
 	
-	/*
-	public LiquidBurningCategory() {
-		super(itemIcon(AllBlocks.BLAZE_BURNER.get()), emptyBackground(177, 53));
+	public static String formatTime(int ticks) {
+		if (ticks > 20*60) return (ticks/(20*60)) + " min";
+		if (ticks > 20) return (ticks/20) + " sec";
+		return (ticks) + " ticks";
 	}
-
-	@Override
-	public Class<? extends CrudeBurningRecipe> getRecipeClass() {
-		return CrudeBurningRecipe.class;
-	}
-
-	@Override
-	public void setIngredients(CrudeBurningRecipe recipe, IIngredients ingredients) {
-		ingredients.setInputIngredients(new ArrayList<Ingredient>());
-		ingredients.setOutputs(VanillaTypes.ITEM, new ArrayList<ItemStack>());
-		ingredients.setInputLists(VanillaTypes.FLUID, NonNullList.of(recipe.getFluidIngredient().getMatchingFluidStacks()));
-	}
-
-	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, LiquidBurningRecipe recipe, IIngredients ingredients) {
-		IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
-		
-		NonNullList<FluidIngredient> fluidIngredients = NonNullList.of(recipe.getFluidIngredient());
-		
-		List<FluidStack> out = new ArrayList<FluidStack>();
-		
-		fluidStacks.init(0, true, 81, 7);
-		fluidStacks.set(0, withImprovedVisibility(recipe.getFluidIngredient().getMatchingFluidStacks()
-				.stream()
-				.map(fluid -> {
-					out.add(fluid);
-					return fluid;
-				})
-				.collect(Collectors.toList())));
-
-		addFluidTooltip(fluidStacks, fluidIngredients, out);
-	}
-
-	@Override
-	public void draw(LiquidBurningRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-		//AllGuiTextures.JEI_SLOT.draw(matrixStack, 14, 8);
-		//AllGuiTextures.JEI_ARROW.draw(matrixStack, 85, 32);
-		//AllGuiTextures.JEI_DOWN_ARROW.draw(matrixStack, 43, 4);
-
-		AllGuiTextures.JEI_SLOT.render(matrixStack, 80, 6);
-
-		Minecraft.getInstance().font.draw(matrixStack, new TranslatableComponent("createaddition.recipe.crude_burning.burn_time").getString(Integer.MAX_VALUE) + ": " + ((double)recipe.getBurnTime()/20d)+"s", 9, 34, 4210752);
-	}
-	*/
 }

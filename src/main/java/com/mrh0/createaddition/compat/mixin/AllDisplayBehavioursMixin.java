@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.compat.forge.ForgeEnergyDisplaySource;
 import com.simibubi.create.content.logistics.block.display.AllDisplayBehaviours;
 import com.simibubi.create.content.logistics.block.display.DisplayBehaviour;
 import com.simibubi.create.content.logistics.block.display.source.DisplaySource;

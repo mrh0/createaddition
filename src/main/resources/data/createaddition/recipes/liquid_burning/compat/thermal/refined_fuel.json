@@ -4,7 +4,8 @@
       	"fluid": "thermal:refined_fuel",
       	"amount": 1000
 	},
-	"burnTime": 256000,
+	"burnTime": 128000,
+	"superheated": true,
 	"conditions": [
     {
     	"type": "forge:mod_loaded",

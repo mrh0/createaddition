@@ -8,7 +8,7 @@
 	"conditions": [
 	    {
 	        "fluidTag": "forge:crude_oil",
-	        "type": "createaddition:hasFluidTag"
+	        "type": "createaddition:has_fluid_tag"
 	    }
 	]
 }
