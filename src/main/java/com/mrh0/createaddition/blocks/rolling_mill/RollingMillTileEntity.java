@@ -59,7 +59,7 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 			return;
 		for (int i = 0; i < outputInv.getSlots(); i++)
 			if (outputInv.getStackInSlot(i)
-				.getCount() == outputInv.getSlotLimit(i))
+					.getCount() == outputInv.getSlotLimit(i))
 				return;
 
 		if (timer > 0) {
@@ -76,7 +76,7 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 		}
 
 		if (inputInv.getStackInSlot(0)
-			.isEmpty())
+				.isEmpty())
 			return;
 
 		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
@@ -96,12 +96,6 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 
 		timer = getProcessingDuration();
 		sendData();
-	}
-
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-//		capability.invalidate();
 	}
 	
 	private void process() {

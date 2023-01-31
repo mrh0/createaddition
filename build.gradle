@@ -10,7 +10,7 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-version = 'fabric-1.18.2-20221128a'
+version = 'fabric-1.18.2-20230121a'
 group = 'com.mrh0.createaddition'
 archivesBaseName = "createaddition"
 
