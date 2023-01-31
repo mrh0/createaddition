@@ -10,9 +10,9 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-version = 'fabric-1.18.2-20221128a'
+version = project.mod_version
 group = 'com.mrh0.createaddition'
-archivesBaseName = "createaddition"
+archivesBaseName = "createaddition-fabric+${project.minecraft_version}"
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
@@ -105,6 +105,15 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 }
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
 java {
     withSourcesJar()
 }
