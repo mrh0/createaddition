@@ -26,7 +26,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import team.reborn.energy.api.EnergyStorage;
 
 
-@SuppressWarnings("UnstableApiUsage")
+@SuppressWarnings({"UnstableApiUsage", "removal"})
 public class CATileEntities {
 	public static final BlockEntityEntry<ElectricMotorTileEntity> ELECTRIC_MOTOR = CreateAddition.registrate()
 			.tileEntity("electric_motor", ElectricMotorTileEntity::new)
