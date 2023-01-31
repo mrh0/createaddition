@@ -46,12 +46,6 @@ public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyT
 			}
 		}
 	}
-
-	@Override
-	public void invalidate() {
-		super.invalidate();
-		lazyEnergy.invalidate();
-	}
 	
 	public void firstTick() {
 		updateCache();
