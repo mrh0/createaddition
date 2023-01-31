@@ -1,9 +1,6 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
-import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CATileEntities;
-import com.simibubi.create.AllTileEntities;
-import com.simibubi.create.api.connectivity.ConnectivityHandler;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -77,7 +74,7 @@ public class ModularAccumulatorBlockItem extends BlockItem {
 
 		if (!ModularAccumulatorBlock.isAccumulator(placedOnState))
 			return;
-		ModularAccumulatorTileEntity accumulatorAt = ConnectivityHandler.partAt(CATileEntities.MODULAR_ACCUMULATOR.get(), world, placedOnPos
+		ModularAccumulatorTileEntity accumulatorAt = CAConnectivityHandler.partAt(CATileEntities.MODULAR_ACCUMULATOR.get(), world, placedOnPos
 		);
 		if (accumulatorAt == null)
 			return;

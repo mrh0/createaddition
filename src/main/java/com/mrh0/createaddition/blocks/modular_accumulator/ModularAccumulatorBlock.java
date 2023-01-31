@@ -1,7 +1,6 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
 import com.mrh0.createaddition.index.CATileEntities;
-import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.ITE;
@@ -221,7 +220,7 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<M
 				return;
 			ModularAccumulatorTileEntity accumulatorTE = (ModularAccumulatorTileEntity) te;
 			world.removeBlockEntity(pos);
-			ConnectivityHandler.splitMulti(accumulatorTE);
+			CAConnectivityHandler.splitMulti(accumulatorTE);
 		}
 	}
 

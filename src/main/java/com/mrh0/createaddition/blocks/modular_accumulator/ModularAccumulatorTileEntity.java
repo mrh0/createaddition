@@ -14,7 +14,6 @@ import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.Create;
-import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
@@ -38,6 +37,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.IFluidTank;
 
 public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity {
 
@@ -79,7 +79,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			return;
 		if (!isController())
 			return;
-		ConnectivityHandler.formMulti(this);
+		CAConnectivityHandler.formMulti(this);
 	}
 	
 	public LerpedFloat gauge = LerpedFloat.linear();
@@ -153,7 +153,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			for (int xOffset = 0; xOffset < width; xOffset++) {
 				for (int zOffset = 0; zOffset < width; zOffset++) {
 					BlockPos pos = this.worldPosition.offset(xOffset, yOffset, zOffset);
-					ModularAccumulatorTileEntity acc = ConnectivityHandler.partAt(getType(), level, pos);
+					ModularAccumulatorTileEntity acc = CAConnectivityHandler.partAt(getType(), level, pos);
 					if (acc == null)
 						continue;
 					level.updateNeighbourForOutputSignal(pos, acc.getBlockState().getBlock());
@@ -460,5 +460,21 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		
 		EnergyNetworkPacket.send(worldPosition, 0, controllerTE.energyStorage.getEnergyStored(), player);
 		// causeBlockUpdate();
+	}
+	
+	public boolean hasAccumulator() {
+		return true;
+	}
+
+	public int getSize(int accumulator) {
+		return getCapacityMultiplier();
+	}
+
+	public void setSize(int accumulator, int blocks) {
+		applySize(blocks);
+	}
+
+	public InternalEnergyStorage getEnergy(int accumulator) {
+		return energyStorage;
 	}
 }
