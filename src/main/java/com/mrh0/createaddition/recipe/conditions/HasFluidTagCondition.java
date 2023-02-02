@@ -55,6 +55,6 @@ public class HasFluidTagCondition implements ICondition {
 
 	@Override
 	public boolean test(IContext context) {
-		return ForgeRegistries.FLUIDS.containsKey(tagName);
+		return context.getTag(new TagKey<Fluid>(Keys.FLUIDS, tagName)).getValues().isEmpty();
 	}
 }
