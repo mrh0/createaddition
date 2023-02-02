@@ -45,14 +45,18 @@ public class InternalEnergyStorage extends EnergyStorage {
     	setEnergy(nbt.getInt("energy_"+name));
     }
     
+    public int getSpace() {
+    	return Math.max(getMaxEnergyStored() - getEnergyStored(), 0);
+    }
+    
     @Override
     public boolean canExtract() {
-    	return true;
+    	return maxExtract > 0;
     }
     
     @Override
     public boolean canReceive() {
-    	return true;
+    	return maxReceive > 0;
     }
     
     public int internalConsumeEnergy(int consume) {
@@ -71,6 +75,10 @@ public class InternalEnergyStorage extends EnergyStorage {
     	this.energy = energy;
     }
     
+    public void setCapacity(int capacity) {
+    	this.capacity = capacity;
+    }
+    
     @Deprecated
     public void outputToSide(Level world, BlockPos pos, Direction side, int max) {
     	BlockEntity te = world.getBlockEntity(pos.relative(side));
@@ -86,6 +94,6 @@ public class InternalEnergyStorage extends EnergyStorage {
     
     @Override
     public String toString() {
-    	return getEnergyStored() + "/" + getMaxEnergyStored();
+    	return getEnergyStored() + "/" + getMaxEnergyStored() + " <-" + maxExtract + " ->" + maxReceive;
     }
 }

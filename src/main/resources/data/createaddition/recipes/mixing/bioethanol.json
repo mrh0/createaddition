@@ -4,6 +4,12 @@
     {
       "item": "minecraft:sugar"
     },
+    {
+      "item": "create:cinder_flour"
+    },
+	{
+      "item": "createaddition:biomass"
+    },
 	{
       "item": "createaddition:biomass"
     }
@@ -11,7 +17,7 @@
   "results": [
     {
       "fluid": "createaddition:bioethanol",
-      "amount": 100
+      "amount": 125
     }
   ]
 }

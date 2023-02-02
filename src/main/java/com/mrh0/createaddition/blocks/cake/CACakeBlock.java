@@ -12,9 +12,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.core.BlockPos;
 
-public class Cake extends CakeBlock {
+public class CACakeBlock extends CakeBlock {
 
-	public Cake(Properties props) {
+	public CACakeBlock(Properties props) {
 		super(props);
 	}
 

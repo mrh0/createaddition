@@ -1,12 +1,12 @@
 package com.mrh0.createaddition.ponder;
 
-import com.mojang.math.Vector3d;
-import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
-import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
+import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
+import com.mrh0.createaddition.blocks.connector.ConnectorMode;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
+import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.index.CAFluids;
-import com.simibubi.create.AllBlocks;
+import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.ponder.ElementLink;
@@ -14,12 +14,12 @@ import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
+import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.utility.Pointing;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -48,6 +48,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(motor));
 		scene.idle(50);
 
+		
 		scene.rotateCameraY(90);
 		scene.idle(20);
 
@@ -61,6 +62,7 @@ public class PonderScenes {
 		scene.overlay.showControls(new InputWindowElement(blockSurface, Pointing.DOWN).scroll(), 60);
 		scene.idle(20);
 
+		scene.addKeyframe();
 		scene.overlay.showText(70)
 			.text("Scrolling on the back panel changes the RPM of the motors' rotational output")
 			.placeNearTarget()
@@ -70,6 +72,7 @@ public class PonderScenes {
 		scene.effects.rotationSpeedIndicator(motor);
 		scene.idle(70);
 		
+		scene.addKeyframe();
 		scene.overlay.showText(70)
 		.text("The Electric Motor requires a source of energy (fe)")
 		.placeNearTarget()
@@ -145,7 +148,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(mill));
 		scene.idle(60);
 
-		
+		scene.addKeyframe();
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(mill), Pointing.DOWN).rightClick(), 50);
 		scene.overlay.showText(50)
 		.text("Manualy retrieve the rolled output by R-clicking the Mill")
@@ -181,8 +184,7 @@ public class PonderScenes {
 		
 		scene.world.showSection(util.select.position(mill), Direction.DOWN);
 		
-		
-		
+		scene.addKeyframe();
 		scene.overlay.showText(50)
 		.text("The Rolling Mill can be automated using a Belt and two Funnels")
 		.placeNearTarget()
@@ -209,7 +211,7 @@ public class PonderScenes {
 		scene.idle(40);*/
 	}
 	
-	public static void heater(SceneBuilder scene, SceneBuildingUtil util) {
+	/*public static void heater(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("heater", "Using electric energy to heat a furnace");
 		scene.configureBasePlate(0, 0, 5);
 		scene.world.showSection(util.select.layer(0), Direction.UP);
@@ -244,7 +246,7 @@ public class PonderScenes {
 		.placeNearTarget()
 		.pointAt(util.vector.blockSurface(furnace, Direction.NORTH));
 		scene.idle(60);
-	}
+	}*/
 	
 	public static void ccMotor(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("cc_electric_motor", "Using Computercraft to control an Electric Motor");
@@ -273,6 +275,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(computer));
 		scene.idle(60);
 		
+		scene.addKeyframe();
 		scene.idle(10);
 		scene.overlay.showText(150)
 			.text("Get to the API documentation by issuing the command '/cca_api' in the chat")
@@ -303,7 +306,7 @@ public class PonderScenes {
 
 		scene.world.createItemOnBeltLike(depotPos, Direction.NORTH, AllItems.CHROMATIC_COMPOUND.asStack());
 		scene.idle(10);
-		scene.world.setBlock(util.grid.at(2, 3, 2), CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.UP).setValue(TeslaCoil.POWERED, true), false);
+		scene.world.setBlock(util.grid.at(2, 3, 2), CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoilBlock.FACING, Direction.UP).setValue(TeslaCoilBlock.POWERED, true), false);
 		scene.overlay.showText(70)
 			.attachKeyFrame()
 			.text("It will charge any Forge Energy Items and more!")
@@ -334,6 +337,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(teslacoil));
 		scene.idle(80);
 		scene.world.showSection(util.select.position(lever), Direction.SOUTH);
+		
 		scene.idle(5);
 		scene.overlay.showText(50)
 			.attachKeyFrame()
@@ -343,7 +347,7 @@ public class PonderScenes {
 		scene.idle(60);
 		scene.world.setBlock(lever, Blocks.LEVER.defaultBlockState().setValue(LeverBlock.POWERED, true).setValue(LeverBlock.FACING, Direction.SOUTH).setValue(LeverBlock.FACE, AttachFace.FLOOR), false);
 		scene.idle(5);
-		scene.world.setBlock(teslacoil, CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.DOWN).setValue(TeslaCoil.POWERED, true), false);
+		scene.world.setBlock(teslacoil, CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoilBlock.FACING, Direction.DOWN).setValue(TeslaCoilBlock.POWERED, true), false);
 		scene.idle(5);
 		scene.overlay.showText(70)
 			.attachKeyFrame()
@@ -352,7 +356,6 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(teslacoil));
 		scene.idle(80);
 	}
-	
 	
 	public static void liquidBlazeBurner(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("liquid_blaze_burner", "Liquid Fuel Burning");
@@ -378,7 +381,7 @@ public class PonderScenes {
 		scene.idle(10);
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(burner), Pointing.DOWN).rightClick()
 				.withItem(new ItemStack(CAItems.STRAW.get())), 40);
-		scene.world.setBlock(burner, CABlocks.LIQUID_BLAZE_BURNER.getDefaultState().setValue(LiquidBlazeBurner.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), false);
+		scene.world.setBlock(burner, CABlocks.LIQUID_BLAZE_BURNER.getDefaultState().setValue(LiquidBlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), false);
 		scene.idle(60);
 		scene.overlay.showText(50)
 			.attachKeyFrame()
@@ -390,16 +393,65 @@ public class PonderScenes {
 				.withItem(new ItemStack(CAFluids.BIOETHANOL.get().getBucket())), 40);
 		scene.idle(60);
 		scene.overlay.showText(50)
-			.attachKeyFrame()
 			.text("- or by pipes.")
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(burner));
 		scene.idle(10);
-
+		
 		for (int i = 0; i < blocks.length; i++) {
 			scene.idle(5);
 			scene.world.showSection(util.select.position(blocks[i]), Direction.EAST);
 		}
 		scene.idle(20);
+	}
+	
+	
+	public static void modularAccumulator(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("modular_accumulator", "Accumulator");
+		scene.configureBasePlate(0, 0, 4);
+		scene.showBasePlate();
+		scene.idle(15);
+		
+		BlockPos cIn = new BlockPos(1, 3, 1);
+		BlockPos cOut = new BlockPos(2, 3, 2);
+		
+		var accumulator = util.select.fromTo(1, 1, 1, 2, 2, 2);
+		//scene.world.showSection(accumulator, Direction.EAST);
+		ElementLink<WorldSectionElement> accumulatorLink = scene.world.showIndependentSection(accumulator, Direction.EAST);
+		scene.idle(15);
+		scene.overlay.showOutline(PonderPalette.GREEN, accumulatorLink, accumulator, 50);
+		
+		scene.overlay.showText(50)
+			.text("The Accumulator is a multiblock")
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(cIn));
+		scene.idle(60);
+		scene.overlay.showText(50)
+			.text("It can store large amounts of energy")
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(cIn));
+		scene.idle(60);
+		scene.world.showSection(util.select.position(cIn), Direction.DOWN);
+		scene.idle(5);
+		scene.world.showSection(util.select.position(cOut), Direction.DOWN);
+		
+		scene.idle(15);
+		scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(cIn), Pointing.DOWN).rightClick()
+				.withItem(new ItemStack(AllItems.WRENCH.get())), 40);
+		scene.world.setBlock(cIn, CABlocks.CONNECTOR_COPPER.getDefaultState().setValue(ConnectorBlock.FACING, Direction.DOWN).setValue(ConnectorBlock.MODE, ConnectorMode.Push), false);
+		scene.overlay.showText(50)
+			.attachKeyFrame()
+			.text("Configure an input connector,")
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(cIn));
+		
+		scene.idle(60);
+		scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(cOut), Pointing.DOWN).rightClick()
+				.withItem(new ItemStack(AllItems.WRENCH.get())), 40);
+		scene.world.setBlock(cOut, CABlocks.CONNECTOR_COPPER.getDefaultState().setValue(ConnectorBlock.FACING, Direction.DOWN).setValue(ConnectorBlock.MODE, ConnectorMode.Pull), false);
+		scene.overlay.showText(50)
+			.text("and an output connector.")
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(cOut));
 	}
 }

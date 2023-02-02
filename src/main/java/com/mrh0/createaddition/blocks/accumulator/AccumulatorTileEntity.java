@@ -276,12 +276,12 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		}
 		
 		
-		energy.extractEnergy(networkOut.push(energy.extractEnergy(demandOut, true)), false);
+		localEnergy.extractEnergy(networkOut.push(localEnergy.extractEnergy(demandOut, true)), false);
 		
 		/*energy.receiveEnergy(networkOut.push(energy.extractEnergy(demandOut, false)), false);*/
 		demandOut = networkOut.getDemand();
-		energy.receiveEnergy(networkIn.pull(Math.min(demandIn, energy.receiveEnergy(MAX_IN, true))), false);
-		demandIn = networkIn.demand(energy.receiveEnergy(MAX_IN, true));
+		localEnergy.receiveEnergy(networkIn.pull(Math.min(demandIn, localEnergy.receiveEnergy(MAX_IN, true))), false);
+		demandIn = networkIn.demand(localEnergy.receiveEnergy(MAX_IN, true));
 		
 	}
 	
@@ -329,12 +329,12 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 	
 	public void setEnergy(int energy) {
-		this.energy.setEnergy(energy);
+		this.localEnergy.setEnergy(energy);
 	}
 
 	@Override
 	public int getComparetorOverride() {
-		return (int)((double)energy.getEnergyStored() / (double)energy.getMaxEnergyStored() * 15d);
+		return (int)((double)localEnergy.getEnergyStored() / (double)localEnergy.getMaxEnergyStored() * 15d);
 	}
 	
 	@Override
@@ -352,7 +352,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
-				.append(Util.getTextComponent(energy)));
+				.append(Util.getTextComponent(localEnergy)));
 		
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(ChatFormatting.GRAY)));

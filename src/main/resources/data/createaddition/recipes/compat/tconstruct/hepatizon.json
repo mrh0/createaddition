@@ -2,16 +2,7 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "item": "minecraft:quartz"
-    },
-    {
-      "item": "minecraft:quartz"
-    },
-    {
-      "item": "minecraft:quartz"
-    },
-    {
-      "item": "minecraft:quartz"
+      "tag": "forge:obsidian"
     },
     {
       "tag": "forge:ingots/cobalt"

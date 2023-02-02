@@ -9,6 +9,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -28,7 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
@@ -76,8 +77,8 @@ public class CreateAddition {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(MobEffect.class, CreateAddition::onRegisterEffectEvent);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, CARecipes::register);
 
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         MinecraftForge.EVENT_BUS.register(this);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
@@ -93,6 +94,7 @@ public class CreateAddition {
         CATileEntities.register();
         CAItems.register();
         CAFluids.register();
+        CARecipes.register(eventBus);
         CAPartials.init();
     }
 
@@ -100,7 +102,7 @@ public class CreateAddition {
     	CAPotatoCannonProjectiles.register();
     	BlockStressValues.registerProvider(MODID, AllConfigs.SERVER.kinetics.stressValues);
     	BoilerHeaters.registerHeater(CABlocks.LIQUID_BLAZE_BURNER.get(), (level, pos, state) -> {
-    		HeatLevel value = state.getValue(LiquidBlazeBurner.HEAT_LEVEL);
+    		HeatLevel value = state.getValue(LiquidBlazeBurnerBlock.HEAT_LEVEL);
 			if (value == HeatLevel.NONE) {
 				return -1;
 			}
@@ -121,6 +123,7 @@ public class CreateAddition {
         RenderType cutout = RenderType.cutoutMipped();       
 		
         ItemBlockRenderTypes.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(CABlocks.BARBED_WIRE.get(), cutout);
     }
     
     public void postInit(FMLLoadCompleteEvent evt) {
@@ -129,7 +132,7 @@ public class CreateAddition {
         Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
         Network.registerMessage(i++, RemoveConnectorPacket.class, RemoveConnectorPacket::encode, RemoveConnectorPacket::decode, RemoveConnectorPacket::handle);
         
-    	System.out.println("Create Crafts & Addition Initialized!");
+    	System.out.println("Create Crafts & Additions Initialized!");
     }
     
     @SubscribeEvent

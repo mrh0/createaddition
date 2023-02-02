@@ -19,38 +19,7 @@ public class CAFluids {
 			.creativeModeTab(() -> ModGroup.MAIN);
 	
 	public static FluidEntry<ForgeFlowingFluid.Flowing> SEED_OIL;
-	
-	/*public static final FluidEntry<ForgeFlowingFluid.Flowing> SEED_OIL =
-			REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition","fluid/seed_oil_still"), new ResourceLocation("createaddition","fluid/seed_oil_flow"),
-					NoColorFluidAttributes::new)//.standardFluid("seed_oil", NoColorFluidAttributes::new)
-					.attributes(b -> b.viscosity(2000)
-							.density(1400))
-					.properties(p -> p.levelDecreasePerBlock(2)
-							.tickRate(15)
-							.slopeFindDistance(6)
-							.explosionResistance(100f))
-					.source(ForgeFlowingFluid.Source::new)
-					.bucket()
-					.properties(p -> p.stacksTo(1))
-					.build()
-					.register();*/
-	
 	public static FluidEntry<ForgeFlowingFluid.Flowing> BIOETHANOL;
-	
-	/*public static final FluidEntry<ForgeFlowingFluid.Flowing> BIOETHANOL =
-			REGISTRATE.fluid("bioethanol", new ResourceLocation("createaddition","fluid/bioethanol_still"), new ResourceLocation("createaddition","fluid/bioethanol_flow"),
-					NoColorFluidAttributes::new)
-					.attributes(b -> b.viscosity(2500)
-							.density(1600))
-					.properties(p -> p.levelDecreasePerBlock(2)
-							.tickRate(15)
-							.slopeFindDistance(6)
-							.explosionResistance(100f))
-					.source(ForgeFlowingFluid.Source::new)
-					.bucket()
-					.properties(p -> p.stacksTo(1))
-					.build()
-					.register();*/
 	
 	private static class NoColorFluidAttributes extends FluidAttributes {
 		protected NoColorFluidAttributes(Builder builder, Fluid fluid) {

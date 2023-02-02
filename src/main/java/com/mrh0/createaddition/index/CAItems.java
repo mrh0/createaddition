@@ -50,11 +50,6 @@ public class CAItems {
 			REGISTRATE.item("biomass_pellet", BiomassPellet::new)
 			.register();
 	
-	public static final ItemEntry<Item> STRAW =
-			REGISTRATE.item("straw", Item::new)
-			.properties(p -> p.stacksTo(16))
-			.register();
-	
 	/*public static final ItemEntry<Multimeter> MULTIMETER =
 		REGISTRATE.item("multimeter", Multimeter::new)
 			.properties((p) -> p.stacksTo(1))
@@ -112,6 +107,9 @@ public class CAItems {
 	public static final ItemEntry<Item> BRASS_ROD =
 			REGISTRATE.item("brass_rod", Item::new).register();
 	
+	public static final ItemEntry<WireSpool> FESTIVE_SPOOL =
+			REGISTRATE.item("festive_spool", WireSpool::new).register();
+	
 	public static final ItemEntry<HiddenIngredientItem> CAKE_BASE =
 			REGISTRATE.item("cake_base", HiddenIngredientItem::new)
 				.register();
@@ -119,25 +117,23 @@ public class CAItems {
 			REGISTRATE.item("cake_base_baked", HiddenIngredientItem::new)
 				.register();
 	
-	/*public static final ItemEntry<WireSpool> DEVTOOL =
-			REGISTRATE.item("devtool", WireSpool::new)
-				.properties((p) -> p.maxStackSize(1))
-				.register();*/
-	
-	
+	public static final ItemEntry<Item> STRAW =
+			REGISTRATE.item("straw", Item::new)
+			.properties(p -> p.stacksTo(16))
+			.register();
 	
 	public static void register() {
 		REGISTRATE.addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
 		//Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
 		REGISTRATE.addToSection(COPPER_SPOOL, AllSections.MATERIALS);
 		REGISTRATE.addToSection(GOLD_SPOOL, AllSections.MATERIALS);
+		REGISTRATE.addToSection(FESTIVE_SPOOL, AllSections.MATERIALS);
 		REGISTRATE.addToSection(SPOOL, AllSections.MATERIALS);
 		
 		REGISTRATE.addToSection(BIOMASS_PELLET, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
+		
 		REGISTRATE.addToSection(STRAW, AllSections.MATERIALS);
-		
-		
 	}
 }

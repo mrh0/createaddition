@@ -1,7 +1,7 @@
 package com.mrh0.createaddition.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
+import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.index.CABlocks;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
@@ -19,7 +19,7 @@ public class AnimatedTeslaCoil extends AnimatedKinetics {
 		matrixStack.translate(-2, 18, 0);
 		int scale = 22;
 		
-		GuiGameElement.of(CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.DOWN).setValue(TeslaCoil.POWERED, true))
+		GuiGameElement.of(CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoilBlock.FACING, Direction.DOWN).setValue(TeslaCoilBlock.POWERED, true))
 			.rotateBlock(22.5, 22.5, 0)
 			.scale(scale)
 			.render(matrixStack);

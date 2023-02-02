@@ -89,11 +89,6 @@ public class CreateAdditionJEI implements IModPlugin {
 	public void registerRecipes(IRecipeRegistration registration) {
 		ingredientManager = registration.getIngredientManager();
 		ALL.forEach(c -> c.registerRecipes(registration));
-
-		List<ConversionRecipe> r1 = new ArrayList<>();
-		//r1.add(ConversionRecipe.create(AllItems.CHROMATIC_COMPOUND.asStack(), CAItems.OVERCHARGED_ALLOY.asStack()));
-
-		registration.addRecipes(r1, new ResourceLocation("create:mystery_conversion"));
 	}
 
 	@Override

@@ -22,8 +22,8 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class TeslaCoil extends Block implements ITE<TeslaCoilTileEntity>, IWrenchable {
-	public TeslaCoil(Properties props) {
+public class TeslaCoilBlock extends Block implements ITE<TeslaCoilTileEntity>, IWrenchable {
+	public TeslaCoilBlock(Properties props) {
 		super(props);
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
 	}

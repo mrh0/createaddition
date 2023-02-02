@@ -41,11 +41,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 
-public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE<LiquidBlazeBurnerTileEntity>, IWrenchable {
+public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implements ITE<LiquidBlazeBurnerTileEntity>, IWrenchable {
 
 	public static final EnumProperty<HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", HeatLevel.class);
 
-	public LiquidBlazeBurner(Properties properties) {
+	public LiquidBlazeBurnerBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, HeatLevel.NONE));
 	}
@@ -88,7 +88,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return ITE.super.newBlockEntity(pos, state);
 	}
-
+	
 	@Override
 	public Item asItem() {
 		return AllBlocks.BLAZE_BURNER.get().asItem();
@@ -97,8 +97,8 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
 		BlockHitResult blockRayTraceResult) {
-
-
+		
+		
 		/*if (world.isClientSide())
 			return InteractionResult.CONSUME;
 		BlockEntity tileentity = world.getBlockEntity(pos);
@@ -118,6 +118,7 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 			Optional<LiquidBurningRecipe> recipe = cbte.find(stack, world);
 			if (!recipe.isPresent())
 				return InteractionResult.SUCCESS;
+
 			LazyOptional<IFluidHandler> tecap = cbte.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
 			if (!tecap.isPresent())
 				return InteractionResult.SUCCESS;
@@ -130,9 +131,9 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 			player.playSound(SoundEvents.BUCKET_EMPTY, 1f, 1f);
 		}
 		return InteractionResult.PASS;*/
-
-
-
+		
+		
+		
 		ItemStack heldItem = player.getItemInHand(hand);
 		HeatLevel heat = state.getValue(HEAT_LEVEL);
 
@@ -176,12 +177,8 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 		ItemStack stack, boolean doNotConsume, boolean forceOverflow, boolean simulate) {
 		if (!state.hasBlockEntity())
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
-		if(stack == null)
-			return InteractionResultHolder.fail(ItemStack.EMPTY);
+
 		BlockEntity te = world.getBlockEntity(pos);
-		if(te == null)
-			return InteractionResultHolder.fail(ItemStack.EMPTY);
-		
 		if (!(te instanceof LiquidBlazeBurnerTileEntity))
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 		LiquidBlazeBurnerTileEntity burnerTE = (LiquidBlazeBurnerTileEntity) te;
@@ -232,8 +229,8 @@ public class LiquidBlazeBurner extends HorizontalDirectionalBlock implements ITE
 	public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
 		return false;
 	}
-
-
+	
+	
 
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {

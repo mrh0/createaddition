@@ -18,14 +18,16 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 	protected final ResourceLocation id;
 	protected FluidIngredient fluidIngredients;
 	protected int burnTime;
-
+	protected boolean superheated;
+	
 	public static RecipeType<LiquidBurningRecipe> TYPE = new LiquidBurningRecipeType();
 	@SuppressWarnings("deprecation")
 	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "liquid_burning"));
-	public LiquidBurningRecipe(ResourceLocation id, FluidIngredient fluid, int burnTime) {
+	public LiquidBurningRecipe(ResourceLocation id, FluidIngredient fluid, int burnTime, boolean superheated) {
 		this.id = id;
 		this.fluidIngredients = fluid;
 		this.burnTime = burnTime;
+		this.superheated = superheated;
 	}
 
 	@Override
@@ -35,8 +37,6 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 		if(wrapper == null)
 			return false;
 		if(wrapper.fluid == null)
-			return false;
-		if(world == null)
 			return false;
 		return fluidIngredients.test(wrapper.fluid);
 	}
@@ -74,8 +74,12 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 	public FluidIngredient getFluidIngredient() {
 		return fluidIngredients;
 	}
-
+	
 	public int getBurnTime() {
 		return this.burnTime;
+	}
+	
+	public boolean isSuperheated() {
+		return this.superheated;
 	}
 }

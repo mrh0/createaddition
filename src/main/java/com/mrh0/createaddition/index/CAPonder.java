@@ -16,8 +16,6 @@ public class CAPonder {
 	static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(CreateAddition.MODID);
 	
 	public static void register() {
-		//PonderRegistry..(CreateAddition.MODID);
-
 		HELPER.addStoryBoard(CABlocks.ELECTRIC_MOTOR, "electric_motor", PonderScenes::electricMotor, PonderTag.KINETIC_SOURCES, ELECTRIC);
 		HELPER.addStoryBoard(CABlocks.ALTERNATOR, "alternator", PonderScenes::alternator, PonderTag.KINETIC_APPLIANCES, ELECTRIC);
 		HELPER.addStoryBoard(CABlocks.ROLLING_MILL, "rolling_mill", PonderScenes::rollingMill, PonderTag.KINETIC_APPLIANCES);
@@ -26,6 +24,7 @@ public class CAPonder {
 		HELPER.addStoryBoard(CABlocks.TESLA_COIL, "tesla_coil_hurt", PonderScenes::teslaCoilHurt, PonderTag.LOGISTICS, ELECTRIC);
 		HELPER.addStoryBoard(CAItems.STRAW, "liquid_blaze_burner", PonderScenes::liquidBlazeBurner, PonderTag.LOGISTICS);
 		HELPER.addStoryBoard(AllBlocks.BLAZE_BURNER, "liquid_blaze_burner", PonderScenes::liquidBlazeBurner, PonderTag.LOGISTICS);
+		HELPER.addStoryBoard(CABlocks.MODULAR_ACCUMULATOR, "accumulator", PonderScenes::modularAccumulator, PonderTag.LOGISTICS, ELECTRIC);
 		
 		
 		if(CreateAddition.CC_ACTIVE)
@@ -39,13 +38,13 @@ public class CAPonder {
 			.add(CABlocks.ALTERNATOR);
 		
 		PonderRegistry.TAGS.forTag(PonderTag.LOGISTICS)
-			.add(CABlocks.TESLA_COIL);
+			.add(CABlocks.TESLA_COIL)
+			.add(CABlocks.MODULAR_ACCUMULATOR);
 		
 		PonderRegistry.TAGS.forTag(ELECTRIC)
 			.add(CABlocks.ELECTRIC_MOTOR)
 			.add(CABlocks.ALTERNATOR)
-			.add(CABlocks.TESLA_COIL);
-
-		//PonderRegistry.endRegistration();
+			.add(CABlocks.TESLA_COIL)
+			.add(CABlocks.MODULAR_ACCUMULATOR);
 	}
 }

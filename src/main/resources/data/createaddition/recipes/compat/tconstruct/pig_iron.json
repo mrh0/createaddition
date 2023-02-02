@@ -8,20 +8,13 @@
       "tag": "forge:slimeball/blood"
     },
     {
-      "tag": "forge:slimeball/blood"
-    },
-    {
-      "item": "minecraft:honey_bottle"
+      "item": "minecraft:clay_ball"
     }
   ],
   "results": [
     {
       "item": "tconstruct:pig_iron_ingot",
       "count": 2
-    },
-    {
-      "item": "minecraft:bottle",
-      "count": 1
     }
   ],
   "heatRequirement": "heated",

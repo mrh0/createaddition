@@ -1,5 +1,6 @@
 {
 	"createaddition.tooltip.energy.stored": "Stored Energy:",
+	"createaddition.tooltip.energy.capacity": "Capacity:",
 	"createaddition.tooltip.energy.consumption": "Energy Usage:",
 	"createaddition.tooltip.energy.production": "Energy Generated:",
 	"createaddition.tooltip.energy.charged": "Charged",
@@ -10,14 +11,20 @@
 	"createaddition.tooltip.energy.input": "Input",
 	"createaddition.tooltip.energy.output": "Output",
 	
+	"createaddition.tooltip.energy.mode": "Mode:",
+	"createaddition.tooltip.energy.push": "Push",
+	"createaddition.tooltip.energy.pull": "Pull",
+	"createaddition.tooltip.energy.passive": "Passive",
+	"createaddition.tooltip.energy.none": "None",
+	
 	"createaddition.tooltip.accumulator.info": "Accumulator Info:",
 	"createaddition.tooltip.relay.info": "Relay Info:",
 	"createaddition.tooltip.connector.info": "Connector Info:",
 	
 	"createaddition.recipe.rolling": "Rolling",
-	"createaddition.recipe.liquid_burning": "Liquid Burning",
 	"createaddition.recipe.rolling.sequence": "Rolling in Mill",
 	"createaddition.recipe.charging": "Charging",
+	"createaddition.recipe.liquid_burning": "Liquid Burning",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
 	
@@ -30,7 +37,8 @@
 	
 	"item.createaddition.copper_spool": "Copper Spool",
 	"item.createaddition.copper_spool.tooltip": "SPOOL",
-	"item.createaddition.copper_spool.tooltip.summary": "R-Clicking two _Connectors_ will create a wire link between them and return an _Empty Spool_.",
+	"item.createaddition.copper_spool.tooltip.control1": "R-Clicking two Connectors",
+	"item.createaddition.copper_spool.tooltip.action1": "Will create a wire link between them and return an _Empty Spool_.",
 	
 	"item.createaddition.iron_wire": "Iron Wire",
 	"item.createaddition.iron_spool": "Iron Spool",
@@ -41,10 +49,16 @@
 	
 	"item.createaddition.gold_spool": "Gold Spool",
 	"item.createaddition.gold_spool.tooltip": "SPOOL",
-	"item.createaddition.gold_spool.tooltip.summary": "R-Clicking two _Connectors_ will create a wire link between them and return an _Empty Spool_.",
+	"item.createaddition.gold_spool.tooltip.control1": "R-Clicking two Connectors",
+	"item.createaddition.gold_spool.tooltip.action1": "Will create a wire link between them and return an _Empty Spool_.",
 	
 	"item.createaddition.gold_wire": "Gold Wire",
 	"item.createaddition.gold_rod": "Gold Rod",
+	
+	"item.createaddition.festive_spool": "Festive Lights Spool",
+	"item.createaddition.festive_spool.tooltip": "SPOOL",
+	"item.createaddition.festive_spool.tooltip.control1": "R-Clicking two Connectors",
+	"item.createaddition.festive_spool.tooltip.action1": "Will create a wire link between them and return an _Empty Spool_.",
 	
 	"item.createaddition.brass_rod": "Brass Rod",
 	"item.createaddition.bronze_rod": "Bronze Rod",
@@ -67,12 +81,13 @@
 	"item.createaddition.biomass": "Biomass",
 	"item.createaddition.biomass_pellet": "Biomass Pellet",
 	"item.createaddition.biomass_pellet.tooltip": "BIOMASS_PELLET",
-	"item.createaddition.biomass_pellet.tooltip.summary": "A _solid fuel_ which can smelt _5 items_ in a _Furnace_.",
+	"item.createaddition.biomass_pellet.tooltip.summary": "A powerful _solid fuel_.",
 	
 	"item.createaddition.spool": "Empty Spool",
 	"item.createaddition.spool.nbt": "Stores connection location.",
 	"item.createaddition.spool.tooltip": "SPOOL",
-	"item.createaddition.spool.tooltip.summary": "R-Clicking two _Connectors_ linked by a wire will remove the wire link and return a filled _spool_.",
+	"item.createaddition.spool.tooltip.control1": "R-Clicking two linked Connectors",
+	"item.createaddition.spool.tooltip.action1": "Will remove the wire link and return a filled _spool_.",
 	
 	"statusbar.createaddition.wire.linked": "Nodes linked",
 	"statusbar.createaddition.wire.linked_in": "Wire linked to input",
@@ -112,17 +127,21 @@
 	
 	"block.createaddition.accumulator": "Accumulator",
 	"block.createaddition.accumulator.tooltip": "ACCUMULATOR",
-	"block.createaddition.accumulator.tooltip.summary": "Accumulates electric charge. ",
-	"block.createaddition.accumulator.tooltip.condition1": "Output",
+	"block.createaddition.accumulator.tooltip.summary": "_[DEPRECATED]_ Accumulates electric charge.",
+	"block.createaddition.accumulator.tooltip.condition1": "Pull",
 	"block.createaddition.accumulator.tooltip.behaviour1": "Provides _FE_ to _wires_ connected to the _connector_ marked with a upwards arrow.",
-	"block.createaddition.accumulator.tooltip.condition2": "Input",
+	"block.createaddition.accumulator.tooltip.condition2": "Push",
 	"block.createaddition.accumulator.tooltip.behaviour2": "Accepts _FE_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
+	
+	"block.createaddition.modular_accumulator": "Accumulator",
 	
 	"block.createaddition.connector": "Connector",
 	"block.createaddition.connector.tooltip": "CONNECTOR",
-	"block.createaddition.connector.tooltip.summary": "Connects Forge Energy compatible blocks with _wires_ to transfer _FE_.",
+	"block.createaddition.connector.tooltip.summary": "Connects _Forge Energy_ compatible blocks with _wires_ to transfer _FE_.",
 	"block.createaddition.connector.tooltip.control1": "R-click",
 	"block.createaddition.connector.tooltip.action1": "While holding a _Copper Spool_ or _Gold Spool_ to create a _wire link_ between two _Connectors_.",
+	"block.createaddition.connector.tooltip.control2": "R-click with Wrench",
+	"block.createaddition.connector.tooltip.action2": "To cycle between _Push_, _Pull_, _Passive_, and _None_ modes.",
 	
 	"block.createaddition.connector_copper": "Copper Connector",
 	"block.createaddition.connector_copper.tooltip": "CONNECTOR",
@@ -139,9 +158,9 @@
 	"block.createaddition.redstone_relay": "Redstone Relay",
 	"block.createaddition.redstone_relay.tooltip": "REDSTONE_RELAY",
 	"block.createaddition.redstone_relay.tooltip.summary": "Allows _FE_ to pass from the _input connector_ to the _output connector_ when receiving a _redstone signal_.",
-	"block.createaddition.redstone_relay.tooltip.condition1": "Output",
+	"block.createaddition.redstone_relay.tooltip.condition1": "Pull",
 	"block.createaddition.redstone_relay.tooltip.behaviour1": "Provides _FE_ to _wires_ connected to the _connector_ marked with a upwards arrow.",
-	"block.createaddition.redstone_relay.tooltip.condition2": "Input",
+	"block.createaddition.redstone_relay.tooltip.condition2": "Push",
 	"block.createaddition.redstone_relay.tooltip.behaviour2": "Accepts _FE_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
 	
 	"block.createaddition.chocolate_cake": "Chocolate Cake",
@@ -149,6 +168,10 @@
 	
 	"block.createaddition.seed_oil": "Seed Oil",
 	"block.createaddition.bioethanol": "Bioethanol",
+	
+	"block.createaddition.barbed_wire": "Barbed Wire",
+	"block.createaddition.barbed_wire.tooltip": "BARBED_WIRE",
+	"block.createaddition.barbed_wire.tooltip.summary": "Inflicts damage when walked through.",
 	
 	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
 	
@@ -200,6 +223,23 @@
 	"createaddition.ponder.liquid_blaze_burner.text_1": "Giving the Blaze Burner a Straw",
 	"createaddition.ponder.liquid_blaze_burner.text_2": "will allow it to accept liquid fuels by Buckets",
 	"createaddition.ponder.liquid_blaze_burner.text_3": "- or by pipes.",
+	
+	"createaddition.ponder.modular_accumulator.header": "The Multi-block Accumulator",
+	"createaddition.ponder.modular_accumulator.text_1": "The Accumulator is a multi-block structure",
+	"createaddition.ponder.modular_accumulator.text_2": "It can store large amounts of electric energy",
+	"createaddition.ponder.modular_accumulator.text_3": "Configure an input connector",
+	"createaddition.ponder.modular_accumulator.text_4": "and an output connector.",
+	
+	"createaddition.display_source.modular_accumulator": "Accumulator",
+	"createaddition.display_source.accumulator.progress_bar": "Progress Bar",
+	"createaddition.display_source.accumulator.percent": "Percentage",
+	"createaddition.display_source.accumulator.current": "Energy Stored in FE",
+	"createaddition.display_source.accumulator.max": "Total Capacity",
+	"createaddition.display_source.accumulator.remaining": "Remaining FE",
+	"createaddition.display_source.accumulator.display": "Choose an Option:",
+	
+	"death.attack.barbed_wire": "%1$s tried to cross barbed wire",
+  	"death.attack.barbed_wire.player": "%1$s tried to cross barbed wire shock while fighting %2$s",
 	
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",

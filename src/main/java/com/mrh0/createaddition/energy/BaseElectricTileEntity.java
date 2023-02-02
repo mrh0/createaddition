@@ -2,6 +2,8 @@ package com.mrh0.createaddition.energy;
 
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 
@@ -18,7 +20,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public abstract class BaseElectricTileEntity extends SmartTileEntity {
 
-	protected final InternalEnergyStorage energy;
+	protected final InternalEnergyStorage localEnergy;
 	protected LazyOptional<IEnergyStorage> lazyEnergy;
 	
 	private boolean firstTickState = true;
@@ -26,11 +28,11 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	
 	public BaseElectricTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state, int CAPACITY, int MAX_IN, int MAX_OUT) {
 		super(tileEntityTypeIn, pos, state);
-		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
+		localEnergy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		this.CAPACITY = CAPACITY;
 		this.MAX_IN = MAX_IN;
 		this.MAX_OUT = MAX_OUT;
-		lazyEnergy = LazyOptional.of(() -> energy);
+		lazyEnergy = LazyOptional.of(() -> localEnergy);
 		setLazyTickRate(20);
 	}
 
@@ -52,13 +54,13 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	@Override
 	protected void read(CompoundTag compound, boolean arg1) {
 		super.read(compound, arg1);
-		energy.read(compound);
+		localEnergy.read(compound);
 	}
 	
 	@Override
 	public void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
-		energy.write(compound);
+		localEnergy.write(compound);
 	}
 	
 	@Override
@@ -71,12 +73,15 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		for(Direction side : Direction.values()) {
 			if(!isEnergyOutput(side))
 				continue;
-			energy.outputToSide(level, worldPosition, side, max);
+			localEnergy.outputToSide(level, worldPosition, side, max);
 		}
 	}
 	
 	@Override
 	public void tick() {
+		updateBlocked--;
+		if(updateBlocked < 0)
+			updateBlocked = 0;
 		super.tick();
 		if(firstTickState)
 			firstTick();
@@ -91,14 +96,23 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		if(level.isClientSide())
 			return;
 		for(Direction side : Direction.values()) {
-			BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
-			if(te == null) {
-				setCache(side, LazyOptional.empty());
-				continue;
-			}
-			LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
-			setCache(side, le);
+			updateCache(side);
 		}
+	}
+	
+	int updateBlocked = 0;
+	
+	public void updateCache(Direction side) {
+		if(updateBlocked > 10) return;
+		updateBlocked++;
+		BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
+		if(te == null) {
+			setCache(side, LazyOptional.empty());
+			return;
+		}
+		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		setCache(side, le);
+		le.addListener((es) -> updateCache(side));
 	}
 	
 	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
@@ -131,22 +145,22 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		}
 	}
 	
-	public IEnergyStorage getCachedEnergy(Direction side) {
+	public LazyOptional<IEnergyStorage> getCachedEnergy(Direction side) {
 		switch(side) {
 			case DOWN:
-				return escacheDown.orElse(null);
+				return escacheDown;
 			case EAST:
-				return escacheEast.orElse(null);
+				return escacheEast;
 			case NORTH:
-				return escacheNorth.orElse(null);
+				return escacheNorth;
 			case SOUTH:
-				return escacheSouth.orElse(null);
+				return escacheSouth;
 			case UP:
-				return escacheUp.orElse(null);
+				return escacheUp;
 			case WEST:
-				return escacheWest.orElse(null);
+				return escacheWest;
 		}
-		return null;
+		return LazyOptional.empty();
 	}
 	
 

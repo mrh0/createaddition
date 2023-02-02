@@ -2,7 +2,7 @@ package com.mrh0.createaddition.util;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
@@ -12,6 +12,14 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class Util {
+	public static int max(int...v) {
+		int m = Integer.MIN_VALUE;
+		for(int i : v)
+			if(i > m)
+				m = i;
+		return m;
+	}
+	
 	public static int min(int...v) {
 		int m = Integer.MAX_VALUE;
 		for(int i : v)
@@ -24,14 +32,6 @@ public class Util {
 		int m = 0;
 		for(int i = 0; i < v.length; i++)
 			if(v[i] < v[m])
-				m = i;
-		return m;
-	}
-	
-	public static int max(int...v) {
-		int m = Integer.MIN_VALUE;
-		for(int i : v)
-			if(i > m)
 				m = i;
 		return m;
 	}
@@ -58,24 +58,30 @@ public class Util {
 	}
 	
 	public static ItemStack mergeStack(ItemStack add, ItemStack to) {
-		return new ItemStack(to.isEmpty()?add.getItem():to.getItem(), to.getCount() + add.getCount());
+		return new ItemStack(to.isEmpty() ? add.getItem() : to.getItem(), to.getCount() + add.getCount());
 	}
 	
 	public static String format(int n) {
-		if(n > 1000000)
-			return Math.round((double)n/100000d)/10d + "M";
+		if(n > 1000_000_000)
+			return Math.round((double)n/100_000_000d)/10d + "G";
+		if(n > 1000_000)
+			return Math.round((double)n/100_000d)/10d + "M";
 		if(n > 1000)
 			return Math.round((double)n/100d)/10d + "K";
 		return n + "";
 	}
 	
-	public static Component getTextComponent(IEnergyStorage ies, String nan, String unit) {
+	public static MutableComponent getTextComponent(IEnergyStorage ies, String nan, String unit) {
 		if(ies == null)
 			return new TextComponent(nan);
-		return new TextComponent(format(ies.getEnergyStored())+unit).withStyle(ChatFormatting.AQUA).append(new TextComponent(" / ").withStyle(ChatFormatting.GRAY)).append(new TextComponent(format(ies.getMaxEnergyStored())+unit));
+		return getTextComponent(ies.getEnergyStored(), unit).withStyle(ChatFormatting.AQUA).append(new TextComponent(" / ").withStyle(ChatFormatting.GRAY)).append(getTextComponent(ies.getMaxEnergyStored(), unit));
 	}
 	
-	public static Component getTextComponent(IEnergyStorage ies) {
+	public static MutableComponent getTextComponent(IEnergyStorage ies) {
 		return getTextComponent(ies, "NaN", "fe");
+	}
+	
+	public static MutableComponent getTextComponent(int value, String unit) {
+		return new TextComponent(format(value)+unit);
 	}
 }

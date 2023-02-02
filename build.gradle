@@ -194,6 +194,7 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
     runtimeOnly fg.deobf("curse.maven:immersive-engineering-231951:3964014")
+    runtimeOnly fg.deobf("curse.maven:immersive-petroleum-268250:4314934")
 
     implementation fg.deobf("curse.maven:create-328085:4174329")
     implementation fg.deobf("curse.maven:flywheel-486392:4174748")

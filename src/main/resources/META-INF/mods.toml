@@ -34,7 +34,7 @@ credits="Special Thanks to the Forge Discord and the Create Team." #optional
 authors="MRH0" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Create Crafts & Additions extends Create and acts as a bridge between electricity and kinetic energy from Create by adding an Electric Motor which generates kinetic energy from Forge energy and an Alternator which does the opposite.
+Create Crafts & Additions extends Create and acts as a bridge between electric and kinetic energiy from Create.
 Join the Discord: https://discord.gg/mRbNnyKTEu
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
@@ -52,7 +52,7 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[0.5a,0.6)"
+    versionRange="[0.5h,0.6)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
@@ -71,12 +71,6 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
     modId="computercraft"
     mandatory=false
     versionRange="[0,)"
-    ordering="NONE"
-    side="BOTH"
-[[dependencies.createaddition]]
-    modId="appliedenergistics2"
-    mandatory=false
-    versionRange="[10.0.0,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]

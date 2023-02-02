@@ -41,7 +41,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 
-public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>, IWrenchable {
+public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEntity>, IWrenchable {
 
 	public static final BooleanProperty VERTICAL = BooleanProperty.create("vertical");
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -61,7 +61,7 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	protected static final VoxelShape SOUTH_SHAPE = Block.box(0, 0, 14, 16, 16, 16);
 	
 	
-	public RedstoneRelay(Properties properties) {
+	public RedstoneRelayBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState().setValue(VERTICAL, false).setValue(HORIZONTAL_FACING, Direction.NORTH).setValue(POWERED, false));
 	}
@@ -98,6 +98,7 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 			return defaultBlockState().setValue(HORIZONTAL_FACING, c.getClickedFace().getOpposite()).setValue(VERTICAL, true);
 	}
 	
+	@Override
 	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
 		boolean flag = state.getValue(POWERED);
 		boolean flag1 = this.shouldBePowered(worldIn, pos, state);
@@ -265,7 +266,7 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
 		if(!world.isClientSide()) {
 			BlockEntity be = world.getBlockEntity(pos);
-			if(be != null && !(newState.getBlock() instanceof RedstoneRelay))
+			if(be != null && !(newState.getBlock() instanceof RedstoneRelayBlock))
 				if(be instanceof RedstoneRelayTileEntity)
 					((RedstoneRelayTileEntity) be).onBlockRemoved(true);
 		}

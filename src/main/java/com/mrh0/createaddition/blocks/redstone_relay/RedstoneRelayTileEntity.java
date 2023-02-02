@@ -89,8 +89,8 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	
 	@Override
 	public Vec3 getNodeOffset(int node) {
-		boolean vertical = getBlockState().getValue(RedstoneRelay.VERTICAL);
-		Direction direction = getBlockState().getValue(RedstoneRelay.HORIZONTAL_FACING);
+		boolean vertical = getBlockState().getValue(RedstoneRelayBlock.VERTICAL);
+		Direction direction = getBlockState().getValue(RedstoneRelayBlock.HORIZONTAL_FACING);
 		if(node > 3) {
 			switch(direction) {
 				case NORTH:
@@ -134,8 +134,8 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	
 	@Override
 	public int getNodeFromPos(Vec3 vec) {
-		Direction dir = level.getBlockState(worldPosition).getValue(RedstoneRelay.HORIZONTAL_FACING);
-		boolean vertical = level.getBlockState(worldPosition).getValue(RedstoneRelay.VERTICAL);
+		Direction dir = level.getBlockState(worldPosition).getValue(RedstoneRelayBlock.HORIZONTAL_FACING);
+		boolean vertical = level.getBlockState(worldPosition).getValue(RedstoneRelayBlock.VERTICAL);
 		boolean upper = true;
 		vec = vec.subtract(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
 		if(vertical) {
@@ -313,7 +313,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		BlockState bs = getBlockState();
 		if(!bs.is(CABlocks.REDSTONE_RELAY.get()))
 			return;
-		if(bs.getValue(RedstoneRelay.POWERED)) {
+		if(bs.getValue(RedstoneRelayBlock.POWERED)) {
 			networkOut.push(networkIn.pull(demand));
 			demand = networkIn.demand(networkOut.getDemand());
 		}
