@@ -24,7 +24,6 @@ public class ModularAccumulatorRenderer extends SafeTileEntityRenderer<ModularAc
 	protected void renderSafe(ModularAccumulatorTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer,
 		int light, int overlay) {
 		if (!te.isController()) return;
-		// if(te.width < 2) return;
 		renderDial(te, partialTicks, ms, buffer, light, overlay);
 		te.observe();
 	}
@@ -37,8 +36,8 @@ public class ModularAccumulatorRenderer extends SafeTileEntityRenderer<ModularAc
 		TransformStack msr = TransformStack.cast(ms);
 		msr.translate(te.width / 2f, te.height - 0.5f, te.width / 2f);
 
-		float dialPivotY = 5f/16f;//5.75f / 16;
-		float dialPivotZ = 8f/16f;//5.75f / 16;
+		float dialPivotY = 6f/16f;
+		float dialPivotZ = 8f/16f;
 		float progress = te.gauge.getValue(partialTicks);
 
 		for (Direction d : Iterate.horizontalDirections) {

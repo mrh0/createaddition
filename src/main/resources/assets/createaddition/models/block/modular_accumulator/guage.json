@@ -7,8 +7,8 @@
 	"elements": [
 		{
 			"name": "GaugeButton",
-			"from": [15.5, 4.2, 7.5],
-			"to": [16.5, 5.3, 8.6],
+			"from": [15.5, 5.2, 7.5],
+			"to": [16.5, 6.3, 8.6],
 			"rotation": {"angle": 0, "axis": "y", "origin": [10, 8, 8]},
 			"faces": {
 				"north": {"uv": [1, 11, 2, 12], "texture": "#1"},
@@ -21,8 +21,8 @@
 		},
 		{
 			"name": "GuageMetalBack",
-			"from": [14, 2.05, 3.05],
-			"to": [15.95, 9.95, 12.95],
+			"from": [14, 3.05, 3.05],
+			"to": [15.95, 10.95, 12.95],
 			"rotation": {"angle": 0, "axis": "y", "origin": [9, 8, 8]},
 			"faces": {
 				"north": {"uv": [11, 0, 13, 8], "texture": "#1"},

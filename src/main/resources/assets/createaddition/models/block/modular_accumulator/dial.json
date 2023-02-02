@@ -6,9 +6,9 @@
 	"elements": [
 		{
 			"name": "GaugeDial",
-			"from": [15.75, 4.5, 8],
-			"to": [16.45, 5.5, 11.25],
-			"rotation": {"angle": 0, "axis": "x", "origin": [16, 5, 8]},
+			"from": [15.75, 5.5, 8],
+			"to": [16.45, 6.5, 11.25],
+			"rotation": {"angle": 0, "axis": "x", "origin": [16, 6, 8]},
 			"faces": {
 				"north": {"uv": [4, 11, 5, 12], "rotation": 180, "texture": "#2"},
 				"east": {"uv": [2, 11, 5, 12], "rotation": 180, "texture": "#2"},
