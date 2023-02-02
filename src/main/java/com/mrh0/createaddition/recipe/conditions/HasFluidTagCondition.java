@@ -55,6 +55,6 @@ public class HasFluidTagCondition implements ICondition {
 
 	@Override
 	public boolean test(IContext context) {
-		return context.getTag(new TagKey<Fluid>(Keys.FLUIDS, tagName)).getValues().isEmpty();
+		return !context.getTag(new TagKey<Fluid>(Keys.FLUIDS, tagName)).getValues().isEmpty();
 	}
 }
