@@ -13,11 +13,11 @@
 		},
 		"C":
 		{
-			"tag": "c:plates/copper"
+			"tag": "c:copper_plates"
 		},
 		"I":
 		{
-			"tag": "c:plates/iron"
+			"tag": "c:iron_plates"
 		},
 		"T":
 		{

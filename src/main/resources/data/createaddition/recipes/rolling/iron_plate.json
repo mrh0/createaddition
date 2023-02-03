@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:rolling",
 	"input": {
-      	"tag": "c:plates/iron"
+      	"tag": "c:iron_plates"
 	},
 	"result": {
 		"item": "createaddition:iron_wire",
