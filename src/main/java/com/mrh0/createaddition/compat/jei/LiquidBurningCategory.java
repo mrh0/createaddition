@@ -3,6 +3,7 @@ package com.mrh0.createaddition.compat.jei;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.util.ClientMinecraftWrapper;
 import com.simibubi.create.compat.jei.category.animations.AnimatedBlazeBurner;
@@ -31,6 +32,10 @@ public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe>
 				.filter(e -> e != null)
 				.map((e) -> new ItemStack(e.getFluid().getBucket()))
 				.toList();
+		builder
+			.addSlot(RecipeIngredientRole.INPUT, getBackground().getWidth() / 2 -56, 3)
+			.setBackground(getRenderedSlot(), -1, -1)
+			.addItemStack(new ItemStack(CAItems.STRAW.get()));
 		builder
 			.addSlot(RecipeIngredientRole.INPUT, getBackground().getWidth() / 2 -36, 3)
 			.setBackground(getRenderedSlot(), -1, -1)
