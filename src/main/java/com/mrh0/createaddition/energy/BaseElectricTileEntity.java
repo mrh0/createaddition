@@ -1,11 +1,8 @@
 package com.mrh0.createaddition.energy;
 
-import java.util.List;
-
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,6 +13,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
+import java.util.List;
+import java.util.Objects;
+
+@SuppressWarnings("CommentedOutCode")
 public abstract class BaseElectricTileEntity extends SmartTileEntity implements EnergyTransferable {
 
 	protected final InternalEnergyStorage energy;
@@ -69,12 +70,6 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity implements 
 		super.write(compound, clientPacket);
 		energy.write(compound);
 	}
-
-	@Override
-	public void invalidate() {
-		super.invalidate();
-		lazyEnergy.invalidate();
-	}
 	
 	@Deprecated
 	public void outputTick(int max) {
@@ -95,10 +90,10 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity implements 
 	
 	public void firstTick() {
 		updateCache();
-	};
+	}
 	
 	public void updateCache() {
-		if(level.isClientSide())
+		if(Objects.requireNonNull(level).isClientSide())
 			return;
 		for(Direction side : Direction.values()) {
 			BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
@@ -119,52 +114,24 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity implements 
 	private LazyOptional<EnergyStorage> escacheWest = LazyOptional.empty();
 	
 	public void setCache(Direction side, LazyOptional<EnergyStorage> storage) {
-		switch(side) {
-			case DOWN:
-				escacheDown = storage;
-				break;
-			case EAST:
-				escacheEast = storage;
-				break;
-			case NORTH:
-				escacheNorth = storage;
-				break;
-			case SOUTH:
-				escacheSouth = storage;
-				break;
-			case UP:
-				escacheUp = storage;
-				break;
-			case WEST:
-				escacheWest = storage;
-				break;
+		switch (side) {
+			case DOWN -> escacheDown = storage;
+			case EAST -> escacheEast = storage;
+			case NORTH -> escacheNorth = storage;
+			case SOUTH -> escacheSouth = storage;
+			case UP -> escacheUp = storage;
+			case WEST -> escacheWest = storage;
 		}
 	}
 	
 	public EnergyStorage getCachedEnergy(Direction side) {
-		switch(side) {
-			case DOWN:
-				return escacheDown.orElse(null);
-			case EAST:
-				return escacheEast.orElse(null);
-			case NORTH:
-				return escacheNorth.orElse(null);
-			case SOUTH:
-				return escacheSouth.orElse(null);
-			case UP:
-				return escacheUp.orElse(null);
-			case WEST:
-				return escacheWest.orElse(null);
-		}
-		return null;
-	}
-	
-
-	public boolean isValidUpgradeSide(BlockState state, Direction side) {
-		return false;
-	}
-	
-	public float getBoostPerUpgrade() {
-		return 0f;
+		return switch (side) {
+			case DOWN -> escacheDown.getValueUnsafer();
+			case EAST -> escacheEast.getValueUnsafer();
+			case NORTH -> escacheNorth.getValueUnsafer();
+			case SOUTH -> escacheSouth.getValueUnsafer();
+			case UP -> escacheUp.getValueUnsafer();
+			case WEST -> escacheWest.getValueUnsafer();
+		};
 	}
 }

@@ -3,16 +3,16 @@ plugins {
     id 'fabric-loom' version '1.0-SNAPSHOT'
     id 'eclipse'
     id 'maven-publish'
-    id 'io.github.juuxel.loom-quiltflower' version '1.+'
+    //id 'io.github.juuxel.loom-quiltflower' version '1.+'
     id 'org.quiltmc.quilt-mappings-on-loom' version '4.2.+'
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-version = 'fabric-1.18.2-20230121a'
+version = project.mod_version
 group = 'com.mrh0.createaddition'
-archivesBaseName = "createaddition"
+archivesBaseName = "createaddition-fabric+${project.minecraft_version}"
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
@@ -78,6 +78,7 @@ dependencies {
     }
 
     modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}+${project.minecraft_version}"
 
     modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}")
     modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
@@ -105,6 +106,15 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 }
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
 java {
     withSourcesJar()
 }

@@ -14,7 +14,7 @@
       "item": "createaddition:capacitor"
     },
     "P": {
-      "tag": "c:plates/brass"
+      "tag": "c:brass_plates"
     },
     "B": {
       "item": "create:brass_casing"

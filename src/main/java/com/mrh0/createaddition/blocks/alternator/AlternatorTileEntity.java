@@ -130,12 +130,6 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 	protected Block getStressConfigKey() {
 		return AllBlocks.MECHANICAL_MIXER.get();
 	}
-
-	@Override
-	public void invalidate() {
-        super.invalidate();
-		lazyEnergy.invalidate();
-	}
 	
 	public void firstTick() {
 		updateCache();

@@ -38,8 +38,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 	protected ScrollValueBehaviour generatedSpeed;
 	protected final InternalEnergyStorage energy;
 	private final LazyOptional<EnergyStorage> lazyEnergy;
-	private LazyOptional<ElectricMotorPeripheral> lazyPeripheral = null;
-	
+	public LazyOptional<ElectricMotorPeripheral> lazyPeripheral = null;
+
 	private boolean cc_update_rpm = false;
 	private int cc_new_rpm = 32;
 	
@@ -186,15 +186,6 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 	
 	public static int getEnergyConsumptionRate(int rpm) {
 		return Math.abs(rpm) > 0 ? (int)Math.max((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d), (double)MIN_CONSUMPTION) : 0;
-	}
-
-	@Override
-	public void invalidate() {
-		super.invalidate();
-
-		lazyEnergy.invalidate();
-		if(lazyPeripheral != null)
-			lazyPeripheral.invalidate();
 	}
 	
 	// CC

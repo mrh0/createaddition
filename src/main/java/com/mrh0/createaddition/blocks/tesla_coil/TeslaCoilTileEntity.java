@@ -1,9 +1,5 @@
 package com.mrh0.createaddition.blocks.tesla_coil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.index.CABlocks;
@@ -13,10 +9,9 @@ import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult;
+import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
-
 import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.DamageSourceAccessor;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
@@ -25,6 +20,8 @@ import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,12 +32,20 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.EnergyStorageUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+@SuppressWarnings("UnstableApiUsage")
 public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
 
-	private Optional<ChargingRecipe> recipeCache = Optional.empty();
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+	private Optional<ChargingRecipe> recipeCache;
 
-	private ItemStackHandler inputInv;
+	private final ItemStackHandler inputInv;
 	private int chargeAccumulator;
 
 	private static final long
@@ -55,15 +60,15 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		HURT_EFFECT_TIME_MOB = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get(),
 		HURT_EFFECT_TIME_PLAYER = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get(),
 		HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();
-	
-	protected ItemStack chargedStackCache;
+
 	protected int poweredTimer = 0;
 	
-	private static DamageSource dmgSource = DamageSourceAccessor.port_lib$init("tesla_coil");
+	private static final DamageSource dmgSource = DamageSourceAccessor.port_lib$init("tesla_coil");
 	
 	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, 0);
 		inputInv = new ItemStackHandler(1);
+		recipeCache = Optional.empty();
 	}
 	
 	public BeltProcessingBehaviour processingBehaviour;
@@ -90,22 +95,15 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	public long getConsumption() {
 		return CHARGE_RATE;
 	}
-	
-	protected float getItemCharge(EnergyStorage energy) {
-		if (energy == null)
-			return 0f;
-		return (float) energy.getAmount() / (float) energy.getCapacity();
-	}
 
 	protected ProcessingResult onCharge(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		ProcessingResult res = chargeCompundAndStack(transported, handler);
-		return res;
+		return chargeCompundAndStack(transported, handler);
 	}
 	
 	private void doDmg() {
 		energy.internalConsumeEnergy(HURT_ENERGY_REQUIRED);
 		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoil.FACING).getOpposite());
-		List<LivingEntity> ents = getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(HURT_RANGE));
+		List<LivingEntity> ents = Objects.requireNonNull(getLevel()).getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(HURT_RANGE));
 		for(LivingEntity e : ents) {
 			long dmg = HURT_DMG_MOB;
 			long time = HURT_EFFECT_TIME_MOB;
@@ -125,9 +123,8 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	@Override
 	public void tick() {
 		super.tick();
-		if(level.isClientSide())
-			return;
-		int signal = getLevel().getBestNeighborSignal(getBlockPos());
+		if (level != null && level.isClientSide()) return;
+		int signal = Objects.requireNonNull(getLevel()).getBestNeighborSignal(getBlockPos());
 		//System.out.println(signal + ":" + (energy.getEnergyStored() >= HURT_ENERGY_REQUIRED));
 		if(signal > 0 && energy.getAmount() >= HURT_ENERGY_REQUIRED)
 			poweredTimer = 10;
@@ -165,28 +162,57 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		}
 		return ProcessingResult.PASS;
 	}
-	
-	protected boolean chargeStack(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		EnergyStorage es = ContainerItemContext.withInitial(stack).find(EnergyStorage.ITEM);
-		if(es == null)
+
+	protected final boolean chargeStack(
+			final ItemStack stack,
+			final TransportedItemStack ignoredTransported,
+			final TransportedItemStackHandlerBehaviour ignoredHandler
+	) {
+		final var energyTag = "energy";
+		final EnergyStorage itemEnergy =  EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+
+		if (itemEnergy == null)
 			return false;
-		try (Transaction t = TransferUtil.getTransaction()) {
-			if (es.insert(1, t) != 1)
+
+		if (stack.getTag() == null)
+			stack.setTag(new CompoundTag());
+
+		// Make sure the targeted stack is energy storage
+		if (EnergyStorageUtil.isEnergyStorage(stack)) {
+			if (energy.getAmount() < stack.getCount())
 				return false;
-		}
-		if(energy.getAmount() < stack.getCount())
+
+			try (Transaction t = TransferUtil.getTransaction()) {
+				final var amountToUse = Math.min(getConsumption(), energy.getAmount());
+				final var compoundTag = stack.getTag();
+				final var energyAmount  = compoundTag.getDouble(energyTag);
+				final var energyCapacity = itemEnergy.getCapacity();
+				final var newAmount = energyAmount + amountToUse;
+
+				if (newAmount < itemEnergy.getCapacity()) {
+					energy.internalConsumeEnergy(itemEnergy.insert(amountToUse, t));
+					compoundTag.put(energyTag, DoubleTag.valueOf(newAmount));
+					t.commit();
+				} else if (energyAmount < energyCapacity) {
+					final long energyDiff = energyCapacity - (long) energyAmount;
+					System.out.println(energyDiff);
+					energy.internalConsumeEnergy(itemEnergy.insert(energyDiff, t));
+					compoundTag.put(energyTag, DoubleTag.valueOf(energyAmount + energyDiff));
+					t.commit();
+				} else {
+					return false;
+				}
+			}
+			return true;
+		} else {
 			return false;
-		try (Transaction t = TransferUtil.getTransaction()) {
-			energy.internalConsumeEnergy(es.insert(Math.min(getConsumption(), energy.getAmount()), t));
-			t.commit();
 		}
-		return true;
 	}
 	
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		if(!inputInv.getStackInSlot(0).sameItem(stack)) {
 			inputInv.setStackInSlot(0, stack);
-			recipeCache = find(new RecipeWrapper(inputInv), this.getLevel());
+			recipeCache = find(new RecipeWrapper(inputInv), Objects.requireNonNull(this.getLevel()));
 			chargeAccumulator = 0;
 		}
 		if(recipeCache.isPresent()) {
