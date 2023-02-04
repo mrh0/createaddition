@@ -67,7 +67,7 @@ public class GameEvents {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static void clientTickEvent(Minecraft client) {
+	public static void clientTickEvent(Minecraft ignoredClient) {
 		ObservePacket.tick();
 	}
 
