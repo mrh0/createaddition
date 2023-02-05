@@ -129,12 +129,6 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 		return AllBlocks.MECHANICAL_MIXER.get();
 	}
 	
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-		lazyEnergy.invalidate();
-	}
-	
 	public void firstTick() {
 		updateCache();
 	}

@@ -27,7 +27,8 @@ public class CreateAddition implements ModInitializer {
     public static boolean CC_ACTIVE = false;
     public static boolean AE2_ACTIVE = false;
     
-    private static final NonNullSupplier<CreateRegistrate> REGISTRATE = CreateRegistrate.lazy(CreateAddition.MODID);
+    private static final NonNullSupplier<CreateRegistrate> REGISTRATE =
+            NonNullSupplier.lazy(() -> CreateRegistrate.create(CreateAddition.MODID));
 
     @Override
     public void onInitialize() {
