@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "createaddition:zinc_sheet"
+    "createaddition:zinc_sheet",
+    "create:copper_sheet",
+    "create:iron_sheet",
+    "create:brass_sheet"
   ]
 }

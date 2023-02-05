@@ -2,7 +2,6 @@ package com.mrh0.createaddition.blocks.electric_motor;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoil;
-import com.mrh0.createaddition.compat.computercraft.ElectricMotorPeripheral;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
@@ -36,8 +35,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 	protected ScrollValueBehaviour generatedSpeed;
 	protected final InternalEnergyStorage energy;
 	private final LazyOptional<EnergyStorage> lazyEnergy;
-	private LazyOptional<ElectricMotorPeripheral> lazyPeripheral = null;
-	
+
 	private boolean cc_update_rpm = false;
 	private int cc_new_rpm = 32;
 	
@@ -58,9 +56,6 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 		long MAX_OUT = 0L;
 		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		lazyEnergy = LazyOptional.of(() -> energy);
-		if(CreateAddition.CC_ACTIVE) {
-			lazyPeripheral = LazyOptional.of(() -> Peripherals.createElectricMotorPeripheral(this));
-		}
 		setLazyTickRate(20);
 	}
 
@@ -185,16 +180,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 	public static int getEnergyConsumptionRate(int rpm) {
 		return Math.abs(rpm) > 0 ? (int)Math.max((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d), (double)MIN_CONSUMPTION) : 0;
 	}
-	
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-		lazyEnergy.invalidate();
-		if(lazyPeripheral != null)
-			lazyPeripheral.invalidate();
-	}
-	
-	// CC
+
 	int cc_antiSpam = 0;
 	boolean first = true;
 	

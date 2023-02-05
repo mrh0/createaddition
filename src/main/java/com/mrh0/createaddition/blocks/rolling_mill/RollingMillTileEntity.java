@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@SuppressWarnings({"UnstableApiUsage", "CommentedOutCode", "removal"})
+@SuppressWarnings({"UnstableApiUsage", "CommentedOutCode", "removal", "deprecation"})
 public class RollingMillTileEntity extends KineticTileEntity implements ItemTransferable {
 
 	public ItemStackHandler inputInv;
@@ -97,15 +97,9 @@ public class RollingMillTileEntity extends KineticTileEntity implements ItemTran
 		timer = getProcessingDuration();
 		sendData();
 	}
-
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-//		capability.invalidate();
-	}
 	
 	private void process() {
-		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
+		final var inventoryIn = new RecipeWrapper(inputInv);
 
 		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, Objects.requireNonNull(level))) {
 			assert level != null;

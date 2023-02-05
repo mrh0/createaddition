@@ -14,15 +14,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
+@SuppressWarnings("UnstableApiUsage")
 public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyTransferable {
 
 	protected final CreativeEnergyStorage energy;
-	private LazyOptional<EnergyStorage> lazyEnergy;
-	
+
 	public CreativeEnergyTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 		energy = new CreativeEnergyStorage();
-		lazyEnergy = LazyOptional.of(() -> energy);
 	}
 	
 	private boolean firstTickState = true;
@@ -30,45 +29,41 @@ public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyT
 	@Override
 	public void tick() {
 		super.tick();
-		if(level.isClientSide())
-			return;
-		if(firstTickState)
-			firstTick();
-		firstTickState = false;
-		
-		for(Direction d : Direction.values()) {
-			EnergyStorage ies = getCachedEnergy(d);
-			if(ies == null)
-				continue;
-			try(Transaction t = Transaction.openOuter()) {
-				long r = ies.insert(Integer.MAX_VALUE, t);
-				t.commit();
+		if (level != null) {
+			if (level.isClientSide())
+				return;
+			if (firstTickState)
+				firstTick();
+			firstTickState = false;
+
+			for (Direction d : Direction.values()) {
+				EnergyStorage ies = getCachedEnergy(d);
+				if (ies == null)
+					continue;
+				try (Transaction t = Transaction.openOuter()) {
+					t.commit();
+				}
 			}
 		}
 	}
 	
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-		lazyEnergy.invalidate();
-	}
-	
 	public void firstTick() {
 		updateCache();
-	};
-	
+	}
+
 	public void updateCache() {
-		if(level.isClientSide())
-			return;
-		for(Direction side : Direction.values()) {
-			BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
-			if(te == null) {
-				setCache(side, LazyOptional.empty());
-				continue;
+		if (level != null) {
+			if (level.isClientSide())
+				return;
+			for (Direction side : Direction.values()) {
+				BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
+				if (te == null) {
+					setCache(side, LazyOptional.empty());
+					continue;
+				}
+				LazyOptional<EnergyStorage> le = LazyOptional.ofObject(EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite()));
+				setCache(side, le);
 			}
-			LazyOptional<EnergyStorage> le = LazyOptional.ofObject(EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite()));
-			setCache(side, le);
-			
 		}
 	}
 	
@@ -80,44 +75,26 @@ public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyT
 	private LazyOptional<EnergyStorage> escacheWest = LazyOptional.empty();
 	
 	public void setCache(Direction side, LazyOptional<EnergyStorage> storage) {
-		switch(side) {
-			case DOWN:
-				escacheDown = storage;
-				break;
-			case EAST:
-				escacheEast = storage;
-				break;
-			case NORTH:
-				escacheNorth = storage;
-				break;
-			case SOUTH:
-				escacheSouth = storage;
-				break;
-			case UP:
-				escacheUp = storage;
-				break;
-			case WEST:
-				escacheWest = storage;
-				break;
+		switch (side) {
+			case DOWN -> escacheDown = storage;
+			case EAST -> escacheEast = storage;
+			case NORTH -> escacheNorth = storage;
+			case SOUTH -> escacheSouth = storage;
+			case UP -> escacheUp = storage;
+			case WEST -> escacheWest = storage;
 		}
 	}
 	
+	@SuppressWarnings("DataFlowIssue")
 	public EnergyStorage getCachedEnergy(Direction side) {
-		switch(side) {
-			case DOWN:
-				return escacheDown.orElse(null);
-			case EAST:
-				return escacheEast.orElse(null);
-			case NORTH:
-				return escacheNorth.orElse(null);
-			case SOUTH:
-				return escacheSouth.orElse(null);
-			case UP:
-				return escacheUp.orElse(null);
-			case WEST:
-				return escacheWest.orElse(null);
-		}
-		return null;
+		return switch (side) {
+			case DOWN -> escacheDown.orElse(null);
+			case EAST -> escacheEast.orElse(null);
+			case NORTH -> escacheNorth.orElse(null);
+			case SOUTH -> escacheSouth.orElse(null);
+			case UP -> escacheUp.orElse(null);
+			case WEST -> escacheWest.orElse(null);
+		};
 	}
 
 	@Override
