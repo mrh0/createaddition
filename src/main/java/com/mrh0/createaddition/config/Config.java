@@ -91,19 +91,19 @@ public class Config {
 				.defineInRange("motor_min_consumption", 8, 0, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_MAX_INPUT = COMMON_BUILDER.comment("Electric Motor max input in FE (Energy transfer not consumption).")
-				.defineInRange("motor_max_input", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("motor_max_input", 4096, 0, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_CAPACITY = COMMON_BUILDER.comment("Electric Motor internal capacity in FE.")
-				.defineInRange("motor_capacity", 2048, 0, Integer.MAX_VALUE);
+				.defineInRange("motor_capacity", 4096, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 		
 		
 		COMMON_BUILDER.comment("Alternator").push(CATAGORY_ALTERNATOR);
 		ALTERNATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Alternator max input in FE (Energy transfer, not generation).")
-				.defineInRange("generator_max_output", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("generator_max_output", 4096, 0, Integer.MAX_VALUE);
 		
 		ALTERNATOR_CAPACITY = COMMON_BUILDER.comment("Alternator internal capacity in FE.")
-				.defineInRange("generator_capacity", 2048, 0, Integer.MAX_VALUE);
+				.defineInRange("generator_capacity", 4096, 0, Integer.MAX_VALUE);
 		
 		ALTERNATOR_EFFICIENCY = COMMON_BUILDER.comment("Alternator efficiency relative to base conversion rate.")
 				.defineInRange("generator_efficiency", 0.75d, 0.01d, 1.0d);
@@ -121,28 +121,28 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Wires").push(CATAGORY_WIRES);
 		CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Connector max input in FE/t (Energy transfer).")
-				.defineInRange("connector_max_input", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_max_input", 4096, 0, Integer.MAX_VALUE);
 		
 		CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Connector max output in FE/t (Energy transfer).")
-				.defineInRange("connector_max_output", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_max_output", 4096, 0, Integer.MAX_VALUE);
 		
 		CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Connector internal input buffer in FE.")
-				.defineInRange("connector_input_capacity", 2048, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_input_capacity", 4096, 0, Integer.MAX_VALUE);
 		
 		CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Max wire length in blocks.")
 				.defineInRange("wire_length", 12, 0, 256);
 		
 		CONNECTOR_IGNORE_FACE_CHECK = COMMON_BUILDER.comment("Ignore checking if block face can support connector.")
-				.define("connector_ignore_face_check", false);
+				.define("connector_ignore_face_check", true);
 		COMMON_BUILDER.pop();
 		
 		
 		COMMON_BUILDER.comment("Accumulator").push(CATAGORY_ACCUMULATOR);
 		ACCUMULATOR_MAX_INPUT = COMMON_BUILDER.comment("Accumulator max input in FE/t (Energy transfer).")
-				.defineInRange("accumulator_max_input", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_max_input", 4096, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Accumulator max output in FE/t (Energy transfer).")
-				.defineInRange("accumulator_max_output", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_max_output", 4096, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_CAPACITY = COMMON_BUILDER.comment("Accumulator internal capacity per block in FE.")
 				.defineInRange("accumulator_capacity", 2048_000, 0, Integer.MAX_VALUE);

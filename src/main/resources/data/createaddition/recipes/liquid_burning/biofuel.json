@@ -4,6 +4,6 @@
       	"fluidTag": "forge:biofuel",
       	"amount": 1000
 	},
-	"burnTime": 12800,
+	"burnTime": 25600,
 	"superheated": true
 }
