@@ -2,7 +2,7 @@ package com.mrh0.createaddition;
 
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurner;
 import com.mrh0.createaddition.commands.CCApiCommand;
-import com.mrh0.createaddition.compat.computercraft.PeripheralProvider;
+import com.mrh0.createaddition.compat.computercraft.ComputerCraftCompat;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.event.GameEvents;
 import com.mrh0.createaddition.index.*;
@@ -11,7 +11,6 @@ import com.simibubi.create.content.contraptions.fluids.tank.BoilerHeaters;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import dan200.computercraft.api.ComputerCraftAPI;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
@@ -68,8 +67,8 @@ public class CreateAddition implements ModInitializer {
         GameEvents.initCommon();
         postInit();
 
-        if(CC_ACTIVE) {
-            ComputerCraftAPI.registerPeripheralProvider(new PeripheralProvider());
+        if  (CC_ACTIVE) {
+            ComputerCraftCompat.registerCompat();
         }
     }
 
