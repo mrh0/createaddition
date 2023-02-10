@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 
 
 public class EnergyNetwork {
-	
+	private int id;
 	// Input
 	private int inBuff;
 	private int inDemand;
@@ -38,7 +38,8 @@ public class EnergyNetwork {
 		EnergyNetworkManager.instances.get(world).add(this);
 	}
 	
-	public void tick() {
+	public void tick(int index) {
+		this.id = index;
 		//System.out.println("NetTick: " + getBuff() + "/" + getDemand() + " " + pulled + "/" + pushed);
 		int t = outBuff;
 		outBuff = inBuff;
@@ -146,5 +147,9 @@ public class EnergyNetwork {
 	
 	public void removed() {
 		
+	}
+	
+	public int getId() {
+		return id;
 	}
 }

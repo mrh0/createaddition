@@ -66,7 +66,7 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)))// && !level.isClientSide
+		if(cap == CapabilityEnergy.ENERGY)// && (isEnergyInput(side) || isEnergyOutput(side))
 			return lazyEnergy.cast();
 		return super.getCapability(cap, side);
 	}
@@ -76,7 +76,7 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	}
 
 	public boolean isEnergyOutput(Direction side) {
-		return side != getBlockState().getValue(AlternatorBlock.FACING);
+		return true; //side != getBlockState().getValue(AlternatorBlock.FACING);
 	}
 	
 	@Override
