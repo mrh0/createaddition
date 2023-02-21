@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
+import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
@@ -258,5 +259,15 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<M
 		return getTileEntityOptional(worldIn, pos).map(ModularAccumulatorTileEntity::getControllerTE)
 			.map(te -> ComparatorUtil.fractionToRedstoneLevel(te.getFillState()))
 			.orElse(0);
+	}
+	
+	@Override
+	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
+		if(tileentity != null) {
+			if(tileentity instanceof ModularAccumulatorTileEntity) {
+				((ModularAccumulatorTileEntity)tileentity).updateCache();
+			}
+		}
 	}
 }

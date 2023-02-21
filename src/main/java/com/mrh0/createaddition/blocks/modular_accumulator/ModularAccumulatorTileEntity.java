@@ -59,6 +59,9 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	private static final int SYNC_RATE = 8;
 	protected int syncCooldown;
 	protected boolean queuedSync;
+	
+	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
 
 	public ModularAccumulatorTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -73,6 +76,52 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	protected InternalEnergyStorage createEnergyStorage() {
 		return new InternalEnergyStorage(getCapacityMultiplier(), Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get());
 	}
+	
+	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
+		switch(side) {
+			case DOWN:
+				escacheDown = storage;
+				break;
+			case UP:
+				escacheUp = storage;
+				break;
+		}
+	}
+	
+	public LazyOptional<IEnergyStorage> getCachedEnergy(Direction side) {
+		switch(side) {
+			case DOWN:
+				return escacheDown;
+			case UP:
+				return escacheUp;
+		}
+		return LazyOptional.empty();
+	}
+	
+	public void firstTick() {
+		updateCache();
+	};
+	
+	public void updateCache() {
+		if(level.isClientSide())
+			return;
+		for(Direction side : Direction.values()) {
+			updateCache(side);
+		}
+	}
+	
+	public void updateCache(Direction side) {
+		if(updateBlocked > 10) return;
+		updateBlocked++;
+		BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
+		if(te == null) {
+			setCache(side, LazyOptional.empty());
+			return;
+		}
+		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		setCache(side, le);
+		le.addListener((es) -> updateCache(side));
+	}
 
 	protected void updateConnectivity() {
 		updateConnectivity = false;
@@ -85,10 +134,21 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	
 	public LerpedFloat gauge = LerpedFloat.linear();
 
+	int updateBlocked = 0;
 	int lastEnergy = 0;
+	boolean firstTickState = true;
 	@Override
 	public void tick() {
 		super.tick();
+		updateBlocked--;
+		if(updateBlocked < 0)
+			updateBlocked = 0;
+		if(firstTickState)
+			firstTick();
+		firstTickState = false;
+		
+		tickOutput();
+		
 		if (syncCooldown > 0) {
 			syncCooldown--;
 			if (syncCooldown == 0 && queuedSync)
@@ -121,6 +181,25 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			return;
 		}
 	}
+	
+	public void tickOutput() {
+		if(getControllerTE() == null) return;
+		BlockState state = this.getBlockState();
+		if(state.getValue(ModularAccumulatorBlock.TOP)) {
+			tickOutputSide(Direction.UP);
+		}
+		if(state.getValue(ModularAccumulatorBlock.BOTTOM)) {
+			tickOutputSide(Direction.DOWN);
+		}
+	}
+	
+	public void tickOutputSide(Direction side) {
+		IEnergyStorage ies = getCachedEnergy(side).orElse(null);
+		if(ies == null)
+			return;
+		int ext = getControllerTE().energyStorage.extractEnergy(ies.receiveEnergy(MAX_OUT, true), false);
+		int rec = ies.receiveEnergy(ext, false);
+	} 
 
 	@Override
 	public BlockPos getLastKnownPos() {
@@ -346,6 +425,8 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!energyCap.isPresent())
 			refreshCapability();
+		//if(side == Direction.UP || side == Direction.DOWN)
+		//	return super.getCapability(cap, side);
 		if (cap == CapabilityEnergy.ENERGY)
 			return energyCap.cast();
 		return super.getCapability(cap, side);
@@ -439,12 +520,12 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
-				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
+				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe").withStyle(ChatFormatting.AQUA));
 		
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.capacity").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
-				.append(Util.format((int)controllerTE.energyStorage.getMaxEnergyStored())).append("fe/t").withStyle(ChatFormatting.AQUA));
+				.append(Util.format((int)controllerTE.energyStorage.getMaxEnergyStored())).append("fe").withStyle(ChatFormatting.AQUA));
 		return true;
 	}
 	
