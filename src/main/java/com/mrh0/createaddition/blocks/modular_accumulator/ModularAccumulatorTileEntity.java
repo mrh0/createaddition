@@ -113,12 +113,23 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	public void updateCache(Direction side) {
 		if(updateBlocked > 10) return;
 		updateBlocked++;
+		// No need to update the cache if we're removed.
+		if (isRemoved()) return;
+		// Make sure the side we're checking is loaded.
+		if (!level.isLoaded(worldPosition.relative(side))) {
+			setCache(side, LazyOptional.empty());
+			return;
+		}
 		BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
 		if(te == null) {
 			setCache(side, LazyOptional.empty());
 			return;
 		}
 		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		// Make sure that the side we're caching can actually be cached.
+		if (side != Direction.UP && side != Direction.DOWN) return;
+		// Make sure the side isn't already cached.
+		if (le.equals(getCachedEnergy(side))) return;
 		setCache(side, le);
 		le.addListener((es) -> updateCache(side));
 	}
@@ -469,6 +480,9 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			level.setBlock(getBlockPos(), state, 6);
 		}
 		setChanged();
+		// When the multi block is updated, the neighborChanged method isn't fired,
+		// so update the cache here instead.
+		updateCache();
 	}
 
 	@Override

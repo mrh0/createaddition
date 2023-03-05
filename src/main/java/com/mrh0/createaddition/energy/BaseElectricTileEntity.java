@@ -105,12 +105,18 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	public void updateCache(Direction side) {
 		if(updateBlocked > 10) return;
 		updateBlocked++;
+		if (!level.isLoaded(worldPosition.relative(side))) {
+			setCache(side, LazyOptional.empty());
+			return;
+		}
 		BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
 		if(te == null) {
 			setCache(side, LazyOptional.empty());
 			return;
 		}
 		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		// Make sure the side isn't already cached.
+		if (le.equals(getCachedEnergy(side))) return;
 		setCache(side, le);
 		le.addListener((es) -> updateCache(side));
 	}
