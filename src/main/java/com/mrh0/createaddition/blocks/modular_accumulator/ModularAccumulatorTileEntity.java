@@ -441,8 +441,8 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!energyCap.isPresent())
 			refreshCapability();
-		//if(side == Direction.UP || side == Direction.DOWN)
-		//	return super.getCapability(cap, side);
+		if(side == Direction.UP || side == Direction.DOWN)
+			return super.getCapability(cap, side);
 		if (cap == CapabilityEnergy.ENERGY)
 			return energyCap.cast();
 		return super.getCapability(cap, side);
