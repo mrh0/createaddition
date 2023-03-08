@@ -2,6 +2,7 @@ package com.mrh0.createaddition.event;
 
 import com.mrh0.createaddition.blocks.connector.ConnectorMovementManager;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
+import com.mrh0.createaddition.debug.AdditionDebugger;
 import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
@@ -33,6 +34,7 @@ public class GameEvents {
 	public static void clientTickEvent(TickEvent.ClientTickEvent evt) {
 		if(evt.phase == Phase.START) return;
 		ObservePacket.tick();
+		AdditionDebugger.tick();
 	}
 	
 	@SubscribeEvent
