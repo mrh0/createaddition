@@ -6,7 +6,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.config.Config;
+import com.mrh0.createaddition.debug.IDebugDrawer;
 import com.mrh0.createaddition.energy.IMultiTileEnergyContainer;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
@@ -14,6 +16,7 @@ import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.Create;
+import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
@@ -30,17 +33,19 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.IFluidTank;
 
-public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity {
+public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer {
 
 	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(),
 			MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(),
@@ -436,8 +441,8 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!energyCap.isPresent())
 			refreshCapability();
-		//if(side == Direction.UP || side == Direction.DOWN)
-		//	return super.getCapability(cap, side);
+		if(side == Direction.UP || side == Direction.DOWN)
+			return super.getCapability(cap, side);
 		if (cap == CapabilityEnergy.ENERGY)
 			return energyCap.cast();
 		return super.getCapability(cap, side);
@@ -477,7 +482,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		if (ModularAccumulatorBlock.isAccumulator(state)) { // safety
 			state = state.setValue(ModularAccumulatorBlock.BOTTOM, getController().getY() == getBlockPos().getY());
 			state = state.setValue(ModularAccumulatorBlock.TOP, getController().getY() + height - 1 == getBlockPos().getY());
-			level.setBlock(getBlockPos(), state, 6);
+			level.setBlock(getBlockPos(), state, Block.UPDATE_NEIGHBORS | Block.UPDATE_CLIENTS | Block.UPDATE_INVISIBLE);
 		}
 		setChanged();
 		// When the multi block is updated, the neighborChanged method isn't fired,
@@ -572,5 +577,15 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 
 	public InternalEnergyStorage getEnergy(int accumulator) {
 		return energyStorage;
+	}
+
+	@Override
+	public void drawDebug() {
+		if (level == null) return;
+		ModularAccumulatorTileEntity controller = getControllerTE();
+		if (controller == null) return;
+		// Outline controller.
+		VoxelShape shape = level.getBlockState(controller.getBlockPos()).getBlockSupportShape(level, controller.getBlockPos());
+		CreateClient.OUTLINER.chaseAABB("ca_accumulator", shape.bounds().move(controller.getBlockPos())).lineWidth(0.0625F).colored(0xFF5B5B);
 	}
 }

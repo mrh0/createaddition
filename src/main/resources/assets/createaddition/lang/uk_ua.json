@@ -239,10 +239,11 @@
 	"createaddition.display_source.accumulator.display": "Виберіть варіант:",
 	
 	"death.attack.barbed_wire": "%1$s заколовся до смерті",
-  	"death.attack.barbed_wire.player": "%1$s заколовся до с мерті поки боровся з %2$s",
+  "death.attack.barbed_wire.player": "%1$s заколовся до с мерті поки боровся з %2$s",
 	
 	"effect.createaddition.shocking":"Шокований",
 	"death.attack.tesla_coil": "%1$s почуває себе електрично",
-  	"death.attack.tesla_coil.player": "%1$s отримав смертельний удар струмом під час бою з %2$s",
-  	"effect.createaddition.shocking.description": "Викликає значне зниження швидкості руху"
+  "death.attack.tesla_coil.player": "%1$s отримав смертельний удар струмом під час бою з %2$s",
+  "effect.createaddition.shocking.description": "Викликає значне зниження швидкості руху"
 }
+

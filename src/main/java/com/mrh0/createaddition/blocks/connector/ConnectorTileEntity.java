@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
+import com.mrh0.createaddition.debug.IDebugDrawer;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
@@ -13,9 +14,12 @@ import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.network.RemoveConnectorPacket;
+import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
+import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -23,12 +27,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation {
+public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation, IDebugDrawer {
 
 	private BlockPos[] connectionPos;
 	private int[] connectionIndecies;
@@ -284,5 +292,23 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		
 		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+	}
+
+	@Override
+	public void drawDebug() {
+		if (level == null) return;
+		// Outline all connected nodes.
+		for (int i = 0; i < NODE_COUNT; i++) {
+			BlockPos pos = connectionPos[i];
+			if (pos == null) continue;
+			VoxelShape shape = level.getBlockState(pos).getBlockSupportShape(level, pos);
+			// ca_ = Create Addition
+			CreateClient.OUTLINER.chaseAABB("ca_nodes_" + i, shape.bounds().move(pos)).lineWidth(0.0625F).colored(0xFF5B5B);
+		}
+		// Outline connected power
+		BlockEntity te = level.getBlockEntity(worldPosition.relative(getBlockState().getValue(ConnectorBlock.FACING)));
+		if (te == null || !te.getCapability(CapabilityEnergy.ENERGY).isPresent()) return;
+		VoxelShape shape = level.getBlockState(te.getBlockPos()).getBlockSupportShape(level, te.getBlockPos());
+		CreateClient.OUTLINER.chaseAABB("ca_output", shape.bounds().move(te.getBlockPos())).lineWidth(0.0625F).colored(0x5B5BFF);
 	}
 }

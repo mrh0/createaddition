@@ -26,7 +26,7 @@ mixin {
 }
 
 
-version = '1.18.2-20230203a'
+version = '1.18.2-20230307a'
 group = 'com.mrh0.createaddition' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createaddition'
 
@@ -176,7 +176,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.85'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -195,6 +195,7 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
     runtimeOnly fg.deobf("curse.maven:immersive-engineering-231951:3964014")
     runtimeOnly fg.deobf("curse.maven:immersive-petroleum-268250:4314934")
+    //runtimeOnly fg.deobf("curse.maven:mekanism-268560:3875976")
     //runtimeOnly fg.deobf("curse.maven:radon-596879:3707321")
 
     implementation fg.deobf("curse.maven:create-328085:4174329")
