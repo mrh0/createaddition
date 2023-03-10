@@ -3,6 +3,7 @@ package com.mrh0.createaddition.energy;
 import java.util.HashMap;
 
 import com.mrh0.createaddition.config.Config;
+import com.mrh0.createaddition.debug.AdditionDebugger;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.util.Util;
@@ -10,120 +11,337 @@ import com.mrh0.createaddition.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 public interface IWireNode {
 	
-	public static final int MAX_LENGTH = Config.CONNECTOR_MAX_LENGTH.get();
-	
-	public Vec3 getNodeOffset(int node);
-	
-	public default int getNodeFromPos(Vec3 vector3d) {
-		return 0;
+	int MAX_LENGTH = Config.CONNECTOR_MAX_LENGTH.get();
+
+	/**
+	 * Get the {@link IWireNode} at the given index.
+	 *
+	 * @param   index
+	 *          The index of the node.
+	 *
+	 * @return  The {@link IWireNode} at the given index, or null if the node
+	 *          doesn't exist.
+	 */
+	@Nullable
+	IWireNode getWireNode(int index);
+
+	/**
+	 * Used by {@link IWireNode#getWireNode(int)} to get a cached
+	 * {@link IWireNode}.
+	 */
+	@Nullable
+	static IWireNode getWireNodeFrom(int index, IWireNode obj, LocalNode[] localNodes, IWireNode[] nodeCache,
+	                                 Level level) {
+		if (!obj.hasConnection(index)) return null;
+		// Cache the node if it isn't already.
+		if (nodeCache[index] == null)
+			nodeCache[index] = IWireNode.getWireNode(level, localNodes[index].getPos());
+		// If the node is still null, remove it.
+		if (nodeCache[index] == null) {
+			AdditionDebugger.print(level, "Removing node " + index + " from " + obj.getPos());
+			obj.removeNode(index);
+		}
+		return nodeCache[index];
 	}
-	
-	public default int getNodeCount() {
+
+	/**
+	 * Get the {@link LocalNode} for the given index.
+	 *
+	 * @param   index
+	 *          The index of the node.
+	 *
+	 * @return  The {@link LocalNode} for the given index, or null if the node
+	 *          doesn't exist.
+	 */
+	@Nullable
+	LocalNode getLocalNode(int index);
+
+	/**
+	 * Create a new node at the given location.
+	 *
+	 * @param   index
+	 *          The index of the node to connect.
+	 * @param   other
+	 *          The index of the node to connect to.
+	 * @param   pos
+	 *          The position of the node we're connecting to.
+	 * @param   type
+	 *          The type of wire we're using.
+	 */
+	void setNode(int index, int other, BlockPos pos, WireType type);
+
+	/**
+	 * Remove the given node.
+	 *
+	 * @param   index
+	 *          The index of the node to remove.
+	 */
+	void removeNode(int index);
+
+	/**
+	 * Get an available node index from this {@link IWireNode}, based on the
+	 * given position.
+	 *
+	 * @param   pos
+	 *          The position we want the node from.
+	 *
+	 * @return  The node index, or -1 if none are available.
+	 */
+	default int getAvailableNode(Vec3 pos) {
+		// before: return 0;
+		// Might be a good idea to not return 0 if the method isn't implemented.
+		return getAvailableNode();
+	}
+
+	/**
+	 * Get the number of nodes this {@link IWireNode} supports.
+	 *
+	 * @return  The number of supported nodes.
+	 */
+	default int getNodeCount() {
 		return 1;
 	}
-	
-	public static boolean hasPos(CompoundTag nbt, int node) {
-		return nbt.contains("x"+node) && nbt.contains("y"+node) && nbt.contains("z"+node);
-	}
-	
-	public static boolean hasNode(CompoundTag nbt, int node) {
-		return hasPos(nbt, node) && nbt.contains("type"+node);
-	}
-	
-	public default int findOpenNode(int from, int to) {
-		for(int i = from; i < to; i++ ) {
-			if(!hasConnection(i))
-				return i;
+
+	/**
+	 * Get an available node index from this {@link IWireNode}.
+	 *
+	 * @return  The node index, or -1 if none are available.
+	 */
+	default int getAvailableNode() {
+		for (int i = 0; i < getNodeCount(); i++) {
+			if (hasConnection(i)) continue;
+			return i;
 		}
 		return -1;
 	}
-	
-	public default CompoundTag writeNode(CompoundTag nbt, int node) {
-		BlockPos pos = getNodePos(node);
-		if(pos == null)
-			return  nbt;
-		int index = getOtherNodeIndex(node);
-		//System.out.println("WRITE: " + node + "->" + index);
-		WireType type = getNodeType(node);
-		if(type == null)
-			return nbt;
-		nbt.putInt("x"+node, pos.getX());
-		nbt.putInt("y"+node, pos.getY());
-		nbt.putInt("z"+node, pos.getZ());
-		nbt.putInt("node"+node, index);
-		nbt.putInt("type"+node, type.getIndex());
-		return nbt;
+
+	/**
+	 * Get the position of the node at the given index.
+	 *
+	 * @param   index
+	 *          The index of the node.
+	 *
+	 * @return  The position of the node, or null if the node doesn't exist.
+	 */
+	@Nullable
+	default BlockPos getNodePos(int index) {
+		LocalNode node = getLocalNode(index);
+		if (node == null) return null;
+		return node.getPos();
 	}
-	
-	public static BlockPos readNodeBlockPos(CompoundTag nbt, int node) {
-		return new BlockPos(nbt.getInt("x"+node), nbt.getInt("y"+node), nbt.getInt("z"+node));
+
+	/**
+	 * Get the {@link WireType} of the node at the given index.
+	 *
+	 * @param   index
+	 *          The index of the node.
+	 *
+	 * @return  The {@link WireType} of the node, or null if the node doesn't
+	 */
+	@Nullable
+	default WireType getNodeType(int index) {
+		LocalNode node = getLocalNode(index);
+		if (node == null) return null;
+		return node.getType();
 	}
-	
-	public static WireType readNodeWireType(CompoundTag nbt, int node) {
-		return WireType.fromIndex(nbt.getInt("type"+node));
+
+	/**
+	 * Get the index of the other node connected to the given index.
+	 *
+	 * @param   index
+	 *          The index of the node.
+	 *
+	 * @return  The index of the other node, or -1 if the node doesn't exist.
+	 */
+	default int getOtherNodeIndex(int index) {
+		LocalNode node = getLocalNode(index);
+		if (node == null) return -1;
+		return node.getOtherIndex();
 	}
-	
-	public static int readNodeIndex(CompoundTag nbt, int node) {
-		return nbt.getInt("node"+node);
+
+	/**
+	 * Check if this {@link IWireNode} has a node at the given index.
+	 *
+	 * @param   index
+	 *          The index of the node to check.
+	 *
+	 * @return  True if the node exists, false otherwise.
+	 */
+	default boolean hasConnection(int index) {
+		return getLocalNode(index) != null;
 	}
-	
-	public default void readNode(CompoundTag nbt, int node) {
-		if(!hasNode(nbt, node))
-			return;
-		BlockPos pos = readNodeBlockPos(nbt, node);
-		WireType type =  readNodeWireType(nbt, node);
-		int index = readNodeIndex(nbt, node);
-		//System.out.println("READ: " + node + "->" + index);
-		setNode(node, index, pos, type);
-	}
-	
-	public static void clearNode(CompoundTag nbt, int node) {
-		nbt.putInt("node"+node, -1);
-		nbt.putInt("type"+node, -1);
-		
-		/*nbt.remove("x"+node);
-		nbt.remove("y"+node);
-		nbt.remove("z"+node);
-		nbt.remove("node"+node);
-		nbt.remove("type"+node);*/
-	}
-	
-	public void setNode(int node, int other, BlockPos pos, WireType type);
-	
-	public default void removeNode(int node) {
-		setNode(node, -1, null, null);
-	}
-	
-	public BlockPos getNodePos(int node);
-	public WireType getNodeType(int node);
-	public int getOtherNodeIndex(int node);
-	public void invalidateNodeCache();
-	
-	public default boolean hasConnection(int node) {
-		return getNodePos(node) != null;
-	}
-	
-	public default boolean hasConnectionTo(BlockPos pos1) {
-		if(pos1 == null)
-			return false;
-		for(int i = 0; i < getNodeCount(); i++) {
-			BlockPos pos2 = getNodePos(i);
-			if(pos2 == null)
-				continue;
-			if(pos1.equals(pos2))
-				return true;
+
+	/**
+	 * Check if this {@link IWireNode} has a node at the given position.
+	 *
+	 * @param   pos
+	 *          The position to check.
+	 *
+	 * @return  True if a node at the given position exists, false otherwise.
+	 */
+	default boolean hasConnectionTo(BlockPos pos) {
+		if (pos == null) return false;
+		for (int i = 0; i < getNodeCount(); i++) {
+			LocalNode node = getLocalNode(i);
+			if (node == null) continue;
+			if (node.getPos().equals(pos)) return true;
 		}
 		return false;
 	}
+
+	/**
+	 * Check if the given node index is an input node.
+	 *
+	 * @param   index
+	 *          The index of the node to check.
+	 *
+	 * @return  True if the node is an input node, false otherwise.
+	 */
+	default boolean isNodeInput(int index) {
+		return true;
+	}
+
+	/**
+	 * Check if the given node index is an output node.
+	 *
+	 * @param   node
+	 *          The index of the node to check.
+	 *
+	 * @return  True if the node is an output node, false otherwise.
+	 */
+	default boolean isNodeOutput(int node) {
+		return true;
+	}
+
+	Vec3 getNodeOffset(int node);
+
+	/**
+	 * Get the position of this {@link IWireNode}.
+	 *
+	 * @return  The position of this {@link IWireNode}.
+	 */
+	BlockPos getPos();
+
+	void invalidateNodeCache();
+
+	// Energy Network
+
+	void setNetwork(int node, EnergyNetwork network);
+	EnergyNetwork getNetwork(int node);
+
+	default boolean awakeNetwork(Level world) {
+		boolean b = false;
+		for(int i = 0; i < getNodeCount(); i++) {
+			if(!isNetworkValid(i)) {
+				setNetwork(i, EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, i));
+				b = true;
+			}
+		}
+		return b;
+	}
+
+	default boolean isNetworkValid(int node) {
+		if(getNetwork(node) == null)
+			return false;
+		else
+			return getNetwork(node).isValid();
+	}
+
+	// Static Helpers
+
+	/**
+	 * Get the position of the node at the given index by reading the
+	 * {@link CompoundTag}.
+	 *
+	 * @param   nbt
+	 *          The {@link CompoundTag} to read from.
+	 * @param   index
+	 *          The index of the node.
+	 * @param   origin
+	 *          The origin {@link BlockPos} to offset from.
+	 *
+	 * @return  The {@link BlockPos} of the node, or null if the node doesn't
+	 *          exist.
+	 */
+	@Nullable
+	static BlockPos readNodeBlockPos(CompoundTag nbt, int index, BlockPos origin) {
+		CompoundTag node = getNbtNode(nbt, index);
+		if (node == null) return null;
+		return origin.offset(node.getInt(LocalNode.X), node.getInt(LocalNode.Y), node.getInt(LocalNode.Z));
+	}
+
+	/**
+	 * Get the {@link WireType} of the node at the given index by reading the
+	 * {@link CompoundTag}.
+	 *
+	 * @param   nbt
+	 *          The {@link CompoundTag} to read from.
+	 * @param   index
+	 *          The index of the node.
+	 *
+	 * @return  The {@link WireType} of the node, or null if the node doesn't
+	 *          exist.
+	 */
+	static WireType readNodeWireType(CompoundTag nbt, int index) {
+		CompoundTag node = getNbtNode(nbt, index);
+		if (node == null) return null;
+		return WireType.fromIndex(node.getInt(LocalNode.TYPE));
+	}
+
+	/**
+	 * Get the index of the other node connected to the given index by reading
+	 * the {@link CompoundTag}.
+	 *
+	 * @param   nbt
+	 *          The {@link CompoundTag} to read from.
+	 * @param   index
+	 *          The index of the node.
+	 *
+	 * @return  The index of the other node, or -1 if the node doesn't exist.
+	 */
+	static int readNodeOtherIndex(CompoundTag nbt, int index) {
+		CompoundTag node = getNbtNode(nbt, index);
+		if (node == null) return -1;
+		return node.getInt(LocalNode.OTHER);
+	}
+
+	/**
+	 * Get the {@link CompoundTag} for the node at the given index.
+	 *
+	 * @param   nbt
+	 *          The {@link CompoundTag} to read from.
+	 * @param   index
+	 *          The index of the node.
+	 *
+	 * @return  The {@link CompoundTag} for the node, with all the data inside,
+	 *          or null if the node doesn't exist.
+	 */
+	@Nullable
+	static CompoundTag getNbtNode(CompoundTag nbt, int index) {
+		if (!nbt.contains(LocalNode.NODES)) return null;
+		ListTag nodes = nbt.getList(LocalNode.NODES, Tag.TAG_COMPOUND);
+		for (Tag t : nodes) {
+			CompoundTag node = (CompoundTag) t;
+			if (node.getInt(LocalNode.ID) == index) {
+				return node;
+			}
+		}
+		return null;
+	}
+
+	// TODO: Self reminder to clean.
 	
 	public static int findConnectionTo(IWireNode wn, BlockPos pos) {
 		if(pos == null)
@@ -137,9 +355,6 @@ public interface IWireNode {
 		}
 		return -1;
 	}
-	
-	public BlockPos getMyPos();
-	public IWireNode getNode(int node);
 	
 	public static WireConnectResult connect(Level world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
 		BlockEntity te1 = world.getBlockEntity(pos1);
@@ -170,8 +385,8 @@ public interface IWireNode {
 		if(wn1.hasConnectionTo(pos2))
 			return WireConnectResult.EXISTS;
 		
-		wn1.setNode(node1, node2, wn2.getMyPos(), type);
-		wn2.setNode(node2, node1, wn1.getMyPos(), type);
+		wn1.setNode(node1, node2, wn2.getPos(), type);
+		wn2.setNode(node2, node1, wn1.getPos(), type);
 		//System.out.println("Connected: " + node1 + " to " + node2);
 		return WireConnectResult.getLink(wn2.isNodeInput(node2), wn2.isNodeOutput(node2));
 	}
@@ -236,14 +451,6 @@ public interface IWireNode {
 		return (IWireNode) te;
 	}
 	
-	public default boolean isNodeInput(int node) {
-		return true;
-	}
-	
-	public default boolean isNodeOutput(int node) {
-		return true;
-	}
-	
 	public static void dropWire(Level world, BlockPos pos, ItemStack stack) {
 		Containers.dropContents(world, pos, NonNullList.of(ItemStack.EMPTY, stack));
 	}
@@ -260,7 +467,7 @@ public interface IWireNode {
 				stacks.get(n).grow(getNodeType(i).getDrop().getCount());
 		}
 		for(ItemStack stack : stacks) {
-			dropWire(world, getMyPos(), stack);
+			dropWire(world, getPos(), stack);
 		}
 	}
 	
@@ -289,11 +496,11 @@ public interface IWireNode {
 		}
 		for(ItemStack stack : stacks1) {
 			if(!stack.isEmpty())
-				dropWire(world, getMyPos(), player.getInventory().add(stack) ? ItemStack.EMPTY : stack);
+				dropWire(world, getPos(), player.getInventory().add(stack) ? ItemStack.EMPTY : stack);
 		}
 		for(ItemStack stack : stacks2) {
 			if(!stack.isEmpty())
-				dropWire(world, getMyPos(), player.getInventory().add(stack) ? ItemStack.EMPTY : stack);
+				dropWire(world, getPos(), player.getInventory().add(stack) ? ItemStack.EMPTY : stack);
 		}
 	}
 	
@@ -301,41 +508,5 @@ public interface IWireNode {
 	
 	public default boolean isNodeIndeciesConnected(int in, int other) {
 		return true;
-	}
-	
-	public default boolean awakeNetwork(Level world) {
-		boolean b = false;
-		for(int i = 0; i < getNodeCount(); i++) {
-			if(!isNetworkValid(i)) {
-				setNetwork(i, EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, i));
-				b = true;
-			}
-		}
-		return b;
-	}
-	
-	public EnergyNetwork getNetwork(int node);
-	public void setNetwork(int node, EnergyNetwork network);
-	
-	public default boolean isNetworkValid(int node) {
-		if(getNetwork(node) == null) 
-			return false;
-		else 
-			return getNetwork(node).isValid();
-	}
-	
-	/*public default boolean isNetworkValid() {
-		for(int i = 0; i < getNodeCount(); i++) {
-			if(getNetwork(i) == null)
-				return false;
-			if(!getNetwork(i).isValid())
-				return false;
-		}
-		return true;
-	}*/
-	
-	public default void preformRemoveOfNode(int node) {
-		removeNode(node);
-		invalidateNodeCache();
 	}
 }

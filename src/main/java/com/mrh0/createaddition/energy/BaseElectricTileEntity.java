@@ -79,18 +79,16 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	
 	@Override
 	public void tick() {
-		updateBlocked--;
-		if(updateBlocked < 0)
-			updateBlocked = 0;
 		super.tick();
-		if(firstTickState)
+		if(firstTickState) {
+			firstTickState = false;
 			firstTick();
-		firstTickState = false;
+		}
 	}
 	
 	public void firstTick() {
 		updateCache();
-	};
+	}
 	
 	public void updateCache() {
 		if(level.isClientSide())
@@ -100,11 +98,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		}
 	}
 	
-	int updateBlocked = 0;
-	
 	public void updateCache(Direction side) {
-		if(updateBlocked > 10) return;
-		updateBlocked++;
 		if (!level.isLoaded(worldPosition.relative(side))) {
 			setCache(side, LazyOptional.empty());
 			return;

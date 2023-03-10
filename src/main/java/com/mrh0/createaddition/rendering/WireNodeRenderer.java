@@ -3,7 +3,6 @@ package com.mrh0.createaddition.rendering;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.index.CAPartials;
@@ -36,13 +35,15 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 		IWireNode te = (IWireNode) tileEntityIn;
 
 		for (int i = 0; i < te.getNodeCount(); i++) {
-			if (te.getNodeType(i) != null) {
+			if (te.hasConnection(i)) {
 				Vec3 d1 = te.getNodeOffset(i);
+				//if (te.getPos().equals(new BlockPos(18, -60, 11))) System.out.println("Offset 1: " + d1 + ", id: " + i);
 				float ox1 = ((float) d1.x());
 				float oy1 = ((float) d1.y());
 				float oz1 = ((float) d1.z());
 
-				IWireNode wn = te.getNode(i);
+				IWireNode wn = te.getWireNode(i);
+				BlockEntity entity = (BlockEntity) wn;
 				if (wn == null)
 					return;
 
@@ -53,9 +54,9 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 
 				BlockPos other = te.getNodePos(i);
 				
-				float tx = other.getX() - te.getMyPos().getX();
-				float ty = other.getY() - te.getMyPos().getY();
-				float tz = other.getZ() - te.getMyPos().getZ();
+				float tx = other.getX() - te.getPos().getX();
+				float ty = other.getY() - te.getPos().getY();
+				float tz = other.getZ() - te.getPos().getZ();
 
 				matrixStackIn.pushPose();
 

@@ -166,12 +166,14 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	
 	@Override
 	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
-		if(!world.isClientSide()) {
+		// Using onRemove() in ConnectorTileEntity instead.
+		// super.onRemove() does the same thing as the old code below.
+		/*if(!world.isClientSide()) {
 			BlockEntity be = world.getBlockEntity(pos);
 			if(be != null && !(newState.getBlock() instanceof ConnectorBlock))
 				if(be instanceof ConnectorTileEntity)
 					((ConnectorTileEntity) be).onBlockRemoved();
-		}
+		}*/
 		super.onRemove(state, world, pos, newState, b);
 	}
 }

@@ -11,7 +11,8 @@ public enum WireType {
 	FESTIVE(3, 256, 26, 94, 12, new ItemStack(CAItems.COPPER_WIRE.get(), 4), new ItemStack(CAItems.FESTIVE_SPOOL.get()));
 	// Hanging lightbulbs?
 	// Festive lights?
-	
+
+	public static final WireType[] VALUES = values();
 	private final int ID, TRANSFER, CR, CG, CB;
 	private final ItemStack DROP;
 	private final ItemStack SOURCE_DROP;

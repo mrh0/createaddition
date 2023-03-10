@@ -6,6 +6,7 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.util.ClientMinecraftWrapper;
 
+import com.simibubi.create.foundation.tileEntity.SyncedTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
@@ -46,15 +47,21 @@ public class RemoveConnectorPacket {
 	}
 	
 	private static void handleData(RemoveConnectorPacket pkt) {
-		BlockEntity te = (BlockEntity) ClientMinecraftWrapper.getClientLevel().getBlockEntity(pkt.pos);
-        if (te != null) {
-        	if(te instanceof IWireNode) {
-        		IWireNode wn = (IWireNode) te;
-        		wn.preformRemoveOfNode(pkt.node);
-        	}
-        }
-    }
-	
+		BlockEntity te = ClientMinecraftWrapper.getClientLevel().getBlockEntity(pkt.pos);
+		System.out.println("RemoveConnectorPacket 1");
+		if (te != null) {
+			System.out.println("RemoveConnectorPacket 2");
+			if(te instanceof IWireNode wn) {
+				System.out.println("RemoveConnectorPacket 3");
+				wn.removeNode(pkt.node);
+			}
+		}
+	}
+
+	/**
+	 * @deprecated  Just use {@link SyncedTileEntity#notifyUpdate()} to send NBT data.
+	 */
+	@Deprecated(forRemoval = true)
 	public static void send(BlockPos pos, int node, Level level) {
 		CreateAddition.Network.send(PacketDistributor.DIMENSION.with(() -> level.dimension()), new RemoveConnectorPacket(pos, node));
 	}
