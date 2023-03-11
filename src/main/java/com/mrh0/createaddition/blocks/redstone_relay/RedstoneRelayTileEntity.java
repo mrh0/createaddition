@@ -1,11 +1,14 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.LocalNode;
+import com.mrh0.createaddition.energy.NodeRotation;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CABlocks;
@@ -13,7 +16,6 @@ import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
-import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
@@ -40,8 +42,15 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	//private final InternalEnergyStorage energyBufferIn;
 	//private final InternalEnergyStorage energyBufferOut;
 
+	private final Set<LocalNode> wireCache = new HashSet<>();
 	private final LocalNode[] localNodes;
-	private final IWireNode[] _nodeCache;
+	private final IWireNode[] nodeCache;
+	private EnergyNetwork networkIn;
+	private EnergyNetwork networkOut;
+	private int demand = 0;
+
+	private boolean wasContraption = false;
+	private boolean firstTick = true;
 	
 	public static Vec3 OFFSET_NORTH = new Vec3(	0f, 	-1f/16f, 	-5f/16f);
 	public static Vec3 OFFSET_WEST = new Vec3(	-5f/16f, 	-1f/16f, 	0f);
@@ -59,66 +68,113 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	public static Vec3 OUT_VERTICAL_OFFSET_EAST = new Vec3(	1f/16f, 	0f, 	-5f/16f);
 	
 	public static final int NODE_COUNT = 8;
-	
 	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
 	public RedstoneRelayTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 
-		//energyBufferIn = new InternalEnergyStorage(ConnectorTileEntity.CAPACITY, MAX_IN, MAX_OUT);
-		//energyBufferOut = new InternalEnergyStorage(ConnectorTileEntity.CAPACITY, MAX_IN, MAX_OUT);
-
-		//setLazyTickRate(20);
-
 		this.localNodes = new LocalNode[getNodeCount()];
-		this._nodeCache = new IWireNode[getNodeCount()];
+		this.nodeCache = new IWireNode[getNodeCount()];
 	}
 
 	@Override
 	public @Nullable IWireNode getWireNode(int index) {
-		return IWireNode.getWireNodeFrom(index, this, this.localNodes, this._nodeCache, level);
+		return IWireNode.getWireNodeFrom(index, this, this.localNodes, this.nodeCache, level);
 	}
 
 	@Override
 	public @Nullable LocalNode getLocalNode(int index) {
 		return this.localNodes[index];
 	}
+
+	@Override
+	public void setNode(int index, int other, BlockPos pos, WireType type) {
+		this.localNodes[index] = new LocalNode(this, index, other, type, pos);
+
+		notifyUpdate();
+
+		// Invalidate
+		if (networkIn != null) networkIn.invalidate();
+		if (networkOut != null) networkOut.invalidate();
+	}
+
+	@Override
+	public void removeNode(int index, boolean dropWire) {
+		LocalNode old = this.localNodes[index];
+		this.localNodes[index] = null;
+
+		invalidateNodeCache();
+		notifyUpdate();
+
+		// Invalidate
+		if (networkIn != null) networkIn.invalidate();
+		if (networkOut != null) networkOut.invalidate();
+		// Drop wire next tick.
+		if (dropWire && old != null) this.wireCache.add(old);
+	}
+
+	@Override
+	public int getNodeCount() {
+		return NODE_COUNT;
+	}
 	
 	@Override
 	public Vec3 getNodeOffset(int node) {
 		boolean vertical = getBlockState().getValue(RedstoneRelayBlock.VERTICAL);
 		Direction direction = getBlockState().getValue(RedstoneRelayBlock.HORIZONTAL_FACING);
+		// Output
 		if(node > 3) {
-			switch(direction) {
-				case NORTH:
-					return vertical ? OUT_VERTICAL_OFFSET_NORTH : OFFSET_NORTH;
-				case WEST:
-					return vertical ? OUT_VERTICAL_OFFSET_WEST : OFFSET_WEST;
-				case SOUTH:
-					return vertical ? OUT_VERTICAL_OFFSET_SOUTH : OFFSET_SOUTH;
-				case EAST:
-					return vertical ? OUT_VERTICAL_OFFSET_EAST : OFFSET_EAST;
-			default:
-				break;
-			}
+			return switch (direction) {
+				case NORTH -> vertical ? OUT_VERTICAL_OFFSET_NORTH : OFFSET_NORTH;
+				case WEST -> vertical ? OUT_VERTICAL_OFFSET_WEST : OFFSET_WEST;
+				case SOUTH -> vertical ? OUT_VERTICAL_OFFSET_SOUTH : OFFSET_SOUTH;
+				case EAST -> vertical ? OUT_VERTICAL_OFFSET_EAST : OFFSET_EAST;
+				default -> OFFSET_NORTH;
+			};
 		}
-		else {
-			switch(direction) {
-				case NORTH:
-					return vertical ? IN_VERTICAL_OFFSET_NORTH : OFFSET_SOUTH;
-				case WEST:
-					return vertical ? IN_VERTICAL_OFFSET_WEST : OFFSET_EAST;
-				case SOUTH:
-					return vertical ? IN_VERTICAL_OFFSET_SOUTH : OFFSET_NORTH;
-				case EAST:
-					return vertical ? IN_VERTICAL_OFFSET_EAST : OFFSET_WEST;
-			default:
-				break;
-			}
-		}
-		return OFFSET_NORTH;
+		// Input
+		return switch (direction) {
+			case NORTH -> vertical ? IN_VERTICAL_OFFSET_NORTH : OFFSET_SOUTH;
+			case WEST -> vertical ? IN_VERTICAL_OFFSET_WEST : OFFSET_EAST;
+			case SOUTH -> vertical ? IN_VERTICAL_OFFSET_SOUTH : OFFSET_NORTH;
+			case EAST -> vertical ? IN_VERTICAL_OFFSET_EAST : OFFSET_WEST;
+			default -> OFFSET_NORTH;
+		};
 	}
-	
+
+	@Override
+	public int getAvailableNode(Vec3 pos) {
+		Direction dir = level.getBlockState(worldPosition).getValue(RedstoneRelayBlock.HORIZONTAL_FACING);
+		boolean vertical = level.getBlockState(worldPosition).getValue(RedstoneRelayBlock.VERTICAL);
+		boolean upper = true;
+		pos = pos.subtract(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
+		if (vertical) {
+			switch (dir) {
+				case NORTH -> upper = pos.x() < 0.5d;
+				case WEST -> upper = pos.z() > 0.5d;
+				case SOUTH -> upper = pos.x() > 0.5d;
+				case EAST -> upper = pos.z() < 0.5d;
+				default -> {}
+			}
+		} else {
+			switch (dir) {
+				case NORTH -> upper = pos.z() < 0.5d;
+				case WEST -> upper = pos.x() < 0.5d;
+				case SOUTH -> upper = pos.z() > 0.5d;
+				case EAST -> upper = pos.x() > 0.5d;
+				default -> {}
+			}
+		}
+
+
+		for(int i = upper ? 4 : 0; i < (upper ? 8 : 4); i++) {
+			if(hasConnection(i))
+				continue;
+			return i;
+		}
+		return -1;
+	}
+
 	@Override
 	public boolean isNodeInput(int node) {
 		return node < 4;
@@ -128,83 +184,6 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	public boolean isNodeOutput(int node) {
 		return !isNodeInput(node);
 	}
-	
-	@Override
-	public int getAvailableNode(Vec3 pos) {
-		Direction dir = level.getBlockState(worldPosition).getValue(RedstoneRelayBlock.HORIZONTAL_FACING);
-		boolean vertical = level.getBlockState(worldPosition).getValue(RedstoneRelayBlock.VERTICAL);
-		boolean upper = true;
-		pos = pos.subtract(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
-		if(vertical) {
-			switch(dir) {
-			case NORTH:
-				upper = pos.x() < 0.5d;
-				break;
-			case WEST:
-				upper = pos.z() > 0.5d;
-				break;
-			case SOUTH:
-				upper = pos.x() > 0.5d;
-				break;
-			case EAST:
-				upper = pos.z() < 0.5d;
-				break;
-			default:
-				break;
-			}
-		}
-		else {
-			switch(dir) {
-				case NORTH:
-					upper = pos.z() < 0.5d;
-					break;
-				case WEST:
-					upper = pos.x() < 0.5d;
-					break;
-				case SOUTH:
-					upper = pos.z() > 0.5d;
-					break;
-				case EAST:
-					upper = pos.x() > 0.5d;
-					break;
-			default:
-				break;
-			}
-		}
-		
-		
-		for(int i = upper ? 4 : 0; i < (upper ? 8 : 4); i++) {
-			if(hasConnection(i))
-				continue;
-			return i;
-		}
-		return -1;
-	}
-	
-	@Override
-	public void setNode(int index, int other, BlockPos pos, WireType type) {
-		this.localNodes[index] = new LocalNode(this, index, other, type, pos);
-		
-		// Invalidate
-		if(networkIn != null)
-			networkIn.invalidate();
-		if(networkOut != null)
-			networkOut.invalidate();
-	}
-
-	@Override
-	public void removeNode(int index) {
-		this.localNodes[index] = null;
-
-		invalidateNodeCache();
-		this.setChanged();
-
-		// Invalidate
-		if(networkIn != null)
-			networkIn.invalidate();
-		if(networkOut != null)
-			networkOut.invalidate();
-	}
 
 	@Override
 	public BlockPos getPos() {
@@ -212,15 +191,54 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	}
 
 	@Override
+	public EnergyNetwork getNetwork(int node) {
+		return isNodeInput(node) ? networkIn : networkOut;
+	}
+
+	@Override
+	public void setNetwork(int node, EnergyNetwork network) {
+		if(isNodeInput(node))
+			networkIn = network;
+		if(isNodeOutput(node))
+			networkOut = network;
+	}
+
+	@Override
 	public void read(CompoundTag nbt, boolean clientPacket) {
 		super.read(nbt, clientPacket);
-		// TODO: Support converting from older version.
+		// Convert old nbt data. x0, y0, z0, node0 & type0 etc.
+		if (!clientPacket && nbt.contains("node0")) {
+			convertOldNbt(nbt);
+			setChanged();
+		}
+
 		// Read the nodes.
-		ListTag nodes = nbt.getList("nodes", Tag.TAG_COMPOUND);
+		invalidateLocalNodes();
+		invalidateNodeCache();
+		ListTag nodes = nbt.getList(LocalNode.NODES, Tag.TAG_COMPOUND);
 		nodes.forEach(tag -> {
 			LocalNode localNode = new LocalNode(this, (CompoundTag) tag);
 			this.localNodes[localNode.getIndex()] = localNode;
 		});
+
+		// Check if this was a contraption.
+		if (nbt.contains("contraption") && !clientPacket) {
+			this.wasContraption = nbt.getBoolean("contraption");
+			NodeRotation rotation = getBlockState().getValue(NodeRotation.ROTATION);
+			if (rotation != NodeRotation.NONE)
+				level.setBlock(getBlockPos(), getBlockState().setValue(NodeRotation.ROTATION, NodeRotation.NONE), 0);
+			// Loop over all nodes and update their relative positions.
+			for (LocalNode localNode : this.localNodes) {
+				if (localNode == null) continue;
+				localNode.updateRelative(rotation);
+			}
+		}
+
+		// Invalidate the network if we updated the nodes.
+		if (!nodes.isEmpty() && this.networkIn != null && this.networkOut != null) {
+			this.networkIn.invalidate();
+			this.networkOut.invalidate();
+		}
 	}
 	
 	@Override
@@ -235,68 +253,48 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 			localNode.write(tag);
 			nodes.add(tag);
 		}
-		nbt.put("nodes", nodes);
-	}
-	
-	@Override
-	public int getNodeCount() {
-		return 8;
+		nbt.put(LocalNode.NODES, nodes);
 	}
 
-	public void invalidateLocalNodes() {
-		for(int i = 0; i < getNodeCount(); i++)
-			this.localNodes[i] = null;
+	/**
+	 * Called after the tile entity has been part of a contraption.
+	 * Only runs on the server.
+	 */
+	private void validateNodes() {
+		boolean changed = validateLocalNodes(this.localNodes);
+
+		// Always set as changed if we were a contraption, as nodes might have been rotated.
+		notifyUpdate();
+
+		if (changed) {
+			invalidateNodeCache();
+			// Invalidate
+			if (networkIn != null) networkIn.invalidate();
+			if (networkOut != null) networkOut.invalidate();
+		}
 	}
 
-	@Override
-	public void invalidateNodeCache() {
-		for(int i = 0; i < getNodeCount(); i++)
-			this._nodeCache[i] = null;
-	}
-	
 	@Override
 	public void tick() {
 		super.tick();
-		if(level.isClientSide())
-			return;
+
+		if (this.firstTick) {
+			this.firstTick = false;
+			// Check if this blockentity was a part of a contraption.
+			// If it was, then make sure all the nodes are valid.
+			if (this.wasContraption && !level.isClientSide()) {
+				this.wasContraption = false;
+				validateNodes();
+			}
+		}
+
+		// Check if we need to drop any wires due to contraption.
+		if (!this.wireCache.isEmpty() && !isRemoved()) handleWireCache(level, this.wireCache);
+
+		if (level.isClientSide()) return;
 		networkTick();
 	}
 
-	/*@Override
-	public void lazyTick() {
-		super.lazyTick();
-
-		BlockState bs = world.getBlockState(pos);
-		if(bs == null)
-			return;
-		if(!bs.isIn(CABlocks.REDSTONE_RELAY.get()))
-			return;
-		if(bs.get(RedstoneRelay.POWERED)) {
-			int ext1 = energyBufferIn.extractEnergy(energyBufferOut.receiveEnergy(Integer.MAX_VALUE, true), false);
-			energyBufferOut.receiveEnergy(ext1, false);
-		}
-		
-		// Shitty code:
-		for(int i = 0; i < getNodeCount(); i++) {
-			if(getNodeType(i) == null)
-				continue;
-			IWireNode n = getNode(i);
-			if(n == null)
-				continue;
-			if(!isNodeOutput(i))
-				continue;
-			if(!n.isNodeInput(getNodeIndex(i)))
-				continue;
-			
-			IEnergyStorage es = n.getNodeEnergyStorage(getNodeIndex(i));
-			
-			int ext3 = energyBufferOut.getEnergyStored()-es.getEnergyStored();
-			ext3 = energyBufferOut.extractEnergy(ext3, false);
-			es.receiveEnergy(Math.max(ext3, 0), false);
-		}
-	}*/
-	
-	private int demand = 0;
 	private void networkTick() {
 		if(awakeNetwork(level)) {
 			//EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, 0);//EnergyNetwork.buildNetwork(world, this);
@@ -310,43 +308,39 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 			demand = networkIn.demand(networkOut.getDemand());
 		}
 	}
-	
-	public void onBlockRemoved(boolean set) {
+
+	@Override
+	public void remove() {
+		if (level.isClientSide()) return;
+		// Remove all nodes.
 		for (int i = 0; i < getNodeCount(); i++) {
-			LocalNode localNode = this.localNodes[i];
+			LocalNode localNode = getLocalNode(i);
 			if (localNode == null) continue;
 			IWireNode otherNode = getWireNode(i);
 			if (otherNode == null) continue;
 
-			int ourNode = getOtherNodeIndex(i);
-			otherNode.removeNode(ourNode);
-			RemoveConnectorPacket.send(otherNode.getPos(), ourNode, level);
+			int ourNode = localNode.getOtherIndex();
+			if (localNode.isInvalid()) otherNode.removeNode(ourNode);
+			else otherNode.removeNode(ourNode, true); // Make the other node drop the wires.
 		}
+
 		invalidateNodeCache();
 		invalidateCaps();
+
 		// Invalidate
-		if(networkIn != null)
-			networkIn.invalidate();
-		if(networkOut != null)
-			networkOut.invalidate();
-		if(set)
-			setRemoved();
+		if (networkIn != null) networkIn.invalidate();
+		if (networkOut != null) networkOut.invalidate();
 	}
-	
-	private EnergyNetwork networkIn;
-	private EnergyNetwork networkOut;
-	
-	@Override
-	public EnergyNetwork getNetwork(int node) {
-		return isNodeInput(node) ? networkIn : networkOut;
+
+	public void invalidateLocalNodes() {
+		for(int i = 0; i < getNodeCount(); i++)
+			this.localNodes[i] = null;
 	}
 
 	@Override
-	public void setNetwork(int node, EnergyNetwork network) {
-		if(isNodeInput(node))
-			networkIn = network;
-		if(isNodeOutput(node))
-			networkOut = network;
+	public void invalidateNodeCache() {
+		for(int i = 0; i < getNodeCount(); i++)
+			this.nodeCache[i] = null;
 	}
 	
 	@Override
@@ -356,7 +350,13 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 
 	@Override
 	public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
-	
+
+	@Override
+	public void onObserved(ServerPlayer player, ObservePacket pack) {
+		if(isNetworkValid(pack.getNode()))
+			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
+	}
+
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		@SuppressWarnings("resource")
@@ -381,17 +381,4 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		
 		return true;
 	}
-
-	@Override
-	public void onObserved(ServerPlayer player, ObservePacket pack) {
-		if(isNetworkValid(pack.getNode()))
-			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
-	}
-	
-	/*@Override
-	protected void setRemovedNotDueToChunkUnload() {
-		onBlockRemoved(false);
-		super.setRemovedNotDueToChunkUnload();
-		
-	}*/
 }

@@ -35,7 +35,12 @@ public class LocalNode {
 	/**
 	 * The relative position of this node from the original block entity.
 	 */
-	private final Vec3i relativePos;
+	private Vec3i relativePos;
+
+	/**
+	 * Whether this node is invalid.
+	 */
+	private boolean invalid = false;
 
 	public LocalNode(BlockEntity entity, int index, int other, WireType type, BlockPos position) {
 		this.entity = entity;
@@ -49,17 +54,21 @@ public class LocalNode {
 		this.entity = entity;
 		this.index = tag.getInt(ID);
 		this.otherIndex = tag.getInt(OTHER);
-		this.type = WireType.VALUES[tag.getInt(TYPE)];
+		this.type = WireType.fromIndex(tag.getInt(TYPE));
 		this.relativePos = new Vec3i(tag.getInt(X), tag.getInt(Y), tag.getInt(Z));
 	}
 
 	public void write(CompoundTag tag) {
 		tag.putInt(ID, this.index);
 		tag.putInt(OTHER, this.otherIndex);
-		tag.putInt(TYPE, this.type.ordinal());
+		tag.putInt(TYPE, this.type.getIndex());
 		tag.putInt(X, this.relativePos.getX());
 		tag.putInt(Y, this.relativePos.getY());
 		tag.putInt(Z, this.relativePos.getZ());
+	}
+
+	public void updateRelative(NodeRotation rotation) {
+		this.relativePos = rotation.updateRelative(this.relativePos);
 	}
 
 	public int getIndex() {
@@ -80,5 +89,13 @@ public class LocalNode {
 
 	public BlockPos getPos() {
 		return entity.getBlockPos().offset(this.relativePos);
+	}
+
+	public boolean isInvalid() {
+		return invalid;
+	}
+
+	public void invalid() {
+		this.invalid = true;
 	}
 }

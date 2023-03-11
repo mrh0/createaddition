@@ -12,7 +12,6 @@ public enum WireType {
 	// Hanging lightbulbs?
 	// Festive lights?
 
-	public static final WireType[] VALUES = values();
 	private final int ID, TRANSFER, CR, CG, CB;
 	private final ItemStack DROP;
 	private final ItemStack SOURCE_DROP;
@@ -28,17 +27,13 @@ public enum WireType {
 	}
 	
 	public static WireType fromIndex(int index) {
-		switch(index) {
-			case 0:
-				return COPPER;
-			case 1:
-				return GOLD;
-			case 2:
-				return ELECTRUM;
-			case 3:
-				return FESTIVE;
-		}
-		return null;
+		return switch (index) {
+			case 0 -> COPPER;
+			case 1 -> GOLD;
+			case 2 -> ELECTRUM;
+			case 3 -> FESTIVE;
+			default -> null;
+		};
 	}
 	
 	public int getIndex() {
