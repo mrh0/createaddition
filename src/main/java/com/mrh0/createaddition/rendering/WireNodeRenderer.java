@@ -42,7 +42,6 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 				float oz1 = ((float) d1.z());
 
 				IWireNode wn = te.getWireNode(i);
-				BlockEntity entity = (BlockEntity) wn;
 				if (wn == null)
 					return;
 
