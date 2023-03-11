@@ -2,8 +2,11 @@ package com.mrh0.createaddition.blocks.connector;
 
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
+import com.mrh0.createaddition.energy.NodeRotation;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
+import com.simibubi.create.content.contraptions.components.structureMovement.ITransformableBlock;
+import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
@@ -33,18 +36,21 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, IWrenchable {
+public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, IWrenchable, ITransformableBlock {
 	boolean IGNORE_FACE_CHECK = Config.CONNECTOR_IGNORE_FACE_CHECK.get();
 
 	public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).forDirectional();
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
-	public static final EnumProperty<ConnectorMode> MODE = EnumProperty.<ConnectorMode>create("mode", ConnectorMode.class);
+	public static final EnumProperty<ConnectorMode> MODE = EnumProperty.create("mode", ConnectorMode.class);
 	private static final VoxelShape boxwe = Block.box(0,7,7,10,9,9);
 	private static final VoxelShape boxsn = Block.box(7,7,0,9,9,10);
 
 	public ConnectorBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(MODE, ConnectorMode.Passive));
+		this.registerDefaultState(this.defaultBlockState()
+				.setValue(FACING, Direction.NORTH)
+				.setValue(MODE, ConnectorMode.Passive)
+				.setValue(NodeRotation.ROTATION, NodeRotation.NONE));
 	}
 	
 	@Override
@@ -64,7 +70,7 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING).add(MODE);
+		builder.add(FACING, MODE, NodeRotation.ROTATION);
 	}
 	
 	@Override
@@ -79,16 +85,12 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	@Override
 	public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
 		super.playerWillDestroy(worldIn, pos, state, player);
-		if(player.isCreative())
-			return;
+
+		if (worldIn.isClientSide()) return;
 		BlockEntity te = worldIn.getBlockEntity(pos);
-		if(te == null)
-			return;
-		if(!(te instanceof IWireNode))
-			return;
-		IWireNode cte = (IWireNode) te;
-		
-		cte.dropWires(worldIn);
+		if (te == null) return;
+		if (!(te instanceof IWireNode cte)) return;
+		cte.dropWires(worldIn, !player.isCreative());
 	}
 	
 	@Override
@@ -102,16 +104,16 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	
 	@Override
 	public InteractionResult onSneakWrenched(BlockState state, UseOnContext c) {
-		if(c.getPlayer().isCreative())
-			return IWrenchable.super.onSneakWrenched(state, c);
 		BlockEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
 		if(te == null)
 			return IWrenchable.super.onSneakWrenched(state, c);
 		if(!(te instanceof IWireNode))
 			return IWrenchable.super.onSneakWrenched(state, c);
 		IWireNode cte = (IWireNode) te;
-		
-		cte.dropWires(c.getLevel(), c.getPlayer());
+
+		if (!c.getLevel().isClientSide())
+			cte.dropWires(c.getLevel(), c.getPlayer(), !c.getPlayer().isCreative());
+
 		return IWrenchable.super.onSneakWrenched(state, c);
 	}
 	
@@ -127,7 +129,7 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 			dropResources(state, worldIn, pos, tileentity);
 			
 			if(tileentity instanceof IWireNode)
-				((IWireNode) tileentity).dropWires(worldIn);
+				((IWireNode) tileentity).dropWires(worldIn, true);
 			
 			worldIn.removeBlock(pos, false);
 
@@ -151,6 +153,7 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	
 	@Override
 	public BlockState rotate(BlockState state, Rotation direction) {
+		// Handle old rotation.
 		return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
 	}
 	
@@ -163,15 +166,14 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
-	
+
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
-		if(!world.isClientSide()) {
-			BlockEntity be = world.getBlockEntity(pos);
-			if(be != null && !(newState.getBlock() instanceof ConnectorBlock))
-				if(be instanceof ConnectorTileEntity)
-					((ConnectorTileEntity) be).onBlockRemoved();
-		}
-		super.onRemove(state, world, pos, newState, b);
+	public BlockState transform(BlockState state, StructureTransform transform) {
+		NodeRotation rotation = NodeRotation.get(transform.rotationAxis, transform.rotation);
+		// Handle default rotation & mirroring.
+		if (transform.mirror != null) state = mirror(state, transform.mirror);
+		state = state.setValue(FACING, rotation.rotate(state.getValue(FACING), false));
+		// Set the rotation state, which will be used to update the nodes.
+		return state.setValue(NodeRotation.ROTATION, rotation);
 	}
 }

@@ -45,7 +45,6 @@ import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
-import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.simibubi.create.content.contraptions.fluids.tank.BoilerHeaters;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.foundation.block.BlockStressValues;
@@ -130,7 +129,6 @@ public class CreateAddition {
     	int i = 0;
         Network.registerMessage(i++, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
         Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
-        Network.registerMessage(i++, RemoveConnectorPacket.class, RemoveConnectorPacket::encode, RemoveConnectorPacket::decode, RemoveConnectorPacket::handle);
         
     	System.out.println("Create Crafts & Additions Initialized!");
     }

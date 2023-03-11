@@ -1,19 +1,16 @@
 package com.mrh0.createaddition.index;
 
-import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
-import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.AllTags.pickaxeOnly;
 import static com.simibubi.create.content.logistics.block.display.AllDisplayBehaviours.assignDataBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
-import com.mrh0.createaddition.blocks.accumulator.AccumulatorMovementBehaviour;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.barbed_wire.BarbedWireBlock;
 import com.mrh0.createaddition.blocks.cake.CACakeBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
-import com.mrh0.createaddition.blocks.connector.ConnectorMovementBehaviour;
+import com.mrh0.createaddition.energy.NodeMovementBehaviour;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
@@ -22,7 +19,6 @@ import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBloc
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorCTBehaviour;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorDisplaySource;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlock;
-import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayMovementBehaviour;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.config.Config;
@@ -37,7 +33,6 @@ import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.SoundType;
@@ -82,7 +77,7 @@ public class CABlocks {
 	
 	public static final BlockEntry<ConnectorBlock> CONNECTOR_COPPER = REGISTRATE.block("connector",  ConnectorBlock::new)
 			.initialProperties(SharedProperties::stone)
-			.onRegister(AllMovementBehaviours.movementBehaviour(new ConnectorMovementBehaviour()))
+			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
 			.register();
@@ -95,7 +90,7 @@ public class CABlocks {
 	
 	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = REGISTRATE.block("accumulator",  AccumulatorBlock::new)
 			.initialProperties(SharedProperties::softMetal)
-			.onRegister(AllMovementBehaviours.movementBehaviour(new AccumulatorMovementBehaviour()))
+			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
 			.item()
 			.tab(() -> null)
 			.transform(customItemModel())
@@ -103,7 +98,7 @@ public class CABlocks {
 	
 	public static final BlockEntry<RedstoneRelayBlock> REDSTONE_RELAY = REGISTRATE.block("redstone_relay",  RedstoneRelayBlock::new)
 			.initialProperties(SharedProperties::stone)
-			.onRegister(AllMovementBehaviours.movementBehaviour(new RedstoneRelayMovementBehaviour()))
+			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
 			.register();

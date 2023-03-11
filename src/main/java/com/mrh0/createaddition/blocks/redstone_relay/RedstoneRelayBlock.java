@@ -4,8 +4,11 @@ import java.util.Random;
 
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
+import com.mrh0.createaddition.energy.NodeRotation;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
+import com.simibubi.create.content.contraptions.components.structureMovement.ITransformableBlock;
+import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
@@ -41,7 +44,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 
-public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEntity>, IWrenchable {
+public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEntity>, IWrenchable, ITransformableBlock {
 
 	public static final BooleanProperty VERTICAL = BooleanProperty.create("vertical");
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -63,7 +66,11 @@ public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEn
 	
 	public RedstoneRelayBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.defaultBlockState().setValue(VERTICAL, false).setValue(HORIZONTAL_FACING, Direction.NORTH).setValue(POWERED, false));
+		this.registerDefaultState(this.defaultBlockState()
+				.setValue(VERTICAL, false)
+				.setValue(HORIZONTAL_FACING, Direction.NORTH)
+				.setValue(POWERED, false)
+				.setValue(NodeRotation.ROTATION, NodeRotation.NONE));
 	}
 
 	@Override
@@ -87,7 +94,7 @@ public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEn
 	
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(VERTICAL, HORIZONTAL_FACING, POWERED);
+		builder.add(VERTICAL, HORIZONTAL_FACING, POWERED, NodeRotation.ROTATION);
 	}
 	
 	@Override
@@ -204,30 +211,26 @@ public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEn
 	@Override
 	public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
 		super.playerWillDestroy(worldIn, pos, state, player);
-		if(player.isCreative())
-			return;
+
+		if (worldIn.isClientSide()) return;
 		BlockEntity te = worldIn.getBlockEntity(pos);
-		if(te == null)
-			return;
-		if(!(te instanceof IWireNode))
-			return;
-		IWireNode cte = (IWireNode) te;
-		
-		cte.dropWires(worldIn);
+		if (te == null) return;
+		if (!(te instanceof IWireNode cte)) return;
+		cte.dropWires(worldIn, !player.isCreative());
 	}
 	
 	@Override
 	public InteractionResult onSneakWrenched(BlockState state, UseOnContext c) {
-		if(c.getPlayer().isCreative())
-			return IWrenchable.super.onSneakWrenched(state, c);
 		BlockEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
 		if(te == null)
 			return IWrenchable.super.onSneakWrenched(state, c);
 		if(!(te instanceof IWireNode))
 			return IWrenchable.super.onSneakWrenched(state, c);
 		IWireNode cte = (IWireNode) te;
-		
-		cte.dropWires(c.getLevel(), c.getPlayer());
+
+		if (!c.getLevel().isClientSide())
+			cte.dropWires(c.getLevel(), c.getPlayer(), !c.getPlayer().isCreative());
+
 		return IWrenchable.super.onSneakWrenched(state, c);
 	}
 	
@@ -261,15 +264,14 @@ public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEn
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return fromRotation(state, mirror.mirror(state.getValue(HORIZONTAL_FACING)));
 	}
-	
+
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
-		if(!world.isClientSide()) {
-			BlockEntity be = world.getBlockEntity(pos);
-			if(be != null && !(newState.getBlock() instanceof RedstoneRelayBlock))
-				if(be instanceof RedstoneRelayTileEntity)
-					((RedstoneRelayTileEntity) be).onBlockRemoved(true);
-		}
-		super.onRemove(state, world, pos, newState, b);
+	public BlockState transform(BlockState state, StructureTransform transform) {
+		NodeRotation rotation = NodeRotation.get(transform.rotationAxis, transform.rotation);
+		// Handle default rotation & mirroring.
+		if (transform.mirror != null) state = mirror(state, transform.mirror);
+		if (transform.rotationAxis == Axis.Y) state = rotate(state, transform.rotation);
+		// Set the rotation state, which will be used to update the nodes.
+		return state.setValue(NodeRotation.ROTATION, rotation);
 	}
 }

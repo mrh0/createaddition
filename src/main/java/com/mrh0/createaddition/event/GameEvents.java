@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.event;
 
-import com.mrh0.createaddition.blocks.connector.ConnectorMovementManager;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.debug.AdditionDebugger;
 import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
@@ -27,7 +26,6 @@ public class GameEvents {
 		if(evt.world.isClientSide()) return;
 		if(evt.phase == Phase.END) return;
 		EnergyNetworkManager.tickWorld(evt.world);
-		ConnectorMovementManager.tickWorld(evt.world);
 	}
 	
 	@SubscribeEvent
@@ -42,7 +40,6 @@ public class GameEvents {
 		if(evt.getWorld().isClientSide())
 			return;
 		new EnergyNetworkManager(evt.getWorld());
-		new ConnectorMovementManager(evt.getWorld());
 	}
 	
 	@SubscribeEvent
