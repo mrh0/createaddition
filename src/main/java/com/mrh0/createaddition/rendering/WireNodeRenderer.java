@@ -37,7 +37,6 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 		for (int i = 0; i < te.getNodeCount(); i++) {
 			if (te.hasConnection(i)) {
 				Vec3 d1 = te.getNodeOffset(i);
-				//if (te.getPos().equals(new BlockPos(18, -60, 11))) System.out.println("Offset 1: " + d1 + ", id: " + i);
 				float ox1 = ((float) d1.x());
 				float oy1 = ((float) d1.y());
 				float oz1 = ((float) d1.z());

@@ -533,8 +533,6 @@ public interface IWireNode {
 		}
 		return null;
 	}
-
-	// TODO: Self reminder to clean.
 	
 	static WireConnectResult connect(Level world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
 		BlockEntity te1 = world.getBlockEntity(pos1);
