@@ -26,7 +26,7 @@ mixin {
 }
 
 
-version = '1.18.2-20230307a'
+version = '1.18.2-20230309a'
 group = 'com.mrh0.createaddition' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createaddition'
 

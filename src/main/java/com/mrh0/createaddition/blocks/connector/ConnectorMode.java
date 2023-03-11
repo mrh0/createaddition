@@ -57,6 +57,10 @@ public enum ConnectorMode implements StringRepresentable {
 		return new TranslatableComponent("createaddition.tooltip.energy.none");
 	}
 	
+	public boolean isActive() {
+		return this == Push || this == Pull;
+	}
+	
 	public static ConnectorMode test(Level level, BlockPos pos, Direction face) {
 		BlockEntity be = level.getBlockEntity(pos);
 		if(be == null) return None;

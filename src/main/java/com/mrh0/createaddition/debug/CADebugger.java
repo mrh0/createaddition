@@ -11,9 +11,9 @@ import net.minecraft.world.phys.HitResult;
 /**
  * Basically a copy of creates {@link KineticDebugger}, but for create addition blocks.
  */
-public class AdditionDebugger {
+public class CADebugger {
 
-	public AdditionDebugger() {}
+	public CADebugger() {}
 
 	public static void tick() {
 		if (!Minecraft.getInstance().options.renderDebug) return;

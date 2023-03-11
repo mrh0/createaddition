@@ -132,7 +132,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		}
 		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
 		// Make sure that the side we're caching can actually be cached.
-		if (side != Direction.UP && side != Direction.DOWN) return;
+		//if (side != Direction.UP && side != Direction.DOWN) return;
 		// Make sure the side isn't already cached.
 		if (le.equals(getCachedEnergy(side))) return;
 		setCache(side, le);
@@ -441,8 +441,6 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!energyCap.isPresent())
 			refreshCapability();
-		if(side == Direction.UP || side == Direction.DOWN)
-			return super.getCapability(cap, side);
 		if (cap == CapabilityEnergy.ENERGY)
 			return energyCap.cast();
 		return super.getCapability(cap, side);

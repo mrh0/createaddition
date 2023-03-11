@@ -90,6 +90,10 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 		updateCache();
 	}
 	
+	public boolean ignoreCapSide() {
+		return false;
+	}
+	
 	public void updateCache() {
 		if(level.isClientSide())
 			return;
@@ -109,6 +113,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 			return;
 		}
 		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		if(ignoreCapSide() && !le.isPresent()) le = te.getCapability(CapabilityEnergy.ENERGY);
 		// Make sure the side isn't already cached.
 		if (le.equals(getCachedEnergy(side))) return;
 		setCache(side, le);

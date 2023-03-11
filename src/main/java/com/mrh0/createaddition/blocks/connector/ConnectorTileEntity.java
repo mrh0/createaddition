@@ -16,6 +16,8 @@ import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
+import com.simibubi.create.foundation.utility.Color;
+import com.sun.jdi.connect.Connector;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -46,17 +48,17 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 
 	private boolean wasContraption = false;
 	private boolean firstTick = true;
-	
+
 	public static Vec3 OFFSET_DOWN = new Vec3(0f, -3f/16f, 0f);
 	public static Vec3 OFFSET_UP = new Vec3(0f, 3f/16f, 0f);
 	public static Vec3 OFFSET_NORTH = new Vec3(0f, 0f, -3f/16f);
 	public static Vec3 OFFSET_WEST = new Vec3(-3f/16f, 0f, 0f);
 	public static Vec3 OFFSET_SOUTH = new Vec3(0f, 0f, 3f/16f);
 	public static Vec3 OFFSET_EAST = new Vec3(3f/16f, 0f, 0f);
-	
+
 	public static final int NODE_COUNT = 4;
 	public static final int CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
-	
+
 	public ConnectorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
 
@@ -175,7 +177,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		// Invalidate the network if we updated the nodes.
 		if (!nodes.isEmpty() && this.network != null) this.network.invalidate();
 	}
-	
+
 	@Override
 	public void write(CompoundTag nbt, boolean clientPacket) {
 		super.write(nbt, clientPacket);
@@ -293,7 +295,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		for(int i = 0; i < getNodeCount(); i++)
 			this.nodeCache[i] = null;
 	}
-	
+
 	public ConnectorMode getMode() {
 		return getBlockState().getValue(ConnectorBlock.MODE);
 	}
@@ -303,25 +305,30 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		if(isNetworkValid(0))
 			EnergyNetworkPacket.send(worldPosition, getNetwork(0).getPulled(), getNetwork(0).getPushed(), player);
 	}
-	
+
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
-		
+
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.connector.info").withStyle(ChatFormatting.WHITE)));
-		
+
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.mode").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
 				.append(getBlockState().getValue(ConnectorBlock.MODE).getTooltip().withStyle(ChatFormatting.AQUA)));
-		
+
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(" ")
 				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
-		
+
 		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+	}
+
+	@Override
+	public boolean ignoreCapSide() {
+		return this.getBlockState().getValue(ConnectorBlock.MODE).isActive();
 	}
 
 	@Override
@@ -349,7 +356,11 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		}
 		// Outline connected power
 		BlockEntity te = level.getBlockEntity(worldPosition.relative(getBlockState().getValue(ConnectorBlock.FACING)));
-		if (te == null || !te.getCapability(CapabilityEnergy.ENERGY).isPresent()) return;
+
+		var cap = te.getCapability(CapabilityEnergy.ENERGY, getBlockState().getValue(ConnectorBlock.FACING).getOpposite());
+		if(ignoreCapSide() && !cap.isPresent()) cap = te.getCapability(CapabilityEnergy.ENERGY);
+
+		if (te == null || !cap.isPresent()) return;
 		VoxelShape shape = level.getBlockState(te.getBlockPos()).getBlockSupportShape(level, te.getBlockPos());
 		CreateClient.OUTLINER.chaseAABB("ca_output", shape.bounds().move(te.getBlockPos())).lineWidth(0.0625F).colored(0x5B5BFF);
 	}
