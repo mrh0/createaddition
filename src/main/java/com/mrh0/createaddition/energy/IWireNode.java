@@ -350,7 +350,7 @@ public interface IWireNode {
 				// Get the node data.
 				int other = nbt.getInt("node" + i);
 				WireType type = WireType.fromIndex(nbt.getInt("type" + i));
-				BlockPos pos = new BlockPos(nbt.getInt("x" + i), nbt.getInt("y" + i), nbt.getInt("z" + i));
+				BlockPos pos = new BlockPos(nbt.getInt("x" + i), nbt.getInt("y" + i), nbt.getInt("z" + i)).subtract(getPos());
 				// Remove the data.
 				nbt.remove("node" + i);
 				nbt.remove("type" + i);
