@@ -97,7 +97,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}
 
 	protected ProcessingResult onCharge(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		return chargeCompundAndStack(transported, handler);
+		return chargeCompoundAndStack(transported, handler);
 	}
 	
 	private void doDmg() {
@@ -149,7 +149,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		return getBlockState().getValue(TeslaCoil.POWERED);
 	}
 	
-	protected ProcessingResult chargeCompundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+	protected ProcessingResult chargeCompoundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		
 		ItemStack stack = transported.stack;
 		if(stack == null)
@@ -220,13 +220,15 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		if(recipeCache.isPresent()) {
 			ChargingRecipe recipe = recipeCache.get();
 			long energyRemoved = energy.internalConsumeEnergy(Math.min(CHARGE_RATE_RECIPE, recipe.getEnergy() - chargeAccumulator));
-chargeAccumulator += energyRemoved;
+			chargeAccumulator += energyRemoved;
 			if(chargeAccumulator >= recipe.getEnergy()) {
-				TransportedItemStack left = transported.copy();
-				left.stack.shrink(1);
-				List<TransportedItemStack> r = new ArrayList<>();
-				r.add(new TransportedItemStack(recipe.getResultItem().copy()));
-				handler.handleProcessingOnItem(transported, TransportedResult.convertToAndLeaveHeld(r, left));
+				TransportedItemStack remainingStack = transported.copy();
+				TransportedItemStack result = transported.copy();
+				result.stack = recipe.getResultItem().copy();
+				remainingStack.stack.shrink(1);
+				List<TransportedItemStack> outList = new ArrayList<>();
+				outList.add(result);
+				handler.handleProcessingOnItem(transported, TransportedResult.convertToAndLeaveHeld(outList, remainingStack));
 				chargeAccumulator = 0;
 			}
 			return true;
