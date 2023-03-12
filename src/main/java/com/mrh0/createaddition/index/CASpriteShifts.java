@@ -22,5 +22,11 @@ public class CASpriteShifts {
 				RECTANGLE,
 				new ResourceLocation(CreateAddition.MODID, "block/modular_accumulator/block_top"),
 				new ResourceLocation(CreateAddition.MODID, "block/modular_accumulator/block_top_connected")
-			);
+			),
+	
+		COPPER_WIRE_CASING = getCT(
+				OMNIDIRECTIONAL,
+			new ResourceLocation(CreateAddition.MODID, "block/copper_wire_casing/block"),
+			new ResourceLocation(CreateAddition.MODID, "block/copper_wire_casing/block_connected")
+		);
 }

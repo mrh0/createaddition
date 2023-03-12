@@ -3,6 +3,7 @@ package com.mrh0.createaddition.blocks.barbed_wire;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,7 +32,8 @@ public class BarbedWireBlock extends Block implements net.minecraftforge.common.
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		double delta = Math.abs(entity.getX() - entity.xOld) + Math.abs(entity.getY() - entity.yOld) + Math.abs(entity.getZ() - entity.zOld);
 		if((entity instanceof LivingEntity) && delta > 0d) {
-			entity.hurt(DMG_SOURCE, 2f);
+			if(entity.hurt(DMG_SOURCE, 2f))
+				entity.playSound(SoundEvents.PLAYER_HURT_SWEET_BERRY_BUSH, 1f, 1f);
 		}
 		entity.makeStuckInBlock(state, new Vec3(0.25D, (double)0.05F, 0.25D));
 	}

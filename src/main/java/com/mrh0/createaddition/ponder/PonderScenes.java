@@ -453,5 +453,11 @@ public class PonderScenes {
 			.text("and an output connector.")
 			.placeNearTarget()
 			.pointAt(util.vector.centerOf(cOut));
+		
+		scene.overlay.showText(110)
+		.text("Compat")
+		.placeNearTarget()
+		.pointAt(util.vector.centerOf(cOut));
+		scene.idle(120);
 	}
 }

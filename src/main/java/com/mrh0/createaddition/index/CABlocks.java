@@ -26,10 +26,12 @@ import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.AllMovementBehaviours;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.AllSections;
+import com.simibubi.create.content.contraptions.base.CasingBlock;
 import com.simibubi.create.content.contraptions.components.AssemblyOperatorBlockItem;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.AssetLookup;
+import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -152,6 +154,11 @@ public class CABlocks {
 			//.onRegister(movementBehaviour(new BlazeBurnerMovementBehaviour()))
 			//.onRegister(interactionBehaviour(new BlazeBurnerInteractionBehaviour()))
 			.register();
+	
+	/*public static final BlockEntry<CasingBlock> COPPER_WIRE_CASING = REGISTRATE.block("copper_wire_casing", CasingBlock::new)
+			.properties(p -> p.color(MaterialColor.PODZOL))
+			.transform(BuilderTransformers.casing(() -> CASpriteShifts.COPPER_WIRE_CASING))
+			.register();*/
 	
 	public static void register() {
 		REGISTRATE.addToSection(TESLA_COIL, AllSections.KINETICS);
