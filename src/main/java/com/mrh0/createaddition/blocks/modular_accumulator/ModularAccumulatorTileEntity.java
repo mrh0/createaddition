@@ -425,6 +425,8 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			compound.put("Controller", NbtUtils.writeBlockPos(controller));
 		if (isController()) {
 			compound.put("EnergyContent", energyStorage.write(new CompoundTag()));
+			// Used by contraptions.
+			compound.putInt("EnergyCapacity", getTotalAccumulatorSize() * getCapacityMultiplier());
 			compound.putInt("Size", width);
 			compound.putInt("Height", height);
 		}

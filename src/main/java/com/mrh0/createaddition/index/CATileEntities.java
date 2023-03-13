@@ -7,6 +7,9 @@ import com.mrh0.createaddition.blocks.electric_motor.*;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.*;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorRenderer;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorTileEntity;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceInstance;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceRenderer;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillTileEntity;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilTileEntity;
@@ -81,6 +84,13 @@ public class CATileEntities {
 			.validBlocks(CABlocks.MODULAR_ACCUMULATOR)
 			.renderer(() -> ModularAccumulatorRenderer::new)
 			//.renderer(() -> LiquidBlazeBurnerRenderer::new)
+			.register();
+
+	public static final BlockEntityEntry<PortableEnergyInterfaceTileEntity> PORTABLE_ENERGY_INTERFACE = CreateAddition.registrate()
+			.tileEntity("portable_energy_interface", PortableEnergyInterfaceTileEntity::new)
+			.instance(() -> PortableEnergyInterfaceInstance::new)
+			.validBlocks(CABlocks.PORTABLE_ENERGY_INTERFACE)
+			.renderer(() -> PortableEnergyInterfaceRenderer::new)
 			.register();
 	
 	public static void register() {}

@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.event;
 
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyManager;
 import com.mrh0.createaddition.debug.CADebugger;
 import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
 import com.mrh0.createaddition.index.CABlocks;
@@ -21,11 +22,19 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class GameEvents {
+
 	@SubscribeEvent
 	public static void worldTickEvent(TickEvent.WorldTickEvent evt) {
 		if(evt.world.isClientSide()) return;
 		if(evt.phase == Phase.END) return;
 		EnergyNetworkManager.tickWorld(evt.world);
+	}
+
+	@SubscribeEvent
+	public static void serverTickEvent(TickEvent.ServerTickEvent evt) {
+		if(evt.phase == Phase.END) return;
+		// Using ServerTick instead of WorldTick because some contraptions can switch worlds.
+		PortableEnergyManager.tick();
 	}
 	
 	@SubscribeEvent
