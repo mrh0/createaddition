@@ -66,8 +66,8 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	protected boolean isCreative;
 	protected boolean goggles;
 	protected boolean hat;
-	
-	
+
+
 
 	public LiquidBlazeBurnerTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -80,21 +80,21 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 
 		headAngle.startWithValue((AngleHelper.horizontalAngle(state.getOptionalValue(LiquidBlazeBurnerBlock.FACING)
 			.orElse(Direction.SOUTH)) + 180) % 360);
-		
+
 		tankInventory = createInventory();
 		fluidCapability = LazyOptional.of(() -> tankInventory);
 	}
-	
-	
+
+
 	// Custom fluid handling
 	protected LazyOptional<IFluidHandler> fluidCapability;
 	protected FluidTank tankInventory;
-	
+
 	private Optional<LiquidBurningRecipe> recipeCache = Optional.empty();
 	private Fluid lastFluid = null;
 	private int updateTimeout = 10;
 	private boolean changed = true;
-	
+
 	protected SmartFluidTank createInventory() {
 		return new SmartFluidTank(4000, this::onFluidStackChanged);
 	}
@@ -104,7 +104,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			return;
 		update(newFluidStack);
 	}
-	
+
 	private void update(FluidStack stack) {
 		if(level.isClientSide())
 			return;
@@ -113,7 +113,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		lastFluid = stack.getFluid();
 		changed = true;
 	}
-	
+
 	public Optional<LiquidBurningRecipe> find(FluidStack stack, Level world) {
 		if(stack == null)
 			return Optional.empty();
@@ -123,33 +123,33 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			return Optional.empty();
 		return world.getRecipeManager().getRecipeFor(LiquidBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
 	}
-	
+
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return fluidCapability.cast();
 		return super.getCapability(cap, side);
 	}
-	
+
 	public boolean first = true;
 	public void burningTick() {
 		if(level.isClientSide())
 			return;
-		
+
 		if(first)
 			update(tankInventory.getFluid());
 		first = false;
-		
+
 		if(remainingBurnTime < 1)
-		
+
 		if(recipeCache.isEmpty())
 			return;
-		
+
 		if(tankInventory.getFluidAmount() < 100)
 			return;
 		if(remainingBurnTime > MAX_HEAT_CAPACITY)
 			return;
-		
+
 		// Added try catch because this crashes for some reason for a minority of players, very strange.
 		try {
 			remainingBurnTime += recipeCache.get().getBurnTime() / 10;
@@ -167,11 +167,11 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		if (prev != getHeatLevelFromBlock()) {
 			level.playSound(null, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
 				.125f + level.random.nextFloat() * .125f, 1.15f - level.random.nextFloat() * .25f);
-			
+
 			spawnParticleBurst(activeFuel == FuelType.SPECIAL);
 		}
 	}
-	
+
 
 	public FuelType getActiveFuel() {
 		return activeFuel;
@@ -195,7 +195,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 				spawnParticles(getHeatLevelFromBlock(), 1);
 			return;
 		}
-		
+
 		burningTick();
 
 		if (isCreative)
@@ -322,7 +322,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
 		return true;
 	}
-	
+
 	/**
 	 * @return true if the heater updated its burn time and an item should be
 	 *         consumed
@@ -337,7 +337,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		// Liquid Fluid Logic
 		if(tryUpdateLiquid(itemStack))
 			return true;
-		
+
 		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
 			newBurnTime = 1000;
 			newFuel = FuelType.SPECIAL;

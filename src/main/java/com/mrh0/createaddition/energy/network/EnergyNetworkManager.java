@@ -27,7 +27,7 @@ public class EnergyNetworkManager {
 		for(int i = 0; i < networks.size(); i++) {
 			EnergyNetwork en = networks.get(i);
 			if(en.isValid()) {
-				en.tick();
+				en.tick(i);
 				keep.add(en);
 				continue;
 			}

@@ -48,7 +48,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(motor));
 		scene.idle(50);
 
-		
+
 		scene.rotateCameraY(90);
 		scene.idle(20);
 
@@ -71,24 +71,24 @@ public class PonderScenes {
 		scene.world.modifyKineticSpeed(util.select.fromTo(1, 1, 2, 3, 1, 2), f -> 4 * f);
 		scene.effects.rotationSpeedIndicator(motor);
 		scene.idle(70);
-		
+
 		scene.addKeyframe();
 		scene.overlay.showText(70)
 		.text("The Electric Motor requires a source of energy (fe)")
 		.placeNearTarget()
 		.pointAt(blockSurface);
 		scene.idle(80);
-		
+
 		scene.overlay.showText(70)
 		.text("The motors' energy consumption is determined by the set RPM")
 		.placeNearTarget()
 		.pointAt(blockSurface);
 		scene.idle(80);
-		
-		
+
+
 		scene.rotateCameraY(-90);
 	}
-	
+
 	public static void alternator(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("alternator", "Generating Electric energy using a Alternator");
 		scene.configureBasePlate(1, 0, 4);
@@ -115,14 +115,14 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(generator));
 		scene.idle(60);
 
-		
+
 		scene.overlay.showText(50)
 		.text("The Alternators energy production is determined by the input RPM")
 		.placeNearTarget()
 		.pointAt(util.vector.topOf(generator));
 		scene.idle(60);
 	}
-	
+
 	public static void rollingMill(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("rolling_mill", "Rolling metals into Rods and Wires");
 		scene.configureBasePlate(1, 0, 4);
@@ -156,7 +156,7 @@ public class PonderScenes {
 		.pointAt(util.vector.topOf(mill));
 		scene.idle(60);
 	}
-	
+
 	public static void automateRollingMill(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("automated_rolling_mill", "Automating the Rolling Mill");
 		scene.configureBasePlate(1, 0, 4);
@@ -165,7 +165,7 @@ public class PonderScenes {
 		BlockPos mill = util.grid.at(3, 2, 2);
 		BlockPos in = util.grid.at(3, 2, 3);
 		BlockPos out = util.grid.at(3, 2, 1);
-		
+
 		//BlockPos entryBeltPos = util.grid.at(3, 1, 4);
 		//BlockPos exitBeltPos = util.grid.at(3, 1, 0);
 
@@ -173,7 +173,7 @@ public class PonderScenes {
 			scene.idle(5);
 			scene.world.showSection(util.select.position(i, 1, 4), Direction.DOWN);
 		}
-		
+
 		for (int i = 5; i >= 0; i--) {
 			scene.idle(5);
 			scene.world.showSection(util.select.position(3, 1, i), Direction.DOWN);
@@ -181,9 +181,9 @@ public class PonderScenes {
 			scene.world.showSection(util.select.position(4, 1, i), Direction.DOWN);
 			scene.world.showSection(util.select.position(4, 2, i), Direction.DOWN);
 		}
-		
+
 		scene.world.showSection(util.select.position(mill), Direction.DOWN);
-		
+
 		scene.addKeyframe();
 		scene.overlay.showText(50)
 		.text("The Rolling Mill can be automated using a Belt and two Funnels")
@@ -210,7 +210,7 @@ public class PonderScenes {
 		}
 		scene.idle(40);*/
 	}
-	
+
 	/*public static void heater(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("heater", "Using electric energy to heat a furnace");
 		scene.configureBasePlate(0, 0, 5);
@@ -219,19 +219,19 @@ public class PonderScenes {
 		BlockPos furnace = util.grid.at(2, 1, 2);
 		BlockPos heater = util.grid.at(2, 2, 2);
 		BlockPos connector = util.grid.at(2, 3, 2);
-		
+
 		scene.idle(5);
 		scene.world.showSection(util.select.position(furnace), Direction.DOWN);
 		scene.idle(5);
 		scene.world.showSection(util.select.position(heater), Direction.DOWN);
-		
+
 		scene.idle(10);
 		scene.overlay.showText(50)
 			.text("The heater can be placed on any side facing the furnace")
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(heater));
 		scene.idle(60);
-		
+
 		scene.world.showSection(util.select.position(connector), Direction.DOWN);
 		scene.idle(10);
 		scene.overlay.showText(50)
@@ -239,7 +239,7 @@ public class PonderScenes {
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(heater));
 		scene.idle(60);
-		
+
 		scene.world.setBlocks(util.select.position(furnace), Blocks.FURNACE.defaultBlockState().setValue(AbstractFurnaceBlock.LIT, true), false);
 		scene.overlay.showText(50)
 		.text("The Furnace will stay lit as long as enough energy is provided")
@@ -247,7 +247,7 @@ public class PonderScenes {
 		.pointAt(util.vector.blockSurface(furnace, Direction.NORTH));
 		scene.idle(60);
 	}*/
-	
+
 	public static void ccMotor(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("cc_electric_motor", "Using Computercraft to control an Electric Motor");
 		scene.configureBasePlate(0, 0, 5);
@@ -255,26 +255,26 @@ public class PonderScenes {
 
 		BlockPos motor = util.grid.at(2, 1, 2);
 		BlockPos computer = util.grid.at(1, 1, 2);
-		
+
 		scene.idle(5);
 		scene.world.showSection(util.select.position(motor), Direction.DOWN);
 		scene.idle(5);
 		scene.world.showSection(util.select.position(computer), Direction.DOWN);
-		
+
 		scene.idle(10);
 		scene.overlay.showText(50)
 			.text("The Electric Motor can be controlled using Computercraft")
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(computer));
 		scene.idle(60);
-		
+
 		scene.idle(10);
 		scene.overlay.showText(50)
 			.text("Connect to the motor using 'peripheral.wrap(side)'")
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(computer));
 		scene.idle(60);
-		
+
 		scene.addKeyframe();
 		scene.idle(10);
 		scene.overlay.showText(150)
@@ -283,7 +283,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(computer));
 		scene.idle(160);
 	}
-	
+
 	public static void teslaCoil(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("tesla_coil", "Using Tesla Coil");
 		scene.configureBasePlate(0, 0, 5);
@@ -318,7 +318,7 @@ public class PonderScenes {
 		scene.world.setBlock(util.grid.at(2, 3, 2), CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.UP).setValue(TeslaCoil.POWERED, false), false);
 		scene.idle(80);*/
 	}
-	
+
 	public static void teslaCoilHurt(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("tesla_coil_hurt", "Dangerous Tesla Coils");
 		scene.configureBasePlate(0, 0, 5);
@@ -337,7 +337,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(teslacoil));
 		scene.idle(80);
 		scene.world.showSection(util.select.position(lever), Direction.SOUTH);
-		
+
 		scene.idle(5);
 		scene.overlay.showText(50)
 			.attachKeyFrame()
@@ -356,7 +356,7 @@ public class PonderScenes {
 			.pointAt(util.vector.topOf(teslacoil));
 		scene.idle(80);
 	}
-	
+
 	public static void liquidBlazeBurner(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("liquid_blaze_burner", "Liquid Fuel Burning");
 		scene.configureBasePlate(0, 0, 5);
@@ -397,30 +397,30 @@ public class PonderScenes {
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(burner));
 		scene.idle(10);
-		
+
 		for (int i = 0; i < blocks.length; i++) {
 			scene.idle(5);
 			scene.world.showSection(util.select.position(blocks[i]), Direction.EAST);
 		}
 		scene.idle(20);
 	}
-	
-	
+
+
 	public static void modularAccumulator(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("modular_accumulator", "Accumulator");
 		scene.configureBasePlate(0, 0, 4);
 		scene.showBasePlate();
 		scene.idle(15);
-		
+
 		BlockPos cIn = new BlockPos(1, 3, 1);
 		BlockPos cOut = new BlockPos(2, 3, 2);
-		
+
 		var accumulator = util.select.fromTo(1, 1, 1, 2, 2, 2);
 		//scene.world.showSection(accumulator, Direction.EAST);
 		ElementLink<WorldSectionElement> accumulatorLink = scene.world.showIndependentSection(accumulator, Direction.EAST);
 		scene.idle(15);
 		scene.overlay.showOutline(PonderPalette.GREEN, accumulatorLink, accumulator, 50);
-		
+
 		scene.overlay.showText(50)
 			.text("The Accumulator is a multiblock")
 			.placeNearTarget()
@@ -434,7 +434,7 @@ public class PonderScenes {
 		scene.world.showSection(util.select.position(cIn), Direction.DOWN);
 		scene.idle(5);
 		scene.world.showSection(util.select.position(cOut), Direction.DOWN);
-		
+
 		scene.idle(15);
 		scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(cIn), Pointing.DOWN).rightClick()
 				.withItem(new ItemStack(AllItems.WRENCH.get())), 40);
@@ -444,7 +444,7 @@ public class PonderScenes {
 			.text("Configure an input connector,")
 			.placeNearTarget()
 			.pointAt(util.vector.centerOf(cIn));
-		
+
 		scene.idle(60);
 		scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(cOut), Pointing.DOWN).rightClick()
 				.withItem(new ItemStack(AllItems.WRENCH.get())), 40);
@@ -453,5 +453,11 @@ public class PonderScenes {
 			.text("and an output connector.")
 			.placeNearTarget()
 			.pointAt(util.vector.centerOf(cOut));
+
+		scene.overlay.showText(110)
+		.text("Compat")
+		.placeNearTarget()
+		.pointAt(util.vector.centerOf(cOut));
+		scene.idle(120);
 	}
 }

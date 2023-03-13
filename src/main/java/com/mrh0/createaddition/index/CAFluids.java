@@ -22,10 +22,10 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 public class CAFluids {
 	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
 			.creativeModeTab(() -> ModGroup.MAIN);
-	
+
 	public static FluidEntry<ForgeFlowingFluid.Flowing> SEED_OIL;
 	public static FluidEntry<ForgeFlowingFluid.Flowing> BIOETHANOL;
-	
+
 
 	/**
 	 * (From Create)
@@ -50,7 +50,7 @@ public class CAFluids {
 		}
 
 	}
-	
+
 	public static void register() {
 		var seedOil = REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition","fluid/seed_oil_still"), new ResourceLocation("createaddition","fluid/seed_oil_flow"),
 				NoColorFluidAttributes::new)
@@ -61,12 +61,12 @@ public class CAFluids {
 						.slopeFindDistance(6)
 						.explosionResistance(100f))
 				.source(ForgeFlowingFluid.Source::new);
-		
+
 		var seedOilBucket = seedOil.bucket()
 			.properties(p -> p.stacksTo(1))
 			.register();
 		SEED_OIL = seedOil.register();
-		
+
 		var bioethanol = REGISTRATE.fluid("bioethanol", new ResourceLocation("createaddition","fluid/bioethanol_still"), new ResourceLocation("createaddition","fluid/bioethanol_flow"),
 				NoColorFluidAttributes::new)
 				.properties(b -> b.viscosity(2500)
@@ -80,7 +80,7 @@ public class CAFluids {
 			.properties(p -> p.stacksTo(1))
 			.register();
 		BIOETHANOL = bioethanol.register();
-		
+
 		REGISTRATE.addToSection(seedOilBucket, AllSections.MATERIALS);
 		REGISTRATE.addToSection(bioethanolBucket, AllSections.MATERIALS);
 	}

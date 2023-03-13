@@ -12,6 +12,14 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class Util {
+	public static int max(int...v) {
+		int m = Integer.MIN_VALUE;
+		for(int i : v)
+			if(i > m)
+				m = i;
+		return m;
+	}
+
 	public static int min(int...v) {
 		int m = Integer.MAX_VALUE;
 		for(int i : v)
@@ -19,7 +27,7 @@ public class Util {
 				m = i;
 		return m;
 	}
-	
+
 	public static int minIndex(int...v) {
 		int m = 0;
 		for(int i = 0; i < v.length; i++)
@@ -27,7 +35,7 @@ public class Util {
 				m = i;
 		return m;
 	}
-	
+
 	public static ItemStack findStack(Item item, Inventory inv) {
 		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
@@ -36,23 +44,23 @@ public class Util {
 		}
 		return ItemStack.EMPTY;
 	}
-	
+
 	public static boolean canStack(ItemStack add, ItemStack to){
 		return add.getCount() + to.getCount() <= to.getMaxStackSize() && (add.getItem() == to.getItem()) || to.isEmpty();
 	}
-	
+
 	public static int getMergeRest(ItemStack add, ItemStack to){
 		return Math.max(add.getCount() + to.getCount() - to.getMaxStackSize(), 0);
 	}
-	
+
 	public static int getSkyLight(Level world, BlockPos pos) {
 		return Math.max(world.getBrightness(LightLayer.SKY, pos) - world.getSkyDarken(), 0);
 	}
-	
+
 	public static ItemStack mergeStack(ItemStack add, ItemStack to) {
 		return new ItemStack(to.isEmpty() ? add.getItem() : to.getItem(), to.getCount() + add.getCount());
 	}
-	
+
 	public static String format(int n) {
 		if(n > 1000_000_000)
 			return Math.round((double)n/100_000_000d)/10d + "G";
@@ -62,17 +70,17 @@ public class Util {
 			return Math.round((double)n/100d)/10d + "K";
 		return n + "";
 	}
-	
+
 	public static MutableComponent getTextComponent(IEnergyStorage ies, String nan, String unit) {
 		if(ies == null)
 			return Component.literal(nan);
 		return getTextComponent(ies.getEnergyStored(), unit).withStyle(ChatFormatting.AQUA).append(Component.literal(" / ").withStyle(ChatFormatting.GRAY)).append(getTextComponent(ies.getMaxEnergyStored(), unit));
 	}
-	
+
 	public static MutableComponent getTextComponent(IEnergyStorage ies) {
 		return getTextComponent(ies, "NaN", "fe");
 	}
-	
+
 	public static MutableComponent getTextComponent(int value, String unit) {
 		return Component.literal(format(value)+unit);
 	}

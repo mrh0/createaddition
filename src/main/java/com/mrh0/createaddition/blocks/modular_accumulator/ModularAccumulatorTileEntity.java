@@ -6,7 +6,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.config.Config;
+import com.mrh0.createaddition.debug.IDebugDrawer;
 import com.mrh0.createaddition.energy.IMultiTileEnergyContainer;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
@@ -14,6 +16,7 @@ import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.Create;
+import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
@@ -39,7 +42,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.IFluidTank;
 
-public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity {
+public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer {
 
 	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(),
 			MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(),
@@ -59,6 +62,9 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	protected int syncCooldown;
 	protected boolean queuedSync;
 
+	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
+
 	public ModularAccumulatorTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		energyStorage = createEnergyStorage();
@@ -73,6 +79,63 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		return new InternalEnergyStorage(getCapacityMultiplier(), Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get());
 	}
 
+	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
+		switch(side) {
+			case DOWN:
+				escacheDown = storage;
+				break;
+			case UP:
+				escacheUp = storage;
+				break;
+		}
+	}
+
+	public LazyOptional<IEnergyStorage> getCachedEnergy(Direction side) {
+		switch(side) {
+			case DOWN:
+				return escacheDown;
+			case UP:
+				return escacheUp;
+		}
+		return LazyOptional.empty();
+	}
+
+	public void firstTick() {
+		updateCache();
+	};
+
+	public void updateCache() {
+		if(level.isClientSide())
+			return;
+		for(Direction side : Direction.values()) {
+			updateCache(side);
+		}
+	}
+
+	public void updateCache(Direction side) {
+		if(updateBlocked > 10) return;
+		updateBlocked++;
+		// No need to update the cache if we're removed.
+		if (isRemoved()) return;
+		// Make sure the side we're checking is loaded.
+		if (!level.isLoaded(worldPosition.relative(side))) {
+			setCache(side, LazyOptional.empty());
+			return;
+		}
+		BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
+		if(te == null) {
+			setCache(side, LazyOptional.empty());
+			return;
+		}
+		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		// Make sure that the side we're caching can actually be cached.
+		if (side != Direction.UP && side != Direction.DOWN) return;
+		// Make sure the side isn't already cached.
+		if (le.equals(getCachedEnergy(side))) return;
+		setCache(side, le);
+		le.addListener((es) -> updateCache(side));
+	}
+
 	protected void updateConnectivity() {
 		updateConnectivity = false;
 		if (level.isClientSide)
@@ -81,13 +144,24 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			return;
 		CAConnectivityHandler.formMulti(this);
 	}
-	
+
 	public LerpedFloat gauge = LerpedFloat.linear();
 
+	int updateBlocked = 0;
 	int lastEnergy = 0;
+	boolean firstTickState = true;
 	@Override
 	public void tick() {
 		super.tick();
+		updateBlocked--;
+		if(updateBlocked < 0)
+			updateBlocked = 0;
+		if(firstTickState)
+			firstTick();
+		firstTickState = false;
+
+		tickOutput();
+
 		if (syncCooldown > 0) {
 			syncCooldown--;
 			if (syncCooldown == 0 && queuedSync)
@@ -103,15 +177,15 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 
 		if (updateConnectivity)
 			updateConnectivity();
-		
+
 		// Tick Logic:
 		if (!isController()) return;
-		
+
 		if(Math.abs(lastEnergy - energyStorage.getEnergyStored()) > 256) {
 			lastEnergy = energyStorage.getEnergyStored();
 			onEnergyChanged();
 		}
-		
+
 		if (level.isClientSide()) {
 			gauge.tickChaser();
 			float current = gauge.getValue(1);
@@ -119,6 +193,25 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 				gauge.setValueNoUpdate(current + Math.min(-(current - 1) * Create.RANDOM.nextFloat(), 0));
 			return;
 		}
+	}
+
+	public void tickOutput() {
+		if(getControllerTE() == null) return;
+		BlockState state = this.getBlockState();
+		if(state.getValue(ModularAccumulatorBlock.TOP)) {
+			tickOutputSide(Direction.UP);
+		}
+		if(state.getValue(ModularAccumulatorBlock.BOTTOM)) {
+			tickOutputSide(Direction.DOWN);
+		}
+	}
+
+	public void tickOutputSide(Direction side) {
+		IEnergyStorage ies = getCachedEnergy(side).orElse(null);
+		if(ies == null)
+			return;
+		int ext = getControllerTE().energyStorage.extractEnergy(ies.receiveEnergy(MAX_OUT, true), false);
+		int rec = ies.receiveEnergy(ext, false);
 	}
 
 	@Override
@@ -166,7 +259,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			sendData();
 		}
 	}
-	
+
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -310,7 +403,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 				energyStorage.setCapacity(getCapacityMultiplier() * getTotalAccumulatorSize());
 			invalidateRenderBoundingBox();
 		}
-		
+
 		if (isController())
 			gauge.chase(getFillState(), 0.125f, Chaser.EXP);
 	}
@@ -367,7 +460,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	public static int getMaxHeight() {
 		return MAX_HEIGHT;
 	}
-	
+
 	@Override
 	public int getMaxWidth() {
 		return MAX_WIDTH;
@@ -384,9 +477,12 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		if (ModularAccumulatorBlock.isAccumulator(state)) { // safety
 			state = state.setValue(ModularAccumulatorBlock.BOTTOM, getController().getY() == getBlockPos().getY());
 			state = state.setValue(ModularAccumulatorBlock.TOP, getController().getY() + height - 1 == getBlockPos().getY());
-			level.setBlock(getBlockPos(), state, 6);
+			level.setBlock(getBlockPos(), state, Block.UPDATE_NEIGHBORS | Block.UPDATE_CLIENTS | Block.UPDATE_INVISIBLE);
 		}
 		setChanged();
+		// When the multi block is updated, the neighborChanged method isn't fired,
+		// so update the cache here instead.
+		updateCache();
 	}
 
 	@Override
@@ -424,29 +520,29 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	@Override
 	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
 	}
-	
+
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ModularAccumulatorTileEntity controllerTE = getControllerTE();
 		if (controllerTE == null)
 			return false;
-		
+
 		ObservePacket.send(worldPosition, 0);
-		
+
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.accumulator.info").withStyle(ChatFormatting.WHITE)));
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
 				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
-		
+
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.capacity").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
 				.append(Util.format((int)controllerTE.energyStorage.getMaxEnergyStored())).append("fe/t").withStyle(ChatFormatting.AQUA));
 		return true;
 	}
-	
+
 	public void observe() {
 		if(!isController()) return;
 		// ObservePacket.send(worldPosition, 0);
@@ -457,11 +553,11 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		ModularAccumulatorTileEntity controllerTE = getControllerTE();
 		if (controllerTE == null)
 			return;
-		
+
 		EnergyNetworkPacket.send(worldPosition, 0, controllerTE.energyStorage.getEnergyStored(), player);
 		// causeBlockUpdate();
 	}
-	
+
 	public boolean hasAccumulator() {
 		return true;
 	}
@@ -476,5 +572,15 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 
 	public InternalEnergyStorage getEnergy(int accumulator) {
 		return energyStorage;
+	}
+
+	@Override
+	public void drawDebug() {
+		if (level == null) return;
+		ModularAccumulatorTileEntity controller = getControllerTE();
+		if (controller == null) return;
+		// Outline controller.
+		VoxelShape shape = level.getBlockState(controller.getBlockPos()).getBlockSupportShape(level, controller.getBlockPos());
+		CreateClient.OUTLINER.chaseAABB("ca_accumulator", shape.bounds().move(controller.getBlockPos())).lineWidth(0.0625F).colored(0xFF5B5B);
 	}
 }

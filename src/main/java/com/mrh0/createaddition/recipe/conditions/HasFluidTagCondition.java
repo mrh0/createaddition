@@ -28,7 +28,7 @@ public class HasFluidTagCondition implements ICondition {
 	public ResourceLocation getID() {
 		return NAME;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "has_fluid_tag(\"" + tagName + "\")";

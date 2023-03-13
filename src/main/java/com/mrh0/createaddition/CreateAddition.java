@@ -40,7 +40,6 @@ import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
-import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.simibubi.create.content.contraptions.fluids.tank.BoilerHeaters;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.foundation.block.BlockStressValues;
@@ -51,15 +50,15 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 @Mod(CreateAddition.MODID)
 public class CreateAddition {
     public static final Logger LOGGER = LogManager.getLogger();
-    
+
     public static final String MODID = "createaddition";
-    
+
     public static boolean IE_ACTIVE = false;
     public static boolean CC_ACTIVE = false;
     public static boolean AE2_ACTIVE = false;
-    
+
     private static final NonNullSupplier<CreateRegistrate> registrate = CreateRegistrate.lazy(CreateAddition.MODID);
-    
+
     private static final String PROTOCOL = "1";
 	public static final SimpleChannel Network = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(MODID, "main"))
             .clientAcceptedVersions(PROTOCOL::equals)
@@ -78,18 +77,17 @@ public class CreateAddition {
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
         Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("createaddition-common.toml"));
-        
+
         IE_ACTIVE = ModList.get().isLoaded("immersiveengineering");
         CC_ACTIVE = ModList.get().isLoaded("computercraft");
         AE2_ACTIVE = ModList.get().isLoaded("ae2");
-        
+
         new ModGroup("main");
-        
+
         CABlocks.register();
         CATileEntities.register();
         CAItems.register();
         CAFluids.register();
-        CAEffects.register(eventBus);
         CARecipes.register(eventBus);
         CAPartials.init();
     }
@@ -115,29 +113,27 @@ public class CreateAddition {
     private void doClientStuff(final FMLClientSetupEvent event) {
     	event.enqueueWork(CAPonder::register);
         event.enqueueWork(CAItemProperties::register);
-        
-        RenderType cutout = RenderType.cutoutMipped();       
-		
+
+        RenderType cutout = RenderType.cutoutMipped();
+
         ItemBlockRenderTypes.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(CABlocks.BARBED_WIRE.get(), cutout);
-        //CAPartials.init();
     }
-    
+
     public void postInit(FMLLoadCompleteEvent evt) {
     	int i = 0;
         Network.registerMessage(i++, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
         Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
-        Network.registerMessage(i++, RemoveConnectorPacket.class, RemoveConnectorPacket::encode, RemoveConnectorPacket::decode, RemoveConnectorPacket::handle);
-        
+
     	System.out.println("Create Crafts & Additions Initialized!");
     }
-    
+
     @SubscribeEvent
     public void onRegisterCommandEvent(RegisterCommandsEvent event) {
     	CommandDispatcher<CommandSourceStack> dispather = event.getDispatcher();
     	CCApiCommand.register(dispather);
     }
-    
+
     public static CreateRegistrate registrate() {
 		return registrate.get();
 	}

@@ -46,38 +46,38 @@ public class CreateAdditionJEI implements IModPlugin {
 	public ResourceLocation getPluginUid() {
 		return ID;
 	}
-	
+
 	public IIngredientManager ingredientManager;
 	final List<CreateRecipeCategory<?>> ALL = new ArrayList<>();
 
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration) {
 		ALL.clear();
-		
+
 		ALL.add(builder(RollingRecipe.class)
 				.addTypedRecipes(() -> RollingRecipe.TYPE)
 				.catalyst(CABlocks.ROLLING_MILL::get)
 				.itemIcon(CABlocks.ROLLING_MILL.get())
 				.emptyBackground(177, 53)
 				.build("rolling", RollingMillCategory::new));
-		
+
 		ALL.add(builder(ChargingRecipe.class)
 				.addTypedRecipes(() -> ChargingRecipe.TYPE)
 				.catalyst(CABlocks.TESLA_COIL::get)
 				.itemIcon(CABlocks.TESLA_COIL.get())
 				.emptyBackground(177, 53)
 				.build("charging", ChargingCategory::new));
-		
+
 		ALL.add(builder(LiquidBurningRecipe.class)
 				.addTypedRecipes(() -> LiquidBurningRecipe.TYPE)
 				.catalyst(AllBlocks.BLAZE_BURNER::get)
 				.itemIcon(AllBlocks.BLAZE_BURNER.get())
 				.emptyBackground(177, 53)
 				.build("liquid_burning", LiquidBurningCategory::new));
-		
+
 		ALL.forEach(registration::addRecipeCategories);
 	}
-	
+
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
 		ingredientManager = registration.getIngredientManager();
@@ -87,13 +87,13 @@ public class CreateAdditionJEI implements IModPlugin {
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		ALL.forEach(c -> c.registerCatalysts(registration));
-		
+
 		registration.getJeiHelpers().getRecipeType(new ResourceLocation("create", "sandpaper_polishing")).ifPresent(type -> {
 			registration.addRecipeCatalyst(new ItemStack(CAItems.DIAMOND_GRIT_SANDPAPER.get()), type);
 		});
-		
+
 	}
-	
+
 	private <T extends Recipe<?>> CategoryBuilder<T> builder(Class<? extends T> recipeClass) {
 		return new CategoryBuilder<>(recipeClass);
 	}

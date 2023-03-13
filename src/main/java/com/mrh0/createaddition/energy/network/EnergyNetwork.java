@@ -1,9 +1,7 @@
 package com.mrh0.createaddition.energy.network;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 
 import net.minecraft.core.BlockPos;
@@ -11,7 +9,7 @@ import net.minecraft.world.level.Level;
 
 
 public class EnergyNetwork {
-	
+	private int id;
 	// Input
 	private int inBuff;
 	private int inDemand;
@@ -38,7 +36,8 @@ public class EnergyNetwork {
 		EnergyNetworkManager.instances.get(world).add(this);
 	}
 	
-	public void tick() {
+	public void tick(int index) {
+		this.id = index;
 		//System.out.println("NetTick: " + getBuff() + "/" + getDemand() + " " + pulled + "/" + pushed);
 		int t = outBuff;
 		outBuff = inBuff;
@@ -111,13 +110,13 @@ public class EnergyNetwork {
 	}*/
 	
 	public static EnergyNetwork nextNode(Level world, EnergyNetwork en, Map<String, IWireNode> visited, IWireNode current, int index) {
-		if(visited.containsKey(posKey(current.getMyPos(), index)))
+		if(visited.containsKey(posKey(current.getPos(), index)))
 			return null; // should never matter?
 		current.setNetwork(index, en);
-		visited.put(posKey(current.getMyPos(), index), current);
+		visited.put(posKey(current.getPos(), index), current);
 		
 		for(int i = 0; i < current.getNodeCount(); i++) {
-			IWireNode next = current.getNode(i);
+			IWireNode next = current.getWireNode(i);
 			if(next == null)
 				continue;
 			if(!current.isNodeIndeciesConnected(index, i)) {
@@ -146,5 +145,9 @@ public class EnergyNetwork {
 	
 	public void removed() {
 		
+	}
+	
+	public int getId() {
+		return id;
 	}
 }

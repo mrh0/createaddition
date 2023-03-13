@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,7 +19,7 @@ public enum ConnectorMode implements StringRepresentable {
 	Passive("passive");
 
 	private String name;
-	
+
 	private ConnectorMode(String name) {
 		this.name = name;
 	}
@@ -27,7 +28,7 @@ public enum ConnectorMode implements StringRepresentable {
 	public String getSerializedName() {
 		return this.name;
 	}
-	
+
 	public ConnectorMode getNext() {
 		switch (this) {
 			case Passive:
@@ -41,7 +42,7 @@ public enum ConnectorMode implements StringRepresentable {
 		}
 		return None;
 	}
-	
+
 	public MutableComponent getTooltip() {
 		switch (this) {
 			case Passive:
@@ -55,20 +56,24 @@ public enum ConnectorMode implements StringRepresentable {
 		}
 		return Component.translatable("createaddition.tooltip.energy.none");
 	}
-	
+
+	public boolean isActive() {
+		return this == Push || this == Pull;
+	}
+
 	public static ConnectorMode test(Level level, BlockPos pos, Direction face) {
 		BlockEntity be = level.getBlockEntity(pos);
 		if(be == null) return None;
 		LazyOptional<IEnergyStorage> optional = be.getCapability(CapabilityEnergy.ENERGY, face);
 		if(!optional.isPresent()) return None;
 		if(optional.orElse(null) == null) return None;
-		
+
 		IEnergyStorage e = optional.orElse(null);
-		
+
 		if(e.canExtract() && e.canReceive()) return Passive;
 		if(e.canExtract()) return Pull;
 		if(e.canReceive()) return Push;
-		
+
 		return None;
 	}
 }

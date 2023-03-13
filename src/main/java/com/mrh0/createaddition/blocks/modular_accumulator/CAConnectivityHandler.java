@@ -295,7 +295,7 @@ public class CAConnectivityHandler {
 		if (be instanceof ModularAccumulatorTileEntity ienergyBE && ienergyBE.hasAccumulator()) {
 			toDistribute = ienergyBE.getEnergy(0).getEnergyStored();
 			maxCapacity = ienergyBE.getSize(0);
-			
+
 			if (!be.isRemoved())
 				ienergyBE.getEnergy(0).internalConsumeEnergy(maxCapacity);
 			ienergyBE.setSize(0, 1);
@@ -304,13 +304,13 @@ public class CAConnectivityHandler {
 		for (int yOffset = 0; yOffset < height; yOffset++) {
 			for (int xOffset = 0; xOffset < width; xOffset++) {
 				for (int zOffset = 0; zOffset < width; zOffset++) {
-					
+
 					BlockPos pos = switch (axis) {
 					case X -> origin.offset(yOffset, xOffset, zOffset);
 					case Y -> origin.offset(xOffset, yOffset, zOffset);
 					case Z -> origin.offset(xOffset, zOffset, yOffset);
 					};
-					
+
 					T partAt = partAt(be.getType(), level, pos);
 					if (partAt == null)
 						continue;
@@ -336,20 +336,20 @@ public class CAConnectivityHandler {
 						frontier.add(partAt);
 						partAt.preventConnectivityUpdate();
 					}
-					if (cache != null) 
+					if (cache != null)
 						cache.put(pos, partAt);
 				}
 			}
 		}
-		
+
 		if (be instanceof ModularAccumulatorTileEntity ienergyBE && ienergyBE.hasAccumulator()) {
 			ienergyBE.getEnergy(0).setEnergy(toDistribute);
 		}
-		
+
 		if (be instanceof ModularAccumulatorTileEntity ienergy && ienergy.hasAccumulator())
 			be.getCapability(ForgeCapabilities.ENERGY)
 				.invalidate();
-		
+
 		if (tryReconnect)
 			formMulti(be.getType(), level, cache == null ? new SearchCache<>() : cache, frontier);
 	}

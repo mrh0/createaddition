@@ -88,7 +88,7 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return ITE.super.newBlockEntity(pos, state);
 	}
-	
+
 	@Override
 	public Item asItem() {
 		return AllBlocks.BLAZE_BURNER.get().asItem();
@@ -97,8 +97,8 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
 		BlockHitResult blockRayTraceResult) {
-		
-		
+
+
 		/*if (world.isClientSide())
 			return InteractionResult.CONSUME;
 		BlockEntity tileentity = world.getBlockEntity(pos);
@@ -131,9 +131,9 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 			player.playSound(SoundEvents.BUCKET_EMPTY, 1f, 1f);
 		}
 		return InteractionResult.PASS;*/
-		
-		
-		
+
+
+
 		ItemStack heldItem = player.getItemInHand(hand);
 		HeatLevel heat = state.getValue(HEAT_LEVEL);
 
@@ -229,8 +229,8 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
 		return false;
 	}
-	
-	
+
+
 
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {

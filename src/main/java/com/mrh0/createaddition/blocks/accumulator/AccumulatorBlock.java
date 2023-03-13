@@ -1,8 +1,11 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
 import com.mrh0.createaddition.energy.IWireNode;
+import com.mrh0.createaddition.energy.NodeRotation;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.util.IComparatorOverride;
+import com.simibubi.create.content.contraptions.components.structureMovement.ITransformableBlock;
+import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 
@@ -31,8 +34,9 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.w3c.dom.Node;
 
-public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity>, IWrenchable {
+public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity>, IWrenchable, ITransformableBlock {
 
 	public static final VoxelShape ACCUMULATOR_SHAPE_MAIN = Block.box(0, 0, 0, 16, 12, 16);
 	public static final VoxelShape ACCUMULATOR_SHAPE_X = Shapes.or(ACCUMULATOR_SHAPE_MAIN, Block.box(1, 0, 6, 5, 16, 10), Block.box(11, 0, 6, 15, 16, 10));
@@ -42,7 +46,9 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	
 	public AccumulatorBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
+		this.registerDefaultState(this.defaultBlockState()
+				.setValue(FACING, Direction.NORTH)
+				.setValue(NodeRotation.ROTATION, NodeRotation.NONE));
 	}
 
 	@Override
@@ -63,7 +69,7 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING);
+		builder.add(FACING, NodeRotation.ROTATION);
 	}
 	
 	@Override
@@ -91,30 +97,26 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	@Override
 	public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
 		super.playerWillDestroy(worldIn, pos, state, player);
-		if(player.isCreative())
-			return;
+
+		if (worldIn.isClientSide()) return;
 		BlockEntity te = worldIn.getBlockEntity(pos);
-		if(te == null)
-			return;
-		if(!(te instanceof IWireNode))
-			return;
-		IWireNode cte = (IWireNode) te;
-		
-		cte.dropWires(worldIn);
+		if (te == null) return;
+		if (!(te instanceof IWireNode cte)) return;
+		cte.dropWires(worldIn, !player.isCreative());
 	}
 	
 	@Override
 	public InteractionResult onSneakWrenched(BlockState state, UseOnContext c) {
-		if(c.getPlayer().isCreative())
-			return IWrenchable.super.onSneakWrenched(state, c);
 		BlockEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
 		if(te == null)
 			return IWrenchable.super.onSneakWrenched(state, c);
 		if(!(te instanceof IWireNode))
 			return IWrenchable.super.onSneakWrenched(state, c);
 		IWireNode cte = (IWireNode) te;
-		
-		cte.dropWires(c.getLevel(), c.getPlayer());
+
+		if (!c.getLevel().isClientSide())
+			cte.dropWires(c.getLevel(), c.getPlayer(), !c.getPlayer().isCreative());
+
 		return IWrenchable.super.onSneakWrenched(state, c);
 	}
 	
@@ -147,15 +149,14 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
-	
+
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean b) {
-		if(!world.isClientSide()) {
-			BlockEntity be = world.getBlockEntity(pos);
-			if(be != null && !(newState.getBlock() instanceof AccumulatorBlock))
-				if(be instanceof AccumulatorTileEntity)
-					((AccumulatorTileEntity) be).onBlockRemoved();
-		}
-		super.onRemove(state, world, pos, newState, b);
+	public BlockState transform(BlockState state, StructureTransform transform) {
+		NodeRotation rotation = NodeRotation.get(transform.rotationAxis, transform.rotation);
+		// Handle default rotation & mirroring.
+		if (transform.mirror != null) state = mirror(state, transform.mirror);
+		if (transform.rotationAxis == Axis.Y) state = rotate(state, transform.rotation);
+		// Set the rotation state, which will be used to update the nodes.
+		return state.setValue(NodeRotation.ROTATION, rotation);
 	}
 }

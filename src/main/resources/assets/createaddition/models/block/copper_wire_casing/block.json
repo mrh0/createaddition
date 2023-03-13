@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "createaddition:block/copper_wire_casing/block"
+  }
+}

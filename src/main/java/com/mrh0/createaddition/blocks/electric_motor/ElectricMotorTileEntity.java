@@ -145,7 +145,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side)))// && !level.isClientSide
+		if(cap == CapabilityEnergy.ENERGY)// && (isEnergyInput(side) || isEnergyOutput(side))
 			return lazyEnergy.cast();
 		if(CreateAddition.CC_ACTIVE) {
 			if(Peripherals.isPeripheral(cap))
@@ -155,7 +155,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	public boolean isEnergyInput(Direction side) {
-		return side != getBlockState().getValue(ElectricMotorBlock.FACING);
+		return true;// side != getBlockState().getValue(ElectricMotorBlock.FACING);
 	}
 
 	public boolean isEnergyOutput(Direction side) {

@@ -9,6 +9,7 @@ import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
@@ -40,33 +41,33 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
 
 	private Optional<ChargingRecipe> recipeCache = Optional.empty();
-	
+
 	private ItemStackHandler inputInv;
 	private int chargeAccumulator;
-	
-	private static final int 
+
+	private static final int
 		MAX_IN = Config.TESLA_COIL_MAX_INPUT.get(),
 		CHARGE_RATE = Config.TESLA_COIL_CHARGE_RATE.get(),
 		CHARGE_RATE_RECIPE = Config.TESLA_COIL_RECIPE_CHARGE_RATE.get(),
-		CAPACITY = Math.max(Config.TESLA_COIL_CAPACITY.get(), CHARGE_RATE), 
-		HURT_ENERGY_REQUIRED = Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get(), 
+		CAPACITY = Util.max(Config.TESLA_COIL_CAPACITY.get(), CHARGE_RATE, CHARGE_RATE_RECIPE),
+		HURT_ENERGY_REQUIRED = Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get(),
 		HURT_DMG_MOB = Config.TESLA_COIL_HURT_DMG_MOB.get(),
 		HURT_DMG_PLAYER = Config.TESLA_COIL_HURT_DMG_PLAYER.get(),
-		HURT_RANGE = Config.TESLA_COIL_HURT_RANGE.get(), 
+		HURT_RANGE = Config.TESLA_COIL_HURT_RANGE.get(),
 		HURT_EFFECT_TIME_MOB = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get(),
 		HURT_EFFECT_TIME_PLAYER = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get(),
 		HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();
-	
+
 	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
-	
+
 	private static DamageSource DMG_SOURCE = new DamageSource("tesla_coil");
-	
+
 	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, 0);
 		inputInv = new ItemStackHandler(1);
 	}
-	
+
 	public BeltProcessingBehaviour processingBehaviour;
 
 	@Override
@@ -87,29 +88,28 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	public boolean isEnergyOutput(Direction side) {
 		return false;
 	}
-	
+
 	public int getConsumption() {
 		return CHARGE_RATE;
 	}
-	
+
 	protected float getItemCharge(IEnergyStorage energy) {
 		if (energy == null)
 			return 0f;
 		return (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored();
 	}
-	
+
 	protected ProcessingResult onCharge(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		ProcessingResult res = chargeCompundAndStack(transported, handler);
 		return res;
 	}
-	
+
 	private void doDmg() {
 		localEnergy.internalConsumeEnergy(HURT_ENERGY_REQUIRED);
 		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoilBlock.FACING).getOpposite());
 		List<LivingEntity> ents = getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(HURT_RANGE));
 		for(LivingEntity e : ents) {
-			if(e == null)
-				return;
+			if(e == null) return;
 			int dmg = HURT_DMG_MOB;
 			int time = HURT_EFFECT_TIME_MOB;
 			if(e instanceof Player) {
@@ -122,10 +122,10 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), time));
 		}
 	}
-	
+
 	int dmgTick = 0;
 	int soundTimeout = 0;
-	
+
 	@Override
 	public void tick() {
 		super.tick();
@@ -140,11 +140,11 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		//System.out.println(signal + ":" + (energy.getEnergyStored() >= HURT_ENERGY_REQUIRED));
 		if(signal > 0 && localEnergy.getEnergyStored() >= HURT_ENERGY_REQUIRED)
 			poweredTimer = 10;
-		
+
 		dmgTick++;
 		if((dmgTick%=HURT_FIRE_COOLDOWN) == 0 && localEnergy.getEnergyStored() >= HURT_ENERGY_REQUIRED && signal > 0)
 			doDmg();
-		
+
 		if(poweredTimer > 0) {
 			if(!isPoweredState())
 				CABlocks.TESLA_COIL.get().setPowered(level, getBlockPos(), true);
@@ -154,13 +154,13 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			if(isPoweredState())
 				CABlocks.TESLA_COIL.get().setPowered(level, getBlockPos(), false);
 	}
-	
+
 	public boolean isPoweredState() {
 		return getBlockState().getValue(TeslaCoilBlock.POWERED);
 	}
-	
+
 	protected ProcessingResult chargeCompundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		
+
 		ItemStack stack = transported.stack;
 		if(stack == null)
 			return ProcessingResult.PASS;
@@ -174,7 +174,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		}
 		return ProcessingResult.PASS;
 	}
-	
+
 	protected boolean chargeStack(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
 			return false;
@@ -186,7 +186,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		localEnergy.internalConsumeEnergy(es.receiveEnergy(Math.min(getConsumption(), localEnergy.getEnergyStored()), false));
 		return true;
 	}
-	
+
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		if(!inputInv.getStackInSlot(0).sameItem(stack)) {
 			inputInv.setStackInSlot(0, stack);
@@ -211,7 +211,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		}
 		return false;
 	}
-	
+
 	public Optional<ChargingRecipe> find(RecipeWrapper wrapper, Level world) {
 		return world.getRecipeManager().getRecipeFor(ChargingRecipe.TYPE, wrapper, world);
 	}

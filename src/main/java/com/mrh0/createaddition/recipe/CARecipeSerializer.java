@@ -22,7 +22,7 @@ public abstract class CARecipeSerializer <R extends Recipe<?>> implements Recipe
 			return readFromJson(recipeId, json, context);
 		return null;
 	}
-	
+
 	@Override
 	public R fromJson(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject serializedRecipe)
 	{
