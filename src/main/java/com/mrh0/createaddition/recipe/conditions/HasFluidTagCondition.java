@@ -3,10 +3,13 @@ package com.mrh0.createaddition.recipe.conditions;
 import com.google.gson.JsonObject;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistries.Keys;
 
 public class HasFluidTagCondition implements ICondition {
 	private static final ResourceLocation NAME = new ResourceLocation("createaddition", "has_fluid_tag");
@@ -55,6 +58,6 @@ public class HasFluidTagCondition implements ICondition {
 
 	@Override
 	public boolean test(IContext context) {
-		return !context.getTag(new TagKey<Fluid>(Keys.FLUIDS, tagName)).getValues().isEmpty();
+		return !context.getTag(new TagKey<Fluid>(Keys.FLUIDS, tagName)).isEmpty();
 	}
 }

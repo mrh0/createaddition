@@ -103,15 +103,6 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	}
 
 	@Override
-	public InteractionResult onWrenched(BlockState state, UseOnContext c) {
-		if (c.getLevel().isClientSide()) {
-			c.getLevel().playLocalSound(c.getClickedPos().getX(), c.getClickedPos().getY(), c.getClickedPos().getZ(), SoundEvents.BONE_BLOCK_HIT, SoundSource.BLOCKS, 1f, 1f, false);
-		}
-		c.getLevel().setBlockAndUpdate(c.getClickedPos(), state.setValue(MODE, state.getValue(MODE).getNext()));
-		return InteractionResult.SUCCESS;
-	}
-
-	@Override
 	public InteractionResult onSneakWrenched(BlockState state, UseOnContext c) {
 		BlockEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
 		if(te == null)

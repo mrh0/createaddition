@@ -22,10 +22,10 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class GameEvents {
 	@SubscribeEvent
-	public static void worldTickEvent(TickEvent.WorldTickEvent evt) {
-		if(evt.world.isClientSide()) return;
+	public static void worldTickEvent(TickEvent.LevelTickEvent evt) {
+		if(evt.level.isClientSide()) return;
 		if(evt.phase == Phase.END) return;
-		EnergyNetworkManager.tickWorld(evt.world);
+		EnergyNetworkManager.tickWorld(evt.level);
 	}
 
 	@SubscribeEvent
@@ -36,23 +36,23 @@ public class GameEvents {
 	}
 
 	@SubscribeEvent
-	public static void loadEvent(WorldEvent.Load evt) {
-		if(evt.getWorld().isClientSide())
+	public static void loadEvent(LevelEvent.Load evt) {
+		if(evt.getLevel().isClientSide())
 			return;
-		new EnergyNetworkManager(evt.getWorld());
+		new EnergyNetworkManager(evt.getLevel());
 	}
 
 	@SubscribeEvent
     public static void interact(PlayerInteractEvent.RightClickBlock evt) {
 		try {
-			if(evt.getWorld().isClientSide()) return;
-			BlockState state = evt.getWorld().getBlockState(evt.getPos());
+			if(evt.getLevel().isClientSide()) return;
+			BlockState state = evt.getLevel().getBlockState(evt.getPos());
 			if(evt.getItemStack().getItem() == CAItems.STRAW.get()) {
 				if(state.is(AllBlocks.BLAZE_BURNER.get())) {
 					BlockState newState = CABlocks.LIQUID_BLAZE_BURNER.getDefaultState()
 							.setValue(LiquidBlazeBurnerBlock.HEAT_LEVEL, HeatLevel.SMOULDERING/*state.getValue(BlazeBurnerBlock.HEAT_LEVEL)*/)
 							.setValue(LiquidBlazeBurnerBlock.FACING, state.getValue(BlazeBurnerBlock.FACING));
-					evt.getWorld().setBlockAndUpdate(evt.getPos(), newState);
+					evt.getLevel().setBlockAndUpdate(evt.getPos(), newState);
 					//if(!evt.getEntity().isCreative())
 						evt.getItemStack().shrink(1);
 					evt.setCancellationResult(InteractionResult.SUCCESS);

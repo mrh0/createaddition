@@ -79,9 +79,6 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 
 	@Override
 	public void tick() {
-		updateBlocked--;
-		if(updateBlocked < 0)
-			updateBlocked = 0;
 		super.tick();
 		if(firstTickState) {
 			firstTickState = false;
@@ -115,8 +112,8 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 			setCache(side, LazyOptional.empty());
 			return;
 		}
-		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
-		if(ignoreCapSide() && !le.isPresent()) le = te.getCapability(CapabilityEnergy.ENERGY);
+		LazyOptional<IEnergyStorage> le = te.getCapability(ForgeCapabilities.ENERGY, side.getOpposite());
+		if(ignoreCapSide() && !le.isPresent()) le = te.getCapability(ForgeCapabilities.ENERGY);
 		// Make sure the side isn't already cached.
 		if (le.equals(getCachedEnergy(side))) return;
 		setCache(side, le);
