@@ -11,6 +11,10 @@ public class ModularAccumulatorMovement implements MovementBehaviour {
 	public void tick(MovementContext context) {
 		// Try to add the modular accumulator every tick, it isn't optimal, but it's a workaround
 		// for not having a way to detect when a contraption is loaded on world start.
+
+		// TODO: If this is the way we're going, a optimization could be to use
+		//       context.temporaryData = new Object(); as a flag to say "hey, this
+		//       isn't a controller.", etc.
 		PortableEnergyManager.add(context);
 	}
 
