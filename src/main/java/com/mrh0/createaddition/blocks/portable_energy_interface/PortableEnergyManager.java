@@ -20,19 +20,12 @@ public class PortableEnergyManager {
 
 	private static int tick = 0;
 	public static void tick() {
-		// TODO: Remove debug
-		tick++;
-		if (tick % (20 * 10) == 0 && !CONTRAPTIONS.isEmpty())
-			System.out.println("PortableEnergyManager: " + CONTRAPTIONS.size() + " contraptions.");
 
 		CONTRAPTIONS.keySet().iterator().forEachRemaining(contraption -> {
 			// It's hard to find out when a contraption is removed...
-			// It might be easier and cleaner to just use mixin.
-			if (System.currentTimeMillis() - CONTRAPTIONS.get(contraption).heartbeat > 5_000) {
-				// TODO: Remove debug
-				System.out.println("PortableEnergyManager: Removing timed out contraption.");
+			// It might be easier and cleaner to just use mixin, but it works.
+			if (System.currentTimeMillis() - CONTRAPTIONS.get(contraption).heartbeat > 5_000)
 				CONTRAPTIONS.remove(contraption);
-			}
 		});
 	}
 
@@ -42,8 +35,6 @@ public class PortableEnergyManager {
 		if (holder == null) {
 			holder = new EnergyStorageHolder();
 			CONTRAPTIONS.put(contraption.entity.getUUID(), holder);
-			// TODO: Remove debug
-			CADebugger.print(context.world, "PortableEnergyManager: Added contraption.");
 		}
 		holder.addEnergySource(context.tileData, context.localPos);
 	}
@@ -51,17 +42,11 @@ public class PortableEnergyManager {
 	public static void untrack(MovementContext context) {
 		EnergyStorageHolder holder = CONTRAPTIONS.remove(context.contraption.entity.getUUID());
 		if (holder == null) return;
-		// TODO: Remove debug
-		System.out.println("PortableEnergyManager: Untrack contraption.");
 		holder.removed = true;
 	}
 
 	public static @Nullable IEnergyStorage get(Contraption contraption) {
-		if (contraption.entity == null) {
-			// TODO: Remove debug
-			CADebugger.print(contraption.getContraptionWorld(), "PortableEnergyManager: Contraption has no entity.");
-			return null;
-		}
+		if (contraption.entity == null) return null;
 		return CONTRAPTIONS.get(contraption.entity.getUUID());
 	}
 
@@ -92,8 +77,6 @@ public class PortableEnergyManager {
 			this.energy += data.energy;
 			this.capacity += data.capacity;
 			this.energyHolders.put(pos, data);
-			// TODO: Remove debug
-			System.out.println("PortableEnergyManager: Added energy source. Energy: " + this.energy + ", Cap: " + this.capacity);
 		}
 
 		@Override

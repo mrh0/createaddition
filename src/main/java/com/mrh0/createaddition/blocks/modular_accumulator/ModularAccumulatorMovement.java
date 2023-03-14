@@ -18,11 +18,7 @@ public class ModularAccumulatorMovement implements MovementBehaviour {
 
 	@Override
 	public void tick(MovementContext context) {
-		if (context.contraption.entity == null) {
-			// TODO: Remove debug
-			CADebugger.print(context.world, "ModularAccumulatorMovement: Contraption has no entity.");
-			return;
-		}
+		if (context.contraption.entity == null) return;
 		if (context.world.isClientSide) return;
 		// Try to add the accumulator each tick / every TICK_DELAY, this fixes multiple
 		// issues, such as there not being a way to detect when a contraption is loaded
@@ -52,13 +48,8 @@ public class ModularAccumulatorMovement implements MovementBehaviour {
 		// then don't do anything.
 		if (context.contraption.entity == null) return;
 		if (context.world.isClientSide) return;
-		CADebugger.print(context.world, "START: TileData: {}", context.tileData);
 		if (!context.tileData.contains("EnergyContent")) return;
 		context.temporaryData = new TemporaryData(true);
-
-		// TODO: Remove debug
-		CADebugger.print(context.world, "START: Contraption.Entity: {}", context.contraption.entity);
-		CADebugger.print(context.world, "START: FirstMovement: {}", context.firstMovement);
 
 		PortableEnergyManager.track(context);
 	}
@@ -67,9 +58,6 @@ public class ModularAccumulatorMovement implements MovementBehaviour {
 	public void stopMoving(MovementContext context) {
 		if (context.contraption.entity == null) return;
 		if (context.world.isClientSide) return;
-		// TODO: Remove debug
-		if (context.tileData.contains("EnergyContent"))
-			CADebugger.print(context.world, "STOP: FirstMovement: {}", context.firstMovement);
 
 		PortableEnergyManager.untrack(context);
 	}
