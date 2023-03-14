@@ -479,9 +479,6 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 			level.setBlock(getBlockPos(), state, Block.UPDATE_NEIGHBORS | Block.UPDATE_CLIENTS | Block.UPDATE_INVISIBLE);
 		}
 		setChanged();
-		// When the multi block is updated, the neighborChanged method isn't fired,
-		// so update the cache here instead.
-		//updateCache();
 	}
 
 	@Override
