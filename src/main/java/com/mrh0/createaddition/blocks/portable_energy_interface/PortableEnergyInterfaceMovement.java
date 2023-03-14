@@ -27,19 +27,23 @@ import java.util.Optional;
 
 public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 
+	@Override
 	public Vec3 getActiveAreaOffset(MovementContext context) {
 		return Vec3.atLowerCornerOf(context.state.getValue(PortableEnergyInterfaceBlock.FACING).getNormal()).scale(1.850000023841858D);
 	}
 
+	@Override
 	public boolean hasSpecialInstancedRendering() {
 		return true;
 	}
 
+	@Override
 	@Nullable
 	public ActorInstance createInstance(MaterialManager materialManager, VirtualRenderWorld simulationWorld, MovementContext context) {
 		return new PortableEnergyInterfaceActorInstance(materialManager, simulationWorld, context);
 	}
 
+	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld, ContraptionMatrices matrices, MultiBufferSource buffer) {
 		if (!ContraptionRenderDispatcher.canInstance()) {
@@ -48,6 +52,7 @@ public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 
 	}
 
+	@Override
 	public void visitNewPosition(MovementContext context, BlockPos pos) {
 		boolean onCarriage = context.contraption instanceof CarriageContraption;
 		if (!onCarriage || !(context.motion.length() > 0.25D)) {
@@ -58,6 +63,7 @@ public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 		}
 	}
 
+	@Override
 	public void tick(MovementContext context) {
 		if (context.world.isClientSide) {
 			getAnimation(context).tickChaser();
@@ -80,19 +86,15 @@ public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 				}
 
 				Optional<Direction> currentFacingIfValid = this.getCurrentFacingIfValid(context);
-				//System.out.println("tick 4");
 				if (currentFacingIfValid.isPresent()) {
 					PortableEnergyInterfaceTileEntity stationaryInterface = this.getStationaryInterfaceAt(context.world, pos, context.state, currentFacingIfValid.get());
 					if (stationaryInterface == null) {
-						System.out.println("tick 5");
 						this.reset(context);
 					} else {
 						if (stationaryInterface.getConnectedEntity() == null) {
-							System.out.println("tick 6");
 							stationaryInterface.startTransferringTo(context.contraption, stationaryInterface.getConnectionDistance());
 						}
 						boolean timerBelow = stationaryInterface.getTransferTimer() <= 4;
-						//System.out.println("tick 7 " + timerBelow);
 						stationaryInterface.keepAlive = 2;
 						if (context.stall && timerBelow) {
 							context.stall = false;
@@ -142,9 +144,11 @@ public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 		}
 	}
 
+	@Override
 	public void stopMoving(MovementContext context) {
 	}
 
+	@Override
 	public void cancelStall(MovementContext context) {
 		this.reset(context);
 	}

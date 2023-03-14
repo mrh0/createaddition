@@ -1,11 +1,13 @@
 package com.mrh0.createaddition.blocks.portable_energy_interface;
 
 import com.mrh0.createaddition.config.Config;
+import com.mrh0.createaddition.debug.CADebugger;
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,47 +16,61 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PortableEnergyManager {
 
-	private static final Map<UUID, EnergyStorageHolder> contraptions = new ConcurrentHashMap<>();
-	private static int tick = 0;
+	private static final Map<UUID, EnergyStorageHolder> CONTRAPTIONS = new ConcurrentHashMap<>();
 
+	private static int tick = 0;
 	public static void tick() {
+		// TODO: Remove debug
 		tick++;
-		if (tick % (20 * 10) == 0) System.out.println("PortableEnergyManager: " + contraptions.size() + " contraptions.");
-		contraptions.keySet().iterator().forEachRemaining(contraption -> {
+		if (tick % (20 * 10) == 0 && !CONTRAPTIONS.isEmpty())
+			System.out.println("PortableEnergyManager: " + CONTRAPTIONS.size() + " contraptions.");
+
+		CONTRAPTIONS.keySet().iterator().forEachRemaining(contraption -> {
 			// It's hard to find out when a contraption is removed...
 			// It might be easier and cleaner to just use mixin.
-			if (System.currentTimeMillis() - contraptions.get(contraption).heartbeat > 10_000) {
+			if (System.currentTimeMillis() - CONTRAPTIONS.get(contraption).heartbeat > 5_000) {
+				// TODO: Remove debug
 				System.out.println("PortableEnergyManager: Removing timed out contraption.");
-				contraptions.remove(contraption);
+				CONTRAPTIONS.remove(contraption);
 			}
 		});
 	}
 
-	public static void add(MovementContext context) {
+	public static void track(MovementContext context) {
 		Contraption contraption = context.contraption;
-		if (contraption.entity == null) return;
-		EnergyStorageHolder holder = contraptions.get(contraption.entity.getUUID());
+		EnergyStorageHolder holder = CONTRAPTIONS.get(contraption.entity.getUUID());
 		if (holder == null) {
 			holder = new EnergyStorageHolder();
-			contraptions.put(contraption.entity.getUUID(), holder);
+			CONTRAPTIONS.put(contraption.entity.getUUID(), holder);
+			// TODO: Remove debug
+			CADebugger.print(context.world, "PortableEnergyManager: Added contraption.");
 		}
 		holder.addEnergySource(context.tileData, context.localPos);
 	}
 
-	public static IEnergyStorage get(Contraption contraption) {
+	public static void untrack(MovementContext context) {
+		EnergyStorageHolder holder = CONTRAPTIONS.remove(context.contraption.entity.getUUID());
+		if (holder == null) return;
+		// TODO: Remove debug
+		System.out.println("PortableEnergyManager: Untrack contraption.");
+		holder.removed = true;
+	}
+
+	public static @Nullable IEnergyStorage get(Contraption contraption) {
 		if (contraption.entity == null) {
-			System.out.println("PortableEnergyManager: Contraption has no entity.");
+			// TODO: Remove debug
+			CADebugger.print(contraption.getContraptionWorld(), "PortableEnergyManager: Contraption has no entity.");
 			return null;
 		}
-		return contraptions.get(contraption.entity.getUUID());
+		return CONTRAPTIONS.get(contraption.entity.getUUID());
 	}
 
 	public static class EnergyStorageHolder implements IEnergyStorage {
 
 		private int energy = 0;
 		private int capacity = 0;
-
 		private long heartbeat;
+		private boolean removed = false;
 
 		private final int maxReceive = Config.ACCUMULATOR_MAX_INPUT.get();
 		private final int maxExtract = Config.ACCUMULATOR_MAX_OUTPUT.get();
@@ -69,21 +85,20 @@ public class PortableEnergyManager {
 			this.heartbeat = System.currentTimeMillis();
 
 			// Make sure this is a controller.
-			System.out.println("Added 1");
 			if (!nbt.contains("EnergyContent")) return;
 			// Check for duplicates.
-			System.out.println("Added 2");
 			if (this.energyHolders.containsKey(pos)) return;
-			System.out.println("Added 3");
 			EnergyData data = new EnergyData(nbt);
 			this.energy += data.energy;
 			this.capacity += data.capacity;
 			this.energyHolders.put(pos, data);
+			// TODO: Remove debug
 			System.out.println("PortableEnergyManager: Added energy source. Energy: " + this.energy + ", Cap: " + this.capacity);
 		}
 
 		@Override
 		public int receiveEnergy(int maxReceive, boolean simulate) {
+			if (!this.canReceive()) return 0;
 			int energyReceived = Math.min(this.capacity - this.energy, Math.min(this.maxReceive, maxReceive));
 			if (!simulate) {
 				this.energy += energyReceived;
@@ -101,8 +116,8 @@ public class PortableEnergyManager {
 
 		@Override
 		public int extractEnergy(int maxExtract, boolean simulate) {
+			if (!this.canExtract()) return 0;
 			int energyExtracted = Math.min(this.energy, Math.min(this.maxExtract, maxExtract));
-			//System.out.println("PortableEnergyManager: Extracting " + energyExtracted + " energy. Want: " + maxExtract + "Energy: " + this.energy + ", Cap: " + this.capacity);
 			if (!simulate) {
 				this.energy -= energyExtracted;
 				// Store NBT
@@ -129,12 +144,12 @@ public class PortableEnergyManager {
 
 		@Override
 		public boolean canExtract() {
-			return true;
+			return !this.removed;
 		}
 
 		@Override
 		public boolean canReceive() {
-			return true;
+			return !this.removed;
 		}
 	}
 
@@ -154,6 +169,7 @@ public class PortableEnergyManager {
 
 		public int receiveEnergy(int energy) {
 			int energyReceived = Math.min(this.capacity - this.energy, energy);
+			if (energyReceived == 0) return 0; // No need to save if nothing changed.
 			this.energy += energyReceived;
 
 			// Save
@@ -165,6 +181,7 @@ public class PortableEnergyManager {
 
 		public int extractEnergy(int energy) {
 			int energyRemoved = Math.min(this.energy, energy);
+			if (energyRemoved == 0) return 0; // No need to save if nothing changed.
 			this.energy -= energyRemoved;
 
 			// Save

@@ -24,15 +24,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceT
 
 	public void startTransferringTo(Contraption contraption, float distance) {
 		LazyOptional<IEnergyStorage> oldcap = this.capability;
-		System.out.println("Starting...");
-		this.capability = LazyOptional.of(() -> {
-			// TODO: ??? What hackery do we need to do this time...
-			// contraption.getSharedEnergyStorage(); plox :/
-			System.out.println("Moving .... fooosh");
-			return new PortableEnergyInterfaceTileEntity.InterfaceEnergyHandler(PortableEnergyManager.get(contraption));
-			//return new PortableEnergyInterfaceTileEntity.InterfaceEnergyHandler(contraption.getSharedFluidTanks());
-			//return new InterfaceEnergyHandler(new EnergyStorage(0));
-		});
+		this.capability = LazyOptional.of(() -> new InterfaceEnergyHandler(PortableEnergyManager.get(contraption)));
 		oldcap.invalidate();
 		super.startTransferringTo(contraption, distance);
 	}
@@ -44,7 +36,6 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceT
 
 	@Override
 	protected void stopTransferring() {
-		System.out.println("Stopping transfer");
 		LazyOptional<IEnergyStorage> oldcap = this.capability;
 		this.capability = this.createEmptyHandler();
 		oldcap.invalidate();
@@ -92,7 +83,6 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceT
 
 		@Override
 		public int receiveEnergy(int maxReceive, boolean simulate) {
-			System.out.println("[" + this.wrapped.getClass().getSimpleName() + "] receiveEnergy " + maxReceive + " " + simulate);
 			if (!PortableEnergyInterfaceTileEntity.this.canTransfer()) return 0;
 			int received = this.wrapped.receiveEnergy(maxReceive, simulate);
 			if (received != 0 && !simulate) this.keepAlive();
@@ -101,10 +91,8 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceT
 
 		@Override
 		public int extractEnergy(int maxExtract, boolean simulate) {
-			//System.out.println("[" + this.wrapped.getClass().getSimpleName() + "] extractEnergy " + maxExtract + " " + simulate);
 			if (!PortableEnergyInterfaceTileEntity.this.canTransfer()) return 0;
 			int extracted = this.wrapped.extractEnergy(maxExtract, simulate);
-			//System.out.println("[" + this.wrapped.getClass().getSimpleName() + "] extract 2 - " + extracted);
 			if (extracted != 0 && !simulate) this.keepAlive();
 			return extracted;
 		}

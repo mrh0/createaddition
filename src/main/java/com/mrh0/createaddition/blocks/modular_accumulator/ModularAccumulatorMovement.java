@@ -1,30 +1,93 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
+import com.jozufozu.flywheel.core.virtual.VirtualRenderWorld;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyManager;
 import com.mrh0.createaddition.debug.CADebugger;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
+import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionMatrices;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.nbt.CompoundTag;
 
 public class ModularAccumulatorMovement implements MovementBehaviour {
 
+	/**
+	 * The delay between each tick.
+	 */
+	public static final int TICK_DELAY = 20;
+
 	@Override
 	public void tick(MovementContext context) {
-		// Try to add the modular accumulator every tick, it isn't optimal, but it's a workaround
-		// for not having a way to detect when a contraption is loaded on world start.
+		if (context.contraption.entity == null) {
+			// TODO: Remove debug
+			CADebugger.print(context.world, "ModularAccumulatorMovement: Contraption has no entity.");
+			return;
+		}
+		if (context.world.isClientSide) return;
+		// Try to add the accumulator each tick / every TICK_DELAY, this fixes multiple
+		// issues, such as there not being a way to detect when a contraption is loaded
+		// or when a contraption is unloaded.
+		TemporaryData data = (TemporaryData) context.temporaryData;
+		if (data == null) {
+			// The contraption / entity was just loaded.
+			data = new TemporaryData();
+			context.temporaryData = data;
 
-		// TODO: If this is the way we're going, a optimization could be to use
-		//       context.temporaryData = new Object(); as a flag to say "hey, this
-		//       isn't a controller.", etc.
-		PortableEnergyManager.add(context);
+			CompoundTag nbt = context.tileData;
+			data.controller = nbt.contains("EnergyContent");
+			data.tick = TICK_DELAY;
+		}
+
+		if (!data.controller) return;
+		if (data.tick >= TICK_DELAY) {
+			data.tick = 0;
+			// This either adds the accumulator, or acts as a heartbeat for the tracked contraption.
+			PortableEnergyManager.track(context);
+		} else data.tick++;
 	}
 
 	@Override
 	public void startMoving(MovementContext context) {
-		CADebugger.print(context.world, "Contraption: " + context.contraption);
-		CADebugger.print(context.world, "Contraption.Entity: " + context.contraption.entity);
-		CADebugger.print(context.world, "FirstMovement: " + context.firstMovement);
-		CADebugger.print(context.world, "Data: " + context.data.toString());
-		CADebugger.print(context.world, "TileData: " + context.tileData.toString());
-		PortableEnergyManager.add(context);
+		// If the contraption didn't actually move (ex: pulley tried to move down, but was blocked)
+		// then don't do anything.
+		if (context.contraption.entity == null) return;
+		if (context.world.isClientSide) return;
+		CADebugger.print(context.world, "START: TileData: {}", context.tileData);
+		if (!context.tileData.contains("EnergyContent")) return;
+		context.temporaryData = new TemporaryData(true);
+
+		// TODO: Remove debug
+		CADebugger.print(context.world, "START: Contraption.Entity: {}", context.contraption.entity);
+		CADebugger.print(context.world, "START: FirstMovement: {}", context.firstMovement);
+
+		PortableEnergyManager.track(context);
+	}
+
+	@Override
+	public void stopMoving(MovementContext context) {
+		if (context.contraption.entity == null) return;
+		if (context.world.isClientSide) return;
+		// TODO: Remove debug
+		if (context.tileData.contains("EnergyContent"))
+			CADebugger.print(context.world, "STOP: FirstMovement: {}", context.firstMovement);
+
+		PortableEnergyManager.untrack(context);
+	}
+
+	@Override
+	public boolean renderAsNormalTileEntity() {
+		return true;
+	}
+
+	private static class TemporaryData {
+
+		public boolean controller = false;
+		private int tick = 0;
+
+		public TemporaryData(boolean controller) {
+			this.controller = controller;
+		}
+
+		public TemporaryData() {}
 	}
 }

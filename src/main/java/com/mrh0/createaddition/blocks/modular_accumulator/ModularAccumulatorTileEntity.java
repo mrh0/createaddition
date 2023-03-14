@@ -116,8 +116,6 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	}
 	
 	public void updateCache(Direction side) {
-		if(updateBlocked > 10) return;
-		updateBlocked++;
 		// No need to update the cache if we're removed.
 		if (isRemoved()) return;
 		// Make sure the side we're checking is loaded.
@@ -150,15 +148,11 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	
 	public LerpedFloat gauge = LerpedFloat.linear();
 
-	int updateBlocked = 0;
 	int lastEnergy = 0;
 	boolean firstTickState = true;
 	@Override
 	public void tick() {
 		super.tick();
-		updateBlocked--;
-		if(updateBlocked < 0)
-			updateBlocked = 0;
 		if(firstTickState)
 			firstTick();
 		firstTickState = false;
@@ -487,7 +481,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		setChanged();
 		// When the multi block is updated, the neighborChanged method isn't fired,
 		// so update the cache here instead.
-		updateCache();
+		//updateCache();
 	}
 
 	@Override

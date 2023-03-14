@@ -23,6 +23,9 @@ jarJar.enable()
 
 mixin {
     add sourceSets.main, "createaddition.refmap.json"
+    config "createaddition.mixins.json"
+
+    debug.export = true
 }
 
 
@@ -228,7 +231,8 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "createaddition",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs"            : "createaddition.mixins.json"
         ])
     }
 }
