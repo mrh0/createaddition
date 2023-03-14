@@ -5,7 +5,8 @@
 	"compatibilityLevel": "JAVA_17",
 	"refmap": "createaddition.refmap.json",
 	"mixins": [
-		"AbstractFurnaceMixinFix"
+		"BlockMovementChecksMixin",
+		"ContraptionMixin"
 	],
 	"minVersion": "0.8.5"
 }

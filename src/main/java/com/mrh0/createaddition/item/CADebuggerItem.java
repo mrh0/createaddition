@@ -4,9 +4,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 
-public class CADebugger extends Item {
+public class CADebuggerItem extends Item {
 
-	public CADebugger(Properties props) {
+	public CADebuggerItem(Properties props) {
 		super(props);
 	}
 
