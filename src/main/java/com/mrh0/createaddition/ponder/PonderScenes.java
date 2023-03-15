@@ -502,9 +502,10 @@ public class PonderScenes {
 		scene.world.showSection(util.select.position(connector), Direction.DOWN);
 		scene.overlay.showText(70)
 			.placeNearTarget()
-			.pointAt(util.vector.topOf(connector))
+			.pointAt(util.vector.centerOf(connector))
 			.attachKeyFrame()
 			.text("Items can now be inserted...");
+		scene.idle(80);
 
 		scene.overlay.showText(120)
 			.placeNearTarget()
