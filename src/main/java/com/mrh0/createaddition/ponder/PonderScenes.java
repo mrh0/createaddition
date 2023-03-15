@@ -3,6 +3,7 @@ package com.mrh0.createaddition.ponder;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorMode;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAFluids;
@@ -13,12 +14,15 @@ import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
+import com.simibubi.create.foundation.ponder.Selection;
+import com.simibubi.create.foundation.ponder.element.EntityElement;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.utility.Pointing;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeverBlock;
@@ -84,6 +88,7 @@ public class PonderScenes {
 		.placeNearTarget()
 		.pointAt(blockSurface);
 		scene.idle(80);
+		scene.markAsFinished();
 
 
 		scene.rotateCameraY(-90);
@@ -121,6 +126,7 @@ public class PonderScenes {
 		.placeNearTarget()
 		.pointAt(util.vector.topOf(generator));
 		scene.idle(60);
+		scene.markAsFinished();
 	}
 
 	public static void rollingMill(SceneBuilder scene, SceneBuildingUtil util) {
@@ -155,6 +161,7 @@ public class PonderScenes {
 		.placeNearTarget()
 		.pointAt(util.vector.topOf(mill));
 		scene.idle(60);
+		scene.markAsFinished();
 	}
 
 	public static void automateRollingMill(SceneBuilder scene, SceneBuildingUtil util) {
@@ -196,57 +203,8 @@ public class PonderScenes {
 		scene.idle(5);
 		scene.world.showSection(util.select.position(out), Direction.SOUTH);
 		scene.idle(20);
-
-		/*ItemStack itemStack = new ItemStack(AllItems.COPPER_INGOT.get());
-
-		for (int i = 0; i < 8; i++) {
-			scene.idle(8);
-			scene.world.removeItemsFromBelt(exitBeltPos);
-			scene.world.flapFunnel(out, false);
-			if (i == 2)
-				scene.rotateCameraY(70);
-			if (i < 6)
-				scene.world.createItemOnBelt(entryBeltPos, Direction.EAST, itemStack);
-		}
-		scene.idle(40);*/
+		scene.markAsFinished();
 	}
-
-	/*public static void heater(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("heater", "Using electric energy to heat a furnace");
-		scene.configureBasePlate(0, 0, 5);
-		scene.world.showSection(util.select.layer(0), Direction.UP);
-
-		BlockPos furnace = util.grid.at(2, 1, 2);
-		BlockPos heater = util.grid.at(2, 2, 2);
-		BlockPos connector = util.grid.at(2, 3, 2);
-
-		scene.idle(5);
-		scene.world.showSection(util.select.position(furnace), Direction.DOWN);
-		scene.idle(5);
-		scene.world.showSection(util.select.position(heater), Direction.DOWN);
-
-		scene.idle(10);
-		scene.overlay.showText(50)
-			.text("The heater can be placed on any side facing the furnace")
-			.placeNearTarget()
-			.pointAt(util.vector.topOf(heater));
-		scene.idle(60);
-
-		scene.world.showSection(util.select.position(connector), Direction.DOWN);
-		scene.idle(10);
-		scene.overlay.showText(50)
-			.text("When connected to a sufficient source of electric energy (fe), the Heater will light the Furnace")
-			.placeNearTarget()
-			.pointAt(util.vector.topOf(heater));
-		scene.idle(60);
-
-		scene.world.setBlocks(util.select.position(furnace), Blocks.FURNACE.defaultBlockState().setValue(AbstractFurnaceBlock.LIT, true), false);
-		scene.overlay.showText(50)
-		.text("The Furnace will stay lit as long as enough energy is provided")
-		.placeNearTarget()
-		.pointAt(util.vector.blockSurface(furnace, Direction.NORTH));
-		scene.idle(60);
-	}*/
 
 	public static void ccMotor(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("cc_electric_motor", "Using Computercraft to control an Electric Motor");
@@ -282,6 +240,7 @@ public class PonderScenes {
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(computer));
 		scene.idle(160);
+		scene.markAsFinished();
 	}
 
 	public static void teslaCoil(SceneBuilder scene, SceneBuildingUtil util) {
@@ -313,10 +272,7 @@ public class PonderScenes {
 			.placeNearTarget()
 			.pointAt(topOf);
 		scene.idle(80);
-		/*scene.world.removeItemsFromBelt(depotPos);
-		scene.idle(5);
-		scene.world.setBlock(util.grid.at(2, 3, 2), CABlocks.TESLA_COIL.getDefaultState().setValue(TeslaCoil.FACING, Direction.UP).setValue(TeslaCoil.POWERED, false), false);
-		scene.idle(80);*/
+		scene.markAsFinished();
 	}
 
 	public static void teslaCoilHurt(SceneBuilder scene, SceneBuildingUtil util) {
@@ -355,6 +311,7 @@ public class PonderScenes {
 			.placeNearTarget()
 			.pointAt(util.vector.topOf(teslacoil));
 		scene.idle(80);
+		scene.markAsFinished();
 	}
 
 	public static void liquidBlazeBurner(SceneBuilder scene, SceneBuildingUtil util) {
@@ -403,6 +360,7 @@ public class PonderScenes {
 			scene.world.showSection(util.select.position(blocks[i]), Direction.EAST);
 		}
 		scene.idle(20);
+		scene.markAsFinished();
 	}
 
 
@@ -460,5 +418,145 @@ public class PonderScenes {
 		.placeNearTarget()
 		.pointAt(util.vector.centerOf(cOut));
 		scene.idle(120);
+		scene.markAsFinished();
+	}
+
+	public static void peiTransfer(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("pei_transfer", "Contraption Storage Exchange");
+		scene.configureBasePlate(0, 0, 6);
+		scene.scaleSceneView(0.95f);
+		scene.setSceneOffsetY(-1);
+		scene.world.showSection(util.select.layer(0), Direction.UP);
+		scene.idle(5);
+
+		BlockPos bearing = util.grid.at(5, 1, 2);
+		scene.world.showSection(util.select.position(bearing), Direction.DOWN);
+		scene.idle(5);
+		ElementLink<WorldSectionElement> contraption =
+			scene.world.showIndependentSection(util.select.fromTo(5, 2, 2, 6, 4, 2), Direction.DOWN);
+		scene.world.configureCenterOfRotation(contraption, util.vector.centerOf(bearing));
+		scene.idle(10);
+		scene.world.rotateBearing(bearing, 360, 70);
+		scene.world.rotateSection(contraption, 0, 360, 0, 70);
+		scene.overlay.showText(60)
+			.pointAt(util.vector.topOf(bearing.above(2)))
+			.colored(PonderPalette.RED)
+			.placeNearTarget()
+			.attachKeyFrame()
+			.text("Inventories on moving contraptions cannot be accessed by players.");
+
+		scene.idle(70);
+		BlockPos pei = util.grid.at(4, 2, 2);
+		scene.world.showSectionAndMerge(util.select.position(pei), Direction.EAST, contraption);
+		scene.idle(13);
+		scene.effects.superGlue(pei, Direction.EAST, true);
+
+		scene.overlay.showText(80)
+			.pointAt(util.vector.topOf(pei))
+			.colored(PonderPalette.GREEN)
+			.placeNearTarget()
+			.attachKeyFrame()
+			.text("This component can interact with storage without the need to stop the contraption.");
+		scene.idle(90);
+
+		BlockPos pei2 = pei.west(2);
+		scene.world.showSection(util.select.position(pei2), Direction.DOWN);
+		scene.overlay.showSelectionWithText(util.select.position(pei.west()), 50)
+			.colored(PonderPalette.RED)
+			.placeNearTarget()
+			.attachKeyFrame()
+			.text("Place a second one with a gap of 1 or 2 blocks inbetween");
+		scene.idle(55);
+
+		scene.world.rotateBearing(bearing, 360, 60);
+		scene.world.rotateSection(contraption, 0, 360, 0, 60);
+		scene.idle(20);
+
+		scene.overlay.showText(40)
+			.placeNearTarget()
+			.pointAt(util.vector.of(3, 3, 2.5))
+			.text("Whenever they pass by each other, they will engage in a connection");
+		scene.idle(35);
+
+		Selection both = util.select.fromTo(2, 2, 2, 4, 2, 2);
+		Class<PortableEnergyInterfaceTileEntity> peiClass = PortableEnergyInterfaceTileEntity.class;
+
+		scene.world.modifyTileNBT(both, peiClass, nbt -> {
+			nbt.putFloat("Distance", 1);
+			nbt.putFloat("Timer", 40);
+		});
+
+		scene.idle(20);
+		scene.overlay.showOutline(PonderPalette.GREEN, pei, util.select.fromTo(5, 3, 2, 6, 4, 2), 80);
+		scene.idle(10);
+
+		scene.overlay.showSelectionWithText(util.select.position(pei2), 70)
+			.placeNearTarget()
+			.colored(PonderPalette.GREEN)
+			.attachKeyFrame()
+			.text("While engaged, the stationary interface will represent ALL inventories on the contraption");
+
+		scene.idle(80);
+
+		BlockPos connector = util.grid.at(2, 3, 2);
+		scene.world.showSection(util.select.position(connector), Direction.DOWN);
+		scene.overlay.showText(70)
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(connector))
+			.attachKeyFrame()
+			.text("Items can now be inserted...");
+		scene.idle(80);
+
+		scene.overlay.showText(120)
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(pei2))
+			.text("After no items have been exchanged for a while, the contraption will continue on its way");
+		scene.world.modifyTileNBT(both, peiClass, nbt -> nbt.putFloat("Timer", 9));
+
+		scene.idle(15);
+		scene.world.rotateBearing(bearing, 270, 120);
+		scene.world.rotateSection(contraption, 0, 270, 0, 120);
+		scene.markAsFinished();
+	}
+
+	public static void peiRedstone(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("pei_redstone", "Redstone Control");
+		scene.configureBasePlate(0, 0, 5);
+		scene.setSceneOffsetY(-1);
+
+		Class<PortableEnergyInterfaceTileEntity> peiClass = PortableEnergyInterfaceTileEntity.class;
+		Selection peis = util.select.fromTo(1, 1, 3, 1, 3, 3);
+		scene.world.modifyTileNBT(peis, peiClass, nbt -> {
+			nbt.putFloat("Distance", 1);
+			nbt.putFloat("Timer", 40);
+		});
+
+		scene.world.showSection(util.select.layer(0), Direction.UP);
+		scene.idle(5);
+		scene.world.showSection(util.select.layer(1), Direction.DOWN);
+		scene.idle(5);
+
+		ElementLink<WorldSectionElement> contraption =
+			scene.world.showIndependentSection(util.select.layersFrom(2), Direction.DOWN);
+		BlockPos bearing = util.grid.at(3, 1, 3);
+		scene.world.configureCenterOfRotation(contraption, util.vector.topOf(bearing));
+		scene.idle(20);
+		scene.world.modifyTileNBT(peis, peiClass, nbt -> nbt.putFloat("Timer", 9));
+		scene.idle(20);
+		scene.world.rotateBearing(bearing, 360 * 3 + 270, 240 + 60);
+		scene.world.rotateSection(contraption, 0, 360 * 3 + 270, 0, 240 + 60);
+		scene.idle(20);
+
+		scene.world.toggleRedstonePower(util.select.fromTo(1, 1, 1, 1, 1, 2));
+		scene.effects.indicateRedstone(util.grid.at(1, 1, 1));
+
+		scene.idle(10);
+
+		scene.overlay.showSelectionWithText(util.select.position(1, 1, 3), 120)
+			.colored(PonderPalette.RED)
+			.text("Redstone power will prevent the stationary interface from engaging");
+
+		scene.idle(20);
+		scene.markAsFinished();
 	}
 }

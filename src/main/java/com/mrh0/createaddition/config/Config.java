@@ -16,6 +16,7 @@ public class Config {
 	public static final String CATAGORY_HEATER = "heater";
 	public static final String CATAGORY_WIRES = "wires";
 	public static final String CATAGORY_ACCUMULATOR = "accumulator";
+	public static final String CATAGORY_PEI = "portable_energy_interface";
 	public static final String CATAGORY_CHARGER = "charger";
 	public static final String CATAGORY_TESLA_COIL = "tesla_coil";
 	public static final String CATAGORY_MISC = "misc";
@@ -56,6 +57,9 @@ public class Config {
 	public static ForgeConfigSpec.IntValue ACCUMULATOR_CAPACITY;
 	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_HEIGHT;
 	public static ForgeConfigSpec.IntValue ACCUMULATOR_MAX_WIDTH;
+
+	public static ForgeConfigSpec.IntValue PEI_MAX_INPUT;
+	public static ForgeConfigSpec.IntValue PEI_MAX_OUTPUT;
 
 	public static ForgeConfigSpec.IntValue TESLA_COIL_MAX_INPUT;
 	public static ForgeConfigSpec.IntValue TESLA_COIL_CHARGE_RATE;
@@ -152,6 +156,14 @@ public class Config {
 
 		ACCUMULATOR_MAX_WIDTH = COMMON_BUILDER.comment("Accumulator max multiblock width.")
 				.defineInRange("accumulator_max_width", 3, 1, 8);
+		COMMON_BUILDER.pop();
+
+		COMMON_BUILDER.comment("Portable Energy Interface").push(CATAGORY_PEI);
+		PEI_MAX_INPUT = COMMON_BUILDER.comment("PEI max input in FE/t (Energy transfer).")
+				.defineInRange("pei_max_input", 4096, 0, Integer.MAX_VALUE);
+
+		PEI_MAX_OUTPUT = COMMON_BUILDER.comment("PEI max output in FE/t (Energy transfer).")
+				.defineInRange("pei_max_output", 4096, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 
 

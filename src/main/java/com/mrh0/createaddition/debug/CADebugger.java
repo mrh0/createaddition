@@ -8,6 +8,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
+import java.text.MessageFormat;
+
 /**
  * Basically a copy of creates {@link KineticDebugger}, but for create addition blocks.
  */
@@ -32,25 +34,32 @@ public class CADebugger {
 		return null;
 	}
 
-	public static void print(Level level, Object o) {
-		if (level == null) {
-			System.out.println("[???] " + o.toString());
-			return;
-		}
-		String side = level.isClientSide ? "CLIENT" : "SERVER";
-		System.out.println("[" + side + "] " + o.toString());
+	public static void print(Level level, Object message, Object... args) {
+		String side = level == null ? "???" : level.isClientSide ? "CLIENT" : "SERVER";
+		if (message == null) message = "null";
+		print("[" + side + "] " + message, args);
 	}
 
-	public static void printServer(Level level, Object o) {
-		if (level == null) return;
-		if (level.isClientSide) return;
-		System.out.println("[SERVER] " + o.toString());
+	public static void printServer(Level level, Object message, Object... args) {
+		String side;
+		if (level != null && level.isClientSide) return;
+		side = level == null ? "?SERVER?" : "SERVER";
+		if (message == null) message = "null";
+		print("[" + side + "] " + message, args);
 	}
 
-	public static void printClient(Level level, Object o) {
-		if (level == null) return;
-		if (!level.isClientSide) return;
-		System.out.println("[CLIENT] " + o.toString());
+	public static void printClient(Level level, Object message, Object... args) {
+		String side;
+		if (level != null && !level.isClientSide) return;
+		side = level == null ? "?CLIENT?" : "CLIENT";
+		if (message == null) message = "null";
+		print("[" + side + "] " + message, args);
+	}
+
+	private static void print(String message, Object... args) {
+		int i = 0;
+		while (message.contains("{}")) message = message.replaceFirst("\\{}", "{" + i++ + "}");
+		System.out.println(MessageFormat.format(message, args));
 	}
 
 }

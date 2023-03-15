@@ -10,14 +10,13 @@ import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.barbed_wire.BarbedWireBlock;
 import com.mrh0.createaddition.blocks.cake.CACakeBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
+import com.mrh0.createaddition.blocks.modular_accumulator.*;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlock;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceMovement;
 import com.mrh0.createaddition.energy.NodeMovementBehaviour;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
-import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlock;
-import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlockItem;
-import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorCTBehaviour;
-import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorDisplaySource;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlock;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
@@ -134,6 +133,7 @@ public class CABlocks {
 	public static final BlockEntry<ModularAccumulatorBlock> MODULAR_ACCUMULATOR = REGISTRATE.block("modular_accumulator",  ModularAccumulatorBlock::regular)
 			.initialProperties(SharedProperties::softMetal)
 			.properties(BlockBehaviour.Properties::noOcclusion)
+			.onRegister(AllMovementBehaviours.movementBehaviour(new ModularAccumulatorMovement()))
 			.onRegister(connectedTextures(ModularAccumulatorCTBehaviour::new))
 			.onRegister(assignDataBehaviour(new ModularAccumulatorDisplaySource(), "modular_accumulator"))
 			//.onRegister(assignDataBehaviour(ForgeEnergyDisplaySource.INSTANCE, "forge_energy"))
@@ -154,6 +154,14 @@ public class CABlocks {
 			//.onRegister(interactionBehaviour(new BlazeBurnerInteractionBehaviour()))
 			.register();
 
+	public static final BlockEntry<PortableEnergyInterfaceBlock> PORTABLE_ENERGY_INTERFACE = REGISTRATE.block("portable_energy_interface",  PortableEnergyInterfaceBlock::new)
+			.initialProperties(SharedProperties::softMetal)
+			.onRegister(AllMovementBehaviours.movementBehaviour(new PortableEnergyInterfaceMovement()))
+			.addLayer(() -> RenderType::cutoutMipped)
+			.item()
+			.transform(customItemModel())
+			.register();
+
 	/*public static final BlockEntry<CasingBlock> COPPER_WIRE_CASING = REGISTRATE.block("copper_wire_casing", CasingBlock::new)
 			.properties(p -> p.color(MaterialColor.PODZOL))
 			.transform(BuilderTransformers.casing(() -> CASpriteShifts.COPPER_WIRE_CASING))
@@ -167,5 +175,6 @@ public class CABlocks {
 		REGISTRATE.addToSection(REDSTONE_RELAY, AllSections.KINETICS);
 		REGISTRATE.addToSection(BARBED_WIRE, AllSections.CURIOSITIES);
 		REGISTRATE.addToSection(MODULAR_ACCUMULATOR, AllSections.KINETICS);
+		REGISTRATE.addToSection(PORTABLE_ENERGY_INTERFACE, AllSections.KINETICS);
 	}
 }

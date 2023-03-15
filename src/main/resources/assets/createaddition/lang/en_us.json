@@ -135,6 +135,8 @@
 
 	"block.createaddition.modular_accumulator": "Accumulator",
 
+	"block.createaddition.portable_energy_interface": "Portable Energy Interface",
+
 	"block.createaddition.connector": "Connector",
 	"block.createaddition.connector.tooltip": "CONNECTOR",
 	"block.createaddition.connector.tooltip.summary": "Connects _Forge Energy_ compatible blocks with _wires_ to transfer _FE_.",
@@ -238,6 +240,18 @@
 	"createaddition.display_source.accumulator.max": "Total Capacity",
 	"createaddition.display_source.accumulator.remaining": "Remaining FE",
 	"createaddition.display_source.accumulator.display": "Choose an Option:",
+
+	"createaddition.ponder.pei_transfer.header": "Contraption Energy Exchange",
+	"createaddition.ponder.pei_transfer.text_1": "Accumulators on moving contraptions cannot connect to stationary connectors.",
+	"createaddition.ponder.pei_transfer.text_2": "This component can interact with Accumulators without the need to stop the contraption.",
+	"createaddition.ponder.pei_transfer.text_3": "Place a second one with a gap of 1 or 2 blocks inbetween",
+	"createaddition.ponder.pei_transfer.text_4": "Whenever they pass by each other, they will engage in a connection",
+	"createaddition.ponder.pei_transfer.text_5": "While engaged, the stationary interface will represent ALL Accumulators on the contraption",
+	"createaddition.ponder.pei_transfer.text_6": "Energy can now be exchanged according to the Push/Pull configuration of the connector...",
+	"createaddition.ponder.pei_transfer.text_7": "After no energy have been exchanged for a while, the contraption will continue on its way.",
+
+	"createaddition.ponder.pei_redstone.header": "Redstone Control",
+	"createaddition.ponder.pei_redstone.text_1": "Redstone power will prevent the stationary interface from engaging.",
 
 	"death.attack.barbed_wire": "%1$s tried to cross barbed wire",
   	"death.attack.barbed_wire.player": "%1$s tried to cross barbed wire while fighting %2$s",
