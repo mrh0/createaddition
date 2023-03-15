@@ -356,11 +356,12 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		}
 		// Outline connected power
 		BlockEntity te = level.getBlockEntity(worldPosition.relative(getBlockState().getValue(ConnectorBlock.FACING)));
+		if(te == null) return;
 
 		var cap = te.getCapability(CapabilityEnergy.ENERGY, getBlockState().getValue(ConnectorBlock.FACING).getOpposite());
 		if(ignoreCapSide() && !cap.isPresent()) cap = te.getCapability(CapabilityEnergy.ENERGY);
 
-		if (te == null || !cap.isPresent()) return;
+		if (!cap.isPresent()) return;
 		VoxelShape shape = level.getBlockState(te.getBlockPos()).getBlockSupportShape(level, te.getBlockPos());
 		CreateClient.OUTLINER.chaseAABB("ca_output", shape.bounds().move(te.getBlockPos())).lineWidth(0.0625F).colored(0x5B5BFF);
 	}

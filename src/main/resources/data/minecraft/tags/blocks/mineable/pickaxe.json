@@ -11,6 +11,7 @@
     "createaddition:tesla_coil",
     "createaddition:liquid_blaze_burner",
     "createaddition:barbed_wire",
-    "createaddition:modular_accumulator"
+    "createaddition:modular_accumulator",
+    "createaddition:portable_energy_interface"
   ]
 }

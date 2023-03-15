@@ -135,6 +135,8 @@
 	
 	"block.createaddition.modular_accumulator": "Accumulator",
 	
+	"block.createaddition.portable_energy_interface": "Portable Energy Interface",
+	
 	"block.createaddition.connector": "Connector",
 	"block.createaddition.connector.tooltip": "CONNECTOR",
 	"block.createaddition.connector.tooltip.summary": "Connects _Forge Energy_ compatible blocks with _wires_ to transfer _FE_.",

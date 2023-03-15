@@ -58,6 +58,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceT
 		return LazyOptional.of(() -> new InterfaceEnergyHandler(new EnergyStorage(0)));
 	}
 
+	@Override
 	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
 		if (cap == CapabilityEnergy.ENERGY) return this.capability.cast();
 		if (CreateAddition.CC_ACTIVE && Peripherals.isPeripheral(cap)) return this.peripheral.cast();
@@ -109,6 +110,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceT
 		public int receiveEnergy(int maxReceive, boolean simulate) {
 			if (!PortableEnergyInterfaceTileEntity.this.canTransfer()) return 0;
 			maxReceive = Math.min(maxReceive, PortableEnergyInterfaceTileEntity.this.maxInput);
+			if (this.wrapped == null) return 0;
 			int received = this.wrapped.receiveEnergy(maxReceive, simulate);
 			if (received != 0 && !simulate) this.keepAlive();
 			return received;
@@ -118,6 +120,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceT
 		public int extractEnergy(int maxExtract, boolean simulate) {
 			if (!PortableEnergyInterfaceTileEntity.this.canTransfer()) return 0;
 			maxExtract = Math.min(maxExtract, PortableEnergyInterfaceTileEntity.this.maxOutput);
+			if (this.wrapped == null) return 0;
 			int extracted = this.wrapped.extractEnergy(maxExtract, simulate);
 			if (extracted != 0 && !simulate) this.keepAlive();
 			return extracted;
@@ -125,22 +128,24 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceT
 
 		@Override
 		public int getEnergyStored() {
+			if (this.wrapped == null) return 0;
 			return this.wrapped.getEnergyStored();
 		}
 
 		@Override
 		public int getMaxEnergyStored() {
+			if (this.wrapped == null) return 0;
 			return this.wrapped.getMaxEnergyStored();
 		}
 
 		@Override
 		public boolean canExtract() {
-			return this.wrapped.canExtract();
+			return true;
 		}
 
 		@Override
 		public boolean canReceive() {
-			return this.wrapped.canReceive();
+			return true;
 		}
 
 		public void keepAlive() {

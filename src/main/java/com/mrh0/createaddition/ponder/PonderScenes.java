@@ -3,6 +3,7 @@ package com.mrh0.createaddition.ponder;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorMode;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAFluids;
@@ -13,12 +14,15 @@ import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
+import com.simibubi.create.foundation.ponder.Selection;
+import com.simibubi.create.foundation.ponder.element.EntityElement;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.utility.Pointing;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeverBlock;
@@ -460,5 +464,143 @@ public class PonderScenes {
 		.placeNearTarget()
 		.pointAt(util.vector.centerOf(cOut));
 		scene.idle(120);
+	}
+	
+	public static void peiTransfer(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("portable_energy_interface", "Contraption Storage Exchange");
+		scene.configureBasePlate(0, 0, 6);
+		scene.scaleSceneView(0.95f);
+		scene.setSceneOffsetY(-1);
+		scene.world.showSection(util.select.layer(0), Direction.UP);
+		scene.idle(5);
+
+		BlockPos bearing = util.grid.at(5, 1, 2);
+		scene.world.showSection(util.select.position(bearing), Direction.DOWN);
+		scene.idle(5);
+		ElementLink<WorldSectionElement> contraption =
+			scene.world.showIndependentSection(util.select.fromTo(5, 2, 2, 6, 3, 2), Direction.DOWN);
+		scene.world.configureCenterOfRotation(contraption, util.vector.centerOf(bearing));
+		scene.idle(10);
+		scene.world.rotateBearing(bearing, 360, 70);
+		scene.world.rotateSection(contraption, 0, 360, 0, 70);
+		scene.overlay.showText(60)
+			.pointAt(util.vector.topOf(bearing.above(2)))
+			.colored(PonderPalette.RED)
+			.placeNearTarget()
+			.attachKeyFrame()
+			.text("Inventories on moving contraptions cannot be accessed by players.");
+
+		scene.idle(70);
+		BlockPos pei = util.grid.at(4, 2, 2);
+		scene.world.showSectionAndMerge(util.select.position(pei), Direction.EAST, contraption);
+		scene.idle(13);
+		scene.effects.superGlue(pei, Direction.EAST, true);
+
+		scene.overlay.showText(80)
+			.pointAt(util.vector.topOf(pei))
+			.colored(PonderPalette.GREEN)
+			.placeNearTarget()
+			.attachKeyFrame()
+			.text("This component can interact with storage without the need to stop the contraption.");
+		scene.idle(90);
+
+		BlockPos pei2 = pei.west(2);
+		scene.world.showSection(util.select.position(pei2), Direction.DOWN);
+		scene.overlay.showSelectionWithText(util.select.position(pei.west()), 50)
+			.colored(PonderPalette.RED)
+			.placeNearTarget()
+			.attachKeyFrame()
+			.text("Place a second one with a gap of 1 or 2 blocks inbetween");
+		scene.idle(55);
+
+		scene.world.rotateBearing(bearing, 360, 60);
+		scene.world.rotateSection(contraption, 0, 360, 0, 60);
+		scene.idle(20);
+
+		scene.overlay.showText(40)
+			.placeNearTarget()
+			.pointAt(util.vector.of(3, 3, 2.5))
+			.text("Whenever they pass by each other, they will engage in a connection");
+		scene.idle(35);
+
+		Selection both = util.select.fromTo(2, 2, 2, 4, 2, 2);
+		Class<PortableEnergyInterfaceTileEntity> peiClass = PortableEnergyInterfaceTileEntity.class;
+
+		scene.world.modifyTileNBT(both, peiClass, nbt -> {
+			nbt.putFloat("Distance", 1);
+			nbt.putFloat("Timer", 40);
+		});
+
+		scene.idle(20);
+		scene.overlay.showOutline(PonderPalette.GREEN, pei, util.select.fromTo(5, 3, 2, 6, 3, 2), 80);
+		scene.idle(10);
+
+		scene.overlay.showSelectionWithText(util.select.position(pei2), 70)
+			.placeNearTarget()
+			.colored(PonderPalette.GREEN)
+			.attachKeyFrame()
+			.text("While engaged, the stationary interface will represent ALL inventories on the contraption");
+
+		scene.idle(80);
+
+		BlockPos connector = util.grid.at(2, 3, 2);
+		scene.world.showSection(util.select.position(connector), Direction.DOWN);
+		scene.overlay.showText(70)
+			.placeNearTarget()
+			.pointAt(util.vector.topOf(connector))
+			.attachKeyFrame()
+			.text("Items can now be inserted...");
+
+		scene.overlay.showText(120)
+			.placeNearTarget()
+			.pointAt(util.vector.topOf(pei2))
+			.text("After no items have been exchanged for a while, the contraption will continue on its way");
+		scene.world.modifyTileNBT(both, peiClass, nbt -> nbt.putFloat("Timer", 9));
+
+		scene.idle(15);
+		scene.markAsFinished();
+		scene.world.rotateBearing(bearing, 270, 120);
+		scene.world.rotateSection(contraption, 0, 270, 0, 120);
+	}
+
+	public static void peiRedstone(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("portable_energy_interface_redstone", "Redstone Control");
+		scene.configureBasePlate(0, 0, 5);
+		scene.setSceneOffsetY(-1);
+
+		Class<PortableEnergyInterfaceTileEntity> peiClass = PortableEnergyInterfaceTileEntity.class;
+		Selection peis = util.select.fromTo(1, 1, 3, 1, 3, 3);
+		scene.world.modifyTileNBT(peis, peiClass, nbt -> {
+			nbt.putFloat("Distance", 1);
+			nbt.putFloat("Timer", 40);
+		});
+
+		scene.world.showSection(util.select.layer(0), Direction.UP);
+		scene.idle(5);
+		scene.world.showSection(util.select.layer(1), Direction.DOWN);
+		scene.idle(5);
+
+		ElementLink<WorldSectionElement> contraption =
+			scene.world.showIndependentSection(util.select.layersFrom(2), Direction.DOWN);
+		BlockPos bearing = util.grid.at(3, 1, 3);
+		scene.world.configureCenterOfRotation(contraption, util.vector.topOf(bearing));
+		scene.idle(20);
+		scene.world.modifyTileNBT(peis, peiClass, nbt -> nbt.putFloat("Timer", 9));
+		scene.idle(20);
+		scene.world.rotateBearing(bearing, 360 * 3 + 270, 240 + 60);
+		scene.world.rotateSection(contraption, 0, 360 * 3 + 270, 0, 240 + 60);
+		scene.idle(20);
+
+		scene.world.toggleRedstonePower(util.select.fromTo(1, 1, 1, 1, 1, 2));
+		scene.effects.indicateRedstone(util.grid.at(1, 1, 1));
+
+		scene.idle(10);
+
+		scene.overlay.showSelectionWithText(util.select.position(1, 1, 3), 120)
+			.colored(PonderPalette.RED)
+			.text("Redstone power will prevent the stationary interface from engaging");
+
+		scene.idle(20);
+		scene.markAsFinished();
 	}
 }

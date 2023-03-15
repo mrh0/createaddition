@@ -25,6 +25,8 @@ public class CAPonder {
 		HELPER.addStoryBoard(CAItems.STRAW, "liquid_blaze_burner", PonderScenes::liquidBlazeBurner, PonderTag.LOGISTICS);
 		HELPER.addStoryBoard(AllBlocks.BLAZE_BURNER, "liquid_blaze_burner", PonderScenes::liquidBlazeBurner, PonderTag.LOGISTICS);
 		HELPER.addStoryBoard(CABlocks.MODULAR_ACCUMULATOR, "accumulator", PonderScenes::modularAccumulator, PonderTag.LOGISTICS, ELECTRIC);
+		HELPER.addStoryBoard(CABlocks.PORTABLE_ENERGY_INTERFACE, "pei_transfer", PonderScenes::peiTransfer, PonderTag.LOGISTICS, ELECTRIC);
+		HELPER.addStoryBoard(CABlocks.PORTABLE_ENERGY_INTERFACE, "pei_redstone", PonderScenes::peiRedstone, PonderTag.LOGISTICS, ELECTRIC);
 		
 		
 		if(CreateAddition.CC_ACTIVE)
@@ -39,12 +41,14 @@ public class CAPonder {
 		
 		PonderRegistry.TAGS.forTag(PonderTag.LOGISTICS)
 			.add(CABlocks.TESLA_COIL)
-			.add(CABlocks.MODULAR_ACCUMULATOR);
+			.add(CABlocks.MODULAR_ACCUMULATOR)
+			.add(CABlocks.PORTABLE_ENERGY_INTERFACE);
 		
 		PonderRegistry.TAGS.forTag(ELECTRIC)
 			.add(CABlocks.ELECTRIC_MOTOR)
 			.add(CABlocks.ALTERNATOR)
 			.add(CABlocks.TESLA_COIL)
-			.add(CABlocks.MODULAR_ACCUMULATOR);
+			.add(CABlocks.MODULAR_ACCUMULATOR)
+			.add(CABlocks.PORTABLE_ENERGY_INTERFACE);
 	}
 }
