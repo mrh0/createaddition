@@ -6,11 +6,13 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -94,7 +96,7 @@ public class CreateAddition {
         CAItems.register();
         CAFluids.register();
         CARecipes.register(eventBus);
-        CAPartials.init();
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CAPartials.init());
     }
 
     private void setup(final FMLCommonSetupEvent event) {
