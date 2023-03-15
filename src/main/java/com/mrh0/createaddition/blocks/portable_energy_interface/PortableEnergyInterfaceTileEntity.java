@@ -24,8 +24,8 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceT
 	protected LazyOptional<PortableEnergyInterfacePeripheral> peripheral;
 
 	// Default limits for PortableEnergyManager.
-	public int maxInput = Config.ACCUMULATOR_MAX_INPUT.get();
-	public int maxOutput = Config.ACCUMULATOR_MAX_OUTPUT.get();
+	public int maxInput = Config.PEI_MAX_INPUT.get();
+	public int maxOutput = Config.PEI_MAX_OUTPUT.get();
 
 	public PortableEnergyInterfaceTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
