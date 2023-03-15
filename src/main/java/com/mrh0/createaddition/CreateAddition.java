@@ -4,10 +4,12 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -88,8 +90,9 @@ public class CreateAddition {
         CATileEntities.register();
         CAItems.register();
         CAFluids.register();
+        CAEffects.register(eventBus);
         CARecipes.register(eventBus);
-        CAPartials.init();
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CAPartials.init());
     }
 
     private void setup(final FMLCommonSetupEvent event) {

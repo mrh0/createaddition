@@ -63,8 +63,8 @@ public enum ConnectorMode implements StringRepresentable {
 	public static ConnectorMode test(Level level, BlockPos pos, Direction face) {
 		BlockEntity be = level.getBlockEntity(pos);
 		if(be == null) return None;
-		LazyOptional<IEnergyStorage> optional = be.getCapability(CapabilityEnergy.ENERGY, face);
-		if(!optional.isPresent()) optional = be.getCapability(CapabilityEnergy.ENERGY);
+		LazyOptional<IEnergyStorage> optional = be.getCapability(ForgeCapabilities.ENERGY, face);
+		if(!optional.isPresent()) optional = be.getCapability(ForgeCapabilities.ENERGY);
 		if(!optional.isPresent()) return None;
 		if(optional.orElse(null) == null) return None;
 
