@@ -45,7 +45,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	private boolean cc_update_rpm = false;
 	private int cc_new_rpm = 32;
 	
-	private static final Integer 
+	public static final Integer
 		RPM_RANGE = Config.ELECTRIC_MOTOR_RPM_RANGE.get(),
 		DEFAULT_SPEED = 32,
 		MAX_IN = Config.ELECTRIC_MOTOR_MAX_INPUT.get(),
