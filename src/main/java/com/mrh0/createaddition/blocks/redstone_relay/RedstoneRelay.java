@@ -150,12 +150,14 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	}
 
 	protected void updateState(Level worldIn, BlockPos pos, BlockState state) {
-		boolean flag = state.getValue(POWERED);
-		boolean flag1 = this.shouldBePowered(worldIn, pos, state);
-		if (flag != flag1 && !worldIn.getBlockTicks().willTickThisTick(pos, this)) {
-			TickPriority tickpriority = TickPriority.VERY_HIGH;
+		boolean isPowered = state.getValue(POWERED);
+		boolean shouldBePowered = this.shouldBePowered(worldIn, pos, state);
+		if (isPowered != shouldBePowered && !worldIn.getBlockTicks().willTickThisTick(pos, this)) {
+			/* it appears that the scheduling did not work here, as the tick() function was not called...*/
+            /*TickPriority tickpriority = TickPriority.VERY_HIGH;
 
-			worldIn.scheduleTick(pos, this, this.getDelay(), tickpriority);
+			worldIn.scheduleTick(pos, this, this.getDelay(), tickpriority);*/
+			tick(state, worldIn.getServer().getLevel(worldIn.dimension()), pos);
 		}
 	}
 
