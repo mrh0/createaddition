@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.compat.computercraft;
 
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
+import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IPeripheral;
@@ -46,5 +47,10 @@ public class RedstoneRelayPeripheral implements IPeripheral {
     @LuaFunction(mainThread = true)
     public int getThroughput() {
         return this.tileEntity.getSupply();
+    }
+
+    @LuaFunction(mainThread = true)
+    public boolean isPowered() {
+        return this.tileEntity.getBlockState().getValue(RedstoneRelayBlock.POWERED);
     }
 }

@@ -1,6 +1,6 @@
 # Create Crafts & Additions: Computercraft Peripheral API
 
-Version 1
+Version 1.1
 
 Supported Blocks:
 - Electric Motor
@@ -160,6 +160,10 @@ local fe = relay.getMaxExtract()
 The function `getThroughput()` will return the current throughput in fe.
 ```lua
 local fe = relay.getThroughput()
+```
+The function `isPowered()` will return the redstone state of the Relay.
+```lua
+local powered = relay.isPowered()
 ```
 The function `getType()` will return the Relay peripheral name, which will always be "redstone_relay".
 ```lua
