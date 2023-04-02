@@ -12,6 +12,7 @@ import com.mrh0.createaddition.blocks.cake.CACakeBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
 import com.mrh0.createaddition.blocks.digital_display_link_adapter.DigitalAdapterBlock;
 import com.mrh0.createaddition.blocks.digital_display_link_adapter.DigitalAdapterDisplaySource;
+import com.mrh0.createaddition.blocks.digital_display_link_adapter.DigitalAdapterBlockItem;
 import com.mrh0.createaddition.blocks.modular_accumulator.*;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlock;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceMovement;
@@ -171,7 +172,7 @@ public class CABlocks {
 			.initialProperties(SharedProperties::softMetal)
 			.onRegister(assignDataBehaviour(new DigitalAdapterDisplaySource(), "digital_adapter"))
 			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
-			.item()
+			.item(DigitalAdapterBlockItem::new)
 			.transform(customItemModel())
 			.register();
 	
