@@ -35,6 +35,7 @@ import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.Random;
 
 @SuppressWarnings({"deprecation", "CommentedOutCode"})
 public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>, IWrenchable, ConnectableRedstoneBlock {
@@ -117,8 +118,9 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 		else
 			return defaultBlockState().setValue(HORIZONTAL_FACING, c.getClickedFace().getOpposite()).setValue(VERTICAL, true);
 	}
-	
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos) {
+
+	@Override
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
 		boolean flag = state.getValue(POWERED);
 		boolean flag1 = this.shouldBePowered(worldIn, pos, state);
 		if (flag && !flag1) {
