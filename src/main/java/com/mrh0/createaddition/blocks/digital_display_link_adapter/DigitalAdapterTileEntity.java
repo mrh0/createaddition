@@ -19,7 +19,7 @@ import java.util.List;
 
 public class DigitalAdapterTileEntity extends BlockEntity {
     public final List<MutableComponent> textLines;
-    public static final int MAX_LINES = 8;
+    public static final int MAX_LINES = 16;
     public static final MutableComponent EMPTY_LINE = new TextComponent("");
 
     protected LazyOptional<DigitalAdapterPeripheral> peripheral;

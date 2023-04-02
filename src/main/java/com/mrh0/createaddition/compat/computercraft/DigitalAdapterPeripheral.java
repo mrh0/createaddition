@@ -45,14 +45,14 @@ public class DigitalAdapterPeripheral implements IPeripheral {
 
     @LuaFunction(mainThread = true)
     public final void print(String text) {
-        this.tileEntity.setTextLine(this.tileEntity.getLine(), new TextComponent(text));
+        this.tileEntity.setTextLine(this.tileEntity.getLine(), new TextComponent(text.substring(0, 128)));
         this.tileEntity.incrementLine();
     }
 
-    @LuaFunction(mainThread = true)
-    public final void write(String text) {
-        this.tileEntity.append(this.tileEntity.getLine(), new TextComponent(text));
-    }
+    //@LuaFunction(mainThread = true)
+    //public final void write(String text) {
+    //    this.tileEntity.append(this.tileEntity.getLine(), new TextComponent(text));
+    //}
 
     @LuaFunction(mainThread = true)
     public final int getLine() {
@@ -62,5 +62,10 @@ public class DigitalAdapterPeripheral implements IPeripheral {
     @LuaFunction(mainThread = true)
     public final int setLine(int ln) {
         return this.tileEntity.setLine(ln);
+    }
+
+    @LuaFunction(mainThread = true)
+    public final int getMaxLines() {
+        return DigitalAdapterTileEntity.MAX_LINES;
     }
 }
