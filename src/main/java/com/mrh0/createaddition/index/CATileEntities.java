@@ -3,6 +3,7 @@ package com.mrh0.createaddition.index;
 import com.mrh0.createaddition.blocks.alternator.AlternatorTileEntity;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
+import com.mrh0.createaddition.blocks.digital_display_link_adapter.DigitalAdapterTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.*;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.*;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorRenderer;
@@ -91,6 +92,11 @@ public class CATileEntities {
 			.instance(() -> PortableEnergyInterfaceInstance::new)
 			.validBlocks(CABlocks.PORTABLE_ENERGY_INTERFACE)
 			.renderer(() -> PortableEnergyInterfaceRenderer::new)
+			.register();
+
+	public static final BlockEntityEntry<DigitalAdapterTileEntity> DIGITAL_ADAPTER = CreateAddition.registrate()
+			.tileEntity("digital_adapter", DigitalAdapterTileEntity::new)
+			.validBlocks(CABlocks.DIGITAL_ADAPTER)
 			.register();
 	
 	public static void register() {}

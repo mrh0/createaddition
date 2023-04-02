@@ -10,6 +10,8 @@ import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.barbed_wire.BarbedWireBlock;
 import com.mrh0.createaddition.blocks.cake.CACakeBlock;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
+import com.mrh0.createaddition.blocks.digital_display_link_adapter.DigitalAdapterBlock;
+import com.mrh0.createaddition.blocks.digital_display_link_adapter.DigitalAdapterDisplaySource;
 import com.mrh0.createaddition.blocks.modular_accumulator.*;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlock;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceMovement;
@@ -25,12 +27,10 @@ import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.AllMovementBehaviours;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.AllSections;
-import com.simibubi.create.content.contraptions.base.CasingBlock;
 import com.simibubi.create.content.contraptions.components.AssemblyOperatorBlockItem;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.AssetLookup;
-import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -151,10 +151,7 @@ public class CABlocks {
 			.properties(p -> p.lightLevel(BlazeBurnerBlock::getLight))
 			.transform(pickaxeOnly())
 			.addLayer(() -> RenderType::cutoutMipped)
-			//.tag(AllBlockTags.FAN_TRANSPARENT.tag, AllBlockTags.PASSIVE_BOILER_HEATERS.tag)
 			.blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
-			//.onRegister(movementBehaviour(new BlazeBurnerMovementBehaviour()))
-			//.onRegister(interactionBehaviour(new BlazeBurnerInteractionBehaviour()))
 			.register();
 
 	public static final BlockEntry<PortableEnergyInterfaceBlock> PORTABLE_ENERGY_INTERFACE = REGISTRATE.block("portable_energy_interface",  PortableEnergyInterfaceBlock::new)
@@ -169,6 +166,14 @@ public class CABlocks {
 			.properties(p -> p.color(MaterialColor.PODZOL))
 			.transform(BuilderTransformers.casing(() -> CASpriteShifts.COPPER_WIRE_CASING))
 			.register();*/
+
+	public static final BlockEntry<DigitalAdapterBlock> DIGITAL_ADAPTER = REGISTRATE.block("digital_adapter",  DigitalAdapterBlock::new)
+			.initialProperties(SharedProperties::softMetal)
+			.onRegister(assignDataBehaviour(new DigitalAdapterDisplaySource(), "digital_adapter"))
+			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
+			.item()
+			.transform(customItemModel())
+			.register();
 	
 	public static void register() {
 		REGISTRATE.addToSection(TESLA_COIL, AllSections.KINETICS);
@@ -179,5 +184,6 @@ public class CABlocks {
 		REGISTRATE.addToSection(BARBED_WIRE, AllSections.CURIOSITIES);
 		REGISTRATE.addToSection(MODULAR_ACCUMULATOR, AllSections.KINETICS);
 		REGISTRATE.addToSection(PORTABLE_ENERGY_INTERFACE, AllSections.KINETICS);
+		REGISTRATE.addToSection(DIGITAL_ADAPTER, AllSections.LOGISTICS);
 	}
 }

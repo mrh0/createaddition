@@ -6,9 +6,6 @@ import com.google.common.collect.ImmutableList;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyManager;
 import com.mrh0.createaddition.index.CAItems;
-import com.simibubi.create.Create;
-import com.simibubi.create.content.contraptions.processing.EmptyingByBasin;
-import com.simibubi.create.content.logistics.item.filter.FilterItem;
 import com.simibubi.create.content.logistics.trains.entity.Carriage;
 import com.simibubi.create.content.logistics.trains.entity.Train;
 import com.simibubi.create.content.logistics.trains.management.schedule.condition.CargoThresholdCondition;
@@ -17,7 +14,6 @@ import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -28,8 +24,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class EnergyThresholdCondition extends CargoThresholdCondition {
     @Override
