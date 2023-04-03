@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -117,13 +118,14 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 		else
 			return defaultBlockState().setValue(HORIZONTAL_FACING, c.getClickedFace().getOpposite()).setValue(VERTICAL, true);
 	}
-	
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos) {
+
+	@Override
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random){
 		boolean flag = state.getValue(POWERED);
 		boolean flag1 = this.shouldBePowered(worldIn, pos, state);
 		if (flag && !flag1) {
 			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.FALSE), 2);
-		} 
+		}
 		else if (!flag) {
 			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.TRUE), 2);
 		}
@@ -150,9 +152,9 @@ public class RedstoneRelay extends Block implements ITE<RedstoneRelayTileEntity>
 	}
 
 	protected void updateState(Level worldIn, BlockPos pos, BlockState state) {
-		boolean flag = state.getValue(POWERED);
-		boolean flag1 = this.shouldBePowered(worldIn, pos, state);
-		if (flag != flag1 && !worldIn.getBlockTicks().willTickThisTick(pos, this)) {
+		boolean isPowered = state.getValue(POWERED);
+		boolean shouldBePowered = this.shouldBePowered(worldIn, pos, state);
+		if (isPowered != shouldBePowered && !worldIn.getBlockTicks().willTickThisTick(pos, this)) {
 			TickPriority tickpriority = TickPriority.VERY_HIGH;
 
 			worldIn.scheduleTick(pos, this, this.getDelay(), tickpriority);
