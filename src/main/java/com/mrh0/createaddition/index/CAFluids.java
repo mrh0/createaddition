@@ -79,7 +79,7 @@ public class CAFluids {
 
 		@Override
 		public Component getName(FluidVariant fluidVariant) {
-			return name;
+			return name.copy();
 		}
 
 		@Override
