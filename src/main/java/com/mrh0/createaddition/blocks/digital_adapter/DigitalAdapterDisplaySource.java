@@ -1,10 +1,9 @@
-package com.mrh0.createaddition.blocks.digital_display_link_adapter;
+package com.mrh0.createaddition.blocks.digital_adapter;
 
 import com.simibubi.create.content.logistics.block.display.DisplayLinkContext;
 import com.simibubi.create.content.logistics.block.display.source.DisplaySource;
 import com.simibubi.create.content.logistics.block.display.target.DisplayTargetStats;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 
 import java.util.List;
 

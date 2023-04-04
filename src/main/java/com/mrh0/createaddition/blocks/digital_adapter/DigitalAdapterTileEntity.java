@@ -1,8 +1,11 @@
-package com.mrh0.createaddition.blocks.digital_display_link_adapter;
+package com.mrh0.createaddition.blocks.digital_adapter;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.compat.computercraft.DigitalAdapterPeripheral;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
+import com.simibubi.create.content.contraptions.relays.advanced.SpeedControllerTileEntity;
+import com.simibubi.create.content.contraptions.relays.gauge.SpeedGaugeTileEntity;
+import com.simibubi.create.content.contraptions.relays.gauge.StressGaugeTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.MutableComponent;
@@ -75,5 +78,40 @@ public class DigitalAdapterTileEntity extends BlockEntity {
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @javax.annotation.Nullable Direction side) {
         if (CreateAddition.CC_ACTIVE && Peripherals.isPeripheral(cap)) return this.peripheral.cast();
         return super.getCapability(cap, side);
+    }
+
+    public SpeedControllerTileEntity getSpeedController(Direction dir) {
+        BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
+        if(be == null) return null;
+        if(be instanceof SpeedControllerTileEntity scte) return scte;
+        return null;
+    }
+
+    public StressGaugeTileEntity getStressGuage(Direction dir) {
+        BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
+        if(be == null) return null;
+        if(be instanceof StressGaugeTileEntity sgte) return sgte;
+        return null;
+    }
+
+    public SpeedGaugeTileEntity getSpeedGuage(Direction dir) {
+        BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
+        if(be == null) return null;
+        if(be instanceof SpeedGaugeTileEntity sgte) return sgte;
+        return null;
+    }
+
+    public void setTargetSpeed(Direction dir, int speed) {
+        SpeedControllerTileEntity scte = getSpeedController(dir);
+        if(scte == null) return;
+        ISpeedControllerAdapter sts = (ISpeedControllerAdapter)((Object)scte);
+        sts.setTargetSpeed(speed);
+    }
+
+    public int getTargetSpeed(Direction dir) {
+        SpeedControllerTileEntity scte = getSpeedController(dir);
+        if(scte == null) return 0;
+        ISpeedControllerAdapter sts = (ISpeedControllerAdapter)((Object)scte);
+        return sts.getTargetSpeed();
     }
 }

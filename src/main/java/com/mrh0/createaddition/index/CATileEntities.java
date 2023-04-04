@@ -3,7 +3,7 @@ package com.mrh0.createaddition.index;
 import com.mrh0.createaddition.blocks.alternator.AlternatorTileEntity;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
-import com.mrh0.createaddition.blocks.digital_display_link_adapter.DigitalAdapterTileEntity;
+import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.*;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.*;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorRenderer;

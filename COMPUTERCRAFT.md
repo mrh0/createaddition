@@ -7,6 +7,7 @@ Supported Blocks:
 - Accumulator
 - Portable Energy Interface
 - Redstone Relay
+- Digital Adapter
 
 # Electric Motor
 To set the speed of the Electric Motor, call `setSpeed(rpm)` where the argument *rpm* is a number between `-256` and `256`. The function will throw an exception if it is called too many times per second.
@@ -168,4 +169,52 @@ local powered = relay.isPowered()
 The function `getType()` will return the Relay peripheral name, which will always be "redstone_relay".
 ```lua
 print("Peripheral: " .. relay.getType())
+```
+# Digital Adapter
+In the following example, we get the peripheral of a Digital Adapter on the left.
+```lua
+local da = peripheral.wrap("left")
+```
+The function `setTargetSpeed(side, speed)` will set the target speed of a Rotational Speed Controller attached to the side of a Digital Adapter.
+```lua
+setTargetSpeed("up", 64)
+```
+The function `getTargetSpeed(side, speed)` will get the target speed of a Rotational Speed Controller attached to the side of a Digital Adapter.
+```lua
+local speed = da.getTargetSpeed("up")
+```
+The function `getKineticStress(side)` will get the stress of a Stressometer attached to the side of a Digital Adapter.
+```lua
+local stress = da.getKineticStress("up")
+```
+The function `getKineticCapacity(side)` will get the stress capacity of a Stressometer attached to the side of a Digital Adapter.
+```lua
+local capacity = da.getKineticCapacity("up")
+```
+The function `getKineticSpeed(side)` will get the speed of a Speedometer attached to the side of a Digital Adapter.
+```lua
+local speed = da.getKineticSpeed("up")
+```
+The function `print(text)` will print a string on the currently selected line to an internal buffer which can be read by a Display Link and put on a Display Board, print will increment the currently selected line.
+```lua
+print("Hello World!")
+```
+The function `clearLine()` will clear the text on the currently selected line.
+
+The function `clear()` will clear all the text on all lines.
+
+The function `getLine()` will return the currently selected line (starts at 1).
+
+The function `setLine(line)` will set the currently selected line (starts at 1).
+```lua
+da.print("Text on first line")
+da.print("Text on second line")
+da.setLine(1)
+da.print("Text on first line again")
+```
+The function `getMaxLines()` will return the max number of lines that can be displayable using the Digital Adapter (will always return 16).
+
+The function `getType()` will return the Adapter peripheral name, which will always be "digital_adapter".
+```lua
+print("Peripheral: " .. da.getType())
 ```

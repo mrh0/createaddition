@@ -1,6 +1,6 @@
 package com.mrh0.createaddition.compat.computercraft;
 
-import com.mrh0.createaddition.blocks.digital_display_link_adapter.DigitalAdapterTileEntity;
+import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorTileEntity;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;

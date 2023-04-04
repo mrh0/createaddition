@@ -1,8 +1,10 @@
 package com.mrh0.createaddition.compat.computercraft;
 
-import com.mrh0.createaddition.blocks.digital_display_link_adapter.DigitalAdapterTileEntity;
+import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
+import com.simibubi.create.content.contraptions.relays.gauge.StressGaugeTileEntity;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IPeripheral;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,6 +34,8 @@ public class DigitalAdapterPeripheral implements IPeripheral {
     public Object getTarget() {
         return this.tileEntity;
     }
+
+    // Display Link
 
     @LuaFunction(mainThread = true)
     public final void clearLine() {
@@ -67,5 +71,52 @@ public class DigitalAdapterPeripheral implements IPeripheral {
     @LuaFunction(mainThread = true)
     public final int getMaxLines() {
         return DigitalAdapterTileEntity.MAX_LINES;
+    }
+
+    // Speed Controller
+
+    @LuaFunction(mainThread = true)
+    public final void setTargetSpeed(String direction, int speed) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return;
+        this.tileEntity.setTargetSpeed(dir, speed);
+    }
+
+    @LuaFunction(mainThread = true)
+    public final int getTargetSpeed(String direction) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return 0;
+        return this.tileEntity.getTargetSpeed(dir);
+    }
+
+    // Stress Gauge
+
+    @LuaFunction(mainThread = true)
+    public final int getKineticStress(String direction) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return 0;
+        var sg = this.tileEntity.getStressGuage(dir);
+        if(sg == null) return 0;
+        return (int)sg.getNetworkStress();
+    }
+
+    @LuaFunction(mainThread = true)
+    public final int getKineticCapacity(String direction) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return 0;
+        var sg = this.tileEntity.getStressGuage(dir);
+        if(sg == null) return 0;
+        return (int)sg.getNetworkCapacity();
+    }
+
+    // Speed Guage
+
+    @LuaFunction(mainThread = true)
+    public final int getKineticSpeed(String direction) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return 0;
+        var sg = this.tileEntity.getSpeedGuage(dir);
+        if(sg == null) return 0;
+        return (int)sg.getSpeed();
     }
 }

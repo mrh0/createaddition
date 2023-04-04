@@ -6,7 +6,8 @@
 	"refmap": "createaddition.refmap.json",
 	"mixins": [
 		"BlockMovementChecksMixin",
-		"ContraptionMixin"
+		"ContraptionMixin",
+		"SpeedControllerTileEntityMixin"
 	],
 	"minVersion": "0.8.5"
 }

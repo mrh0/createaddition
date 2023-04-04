@@ -1,4 +1,4 @@
-package com.mrh0.createaddition.blocks.digital_display_link_adapter;
+package com.mrh0.createaddition.blocks.digital_adapter;
 
 import com.mrh0.createaddition.index.CATileEntities;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
