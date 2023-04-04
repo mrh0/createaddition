@@ -5,7 +5,7 @@ import com.simibubi.create.content.contraptions.relays.gauge.StressGaugeTileEnti
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,7 +49,7 @@ public class DigitalAdapterPeripheral implements IPeripheral {
 
     @LuaFunction(mainThread = true)
     public final void print(String text) {
-        this.tileEntity.setTextLine(this.tileEntity.getLine(), new TextComponent(text.substring(0, 128)));
+        this.tileEntity.setTextLine(this.tileEntity.getLine(), Component.literal(text.substring(0, 128)));
         this.tileEntity.incrementLine();
     }
 

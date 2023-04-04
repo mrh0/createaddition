@@ -8,8 +8,8 @@ import com.simibubi.create.content.contraptions.relays.gauge.SpeedGaugeTileEntit
 import com.simibubi.create.content.contraptions.relays.gauge.StressGaugeTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +23,7 @@ import java.util.List;
 public class DigitalAdapterTileEntity extends BlockEntity {
     public final List<MutableComponent> textLines;
     public static final int MAX_LINES = 16;
-    public static final MutableComponent EMPTY_LINE = new TextComponent("");
+    public static final MutableComponent EMPTY_LINE = Component.literal("");
 
     protected LazyOptional<DigitalAdapterPeripheral> peripheral;
 
