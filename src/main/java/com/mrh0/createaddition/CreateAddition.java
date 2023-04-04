@@ -1,5 +1,6 @@
 package com.mrh0.createaddition;
 
+import com.mrh0.createaddition.trains.schedule.CASchedule;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.CommandSourceStack;
@@ -92,6 +93,7 @@ public class CreateAddition {
         CAFluids.register();
         CAEffects.register(eventBus);
         CARecipes.register(eventBus);
+        CASchedule.register();
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CAPartials.init());
     }
 

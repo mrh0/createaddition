@@ -7,6 +7,8 @@ import javax.annotation.Nullable;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
+import com.mrh0.createaddition.compat.computercraft.ModularAccumulatorPeripheral;
+import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.debug.IDebugDrawer;
 import com.mrh0.createaddition.energy.IMultiTileEnergyContainer;
@@ -18,6 +20,7 @@ import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.Create;
 import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.logistics.block.redstone.StockpileSwitchObservable;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
@@ -44,7 +47,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.IFluidTank;
 
-public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer {
+public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer, StockpileSwitchObservable {
 
 	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(),
 			MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(),
@@ -66,6 +69,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 
 	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
 	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
+	protected LazyOptional<ModularAccumulatorPeripheral> peripheral;
 
 	public ModularAccumulatorTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -75,6 +79,9 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		height = 1;
 		width = 1;
 		refreshCapability();
+
+		if (CreateAddition.CC_ACTIVE)
+			this.peripheral = LazyOptional.of(() -> Peripherals.createModularAccumulatorPeripheral(this));
 	}
 
 	protected InternalEnergyStorage createEnergyStorage() {
@@ -434,10 +441,9 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (!energyCap.isPresent())
-			refreshCapability();
-		if (cap == ForgeCapabilities.ENERGY)
-			return energyCap.cast();
+		if (!energyCap.isPresent()) refreshCapability();
+		if (cap == CapabilityEnergy.ENERGY) return energyCap.cast();
+		if (CreateAddition.CC_ACTIVE && Peripherals.isPeripheral(cap)) return this.peripheral.cast();
 		return super.getCapability(cap, side);
 	}
 
@@ -565,7 +571,7 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		applySize(blocks);
 	}
 
-	public InternalEnergyStorage getEnergy(int accumulator) {
+	public InternalEnergyStorage getEnergy() {
 		return energyStorage;
 	}
 
@@ -577,5 +583,12 @@ public class ModularAccumulatorTileEntity extends SmartTileEntity implements IHa
 		// Outline controller.
 		VoxelShape shape = level.getBlockState(controller.getBlockPos()).getBlockSupportShape(level, controller.getBlockPos());
 		CreateClient.OUTLINER.chaseAABB("ca_accumulator", shape.bounds().move(controller.getBlockPos())).lineWidth(0.0625F).colored(0xFF5B5B);
+	}
+
+	@Override
+	public float getPercent() {
+		ModularAccumulatorTileEntity controllerTE = getControllerTE();
+		if (controllerTE == null) return 0f;
+		return controllerTE.getFillState() * 100f;
 	}
 }

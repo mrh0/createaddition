@@ -56,14 +56,4 @@ public class PortableEnergyInterfacePeripheral implements IPeripheral {
 	public int getMaxExtract() {
 		return this.tileEntity.maxOutput;
 	}
-
-	@LuaFunction(mainThread = true)
-	public void setMaxInsert(int max) {
-		this.tileEntity.maxInput = max;
-	}
-
-	@LuaFunction(mainThread = true)
-	public void setMaxExtract(int max) {
-		this.tileEntity.maxOutput = max;
-	}
 }

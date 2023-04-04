@@ -12,6 +12,7 @@
     "createaddition:liquid_blaze_burner",
     "createaddition:barbed_wire",
     "createaddition:modular_accumulator",
-    "createaddition:portable_energy_interface"
+    "createaddition:portable_energy_interface",
+    "createaddition:digital_adapter"
   ]
 }

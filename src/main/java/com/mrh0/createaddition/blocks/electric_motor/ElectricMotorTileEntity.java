@@ -34,16 +34,16 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
-	
+
 	protected ScrollValueBehaviour generatedSpeed;
 	protected final InternalEnergyStorage energy;
 	private LazyOptional<net.minecraftforge.energy.IEnergyStorage> lazyEnergy;
 	private LazyOptional<ElectricMotorPeripheral> lazyPeripheral = null;
-	
+
 	private boolean cc_update_rpm = false;
 	private int cc_new_rpm = 32;
-	
-	private static final Integer 
+
+	public static final Integer
 		RPM_RANGE = Config.ELECTRIC_MOTOR_RPM_RANGE.get(),
 		DEFAULT_SPEED = 32,
 		MAX_IN = Config.ELECTRIC_MOTOR_MAX_INPUT.get(),
@@ -51,7 +51,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		MAX_OUT = 0,
 		CAPACITY = Config.ELECTRIC_MOTOR_CAPACITY.get(),
 		STRESS = Config.BASELINE_STRESS.get();
-	
+
 	private boolean active = false;
 
 	public ElectricMotorTileEntity(BlockEntityType<? extends ElectricMotorTileEntity> type, BlockPos pos, BlockState state) {
@@ -80,7 +80,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		generatedSpeed.withStepFunction(ElectricMotorTileEntity::step);
 		behaviours.add(generatedSpeed);
 	}
-	
+
 	public static int step(StepContext context) {
 		int current = context.currentValue;
 		int step = 1;
@@ -96,25 +96,24 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 				step *= 4;
 		}
 
-		return (int) step;
+		return step;
 	}
-	
+
 	public float calculateAddedStressCapacity() {
 		float capacity = STRESS/256f;
 		this.lastCapacityProvided = capacity;
 		return capacity;
 	}
-	
+
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
 				.withStyle(ChatFormatting.AQUA)).append(Lang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
-		added = true;
-		return added;
+		return true;
 	}
-	
+
 	public void updateGeneratedRotation(int i) {
 		super.updateGeneratedRotation();
 		cc_new_rpm = i;
@@ -133,16 +132,16 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 			return 0;
 		return convertToDirection(active ? generatedSpeed.getValue() : 0, getBlockState().getValue(ElectricMotorBlock.FACING));
 	}
-	
+
 	@Override
 	protected Block getStressConfigKey() {
 		return AllBlocks.WATER_WHEEL.get();
 	}
-	
+
 	public InternalEnergyStorage getEnergyStorage() {
 		return energy;
 	}
-	
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if(cap == CapabilityEnergy.ENERGY)// && (isEnergyInput(side) || isEnergyOutput(side))
@@ -153,7 +152,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		}
 		return super.getCapability(cap, side);
 	}
-	
+
 	public boolean isEnergyInput(Direction side) {
 		return true;// side != getBlockState().getValue(ElectricMotorBlock.FACING);
 	}
@@ -161,43 +160,43 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	public boolean isEnergyOutput(Direction side) {
 		return false;
 	}
-	
+
 	@Override
 	public void read(CompoundTag compound, boolean clientPacket) {
 		super.read(compound, clientPacket);
 		energy.read(compound);
 		active = compound.getBoolean("active");
 	}
-	
+
 	@Override
 	public void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
 		energy.write(compound);
 		compound.putBoolean("active", active);
 	}
-	
+
 	@Override
 	public void lazyTick() {
 		super.lazyTick();
 		cc_antiSpam = 5;
-		
+
 	}
-	
+
 	public static int getEnergyConsumptionRate(int rpm) {
 		return Math.abs(rpm) > 0 ? (int)Math.max((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d), (double)MIN_CONSUMPTION) : 0;
 	}
-	
+
 	@Override
 	public void remove() {
 		lazyEnergy.invalidate();
 		if(lazyPeripheral != null)
 			lazyPeripheral.invalidate();
 	}
-	
+
 	// CC
 	int cc_antiSpam = 0;
 	boolean first = true;
-	
+
 	@Override
 	public void tick() {
 		super.tick();
@@ -205,14 +204,14 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 			updateGeneratedRotation();
 			first = false;
 		}
-		
+
 		if(cc_update_rpm && cc_antiSpam > 0) {
 			generatedSpeed.setValue(cc_new_rpm);
 			cc_update_rpm = false;
 			cc_antiSpam--;
 			updateGeneratedRotation();
 		}
-		
+
 		//Old Lazy
 		if(level.isClientSide())
 			return;
@@ -230,7 +229,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 				updateGeneratedRotation();
 			}
 		}
-		
+
 		/*if (world.isRemote)
 			return;
 		if (currentInstructionDuration < 0)
@@ -239,13 +238,13 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 			timer++;
 			return;
 		}*/
-		
+
 		//currentTarget = -1;
 		//currentInstruct = Instruct.NONE;
 		//currentInstructionDuration = -1;
 		//timer = 0;
 	}
-	
+
 	/*@Override
 	public void onSpeedChanged(float previousSpeed) {
 		super.onSpeedChanged(previousSpeed);
@@ -260,18 +259,18 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 			currentInstructionDuration = getDurationAngle(currentTarget, initialProgress, generatedSpeed.getValue());
 		timer = 0;
 	}*/
-	
+
 	/*public float runAngle(int angle, int speed) {
 		generatedSpeed.setValue(angle < 0 ? -speed : speed);
 		currentInstructionDuration = getDurationAngle(Math.abs(angle), 0, speed);
 		//currentTarget = angle;
 		//timer = 0;
-		
+
 		return (float)currentInstructionDuration / 20f;
 	}*/
-	
-	
-	
+
+
+
 	public int getDurationAngle(int deg, float initialProgress, float speed) {
 		speed = Math.abs(speed);
 		deg = Math.abs(deg);
@@ -280,7 +279,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		double degreesPerTick = (speed * 360) / 60 / 20;
 		return (int) ((1 - initialProgress) * deg / degreesPerTick + 1);
 	}
-	
+
 	public int getDurationDistance(int dis, float initialProgress, float speed) {
 		speed = Math.abs(speed);
 		dis = Math.abs(dis);
@@ -289,7 +288,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		double metersPerTick = speed / 512;
 		return (int) ((1 - initialProgress) * dis / metersPerTick);
 	}
-	
+
 	public boolean setRPM(int rpm) {
 		//System.out.println("SETSPEED" + rpm);
 		rpm = Math.max(Math.min(rpm, RPM_RANGE), -RPM_RANGE);
@@ -297,19 +296,19 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		cc_update_rpm = true;
 		return cc_antiSpam > 0;
 	}
-	
+
 	public int getRPM() {
 		return cc_new_rpm;//generatedSpeed.getValue();
 	}
-	
+
 	public int getGeneratedStress() {
 		return (int) calculateAddedStressCapacity();
 	}
-	
+
 	public int getEnergyConsumption() {
 		return getEnergyConsumptionRate(generatedSpeed.getValue());
 	}
-	
+
 	public boolean isPoweredState() {
 		return getBlockState().getValue(TeslaCoilBlock.POWERED);
 	}
