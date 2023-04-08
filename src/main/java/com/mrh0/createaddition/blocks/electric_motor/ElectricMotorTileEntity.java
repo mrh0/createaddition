@@ -45,7 +45,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	private boolean cc_update_rpm = false;
 	private int cc_new_rpm = 32;
 	
-	private static final Integer 
+	public static final Integer
 		RPM_RANGE = Config.ELECTRIC_MOTOR_RPM_RANGE.get(),
 		DEFAULT_SPEED = 32,
 		MAX_IN = Config.ELECTRIC_MOTOR_MAX_INPUT.get(),
@@ -98,7 +98,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 				step *= 4;
 		}
 
-		return (int) step;
+		return step;
 	}
 	
 	public float calculateAddedStressCapacity() {
@@ -109,12 +109,11 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Util.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
 				.withStyle(ChatFormatting.AQUA)).append(Lang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
-		added = true;
-		return added;
+		return true;
 	}
 	
 	public void updateGeneratedRotation(int i) {

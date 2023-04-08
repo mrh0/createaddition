@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
 
 import dan200.computercraft.api.lua.LuaException;
@@ -106,5 +107,15 @@ public class ElectricMotorPeripheral implements IPeripheral {
     		return tileEntity.getDurationDistance(blocks, 0, _rpm) / 20f;
     	}
     	return 0f;
+    }
+
+    @LuaFunction(mainThread = true)
+    public int getMaxInsert() {
+        return ElectricMotorTileEntity.MAX_IN;
+    }
+
+    @LuaFunction(mainThread = true)
+    public int getMaxExtract() {
+        return ElectricMotorTileEntity.MAX_OUT;
     }
 }

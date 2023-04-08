@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "createaddition:block/digital_adapter/block" }
+    }
+}

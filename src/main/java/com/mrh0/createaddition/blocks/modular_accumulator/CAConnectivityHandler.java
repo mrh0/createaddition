@@ -154,7 +154,7 @@ public class CAConnectivityHandler {
 		// optional energy handling
 		InternalEnergyStorage beEnergy = null;
 		if (be instanceof ModularAccumulatorTileEntity ienergy && ienergy.hasAccumulator()) {
-			beEnergy = ienergy.getEnergy(0);
+			beEnergy = ienergy.getEnergy();
 		}
 		Direction.Axis axis = be.getMainConnectionAxis();
 
@@ -238,7 +238,7 @@ public class CAConnectivityHandler {
 					extraData = be.modifyExtraData(extraData);
 
 					if (part instanceof ModularAccumulatorTileEntity ienergyPart && ienergyPart.hasAccumulator()) {
-						InternalEnergyStorage storageAt = ienergyPart.getEnergy(0);
+						InternalEnergyStorage storageAt = ienergyPart.getEnergy();
 						int energyAt = storageAt.getEnergyStored();
 						if (energyAt > 0) {
 							// making this generic would be a rather large mess, unfortunately
@@ -293,11 +293,11 @@ public class CAConnectivityHandler {
 		int toDistribute = 0;
 		int maxCapacity = 0;
 		if (be instanceof ModularAccumulatorTileEntity ienergyBE && ienergyBE.hasAccumulator()) {
-			toDistribute = ienergyBE.getEnergy(0).getEnergyStored();
+			toDistribute = ienergyBE.getEnergy().getEnergyStored();
 			maxCapacity = ienergyBE.getSize(0);
 			
 			if (!be.isRemoved())
-				ienergyBE.getEnergy(0).internalConsumeEnergy(maxCapacity);
+				ienergyBE.getEnergy().internalConsumeEnergy(maxCapacity);
 			ienergyBE.setSize(0, 1);
 		}
 
@@ -325,7 +325,7 @@ public class CAConnectivityHandler {
 					if (partAt != be) {
 						int copy = toDistribute;
 						InternalEnergyStorage tank =
-							(partAt instanceof ModularAccumulatorTileEntity ienergyPart ? ienergyPart.getEnergy(0) : null);
+							(partAt instanceof ModularAccumulatorTileEntity ienergyPart ? ienergyPart.getEnergy() : null);
 							int split = Math.min(maxCapacity, toDistribute);
 							copy = split;
 							toDistribute -= split;
@@ -343,7 +343,7 @@ public class CAConnectivityHandler {
 		}
 		
 		if (be instanceof ModularAccumulatorTileEntity ienergyBE && ienergyBE.hasAccumulator()) {
-			ienergyBE.getEnergy(0).setEnergy(toDistribute);
+			ienergyBE.getEnergy().setEnergy(toDistribute);
 		}
 		
 		if (be instanceof ModularAccumulatorTileEntity ienergy && ienergy.hasAccumulator())

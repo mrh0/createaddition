@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.config.Config;
+import com.mrh0.createaddition.compat.computercraft.Peripherals;
+import com.mrh0.createaddition.compat.computercraft.RedstoneRelayPeripheral;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.LocalNode;
 import com.mrh0.createaddition.energy.NodeRotation;
@@ -35,7 +36,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nonnull;
 
 public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
 
@@ -48,6 +53,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	private EnergyNetwork networkIn;
 	private EnergyNetwork networkOut;
 	private int demand = 0;
+	private int supply = 0;
 
 	private boolean wasContraption = false;
 	private boolean firstTick = true;
@@ -68,13 +74,17 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	public static Vec3 OUT_VERTICAL_OFFSET_EAST = new Vec3(	1f/16f, 	0f, 	-5f/16f);
 	
 	public static final int NODE_COUNT = 8;
-	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
-	
+
+	protected LazyOptional<RedstoneRelayPeripheral> peripheral;
+
 	public RedstoneRelayTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 
 		this.localNodes = new LocalNode[getNodeCount()];
 		this.nodeCache = new IWireNode[getNodeCount()];
+
+		if (CreateAddition.CC_ACTIVE)
+			this.peripheral = LazyOptional.of(() -> Peripherals.createRedstoneRelayPeripheral(this));
 	}
 
 	@Override
@@ -304,7 +314,9 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 		if(!bs.is(CABlocks.REDSTONE_RELAY.get()))
 			return;
 		if(bs.getValue(RedstoneRelayBlock.POWERED)) {
-			networkOut.push(networkIn.pull(demand));
+			supply = networkIn.getDemand();
+			networkIn.pull(demand);
+			networkOut.push(supply);
 			demand = networkIn.demand(networkOut.getDemand());
 		}
 	}
@@ -351,10 +363,25 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	@Override
 	public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
 
+	public int getDemand() {
+		return demand;
+	}
+
+	public int getSupply() {
+		return supply;
+	}
+
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
 		if(isNetworkValid(pack.getNode()))
 			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
+	}
+
+	@Nonnull
+	@Override
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @javax.annotation.Nullable Direction side) {
+		if (CreateAddition.CC_ACTIVE && Peripherals.isPeripheral(cap)) return this.peripheral.cast();
+		return super.getCapability(cap, side);
 	}
 
 	@Override
