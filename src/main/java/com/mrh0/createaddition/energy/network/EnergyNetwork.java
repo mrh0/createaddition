@@ -54,10 +54,11 @@ public class EnergyNetwork {
 	public int getBuff() {
 		return outBuffRetained;
 	}
-	
+
+	// Returns the amount of energy pushed
 	public int push(int energy) {
 		energy = Math.min(MAX_BUFF - inBuff, energy);
-		energy = energy > 0 ? energy : 0;
+		energy = Math.max(energy, 0);
 		inBuff += energy;
 		pushed += energy;
 		return energy;
