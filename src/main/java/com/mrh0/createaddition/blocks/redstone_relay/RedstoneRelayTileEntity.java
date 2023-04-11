@@ -53,7 +53,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	private EnergyNetwork networkIn;
 	private EnergyNetwork networkOut;
 	private int demand = 0;
-	private int supply = 0;
+	private int throughput = 0;
 
 	private boolean wasContraption = false;
 	private boolean firstTick = true;
@@ -306,19 +306,18 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	}
 
 	private void networkTick() {
-		if(awakeNetwork(level)) {
-			//EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, 0);//EnergyNetwork.buildNetwork(world, this);
-			causeBlockUpdate();
-		}
+		if(awakeNetwork(level)) causeBlockUpdate();
 		BlockState bs = getBlockState();
-		if(!bs.is(CABlocks.REDSTONE_RELAY.get()))
-			return;
+		throughput = 0;
+		if(!bs.is(CABlocks.REDSTONE_RELAY.get())) return;
 		if(bs.getValue(RedstoneRelayBlock.POWERED)) {
-			supply = networkIn.getDemand();
-			networkIn.pull(demand);
-			networkOut.push(supply);
+			throughput = networkOut.push(networkIn.pull(demand));
 			demand = networkIn.demand(networkOut.getDemand());
 		}
+	}
+
+	public int getThroughput() {
+		return throughput;
 	}
 
 	@Override
@@ -365,10 +364,6 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 
 	public int getDemand() {
 		return demand;
-	}
-
-	public int getSupply() {
-		return supply;
 	}
 
 	@Override
