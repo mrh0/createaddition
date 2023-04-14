@@ -177,7 +177,7 @@ local da = peripheral.wrap("left")
 ```
 The function `setTargetSpeed(side, speed)` will set the target speed of a Rotational Speed Controller attached to the side of a Digital Adapter.
 ```lua
-setTargetSpeed("up", 64)
+setTargetSpeed("top", 64)
 ```
 The function `getTargetSpeed(side, speed)` will get the target speed of a Rotational Speed Controller attached to the side of a Digital Adapter.
 ```lua
@@ -185,15 +185,23 @@ local speed = da.getTargetSpeed("up")
 ```
 The function `getKineticStress(side)` will get the stress of a Stressometer attached to the side of a Digital Adapter.
 ```lua
-local stress = da.getKineticStress("up")
+local stress = da.getKineticStress("bottom")
 ```
 The function `getKineticCapacity(side)` will get the stress capacity of a Stressometer attached to the side of a Digital Adapter.
 ```lua
-local capacity = da.getKineticCapacity("up")
+local capacity = da.getKineticCapacity("down")
 ```
 The function `getKineticSpeed(side)` will get the speed of a Speedometer attached to the side of a Digital Adapter.
 ```lua
-local speed = da.getKineticSpeed("up")
+local speed = da.getKineticSpeed("north")
+```
+The function `getKineticTopSpeed()` will get the top speed as set by Create.
+```lua
+local topSpeed = da.getKineticTopSpeed()
+```
+The function `getPulleyDistance(side)` will get the extended distance of a Rope or Hose -Pulley attached to the side of a Digital Adapter.
+```lua
+local blocks = da.getPulleyDistance("south")
 ```
 The function `print(text)` will print a string on the currently selected line to an internal buffer which can be read by a Display Link and put on a Display Board, print will increment the currently selected line.
 ```lua

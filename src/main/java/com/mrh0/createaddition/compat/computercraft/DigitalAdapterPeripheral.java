@@ -1,7 +1,8 @@
 package com.mrh0.createaddition.compat.computercraft;
 
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
-import com.simibubi.create.content.contraptions.relays.gauge.StressGaugeTileEntity;
+import com.simibubi.create.foundation.config.AllConfigs;
+import com.simibubi.create.foundation.config.CServer;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import net.minecraft.core.Direction;
@@ -95,28 +96,52 @@ public class DigitalAdapterPeripheral implements IPeripheral {
     public final int getKineticStress(String direction) {
         Direction dir = Helpers.nameToDir(direction);
         if(dir == null) return 0;
-        var sg = this.tileEntity.getStressGuage(dir);
+        var sg = this.tileEntity.getStressGauge(dir);
         if(sg == null) return 0;
-        return (int)sg.getNetworkStress();
+        return (int) sg.getNetworkStress();
     }
 
     @LuaFunction(mainThread = true)
     public final int getKineticCapacity(String direction) {
         Direction dir = Helpers.nameToDir(direction);
         if(dir == null) return 0;
-        var sg = this.tileEntity.getStressGuage(dir);
+        var sg = this.tileEntity.getStressGauge(dir);
         if(sg == null) return 0;
-        return (int)sg.getNetworkCapacity();
+        return (int) sg.getNetworkCapacity();
     }
 
-    // Speed Guage
+    // Speed Gauge
 
     @LuaFunction(mainThread = true)
     public final int getKineticSpeed(String direction) {
         Direction dir = Helpers.nameToDir(direction);
         if(dir == null) return 0;
-        var sg = this.tileEntity.getSpeedGuage(dir);
+        var sg = this.tileEntity.getSpeedGauge(dir);
         if(sg == null) return 0;
-        return (int)sg.getSpeed();
+        return (int) sg.getSpeed();
+    }
+
+    @LuaFunction(mainThread = true)
+    public final int getKineticTopSpeed() {
+        return AllConfigs.SERVER.kinetics.maxRotationSpeed.get();
+    }
+
+    // Pulley
+
+    @LuaFunction(mainThread = true)
+    public final int getPulleyDistance(String direction) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return 0;
+        var rp = this.tileEntity.getRopePulley(dir);
+        var hp = this.tileEntity.getHosePulley(dir);
+        if(rp != null) {
+            return (int) rp.getInterpolatedOffset(.5f);
+        }
+        else if(hp != null) {
+            return (int) hp.getInterpolatedOffset(.5f);
+        }
+        else {
+            return 0;
+        }
     }
 }
