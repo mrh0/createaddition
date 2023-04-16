@@ -1,24 +1,30 @@
-# Create Crafts & Additions: Computercraft Peripheral API
+# Create Crafts & Additions: Computercraft Peripheral API 中文版本
+
+>If you are using English, please view [COMPUTERCRAFT.md](COMPUTERCRAFT.md).
+
+>本文件为纯手动翻译，如有不足或错误欢迎修改。内容可能不是最新，请以英文版本为准。
+
+>This document is a purely manual translation. If there are any shortcomings or errors, please feel free to modify them. The content may not be the latest, please refer to the English version.
 
 Version 1.1
 
 Supported Blocks:
-- Electric Motor
+- [电动马达](#电动马达)
 - Accumulator
 - Portable Energy Interface
 - Redstone Relay
 - Digital Adapter
 
-# Electric Motor
-To set the speed of the Electric Motor, call `setSpeed(rpm)` where the argument *rpm* is a number between `-256` and `256`. The function will throw an exception if it is called too many times per second.
+# 电动马达
+可以通过调用 `setSpeed(rpm)` 设置电动马达的速度。参数 *rpm* 是一个介于 `-256` 和 `256` 之间的数字。如果此函数在每秒调用的次数过多，它会抛出一个异常。
 ```lua
 motor.setSpeed(rpm)
 ```
-The function `stop()` is a shorthand for `setSpeed(0)`.
+函数 `stop()` 是 `setSpeed(0)` 的简写。
 ```lua
 motor.stop()
 ```
-In the following example, the motor attached to the left of the computer will rotate at 32RPM for 5 seconds and then stop.
+在如下的例子中，连接到电脑左侧的电动马达会以 32RPM 旋转 5s 然后停止。
 ```lua
 local motor = peripheral.wrap("left")
 motor.setSpeed(32)
@@ -26,13 +32,13 @@ sleep(5)
 motor.stop()
 ```
 
-The function `rotate(degrees, [rpm])` will return the time it will take to rotate the shaft by the argument *degrees* at the current speed. If the optional argument *rpm* is given it will set the speed of the motor and return the rotation time at the new speed.
+函数 `rotate(degrees, [rpm])` 会返回以当前速度所需轴旋转 *degrees* 角度所需的时间。如果传递了可选的 *rpm* 参数，它会将电动马达设置到该速度并返回以新的速度将轴旋转 *degrees* 角度所需的时间。
 ```lua
 motor.setSpeed(32)
 sleep(motor.rotate(90))
 motor.stop()
 ```
-In the following example, the motor will first rotate 180 degrees in the clockwise direction, then 180 degrees at half the speed in the anti-clockwise direction and then finaly stop.
+在如下的例子中，电机将首先沿顺时针方向旋转180度，然后以逆时针方向一半速度旋转180度，最终停止。
 ```lua
 local motor = peripheral.wrap("left")
 sleep(motor.rotate(180, 32))
@@ -40,13 +46,13 @@ sleep(motor.rotate(-180, 16))
 motor.stop()
 ```
 
-The function `translate(blocks, [rpm])` will return the time it will take to rotate the shaft to push a piston or gantry shaft by distance given by the argument *blocks* at the current speed. If the optional argument *rpm* is given it will set the speed of the motor and return the action time at the new speed.
+函数 `translate(blocks, [rpm])` 会返回以当前速度推动动力活塞或起重机移动 *blocks* 距离所需的时间。如果传递了可选的 *rpm* 参数，它会将电动马达设置到该速度并返回以新的速度完成动作所需的时间。
 ```lua
 motor.setSpeed(32)
 sleep(motor.translate(5))
 motor.stop()
 ```
-In the following example, the motor attached to a piston will extend the piston by 5 blocks, stop for a second, retract, and then finally stop.
+在以下示例中，连接到动力活塞上的电机将使动力活塞推出 5 个方块的距离，等待一秒钟，缩回，最终停止。
 ```lua
 local motor = peripheral.wrap("left")
 sleep(motor.translate(5, 32))
@@ -55,27 +61,27 @@ sleep(motor.translate(-5, 32))
 motor.stop()
 ```
 
-The function `getSpeed()` will return the current motor speed.
+函数 `getSpeed()` 会返回当前电动马达的速度。
 ```lua
 local rpm = motor.getSpeed()
 ```
-The function `getStressCapacity()` will return the produced stress capacity (output su).
+函数 `getStressCapacity()` 将返回产生的应力（单位su）。
 ```lua
 local su = motor.getStressCapacity()
 ```
-The function `getEnergyConsumption()` will return the motor energy consumption in FE/t.
+函数 `getEnergyConsumption()` 将返回以FE/t为单位的电动马达能耗。
 ```lua
 local fe = motor.getEnergyConsumption()
 ```
-The function `getMaxInsert()` will return the Motor max input in fe.
+函数 `getMaxInsert()` 将返回以FE为单位的的电动马达最大输入。
 ```lua
 local fe = motor.getMaxInsert()
 ```
-The function `getMaxExtract()` will return the Motor max output in fe (Always 0).
+函数 `getMaxExtract()` 将返回以FE为单位的电动马达最大输出（始终为0）。
 ```lua
 local fe = motor.getMaxExtract()
 ```
-The function `getType()` will return the motor peripheral name, which will always be "electric_motor".
+函数 `getType()` 将返回电动马达的设备名称，该名称将始终为 “electric_motor”。
 ```lua
 print("Peripheral: " .. motor.getType())
 ```
