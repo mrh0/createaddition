@@ -3,11 +3,14 @@
 Version 1.1
 
 Supported Blocks:
-- Electric Motor
-- Accumulator
-- Portable Energy Interface
-- Redstone Relay
-- Digital Adapter
+- [Electric Motor](#electric-motor)
+- [Accumulator](#accumulator)
+- [Portable Energy Interface](#portable-energy-interface-pei)
+- [Redstone Relay](#redstone-relay)
+- [Digital Adapter](#digital-adapter)
+
+## Other Languages
+ [简体中文 (Simplified Chinese)](COMPUTERCRAFT_zh-CN.md)
 
 # Electric Motor
 To set the speed of the Electric Motor, call `setSpeed(rpm)` where the argument *rpm* is a number between `-256` and `256`. The function will throw an exception if it is called too many times per second.
@@ -73,7 +76,7 @@ local fe = motor.getMaxInsert()
 ```
 The function `getMaxExtract()` will return the Motor max output in fe (Always 0).
 ```lua
-local fe = relay.getMaxExtract()
+local fe = motor.getMaxExtract()
 ```
 The function `getType()` will return the motor peripheral name, which will always be "electric_motor".
 ```lua
@@ -175,11 +178,11 @@ In the following example, we get the peripheral of a Digital Adapter on the left
 ```lua
 local da = peripheral.wrap("left")
 ```
-The function `setTargetSpeed(side, speed)` will set the target speed of a Rotational Speed Controller attached to the side of a Digital Adapter.
+The function `setTargetSpeed(side, speed)` will set the target speed of a Rotation Speed Controller attached to the side of a Digital Adapter.
 ```lua
 setTargetSpeed("top", 64)
 ```
-The function `getTargetSpeed(side, speed)` will get the target speed of a Rotational Speed Controller attached to the side of a Digital Adapter.
+The function `getTargetSpeed(side, speed)` will get the target speed of a Rotation Speed Controller attached to the side of a Digital Adapter.
 ```lua
 local speed = da.getTargetSpeed("up")
 ```
@@ -213,7 +216,7 @@ The function `clear()` will clear all the text on all lines.
 
 The function `getLine()` will return the currently selected line (starts at 1).
 
-The function `setLine(line)` will set the currently selected line (starts at 1).
+The function `setLine(line)` will set the currently selected line to *line* (starts at 1).
 ```lua
 da.print("Text on first line")
 da.print("Text on second line")
