@@ -167,7 +167,7 @@
 
 	"block.createaddition.digital_adapter": "Digital Adapter",
 	"block.createaddition.digital_adapter.tooltip": "DIGITAL_ADAPTER",
-	"block.createaddition.digital_adapter.tooltip.summary": "A _Computercraft Peripheral_ which allows computers to interface with _Display Boards_, _Speedometers_, _Stressometers_, _Rope Pulley_, _Hoes Pulley_, Mechanical Piston, and _Rotational Speed Controllers_.",
+	"block.createaddition.digital_adapter.tooltip.summary": "A _Computercraft Peripheral_ which allows computers to interface with _Display Boards_, _Speedometers_, _Stressometers_, _Rope Pulley_, _Hoes Pulley_, _Mechanical Piston_, Mechanical Bearing, and _Rotational Speed Controllers_.",
 	
 	"block.createaddition.chocolate_cake": "Chocolate Cake",
 	"block.createaddition.honey_cake": "Honey Cake",
