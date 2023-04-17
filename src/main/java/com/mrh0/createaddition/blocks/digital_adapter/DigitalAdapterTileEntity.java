@@ -3,6 +3,8 @@ package com.mrh0.createaddition.blocks.digital_adapter;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.compat.computercraft.DigitalAdapterPeripheral;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
+import com.simibubi.create.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
+import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonTileEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.pulley.PulleyTileEntity;
 import com.simibubi.create.content.contraptions.fluids.actors.HosePulleyTileEntity;
 import com.simibubi.create.content.contraptions.relays.advanced.SpeedControllerTileEntity;
@@ -100,6 +102,20 @@ public class DigitalAdapterTileEntity extends BlockEntity {
         BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
         if(be == null) return null;
         if(be instanceof HosePulleyTileEntity pte) return pte;
+        return null;
+    }
+
+    public MechanicalPistonTileEntity getMechanicalPiston(Direction dir) {
+        BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
+        if(be == null) return null;
+        if(be instanceof MechanicalPistonTileEntity mpte) return mpte;
+        return null;
+    }
+
+    public MechanicalBearingTileEntity getMechanicalBearing(Direction dir) {
+        BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
+        if(be == null) return null;
+        if(be instanceof MechanicalBearingTileEntity mpte) return mpte;
         return null;
     }
 

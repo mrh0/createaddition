@@ -144,4 +144,22 @@ public class DigitalAdapterPeripheral implements IPeripheral {
             return 0;
         }
     }
+
+    @LuaFunction(mainThread = true)
+    public final int getPistonDistance(String direction) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return 0;
+        var mp = this.tileEntity.getMechanicalPiston(dir);
+        if(mp == null) return 0;
+        return (int) mp.getInterpolatedOffset(.5f);
+    }
+
+    @LuaFunction(mainThread = true)
+    public final int getBearingAngle(String direction) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return 0;
+        var mp = this.tileEntity.getMechanicalBearing(dir);
+        if(mp == null) return 0;
+        return (int) mp.getInterpolatedAngle(.5f);
+    }
 }
