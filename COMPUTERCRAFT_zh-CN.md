@@ -12,12 +12,18 @@
 
 Version 1.1
 
-支持的块:
+支持的方块:
 - [电动马达](#电动马达)
 - [蓄电池](#蓄电池)
-- [Portable Energy Interface](#portable-energy-interface-pei)
+- [移动式能量接口](#移动式能量接口-pei)
 - [红石继电器](#红石继电器)
-- [Digital Adapter](#digital-adapter)
+- [数字适配器](#数字适配器)
+  - [速度表](#速度表)
+  - [应力表](#应力表)
+  - [绳索滑轮](#绳索滑轮)
+  - [动力活塞](#动力活塞)
+  - [动力轴承](#动力轴承)
+  - [显示链接器](#显示链接器)
 
 # 电动马达
 可以通过调用 `setSpeed(rpm)` 设置电动马达的速度。参数 *rpm* 是一个介于 `-256` 和 `256` 之间的数字。如果此函数在每秒被调用的次数过多，它会抛出一个异常。
@@ -50,7 +56,7 @@ sleep(motor.rotate(-180, 16))
 motor.stop()
 ```
 
-函数 `translate(blocks, [rpm])` 会返回以当前速度推动动力活塞或起重机移动 *blocks* 距离所需的时间。如果传递了可选的 *rpm* 参数，它会将电动马达设置到该速度并返回以新的速度完成动作所需的时间。
+函数 `translate(blocks, [rpm])` 会返回以当前速度推动动力活塞或起重机移动 *blocks* 方块所需的时间。如果传递了可选的 *rpm* 参数，它会将电动马达设置到该速度并返回以新的速度完成动作所需的时间。
 ```lua
 motor.setSpeed(32)
 sleep(motor.translate(5))
@@ -114,11 +120,11 @@ local fe = accumulator.getMaxInsert()
 ```lua
 local fe = accumulator.getMaxExtract()
 ```
-函数 `getHeight()` 会返回蓄电池多方块结构的高度（单位：块）。
+函数 `getHeight()` 会返回蓄电池多方块结构的高度（单位：方块）。
 ```lua
 local blocks = accumulator.getHeight()
 ```
-函数 `getWidth()` 会返回蓄电池多方块结构的宽度（单位：块）。
+函数 `getWidth()` 会返回蓄电池多方块结构的宽度（单位：方块）。
 ```lua
 local blocks = accumulator.getWidth()
 ```
@@ -126,7 +132,7 @@ local blocks = accumulator.getWidth()
 ```lua
 print("Peripheral: " .. accumulator.getType())
 ```
-# Portable Energy Interface (PEI)
+# 移动式能量接口 (PEI)
 在如下的例子中, 我们可以获得一个左侧 PEI 的外围设备接口。
 ```lua
 local pei = peripheral.wrap("left")
@@ -180,31 +186,54 @@ local powered = relay.isPowered()
 ```lua
 print("Peripheral: " .. relay.getType())
 ```
-# Digital Adapter
-在如下的例子中, 我们可以获得一个左侧 Digital Adapter 的外围设备接口。
+# 数字适配器
+在如下的例子中, 我们可以获得一个左侧数字适配器的外围设备接口。
 ```lua
 local da = peripheral.wrap("left")
 ```
-函数 `setTargetSpeed(side, speed)` 可以设置 Digital Adapter 的 *side* 面上的 转速控制器`(create:rotation_speed_conroller)` 的目标转速到 *speed*。
+函数 `getType()` 将返回数字适配器的外围设备名称，该名称将始终为 "digital_adapter"。
 ```lua
-setTargetSpeed("up", 64)
+print("Peripheral: " .. da.getType())
 ```
-函数 `getTargetSpeed(side, speed)` 可以获得 Digital Adapter 的 *side* 面上的 转速控制器 的目标转速到 *speed*。
+### Rotation Speed Controller
+函数 `setTargetSpeed(side, speed)` 可以设置数字适配器的 *side* 面上的 转速控制器`(create:rotation_speed_conroller)` 的目标转速到 *speed*。
 ```lua
-local speed = da.getTargetSpeed("up")
+setTargetSpeed("top", 64)
 ```
-函数 `getKineticStress(side)` 可以获得 Digital Adapter 的 *side* 面上的 应力表`(create:stressometer)` 的当前应力。
+函数 `getTargetSpeed(side, speed)` 可以获得数字适配器的 *side* 面上的 转速控制器 的目标转速到 *speed*。
+```lua
+local speed = da.getTargetSpeed("top")
+```
+### 应力表
+函数 `getKineticStress(side)` 可以获得数字适配器的 *side* 面上的 应力表`(create:stressometer)` 的当前应力。
 ```lua
 local stress = da.getKineticStress("up")
 ```
-函数 `getKineticCapacity(side)` 可以获得 Digital Adapter 的 *side* 面上的 应力表 的应力最大值。
+函数 `getKineticCapacity(side)` 可以获得数字适配器的 *side* 面上的 应力表 的应力最大值。
 ```lua
 local capacity = da.getKineticCapacity("up")
 ```
-函数 `getKineticSpeed(side)`  可以获得 Digital Adapter 的 *side* 面上的 速度表`(create:speedometer)` 的转速。
+### 速度表
+函数 `getKineticSpeed(side)`  可以获得数字适配器的 *side* 面上的 速度表`(create:speedometer)` 的转速。
 ```lua
 local speed = da.getKineticSpeed("up")
 ```
+### 绳索滑轮
+函数 `getPulleyDistance(side)` 可以获得连接到数字适配器的 *side* 面的绳索滑轮的伸出长度。
+```lua
+local blocks = da.getPulleyDistance("south")
+```
+### 动力活塞
+函数 `getPistonDistance(side)` 可以获得连接到数字适配器的 *side* 面的动力活塞的伸出长度。
+```lua
+local blocks = da.getPistonDistance("east")
+```
+### 动力轴承
+函数 `getBearingAngle(side)` 可以获得连接到数字适配器的 *side* 面的动力轴承的角度。
+```lua
+local degrees = da.getBearingAngle("west")
+```
+### 显示链接器
 函数 `print(text)` 将当前所选行上的字符串打印到内部缓冲区，该缓冲区可由 显示链接器`(create:display_link)` 读取并显示到 翻牌显示器`(create:display_board)` 上，打印将在当前所选行追加。
 
 >_此段不保证完全准确，因为我无法准确翻译最后一句。请以英文文档为准。_
@@ -224,9 +253,6 @@ da.print("Text on second line")
 da.setLine(1)
 da.print("Text on first line again")
 ```
-函数 `getMaxLines()` 将返回使用 Digital Adapter 可以显示的最大行数（将始终返回16）。
+函数 `getMaxLines()` 将返回使用数字适配器可以显示的最大行数（将始终返回16）。
 
-函数 `getType()` 将返回 Digital Adapter 的外围设备名称，该名称将始终为 "digital_adapter"。
-```lua
-print("Peripheral: " .. da.getType())
-```
+
