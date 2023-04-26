@@ -3,6 +3,10 @@ package com.mrh0.createaddition.blocks.digital_adapter;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.compat.computercraft.DigitalAdapterPeripheral;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
+import com.simibubi.create.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
+import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonTileEntity;
+import com.simibubi.create.content.contraptions.components.structureMovement.pulley.PulleyTileEntity;
+import com.simibubi.create.content.contraptions.fluids.actors.HosePulleyTileEntity;
 import com.simibubi.create.content.contraptions.relays.advanced.SpeedControllerTileEntity;
 import com.simibubi.create.content.contraptions.relays.gauge.SpeedGaugeTileEntity;
 import com.simibubi.create.content.contraptions.relays.gauge.StressGaugeTileEntity;
@@ -87,14 +91,42 @@ public class DigitalAdapterTileEntity extends BlockEntity {
         return null;
     }
 
-    public StressGaugeTileEntity getStressGuage(Direction dir) {
+    public PulleyTileEntity getRopePulley(Direction dir) {
+        BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
+        if(be == null) return null;
+        if(be instanceof PulleyTileEntity pte) return pte;
+        return null;
+    }
+
+    public HosePulleyTileEntity getHosePulley(Direction dir) {
+        BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
+        if(be == null) return null;
+        if(be instanceof HosePulleyTileEntity pte) return pte;
+        return null;
+    }
+
+    public MechanicalPistonTileEntity getMechanicalPiston(Direction dir) {
+        BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
+        if(be == null) return null;
+        if(be instanceof MechanicalPistonTileEntity mpte) return mpte;
+        return null;
+    }
+
+    public MechanicalBearingTileEntity getMechanicalBearing(Direction dir) {
+        BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
+        if(be == null) return null;
+        if(be instanceof MechanicalBearingTileEntity mpte) return mpte;
+        return null;
+    }
+
+    public StressGaugeTileEntity getStressGauge(Direction dir) {
         BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
         if(be == null) return null;
         if(be instanceof StressGaugeTileEntity sgte) return sgte;
         return null;
     }
 
-    public SpeedGaugeTileEntity getSpeedGuage(Direction dir) {
+    public SpeedGaugeTileEntity getSpeedGauge(Direction dir) {
         BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
         if(be == null) return null;
         if(be instanceof SpeedGaugeTileEntity sgte) return sgte;

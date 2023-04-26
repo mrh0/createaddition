@@ -8,6 +8,14 @@ Supported Blocks:
 - [Portable Energy Interface](#portable-energy-interface-pei)
 - [Redstone Relay](#redstone-relay)
 - [Digital Adapter](#digital-adapter)
+  - [Rotational Speed Controller](#rotational-speed-controller)
+  - [Stressometer](#stressometer)
+  - [Speedometer](#speedometer)
+  - [Rope and Hoes Pulley](#rope-and-hoes-pulley)
+  - [Mechanical Piston](#mechanical-piston)
+  - [Mechanical Bearing](#mechanical-bearing)
+  - [Display Link](#display-link)
+  - [Other](#other)
 
 ## Other Languages
  [简体中文 (Simplified Chinese)](COMPUTERCRAFT_zh-CN.md)
@@ -178,26 +186,53 @@ In the following example, we get the peripheral of a Digital Adapter on the left
 ```lua
 local da = peripheral.wrap("left")
 ```
+The function `getType()` will return the Adapter peripheral name, which will always be "digital_adapter".
+```lua
+print("Peripheral: " .. da.getType())
+```
+### Rotational Speed Controller
 The function `setTargetSpeed(side, speed)` will set the target speed of a Rotation Speed Controller attached to the side of a Digital Adapter.
 ```lua
-setTargetSpeed("up", 64)
+da.setTargetSpeed("top", 64)
 ```
 The function `getTargetSpeed(side, speed)` will get the target speed of a Rotation Speed Controller attached to the side of a Digital Adapter.
 ```lua
-local speed = da.getTargetSpeed("up")
+local speed = da.getTargetSpeed("top")
 ```
+### Stressometer
 The function `getKineticStress(side)` will get the stress of a Stressometer attached to the side of a Digital Adapter.
 ```lua
-local stress = da.getKineticStress("up")
+local stress = da.getKineticStress("bottom")
 ```
 The function `getKineticCapacity(side)` will get the stress capacity of a Stressometer attached to the side of a Digital Adapter.
 ```lua
-local capacity = da.getKineticCapacity("up")
+local capacity = da.getKineticCapacity("bottom")
 ```
+### Speedometer
 The function `getKineticSpeed(side)` will get the speed of a Speedometer attached to the side of a Digital Adapter.
 ```lua
-local speed = da.getKineticSpeed("up")
+local speed = da.getKineticSpeed("north")
 ```
+The function `getKineticTopSpeed()` will get the top speed as set by Create.
+```lua
+local topSpeed = da.getKineticTopSpeed()
+```
+### Rope and Hoes Pulley
+The function `getPulleyDistance(side)` will get the extended distance of a Rope or Hose -Pulley attached to the side of a Digital Adapter.
+```lua
+local blocks = da.getPulleyDistance("south")
+```
+### Mechanical Piston
+The function `getPistonDistance(side)` will get the extended distance of a Mechanical Piston attached to the side of a Digital Adapter.
+```lua
+local blocks = da.getPistonDistance("east")
+```
+### Mechanical Bearing
+The function `getBearingAngle(side)` will get the angle of a Mechanical Bearing attached to the side of a Digital Adapter.
+```lua
+local degrees = da.getBearingAngle("west")
+```
+### Display Link
 The function `print(text)` will print a string on the currently selected line to an internal buffer which can be read by a Display Link and put on a Display Board, print will increment the currently selected line.
 ```lua
 print("Hello World!")
@@ -217,7 +252,8 @@ da.print("Text on first line again")
 ```
 The function `getMaxLines()` will return the max number of lines that can be displayable using the Digital Adapter (will always return 16).
 
-The function `getType()` will return the Adapter peripheral name, which will always be "digital_adapter".
-```lua
-print("Peripheral: " .. da.getType())
-```
+### Other
+
+The function `getDurationDistance(blocks, rpm)` will return the time needed to push a Mechanical Piston, Pulley or Gantry a number of blocks at the given rpm.
+
+The function `getDurationAngle(degrees, rpm)` will return the time needed to rotate a Mechanical Bearing by a number of degrees at the given rpm.

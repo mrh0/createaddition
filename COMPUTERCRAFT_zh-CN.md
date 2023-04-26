@@ -6,7 +6,7 @@
 >我已经尽量保证译名与模组翻译文件同步。
 >内容可能不是最新，请以英文版本为准。
 
->This document is a purely manual translation. If there are any shortcomings or errors, please feel free to modify them. 
+>This document is a purely manual translation. If there are any shortcomings or errors, please feel free to modify them.
 >I have tried my best to ensure that the translated name is synchronized with the mod translation file.
 >The content may not be the latest, please refer to the English version.
 
@@ -24,6 +24,7 @@ Version 1.1
   - [动力活塞](#动力活塞)
   - [动力轴承](#动力轴承)
   - [显示链接器](#显示链接器)
+  - [Other](#other)
 
 # 电动马达
 可以通过调用 `setSpeed(rpm)` 设置电动马达的速度。参数 *rpm* 是一个介于 `-256` 和 `256` 之间的数字。如果此函数在每秒被调用的次数过多，它会抛出一个异常。
@@ -128,7 +129,7 @@ local blocks = accumulator.getHeight()
 ```lua
 local blocks = accumulator.getWidth()
 ```
-函数 `getType()` 将返回蓄电池的设备名称，该名称将始终为  "modular_accumulator"。 
+函数 `getType()` 将返回蓄电池的设备名称，该名称将始终为  "modular_accumulator"。
 ```lua
 print("Peripheral: " .. accumulator.getType())
 ```
@@ -249,3 +250,9 @@ da.setLine(1)
 da.print("Text on first line again")
 ```
 函数 `getMaxLines()` 将返回使用数字适配器可以显示的最大行数（将始终返回16）。
+
+### Other
+
+The function `getDurationDistance(blocks, rpm)` will return the time needed to push a Mechanical Piston, Pulley or Gantry a number of blocks at the given rpm.
+
+The function `getDurationAngle(degrees, rpm)` will return the time needed to rotate a Mechanical Bearing by a number of degrees at the given rpm.
