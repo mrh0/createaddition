@@ -251,4 +251,8 @@ da.print("Text on first line again")
 ```
 The function `getMaxLines()` will return the max number of lines that can be displayable using the Digital Adapter (will always return 16).
 
+### Other
 
+The function `getDurationDistance(blocks, rpm)` will return the time needed to push a Mechanical Piston, Pulley or Gantry a number of blocks at the given rpm.
+
+The function `getDurationAngle(degrees, rpm)` will return the time needed to rotate a Mechanical Bearing by a number of degrees at the given rpm.

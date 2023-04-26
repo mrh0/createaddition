@@ -231,49 +231,9 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 				updateGeneratedRotation();
 			}
 		}
-		
-		/*if (world.isRemote)
-			return;
-		if (currentInstructionDuration < 0)
-			return;
-		if (timer < currentInstructionDuration) {
-			timer++;
-			return;
-		}*/
-		
-		//currentTarget = -1;
-		//currentInstruct = Instruct.NONE;
-		//currentInstructionDuration = -1;
-		//timer = 0;
 	}
 	
-	/*@Override
-	public void onSpeedChanged(float previousSpeed) {
-		super.onSpeedChanged(previousSpeed);
-		if (currentInstruct == Instruct.NONE)
-			return;
-		float currentSpeed = Math.abs(speed);
-		if (Math.abs(previousSpeed) == currentSpeed)
-			return;
-
-		float initialProgress = timer / (float) currentInstructionDuration;
-		if(currentInstruct == Instruct.ANGLE)
-			currentInstructionDuration = getDurationAngle(currentTarget, initialProgress, generatedSpeed.getValue());
-		timer = 0;
-	}*/
-	
-	/*public float runAngle(int angle, int speed) {
-		generatedSpeed.setValue(angle < 0 ? -speed : speed);
-		currentInstructionDuration = getDurationAngle(Math.abs(angle), 0, speed);
-		//currentTarget = angle;
-		//timer = 0;
-		
-		return (float)currentInstructionDuration / 20f;
-	}*/
-	
-	
-	
-	public int getDurationAngle(int deg, float initialProgress, float speed) {
+	public static int getDurationAngle(int deg, float initialProgress, float speed) {
 		speed = Math.abs(speed);
 		deg = Math.abs(deg);
 		if(speed < 0.1f)
@@ -282,7 +242,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		return (int) ((1 - initialProgress) * deg / degreesPerTick + 1);
 	}
 	
-	public int getDurationDistance(int dis, float initialProgress, float speed) {
+	public static int getDurationDistance(int dis, float initialProgress, float speed) {
 		speed = Math.abs(speed);
 		dis = Math.abs(dis);
 		if(speed < 0.1f)
@@ -292,7 +252,6 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 	}
 	
 	public boolean setRPM(int rpm) {
-		//System.out.println("SETSPEED" + rpm);
 		rpm = Math.max(Math.min(rpm, RPM_RANGE), -RPM_RANGE);
 		cc_new_rpm = rpm;
 		cc_update_rpm = true;

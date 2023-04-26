@@ -93,7 +93,7 @@ public class ElectricMotorPeripheral implements IPeripheral {
     		int _rpm = rpm.orElse(getSpeed());
     		if(rpm.isPresent())
     			setSpeed(deg < 0 ? -_rpm : _rpm);
-    		return tileEntity.getDurationAngle(deg, 0, _rpm) / 20f;
+    		return ElectricMotorTileEntity.getDurationAngle(deg, 0, _rpm) / 20f;
     	}
     	return 0f;
     }
@@ -104,7 +104,7 @@ public class ElectricMotorPeripheral implements IPeripheral {
     		int _rpm = rpm.orElse(getSpeed());
     		if(rpm.isPresent())
     			setSpeed(blocks < 0 ? -_rpm : _rpm);
-    		return tileEntity.getDurationDistance(blocks, 0, _rpm) / 20f;
+    		return ElectricMotorTileEntity.getDurationDistance(blocks, 0, _rpm) / 20f;
     	}
     	return 0f;
     }
