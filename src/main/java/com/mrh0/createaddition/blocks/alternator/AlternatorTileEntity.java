@@ -135,6 +135,7 @@ public class AlternatorTileEntity extends KineticTileEntity {
 	@Override
 	public void remove() {
 		lazyEnergy.invalidate();
+		super.remove();
 	}
 	
 	public void firstTick() {

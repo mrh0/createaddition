@@ -54,7 +54,7 @@ public class DigitalAdapterPeripheral implements IPeripheral {
 
     @LuaFunction(mainThread = true)
     public final void print(String text) {
-        this.tileEntity.setTextLine(this.tileEntity.getLine(), new TextComponent(text.substring(0, Math.min(text.length(), 128))));
+        this.tileEntity.setTextLine(this.tileEntity.getLine(), Component.literal(text.substring(0, Math.min(text.length(), 128))));
         this.tileEntity.incrementLine();
     }
 
