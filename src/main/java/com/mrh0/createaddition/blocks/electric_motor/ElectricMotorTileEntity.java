@@ -193,6 +193,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity {
 		lazyEnergy.invalidate();
 		if(lazyPeripheral != null)
 			lazyPeripheral.invalidate();
+		super.remove();
 	}
 	
 	// CC
