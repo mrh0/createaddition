@@ -249,3 +249,9 @@ da.setLine(1)
 da.print("Text on first line again")
 ```
 函数 `getMaxLines()` 将返回使用数字适配器可以显示的最大行数（将始终返回16）。
+
+### Other
+
+The function `getDurationDistance(blocks, rpm)` will return the time needed to push a Mechanical Piston, Pulley or Gantry a number of blocks at the given rpm.
+
+The function `getDurationAngle(degrees, rpm)` will return the time needed to rotate a Mechanical Bearing by a number of degrees at the given rpm.
