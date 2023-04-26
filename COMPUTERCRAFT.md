@@ -15,6 +15,7 @@ Supported Blocks:
   - [Mechanical Piston](#mechanical-piston)
   - [Mechanical Bearing](#mechanical-bearing)
   - [Display Link](#display-link)
+  - [Other](#other)
 
 ## Other Languages
  [简体中文 (Simplified Chinese)](COMPUTERCRAFT_zh-CN.md)
