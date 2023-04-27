@@ -238,6 +238,7 @@
 	"createaddition.ponder.modular_accumulator.text_5": "为了提高模组兼容性，蓄电池将主动输出能量至顶部或底部的方块。",
 
 	"createaddition.display_source.digital_adapter_source": "数字适配器",
+	"createaddition.display_source.digital_adapter_source_digital_adapter": "数字适配器",
 	"createaddition.display_source.modular_accumulator": "蓄电池",
 	"createaddition.display_source.accumulator.progress_bar": "进度条",
 	"createaddition.display_source.accumulator.percent": "百分比",
