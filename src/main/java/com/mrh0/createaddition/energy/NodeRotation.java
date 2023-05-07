@@ -7,6 +7,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
+
 import static net.minecraft.core.Direction.Axis.*;
 import static net.minecraft.world.level.block.Rotation.*;
 
@@ -82,7 +84,7 @@ public enum NodeRotation implements StringRepresentable {
 
 	@Override
 	public @NotNull String getSerializedName() {
-		return this.name().toLowerCase();
+		return this.name().toLowerCase(Locale.ROOT);
 	}
 
 	public static NodeRotation get(Direction.Axis axis, Rotation rotation) {
