@@ -56,6 +56,7 @@ public class EnergyThresholdCondition extends CargoThresholdCondition {
 
         int foundEnergy = 0;
         for (Carriage carriage : train.carriages) {
+            if(carriage.anyAvailableEntity() == null) continue;
             IEnergyStorage ies = PortableEnergyManager.get(carriage.anyAvailableEntity().getContraption());
             if(ies == null) continue;
             foundEnergy += ies.getEnergyStored();
