@@ -95,6 +95,7 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 		return CATileEntities.ELECTRIC_MOTOR.get();
 	}
 
+	/*
 	@Override
 	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos from, boolean b) {
 		if (!world.isClientSide) {
@@ -104,6 +105,23 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 					world.scheduleTick(pos, this, 4);
 				else
 					world.setBlock(pos, state.cycle(POWERED), 2);
+			}
+		}
+	}
+	*/
+
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos from, boolean b) {
+		if (!world.isClientSide) {
+			boolean flag = state.getValue(POWERED);
+			if (flag != world.hasNeighborSignal(pos)) {
+				if (flag){
+					setPowered(world, pos, false);
+					world.scheduleTick(pos, this, 4);
+				}
+				else{
+					setPowered(world, pos, true);
+					world.setBlock(pos, state.cycle(POWERED), 2);
+				}
 			}
 		}
 	}
