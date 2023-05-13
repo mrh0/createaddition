@@ -87,7 +87,7 @@
 	"item.createaddition.spool.nbt": "存储连接地点",
 	"item.createaddition.spool.tooltip": "线轴",
 	"item.createaddition.spool.tooltip.control1": "右击两个已连接的连接器时",
-	"item.createaddition.spool.tooltip.action1": "会移除它们之间的连接，并返还一个对应线缆的_线轴_",
+	"item.createaddition.spool.tooltip.action1": "解除它们之间的连接，并返还一个对应线缆的_线轴_",
 
 	"statusbar.createaddition.wire.linked": "节点已连接",
 	"statusbar.createaddition.wire.linked_in": "线缆已连接至输入端",
@@ -183,7 +183,7 @@
 
 	"block.createaddition.tesla_coil": "特斯拉线圈",
 
-	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	"itemGroup.createaddition:main": "Create Crafts & Additions",
 	
 	"createaddition.command.cca_api.link": "点击这里打开 API 文档。",
 	
