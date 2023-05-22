@@ -2,15 +2,14 @@ package com.mrh0.createaddition.blocks.redstone_relay;
 
 import java.util.Random;
 
-import com.mrh0.createaddition.blocks.accumulator.AccumulatorTileEntity;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.NodeRotation;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
-import com.simibubi.create.content.contraptions.components.structureMovement.ITransformableBlock;
-import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.contraptions.ITransformableBlock;
+import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
@@ -44,7 +43,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 
-public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEntity>, IWrenchable, ITransformableBlock {
+public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEntity>, IWrenchable, ITransformableBlock {
 
 	public static final BooleanProperty VERTICAL = BooleanProperty.create("vertical");
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -72,11 +71,6 @@ public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEn
 				.setValue(POWERED, false)
 				.setValue(NodeRotation.ROTATION, NodeRotation.NONE));
 	}
-
-	@Override
-	public Class<RedstoneRelayTileEntity> getTileEntityClass() {
-		return RedstoneRelayTileEntity.class;
-	}
 	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
@@ -86,10 +80,15 @@ public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEn
 		Axis axis = dir.getAxis();
 		return axis == Axis.X ? HORIZONTAL_SHAPE_X : HORIZONTAL_SHAPE_Z;
 	}
-	
+
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.REDSTONE_RELAY.create(pos, state);
+	public Class<RedstoneRelayTileEntity> getBlockEntityClass() {
+		return RedstoneRelayTileEntity.class;
+	}
+
+	@Override
+	public BlockEntityType<? extends RedstoneRelayTileEntity> getBlockEntityType() {
+		return CATileEntities.REDSTONE_RELAY.get();;
 	}
 	
 	@Override
@@ -240,11 +239,6 @@ public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEn
 			return false;
 		return !state.getValue(VERTICAL).booleanValue() && side.getAxis() != state.getValue(HORIZONTAL_FACING).getAxis();
 	}
-
-	@Override
-	public BlockEntityType<? extends RedstoneRelayTileEntity> getTileEntityType() {
-		return CATileEntities.REDSTONE_RELAY.get();
-	}
 	
 	private BlockState fromRotation(BlockState state, Direction dir) {
 		return state.setValue(HORIZONTAL_FACING, dir);
@@ -273,5 +267,10 @@ public class RedstoneRelayBlock extends Block implements ITE<RedstoneRelayTileEn
 		if (transform.rotationAxis == Axis.Y) state = rotate(state, transform.rotation);
 		// Set the rotation state, which will be used to update the nodes.
 		return state.setValue(NodeRotation.ROTATION, rotation);
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return CATileEntities.REDSTONE_RELAY.create(pos, state);
 	}
 }

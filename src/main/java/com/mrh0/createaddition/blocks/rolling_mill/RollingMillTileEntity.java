@@ -8,6 +8,10 @@ import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipeType;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.content.contraptions.itemAssembly.SequencedAssemblyRecipe;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
+import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.DirectBeltInputBehaviour;
 import com.simibubi.create.foundation.utility.VecHelper;
@@ -33,7 +37,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public class RollingMillTileEntity extends KineticTileEntity {
+public class RollingMillTileEntity extends KineticBlockEntity {
 
 	public ItemStackHandler inputInv;
 	public ItemStackHandler outputInv;
@@ -53,7 +57,7 @@ public class RollingMillTileEntity extends KineticTileEntity {
 	}
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
 		super.addBehaviours(behaviours);
 		behaviours.add(new DirectBeltInputBehaviour(this));
 	}
@@ -100,7 +104,7 @@ public class RollingMillTileEntity extends KineticTileEntity {
 
 		var step = new Vec3i(ejectDirection.getStepX(),ejectDirection.getStepY(),ejectDirection.getStepZ());
 		BlockPos nextPos = getBlockPos().offset(step);
-		DirectBeltInputBehaviour behaviour = TileEntityBehaviour.get(level,nextPos,DirectBeltInputBehaviour.TYPE);
+		DirectBeltInputBehaviour behaviour = BlockEntityBehaviour.get(level,nextPos,DirectBeltInputBehaviour.TYPE);
 		if(behaviour != null) {
 			boolean changed = false;
 			if(level.isClientSide && !isVirtual())

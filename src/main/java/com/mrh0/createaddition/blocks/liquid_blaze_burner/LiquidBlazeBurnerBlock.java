@@ -8,10 +8,10 @@ import com.mrh0.createaddition.index.CATileEntities;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.contraptions.processing.BasinTileEntity;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.content.processing.basin.BasinBlockEntity;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -41,13 +41,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 
-public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implements ITE<LiquidBlazeBurnerTileEntity>, IWrenchable {
+public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implements IBE<LiquidBlazeBurnerTileEntity>, IWrenchable {
 
-	public static final EnumProperty<HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", HeatLevel.class);
+	public static final EnumProperty<BlazeBurnerBlock.HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", BlazeBurnerBlock.HeatLevel.class);
 
 	public LiquidBlazeBurnerBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, HeatLevel.NONE));
+		registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.NONE));
 	}
 
 	@Override
@@ -61,9 +61,9 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 		if (world.isClientSide)
 			return;
 		BlockEntity tileEntity = world.getBlockEntity(pos.above());
-		if (!(tileEntity instanceof BasinTileEntity))
+		if (!(tileEntity instanceof BasinBlockEntity))
 			return;
-		BasinTileEntity basin = (BasinTileEntity) tileEntity;
+		BasinBlockEntity basin = (BasinBlockEntity) tileEntity;
 		basin.notifyChangeOfContents();
 	}
 
@@ -74,19 +74,19 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	}
 
 	@Override
-	public Class<LiquidBlazeBurnerTileEntity> getTileEntityClass() {
+	public Class<LiquidBlazeBurnerTileEntity> getBlockEntityClass() {
 		return LiquidBlazeBurnerTileEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends LiquidBlazeBurnerTileEntity> getTileEntityType() {
+	public BlockEntityType<? extends LiquidBlazeBurnerTileEntity> getBlockEntityType() {
 		return CATileEntities.LIQUID_BLAZE_BURNER.get();
 	}
 
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return ITE.super.newBlockEntity(pos, state);
+		return IBE.super.newBlockEntity(pos, state);
 	}
 	
 	@Override
@@ -135,10 +135,10 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 		
 		
 		ItemStack heldItem = player.getItemInHand(hand);
-		HeatLevel heat = state.getValue(HEAT_LEVEL);
+		BlazeBurnerBlock.HeatLevel heat = state.getValue(HEAT_LEVEL);
 
-		if (AllItems.GOGGLES.isIn(heldItem) && heat != HeatLevel.NONE)
-			return onTileEntityUse(world, pos, bbte -> {
+		if (AllItems.GOGGLES.isIn(heldItem) && heat != BlazeBurnerBlock.HeatLevel.NONE)
+			return onBlockEntityUse(world, pos, bbte -> {
 				if (bbte.goggles)
 					return InteractionResult.PASS;
 				bbte.goggles = true;
@@ -146,8 +146,8 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 				return InteractionResult.SUCCESS;
 			});
 
-		if (heldItem.isEmpty() && heat != HeatLevel.NONE)
-			return onTileEntityUse(world, pos, bbte -> {
+		if (heldItem.isEmpty() && heat != BlazeBurnerBlock.HeatLevel.NONE)
+			return onBlockEntityUse(world, pos, bbte -> {
 				if (!bbte.goggles)
 					return InteractionResult.PASS;
 				bbte.goggles = false;
@@ -237,7 +237,7 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 		if (random.nextInt(10) != 0)
 			return;
 		if (!state.getValue(HEAT_LEVEL)
-			.isAtLeast(HeatLevel.SMOULDERING))
+			.isAtLeast(BlazeBurnerBlock.HeatLevel.SMOULDERING))
 			return;
 		world.playLocalSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F),
 			(double) ((float) pos.getZ() + 0.5F), SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS,

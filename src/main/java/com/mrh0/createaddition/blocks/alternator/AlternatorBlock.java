@@ -2,9 +2,9 @@ package com.mrh0.createaddition.blocks.alternator;
 
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
-import com.simibubi.create.content.contraptions.base.DirectionalKineticBlock;
-import com.simibubi.create.content.contraptions.base.IRotate;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
+import com.simibubi.create.content.kinetics.base.IRotate;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class AlternatorBlock extends DirectionalKineticBlock implements ITE<AlternatorTileEntity>, IRotate {
+public class AlternatorBlock extends DirectionalKineticBlock implements IBE<AlternatorTileEntity>, IRotate {
 	
 	public static final VoxelShaper ALTERNATOR_SHAPE = CAShapes.shape(0, 3, 0, 16, 13, 16).add(2, 0, 2, 14, 14, 14).forDirectional();
 	
@@ -55,12 +55,12 @@ public class AlternatorBlock extends DirectionalKineticBlock implements ITE<Alte
 	}
 	
 	@Override
-	public BlockEntityType<? extends AlternatorTileEntity> getTileEntityType() {
+	public BlockEntityType<? extends AlternatorTileEntity> getBlockEntityType() {
 		return CATileEntities.ALTERNATOR.get();
 	}
 
 	@Override
-	public Class<AlternatorTileEntity> getTileEntityClass() {
+	public Class<AlternatorTileEntity> getBlockEntityClass() {
 		return AlternatorTileEntity.class;
 	}
 

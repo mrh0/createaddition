@@ -5,10 +5,10 @@ import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.NodeRotation;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
-import com.simibubi.create.content.contraptions.components.structureMovement.ITransformableBlock;
-import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.contraptions.ITransformableBlock;
+import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
@@ -36,7 +36,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, IWrenchable, ITransformableBlock {
+public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, IWrenchable, ITransformableBlock {
 	boolean IGNORE_FACE_CHECK = Config.CONNECTOR_IGNORE_FACE_CHECK.get();
 
 	public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).forDirectional();
@@ -57,15 +57,15 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return CONNECTOR_SHAPE.get(state.getValue(FACING).getOpposite());
 	}
-	
+
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.CONNECTOR.create(pos, state);
+	public Class<ConnectorTileEntity> getBlockEntityClass() {
+		return ConnectorTileEntity.class;
 	}
 
 	@Override
-	public Class<ConnectorTileEntity> getTileEntityClass() {
-		return ConnectorTileEntity.class;
+	public BlockEntityType<? extends ConnectorTileEntity> getBlockEntityType() {
+		return CATileEntities.CONNECTOR.get();
 	}
 	
 	@Override
@@ -145,11 +145,6 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 				!Shapes.joinIsNotEmpty(world.getBlockState(pos.relative(dir)).getBlockSupportShape(world,pos.relative(dir)).getFaceShape(dir.getOpposite()), boxsn, BooleanOp.ONLY_SECOND) ||
 				world.getBlockState(pos.relative(dir)).isFaceSturdy(world, pos, dir.getOpposite(), SupportType.CENTER) || IGNORE_FACE_CHECK;
 	}
-
-	@Override
-	public BlockEntityType<? extends ConnectorTileEntity> getTileEntityType() {
-		return CATileEntities.CONNECTOR.get();
-	}
 	
 	@Override
 	public BlockState rotate(BlockState state, Rotation direction) {
@@ -175,5 +170,10 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 		state = state.setValue(FACING, rotation.rotate(state.getValue(FACING), false));
 		// Set the rotation state, which will be used to update the nodes.
 		return state.setValue(NodeRotation.ROTATION, rotation);
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return CATileEntities.CONNECTOR.create(pos, state);
 	}
 }

@@ -2,8 +2,8 @@ package com.mrh0.createaddition.blocks.rolling_mill;
 
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
-import com.simibubi.create.content.contraptions.base.HorizontalKineticBlock;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.Iterate;
 
@@ -34,22 +34,12 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 
-public class RollingMillBlock extends HorizontalKineticBlock implements ITE<RollingMillTileEntity> {
+public class RollingMillBlock extends HorizontalKineticBlock implements IBE<RollingMillTileEntity> {
 
 	public static final VoxelShape ROLLING_MILL_SHAPE = CAShapes.shape(0,0,0,16,5,16).add(2,0,2,14,16,14).build();
 	
 	public RollingMillBlock(Properties properties) {
 		super(properties);
-	}
-	
-	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.ROLLING_MILL.create(pos, state);
-	}
-	
-	@Override
-	public Class<RollingMillTileEntity> getTileEntityClass() {
-		return RollingMillTileEntity.class;
 	}
 
 	@Override
@@ -64,7 +54,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 		if (worldIn.isClientSide)
 			return InteractionResult.SUCCESS;
 
-		withTileEntityDo(worldIn, pos, rollingMill -> {
+		withBlockEntityDo(worldIn, pos, rollingMill -> {
 			boolean emptyOutput = true;
 			IItemHandlerModifiable inv = rollingMill.outputInv;
 			for (int slot = 0; slot < inv.getSlots(); slot++) {
@@ -103,7 +93,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 
 		RollingMillTileEntity rollingMill = null;
 		for (BlockPos pos : Iterate.hereAndBelow(entityIn.blockPosition())) {
-			rollingMill = getTileEntity(worldIn, pos);
+			rollingMill = getBlockEntity(worldIn, pos);
 		}
 		if (rollingMill == null)
 			return;
@@ -123,7 +113,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.hasBlockEntity() && state.getBlock() != newState.getBlock()) {
-			withTileEntityDo(worldIn, pos, te -> {
+			withBlockEntityDo(worldIn, pos, te -> {
 				ItemHelper.dropContents(worldIn, pos, te.inputInv);
 				ItemHelper.dropContents(worldIn, pos, te.outputInv);
 			});
@@ -153,7 +143,17 @@ public class RollingMillBlock extends HorizontalKineticBlock implements ITE<Roll
 	}
 
 	@Override
-	public BlockEntityType<? extends RollingMillTileEntity> getTileEntityType() {
+	public BlockEntityType<? extends RollingMillTileEntity> getBlockEntityType() {
 		return CATileEntities.ROLLING_MILL.get();
+	}
+
+	@Override
+	public Class<RollingMillTileEntity> getBlockEntityClass() {
+		return CATileEntities.ROLLING_MILL.get();
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return CATileEntities.ROLLING_MILL.create(pos, state);
 	}
 }

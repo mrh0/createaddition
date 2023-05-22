@@ -1,12 +1,12 @@
 package com.mrh0.createaddition.mixin;
 
 import com.mrh0.createaddition.blocks.digital_adapter.ISpeedControllerAdapter;
-import com.simibubi.create.content.contraptions.relays.advanced.SpeedControllerTileEntity;
-import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
+import com.simibubi.create.content.kinetics.speedController.SpeedControllerBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(value = SpeedControllerTileEntity.class, remap = false)
+@Mixin(value = SpeedControllerBlockEntity.class, remap = false)
 public abstract class SpeedControllerTileEntityMixin implements ISpeedControllerAdapter {
 
     @Shadow

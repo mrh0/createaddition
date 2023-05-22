@@ -1,8 +1,8 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
 import com.jozufozu.flywheel.api.MaterialManager;
-import com.simibubi.create.content.contraptions.base.flwdata.RotatingData;
-import com.simibubi.create.content.contraptions.relays.encased.ShaftInstance;
+import com.simibubi.create.content.kinetics.base.ShaftInstance;
+import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 
 public class RollingMillInstance extends ShaftInstance {
 
@@ -17,7 +17,7 @@ public class RollingMillInstance extends ShaftInstance {
         super.init();
         shaft = getModel().createInstance();
         shaft.setRotationAxis(axis)
-                .setRotationalSpeed(getTileSpeed())
+                .setRotationalSpeed(getBlockEntitySpeed())
                 .setRotationOffset(-getRotationOffset(axis))
                 .setColor(blockEntity)
                 .setPosition(getInstancePosition());
@@ -34,7 +34,7 @@ public class RollingMillInstance extends ShaftInstance {
     private void transformModels() {
         shaft.setPosition(getInstancePosition())
                 .nudge(0, 4f/16f, 0)
-                .setRotationalSpeed(-getTileSpeed());
+                .setRotationalSpeed(-getBlockEntitySpeed());
     }
 
     @Override

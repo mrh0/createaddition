@@ -1,12 +1,8 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
-import com.jozufozu.flywheel.core.virtual.VirtualRenderWorld;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyManager;
-import com.mrh0.createaddition.debug.CADebugger;
-import com.simibubi.create.content.contraptions.components.structureMovement.MovementBehaviour;
-import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
-import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionMatrices;
-import net.minecraft.client.renderer.MultiBufferSource;
+import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
+import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import net.minecraft.nbt.CompoundTag;
 
 public class ModularAccumulatorMovement implements MovementBehaviour {
@@ -29,7 +25,7 @@ public class ModularAccumulatorMovement implements MovementBehaviour {
 			data = new TemporaryData();
 			context.temporaryData = data;
 
-			CompoundTag nbt = context.tileData;
+			CompoundTag nbt = context.blockEntityData;
 			data.controller = nbt.contains("EnergyContent");
 			data.tick = TICK_DELAY;
 		}
@@ -48,7 +44,7 @@ public class ModularAccumulatorMovement implements MovementBehaviour {
 		// then don't do anything.
 		if (context.contraption.entity == null) return;
 		if (context.world.isClientSide) return;
-		if (!context.tileData.contains("EnergyContent")) return;
+		if (!context.blockEntityData.contains("EnergyContent")) return;
 		context.temporaryData = new TemporaryData(true);
 
 		PortableEnergyManager.track(context);
@@ -63,7 +59,7 @@ public class ModularAccumulatorMovement implements MovementBehaviour {
 	}
 
 	@Override
-	public boolean renderAsNormalTileEntity() {
+	public boolean renderAsNormalBlockEntity() {
 		return true;
 	}
 

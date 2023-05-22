@@ -3,8 +3,8 @@ package com.mrh0.createaddition.blocks.modular_accumulator;
 import java.util.List;
 
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.content.logistics.block.display.DisplayLinkContext;
-import com.simibubi.create.content.logistics.block.display.source.PercentOrProgressBarDisplaySource;
+import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
+import com.simibubi.create.content.redstone.displayLink.source.PercentOrProgressBarDisplaySource;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 
 import net.minecraft.network.chat.Component;
@@ -30,7 +30,7 @@ public class ModularAccumulatorDisplaySource extends PercentOrProgressBarDisplay
 
 	@Override
 	protected Float getProgress(DisplayLinkContext context) {
-		if (!(context.getSourceTE() instanceof ModularAccumulatorTileEntity te)) return null;
+		if (!(context.getSourceBlockEntity() instanceof ModularAccumulatorTileEntity te)) return null;
 		te = te.getControllerTE();
 		if(te == null) return null;
 		float capacity = te.energyStorage.getMaxEnergyStored();

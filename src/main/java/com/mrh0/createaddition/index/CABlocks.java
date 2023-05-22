@@ -1,7 +1,5 @@
 package com.mrh0.createaddition.index;
 
-import static com.simibubi.create.AllTags.pickaxeOnly;
-import static com.simibubi.create.content.logistics.block.display.AllDisplayBehaviours.assignDataBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
 import com.mrh0.createaddition.CreateAddition;
@@ -27,14 +25,15 @@ import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.AllMovementBehaviours;
 import com.simibubi.create.AllTags.AllBlockTags;
-import com.simibubi.create.content.AllSections;
-import com.simibubi.create.content.contraptions.components.AssemblyOperatorBlockItem;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.foundation.block.BlockStressDefaults;
+import com.simibubi.create.content.kinetics.BlockStressDefaults;
+import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours.assignDataBehaviour;
+import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.Rarity;
@@ -177,7 +176,7 @@ public class CABlocks {
 			.register();
 	
 	public static void register() {
-		REGISTRATE.addToSection(TESLA_COIL, AllSections.KINETICS);
+		/*REGISTRATE.addToSection(TESLA_COIL, AllSections.KINETICS);
 		REGISTRATE.addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
 		REGISTRATE.addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
 		REGISTRATE.addToSection(ACCUMULATOR, AllSections.KINETICS);
@@ -185,6 +184,6 @@ public class CABlocks {
 		REGISTRATE.addToSection(BARBED_WIRE, AllSections.CURIOSITIES);
 		REGISTRATE.addToSection(MODULAR_ACCUMULATOR, AllSections.KINETICS);
 		REGISTRATE.addToSection(PORTABLE_ENERGY_INTERFACE, AllSections.KINETICS);
-		REGISTRATE.addToSection(DIGITAL_ADAPTER, AllSections.LOGISTICS);
+		REGISTRATE.addToSection(DIGITAL_ADAPTER, AllSections.LOGISTICS);*/
 	}
 }

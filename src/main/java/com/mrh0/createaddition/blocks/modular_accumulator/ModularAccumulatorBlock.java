@@ -1,11 +1,9 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
-import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.index.CATileEntities;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
-import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.foundation.block.IBE;
+import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,7 +29,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.ForgeSoundType;
 
-public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<ModularAccumulatorTileEntity> {
+public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<ModularAccumulatorTileEntity> {
 
 	public static final BooleanProperty TOP = BooleanProperty.create("top");
 	public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom");
@@ -69,7 +67,7 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<M
 			return;
 		if (moved)
 			return;
-		withTileEntityDo(world, pos, ModularAccumulatorTileEntity::updateConnectivity);
+		withBlockEntityDo(world, pos, ModularAccumulatorTileEntity::updateConnectivity);
 	}
 
 	@Override
@@ -225,16 +223,6 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<M
 		}
 	}
 
-	@Override
-	public Class<ModularAccumulatorTileEntity> getTileEntityClass() {
-		return ModularAccumulatorTileEntity.class;
-	}
-
-	@Override
-	public BlockEntityType<? extends ModularAccumulatorTileEntity> getTileEntityType() {
-		return CATileEntities.MODULAR_ACCUMULATOR.get();
-	}
-
 	// Blocks are less noisy when placed in batch
 	public static final SoundType SILENCED_METAL =
 		new ForgeSoundType(0.1F, 1.5F, () -> SoundEvents.METAL_BREAK, () -> SoundEvents.METAL_STEP,
@@ -256,7 +244,7 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<M
 
 	@Override
 	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-		return getTileEntityOptional(worldIn, pos).map(ModularAccumulatorTileEntity::getControllerTE)
+		return getBlockEntityOptional(worldIn, pos).map(ModularAccumulatorTileEntity::getControllerBE)
 			.map(te -> ComparatorUtil.fractionToRedstoneLevel(te.getFillState()))
 			.orElse(0);
 	}
@@ -269,5 +257,20 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, ITE<M
 				((ModularAccumulatorTileEntity)tileentity).updateCache();
 			}
 		}
+	}
+
+	@Override
+	public Class<ModularAccumulatorTileEntity> getBlockEntityClass() {
+		return ModularAccumulatorTileEntity.class;
+	}
+
+	@Override
+	public BlockEntityType<? extends ModularAccumulatorTileEntity> getBlockEntityType() {
+		return CATileEntities.MODULAR_ACCUMULATOR.get();
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return CATileEntities.MODULAR_ACCUMULATOR.create(pos, state);
 	}
 }

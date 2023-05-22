@@ -14,10 +14,8 @@ import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.CreateClient;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
-import com.simibubi.create.foundation.utility.Color;
-import com.sun.jdi.connect.Connector;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -229,7 +227,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		super.tick();
 
 		if(level.isClientSide()) return;
-		if(awakeNetwork(level)) causeBlockUpdate();
+		if(awakeNetwork(level)) notifyUpdate();
 
 		networkTick(network);
 	}

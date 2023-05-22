@@ -1,12 +1,7 @@
 package com.mrh0.createaddition.energy;
 
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +13,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public abstract class BaseElectricTileEntity extends SmartTileEntity {
+import java.util.List;
+
+public abstract class BaseElectricTileEntity extends SmartBlockEntity {
 
 	protected final InternalEnergyStorage localEnergy;
 	protected LazyOptional<IEnergyStorage> lazyEnergy;
@@ -37,7 +34,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity {
 	}
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {

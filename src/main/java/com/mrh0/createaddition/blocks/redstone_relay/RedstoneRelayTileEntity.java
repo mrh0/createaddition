@@ -17,9 +17,9 @@ import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -42,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
-public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
+public class RedstoneRelayTileEntity extends SmartBlockEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
 
 	//private final InternalEnergyStorage energyBufferIn;
 	//private final InternalEnergyStorage energyBufferOut;
@@ -85,6 +85,11 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 
 		if (CreateAddition.CC_ACTIVE)
 			this.peripheral = LazyOptional.of(() -> Peripherals.createRedstoneRelayPeripheral(this));
+	}
+
+	@Override
+	public void addBehaviours(List<BlockEntityBehaviour> list) {
+
 	}
 
 	@Override
@@ -306,7 +311,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	}
 
 	private void networkTick() {
-		if(awakeNetwork(level)) causeBlockUpdate();
+		if(awakeNetwork(level)) notifyUpdate();
 		BlockState bs = getBlockState();
 		throughput = 0;
 		if(!bs.is(CABlocks.REDSTONE_RELAY.get())) return;
@@ -358,9 +363,6 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	public boolean isNodeIndeciesConnected(int in, int other) {
 		return isNodeInput(in) == isNodeInput(other);
 	}
-
-	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
 
 	public int getDemand() {
 		return demand;

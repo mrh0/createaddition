@@ -1,7 +1,7 @@
 package com.mrh0.createaddition.mixin;
 
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorTileEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
+import com.simibubi.create.content.contraptions.Contraption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -21,7 +21,7 @@ public abstract class ContraptionMixin {
 	private BlockPos anchor;
 
 	@Inject(
-			method = "getTileEntityNBT",
+			method = "getBlockEntityNBT",
 			at = @At("TAIL"),
 			locals = LocalCapture.CAPTURE_FAILSOFT
 	)
