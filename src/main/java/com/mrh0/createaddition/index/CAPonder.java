@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
 import com.simibubi.create.foundation.ponder.PonderTag;
 
+import com.simibubi.create.infrastructure.ponder.AllPonderTags;
 import net.minecraft.resources.ResourceLocation;
 
 public class CAPonder {
@@ -16,30 +17,31 @@ public class CAPonder {
 	static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(CreateAddition.MODID);
 	
 	public static void register() {
-		HELPER.addStoryBoard(CABlocks.ELECTRIC_MOTOR, "electric_motor", PonderScenes::electricMotor, PonderTag.KINETIC_SOURCES, ELECTRIC);
-		HELPER.addStoryBoard(CABlocks.ALTERNATOR, "alternator", PonderScenes::alternator, PonderTag.KINETIC_APPLIANCES, ELECTRIC);
-		HELPER.addStoryBoard(CABlocks.ROLLING_MILL, "rolling_mill", PonderScenes::rollingMill, PonderTag.KINETIC_APPLIANCES);
-		HELPER.addStoryBoard(CABlocks.ROLLING_MILL, "automate_rolling_mill", PonderScenes::automateRollingMill, PonderTag.KINETIC_APPLIANCES);
-		HELPER.addStoryBoard(CABlocks.TESLA_COIL, "tesla_coil", PonderScenes::teslaCoil, PonderTag.LOGISTICS, ELECTRIC);
-		HELPER.addStoryBoard(CABlocks.TESLA_COIL, "tesla_coil_hurt", PonderScenes::teslaCoilHurt, PonderTag.LOGISTICS, ELECTRIC);
-		HELPER.addStoryBoard(CAItems.STRAW, "liquid_blaze_burner", PonderScenes::liquidBlazeBurner, PonderTag.LOGISTICS);
-		HELPER.addStoryBoard(AllBlocks.BLAZE_BURNER, "liquid_blaze_burner", PonderScenes::liquidBlazeBurner, PonderTag.LOGISTICS);
-		HELPER.addStoryBoard(CABlocks.MODULAR_ACCUMULATOR, "accumulator", PonderScenes::modularAccumulator, PonderTag.LOGISTICS, ELECTRIC);
-		HELPER.addStoryBoard(CABlocks.PORTABLE_ENERGY_INTERFACE, "pei_transfer", PonderScenes::peiTransfer, PonderTag.LOGISTICS, ELECTRIC);
-		HELPER.addStoryBoard(CABlocks.PORTABLE_ENERGY_INTERFACE, "pei_redstone", PonderScenes::peiRedstone, PonderTag.LOGISTICS, ELECTRIC);
+		HELPER.addStoryBoard(CABlocks.ELECTRIC_MOTOR, "electric_motor", PonderScenes::electricMotor, AllPonderTags.KINETIC_SOURCES, ELECTRIC);
+		HELPER.addStoryBoard(CABlocks.ALTERNATOR, "alternator", PonderScenes::alternator, AllPonderTags.KINETIC_APPLIANCES, ELECTRIC);
+		HELPER.addStoryBoard(CABlocks.ROLLING_MILL, "rolling_mill", PonderScenes::rollingMill, AllPonderTags.KINETIC_APPLIANCES);
+		HELPER.addStoryBoard(CABlocks.ROLLING_MILL, "automate_rolling_mill", PonderScenes::automateRollingMill, AllPonderTags.KINETIC_APPLIANCES);
+		HELPER.addStoryBoard(CABlocks.TESLA_COIL, "tesla_coil", PonderScenes::teslaCoil, AllPonderTags.LOGISTICS, ELECTRIC);
+		HELPER.addStoryBoard(CABlocks.TESLA_COIL, "tesla_coil_hurt", PonderScenes::teslaCoilHurt, AllPonderTags.LOGISTICS, ELECTRIC);
+		HELPER.addStoryBoard(CAItems.STRAW, "liquid_blaze_burner", PonderScenes::liquidBlazeBurner, AllPonderTags.LOGISTICS);
+		HELPER.addStoryBoard(AllBlocks.BLAZE_BURNER, "liquid_blaze_burner", PonderScenes::liquidBlazeBurner, AllPonderTags.LOGISTICS);
+		HELPER.addStoryBoard(CABlocks.MODULAR_ACCUMULATOR, "accumulator", PonderScenes::modularAccumulator, AllPonderTags.LOGISTICS, ELECTRIC);
+		HELPER.addStoryBoard(CABlocks.PORTABLE_ENERGY_INTERFACE, "pei_transfer", PonderScenes::peiTransfer, AllPonderTags.LOGISTICS, ELECTRIC);
+		HELPER.addStoryBoard(CABlocks.PORTABLE_ENERGY_INTERFACE, "pei_redstone", PonderScenes::peiRedstone, AllPonderTags.LOGISTICS, ELECTRIC);
 		
 		
 		if(CreateAddition.CC_ACTIVE)
-			HELPER.addStoryBoard(CABlocks.ELECTRIC_MOTOR, "cc_electric_motor", PonderScenes::ccMotor, PonderTag.KINETIC_SOURCES, ELECTRIC);
+			HELPER.addStoryBoard(CABlocks.ELECTRIC_MOTOR, "cc_electric_motor", PonderScenes::ccMotor, AllPonderTags.KINETIC_SOURCES, ELECTRIC);
 		
-		PonderRegistry.TAGS.forTag(PonderTag.KINETIC_SOURCES)
+		PonderRegistry.TAGS.forTag(AllPonderTags.KINETIC_SOURCES)
 			.add(CABlocks.ELECTRIC_MOTOR);
 		
-		PonderRegistry.TAGS.forTag(PonderTag.KINETIC_APPLIANCES)
+
+		PonderRegistry.TAGS.forTag(AllPonderTags.KINETIC_APPLIANCES)
 			.add(CABlocks.ROLLING_MILL)
 			.add(CABlocks.ALTERNATOR);
 		
-		PonderRegistry.TAGS.forTag(PonderTag.LOGISTICS)
+		PonderRegistry.TAGS.forTag(AllPonderTags.LOGISTICS)
 			.add(CABlocks.TESLA_COIL)
 			.add(CABlocks.MODULAR_ACCUMULATOR)
 			.add(CABlocks.PORTABLE_ENERGY_INTERFACE);

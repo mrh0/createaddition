@@ -149,7 +149,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 
 	@Override
 	public Class<RollingMillTileEntity> getBlockEntityClass() {
-		return CATileEntities.ROLLING_MILL.get();
+		return RollingMillTileEntity.class;
 	}
 
 	@Override

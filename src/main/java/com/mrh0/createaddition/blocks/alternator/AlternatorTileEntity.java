@@ -7,7 +7,6 @@ import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.utility.Lang;
 
@@ -18,7 +17,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;

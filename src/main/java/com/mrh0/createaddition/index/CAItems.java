@@ -119,7 +119,7 @@ public class CAItems {
 			.register();
 	
 	public static void register() {
-		REGISTRATE.addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
+		/*REGISTRATE.addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
 		//Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
 		REGISTRATE.addToSection(COPPER_SPOOL, AllSections.MATERIALS);
 		REGISTRATE.addToSection(GOLD_SPOOL, AllSections.MATERIALS);
@@ -130,6 +130,6 @@ public class CAItems {
 		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
 		
-		REGISTRATE.addToSection(STRAW, AllSections.MATERIALS);
+		REGISTRATE.addToSection(STRAW, AllSections.MATERIALS);*/
 	}
 }

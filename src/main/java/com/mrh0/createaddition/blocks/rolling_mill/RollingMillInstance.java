@@ -1,10 +1,13 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
+import com.jozufozu.flywheel.api.Instancer;
 import com.jozufozu.flywheel.api.MaterialManager;
+import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.ShaftInstance;
+import com.simibubi.create.content.kinetics.base.SingleRotatingInstance;
 import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 
-public class RollingMillInstance extends ShaftInstance {
+public class RollingMillInstance extends SingleRotatingInstance<RollingMillTileEntity> {
 
     private RotatingData shaft;
 
@@ -15,14 +18,19 @@ public class RollingMillInstance extends ShaftInstance {
     @Override
     public void init() {
         super.init();
-        shaft = getModel().createInstance();
+        /*shaft = getRotatingMaterial().getModel(AllPartialModels.SHAFT_HALF, ).createInstance();
         shaft.setRotationAxis(axis)
                 .setRotationalSpeed(getBlockEntitySpeed())
                 .setRotationOffset(-getRotationOffset(axis))
                 .setColor(blockEntity)
                 .setPosition(getInstancePosition());
-
+        */
         transformModels();
+    }
+
+    @Override
+    protected Instancer<RotatingData> getModel() {
+        return getRotatingMaterial().getModel(AllPartialModels.SHAFT_HALF, blockEntity.getBlockState());
     }
 
     @Override
@@ -36,17 +44,10 @@ public class RollingMillInstance extends ShaftInstance {
                 .nudge(0, 4f/16f, 0)
                 .setRotationalSpeed(-getBlockEntitySpeed());
     }
-
-    @Override
-    public void updateLight() {
-        super.updateLight();
-
-        relight(pos, shaft);
-    }
-
+    /*
     @Override
     public void remove() {
         super.remove();
         shaft.delete();
-    }
+    }*/
 }

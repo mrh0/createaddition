@@ -8,8 +8,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import javax.annotation.Nonnull;
 
 import com.mrh0.createaddition.CreateAddition;
@@ -19,17 +17,15 @@ import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.Create;
-import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.compat.jei.CreateJEI;
 import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
-import com.simibubi.create.foundation.config.AllConfigs;
-import com.simibubi.create.foundation.config.CRecipes;
 import com.simibubi.create.foundation.config.ConfigBase;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
+import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
+import com.simibubi.create.infrastructure.config.AllConfigs;
+import com.simibubi.create.infrastructure.config.CRecipes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -37,7 +33,6 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -95,7 +90,7 @@ public class CreateAdditionJEI implements IModPlugin {
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		ALL.forEach(c -> c.registerCatalysts(registration));
 		
-		registration.addRecipeCatalyst(new ItemStack(CAItems.DIAMOND_GRIT_SANDPAPER.get()), new ResourceLocation(Create.ID, "sandpaper_polishing"));
+		registration.addRecipeCatalyst(CAItems.DIAMOND_GRIT_SANDPAPER.asStack(), new ResourceLocation(Create.ID, "sandpaper_polishing"));
 		//registration.addRecipeCatalyst(new ItemStack(CAItems.DIAMOND_GRIT_SANDPAPER.get()), new ResourceLocation(Create.ID, "deploying"));
 	}
 	
@@ -238,7 +233,7 @@ public class CreateAdditionJEI implements IModPlugin {
 
 		public CreateRecipeCategory<T> build(String name, CreateRecipeCategory.Factory<T> factory) {
 			Supplier<List<T>> recipesSupplier;
-			if (predicate.test(AllConfigs.SERVER.recipes)) {
+			if (predicate.test(AllConfigs.server().recipes)) {
 				recipesSupplier = () -> {
 					List<T> recipes = new ArrayList<>();
 					for (Consumer<List<T>> consumer : recipeListConsumers)

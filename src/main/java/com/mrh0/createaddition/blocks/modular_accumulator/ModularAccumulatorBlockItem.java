@@ -77,7 +77,7 @@ public class ModularAccumulatorBlockItem extends BlockItem {
 		ModularAccumulatorTileEntity accumulatorAt = CAConnectivityHandler.partAt(CATileEntities.MODULAR_ACCUMULATOR.get(), world, placedOnPos);
 		if (accumulatorAt == null)
 			return;
-		ModularAccumulatorTileEntity controllerTE = accumulatorAt.getControllerTE();
+		ModularAccumulatorTileEntity controllerTE = accumulatorAt.getControllerBE();
 		if (controllerTE == null)
 			return;
 

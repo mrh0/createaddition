@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.debug;
 
-import com.simibubi.create.content.contraptions.KineticDebugger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.level.Level;
@@ -10,9 +9,6 @@ import net.minecraft.world.phys.HitResult;
 
 import java.text.MessageFormat;
 
-/**
- * Basically a copy of creates {@link KineticDebugger}, but for create addition blocks.
- */
 public class CADebugger {
 
 	public CADebugger() {}

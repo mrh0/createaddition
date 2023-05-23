@@ -88,7 +88,7 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 
 	@Override
 	public BlockEntityType<? extends RedstoneRelayTileEntity> getBlockEntityType() {
-		return CATileEntities.REDSTONE_RELAY.get();;
+		return CATileEntities.REDSTONE_RELAY.get();
 	}
 	
 	@Override

@@ -7,7 +7,7 @@ import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.util.ClientMinecraftWrapper;
 import com.simibubi.create.compat.jei.category.animations.AnimatedBlazeBurner;
-import com.simibubi.create.content.contraptions.processing.HeatCondition;
+import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.utility.Lang;
 

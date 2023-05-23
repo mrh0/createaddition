@@ -2,8 +2,6 @@ package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
-import com.simibubi.create.Create;
-import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.FluidEntry;
 
@@ -62,7 +60,7 @@ public class CAFluids {
 			.register();
 		BIOETHANOL = bioethanol.register();
 		
-		REGISTRATE.addToSection(seedOilBucket, AllSections.MATERIALS);
-		REGISTRATE.addToSection(bioethanolBucket, AllSections.MATERIALS);
+		//REGISTRATE.addToSection(seedOilBucket, AllSections.MATERIALS);
+		//REGISTRATE.addToSection(bioethanolBucket, AllSections.MATERIALS);
 	}
 }
