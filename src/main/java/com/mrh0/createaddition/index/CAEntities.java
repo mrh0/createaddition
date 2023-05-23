@@ -16,7 +16,9 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 public class CAEntities {
-	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate();
+	static {
+
+	}
 	
 	
 	/*public static final EntityEntry<OverchargedHammerEntity> OVERCHARGED_HAMMER_ENTITY =
@@ -28,8 +30,8 @@ public class CAEntities {
 			MobCategory group, int range, int updateFrequency, boolean sendVelocity, boolean immuneToFire,
 			NonNullConsumer<Builder<T>> propertyBuilder) {
 		String id = Lang.asId(name);
-		return (CreateEntityBuilder<T, ?>) 
-			REGISTRATE.entity(id, factory, group)
+		return (CreateEntityBuilder<T, ?>)
+				CreateAddition.REGISTRATE.entity(id, factory, group)
 			.properties(b -> b.setTrackingRange(range)
 				.setUpdateInterval(updateFrequency)
 				.setShouldReceiveVelocityUpdates(sendVelocity))

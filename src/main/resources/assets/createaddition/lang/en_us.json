@@ -37,7 +37,7 @@
 	
 	"item.createaddition.copper_spool": "Copper Spool",
 	"item.createaddition.copper_spool.tooltip": "SPOOL",
-	"item.createaddition.copper_spool.tooltip.control1": "R-Clicking two Connectors",
+	"item.createaddition.copper_spool.tooltip.condition1": "R-Clicking two Connectors",
 	"item.createaddition.copper_spool.tooltip.action1": "Will create a wire link between them and return an _Empty Spool_.",
 	
 	"item.createaddition.iron_wire": "Iron Wire",
@@ -49,7 +49,7 @@
 	
 	"item.createaddition.gold_spool": "Gold Spool",
 	"item.createaddition.gold_spool.tooltip": "SPOOL",
-	"item.createaddition.gold_spool.tooltip.control1": "R-Clicking two Connectors",
+	"item.createaddition.gold_spool.tooltip.condition1": "R-Clicking two Connectors",
 	"item.createaddition.gold_spool.tooltip.action1": "Will create a wire link between them and return an _Empty Spool_.",
 	
 	"item.createaddition.gold_wire": "Gold Wire",
@@ -57,7 +57,7 @@
 	
 	"item.createaddition.festive_spool": "Festive Lights Spool",
 	"item.createaddition.festive_spool.tooltip": "SPOOL",
-	"item.createaddition.festive_spool.tooltip.control1": "R-Clicking two Connectors",
+	"item.createaddition.festive_spool.tooltip.condition1": "R-Clicking two Connectors",
 	"item.createaddition.festive_spool.tooltip.action1": "Will create a wire link between them and return an _Empty Spool_.",
 	
 	"item.createaddition.brass_rod": "Brass Rod",
@@ -86,7 +86,7 @@
 	"item.createaddition.spool": "Empty Spool",
 	"item.createaddition.spool.nbt": "Stores connection location.",
 	"item.createaddition.spool.tooltip": "SPOOL",
-	"item.createaddition.spool.tooltip.control1": "R-Clicking two linked Connectors",
+	"item.createaddition.spool.tooltip.condition1": "R-Clicking two linked Connectors",
 	"item.createaddition.spool.tooltip.action1": "Will remove the wire link and return a filled _spool_.",
 	
 	"statusbar.createaddition.wire.linked": "Nodes linked",
@@ -140,21 +140,21 @@
 	"block.createaddition.connector": "Connector",
 	"block.createaddition.connector.tooltip": "CONNECTOR",
 	"block.createaddition.connector.tooltip.summary": "Connects _Forge Energy_ compatible blocks with _wires_ to transfer _FE_.",
-	"block.createaddition.connector.tooltip.control1": "R-click",
+	"block.createaddition.connector.tooltip.condition1": "R-click",
 	"block.createaddition.connector.tooltip.action1": "While holding a _Copper Spool_ or _Gold Spool_ to create a _wire link_ between two _Connectors_.",
-	"block.createaddition.connector.tooltip.control2": "R-click with Wrench",
+	"block.createaddition.connector.tooltip.condition2": "R-click with Wrench",
 	"block.createaddition.connector.tooltip.action2": "To cycle between _Push_, _Pull_, _Passive_, and _None_ modes.",
 	
 	"block.createaddition.connector_copper": "Copper Connector",
 	"block.createaddition.connector_copper.tooltip": "CONNECTOR",
 	"block.createaddition.connector_copper.tooltip.summary": "Connects Forge Energy compatible blocks with _wires_ to transfer _FE_.",
-	"block.createaddition.connector_copper.tooltip.control1": "R-click",
+	"block.createaddition.connector_copper.tooltip.condition1": "R-click",
 	"block.createaddition.connector_copper.tooltip.action1": "While holding a _Copper Spool_ to create a _wire link_ between two _Connectors_.",
 	
 	"block.createaddition.connector_gold": "Gold Connector",
 	"block.createaddition.connector_gold.tooltip": "CONNECTOR",
 	"block.createaddition.connector_gold.tooltip.summary": "Connects Forge Energy compatible blocks with _wires_ to transfer _FE_.",
-	"block.createaddition.connector_gold.tooltip.control1": "R-click",
+	"block.createaddition.connector_gold.tooltip.condition1": "R-click",
 	"block.createaddition.connector_gold.tooltip.action1": "While holding a _Gold Spool_ to create a _wire link_ between two _Connectors_.",
 	
 	"block.createaddition.redstone_relay": "Redstone Relay",

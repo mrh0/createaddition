@@ -16,34 +16,35 @@ import net.minecraft.world.item.Item;
 
 public class CAItems {
 
-	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
-		.creativeModeTab(() -> ModGroup.MAIN);
+	static {
+		CreateAddition.REGISTRATE.creativeModeTab(() -> ModGroup.MAIN);
+	}
 	
 	public static final ItemEntry<Item> CAPACITOR =
-			REGISTRATE.item("capacitor", Item::new)
+			CreateAddition.REGISTRATE.item("capacitor", Item::new)
 			.register();
 	
 	public static final ItemEntry<Item> DIAMOND_GRIT =
-			REGISTRATE.item("diamond_grit", Item::new)
+			CreateAddition.REGISTRATE.item("diamond_grit", Item::new)
 			.register();
 	
-	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER = REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new)
+	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER = CreateAddition.REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new)
 			//.transform(CreateRegistrate.customRenderedItem(() -> SandPaperItemRenderer::new))
 			//.onRegister(s -> TooltipHelper.referTo(s, AllItems.SAND_PAPER))
 			.register();
 	
 	public static final ItemEntry<Item> ZINC_SHEET =
-			REGISTRATE.item("zinc_sheet", Item::new)
+			CreateAddition.REGISTRATE.item("zinc_sheet", Item::new)
 			.tag(forgeItemTag("plates/zinc"), PLATES.tag)
 			.register();
 	
 	public static final ItemEntry<Item> BIOMASS =
-			REGISTRATE.item("biomass", Item::new)
+			CreateAddition.REGISTRATE.item("biomass", Item::new)
 			.properties(p -> p.stacksTo(16))
 			.register();
 	
 	public static final ItemEntry<BiomassPellet> BIOMASS_PELLET =
-			REGISTRATE.item("biomass_pellet", BiomassPellet::new)
+			CreateAddition.REGISTRATE.item("biomass_pellet", BiomassPellet::new)
 			.register();
 	
 	/*public static final ItemEntry<Multimeter> MULTIMETER =
@@ -75,46 +76,46 @@ public class CAItems {
 			.register();*/
 	
 	public static final ItemEntry<WireSpool> SPOOL =
-			REGISTRATE.item("spool", WireSpool::new).register();
+			CreateAddition.REGISTRATE.item("spool", WireSpool::new).register();
 	
 	public static final ItemEntry<WireSpool> COPPER_SPOOL =
-			REGISTRATE.item("copper_spool", WireSpool::new)
+			CreateAddition.REGISTRATE.item("copper_spool", WireSpool::new)
 			.register();
 	
 	public static final ItemEntry<Item> COPPER_WIRE =
-			REGISTRATE.item("copper_wire", Item::new).register();
+			CreateAddition.REGISTRATE.item("copper_wire", Item::new).register();
 	public static final ItemEntry<Item> COPPER_ROD =
-			REGISTRATE.item("copper_rod", Item::new).register();
+			CreateAddition.REGISTRATE.item("copper_rod", Item::new).register();
 
 	//public static final ItemEntry<Item> IRON_SPOOL =
 	//		REGISTRATE.item("iron_spool", Item::new).register();
 	public static final ItemEntry<Item> IRON_WIRE =
-			REGISTRATE.item("iron_wire", Item::new).register();
+			CreateAddition.REGISTRATE.item("iron_wire", Item::new).register();
 	public static final ItemEntry<Item> IRON_ROD =
-			REGISTRATE.item("iron_rod", Item::new).register();
+			CreateAddition.REGISTRATE.item("iron_rod", Item::new).register();
 
 	public static final ItemEntry<WireSpool> GOLD_SPOOL =
-			REGISTRATE.item("gold_spool", WireSpool::new).register();
+			CreateAddition.REGISTRATE.item("gold_spool", WireSpool::new).register();
 	public static final ItemEntry<Item> GOLD_WIRE =
-			REGISTRATE.item("gold_wire", Item::new).register();
+			CreateAddition.REGISTRATE.item("gold_wire", Item::new).register();
 	public static final ItemEntry<Item> GOLD_ROD =
-			REGISTRATE.item("gold_rod", Item::new).register();
+			CreateAddition.REGISTRATE.item("gold_rod", Item::new).register();
 	
 	public static final ItemEntry<Item> BRASS_ROD =
-			REGISTRATE.item("brass_rod", Item::new).register();
+			CreateAddition.REGISTRATE.item("brass_rod", Item::new).register();
 	
 	public static final ItemEntry<WireSpool> FESTIVE_SPOOL =
-			REGISTRATE.item("festive_spool", WireSpool::new).register();
+			CreateAddition.REGISTRATE.item("festive_spool", WireSpool::new).register();
 	
 	public static final ItemEntry<HiddenIngredientItem> CAKE_BASE =
-			REGISTRATE.item("cake_base", HiddenIngredientItem::new)
+			CreateAddition.REGISTRATE.item("cake_base", HiddenIngredientItem::new)
 				.register();
 	public static final ItemEntry<HiddenIngredientItem> CAKE_BASE_BAKED =
-			REGISTRATE.item("cake_base_baked", HiddenIngredientItem::new)
+			CreateAddition.REGISTRATE.item("cake_base_baked", HiddenIngredientItem::new)
 				.register();
 	
 	public static final ItemEntry<Item> STRAW =
-			REGISTRATE.item("straw", Item::new)
+			CreateAddition.REGISTRATE.item("straw", Item::new)
 			.properties(p -> p.stacksTo(16))
 			.register();
 	

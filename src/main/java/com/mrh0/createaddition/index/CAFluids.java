@@ -13,9 +13,10 @@ import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 public class CAFluids {
-	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
-			.creativeModeTab(() -> ModGroup.MAIN);
-	
+	static {
+		CreateAddition.REGISTRATE.creativeModeTab(() -> ModGroup.MAIN);
+	}
+
 	public static FluidEntry<ForgeFlowingFluid.Flowing> SEED_OIL;
 	public static FluidEntry<ForgeFlowingFluid.Flowing> BIOETHANOL;
 	
@@ -31,7 +32,7 @@ public class CAFluids {
 	}
 	
 	public static void register() {
-		var seedOil = REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition","fluid/seed_oil_still"), new ResourceLocation("createaddition","fluid/seed_oil_flow"),
+		var seedOil = CreateAddition.REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition","fluid/seed_oil_still"), new ResourceLocation("createaddition","fluid/seed_oil_flow"),
 				NoColorFluidAttributes::new)//.standardFluid("seed_oil", NoColorFluidAttributes::new)
 				.attributes(b -> b.viscosity(2000)
 						.density(1400))
@@ -46,7 +47,7 @@ public class CAFluids {
 			.register();
 		SEED_OIL = seedOil.register();
 		
-		var bioethanol = REGISTRATE.fluid("bioethanol", new ResourceLocation("createaddition","fluid/bioethanol_still"), new ResourceLocation("createaddition","fluid/bioethanol_flow"),
+		var bioethanol = CreateAddition.REGISTRATE.fluid("bioethanol", new ResourceLocation("createaddition","fluid/bioethanol_still"), new ResourceLocation("createaddition","fluid/bioethanol_flow"),
 				NoColorFluidAttributes::new)
 				.attributes(b -> b.viscosity(2500)
 						.density(1600))
