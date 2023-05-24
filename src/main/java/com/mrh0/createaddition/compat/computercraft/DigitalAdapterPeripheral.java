@@ -168,6 +168,15 @@ public class DigitalAdapterPeripheral implements IPeripheral {
         return (int) mp.getInterpolatedAngle(.5f);
     }
 
+    /*@LuaFunction(mainThread = true)
+    public final int getElevatorFloor(String direction) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return 0;
+        var ep = this.tileEntity.getElevatorPulley(dir);
+        if(ep == null) return 0;
+        return (int) ep.getTargetOffset();
+    }*/
+
     @LuaFunction(mainThread = true)
     public final float getDurationAngle(int deg, int rpm) throws LuaException {
         return ElectricMotorTileEntity.getDurationAngle(deg, 0, rpm) / 20f;

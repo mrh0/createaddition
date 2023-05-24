@@ -4,6 +4,7 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.compat.computercraft.DigitalAdapterPeripheral;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.simibubi.create.content.contraptions.bearing.MechanicalBearingBlockEntity;
+import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyBlockEntity;
 import com.simibubi.create.content.contraptions.piston.MechanicalPistonBlockEntity;
 import com.simibubi.create.content.contraptions.pulley.PulleyBlockEntity;
 import com.simibubi.create.content.fluids.hosePulley.HosePulleyBlockEntity;
@@ -102,6 +103,13 @@ public class DigitalAdapterTileEntity extends BlockEntity {
         BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
         if(be == null) return null;
         if(be instanceof HosePulleyBlockEntity pte) return pte;
+        return null;
+    }
+
+    public ElevatorPulleyBlockEntity getElevatorPulley(Direction dir) {
+        BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
+        if(be == null) return null;
+        if(be instanceof ElevatorPulleyBlockEntity epbe) return epbe;
         return null;
     }
 
