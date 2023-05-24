@@ -37,8 +37,8 @@
 
 	"item.createaddition.copper_spool": "Copper Spool",
 	"item.createaddition.copper_spool.tooltip": "SPOOL",
-	"item.createaddition.copper_spool.tooltip.control1": "R-Clicking two Connectors",
-	"item.createaddition.copper_spool.tooltip.action1": "Will create a wire link between them and return an _Empty Spool_.",
+	"item.createaddition.copper_spool.tooltip.condition1": "R-Clicking two Connectors",
+	"item.createaddition.copper_spool.tooltip.behaviour1": "Will create a wire link between them and return an _Empty Spool_.",
 
 	"item.createaddition.iron_wire": "Iron Wire",
 	"item.createaddition.iron_spool": "Iron Spool",
@@ -49,16 +49,16 @@
 
 	"item.createaddition.gold_spool": "Gold Spool",
 	"item.createaddition.gold_spool.tooltip": "SPOOL",
-	"item.createaddition.gold_spool.tooltip.control1": "R-Clicking two Connectors",
-	"item.createaddition.gold_spool.tooltip.action1": "Will create a wire link between them and return an _Empty Spool_.",
+	"item.createaddition.gold_spool.tooltip.condition1": "R-Clicking two Connectors",
+	"item.createaddition.gold_spool.tooltip.behaviour1": "Will create a wire link between them and return an _Empty Spool_.",
 
 	"item.createaddition.gold_wire": "Gold Wire",
 	"item.createaddition.gold_rod": "Gold Rod",
 
 	"item.createaddition.festive_spool": "Festive Lights Spool",
 	"item.createaddition.festive_spool.tooltip": "SPOOL",
-	"item.createaddition.festive_spool.tooltip.control1": "R-Clicking two Connectors",
-	"item.createaddition.festive_spool.tooltip.action1": "Will create a wire link between them and return an _Empty Spool_.",
+	"item.createaddition.festive_spool.tooltip.condition1": "R-Clicking two Connectors",
+	"item.createaddition.festive_spool.tooltip.behaviour1": "Will create a wire link between them and return an _Empty Spool_.",
 
 	"item.createaddition.brass_rod": "Brass Rod",
 	"item.createaddition.bronze_rod": "Bronze Rod",
@@ -86,8 +86,8 @@
 	"item.createaddition.spool": "Empty Spool",
 	"item.createaddition.spool.nbt": "Stores connection location.",
 	"item.createaddition.spool.tooltip": "SPOOL",
-	"item.createaddition.spool.tooltip.control1": "R-Clicking two linked Connectors",
-	"item.createaddition.spool.tooltip.action1": "Will remove the wire link and return a filled _spool_.",
+	"item.createaddition.spool.tooltip.condition1": "R-Clicking two linked Connectors",
+	"item.createaddition.spool.tooltip.behaviour1": "Will remove the wire link and return a filled _spool_.",
 
 	"statusbar.createaddition.wire.linked": "Nodes linked",
 	"statusbar.createaddition.wire.linked_in": "Wire linked to input",
@@ -118,12 +118,6 @@
 	"block.createaddition.creative_energy.tooltip.summary": "Generates an infinite supply of _FE_.",
 
 	"block.createaddition.rolling_mill": "Rolling Mill",
-	"deprecated.block.createaddition.rolling_mill.tooltip": "ROLLING MILL",
-	"deprecated.block.createaddition.rolling_mill.tooltip.summary": "A kinetic component suitable for _rolling_ inserted _materials_. Can be powered by connecting to the shaft at the sides. Results have to be extracted from the component.",
-	"deprecated.block.createaddition.rolling_mill.tooltip.condition1": "When Powered by Kinetics",
-	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour1": "Starts applying _rolling recipes_ to any items inserted from the side or the top of the block.",
-	"deprecated.block.createaddition.rolling_mill.tooltip.condition2": "When R-Clicked",
-	"deprecated.block.createaddition.rolling_mill.tooltip.behaviour2": "Collects the outputs manually.",
 
 	"block.createaddition.accumulator": "Accumulator",
 	"block.createaddition.accumulator.tooltip": "ACCUMULATOR",
@@ -140,22 +134,22 @@
 	"block.createaddition.connector": "Connector",
 	"block.createaddition.connector.tooltip": "CONNECTOR",
 	"block.createaddition.connector.tooltip.summary": "Connects _Forge Energy_ compatible blocks with _wires_ to transfer _FE_.",
-	"block.createaddition.connector.tooltip.control1": "R-click",
-	"block.createaddition.connector.tooltip.action1": "While holding a _Copper Spool_ or _Gold Spool_ to create a _wire link_ between two _Connectors_.",
-	"block.createaddition.connector.tooltip.control2": "R-click with Wrench",
-	"block.createaddition.connector.tooltip.action2": "To cycle between _Push_, _Pull_, _Passive_, and _None_ modes.",
+	"block.createaddition.connector.tooltip.condition1": "R-click",
+	"block.createaddition.connector.tooltip.behaviour1": "While holding a _Copper Spool_ or _Gold Spool_ to create a _wire link_ between two _Connectors_.",
+	"block.createaddition.connector.tooltip.condition2": "R-click with Wrench",
+	"block.createaddition.connector.tooltip.behaviour2": "To cycle between _Push_, _Pull_, _Passive_, and _None_ modes.",
 
 	"block.createaddition.connector_copper": "Copper Connector",
 	"block.createaddition.connector_copper.tooltip": "CONNECTOR",
 	"block.createaddition.connector_copper.tooltip.summary": "Connects Forge Energy compatible blocks with _wires_ to transfer _FE_.",
-	"block.createaddition.connector_copper.tooltip.control1": "R-click",
-	"block.createaddition.connector_copper.tooltip.action1": "While holding a _Copper Spool_ to create a _wire link_ between two _Connectors_.",
+	"block.createaddition.connector_copper.tooltip.condition1": "R-click",
+	"block.createaddition.connector_copper.tooltip.behaviour1": "While holding a _Copper Spool_ to create a _wire link_ between two _Connectors_.",
 
 	"block.createaddition.connector_gold": "Gold Connector",
 	"block.createaddition.connector_gold.tooltip": "CONNECTOR",
 	"block.createaddition.connector_gold.tooltip.summary": "Connects Forge Energy compatible blocks with _wires_ to transfer _FE_.",
-	"block.createaddition.connector_gold.tooltip.control1": "R-click",
-	"block.createaddition.connector_gold.tooltip.action1": "While holding a _Gold Spool_ to create a _wire link_ between two _Connectors_.",
+	"block.createaddition.connector_gold.tooltip.condition1": "R-click",
+	"block.createaddition.connector_gold.tooltip.behaviour1": "While holding a _Gold Spool_ to create a _wire link_ between two _Connectors_.",
 
 	"block.createaddition.redstone_relay": "Redstone Relay",
 	"block.createaddition.redstone_relay.tooltip": "REDSTONE_RELAY",

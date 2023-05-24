@@ -4,8 +4,8 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.compat.computercraft.PortableEnergyInterfacePeripheral;
 import com.mrh0.createaddition.config.Config;
-import com.simibubi.create.content.contraptions.components.actors.PortableStorageInterfaceTileEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
+import com.simibubi.create.content.contraptions.Contraption;
+import com.simibubi.create.content.contraptions.actors.psi.PortableStorageInterfaceBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -18,7 +18,7 @@ import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 
-public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceTileEntity {
+public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceBlockEntity {
 
 	protected LazyOptional<IEnergyStorage> capability = this.createEmptyHandler();
 	protected LazyOptional<PortableEnergyInterfacePeripheral> peripheral;

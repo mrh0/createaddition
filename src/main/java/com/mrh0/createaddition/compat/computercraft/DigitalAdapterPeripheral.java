@@ -2,8 +2,7 @@ package com.mrh0.createaddition.compat.computercraft;
 
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
-import com.simibubi.create.foundation.config.AllConfigs;
-import com.simibubi.create.foundation.config.CServer;
+import com.simibubi.create.infrastructure.config.AllConfigs;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IPeripheral;
@@ -129,7 +128,7 @@ public class DigitalAdapterPeripheral implements IPeripheral {
 
     @LuaFunction(mainThread = true)
     public final int getKineticTopSpeed() {
-        return AllConfigs.SERVER.kinetics.maxRotationSpeed.get();
+        return AllConfigs.server().kinetics.maxRotationSpeed.get();
     }
 
     // Pulley
@@ -168,6 +167,15 @@ public class DigitalAdapterPeripheral implements IPeripheral {
         if(mp == null) return 0;
         return (int) mp.getInterpolatedAngle(.5f);
     }
+
+    /*@LuaFunction(mainThread = true)
+    public final int getElevatorFloor(String direction) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return 0;
+        var ep = this.tileEntity.getElevatorPulley(dir);
+        if(ep == null) return 0;
+        return (int) ep.getTargetOffset();
+    }*/
 
     @LuaFunction(mainThread = true)
     public final float getDurationAngle(int deg, int rpm) throws LuaException {

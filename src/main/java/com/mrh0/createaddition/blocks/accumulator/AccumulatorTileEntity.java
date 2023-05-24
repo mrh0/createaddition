@@ -14,8 +14,8 @@ import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.util.IComparatorOverride;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -322,7 +322,8 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	private void networkTick() {
 		if(awakeNetwork(level)) {
 			//EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, 0);//EnergyNetwork.buildNetwork(world, this);
-			causeBlockUpdate();
+			//causeBlockUpdate();
+			notifyUpdate();
 		}
 		if(networkOut == null) {
 			//System.out.println("WARN!");
@@ -425,6 +426,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
 		if(isNetworkValid(0))
 			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
-		causeBlockUpdate();
+		//causeBlockUpdate();
+		notifyUpdate();
 	}
 }

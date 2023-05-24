@@ -1,9 +1,8 @@
 package com.mrh0.createaddition.blocks.portable_energy_interface;
 
 import com.mrh0.createaddition.config.Config;
-import com.mrh0.createaddition.debug.CADebugger;
-import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
-import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
+import com.simibubi.create.content.contraptions.Contraption;
+import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -36,7 +35,7 @@ public class PortableEnergyManager {
 			holder = new EnergyStorageHolder();
 			CONTRAPTIONS.put(contraption.entity.getUUID(), holder);
 		}
-		holder.addEnergySource(context.tileData, context.localPos);
+		holder.addEnergySource(context.blockEntityData, context.localPos);
 	}
 
 	public static void untrack(MovementContext context) {

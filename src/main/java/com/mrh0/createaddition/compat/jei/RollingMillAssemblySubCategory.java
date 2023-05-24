@@ -2,7 +2,7 @@ package com.mrh0.createaddition.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.compat.jei.category.sequencedAssembly.SequencedAssemblySubCategory;
-import com.simibubi.create.content.contraptions.itemAssembly.SequencedRecipe;
+import com.simibubi.create.content.processing.sequenced.SequencedRecipe;
 
 public class RollingMillAssemblySubCategory extends SequencedAssemblySubCategory {
 

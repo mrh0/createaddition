@@ -3,13 +3,14 @@ package com.mrh0.createaddition.blocks.digital_adapter;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.compat.computercraft.DigitalAdapterPeripheral;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
-import com.simibubi.create.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonTileEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.pulley.PulleyTileEntity;
-import com.simibubi.create.content.contraptions.fluids.actors.HosePulleyTileEntity;
-import com.simibubi.create.content.contraptions.relays.advanced.SpeedControllerTileEntity;
-import com.simibubi.create.content.contraptions.relays.gauge.SpeedGaugeTileEntity;
-import com.simibubi.create.content.contraptions.relays.gauge.StressGaugeTileEntity;
+import com.simibubi.create.content.contraptions.bearing.MechanicalBearingBlockEntity;
+import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyBlockEntity;
+import com.simibubi.create.content.contraptions.piston.MechanicalPistonBlockEntity;
+import com.simibubi.create.content.contraptions.pulley.PulleyBlockEntity;
+import com.simibubi.create.content.fluids.hosePulley.HosePulleyBlockEntity;
+import com.simibubi.create.content.kinetics.gauge.SpeedGaugeBlockEntity;
+import com.simibubi.create.content.kinetics.gauge.StressGaugeBlockEntity;
+import com.simibubi.create.content.kinetics.speedController.SpeedControllerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -84,64 +85,71 @@ public class DigitalAdapterTileEntity extends BlockEntity {
         return super.getCapability(cap, side);
     }
 
-    public SpeedControllerTileEntity getSpeedController(Direction dir) {
+    public SpeedControllerBlockEntity getSpeedController(Direction dir) {
         BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
         if(be == null) return null;
-        if(be instanceof SpeedControllerTileEntity scte) return scte;
+        if(be instanceof SpeedControllerBlockEntity scte) return scte;
         return null;
     }
 
-    public PulleyTileEntity getRopePulley(Direction dir) {
+    public PulleyBlockEntity getRopePulley(Direction dir) {
         BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
         if(be == null) return null;
-        if(be instanceof PulleyTileEntity pte) return pte;
+        if(be instanceof PulleyBlockEntity pte) return pte;
         return null;
     }
 
-    public HosePulleyTileEntity getHosePulley(Direction dir) {
+    public HosePulleyBlockEntity getHosePulley(Direction dir) {
         BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
         if(be == null) return null;
-        if(be instanceof HosePulleyTileEntity pte) return pte;
+        if(be instanceof HosePulleyBlockEntity pte) return pte;
         return null;
     }
 
-    public MechanicalPistonTileEntity getMechanicalPiston(Direction dir) {
+    public ElevatorPulleyBlockEntity getElevatorPulley(Direction dir) {
         BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
         if(be == null) return null;
-        if(be instanceof MechanicalPistonTileEntity mpte) return mpte;
+        if(be instanceof ElevatorPulleyBlockEntity epbe) return epbe;
         return null;
     }
 
-    public MechanicalBearingTileEntity getMechanicalBearing(Direction dir) {
+    public MechanicalPistonBlockEntity getMechanicalPiston(Direction dir) {
         BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
         if(be == null) return null;
-        if(be instanceof MechanicalBearingTileEntity mpte) return mpte;
+        if(be instanceof MechanicalPistonBlockEntity mpte) return mpte;
         return null;
     }
 
-    public StressGaugeTileEntity getStressGauge(Direction dir) {
+    public MechanicalBearingBlockEntity getMechanicalBearing(Direction dir) {
         BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
         if(be == null) return null;
-        if(be instanceof StressGaugeTileEntity sgte) return sgte;
+        if(be instanceof MechanicalBearingBlockEntity mpte) return mpte;
         return null;
     }
 
-    public SpeedGaugeTileEntity getSpeedGauge(Direction dir) {
+    public StressGaugeBlockEntity getStressGauge(Direction dir) {
         BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
         if(be == null) return null;
-        if(be instanceof SpeedGaugeTileEntity sgte) return sgte;
+        if(be instanceof StressGaugeBlockEntity sgte) return sgte;
+        return null;
+    }
+
+    public SpeedGaugeBlockEntity getSpeedGauge(Direction dir) {
+        BlockEntity be = this.level.getBlockEntity(getBlockPos().relative(dir));
+        if(be == null) return null;
+        if(be instanceof SpeedGaugeBlockEntity sgte) return sgte;
         return null;
     }
 
     public void setTargetSpeed(Direction dir, int speed) {
-        SpeedControllerTileEntity scte = getSpeedController(dir);
+        SpeedControllerBlockEntity scte = getSpeedController(dir);
         if(scte == null) return;
         ISpeedControllerAdapter sts = (ISpeedControllerAdapter)((Object)scte);
         sts.setTargetSpeed(speed);
     }
 
     public int getTargetSpeed(Direction dir) {
-        SpeedControllerTileEntity scte = getSpeedController(dir);
+        SpeedControllerBlockEntity scte = getSpeedController(dir);
         if(scte == null) return 0;
         ISpeedControllerAdapter sts = (ISpeedControllerAdapter)((Object)scte);
         return sts.getTargetSpeed();

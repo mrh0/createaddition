@@ -1,6 +1,13 @@
 package com.mrh0.createaddition;
 
 import com.mrh0.createaddition.trains.schedule.CASchedule;
+import com.simibubi.create.content.fluids.tank.BoilerHeaters;
+import com.simibubi.create.content.kinetics.BlockStressValues;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.KineticStats;
+import com.simibubi.create.foundation.item.TooltipHelper;
+import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.CommandSourceStack;
@@ -43,12 +50,9 @@ import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
-import com.simibubi.create.content.contraptions.fluids.tank.BoilerHeaters;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
-import com.simibubi.create.foundation.block.BlockStressValues;
-import com.simibubi.create.foundation.config.AllConfigs;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import com.simibubi.create.foundation.item.TooltipModifier;
 
 @Mod(CreateAddition.MODID)
 public class CreateAddition {
@@ -60,7 +64,7 @@ public class CreateAddition {
     public static boolean CC_ACTIVE = false;
     public static boolean AE2_ACTIVE = false;
 
-    private static final NonNullSupplier<CreateRegistrate> registrate = CreateRegistrate.lazy(CreateAddition.MODID);
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(CreateAddition.MODID);
 
     private static final String PROTOCOL = "1";
 	public static final SimpleChannel Network = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(MODID, "main"))
@@ -68,6 +72,13 @@ public class CreateAddition {
             .serverAcceptedVersions(PROTOCOL::equals)
             .networkProtocolVersion(() -> PROTOCOL)
             .simpleChannel();
+
+    static {
+        REGISTRATE.setTooltipModifierFactory(item ->
+            new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
+                    .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
+        );
+    }
 
     public CreateAddition() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -86,7 +97,7 @@ public class CreateAddition {
         AE2_ACTIVE = ModList.get().isLoaded("ae2");
 
         new ModGroup("main");
-
+        REGISTRATE.registerEventListeners(eventBus);
         CABlocks.register();
         CATileEntities.register();
         CAItems.register();
@@ -99,16 +110,16 @@ public class CreateAddition {
 
     private void setup(final FMLCommonSetupEvent event) {
     	CAPotatoCannonProjectiles.register();
-    	BlockStressValues.registerProvider(MODID, AllConfigs.SERVER.kinetics.stressValues);
+    	BlockStressValues.registerProvider(MODID, AllConfigs.server().kinetics.stressValues);
     	BoilerHeaters.registerHeater(CABlocks.LIQUID_BLAZE_BURNER.get(), (level, pos, state) -> {
-    		HeatLevel value = state.getValue(LiquidBlazeBurnerBlock.HEAT_LEVEL);
-			if (value == HeatLevel.NONE) {
+    		BlazeBurnerBlock.HeatLevel value = state.getValue(LiquidBlazeBurnerBlock.HEAT_LEVEL);
+			if (value == BlazeBurnerBlock.HeatLevel.NONE) {
 				return -1;
 			}
-			if (value == HeatLevel.SEETHING) {
+			if (value == BlazeBurnerBlock.HeatLevel.SEETHING) {
 				return 2;
 			}
-			if (value.isAtLeast(HeatLevel.FADING)) {
+			if (value.isAtLeast(BlazeBurnerBlock.HeatLevel.FADING)) {
 				return 1;
 			}
 			return 0;
@@ -139,9 +150,9 @@ public class CreateAddition {
     	CCApiCommand.register(dispather);
     }
 
-    public static CreateRegistrate registrate() {
-		return registrate.get();
-	}
+    public static void onRegisterEffectEvent(Register<MobEffect> event) {
+    	CAEffects.register(event.getRegistry());
+    }
 
     public static ResourceLocation asResource(String path) {
         return new ResourceLocation(MODID, path);

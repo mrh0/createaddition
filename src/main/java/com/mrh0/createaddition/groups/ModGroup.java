@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 
 
 public class ModGroup extends CreativeModeTab {
-	public static ModGroup MAIN;;
+	public static ModGroup MAIN;
 	
 	public ModGroup(String name) {
 		super(CreateAddition.MODID+":"+name);

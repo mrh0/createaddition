@@ -9,20 +9,18 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.Selection;
-import com.simibubi.create.foundation.ponder.element.EntityElement;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.utility.Pointing;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeverBlock;
@@ -481,7 +479,7 @@ public class PonderScenes {
 		Selection both = util.select.fromTo(2, 2, 2, 4, 2, 2);
 		Class<PortableEnergyInterfaceTileEntity> peiClass = PortableEnergyInterfaceTileEntity.class;
 
-		scene.world.modifyTileNBT(both, peiClass, nbt -> {
+		scene.world.modifyBlockEntityNBT(both, peiClass, nbt -> {
 			nbt.putFloat("Distance", 1);
 			nbt.putFloat("Timer", 40);
 		});
@@ -511,7 +509,7 @@ public class PonderScenes {
 			.placeNearTarget()
 			.pointAt(util.vector.centerOf(pei2))
 			.text("After no items have been exchanged for a while, the contraption will continue on its way");
-		scene.world.modifyTileNBT(both, peiClass, nbt -> nbt.putFloat("Timer", 9));
+		scene.world.modifyBlockEntityNBT(both, peiClass, nbt -> nbt.putFloat("Timer", 9));
 
 		scene.idle(15);
 		scene.world.rotateBearing(bearing, 270, 120);
@@ -526,7 +524,7 @@ public class PonderScenes {
 
 		Class<PortableEnergyInterfaceTileEntity> peiClass = PortableEnergyInterfaceTileEntity.class;
 		Selection peis = util.select.fromTo(1, 1, 3, 1, 3, 3);
-		scene.world.modifyTileNBT(peis, peiClass, nbt -> {
+		scene.world.modifyBlockEntityNBT(peis, peiClass, nbt -> {
 			nbt.putFloat("Distance", 1);
 			nbt.putFloat("Timer", 40);
 		});
@@ -541,7 +539,7 @@ public class PonderScenes {
 		BlockPos bearing = util.grid.at(3, 1, 3);
 		scene.world.configureCenterOfRotation(contraption, util.vector.topOf(bearing));
 		scene.idle(20);
-		scene.world.modifyTileNBT(peis, peiClass, nbt -> nbt.putFloat("Timer", 9));
+		scene.world.modifyBlockEntityNBT(peis, peiClass, nbt -> nbt.putFloat("Timer", 9));
 		scene.idle(20);
 		scene.world.rotateBearing(bearing, 360 * 3 + 270, 240 + 60);
 		scene.world.rotateSection(contraption, 0, 360 * 3 + 270, 0, 240 + 60);

@@ -1,8 +1,8 @@
 package com.mrh0.createaddition.blocks.creative_energy;
 
 import com.mrh0.createaddition.energy.CreativeEnergyStorage;
-import com.simibubi.create.content.logistics.block.inventories.CrateTileEntity;
 
+import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class CreativeEnergyTileEntity extends CrateTileEntity {
+public class CreativeEnergyTileEntity extends CrateBlockEntity {
 
 	protected final CreativeEnergyStorage energy;
 	private LazyOptional<IEnergyStorage> lazyEnergy;

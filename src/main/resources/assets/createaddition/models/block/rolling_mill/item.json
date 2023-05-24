@@ -1,10 +1,10 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "create:block/andesite_casing_very_short",
+		"0": "createaddition:block/rolling_mill/andesite_casing_short",
 		"1": "create:block/andesite_casing",
 		"2": "create:block/fan_side",
-		"particle": "create:block/andesite_casing_very_short",
+		"particle": "createaddition:block/rolling_mill/andesite_casing_short",
 		"1_0": "create:block/axis",
 		"1_1": "create:block/axis_top"
 	},

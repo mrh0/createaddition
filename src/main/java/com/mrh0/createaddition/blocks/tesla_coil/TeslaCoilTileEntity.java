@@ -10,20 +10,15 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
 
-import net.minecraft.client.resources.sounds.Sound;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
+import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -71,7 +66,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	public BeltProcessingBehaviour processingBehaviour;
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
 		super.addBehaviours(behaviours);
 		processingBehaviour =
 			new BeltProcessingBehaviour(this).whenItemEnters((s, i) -> TeslaCoilBeltCallbacks.onItemReceived(s, i, this))
@@ -99,8 +94,8 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		return (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored();
 	}
 
-	protected ProcessingResult onCharge(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		ProcessingResult res = chargeCompundAndStack(transported, handler);
+	protected BeltProcessingBehaviour.ProcessingResult onCharge(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+		BeltProcessingBehaviour.ProcessingResult res = chargeCompundAndStack(transported, handler);
 		return res;
 	}
 
@@ -159,20 +154,20 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		return getBlockState().getValue(TeslaCoilBlock.POWERED);
 	}
 
-	protected ProcessingResult chargeCompundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+	protected BeltProcessingBehaviour.ProcessingResult chargeCompundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 
 		ItemStack stack = transported.stack;
 		if(stack == null)
-			return ProcessingResult.PASS;
+			return BeltProcessingBehaviour.ProcessingResult.PASS;
 		if(chargeStack(stack, transported, handler)) {
 			poweredTimer = 10;
-			return ProcessingResult.HOLD;
+			return BeltProcessingBehaviour.ProcessingResult.HOLD;
 		}
 		else if(chargeRecipe(stack, transported, handler)) {
 			poweredTimer = 10;
-			return ProcessingResult.HOLD;
+			return BeltProcessingBehaviour.ProcessingResult.HOLD;
 		}
-		return ProcessingResult.PASS;
+		return BeltProcessingBehaviour.ProcessingResult.PASS;
 	}
 
 	protected boolean chargeStack(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
@@ -204,7 +199,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 				remainingStack.stack.shrink(1);
 				List<TransportedItemStack> outList = new ArrayList<>();
 				outList.add(result);
-				handler.handleProcessingOnItem(transported, TransportedResult.convertToAndLeaveHeld(outList, remainingStack));
+				handler.handleProcessingOnItem(transported, TransportedItemStackHandlerBehaviour.TransportedResult.convertToAndLeaveHeld(outList, remainingStack));
 				chargeAccumulator = 0;
 			}
 			return true;

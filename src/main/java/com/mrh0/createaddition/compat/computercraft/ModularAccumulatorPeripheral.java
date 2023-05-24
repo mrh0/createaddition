@@ -35,20 +35,20 @@ public class ModularAccumulatorPeripheral implements IPeripheral {
 
     @LuaFunction(mainThread = true)
     public final int getEnergy() {
-        if(this.tileEntity.getControllerTE() == null) return 0;
-        return this.tileEntity.getControllerTE().getEnergy().getEnergyStored();
+        if(this.tileEntity.getControllerBE() == null) return 0;
+        return this.tileEntity.getControllerBE().getEnergy().getEnergyStored();
     }
 
     @LuaFunction(mainThread = true)
     public final int getCapacity() {
-        if(this.tileEntity.getControllerTE() == null) return 0;
-        return this.tileEntity.getControllerTE().getEnergy().getMaxEnergyStored();
+        if(this.tileEntity.getControllerBE() == null) return 0;
+        return this.tileEntity.getControllerBE().getEnergy().getMaxEnergyStored();
     }
 
     @LuaFunction(mainThread = true)
     public final float getPercent() {
-        if(this.tileEntity.getControllerTE() == null) return 0;
-        return this.tileEntity.getControllerTE().getPercent();
+        if(this.tileEntity.getControllerBE() == null) return 0;
+        return this.tileEntity.getControllerBE().getPercent();
     }
 
     @LuaFunction(mainThread = true)

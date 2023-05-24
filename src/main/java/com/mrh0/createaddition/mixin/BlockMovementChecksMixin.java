@@ -2,7 +2,7 @@ package com.mrh0.createaddition.mixin;
 
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlock;
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
-import com.simibubi.create.content.contraptions.components.structureMovement.BlockMovementChecks;
+import com.simibubi.create.content.contraptions.BlockMovementChecks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
