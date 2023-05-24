@@ -150,10 +150,6 @@ public class CreateAddition {
     	CCApiCommand.register(dispather);
     }
 
-    public static void onRegisterEffectEvent(Register<MobEffect> event) {
-    	CAEffects.register(event.getRegistry());
-    }
-
     public static ResourceLocation asResource(String path) {
         return new ResourceLocation(MODID, path);
     }

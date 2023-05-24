@@ -2,6 +2,7 @@ package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
+import com.simibubi.create.AllFluids;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.builders.FluidBuilder;
 import com.tterrag.registrate.util.entry.FluidEntry;
@@ -52,7 +53,7 @@ public class CAFluids {
 	public static void register() {
 		var seedOil = CreateAddition.REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition","fluid/seed_oil_still"), new ResourceLocation("createaddition","fluid/seed_oil_flow"),
 				NoColorFluidAttributes::new)//.standardFluid("seed_oil", NoColorFluidAttributes::new)
-				.attributes(b -> b.viscosity(2000)
+				.properties(b -> b.viscosity(2000)
 						.density(1400))
 				.fluidProperties(p -> p.levelDecreasePerBlock(2)
 						.tickRate(15)

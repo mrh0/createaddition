@@ -3,7 +3,6 @@ package com.mrh0.createaddition.recipe.liquid_burning;
 import com.google.gson.JsonObject;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.CARecipeSerializer;
-import com.simibubi.create.content.contraptions.processing.HeatCondition;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import net.minecraft.network.FriendlyByteBuf;
