@@ -123,7 +123,7 @@
 	"block.createaddition.accumulator.tooltip": "ACCUMULATOR",
 	"block.createaddition.accumulator.tooltip.summary": "_[DEPRECATED]_ Accumulates electric charge.",
 	"block.createaddition.accumulator.tooltip.condition1": "Pull",
-	"block.createaddition.accumulator.tooltip.behaviour1": "Provides _FE_ to _wires_ connected to the _connector_ marked with a upwards arrow.",
+	"block.createaddition.accumulator.tooltip.behaviour1": "Provides _FE_ to _wires_ connected to the _connector_ marked with an upwards arrow.",
 	"block.createaddition.accumulator.tooltip.condition2": "Push",
 	"block.createaddition.accumulator.tooltip.behaviour2": "Accepts _FE_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
 	
@@ -176,6 +176,8 @@
 	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
 	
 	"block.createaddition.tesla_coil": "Tesla Coil",
+
+	"block.createaddition.liquid_blaze_burner": "Blaze Burner with Straw",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
 	
