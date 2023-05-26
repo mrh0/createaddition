@@ -56,7 +56,7 @@ public class RollingMillInstance extends KineticBlockEntityInstance<RollingMillT
     }
 
     protected BlockState getRenderedBlockState() {
-        return AllBlocks.SHAFT.getDefaultState().setValue(ShaftBlock.AXIS, Direction.Axis.Z);
+        return AllBlocks.SHAFT.getDefaultState().setValue(ShaftBlock.AXIS, blockState.getValue(RollingMillBlock.HORIZONTAL_FACING).getAxis());
     }
 
     protected Instancer<RotatingData> getModel() {
