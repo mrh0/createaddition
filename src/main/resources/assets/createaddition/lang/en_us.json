@@ -123,7 +123,7 @@
 	"block.createaddition.accumulator.tooltip": "ACCUMULATOR",
 	"block.createaddition.accumulator.tooltip.summary": "_[DEPRECATED]_ Accumulates electric charge.",
 	"block.createaddition.accumulator.tooltip.condition1": "Pull",
-	"block.createaddition.accumulator.tooltip.behaviour1": "Provides _FE_ to _wires_ connected to the _connector_ marked with a upwards arrow.",
+	"block.createaddition.accumulator.tooltip.behaviour1": "Provides _FE_ to _wires_ connected to the _connector_ marked with an upwards arrow.",
 	"block.createaddition.accumulator.tooltip.condition2": "Push",
 	"block.createaddition.accumulator.tooltip.behaviour2": "Accepts _FE_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
 
@@ -161,7 +161,7 @@
 
 	"block.createaddition.digital_adapter": "Digital Adapter",
 	"block.createaddition.digital_adapter.tooltip": "DIGITAL_ADAPTER",
-	"block.createaddition.digital_adapter.tooltip.summary": "A _Computercraft Peripheral_ which allows computers to interface with _Display Boards_, _Speedometers_, _Stressometers_, _Rope Pulley_, _Hose Pulley_, _Mechanical Piston_, _Mechanical Bearing_, and _Rotational Speed Controllers_.",
+	"block.createaddition.digital_adapter.tooltip.summary": "A _Computercraft Peripheral_ which allows computers to interface with _Display Boards_, _Speedometers_, _Stressometers_, _Rope Pulley_, _Hose Pulley_, _Elevator Pulley_, _Mechanical Piston_, _Mechanical Bearing_, and _Rotational Speed Controllers_.",
 
 	"block.createaddition.chocolate_cake": "Chocolate Cake",
 	"block.createaddition.honey_cake": "Honey Cake",
@@ -176,6 +176,8 @@
 	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
 
 	"block.createaddition.tesla_coil": "Tesla Coil",
+
+	"block.createaddition.liquid_blaze_burner": "Blaze Burner with Straw",
 
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
 
