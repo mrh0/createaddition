@@ -2,12 +2,21 @@ package com.mrh0.createaddition.compat.computercraft;
 
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.elevator.ElevatorColumn;
+import com.simibubi.create.content.contraptions.elevator.ElevatorContactBlock;
+import com.simibubi.create.content.contraptions.elevator.ElevatorContraption;
+import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyBlockEntity;
+import com.simibubi.create.foundation.utility.IntAttached;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IPeripheral;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -139,11 +148,15 @@ public class DigitalAdapterPeripheral implements IPeripheral {
         if(dir == null) return 0;
         var rp = this.tileEntity.getRopePulley(dir);
         var hp = this.tileEntity.getHosePulley(dir);
+        var ep = this.tileEntity.getElevatorPulley(dir);
         if(rp != null) {
             return (int) rp.getInterpolatedOffset(.5f);
         }
         else if(hp != null) {
             return (int) hp.getInterpolatedOffset(.5f);
+        }
+        else if(ep != null) {
+            return (int) ep.getInterpolatedOffset(.5f);
         }
         else {
             return 0;
@@ -168,14 +181,86 @@ public class DigitalAdapterPeripheral implements IPeripheral {
         return (int) mp.getInterpolatedAngle(.5f);
     }
 
-    /*@LuaFunction(mainThread = true)
+    public final @Nullable ElevatorContraption getElevatorContraption(ElevatorPulleyBlockEntity ep) {
+        if(ep == null) return null;
+        if(ep.movedContraption == null) return null;
+        if(ep.movedContraption.getContraption() == null) return null;
+        if(!(ep.movedContraption.getContraption() instanceof ElevatorContraption ec)) return null;
+        return ec;
+    }
+
+    @LuaFunction(mainThread = true)
     public final int getElevatorFloor(String direction) {
         Direction dir = Helpers.nameToDir(direction);
         if(dir == null) return 0;
         var ep = this.tileEntity.getElevatorPulley(dir);
         if(ep == null) return 0;
-        return (int) ep.getTargetOffset();
-    }*/
+        var ec = getElevatorContraption(ep);
+        if(ec == null) return 0;
+
+        for(int i = 0; i < ec.namesList.size(); ++i) {
+            if ((int)((IntAttached)ec.namesList.get(i)).getFirst() == ec.getCurrentTargetY(ep.getLevel())) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    @LuaFunction(mainThread = true)
+    public final int getElevatorFloors(String direction) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return 0;
+        var ep = this.tileEntity.getElevatorPulley(dir);
+        if(ep == null) return 0;
+        var ec = getElevatorContraption(ep);
+        if(ec == null) return 0;
+        return ec.namesList.size();
+    }
+
+    @LuaFunction(mainThread = true)
+    public final String getElevatorFloorName(String direction, int index) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return String.valueOf(index);
+        var ep = this.tileEntity.getElevatorPulley(dir);
+        if(ep == null) return String.valueOf(index);
+        var ec = getElevatorContraption(ep);
+        if(ec == null) return String.valueOf(index);
+
+        if(index >= ec.namesList.size()) return String.valueOf(index);
+        if(index < 0) return String.valueOf(index);
+        return ec.namesList.get(index).getSecond().getFirst();
+    }
+
+    @LuaFunction(mainThread = true)
+    public final int gotoElevatorFloor(String direction, int index) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return 0;
+        var ep = this.tileEntity.getElevatorPulley(dir);
+        if(ep == null) return 0;
+        var ec = getElevatorContraption(ep);
+        if(ec == null) return 0;
+
+        if(index >= ec.namesList.size()) return 0;
+        if(index < 0) return 0;
+
+        var level = this.tileEntity.getLevel();
+
+        int oldTargetY = ec.getCurrentTargetY(level);
+        int targetY = ec.namesList.get(index).getFirst();
+
+        ElevatorColumn elevatorColumn = ElevatorColumn.get(level, ec.getGlobalColumn());
+        if (!ec.isTargetUnreachable(targetY)) {
+            BlockPos pos = elevatorColumn.contactAt(targetY);
+            BlockState blockState = level.getBlockState(pos);
+            Block block = blockState.getBlock();
+            if (block instanceof ElevatorContactBlock) {
+                ElevatorContactBlock ecb = (ElevatorContactBlock)block;
+                ecb.callToContactAndUpdate(elevatorColumn, blockState, level, pos, false);
+            }
+        }
+
+        return targetY - oldTargetY;
+    }
 
     @LuaFunction(mainThread = true)
     public final float getDurationAngle(int deg, int rpm) throws LuaException {

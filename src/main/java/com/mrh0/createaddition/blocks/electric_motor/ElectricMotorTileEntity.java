@@ -12,6 +12,7 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
+import com.simibubi.create.content.kinetics.motor.KineticScrollValueBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
@@ -69,7 +70,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity {
 		CenteredSideValueBoxTransform slot =
 			new CenteredSideValueBoxTransform((motor, side) -> motor.getValue(ElectricMotorBlock.FACING) == side.getOpposite());
 
-		generatedSpeed = new ScrollValueBehaviour(Lang.translateDirect("generic.speed"), this, slot);
+		generatedSpeed = new KineticScrollValueBehaviour(Lang.translateDirect("generic.speed"), this, slot);
 		generatedSpeed.between(-RPM_RANGE, RPM_RANGE);
 		generatedSpeed.value = DEFAULT_SPEED;
 		//generatedSpeed.withUnit(i -> Lang.translateDirect("generic.unit.rpm"));
