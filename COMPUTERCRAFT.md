@@ -11,10 +11,12 @@ Supported Blocks:
   - [Rotational Speed Controller](#rotational-speed-controller)
   - [Stressometer](#stressometer)
   - [Speedometer](#speedometer)
-  - [Rope and Hoes Pulley](#rope-and-hoes-pulley)
+  - [Rope, Hose, and Elevator Pulley](#pulleys)
+  - [Elevator Pulley](#elevator-pulley)
   - [Mechanical Piston](#mechanical-piston)
   - [Mechanical Bearing](#mechanical-bearing)
   - [Display Link](#display-link)
+  - [Other](#other)
 
 ## Other Languages
  [简体中文 (Simplified Chinese)](COMPUTERCRAFT_zh-CN.md)
@@ -216,10 +218,27 @@ The function `getKineticTopSpeed()` will get the top speed as set by Create.
 ```lua
 local topSpeed = da.getKineticTopSpeed()
 ```
-### Rope and Hoes Pulley
-The function `getPulleyDistance(side)` will get the extended distance of a Rope or Hose -Pulley attached to the side of a Digital Adapter.
+### Pulleys
+The function `getPulleyDistance(side)` will get the extended distance of a Rope, Hose, or Elevator -Pulley attached to the side of a Digital Adapter.
 ```lua
 local blocks = da.getPulleyDistance("south")
+```
+### Elevator Pulley
+The function `getElevatorFloor(side)` will get the current floor index of an Elevator Pulley attached to the side of a Digital Adapter.
+```lua
+local floor = da.getElevatorFloor("south")
+```
+The function `getElevatorFloors(side)` will get the number of floors of an Elevator Pulley attached to the side of a Digital Adapter.
+```lua
+local floorCount = da.getElevatorFloors("south")
+```
+The function `getElevatorFloorName(side, index)` will get floor name at floor index of a Elevator Pulley attached to the side of a Digital Adapter.
+```lua
+local floorName = da.getElevatorFloorName("south", 0)
+```
+The function `gotoElevatorFloor(side, index)` will trigger a Elevator Pulley attached to the side of a Digital Adapter to move to the given floor index and returns the delta-y to move.
+```lua
+local floorName = da.gotoElevatorFloor("south", 0)
 ```
 ### Mechanical Piston
 The function `getPistonDistance(side)` will get the extended distance of a Mechanical Piston attached to the side of a Digital Adapter.
@@ -251,3 +270,8 @@ da.print("Text on first line again")
 ```
 The function `getMaxLines()` will return the max number of lines that can be displayable using the Digital Adapter (will always return 16).
 
+### Other
+
+The function `getDurationDistance(blocks, rpm)` will return the time needed to push a Mechanical Piston, Pulley or Gantry a number of blocks at the given rpm.
+
+The function `getDurationAngle(degrees, rpm)` will return the time needed to rotate a Mechanical Bearing by a number of degrees at the given rpm.
