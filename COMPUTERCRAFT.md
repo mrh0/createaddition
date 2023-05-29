@@ -12,6 +12,7 @@ Supported Blocks:
   - [Stressometer](#stressometer)
   - [Speedometer](#speedometer)
   - [Rope, Hose, and Elevator Pulley](#pulleys)
+  - [Elevator Pulley](#elevator-pulley)
   - [Mechanical Piston](#mechanical-piston)
   - [Mechanical Bearing](#mechanical-bearing)
   - [Display Link](#display-link)
