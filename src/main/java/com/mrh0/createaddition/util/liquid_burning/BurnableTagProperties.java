@@ -5,11 +5,16 @@ import net.minecraft.resources.ResourceLocation;
 
 
 public class BurnableTagProperties {
+    private final boolean superheated;
     private final int time;
     private final ResourceLocation tagResource;
 
-    public BurnableTagProperties(int timePerBucket, boolean crashOnLow) {
-        this.tagResource = new ResourceLocation(CreateAddition.MODID ,"burnable_fuel_" + timePerBucket);
+    public BurnableTagProperties(boolean superheated, int timePerBucket, boolean crashOnLow) {
+        if (superheated) {
+            this.tagResource = new ResourceLocation(CreateAddition.MODID, "burnable_fuel_superheated_" + timePerBucket);
+        } else {
+            this.tagResource = new ResourceLocation(CreateAddition.MODID, "burnable_fuel_" + timePerBucket);
+        }
         if (timePerBucket < 200 && crashOnLow) {
             throw new RuntimeException("Burning Time cannot be less then 200! Change this to stop this crash " +
                     "\n[Conflicting Tag ---> " + tagResource + "]\n");
@@ -22,12 +27,17 @@ public class BurnableTagProperties {
                     "\n[Conflicting Tag ---> " + tagResource + "]\n");
         }
 
+        this.superheated = superheated;
         this.time = timePerBucket;
     }
 
     @SuppressWarnings("unused")
-    public BurnableTagProperties(int timePerBucket) {
-        this(timePerBucket, true);
+    public BurnableTagProperties(boolean superheated, int timePerBucket) {
+        this(superheated, timePerBucket, true);
+    }
+
+    public boolean getSuperheated() {
+        return this.superheated;
     }
 
     public int getTime() {

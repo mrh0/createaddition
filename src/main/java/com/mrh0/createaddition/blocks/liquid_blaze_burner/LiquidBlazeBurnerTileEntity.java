@@ -106,6 +106,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 				setBurnTag(
 					tagKey,
 					tagProperties.asResource(),
+					tagProperties.getSuperheated(),
 					tagProperties.getTime() / 100,
 					tagProperties.getDropletAmount() / 100
 				)
@@ -114,7 +115,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 		if (remainingBurnTime > 0)
 			remainingBurnTime--;
 
-		if (activeFuel == FuelType.NORMAL)
+		if (activeFuel == FuelType.NORMAL || activeFuel == FuelType.SPECIAL)
 			updateBlockState();
 
 		if (remainingBurnTime > 0)
@@ -128,7 +129,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 
 		updateBlockState();
 	}
-	private boolean setBurnTag(TagKey<Fluid> tagKey, ResourceLocation burnableTagLocation, int time, int fluidDropletAmount) {
+	private boolean setBurnTag(TagKey<Fluid> tagKey, ResourceLocation burnableTagLocation, boolean superheated, int time, int fluidDropletAmount) {
 		if (
 						tagKey.location().equals(burnableTagLocation) &&
 						!Transaction.isOpen() &&
@@ -139,7 +140,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			fluidTank.extract(fluidTank.variant, fluidDropletAmount, transaction);
 			transaction.commit();
 			remainingBurnTime = remainingBurnTime + time;
-			activeFuel = FuelType.NORMAL;
+			activeFuel = superheated ? FuelType.SPECIAL : FuelType.NORMAL;
 			return true;
 		}
 		return false;
@@ -153,8 +154,6 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			return;
 		if (remainingBurnTime > MAX_HEAT_CAPACITY)
 			return;
-
-		activeFuel = FuelType.NORMAL;
 
 		if (getHeatLevelFromBlock() != getHeatLevelFromBlock()) {
 			level.playSound(null, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
@@ -233,7 +232,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	}
 
 	public void updateBlockState() {
-		setBlockHeat(getHeatLevelFromFuelType(activeFuel));
+		setBlockHeat(getHeatLevelFromFuelType());
 	}
 
 	protected void setBlockHeat(HeatLevel heat) {
@@ -383,7 +382,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 			.125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
 	}
 
-	protected HeatLevel getHeatLevelFromFuelType(FuelType ignoredFuel) {
+	protected HeatLevel getHeatLevelFromFuelType() {
 		HeatLevel level = HeatLevel.SMOULDERING;
 		switch (activeFuel) {
 		case SPECIAL:

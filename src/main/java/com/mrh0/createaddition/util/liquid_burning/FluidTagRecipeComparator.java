@@ -17,23 +17,29 @@ import javax.annotation.Nullable;
  * don't need to worry about breaking changes.
  */
 public final class FluidTagRecipeComparator {
-
-   public static boolean argsToTag(Fluid fluid, Args args) {
+    public static boolean argsToTag(Fluid fluid, Args args) {
         for (TagKey<Fluid> tagKey : fluid.defaultFluidState().getTags().toList()) {
-            int i;
+            if (!tagKey.toString().contains("burnable_fuel")) {
+                continue;
+            }
+            boolean superheated = false;
+            int timePerBucket = 0;
             boolean crashOnLow = true;
+            if (tagKey.toString().contains("superheated")) {
+                superheated = true;
+            }
             try {
-                i = Integer.parseInt(tagKey
+                timePerBucket = Integer.parseInt(tagKey
                         .toString()
                         .replaceAll("[^0-9]+", " ")
                         .trim()
                 );
             } catch (NumberFormatException e) {
-                i = 0;
                 crashOnLow = false;
             }
             BurnableTagProperties tagProperties = new BurnableTagProperties(
-                    i,
+                    superheated,
+                    timePerBucket,
                     crashOnLow
             );
             Boolean bl = args.args(tagProperties, tagKey);
