@@ -21,7 +21,7 @@ public class EnergyNetwork {
 	private int pulled = 0;
 	private int pushed = 0;
 	
-	private static int MAX_BUFF = 10000;
+	private static int MAX_BUFF = 80000;
 	
 	public EnergyNetwork(Level world) {
 		this.inBuff = 0;

@@ -179,14 +179,6 @@ public class CABlocks {
 			.register();
 	
 	public static void register() {
-		/*REGISTRATE.addToSection(TESLA_COIL, AllSections.KINETICS);
-		REGISTRATE.addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
-		REGISTRATE.addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
-		REGISTRATE.addToSection(ACCUMULATOR, AllSections.KINETICS);
-		REGISTRATE.addToSection(REDSTONE_RELAY, AllSections.KINETICS);
-		REGISTRATE.addToSection(BARBED_WIRE, AllSections.CURIOSITIES);
-		REGISTRATE.addToSection(MODULAR_ACCUMULATOR, AllSections.KINETICS);
-		REGISTRATE.addToSection(PORTABLE_ENERGY_INTERFACE, AllSections.KINETICS);
-		REGISTRATE.addToSection(DIGITAL_ADAPTER, AllSections.LOGISTICS);*/
+
 	}
 }

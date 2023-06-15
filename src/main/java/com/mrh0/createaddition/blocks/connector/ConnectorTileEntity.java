@@ -55,10 +55,10 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	public static Vec3 OFFSET_EAST = new Vec3(3f/16f, 0f, 0f);
 
 	public static final int NODE_COUNT = 4;
-	public static final int CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
+	//public static final int CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
 
 	public ConnectorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
-		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
+		super(tileEntityTypeIn, pos, state, Config.CONNECTOR_CAPACITY.get(), Config.CONNECTOR_MAX_INPUT.get(), Config.CONNECTOR_MAX_OUTPUT.get());
 
 		this.localNodes = new LocalNode[getNodeCount()];
 		this.nodeCache = new IWireNode[getNodeCount()];

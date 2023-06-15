@@ -42,20 +42,20 @@ public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity {
 	private boolean cc_update_rpm = false;
 	private int cc_new_rpm = 32;
 	
-	public static final Integer
+	/*public static final Integer
 		RPM_RANGE = Config.ELECTRIC_MOTOR_RPM_RANGE.get(),
 		DEFAULT_SPEED = 32,
 		MAX_IN = Config.ELECTRIC_MOTOR_MAX_INPUT.get(),
 		MIN_CONSUMPTION = Config.ELECTRIC_MOTOR_MINIMUM_CONSUMPTION.get(),
 		MAX_OUT = 0,
 		CAPACITY = Config.ELECTRIC_MOTOR_CAPACITY.get(),
-		STRESS = Config.BASELINE_STRESS.get();
+		STRESS = Config.BASELINE_STRESS.get();*/
 	
 	private boolean active = false;
 
 	public ElectricMotorTileEntity(BlockEntityType<? extends ElectricMotorTileEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
+		energy = new InternalEnergyStorage(Config.ELECTRIC_MOTOR_CAPACITY.get(), Config.ELECTRIC_MOTOR_MAX_INPUT.get(), 0);
 		lazyEnergy = LazyOptional.of(() -> energy);
 		if(CreateAddition.CC_ACTIVE) {
 			lazyPeripheral = LazyOptional.of(() -> Peripherals.createElectricMotorPeripheral(this));
@@ -71,8 +71,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity {
 			new CenteredSideValueBoxTransform((motor, side) -> motor.getValue(ElectricMotorBlock.FACING) == side.getOpposite());
 
 		generatedSpeed = new KineticScrollValueBehaviour(Lang.translateDirect("generic.speed"), this, slot);
-		generatedSpeed.between(-RPM_RANGE, RPM_RANGE);
-		generatedSpeed.value = DEFAULT_SPEED;
+		generatedSpeed.between(-Config.ELECTRIC_MOTOR_RPM_RANGE.get(), Config.ELECTRIC_MOTOR_RPM_RANGE.get());
+		generatedSpeed.value = 32;
 		//generatedSpeed.withUnit(i -> Lang.translateDirect("generic.unit.rpm"));
 		generatedSpeed.withCallback(i -> this.updateGeneratedRotation(i));
 		//generatedSpeed.withStepFunction(ElectricMotorTileEntity::step);
@@ -98,7 +98,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity {
 	}
 	
 	public float calculateAddedStressCapacity() {
-		float capacity = STRESS/256f;
+		float capacity = Config.BASELINE_STRESS.get()/256f;
 		this.lastCapacityProvided = capacity;
 		return capacity;
 	}
@@ -181,7 +181,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity {
 	}
 	
 	public static int getEnergyConsumptionRate(int rpm) {
-		return Math.abs(rpm) > 0 ? (int)Math.max((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d), (double)MIN_CONSUMPTION) : 0;
+		return Math.abs(rpm) > 0 ? (int)Math.max((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d), (double)Config.ELECTRIC_MOTOR_MINIMUM_CONSUMPTION.get()) : 0;
 	}
 	
 	@Override
@@ -249,7 +249,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity {
 	}
 	
 	public boolean setRPM(int rpm) {
-		rpm = Math.max(Math.min(rpm, RPM_RANGE), -RPM_RANGE);
+		rpm = Math.max(Math.min(rpm, Config.ELECTRIC_MOTOR_RPM_RANGE.get()), -Config.ELECTRIC_MOTOR_RPM_RANGE.get());
 		cc_new_rpm = rpm;
 		cc_update_rpm = true;
 		return cc_antiSpam > 0;

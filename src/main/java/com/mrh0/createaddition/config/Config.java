@@ -74,6 +74,7 @@ public class Config {
 	public static ForgeConfigSpec.IntValue TESLA_COIL_HURT_FIRE_COOLDOWN;
 	
 	public static ForgeConfigSpec.IntValue DIAMOND_GRIT_SANDPAPER_USES;
+	public static ForgeConfigSpec.DoubleValue BARBED_WIRE_DAMAGE;
 	
 	static {
 		COMMON_BUILDER.comment("Make sure config changes are duplicated on both Clients and the Server when running a dedicated Server,")
@@ -95,19 +96,19 @@ public class Config {
 				.defineInRange("motor_min_consumption", 8, 0, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_MAX_INPUT = COMMON_BUILDER.comment("Electric Motor max input in FE (Energy transfer not consumption).")
-				.defineInRange("motor_max_input", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("motor_max_input", 5000, 0, Integer.MAX_VALUE);
 		
 		ELECTRIC_MOTOR_CAPACITY = COMMON_BUILDER.comment("Electric Motor internal capacity in FE.")
-				.defineInRange("motor_capacity", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("motor_capacity", 5000, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 		
 		
 		COMMON_BUILDER.comment("Alternator").push(CATAGORY_ALTERNATOR);
 		ALTERNATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Alternator max input in FE (Energy transfer, not generation).")
-				.defineInRange("generator_max_output", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("generator_max_output", 5000, 0, Integer.MAX_VALUE);
 		
 		ALTERNATOR_CAPACITY = COMMON_BUILDER.comment("Alternator internal capacity in FE.")
-				.defineInRange("generator_capacity", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("generator_capacity", 5000, 0, Integer.MAX_VALUE);
 		
 		ALTERNATOR_EFFICIENCY = COMMON_BUILDER.comment("Alternator efficiency relative to base conversion rate.")
 				.defineInRange("generator_efficiency", 0.75d, 0.01d, 1.0d);
@@ -125,13 +126,13 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Wires").push(CATAGORY_WIRES);
 		CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Connector max input in FE/t (Energy transfer).")
-				.defineInRange("connector_max_input", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_max_input", 5000, 0, Integer.MAX_VALUE);
 		
 		CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Connector max output in FE/t (Energy transfer).")
-				.defineInRange("connector_max_output", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_max_output", 5000, 0, Integer.MAX_VALUE);
 		
 		CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Connector internal input buffer in FE.")
-				.defineInRange("connector_input_capacity", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("connector_input_capacity", 5000, 0, Integer.MAX_VALUE);
 		
 		CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Max wire length in blocks.")
 				.defineInRange("wire_length", 12, 0, 256);
@@ -143,13 +144,13 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Accumulator").push(CATAGORY_ACCUMULATOR);
 		ACCUMULATOR_MAX_INPUT = COMMON_BUILDER.comment("Accumulator max input in FE/t (Energy transfer).")
-				.defineInRange("accumulator_max_input", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_max_input", 5000, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_MAX_OUTPUT = COMMON_BUILDER.comment("Accumulator max output in FE/t (Energy transfer).")
-				.defineInRange("accumulator_max_output", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_max_output", 5000, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_CAPACITY = COMMON_BUILDER.comment("Accumulator internal capacity per block in FE.")
-				.defineInRange("accumulator_capacity", 2048_000, 0, Integer.MAX_VALUE);
+				.defineInRange("accumulator_capacity", 2_000_000, 0, Integer.MAX_VALUE);
 		
 		ACCUMULATOR_MAX_HEIGHT = COMMON_BUILDER.comment("Accumulator max multiblock height.")
 				.defineInRange("accumulator_max_height", 5, 1, 8);
@@ -160,28 +161,28 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Portable Energy Interface").push(CATAGORY_PEI);
 		PEI_MAX_INPUT = COMMON_BUILDER.comment("PEI max input in FE/t (Energy transfer).")
-				.defineInRange("pei_max_input", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("pei_max_input", 5000, 0, Integer.MAX_VALUE);
 		
 		PEI_MAX_OUTPUT = COMMON_BUILDER.comment("PEI max output in FE/t (Energy transfer).")
-				.defineInRange("pei_max_output", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("pei_max_output", 5000, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 		
 		
 		COMMON_BUILDER.comment("Tesla Coil").push(CATAGORY_TESLA_COIL);
 		TESLA_COIL_MAX_INPUT = COMMON_BUILDER.comment("Tesla Coil max input in FE/t (Energy transfer).")
-				.defineInRange("tesla_coil_max_input", 8192, 0, Integer.MAX_VALUE);
+				.defineInRange("tesla_coil_max_input", 10000, 0, Integer.MAX_VALUE);
 		
 		TESLA_COIL_CHARGE_RATE = COMMON_BUILDER.comment("Tesla Coil charge rate in FE/t.")
-				.defineInRange("tesla_coil_charge_rate", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("tesla_coil_charge_rate", 5000, 0, Integer.MAX_VALUE);
 		
 		TESLA_COIL_RECIPE_CHARGE_RATE = COMMON_BUILDER.comment("Tesla Coil charge rate in FE/t for recipes.")
-				.defineInRange("tesla_coil_recipe_charge_rate", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("tesla_coil_recipe_charge_rate", 2000, 0, Integer.MAX_VALUE);
 		
 		TESLA_COIL_CAPACITY = COMMON_BUILDER.comment("Tesla Coil internal capacity in FE.")
-				.defineInRange("tesla_coil_capacity", 32_000, 0, Integer.MAX_VALUE);
+				.defineInRange("tesla_coil_capacity", 40_000, 0, Integer.MAX_VALUE);
 		
 		TESLA_COIL_HURT_ENERGY_REQUIRED = COMMON_BUILDER.comment("Energy consumed when Tesla Coil is fired (in FE).")
-				.defineInRange("tesla_coil_hurt_energy_required", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("tesla_coil_hurt_energy_required", 1000, 0, Integer.MAX_VALUE);
 		
 		TESLA_COIL_HURT_RANGE = COMMON_BUILDER.comment("Hurt range (in blocks/meters).")
 				.defineInRange("tesla_coil_hurt_range", 3, 0, Integer.MAX_VALUE);
@@ -201,11 +202,14 @@ public class Config {
 		TESLA_COIL_HURT_FIRE_COOLDOWN = COMMON_BUILDER.comment("Tesla Coil fire interval (in ticks).")
 				.defineInRange("tesla_coil_fire_cooldown", 20, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
-		
+
 		
 		COMMON_BUILDER.comment("Misc").push(CATAGORY_MISC);
 		DIAMOND_GRIT_SANDPAPER_USES = COMMON_BUILDER.comment("Diamond Grit Sandpaper durability (number of uses).")
 				.defineInRange("diamond_grit_sandpaper_uses", 1024, 3, Integer.MAX_VALUE);
+
+		BARBED_WIRE_DAMAGE = COMMON_BUILDER.comment("Barbed Wire Damage.")
+				.defineInRange("barbed_wire_damage", 2, 0, Float.MAX_VALUE);
 		
 		COMMON_BUILDER.pop();
 		

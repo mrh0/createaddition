@@ -4,7 +4,7 @@
       	"fluidTag": "forge:ethanol",
       	"amount": 1000
 	},
-	"burnTime": 6400,
+	"burnTime": 6000,
 	"conditions": [
 	    {
 	        "fluidTag": "forge:ethanol",

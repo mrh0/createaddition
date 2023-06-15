@@ -4,7 +4,7 @@
       	"fluidTag": "forge:diesel",
       	"amount": 1000
 	},
-	"burnTime": 51200,
+	"burnTime": 48000,
 	"superheated": true,
 	"conditions": [
 	    {

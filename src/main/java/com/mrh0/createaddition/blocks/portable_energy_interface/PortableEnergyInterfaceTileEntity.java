@@ -24,8 +24,8 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 	protected LazyOptional<PortableEnergyInterfacePeripheral> peripheral;
 
 	// Default limits for PortableEnergyManager.
-	public int maxInput = Config.PEI_MAX_INPUT.get();
-	public int maxOutput = Config.PEI_MAX_OUTPUT.get();
+	//public int maxInput = Config.PEI_MAX_INPUT.get();
+	//public int maxOutput = Config.PEI_MAX_OUTPUT.get();
 
 	public PortableEnergyInterfaceTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -109,7 +109,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 		@Override
 		public int receiveEnergy(int maxReceive, boolean simulate) {
 			if (!PortableEnergyInterfaceTileEntity.this.canTransfer()) return 0;
-			maxReceive = Math.min(maxReceive, PortableEnergyInterfaceTileEntity.this.maxInput);
+			maxReceive = Math.min(maxReceive, Config.PEI_MAX_INPUT.get());
 			if (this.wrapped == null) return 0;
 			int received = this.wrapped.receiveEnergy(maxReceive, simulate);
 			if (received != 0 && !simulate) this.keepAlive();
@@ -119,7 +119,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 		@Override
 		public int extractEnergy(int maxExtract, boolean simulate) {
 			if (!PortableEnergyInterfaceTileEntity.this.canTransfer()) return 0;
-			maxExtract = Math.min(maxExtract, PortableEnergyInterfaceTileEntity.this.maxOutput);
+			maxExtract = Math.min(maxExtract, Config.PEI_MAX_OUTPUT.get());
 			if (this.wrapped == null) return 0;
 			int extracted = this.wrapped.extractEnergy(maxExtract, simulate);
 			if (extracted != 0 && !simulate) this.keepAlive();

@@ -41,9 +41,9 @@ public class RollingMillTileEntity extends KineticBlockEntity {
 	public int timer;
 	private RollingRecipe lastRecipe;
 	
-	private static final int 
+	/*private static final int
 		STRESS = Config.ROLLING_MILL_STRESS.get(), 
-		DURATION = Config.ROLLING_MILL_PROCESSING_DURATION.get();
+		DURATION = Config.ROLLING_MILL_PROCESSING_DURATION.get();*/
 
 	public RollingMillTileEntity(BlockEntityType<? extends RollingMillTileEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -300,11 +300,11 @@ public class RollingMillTileEntity extends KineticBlockEntity {
 	}
 	
 	public static int getProcessingDuration() {
-		return DURATION;
+		return Config.ROLLING_MILL_PROCESSING_DURATION.get();
 	}
 	
 	public float calculateStressApplied() {
-		float impact = STRESS;
+		float impact = Config.ROLLING_MILL_STRESS.get();
 		this.lastStressApplied = impact;
 		return impact;
 	}

@@ -48,10 +48,10 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public static Vec3 OFFSET_EAST = new Vec3(	5f/16f, 	9f/16f, 	0f);
 	
 	public static final int NODE_COUNT = 8;
-	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
+	//public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
 	public AccumulatorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
-		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
+		super(tileEntityTypeIn, pos, state, Config.ACCUMULATOR_CAPACITY.get(), Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get());
 		
 		setLazyTickRate(20);
 
