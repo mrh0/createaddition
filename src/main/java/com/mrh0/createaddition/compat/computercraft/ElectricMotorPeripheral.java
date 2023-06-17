@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
 
+import com.mrh0.createaddition.config.Config;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IComputerAccess;
@@ -111,11 +112,11 @@ public class ElectricMotorPeripheral implements IPeripheral {
 
     @LuaFunction(mainThread = true)
     public int getMaxInsert() {
-        return ElectricMotorTileEntity.MAX_IN;
+        return Config.ELECTRIC_MOTOR_MAX_INPUT.get();
     }
 
     @LuaFunction(mainThread = true)
     public int getMaxExtract() {
-        return ElectricMotorTileEntity.MAX_OUT;
+        return 0;
     }
 }

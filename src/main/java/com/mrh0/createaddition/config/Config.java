@@ -40,12 +40,6 @@ public class Config {
 	public static ForgeConfigSpec.IntValue ROLLING_MILL_PROCESSING_DURATION;
 	public static ForgeConfigSpec.IntValue ROLLING_MILL_STRESS;
 	
-	public static ForgeConfigSpec.IntValue HEATER_MAX_INPUT;
-	public static ForgeConfigSpec.IntValue HEATER_CAPACITY;
-	public static ForgeConfigSpec.IntValue HEATER_NORMAL_CONSUMPTION;
-	public static ForgeConfigSpec.IntValue HEATER_FURNACE_ENGINE_CONSUMPTION;
-	public static ForgeConfigSpec.BooleanValue HEATER_FURNACE_ENGINE_ENABLED;
-	
 	public static ForgeConfigSpec.IntValue CONNECTOR_MAX_INPUT;
 	public static ForgeConfigSpec.IntValue CONNECTOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.IntValue CONNECTOR_CAPACITY;
@@ -84,7 +78,7 @@ public class Config {
 				.defineInRange("fe_conversion", 240, 0, Integer.MAX_VALUE);
 		
 		BASELINE_STRESS = COMMON_BUILDER.comment("Max stress for the Alternator and Electric Motor (in SU at 256 RPM).")
-				.defineInRange("baseline_stress", 8192, 0, 16_383);
+				.defineInRange("baseline_stress", 8192, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 		
 		
