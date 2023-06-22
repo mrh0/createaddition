@@ -31,7 +31,7 @@ public class Config {
 	public static ForgeConfigSpec.IntValue ELECTRIC_MOTOR_CAPACITY;
 	
 	public static ForgeConfigSpec.IntValue FE_RPM;
-	public static ForgeConfigSpec.IntValue BASELINE_STRESS;
+	public static ForgeConfigSpec.IntValue MAX_STRESS;
 	
 	public static ForgeConfigSpec.IntValue ALTERNATOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.IntValue ALTERNATOR_CAPACITY;
@@ -74,11 +74,11 @@ public class Config {
 		COMMON_BUILDER.comment("Make sure config changes are duplicated on both Clients and the Server when running a dedicated Server,")
 					.comment(" as the config isnt synced between Clients and Server.");
 		COMMON_BUILDER.comment("General Settings").push(CATAGORY_GENERAL);
-		FE_RPM = COMMON_BUILDER.comment("Forge Energy conversion rate (in FE/t at 256 RPM).")
-				.defineInRange("fe_conversion", 240, 0, Integer.MAX_VALUE);
+		FE_RPM = COMMON_BUILDER.comment("Forge Energy conversion rate (in FE/t at 256 RPM, value is the FE/t generated and consumed is at 256rpm).")
+				.defineInRange("fe_at_max_rpm", 480, 0, Integer.MAX_VALUE);
 		
-		BASELINE_STRESS = COMMON_BUILDER.comment("Max stress for the Alternator and Electric Motor (in SU at 256 RPM).")
-				.defineInRange("baseline_stress", 8192, 0, Integer.MAX_VALUE);
+		MAX_STRESS = COMMON_BUILDER.comment("Max stress for the Alternator and Electric Motor (in SU at 256 RPM).")
+				.defineInRange("max_stress", 16384, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 		
 		

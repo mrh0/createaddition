@@ -98,7 +98,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity {
 	}
 	
 	public float calculateAddedStressCapacity() {
-		float capacity = Config.BASELINE_STRESS.get()/256f;
+		float capacity = Config.MAX_STRESS.get()/256f;
 		this.lastCapacityProvided = capacity;
 		return capacity;
 	}

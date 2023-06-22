@@ -58,7 +58,7 @@ public class AlternatorTileEntity extends KineticBlockEntity {
 	
 	@Override
 	public float calculateStressApplied() {
-		float impact = Config.BASELINE_STRESS.get()/256f;
+		float impact = Config.MAX_STRESS.get()/256f;
 		this.lastStressApplied = impact;
 		return impact;
 	}
