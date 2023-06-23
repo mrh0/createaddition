@@ -30,16 +30,16 @@ public class AlternatorTileEntity extends KineticBlockEntity {
 	protected final InternalEnergyStorage energy;
 	private LazyOptional<IEnergyStorage> lazyEnergy;
 
-	private static final int
+	/*private static final int
 		MAX_IN = 0,
 		MAX_OUT = Config.ALTERNATOR_MAX_OUTPUT.get(),
 		CAPACITY = Config.ALTERNATOR_CAPACITY.get(),
 		STRESS = Config.BASELINE_STRESS.get();
-	private static final double EFFICIENCY = Config.ALTERNATOR_EFFICIENCY.get();
+	private static final double EFFICIENCY = Config.ALTERNATOR_EFFICIENCY.get();*/
 
 	public AlternatorTileEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);
-		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
+		energy = new InternalEnergyStorage(Config.ALTERNATOR_CAPACITY.get(), 0, Config.ALTERNATOR_MAX_OUTPUT.get());
 		lazyEnergy = LazyOptional.of(() -> energy);
 	}
 
@@ -57,7 +57,7 @@ public class AlternatorTileEntity extends KineticBlockEntity {
 
 	@Override
 	public float calculateStressApplied() {
-		float impact = STRESS/256f;
+		float impact = Config.MAX_STRESS.get()/256f;
 		this.lastStressApplied = impact;
 		return impact;
 	}
@@ -116,7 +116,7 @@ public class AlternatorTileEntity extends KineticBlockEntity {
 			IEnergyStorage ies = getCachedEnergy(d);
 			if(ies == null)
 				continue;
-			int ext = energy.extractEnergy(ies.receiveEnergy(MAX_OUT, true), false);
+			int ext = energy.extractEnergy(ies.receiveEnergy(Config.ALTERNATOR_MAX_OUTPUT.get(), true), false);
 			int rec = ies.receiveEnergy(ext, false);
 			//System.out.println(ext + ":" + getEnergyProductionRate((int)getSpeed()) + ":" + rec + ":" + d);
 		}
@@ -124,7 +124,7 @@ public class AlternatorTileEntity extends KineticBlockEntity {
 
 	public static int getEnergyProductionRate(int rpm) {
 		rpm = Math.abs(rpm);
-		return (int)((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d) * EFFICIENCY);//return (int)((double)Config.FE_TO_SU.get() * ((double)Math.abs(rpm)/256d) * EFFICIENCY);
+		return (int)((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d) * Config.ALTERNATOR_EFFICIENCY.get());//return (int)((double)Config.FE_TO_SU.get() * ((double)Math.abs(rpm)/256d) * EFFICIENCY);
 	}
 
 	@Override

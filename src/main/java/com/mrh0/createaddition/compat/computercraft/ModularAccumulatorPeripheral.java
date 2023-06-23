@@ -2,6 +2,7 @@ package com.mrh0.createaddition.compat.computercraft;
 
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorTileEntity;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
+import com.mrh0.createaddition.config.Config;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import org.jetbrains.annotations.NotNull;
@@ -53,12 +54,12 @@ public class ModularAccumulatorPeripheral implements IPeripheral {
 
     @LuaFunction(mainThread = true)
     public int getMaxInsert() {
-        return ModularAccumulatorTileEntity.MAX_IN;
+        return Config.ACCUMULATOR_MAX_INPUT.get();
     }
 
     @LuaFunction(mainThread = true)
     public int getMaxExtract() {
-        return ModularAccumulatorTileEntity.MAX_OUT;
+        return Config.ACCUMULATOR_MAX_OUTPUT.get();
     }
 
     @LuaFunction(mainThread = true)

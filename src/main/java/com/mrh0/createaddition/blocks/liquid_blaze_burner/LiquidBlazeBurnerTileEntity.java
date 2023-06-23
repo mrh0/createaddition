@@ -66,8 +66,6 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 	protected boolean goggles;
 	protected boolean hat;
 
-
-
 	public LiquidBlazeBurnerTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		activeFuel = FuelType.NONE;
@@ -88,7 +86,6 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 	public void addBehaviours(List<BlockEntityBehaviour> list) {
 
 	}
-
 
 	// Custom fluid handling
 	protected LazyOptional<IFluidHandler> fluidCapability;

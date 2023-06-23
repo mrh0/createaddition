@@ -44,9 +44,7 @@ public abstract class BaseElectricTileEntity extends SmartBlockEntity {
 	}
 
 	public abstract boolean isEnergyInput(Direction side);
-
 	public abstract boolean isEnergyOutput(Direction side);
-
 
 	@Override
 	protected void read(CompoundTag compound, boolean arg1) {
@@ -163,14 +161,5 @@ public abstract class BaseElectricTileEntity extends SmartBlockEntity {
 				return escacheWest;
 		}
 		return LazyOptional.empty();
-	}
-
-
-	public boolean isValidUpgradeSide(BlockState state, Direction side) {
-		return false;
-	}
-
-	public float getBoostPerUpgrade() {
-		return 0f;
 	}
 }

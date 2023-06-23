@@ -28,7 +28,7 @@ mixin {
     debug.export = true
 }
 
-version = '1.19.2-20230527a'
+version = '1.19.2-20230623a'
 group = 'com.mrh0.createaddition'
 archivesBaseName = 'createaddition'
 

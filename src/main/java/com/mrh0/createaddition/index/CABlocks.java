@@ -29,7 +29,6 @@ import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.AssetLookup;
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.utility.Couple;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -52,7 +51,7 @@ public class CABlocks {
 	public static final BlockEntry<ElectricMotorBlock> ELECTRIC_MOTOR = CreateAddition.REGISTRATE.block("electric_motor", ElectricMotorBlock::new)
 			.initialProperties(SharedProperties::softMetal)
 			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
-			.transform(BlockStressDefaults.setCapacity(Config.BASELINE_STRESS.get()/256f))
+			.transform(BlockStressDefaults.setCapacity(Config.MAX_STRESS.get()/256f))
 			.transform(BlockStressDefaults.setGeneratorSpeed(() -> Couple.create(0, 256)))
 			.item()
 			.transform(customItemModel())
@@ -60,7 +59,7 @@ public class CABlocks {
 
 	public static final BlockEntry<AlternatorBlock> ALTERNATOR = CreateAddition.REGISTRATE.block("alternator", AlternatorBlock::new)
 			.initialProperties(SharedProperties::softMetal)
-			.transform(BlockStressDefaults.setImpact(Config.BASELINE_STRESS.get()/256f))
+			.transform(BlockStressDefaults.setImpact(Config.MAX_STRESS.get()/256f))
 			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
 			.item()
 			.transform(customItemModel())
@@ -179,14 +178,6 @@ public class CABlocks {
 			.register();
 
 	public static void register() {
-		/*REGISTRATE.addToSection(TESLA_COIL, AllSections.KINETICS);
-		REGISTRATE.addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
-		REGISTRATE.addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
-		REGISTRATE.addToSection(ACCUMULATOR, AllSections.KINETICS);
-		REGISTRATE.addToSection(REDSTONE_RELAY, AllSections.KINETICS);
-		REGISTRATE.addToSection(BARBED_WIRE, AllSections.CURIOSITIES);
-		REGISTRATE.addToSection(MODULAR_ACCUMULATOR, AllSections.KINETICS);
-		REGISTRATE.addToSection(PORTABLE_ENERGY_INTERFACE, AllSections.KINETICS);
-		REGISTRATE.addToSection(DIGITAL_ADAPTER, AllSections.LOGISTICS);*/
+
 	}
 }

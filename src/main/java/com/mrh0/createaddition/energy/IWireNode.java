@@ -24,8 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface IWireNode {
-	
-	int MAX_LENGTH = Config.CONNECTOR_MAX_LENGTH.get();
 
 	/**
 	 * Get the {@link IWireNode} at the given index.
@@ -543,7 +541,7 @@ public interface IWireNode {
 			return WireConnectResult.INVALID;
 		if (node1 < 0 || node2 < 0)
 			return WireConnectResult.COUNT;
-		if (pos1.distSqr(pos2) > MAX_LENGTH * MAX_LENGTH)
+		if (pos1.distSqr(pos2) > Config.CONNECTOR_MAX_LENGTH.get() * Config.CONNECTOR_MAX_LENGTH.get())
 			return WireConnectResult.LONG;
 		
 		if (wn1.hasConnectionTo(pos2))

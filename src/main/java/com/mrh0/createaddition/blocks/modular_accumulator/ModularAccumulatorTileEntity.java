@@ -47,11 +47,11 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer, ThresholdSwitchObservable {
 
-	public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(),
+	/*public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(),
 			MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(),
 			MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get(),
 			MAX_HEIGHT = Config.ACCUMULATOR_MAX_HEIGHT.get(),
-			MAX_WIDTH = Config.ACCUMULATOR_MAX_WIDTH.get();
+			MAX_WIDTH = Config.ACCUMULATOR_MAX_WIDTH.get();*/
 
 	protected LazyOptional<IEnergyStorage> energyCap;
 	protected InternalEnergyStorage energyStorage;
@@ -211,7 +211,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		IEnergyStorage ies = getCachedEnergy(side).orElse(null);
 		if(ies == null)
 			return;
-		int ext = getControllerBE().energyStorage.extractEnergy(ies.receiveEnergy(MAX_OUT, true), false);
+		int ext = getControllerBE().energyStorage.extractEnergy(ies.receiveEnergy(Config.ACCUMULATOR_MAX_OUTPUT.get(), true), false);
 		int rec = ies.receiveEnergy(ext, false);
 	}
 
@@ -341,7 +341,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 
 	private InternalEnergyStorage handlerForCapability() {
 		return isController() ? energyStorage
-			: (getControllerBE() != null ? getControllerBE().handlerForCapability() : new InternalEnergyStorage(0, MAX_IN, MAX_OUT));
+			: (getControllerBE() != null ? getControllerBE().handlerForCapability() : new InternalEnergyStorage(0, Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get()));
 	}
 
 	@Override
@@ -461,12 +461,12 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	}
 
 	public static int getMaxHeight() {
-		return MAX_HEIGHT;
+		return Config.ACCUMULATOR_MAX_HEIGHT.get();
 	}
 
 	@Override
 	public int getMaxWidth() {
-		return MAX_WIDTH;
+		return Config.ACCUMULATOR_MAX_WIDTH.get();
 	}
 
 	@Override

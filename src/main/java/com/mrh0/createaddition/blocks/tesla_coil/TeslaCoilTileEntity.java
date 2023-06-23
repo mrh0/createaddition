@@ -40,7 +40,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	private ItemStackHandler inputInv;
 	private int chargeAccumulator;
 
-	private static final int
+	/*private static final int
 		MAX_IN = Config.TESLA_COIL_MAX_INPUT.get(),
 		CHARGE_RATE = Config.TESLA_COIL_CHARGE_RATE.get(),
 		CHARGE_RATE_RECIPE = Config.TESLA_COIL_RECIPE_CHARGE_RATE.get(),
@@ -51,7 +51,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		HURT_RANGE = Config.TESLA_COIL_HURT_RANGE.get(),
 		HURT_EFFECT_TIME_MOB = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get(),
 		HURT_EFFECT_TIME_PLAYER = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get(),
-		HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();
+		HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();*/
 
 	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
@@ -59,7 +59,14 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	private static DamageSource DMG_SOURCE = new DamageSource("tesla_coil");
 
 	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
-		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, 0);
+		super(
+				tileEntityTypeIn,
+				pos,
+				state,
+				Util.max(Config.TESLA_COIL_CAPACITY.get(), Config.TESLA_COIL_CHARGE_RATE.get(), Config.TESLA_COIL_RECIPE_CHARGE_RATE.get()),
+				Config.TESLA_COIL_MAX_INPUT.get(),
+				0)
+		;
 		inputInv = new ItemStackHandler(1);
 	}
 
@@ -85,7 +92,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}
 
 	public int getConsumption() {
-		return CHARGE_RATE;
+		return Config.TESLA_COIL_CHARGE_RATE.get();
 	}
 
 	protected float getItemCharge(IEnergyStorage energy) {
@@ -100,16 +107,16 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}
 
 	private void doDmg() {
-		localEnergy.internalConsumeEnergy(HURT_ENERGY_REQUIRED);
+		localEnergy.internalConsumeEnergy(Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get());
 		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoilBlock.FACING).getOpposite());
-		List<LivingEntity> ents = getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(HURT_RANGE));
+		List<LivingEntity> ents = getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(Config.TESLA_COIL_HURT_RANGE.get()));
 		for(LivingEntity e : ents) {
 			if(e == null) return;
-			int dmg = HURT_DMG_MOB;
-			int time = HURT_EFFECT_TIME_MOB;
+			int dmg = Config.TESLA_COIL_HURT_DMG_MOB.get();
+			int time = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get();
 			if(e instanceof Player) {
-				dmg = HURT_DMG_PLAYER;
-				time = HURT_EFFECT_TIME_PLAYER;
+				dmg = Config.TESLA_COIL_HURT_DMG_PLAYER.get();
+				time = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get();
 			}
 			if(dmg > 0)
 				e.hurt(DMG_SOURCE, dmg);
@@ -133,11 +140,11 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		}
 		int signal = getLevel().getBestNeighborSignal(getBlockPos());
 		//System.out.println(signal + ":" + (energy.getEnergyStored() >= HURT_ENERGY_REQUIRED));
-		if(signal > 0 && localEnergy.getEnergyStored() >= HURT_ENERGY_REQUIRED)
+		if(signal > 0 && localEnergy.getEnergyStored() >= Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get())
 			poweredTimer = 10;
 
 		dmgTick++;
-		if((dmgTick%=HURT_FIRE_COOLDOWN) == 0 && localEnergy.getEnergyStored() >= HURT_ENERGY_REQUIRED && signal > 0)
+		if((dmgTick%=Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get()) == 0 && localEnergy.getEnergyStored() >= Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get() && signal > 0)
 			doDmg();
 
 		if(poweredTimer > 0) {
@@ -190,7 +197,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		}
 		if(recipeCache.isPresent()) {
 			ChargingRecipe recipe = recipeCache.get();
-			int energyRemoved = localEnergy.internalConsumeEnergy(Math.min(CHARGE_RATE_RECIPE, recipe.getEnergy() - chargeAccumulator));
+			int energyRemoved = localEnergy.internalConsumeEnergy(Math.min( Config.TESLA_COIL_RECIPE_CHARGE_RATE.get(), recipe.getEnergy() - chargeAccumulator));
 			chargeAccumulator += energyRemoved;
 			if(chargeAccumulator >= recipe.getEnergy()) {
 				TransportedItemStack remainingStack = transported.copy();
