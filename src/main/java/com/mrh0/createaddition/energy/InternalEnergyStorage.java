@@ -44,15 +44,18 @@ public class InternalEnergyStorage extends SimpleEnergyStorage {
     public void read(CompoundTag nbt, String name) {
     	setEnergy(nbt.getInt("energy_"+name));
     }
+public int getSpace() {
+    	return Math.max(getMaxEnergyStored() - getEnergyStored(), 0);
+    }
 
     @Override
     public boolean supportsExtraction() {
-        return true;
+        return maxExtract > 0;
     }
 
     @Override
     public boolean supportsInsertion() {
-        return true;
+        return maxReceive > 0;
     }
 
     public long internalConsumeEnergy(long consume) {
@@ -71,6 +74,10 @@ public class InternalEnergyStorage extends SimpleEnergyStorage {
     	this.amount = energy;
     }
     
+    public void setCapacity(int capacity) {
+    	this.capacity = capacity;
+    }
+
     @Deprecated
     public void outputToSide(Level world, BlockPos pos, Direction side, int max) {
 		EnergyStorage ies = EnergyStorage.SIDED.find(world, pos.relative(side), side.getOpposite());
@@ -85,6 +92,6 @@ public class InternalEnergyStorage extends SimpleEnergyStorage {
     
     @Override
     public String toString() {
-    	return getAmount() + "/" + getCapacity();
+    	return getAmount() + "/" + getCapacity() + " <-" + maxExtract + " ->" + maxReceive;
     }
 }

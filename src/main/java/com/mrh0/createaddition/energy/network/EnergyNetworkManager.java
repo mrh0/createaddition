@@ -26,7 +26,7 @@ public class EnergyNetworkManager {
 		List<EnergyNetwork> keep = new ArrayList<>();
 		for (EnergyNetwork en : networks) {
 			if (en.isValid()) {
-				en.tick();
+				en.tick(i);
 				keep.add(en);
 				continue;
 			}

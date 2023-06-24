@@ -8,7 +8,7 @@ import com.simibubi.create.foundation.gui.element.GuiGameElement;
 
 public class AnimatedRollingMill extends AnimatedKinetics {
 
-	private final boolean shadow;
+	private boolean shadow = true;
 
 	public AnimatedRollingMill(boolean shadow) {
 		this.shadow = shadow;

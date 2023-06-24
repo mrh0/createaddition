@@ -3,94 +3,65 @@ package com.mrh0.createaddition.index;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.fabric.SimpleFlowableFluid;
 import com.tterrag.registrate.util.entry.FluidEntry;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributeHandler;
-import net.fabricmc.fabric.api.transfer.v1.fluid.base.EmptyItemFluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.fluid.base.FullItemFluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.minecraft.core.Registry;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
 
-import javax.annotation.Nullable;
-
-import static net.minecraft.world.item.Items.BUCKET;
-
-@SuppressWarnings("UnstableApiUsage")
 public class CAFluids {
-	public static void register() {}
-	private static final CreateRegistrate REGISTRATE = CreateAddition.registrate()
-			.creativeModeTab(() -> ModGroup.MAIN);
-
-	public static final FluidEntry<SimpleFlowableFluid.Flowing> BIOETHANOL;
-	public static final FluidEntry<SimpleFlowableFluid.Flowing> SEED_OIL;
-
-	static  {
-		BIOETHANOL = REGISTRATE
-				.fluid("bioethanol",
-						new ResourceLocation(CreateAddition.MODID, "fluid/bioethanol_still"),
-						new ResourceLocation(CreateAddition.MODID,"fluid/bioethanol_flow")
-				)
-				.properties(p -> p.levelDecreasePerBlock(2)
-						.tickRate(15)
-						.flowSpeed(6)
-						.blastResistance(100f))
-				.attributes((cons) -> new CreateAdditionsAttributeHandler("fluid.bioethanol", 2000, 1400))
-				.lang("Bioethanol")
-				.onRegisterAfter(Registry.ITEM_REGISTRY, fluid -> {
-					Fluid source = fluid.getSource();
-					FluidStorage.combinedItemApiProvider(source.getBucket()).register(context ->
-							new FullItemFluidStorage(context, bucket -> ItemVariant.of(BUCKET), FluidVariant.of(source), FluidConstants.BUCKET));
-					FluidStorage.combinedItemApiProvider(BUCKET).register(context ->
-							new EmptyItemFluidStorage(context, bucket -> ItemVariant.of(source.getBucket()), source, FluidConstants.BUCKET));
-				}).register();
-
-		SEED_OIL = REGISTRATE
-				.fluid("seed_oil",
-						new ResourceLocation(CreateAddition.MODID, "fluid/seed_oil_still"),
-						new ResourceLocation(CreateAddition.MODID, "fluid/seed_oil_flow")
-				)
-				.properties(p -> p.levelDecreasePerBlock(2)
-						.tickRate(15)
-						.flowSpeed(6)
-						.blastResistance(100f))
-				.attributes((cons) -> new CreateAdditionsAttributeHandler("fluid.seed_oil", 2500, 1600))
-				.lang("Seed Oil")
-				.onRegisterAfter(Registry.ITEM_REGISTRY, fluid -> {
-					Fluid source = fluid.getSource();
-					FluidStorage.combinedItemApiProvider(source.getBucket()).register(context ->
-							new FullItemFluidStorage(context, bucket -> ItemVariant.of(BUCKET), FluidVariant.of(source), FluidConstants.BUCKET));
-					FluidStorage.combinedItemApiProvider(BUCKET).register(context ->
-							new EmptyItemFluidStorage(context, bucket -> ItemVariant.of(source.getBucket()), source, FluidConstants.BUCKET));
-				}).register();
+	static {
+		CreateAddition.REGISTRATE.creativeModeTab(() -> ModGroup.MAIN);
 	}
 
-
-	private record CreateAdditionsAttributeHandler(Component name, int viscosity, boolean lighterThanAir) implements FluidVariantAttributeHandler {
-		private CreateAdditionsAttributeHandler(String key, int viscosity, int density) {
-			this(new TranslatableComponent(key), viscosity, density <= 0);
+	public static FluidEntry<ForgeFlowingFluid.Flowing> SEED_OIL;
+	public static FluidEntry<ForgeFlowingFluid.Flowing> BIOETHANOL;
+	
+	private static class NoColorFluidAttributes extends FluidAttributes {
+		protected NoColorFluidAttributes(Builder builder, Fluid fluid) {
+			super(builder, fluid);
 		}
 
 		@Override
-		public Component getName(FluidVariant fluidVariant) {
-			return name;
+		public int getColor(BlockAndTintGetter world, BlockPos pos) {
+			return 0x00ffffff;
 		}
-
-		@Override
-		public int getViscosity(FluidVariant variant, @Nullable Level world) {
-			return viscosity;
-		}
-
-		@Override
-		public boolean isLighterThanAir(FluidVariant variant) {
-			return lighterThanAir;
-		}
+	}
+	
+	public static void register() {
+		var seedOil = CreateAddition.REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition","fluid/seed_oil_still"), new ResourceLocation("createaddition","fluid/seed_oil_flow"),
+				NoColorFluidAttributes::new)//.standardFluid("seed_oil", NoColorFluidAttributes::new)
+				.attributes(b -> b.viscosity(2000)
+						.density(1400))
+				.properties(p -> p.levelDecreasePerBlock(2)
+						.tickRate(15)
+						.slopeFindDistance(6)
+						.explosionResistance(100f))
+				.source(ForgeFlowingFluid.Source::new);
+		
+		var seedOilBucket = seedOil.bucket()
+			.properties(p -> p.stacksTo(1))
+			.register();
+		SEED_OIL = seedOil.register();
+		
+		var bioethanol = CreateAddition.REGISTRATE.fluid("bioethanol", new ResourceLocation("createaddition","fluid/bioethanol_still"), new ResourceLocation("createaddition","fluid/bioethanol_flow"),
+				NoColorFluidAttributes::new)
+				.attributes(b -> b.viscosity(2500)
+						.density(1600))
+				.properties(p -> p.levelDecreasePerBlock(2)
+						.tickRate(15)
+						.slopeFindDistance(6)
+						.explosionResistance(100f))
+				.source(ForgeFlowingFluid.Source::new);
+		var bioethanolBucket = bioethanol.bucket()
+			.properties(p -> p.stacksTo(1))
+			.register();
+		BIOETHANOL = bioethanol.register();
+		
+		//REGISTRATE.addToSection(seedOilBucket, AllSections.MATERIALS);
+		//REGISTRATE.addToSection(bioethanolBucket, AllSections.MATERIALS);
 	}
 }

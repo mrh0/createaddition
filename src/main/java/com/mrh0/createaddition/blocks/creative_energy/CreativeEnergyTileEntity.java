@@ -1,11 +1,8 @@
 package com.mrh0.createaddition.blocks.creative_energy;
 
 import com.mrh0.createaddition.energy.CreativeEnergyStorage;
-import com.mrh0.createaddition.transfer.EnergyTransferable;
-import com.simibubi.create.content.logistics.block.inventories.CrateTileEntity;
 
-import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -14,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
-public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyTransferable {
+public class CreativeEnergyTileEntity extends CrateBlockEntity {
 
 	protected final CreativeEnergyStorage energy;
 	private LazyOptional<EnergyStorage> lazyEnergy;
@@ -24,7 +21,7 @@ public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyT
 		energy = new CreativeEnergyStorage();
 		lazyEnergy = LazyOptional.of(() -> energy);
 	}
-	
+
 	private boolean firstTickState = true;
 	
 	@Override
@@ -45,6 +42,11 @@ public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyT
 				t.commit();
 			}
 		}
+	}
+
+	@Override
+	public void remove() {
+		lazyEnergy.invalidate();
 	}
 	
 	public void firstTick() {

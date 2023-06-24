@@ -1,9 +1,7 @@
 package com.mrh0.createaddition.energy;
 
-import com.mrh0.createaddition.transfer.EnergyTransferable;
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,29 +12,26 @@ import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
 import java.util.List;
-import java.util.Objects;
 
-@SuppressWarnings("CommentedOutCode")
-public abstract class BaseElectricTileEntity extends SmartTileEntity implements EnergyTransferable {
+public abstract class BaseElectricTileEntity extends SmartBlockEntity {
 
-	protected final InternalEnergyStorage energy;
+	protected final InternalEnergyStorage localEnergy;
 	protected LazyOptional<EnergyStorage> lazyEnergy;
-	
 	private boolean firstTickState = true;
 	protected final long CAPACITY, MAX_IN, MAX_OUT;
-	
+
 	public BaseElectricTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state, long CAPACITY, long MAX_IN, long MAX_OUT) {
 		super(tileEntityTypeIn, pos, state);
-		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
+		localEnergy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
 		this.CAPACITY = CAPACITY;
 		this.MAX_IN = MAX_IN;
 		this.MAX_OUT = MAX_OUT;
-		lazyEnergy = LazyOptional.of(() -> energy);
+		lazyEnergy = LazyOptional.of(() -> localEnergy);
 		setLazyTickRate(20);
 	}
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
 
 	@Nullable
 	@Override
@@ -53,85 +48,123 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity implements 
 //			return lazyEnergy.cast();
 //		return super.getStorage(cap, side);
 //	}
-	
-	public abstract boolean isEnergyInput(Direction side);
 
+	public abstract boolean isEnergyInput(Direction side);
 	public abstract boolean isEnergyOutput(Direction side);
-	
-	
+
 	@Override
 	protected void read(CompoundTag compound, boolean arg1) {
 		super.read(compound, arg1);
-		energy.read(compound);
+		localEnergy.read(compound);
 	}
-	
+
 	@Override
 	public void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
-		energy.write(compound);
+		localEnergy.write(compound);
 	}
-	
+
+	@Override
+	public void remove() {
+		lazyEnergy.invalidate();
+	}
+
 	@Deprecated
 	public void outputTick(int max) {
 		for(Direction side : Direction.values()) {
 			if(!isEnergyOutput(side))
 				continue;
-			energy.outputToSide(level, worldPosition, side, max);
+			localEnergy.outputToSide(level, worldPosition, side, max);
 		}
 	}
-	
+
 	@Override
 	public void tick() {
 		super.tick();
-		if(firstTickState)
+		if(firstTickState) {
+			firstTickState = false;
 			firstTick();
-		firstTickState = false;
+		}
 	}
-	
+
 	public void firstTick() {
 		updateCache();
 	}
-	
+
+	public boolean ignoreCapSide() {
+		return false;
+	}
 	public void updateCache() {
 		if(Objects.requireNonNull(level).isClientSide())
 			return;
 		for(Direction side : Direction.values()) {
-			BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
-			if(te == null) {
-				setCache(side, LazyOptional.empty());
-				continue;
-			}
-			LazyOptional<EnergyStorage> le = LazyOptional.ofObject(EnergyStorage.SIDED.find(te.getLevel(), te.getBlockPos(), side.getOpposite()));
-			setCache(side, le);
+			updateCache(side);
 		}
 	}
-	
-	private LazyOptional<EnergyStorage> escacheUp = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheDown = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheNorth = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheEast = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheSouth = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheWest = LazyOptional.empty();
-	
-	public void setCache(Direction side, LazyOptional<EnergyStorage> storage) {
-		switch (side) {
-			case DOWN -> escacheDown = storage;
-			case EAST -> escacheEast = storage;
-			case NORTH -> escacheNorth = storage;
-			case SOUTH -> escacheSouth = storage;
-			case UP -> escacheUp = storage;
-			case WEST -> escacheWest = storage;
+
+	public void updateCache(Direction side) {
+		if (!level.isLoaded(worldPosition.relative(side))) {
+			setCache(side, LazyOptional.empty());
+			return;
+		}
+		BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
+		if(te == null) {
+			setCache(side, LazyOptional.empty());
+			return;
+		}
+		LazyOptional<EnergyStorage> le = LazyOptional.ofObject(EnergyStorage.SIDED.find(te.getLevel(), te.getBlockPos(), side.getOpposite()));
+		if(ignoreCapSide() && !le.isPresent()) le = te.getCapability(CapabilityEnergy.ENERGY);
+		// Make sure the side isn't already cached.
+		if (le.equals(getCachedEnergy(side))) return;
+		setCache(side, le);
+		le.addListener((es) -> updateCache(side));
+	}
+
+	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheNorth = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheEast = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheSouth = LazyOptional.empty();
+	private LazyOptional<IEnergyStorage> escacheWest = LazyOptional.empty();
+
+	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
+		switch(side) {
+			case DOWN:
+				escacheDown = storage;
+				break;
+			case EAST:
+				escacheEast = storage;
+				break;
+			case NORTH:
+				escacheNorth = storage;
+				break;
+			case SOUTH:
+				escacheSouth = storage;
+				break;
+			case UP:
+				escacheUp = storage;
+				break;
+			case WEST:
+				escacheWest = storage;
+				break;
 		}
 	}
-	
-	public EnergyStorage getCachedEnergy(Direction side) {
-		return switch (side) {
-			case DOWN -> escacheDown.getValueUnsafer();
-			case EAST -> escacheEast.getValueUnsafer();
-			case NORTH -> escacheNorth.getValueUnsafer();
-			case SOUTH -> escacheSouth.getValueUnsafer();
-			case UP -> escacheUp.getValueUnsafer();
-			case WEST -> escacheWest.getValueUnsafer();
-		};
+
+	public LazyOptional<IEnergyStorage> getCachedEnergy(Direction side) {
+		switch(side) {
+			case DOWN:
+				return escacheDown;
+			case EAST:
+				return escacheEast;
+			case NORTH:
+				return escacheNorth;
+			case SOUTH:
+				return escacheSouth;
+			case UP:
+				return escacheUp;
+			case WEST:
+				return escacheWest;
+		}
+		return LazyOptional.empty();
 	}
 }

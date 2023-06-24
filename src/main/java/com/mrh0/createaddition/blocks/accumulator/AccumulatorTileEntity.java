@@ -1,25 +1,28 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
-import com.mrh0.createaddition.energy.BaseElectricTileEntity;
-import com.mrh0.createaddition.energy.IWireNode;
-import com.mrh0.createaddition.energy.WireType;
+import com.mrh0.createaddition.energy.*;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
-import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.mrh0.createaddition.util.IComparatorOverride;
+
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -28,16 +31,19 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 @SuppressWarnings({"UnstableApiUsage", "CommentedOutCode"})
 public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWireNode, IHaveGoggleInformation, IComparatorOverride, IObserveTileEntity {
-	
-	private final BlockPos[] connectionPos;
-	private final int[] connectionIndices;
-	private final WireType[] connectionTypes;
-	public IWireNode[] nodeCache;
+
+	private final Set<LocalNode> wireCache = new HashSet<>();
+	private final LocalNode[] localNodes;
+	private final IWireNode[] nodeCache;
+
+	private boolean wasContraption = false;
+	private boolean firstTick = true;
 	
 	public static Vec3 OFFSET_NORTH = new Vec3(	0f, 	9f/16f, 	-5f/16f);
 	public static Vec3 OFFSET_WEST = new Vec3(	-5f/16f, 	9f/16f, 	0f);
@@ -46,31 +52,25 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	
 	public static final int NODE_COUNT = 8;
 
-	public static final long CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
+	//public static final long CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
 	public AccumulatorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
-		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, MAX_OUT);
+		super(tileEntityTypeIn, pos, state, Config.ACCUMULATOR_CAPACITY.get(), Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get());
 		
 		setLazyTickRate(20);
-		
-		connectionPos = new BlockPos[getNodeCount()];
-		connectionIndices = new int[getNodeCount()];
-		connectionTypes = new WireType[getNodeCount()];
-		
-		nodeCache = new IWireNode[getNodeCount()];
+
+		this.localNodes = new LocalNode[getNodeCount()];
+		this.nodeCache = new IWireNode[getNodeCount()];
 	}
-	
-	public IWireNode getNode(int node) {
-		if(getNodeType(node) == null) {
-			nodeCache[node] = null;
-			return null;
-		}
-		if(nodeCache[node] == null)
-			nodeCache[node] = IWireNode.getWireNode(level, getNodePos(node));
-		if(nodeCache[node] == null)
-			setNode(node, -1, null, null);
-		
-		return nodeCache[node];
+
+	@Override
+	public @Nullable IWireNode getWireNode(int index) {
+		return IWireNode.getWireNodeFrom(index, this, this.localNodes, this.nodeCache, level);
+	}
+
+	@Override
+	public @Nullable LocalNode getLocalNode(int index) {
+		return this.localNodes[index];
 	}
 	
 	@Override
@@ -127,16 +127,16 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 	
 	@Override
-	public int getNodeFromPos(Vec3 vec) {
+	public int getAvailableNode(Vec3 pos) {
 		assert level != null;
 		Direction dir = level.getBlockState(worldPosition).getValue(AccumulatorBlock.FACING);
 		boolean upper = true;
-		vec = vec.subtract(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
+		pos = pos.subtract(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
 		switch (dir) {
-			case NORTH -> upper = vec.z() < 0.5d;
-			case WEST -> upper = vec.x() < 0.5d;
-			case SOUTH -> upper = vec.z() > 0.5d;
-			case EAST -> upper = vec.x() > 0.5d;
+			case NORTH -> upper = pos.z() < 0.5d;
+			case WEST -> upper = pos.x() < 0.5d;
+			case SOUTH -> upper = pos.z() > 0.5d;
+			case EAST -> upper = pos.x() > 0.5d;
 			default -> {
 			}
 		}
@@ -150,65 +150,92 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 
 	@Override
-	public BlockPos getNodePos(int node) {
-		return connectionPos[node];
-	}
+	public void setNode(int index, int other, BlockPos pos, WireType type) {
+		this.localNodes[index] = new LocalNode(this, index, other, type, pos);
 
-	@Override
-	public WireType getNodeType(int node) {
-		return connectionTypes[node];
-	}
-	
-	@Override
-	public int getOtherNodeIndex(int node) {
-		if(connectionPos[node] == null)
-			return -1;
-		return connectionIndices[node];
-	}
-	
-	@Override
-	public void setNode(int node, int other, BlockPos pos, WireType type) {
-		connectionPos[node] = pos; 
-		connectionIndices[node] = other;
-		connectionTypes[node] = type;
-		
+		notifyUpdate();
+
 		// Invalidate
 		if(networkIn != null)
 			networkIn.invalidate();
 		if(networkOut != null)
 			networkOut.invalidate();
+	}
+
+	@Override
+	public void removeNode(int index, boolean dropWire) {
+		LocalNode old = this.localNodes[index];
+		this.localNodes[index] = null;
+		this.nodeCache[index] = null;
+
+		this.invalidateNodeCache();
+		notifyUpdate();
+
+		// Invalidate
+		if(networkIn != null)
+			networkIn.invalidate();
+		if(networkOut != null)
+			networkOut.invalidate();
+		// Drop wire next tick.
+		if (dropWire && old != null) this.wireCache.add(old);
+	}
+
+	@Override
+	public BlockPos getPos() {
+		return getBlockPos();
 	}
 	
 	@Override
 	public void read(CompoundTag nbt, boolean clientPacket) {
 		super.read(nbt, clientPacket);
-		for(int i = 0; i < getNodeCount(); i++)
-			if(IWireNode.hasNode(nbt, i))
-				readNode(nbt, i);
+		// Convert old nbt data. x0, y0, z0, node0 & type0 etc.
+		if (!clientPacket && nbt.contains("node0")) {
+			convertOldNbt(nbt);
+			setChanged();
+		}
+
+		// Read the nodes.
+		invalidateLocalNodes();
+		invalidateNodeCache();
+		ListTag nodes = nbt.getList(LocalNode.NODES, Tag.TAG_COMPOUND);
+		nodes.forEach(tag -> {
+			LocalNode localNode = new LocalNode(this, (CompoundTag) tag);
+			this.localNodes[localNode.getIndex()] = localNode;
+		});
+
+		// Check if this was a contraption.
+		if (nbt.contains("contraption") && !clientPacket) {
+			this.wasContraption = nbt.getBoolean("contraption");
+			NodeRotation rotation = getBlockState().getValue(NodeRotation.ROTATION);
+			if (rotation != NodeRotation.NONE)
+				level.setBlock(getBlockPos(), getBlockState().setValue(NodeRotation.ROTATION, NodeRotation.NONE), 0);
+			// Loop over all nodes and update their relative positions.
+			for (LocalNode localNode : this.localNodes) {
+				if (localNode == null) continue;
+				localNode.updateRelative(rotation);
+			}
+		}
+
+		// Invalidate the network if we updated the nodes.
+		if (!nodes.isEmpty() && this.networkIn != null && this.networkOut != null) {
+			this.networkIn.invalidate();
+			this.networkOut.invalidate();
+		}
 	}
 	
 	@Override
 	public void write(CompoundTag nbt, boolean clientPacket) {
 		super.write(nbt, clientPacket);
-		for(int i = 0; i < getNodeCount(); i++) {
-			if(getNodeType(i) == null)
-				IWireNode.clearNode(nbt, i);
-			else //?
-				writeNode(nbt, i);
+		// Write nodes.
+		ListTag nodes = new ListTag();
+		for (int i = 0; i < getNodeCount(); i++) {
+			LocalNode localNode = this.localNodes[i];
+			if (localNode == null) continue;
+			CompoundTag tag = new CompoundTag();
+			localNode.write(tag);
+			nodes.add(tag);
 		}
-	}
-	
-	@Override
-	public void removeNode(int other) {
-		IWireNode.super.removeNode(other);
-		invalidateNodeCache();
-		this.setChanged();
-		
-		// Invalidate
-		if(networkIn != null)
-			networkIn.invalidate();
-		if(networkOut != null)
-			networkOut.invalidate();
+		nbt.put(LocalNode.NODES, nodes);
 	}
 	
 	@Override
@@ -216,15 +243,15 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		return NODE_COUNT;
 	}
 
-	@Override
-	public BlockPos getMyPos() {
-		return worldPosition;
+	public void invalidateLocalNodes() {
+		for(int i = 0; i < getNodeCount(); i++)
+			this.localNodes[i] = null;
 	}
 
 	@Override
 	public void invalidateNodeCache() {
 		for(int i = 0; i < getNodeCount(); i++)
-			nodeCache[i] = null;
+			this.nodeCache[i] = null;
 	}
 	
 	private int lastComparator = 0;
@@ -247,10 +274,42 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 	
 	private boolean firstTickState = true;
-	
+
+	/**
+	 * Called after the tile entity has been part of a contraption.
+	 * Only runs on the server.
+	 */
+	private void validateNodes() {
+		boolean changed = validateLocalNodes(this.localNodes);
+
+		// Always set as changed if we were a contraption, as nodes might have been rotated.
+		notifyUpdate();
+
+		if (changed) {
+			invalidateNodeCache();
+			// Invalidate
+			if (this.networkIn != null) this.networkIn.invalidate();
+			if (this.networkOut != null) this.networkOut.invalidate();
+		}
+	}
+
 	@Override
 	public void tick() {
 		super.tick();
+
+		if (this.firstTick) {
+			this.firstTick = false;
+			// Check if this blockentity was a part of a contraption.
+			// If it was, then make sure all the nodes are valid.
+			if (this.wasContraption && !level.isClientSide()) {
+				this.wasContraption = false;
+				validateNodes();
+			}
+		}
+
+		// Check if we need to drop any wires due to contraption.
+		if (!this.wireCache.isEmpty() && !isRemoved()) handleWireCache(level, this.wireCache);
+
 		if(firstTickState)
 			firstTick();
 		firstTickState = false;
@@ -265,42 +324,36 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	private void networkTick() {
 		if(awakeNetwork(level)) {
 			//EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, 0);//EnergyNetwork.buildNetwork(world, this);
-			causeBlockUpdate();
+			//causeBlockUpdate();
+			notifyUpdate();
 		}
 		if(networkOut == null) {
 			//System.out.println("WARN!");
 			return;
 		}
 		
-		try(Transaction t = Transaction.openOuter()) {
-			long demand, pull;
-			try(Transaction nested = Transaction.openNested(t)) {
-				demand = networkOut.push(energy.extract(demandOut, nested));
+		
+		localEnergy.extractEnergy(networkOut.push(localEnergy.extractEnergy(demandOut, true)), false);
 
-				/*energy.receiveEnergy(networkOut.push(energy.extractEnergy(demandOut, false)), false);*/
-				pull = networkIn.pull(Math.min(demandIn, energy.insert(MAX_IN, nested)));
-
-				demandIn = networkIn.demand(energy.insert(MAX_IN, nested));
-			}
-			energy.extract(demand, t);
-
-			demandOut = networkOut.getDemand();
-			energy.insert(pull, t);
-			t.commit();
-		}
+		/*energy.receiveEnergy(networkOut.push(energy.extractEnergy(demandOut, false)), false);*/
+		demandOut = networkOut.getDemand();
+		localEnergy.receiveEnergy(networkIn.pull(Math.min(demandIn, localEnergy.receiveEnergy(MAX_IN, true))), false);
+		demandIn = networkIn.demand(localEnergy.receiveEnergy(MAX_IN, true));
+		
 	}
-	
-	public void onBlockRemoved() {
+
+	@Override
+	public void remove() {
+		if (level.isClientSide()) return;
 		for(int i = 0; i < getNodeCount(); i++) {
-			if(getNodeType(i) == null)
-				continue;
-			IWireNode node = getNode(i);
-			if(node == null)
-				break;
-			int other = getOtherNodeIndex(i);
-			node.removeNode(other);
-			node.invalidateNodeCache();
-			RemoveConnectorPacket.send(node.getMyPos(), other, level);
+			LocalNode localNode = getLocalNode(i);
+			if (localNode == null) continue;
+			IWireNode otherNode = getWireNode(i);
+			if(otherNode == null) continue;
+
+			int ourNode = localNode.getOtherIndex();
+			if (localNode.isInvalid()) otherNode.removeNode(ourNode);
+			else otherNode.removeNode(ourNode, true); // Make the other node drop the wires.
 		}
 		invalidateNodeCache();
 		// Invalidate
@@ -308,7 +361,6 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			networkIn.invalidate();
 		if(networkOut != null)
 			networkOut.invalidate();
-		setRemoved();
 	}
 			
 	private EnergyNetwork networkIn;
@@ -333,12 +385,12 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	}
 	
 	public void setEnergy(int energy) {
-		this.energy.setEnergy(energy);
+		this.localEnergy.setEnergy(energy);
 	}
 
 	@Override
 	public int getComparatorOverride() {
-		return (int)((double)energy.getAmount() / (double)energy.getCapacity() * 15d);
+		return (int)((double)localEnergy.getAmount() / (double)localEnergy.getCapacity() * 15d);
 	}
 	
 	@Override
@@ -346,7 +398,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		HitResult ray = Minecraft.getInstance().hitResult;
 		if(ray == null)
 			return false;
-		int node = getNodeFromPos(ray.getLocation());
+		int node = getAvailableNode(ray.getLocation());
 		
 		ObservePacket.send(worldPosition, node);
 
@@ -355,8 +407,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
-				.append(Util.getTextComponent(energy)));
-
+				.append(Util.getTextComponent(localEnergy)));
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
@@ -374,6 +425,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
 		if(isNetworkValid(0))
 			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.node()).getPulled(), getNetwork(pack.node()).getPushed(), player);
-		causeBlockUpdate();
+		//causeBlockUpdate();
+		notifyUpdate();
 	}
 }

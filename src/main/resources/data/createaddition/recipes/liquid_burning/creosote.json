@@ -1,0 +1,14 @@
+{
+	"type":"createaddition:liquid_burning",
+	"input": {
+      	"fluidTag": "forge:creosote",
+      	"amount": 1000
+	},
+	"burnTime": 4800,
+	"conditions": [
+	    {
+	        "fluidTag": "forge:creosote",
+	        "type": "createaddition:has_fluid_tag"
+	    }
+	]
+}

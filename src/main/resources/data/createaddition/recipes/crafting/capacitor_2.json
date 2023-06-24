@@ -2,22 +2,18 @@
 	"type": "minecraft:crafting_shaped",
 	
 	"pattern":
-	[" C ",
-	 "IZI",
-	 " T "],
+	["C",
+	 "Z",
+	 "T"],
 	"key":
 	{
 		"Z":
 		{
-			"tag": "c:plates/zinc"
+			"tag": "forge:plates/zinc"
 		},
 		"C":
 		{
-			"tag": "c:copper_plates"
-		},
-		"I":
-		{
-			"tag": "c:iron_plates"
+			"tag": "forge:plates/copper"
 		},
 		"T":
 		{

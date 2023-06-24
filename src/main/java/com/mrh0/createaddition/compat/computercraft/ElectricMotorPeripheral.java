@@ -1,7 +1,10 @@
 package com.mrh0.createaddition.compat.computercraft;
 
 
+import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
+
+import com.mrh0.createaddition.config.Config;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IComputerAccess;
@@ -93,7 +96,7 @@ public class ElectricMotorPeripheral implements IPeripheral {
     		int _rpm = rpm.orElse(getSpeed());
     		if(rpm.isPresent())
     			setSpeed(deg < 0 ? -_rpm : _rpm);
-    		return tileEntity.getDurationAngle(deg, 0, _rpm) / 20f;
+    		return ElectricMotorTileEntity.getDurationAngle(deg, 0, _rpm) / 20f;
     	}
     	return 0f;
     }
@@ -104,8 +107,18 @@ public class ElectricMotorPeripheral implements IPeripheral {
     		int _rpm = rpm.orElse(getSpeed());
     		if(rpm.isPresent())
     			setSpeed(blocks < 0 ? -_rpm : _rpm);
-    		return tileEntity.getDurationDistance(blocks, 0, _rpm) / 20f;
+    		return ElectricMotorTileEntity.getDurationDistance(blocks, 0, _rpm) / 20f;
     	}
     	return 0f;
+    }
+
+    @LuaFunction(mainThread = true)
+    public int getMaxInsert() {
+        return Config.ELECTRIC_MOTOR_MAX_INPUT.get();
+    }
+
+    @LuaFunction(mainThread = true)
+    public int getMaxExtract() {
+        return 0;
     }
 }

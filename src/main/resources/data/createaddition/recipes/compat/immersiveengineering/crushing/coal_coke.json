@@ -1,0 +1,21 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/coal_coke"
+    }
+  ],
+  "results": [
+    {
+      "item": "immersiveengineering:dust_coke",
+      "count": 9
+    }
+  ],
+  "processingTime": 300,
+  "conditions": [
+    {
+    	"type": "forge:mod_loaded",
+    	"modid": "immersiveengineering"
+  	}
+  ]
+}

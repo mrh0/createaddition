@@ -1,0 +1,8 @@
+{
+	"type":"createaddition:liquid_burning",
+	"input": {
+      	"fluidTag": "forge:plantoil",
+      	"amount": 1000
+	},
+	"burnTime": 4800
+}

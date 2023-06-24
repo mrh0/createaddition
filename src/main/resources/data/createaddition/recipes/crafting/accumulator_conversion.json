@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+		    "item": "createaddition:accumulator"
+		}
+	],
+	"result":{
+		"item": "createaddition:modular_accumulator",
+		"count": 3
+	}
+}

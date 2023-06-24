@@ -11,14 +11,14 @@
       "tag": "minecraft:leaves"
     },
     {
-      "fluidTag": "c:plantoil",
-      "amount": 12150
+      "fluidTag": "forge:plantoil",
+      "amount": 100
     }
   ],
   "results": [
     {
       "item": "createaddition:biomass",
-      "count": 2
+      "count": 1
     }
   ],
   "heatRequirement": "heated"

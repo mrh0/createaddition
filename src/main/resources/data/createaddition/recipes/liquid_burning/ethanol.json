@@ -1,0 +1,14 @@
+{
+	"type":"createaddition:liquid_burning",
+	"input": {
+      	"fluidTag": "forge:ethanol",
+      	"amount": 1000
+	},
+	"burnTime": 6000,
+	"conditions": [
+	    {
+	        "fluidTag": "forge:ethanol",
+	        "type": "createaddition:has_fluid_tag"
+	    }
+	]
+}
