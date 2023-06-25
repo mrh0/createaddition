@@ -1,52 +1,65 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
+import com.jozufozu.flywheel.api.Instancer;
 import com.jozufozu.flywheel.api.MaterialManager;
-import com.simibubi.create.content.contraptions.base.flwdata.RotatingData;
-import com.simibubi.create.content.contraptions.relays.encased.ShaftInstance;
+import com.jozufozu.flywheel.core.materials.FlatLit;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntityInstance;
+import com.simibubi.create.content.kinetics.base.ShaftInstance;
+import com.simibubi.create.content.kinetics.base.SingleRotatingInstance;
+import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
+import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class RollingMillInstance extends ShaftInstance {
+public class RollingMillInstance extends KineticBlockEntityInstance<RollingMillTileEntity> {
+    protected RotatingData rotatingModel1;
+    protected RotatingData rotatingModel2;
 
-    private RotatingData shaft;
-
-    public RollingMillInstance(MaterialManager dispatcher, RollingMillTileEntity tile) {
-        super(dispatcher, tile);
+    public RollingMillInstance(MaterialManager materialManager, RollingMillTileEntity blockEntity) {
+        super(materialManager, blockEntity);
     }
 
-    @Override
     public void init() {
-        super.init();
-        shaft = getModel().createInstance();
-        shaft.setRotationAxis(axis)
-                .setRotationalSpeed(getTileSpeed())
+        this.rotatingModel1 = this.setup((RotatingData)this.getModel().createInstance());
+        this.rotatingModel2 = this.setup((RotatingData)this.getModel().createInstance());
+
+        rotatingModel1.setRotationAxis(axis)
+                .setRotationalSpeed(getBlockEntitySpeed())
                 .setRotationOffset(-getRotationOffset(axis))
                 .setColor(blockEntity)
                 .setPosition(getInstancePosition());
 
-        transformModels();
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        transformModels();
-    }
-
-    private void transformModels() {
-        shaft.setPosition(getInstancePosition())
+        rotatingModel2.setRotationAxis(axis)
+                .setRotationalSpeed(getBlockEntitySpeed())
+                .setRotationOffset(-getRotationOffset(axis))
+                .setColor(blockEntity)
+                .setPosition(getInstancePosition())
                 .nudge(0, 4f/16f, 0)
-                .setRotationalSpeed(-getTileSpeed());
+                .setRotationalSpeed(-getBlockEntitySpeed());
     }
 
-    @Override
+    public void update() {
+        this.updateRotation(this.rotatingModel1);
+        this.updateRotation(this.rotatingModel2);
+        rotatingModel2.setRotationalSpeed(-getBlockEntitySpeed());
+    }
+
     public void updateLight() {
-        super.updateLight();
-
-        relight(pos, shaft);
+        this.relight(this.pos, new FlatLit[]{this.rotatingModel1, this.rotatingModel2});
     }
 
-    @Override
     public void remove() {
-        super.remove();
-        shaft.delete();
+        this.rotatingModel1.delete();
+        this.rotatingModel2.delete();
+    }
+
+    protected BlockState getRenderedBlockState() {
+        return AllBlocks.SHAFT.getDefaultState().setValue(ShaftBlock.AXIS, blockState.getValue(RollingMillBlock.HORIZONTAL_FACING).getAxis());
+    }
+
+    protected Instancer<RotatingData> getModel() {
+        return this.getRotatingMaterial().getModel(this.getRenderedBlockState());
     }
 }

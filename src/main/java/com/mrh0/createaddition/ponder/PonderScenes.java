@@ -6,7 +6,7 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;

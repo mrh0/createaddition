@@ -1,7 +1,7 @@
 package com.mrh0.createaddition.index;
 
 import com.simibubi.create.Create;
-import com.simibubi.create.content.curiosities.weapons.PotatoCannonProjectileType;
+import com.simibubi.create.content.equipment.potatoCannon.PotatoCannonProjectileType;
 
 public class CAPotatoCannonProjectiles {
 	

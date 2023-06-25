@@ -17,8 +17,8 @@ import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.compat.jei.*;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
-import com.simibubi.create.foundation.config.AllConfigs;
-import com.simibubi.create.foundation.config.CRecipes;
+import com.simibubi.create.infrastructure.config.AllConfigs;
+import com.simibubi.create.infrastructure.config.CRecipes;
 import com.simibubi.create.foundation.utility.Lang;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -147,7 +147,7 @@ public class CreateAdditionJEI implements IModPlugin {
 
 		public CreateRecipeCategory<T> build(String name, CreateRecipeCategory.Factory<T> factory) {
 			Supplier<List<T>> recipesSupplier;
-			if (predicate.test(AllConfigs.SERVER.recipes)) {
+			if (predicate.test(AllConfigs.server().recipes)) {
 				recipesSupplier = () -> {
 					List<T> recipes = new ArrayList<>();
 					for (Consumer<List<T>> consumer : recipeListConsumers)

@@ -1,8 +1,8 @@
 package com.mrh0.createaddition.energy;
 
 import com.mrh0.createaddition.transfer.EnergyTransferable;
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,7 +15,7 @@ import team.reborn.energy.api.EnergyStorage;
 
 import java.util.List;
 
-public abstract class BaseElectricTileEntity extends SmartTileEntity implements EnergyTransferable {
+public abstract class BaseElectricTileEntity extends SmartBlockEntity implements EnergyTransferable {
 
 	protected final InternalEnergyStorage energy;
 	protected LazyOptional<EnergyStorage> lazyEnergy;
@@ -34,7 +34,7 @@ public abstract class BaseElectricTileEntity extends SmartTileEntity implements 
 	}
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
 
 	@Nullable
 	@Override

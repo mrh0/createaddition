@@ -2,7 +2,7 @@ package com.mrh0.createaddition.blocks.rolling_mill;
 
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
-import com.simibubi.create.content.contraptions.base.KineticTileEntity;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.ViewOnlyWrappedStorageView;
@@ -36,7 +36,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @SuppressWarnings({"UnstableApiUsage", "CommentedOutCode", "removal", "deprecation"})
-public class RollingMillTileEntity extends KineticTileEntity implements ItemTransferable {
+public class RollingMillTileEntity extends KineticBlockEntity implements ItemTransferable {
 
 	public ItemStackHandler inputInv;
 	public ItemStackHandler outputInv;

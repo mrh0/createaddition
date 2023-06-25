@@ -10,13 +10,13 @@ import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
+import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
+import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour.ProcessingResult;
+import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour.TransportedResult;
 
 import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.DamageSourceAccessor;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
@@ -66,15 +66,15 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	
 	private static final DamageSource dmgSource = DamageSourceAccessor.port_lib$init("tesla_coil");
 	
-	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
-		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, 0);
+	public TeslaCoilTileEntity(BlockEntityType<?> blockEntityTypeIn, BlockPos pos, BlockState state) {
+		super(blockEntityTypeIn, pos, state, CAPACITY, MAX_IN, 0);
 		inputInv = new ItemStackHandler(1);
 	}
 	
 	public BeltProcessingBehaviour processingBehaviour;
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
 		super.addBehaviours(behaviours);
 		processingBehaviour =
 			new BeltProcessingBehaviour(this).whenItemEnters((s, i) -> TeslaCoilBeltCallbacks.onItemReceived(s, i, this))

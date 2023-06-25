@@ -2,7 +2,7 @@ package com.mrh0.createaddition.blocks.creative_energy;
 
 import com.mrh0.createaddition.energy.CreativeEnergyStorage;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
-import com.simibubi.create.content.logistics.block.inventories.CrateTileEntity;
+import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
 @SuppressWarnings("UnstableApiUsage")
-public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyTransferable {
+public class CreativeEnergyTileEntity extends CrateBlockEntity implements EnergyTransferable {
 
 	protected final CreativeEnergyStorage energy;
 

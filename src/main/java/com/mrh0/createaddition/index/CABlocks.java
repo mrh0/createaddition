@@ -15,10 +15,9 @@ import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.Create;
-import com.simibubi.create.content.AllSections;
-import com.simibubi.create.content.contraptions.components.AssemblyOperatorBlockItem;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.foundation.block.BlockStressDefaults;
+import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
@@ -128,12 +127,8 @@ public class CABlocks {
 				.transform(BuilderTransformers.casing(CASpriteShifts.OVERCHARGED_CASING))
 				.properties(p -> p.lightLevel($ -> 4))
 				.register();*/
-	
+
 	public static void register() {
-		Create.REGISTRATE.addToSection(TESLA_COIL, AllSections.KINETICS);
-		Create.REGISTRATE.addToSection(CREATIVE_ENERGY, AllSections.KINETICS);
-		Create.REGISTRATE.addToSection(CONNECTOR_COPPER, AllSections.KINETICS);
-		Create.REGISTRATE.addToSection(ACCUMULATOR, AllSections.KINETICS);
-		Create.REGISTRATE.addToSection(REDSTONE_RELAY, AllSections.KINETICS);
+
 	}
 }

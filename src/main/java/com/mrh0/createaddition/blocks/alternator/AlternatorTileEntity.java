@@ -6,7 +6,7 @@ import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.base.KineticTileEntity;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.utility.Lang;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
@@ -27,7 +27,7 @@ import team.reborn.energy.api.EnergyStorageUtil;
 import java.util.List;
 
 @SuppressWarnings({"CommentedOutCode", "UnstableApiUsage"})
-public class AlternatorTileEntity extends KineticTileEntity implements EnergyTransferable {
+public class AlternatorTileEntity extends KineticBlockEntity implements EnergyTransferable {
 	
 	protected final InternalEnergyStorage energy;
 	private final LazyOptional<EnergyStorage> lazyEnergy;

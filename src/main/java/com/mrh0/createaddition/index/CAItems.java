@@ -6,8 +6,7 @@ import com.mrh0.createaddition.item.DiamondGritSandpaper;
 import com.mrh0.createaddition.item.WireSpool;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
-import com.simibubi.create.content.AllSections;
-import com.simibubi.create.content.curiosities.tools.SandPaperItemRenderer;
+import com.simibubi.create.content.equipment.sandPaper.SandPaperItemRenderer;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.simibubi.create.foundation.item.TooltipHelper;
@@ -39,7 +38,7 @@ public class CAItems {
 	
 	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER = REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new)
 			.transform(CreateRegistrate.customRenderedItem(() -> SandPaperItemRenderer::new))
-			.onRegister(s -> TooltipHelper.referTo(s, AllItems.SAND_PAPER))
+			//.onRegister(s -> TooltipHelper.referTo(s, AllItems.SAND_PAPER))
 			.register();
 	
 	public static final ItemEntry<Item> ZINC_SHEET =
@@ -128,6 +127,7 @@ public class CAItems {
 	
 	
 	public static void register() {
+		/*
 		Create.REGISTRATE.addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
 		//Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
 		Create.REGISTRATE.addToSection(COPPER_SPOOL, AllSections.MATERIALS);
@@ -137,6 +137,7 @@ public class CAItems {
 		Create.REGISTRATE.addToSection(BIOMASS_PELLET, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
 		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
+		*/
 		
 		
 	}

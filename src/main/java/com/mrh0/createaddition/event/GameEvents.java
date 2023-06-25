@@ -7,7 +7,7 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;

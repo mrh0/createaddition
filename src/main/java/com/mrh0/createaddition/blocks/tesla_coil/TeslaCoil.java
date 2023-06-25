@@ -2,8 +2,8 @@ package com.mrh0.createaddition.blocks.tesla_coil;
 
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import io.github.fabricators_of_create.porting_lib.block.ConnectableRedstoneBlock;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class TeslaCoil extends Block implements ITE<TeslaCoilTileEntity>, IWrenchable, ConnectableRedstoneBlock {
+public class TeslaCoil extends Block implements IBE<TeslaCoilTileEntity>, IWrenchable, ConnectableRedstoneBlock {
 	public TeslaCoil(Properties props) {
 		super(props);
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
@@ -39,7 +39,7 @@ public class TeslaCoil extends Block implements ITE<TeslaCoilTileEntity>, IWrenc
 	}
 	
 	@Override
-	public Class<TeslaCoilTileEntity> getTileEntityClass() {
+	public Class<TeslaCoilTileEntity> getBlockEntityClass() {
 		return TeslaCoilTileEntity.class;
 	}
 
@@ -68,7 +68,7 @@ public class TeslaCoil extends Block implements ITE<TeslaCoilTileEntity>, IWrenc
 	}
 
 	@Override
-	public BlockEntityType<? extends TeslaCoilTileEntity> getTileEntityType() {
+	public BlockEntityType<? extends TeslaCoilTileEntity> getBlockEntityType() {
 		return CATileEntities.TESLA_COIL.get();
 	}
 }

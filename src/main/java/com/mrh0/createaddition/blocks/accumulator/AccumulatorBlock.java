@@ -3,8 +3,8 @@ package com.mrh0.createaddition.blocks.accumulator;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.util.IComparatorOverride;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,7 +31,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity>, IWrenchable {
+
+public class AccumulatorBlock extends Block implements IBE<AccumulatorTileEntity>, IWrenchable {
 
 	public static final VoxelShape ACCUMULATOR_SHAPE_MAIN = Block.box(0, 0, 0, 16, 12, 16);
 	public static final VoxelShape ACCUMULATOR_SHAPE_X = Shapes.or(ACCUMULATOR_SHAPE_MAIN, Block.box(1, 0, 6, 5, 16, 10), Block.box(11, 0, 6, 15, 16, 10));
@@ -45,7 +46,7 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	}
 
 	@Override
-	public Class<AccumulatorTileEntity> getTileEntityClass() {
+	public Class<AccumulatorTileEntity> getBlockEntityClass() {
 		return AccumulatorTileEntity.class;
 	}
 	
@@ -54,7 +55,7 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 		Axis axis = state.getValue(FACING).getAxis();
 		return axis == Axis.X ? ACCUMULATOR_SHAPE_X : ACCUMULATOR_SHAPE_Z;
 	}
-	
+
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return CATileEntities.ACCUMULATOR.create(pos, state);
@@ -128,7 +129,7 @@ public class AccumulatorBlock extends Block implements ITE<AccumulatorTileEntity
 	}
 
 	@Override
-	public BlockEntityType<? extends AccumulatorTileEntity> getTileEntityType() {
+	public BlockEntityType<? extends AccumulatorTileEntity> getBlockEntityType() {
 		return null;
 	}
 	

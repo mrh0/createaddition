@@ -5,12 +5,12 @@ import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.content.contraptions.fluids.tank.FluidTankBlock;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import com.simibubi.create.content.fluids.tank.FluidTankBlock;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HeatLevel;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.VecHelper;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
@@ -55,7 +55,7 @@ import java.util.List;
 
 
 @SuppressWarnings({"UnstableApiUsage"})
-public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IObserveTileEntity, SidedStorageBlockEntity {
+public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHaveGoggleInformation, IObserveTileEntity, SidedStorageBlockEntity {
 	public static final int MAX_HEAT_CAPACITY;
 	protected FuelType activeFuel;
 	protected int remainingBurnTime;
@@ -199,7 +199,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 	}
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
 
 	@Override
 	public void write(CompoundTag compound, boolean clientPacket) {
@@ -463,7 +463,8 @@ public class LiquidBlazeBurnerTileEntity extends SmartTileEntity implements IHav
 
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
-		causeBlockUpdate();
+		//causeBlockUpdate();
+		notifyUpdate();
 	}
 
 	public enum FuelType {

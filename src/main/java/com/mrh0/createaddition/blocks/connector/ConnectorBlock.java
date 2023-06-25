@@ -3,8 +3,8 @@ package com.mrh0.createaddition.blocks.connector;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
@@ -29,7 +29,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, IWrenchable {
+public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, IWrenchable {
 
 	public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).forDirectional();
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -52,7 +52,7 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	}
 
 	@Override
-	public Class<ConnectorTileEntity> getTileEntityClass() {
+	public Class<ConnectorTileEntity> getBlockEntityClass() {
 		return ConnectorTileEntity.class;
 	}
 	
@@ -126,7 +126,7 @@ public class ConnectorBlock extends Block implements ITE<ConnectorTileEntity>, I
 	}
 
 	@Override
-	public BlockEntityType<? extends ConnectorTileEntity> getTileEntityType() {
+	public BlockEntityType<? extends ConnectorTileEntity> getBlockEntityType() {
 		return CATileEntities.CONNECTOR.get();
 	}
 	

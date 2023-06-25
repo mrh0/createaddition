@@ -9,11 +9,11 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
-import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour.StepContext;
+import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.CenteredSideValueBoxTransform;
+import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour.StepContext;
 import com.simibubi.create.foundation.utility.Lang;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.ChatFormatting;
@@ -30,7 +30,7 @@ import team.reborn.energy.api.EnergyStorage;
 import java.util.List;
 
 @SuppressWarnings("CommentedOutCode")
-public class ElectricMotorTileEntity extends GeneratingKineticTileEntity implements EnergyTransferable {
+public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity implements EnergyTransferable {
 	
 	protected ScrollValueBehaviour generatedSpeed;
 	protected final InternalEnergyStorage energy;
@@ -60,7 +60,7 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 	}
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
 		super.addBehaviours(behaviours);
 
 		CenteredSideValueBoxTransform slot =
@@ -69,10 +69,10 @@ public class ElectricMotorTileEntity extends GeneratingKineticTileEntity impleme
 		generatedSpeed = new ScrollValueBehaviour(Lang.translateDirect("generic.speed"), this, slot);
 		generatedSpeed.between(-RPM_RANGE, RPM_RANGE);
 		generatedSpeed.value = DEFAULT_SPEED;
-		generatedSpeed.scrollableValue = DEFAULT_SPEED;
-		generatedSpeed.withUnit(i -> Lang.translateDirect("generic.unit.rpm"));
+		//generatedSpeed.scrollValue = DEFAULT_SPEED;
+		//generatedSpeed.withUnit(i -> Lang.translateDirect("generic.unit.rpm"));
 		generatedSpeed.withCallback(this::updateGeneratedRotation);
-		generatedSpeed.withStepFunction(ElectricMotorTileEntity::step);
+		//generatedSpeed.withStepFunction(ElectricMotorTileEntity::step);
 		behaviours.add(generatedSpeed);
 	}
 	

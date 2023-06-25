@@ -11,9 +11,9 @@ import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -31,7 +31,7 @@ import java.util.List;
 import static com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelay.*;
 
 @SuppressWarnings("CommentedOutCode")
-public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
+public class RedstoneRelayTileEntity extends SmartBlockEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
 
 
 	private final BlockPos[] connectionPos;
@@ -294,7 +294,8 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	private void networkTick() {
 		if(awakeNetwork(level)) {
 			//EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, 0);//EnergyNetwork.buildNetwork(world, this);
-			causeBlockUpdate();
+			//causeBlockUpdate();
+			notifyUpdate();
 		}
 		BlockState bs = getBlockState();
 		if(!bs.is(CABlocks.REDSTONE_RELAY.get()))
@@ -350,7 +351,7 @@ public class RedstoneRelayTileEntity extends SmartTileEntity implements IWireNod
 	}
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {

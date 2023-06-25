@@ -11,7 +11,7 @@ import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.network.RemoveConnectorPacket;
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -207,7 +207,8 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			return;
 		if(awakeNetwork(level)) {
 			//EnergyNetwork.buildNetwork(world, this);
-			causeBlockUpdate();
+			//causeBlockUpdate();
+			notifyUpdate();
 		}
 		networkTick(network);
 	}
