@@ -36,40 +36,39 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 		IWireNode te = (IWireNode) tileEntityIn;
 
 		for (int i = 0; i < te.getNodeCount(); i++) {
-			if (te.hasConnection(i)) {
-				Vec3 d1 = te.getNodeOffset(i);
-				float ox1 = ((float) d1.x());
-				float oy1 = ((float) d1.y());
-				float oz1 = ((float) d1.z());
+			if (!te.hasConnection(i)) continue;
+			Vec3 d1 = te.getNodeOffset(i);
+			float ox1 = ((float) d1.x());
+			float oy1 = ((float) d1.y());
+			float oz1 = ((float) d1.z());
 
-				IWireNode wn = te.getWireNode(i);
-				if (wn == null)
-					return;
+			IWireNode wn = te.getWireNode(i);
+			if (wn == null)
+				return;
 
-				Vec3 d2 = wn.getNodeOffset(te.getOtherNodeIndex(i)); // get other
-				float ox2 = ((float) d2.x());
-				float oy2 = ((float) d2.y());
-				float oz2 = ((float) d2.z());
+			Vec3 d2 = wn.getNodeOffset(te.getOtherNodeIndex(i)); // get other
+			float ox2 = ((float) d2.x());
+			float oy2 = ((float) d2.y());
+			float oz2 = ((float) d2.z());
 
-				BlockPos other = te.getNodePos(i);
+			BlockPos other = te.getNodePos(i);
 
-				float tx = other.getX() - te.getPos().getX();
-				float ty = other.getY() - te.getPos().getY();
-				float tz = other.getZ() - te.getPos().getZ();
+			float tx = other.getX() - te.getPos().getX();
+			float ty = other.getY() - te.getPos().getY();
+			float tz = other.getZ() - te.getPos().getZ();
 
-				matrixStackIn.pushPose();
+			matrixStackIn.pushPose();
 
-				// IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.getLines());
-				// Matrix4f matrix4f1 = matrixStackIn.peek().getModel();
+			// IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.getLines());
+			// Matrix4f matrix4f1 = matrixStackIn.peek().getModel();
 
-				float dis = distanceFromZero(tx, ty, tz);
+			float dis = distanceFromZero(tx, ty, tz);
 
-				matrixStackIn.translate(tx + .5f + ox2, ty + .5f + oy2, tz + .5f + oz2);
-				wireRender(tileEntityIn, other, matrixStackIn, bufferIn, -tx - ox2 + ox1, -ty - oy2 + oy1, -tz - oz2 + oz1,
-						te.getNodeType(i), dis);
+			matrixStackIn.translate(tx + .5f + ox2, ty + .5f + oy2, tz + .5f + oz2);
+			wireRender(tileEntityIn, other, matrixStackIn, bufferIn, -tx - ox2 + ox1, -ty - oy2 + oy1, -tz - oz2 + oz1,
+					te.getNodeType(i), dis);
 
-				matrixStackIn.popPose();
-			}
+			matrixStackIn.popPose();
 		}
 	}
 
