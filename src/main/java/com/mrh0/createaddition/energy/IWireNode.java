@@ -310,7 +310,7 @@ public interface IWireNode {
 			return getNetwork(node).isValid();
 	}
 
-	default boolean isNodeIndeciesConnected(int in, int other) {
+	default boolean isNodeIndicesConnected(int in, int other) {
 		return true;
 	}
 

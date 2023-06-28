@@ -44,11 +44,11 @@ public class ModularAccumulatorBlockItem extends BlockItem {
 			nbt.remove("Controller");
 			nbt.remove("LastKnownPos");
 			if (nbt.contains("EnergyContent")) {
-				int energy = nbt.getCompound("EnergyContent").getInt("energy");
+				long energy = nbt.getCompound("EnergyContent").getLong("energy");
 				if (energy > 0) {
 					energy = Math.min(ModularAccumulatorTileEntity.getCapacityMultiplier(), energy);
 					CompoundTag ec = new CompoundTag();
-					ec.putInt("energy", energy);
+					ec.putLong("energy", energy);
 					nbt.put("EnergyContent", ec);
 				}
 			}
@@ -117,10 +117,10 @@ public class ModularAccumulatorBlockItem extends BlockItem {
 				if (ModularAccumulatorBlock.isAccumulator(blockState))
 					continue;
 				BlockPlaceContext context = BlockPlaceContext.at(ctx, offsetPos, face);
-				player.getPersistentData()
+				player.getExtraCustomData()
 					.putBoolean("SilenceTankSound", true);
 				super.place(context);
-				player.getPersistentData()
+				player.getExtraCustomData()
 					.remove("SilenceTankSound");
 			}
 		}

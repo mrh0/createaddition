@@ -15,7 +15,9 @@ import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.util.IComparatorOverride;
 
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -332,14 +334,29 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			return;
 		}
 		
-		
-		localEnergy.extractEnergy(networkOut.push(localEnergy.extractEnergy(demandOut, true)), false);
+		try (Transaction t = TransferUtil.getTransaction()) {
+			long toExtract = 0;
+			try (Transaction nested = TransferUtil.getTransaction()) {
+				toExtract = localEnergy.extract(demandOut, nested);
+			}
+			localEnergy.extract(networkOut.push(toExtract), t);
+			t.commit();
+		}
+
 
 		/*energy.receiveEnergy(networkOut.push(energy.extractEnergy(demandOut, false)), false);*/
 		demandOut = networkOut.getDemand();
-		localEnergy.receiveEnergy(networkIn.pull(Math.min(demandIn, localEnergy.receiveEnergy(MAX_IN, true))), false);
-		demandIn = networkIn.demand(localEnergy.receiveEnergy(MAX_IN, true));
-		
+		try (Transaction t = TransferUtil.getTransaction()) {
+			long toInsert = 0;
+			try (Transaction nested = TransferUtil.getTransaction()) {
+				toInsert = localEnergy.insert(MAX_IN, nested);
+			}
+			localEnergy.insert(networkIn.pull(Math.min(demandIn, toInsert)), t);
+			t.commit();
+		}
+		try (Transaction t = TransferUtil.getTransaction()) {
+			demandIn = networkIn.demand(localEnergy.insert(MAX_IN, t));
+		}
 	}
 
 	@Override

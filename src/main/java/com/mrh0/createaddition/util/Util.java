@@ -9,9 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import team.reborn.energy.api.EnergyStorage;
 
 public class Util {
-	public static int max(int...v) {
-		int m = Integer.MIN_VALUE;
-		for(int i : v)
+	public static long max(long...v) {
+		long m = Long.MIN_VALUE;
+		for(long i : v)
 			if(i > m)
 				m = i;
 		return m;
@@ -64,7 +64,7 @@ public class Util {
 		return getTextComponent(ies, "NaN", "fe");
 	}
 
-	public static MutableComponent getTextComponent(int value, String unit) {
+	public static MutableComponent getTextComponent(long value, String unit) {
 		return new TextComponent(format(value)+unit);
 	}
 }

@@ -10,66 +10,74 @@ import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.AllBlocks;
 
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.world.phys.BlockHitResult;
 
-@Mod.EventBusSubscriber
 public class GameEvents {
 
-	@SubscribeEvent
-	public static void worldTickEvent(TickEvent.WorldTickEvent evt) {
-		if(evt.world.isClientSide()) return;
-		if(evt.phase == Phase.END) return;
-		EnergyNetworkManager.tickWorld(evt.world);
+	public static void initCommon() {
+		ServerTickEvents.START_WORLD_TICK.register(GameEvents::worldTickEvent);
+		ServerTickEvents.START_SERVER_TICK.register(GameEvents::serverTickEvent);
+		ServerWorldEvents.LOAD.register(GameEvents::loadEvent);
+		UseBlockCallback.EVENT.register(GameEvents::interact);
 	}
 
-	@SubscribeEvent
-	public static void serverTickEvent(TickEvent.ServerTickEvent evt) {
-		if(evt.phase == Phase.END) return;
+	public static void initClient() {
+		ClientTickEvents.END_CLIENT_TICK.register(GameEvents::clientTickEvent);
+	}
+
+	public static void worldTickEvent(ServerLevel world) {
+		EnergyNetworkManager.tickWorld(world);
+	}
+
+	public static void serverTickEvent(MinecraftServer server) {
 		// Using ServerTick instead of WorldTick because some contraptions can switch worlds.
 		PortableEnergyManager.tick();
 	}
-	
-	@SubscribeEvent
-	public static void clientTickEvent(TickEvent.ClientTickEvent evt) {
-		if(evt.phase == Phase.START) return;
+
+	public static void clientTickEvent(Minecraft client) {
 		ObservePacket.tick();
 		CADebugger.tick();
 	}
-	
-	@SubscribeEvent
-	public static void loadEvent(WorldEvent.Load evt) {
-		if(evt.getWorld().isClientSide())
-			return;
-		new EnergyNetworkManager(evt.getWorld());
+
+	public static void loadEvent(MinecraftServer server, ServerLevel world) {
+		new EnergyNetworkManager(world);
 	}
-	
-	@SubscribeEvent
-    public static void interact(PlayerInteractEvent.RightClickBlock evt) {
+
+    public static InteractionResult interact(Player player, Level world, InteractionHand hand, BlockHitResult hitResult) {
 		try {
-			if(evt.getWorld().isClientSide()) return;
-			BlockState state = evt.getWorld().getBlockState(evt.getPos());
-			if(evt.getItemStack().getItem() == CAItems.STRAW.get()) {
+			BlockPos pos = hitResult.getBlockPos();
+			ItemStack item = player.getItemInHand(hand);
+			if(world.isClientSide()) return InteractionResult.PASS;
+			BlockState state = world.getBlockState(pos);
+			if(item.getItem() == CAItems.STRAW.get()) {
 				if(state.is(AllBlocks.BLAZE_BURNER.get())) {
 					BlockState newState = CABlocks.LIQUID_BLAZE_BURNER.getDefaultState()
 							.setValue(LiquidBlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING/*state.getValue(BlazeBurnerBlock.HEAT_LEVEL)*/)
 							.setValue(LiquidBlazeBurnerBlock.FACING, state.getValue(BlazeBurnerBlock.FACING));
-					evt.getWorld().setBlockAndUpdate(evt.getPos(), newState);
+					world.setBlockAndUpdate(pos, newState);
 					//if(!evt.getEntity().isCreative())
-						evt.getItemStack().shrink(1);
-					evt.setCancellationResult(InteractionResult.SUCCESS);
-	            	evt.setCanceled(true);
+						item.shrink(1);
+					return InteractionResult.SUCCESS;
 				}
 			}
 		}
 		catch(Exception e)  {
 			e.printStackTrace();
 		}
+		return InteractionResult.PASS;
 	}
 }

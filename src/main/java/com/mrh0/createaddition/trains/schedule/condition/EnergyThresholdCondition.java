@@ -13,6 +13,8 @@ import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,9 +23,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.energy.IEnergyStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 public class EnergyThresholdCondition extends CargoThresholdCondition {
     @Override
@@ -53,14 +53,14 @@ public class EnergyThresholdCondition extends CargoThresholdCondition {
     @Override
     protected boolean test(Level level, Train train, CompoundTag context) {
         Ops operator = getOperator();
-        int target = getThreshold();
+        long target = getThreshold();
 
-        int foundEnergy = 0;
+        long foundEnergy = 0;
         for (Carriage carriage : train.carriages) {
             if(carriage.anyAvailableEntity() == null) continue;
-            IEnergyStorage ies = PortableEnergyManager.get(carriage.anyAvailableEntity().getContraption());
+            EnergyStorage ies = PortableEnergyManager.get(carriage.anyAvailableEntity().getContraption());
             if(ies == null) continue;
-            foundEnergy += ies.getEnergyStored();
+            foundEnergy += ies.getAmount();
         }
 
         requestStatusToUpdate(foundEnergy / 1000, context);
@@ -84,7 +84,7 @@ public class EnergyThresholdCondition extends CargoThresholdCondition {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public void initConfigurationWidgets(ModularGuiLineBuilder builder) {
         super.initConfigurationWidgets(builder);
         builder.addSelectionScrollInput(71, 50, (i, l) -> {
@@ -95,7 +95,7 @@ public class EnergyThresholdCondition extends CargoThresholdCondition {
 
     @Override
     public MutableComponent getWaitingStatus(Level level, Train train, CompoundTag tag) {
-        int lastDisplaySnapshot = getLastDisplaySnapshot(tag);
+        long lastDisplaySnapshot = getLastDisplaySnapshot(tag);
         if (lastDisplaySnapshot == -1)
             return Components.empty();
         int offset = getOperator() == Ops.LESS ? -1 : getOperator() == Ops.GREATER ? 1 : 0;

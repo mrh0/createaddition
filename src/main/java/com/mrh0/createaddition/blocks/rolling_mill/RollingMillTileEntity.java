@@ -1,6 +1,8 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.mrh0.createaddition.config.Config;
@@ -38,7 +40,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class RollingMillTileEntity extends KineticBlockEntity {
+public class RollingMillTileEntity extends KineticBlockEntity implements ItemTransferable {
 
 	public ItemStackHandler inputInv;
 	public ItemStackHandler outputInv;
@@ -116,7 +118,7 @@ public class RollingMillTileEntity extends KineticBlockEntity {
 				if(stack.isEmpty())
 					continue;
 				ItemStack rest = behaviour.handleInsertion(stack,ejectDirection,false);
-				if(rest.equals(stack,false))
+				if(!stack.isEmpty() && rest.getCount() == stack.getCount() && rest.getItem() == stack.getItem() && ItemStack.tagMatches(rest, stack))
 					continue;
 				outputInv.setStackInSlot(slot,rest);
 				changed = true;
@@ -167,12 +169,6 @@ public class RollingMillTileEntity extends KineticBlockEntity {
 		}
 		return ejectDirection;
 	}
-
-	@Override
-	public void remove() {
-		capability.invalidate();
-		super.remove();
-	}
 	
 	private void process() {
 		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
@@ -183,7 +179,7 @@ public class RollingMillTileEntity extends KineticBlockEntity {
 			var results = recipe.rollResults();
 			if(!results.isEmpty()) {
 				var result = results.get(0);
-				ItemHandlerHelper.insertItemStacked(outputInv, result, false);
+				TransferUtil.insertItem(outputInv, result);
 				ItemStack stackInSlot = inputInv.getStackInSlot(0);
 				stackInSlot.shrink(1);
 				inputInv.setStackInSlot(0, stackInSlot);

@@ -11,7 +11,7 @@ import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.utility.Lang;
 
-import mezz.jei.api.forge.ForgeTypes;
+import mezz.jei.api.fabric.constants.FabricTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -43,7 +43,7 @@ public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe>
 		builder
 			.addSlot(RecipeIngredientRole.INPUT, getBackground().getWidth() / 2 -16, 3)
 			.setBackground(getRenderedSlot(), -1, -1)
-			.addIngredients(ForgeTypes.FLUID_STACK, withImprovedVisibility(recipe.getFluidIngredient().getMatchingFluidStacks()))
+			.addIngredients(FabricTypes.FLUID_STACK, toJei(withImprovedVisibility(recipe.getFluidIngredient().getMatchingFluidStacks())))
 			.addTooltipCallback(addFluidTooltip(recipe.getFluidIngredient().getRequiredAmount()));
 	}
 	

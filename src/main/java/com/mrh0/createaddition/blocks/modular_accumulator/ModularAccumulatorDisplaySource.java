@@ -1,17 +1,15 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
-import java.util.List;
-
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
 import com.simibubi.create.content.redstone.displayLink.source.PercentOrProgressBarDisplaySource;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
-
-import net.minecraft.network.chat.Component;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.List;
 
 public class ModularAccumulatorDisplaySource extends PercentOrProgressBarDisplaySource {
 
@@ -33,8 +31,8 @@ public class ModularAccumulatorDisplaySource extends PercentOrProgressBarDisplay
 		if (!(context.getSourceBlockEntity() instanceof ModularAccumulatorTileEntity te)) return null;
 		te = te.getControllerBE();
 		if(te == null) return null;
-		float capacity = te.energyStorage.getMaxEnergyStored();
-		float stored = te.energyStorage.getEnergyStored();
+		float capacity = te.energyStorage.getCapacity();
+		float stored = te.energyStorage.getAmount();
 
 		if (capacity == 0) return 0f;
 
@@ -58,7 +56,7 @@ public class ModularAccumulatorDisplaySource extends PercentOrProgressBarDisplay
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void initConfigurationWidgets(DisplayLinkContext context, ModularGuiLineBuilder builder,
 		boolean isFirstLine) {
 		super.initConfigurationWidgets(context, builder, isFirstLine);

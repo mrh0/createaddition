@@ -30,12 +30,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
-public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity {
+import java.util.List;
+
+public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity implements EnergyTransferable {
 	
 	protected ScrollValueBehaviour generatedSpeed;
 	protected final InternalEnergyStorage energy;
 	private final LazyOptional<EnergyStorage> lazyEnergy;
-	public LazyOptional<ElectricMotorPeripheral> lazyPeripheral = null;
 
 	private boolean cc_update_rpm = false;
 	private int cc_new_rpm = 32;
@@ -56,9 +57,6 @@ public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity {
 		long MAX_OUT = 0L;
 		energy = new InternalEnergyStorage(Config.ELECTRIC_MOTOR_CAPACITY.get(), Config.ELECTRIC_MOTOR_MAX_INPUT.get(), 0);
 		lazyEnergy = LazyOptional.of(() -> energy);
-		if(CreateAddition.CC_ACTIVE) {
-			lazyPeripheral = LazyOptional.of(() -> Peripherals.createElectricMotorPeripheral(this));
-		}
 		setLazyTickRate(20);
 	}
 
@@ -144,9 +142,8 @@ public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity {
 	@Override
 	public EnergyStorage getEnergyStorage(@Nullable Direction side) {
 		return lazyEnergy.getValueUnsafer();
-		if(CreateAddition.CC_ACTIVE)
-			Peripherals.isPeripheral(getLevel(), getBlockPos(), side);
-		return null;
+//		if(CreateAddition.CC_ACTIVE)
+//			Peripherals.isPeripheral(getLevel(), getBlockPos(), side);
 	}
 
 	public boolean isEnergyInput(Direction side) {
@@ -185,8 +182,6 @@ public class ElectricMotorTileEntity extends GeneratingKineticBlockEntity {
 	@Override
 	public void remove() {
 		lazyEnergy.invalidate();
-		if(lazyPeripheral != null)
-			lazyPeripheral.invalidate();
 		super.remove();
 	}
 	

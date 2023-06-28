@@ -2,15 +2,11 @@ package com.mrh0.createaddition.blocks.connector;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 public enum ConnectorMode implements StringRepresentable {
 	Push("push"),
@@ -62,18 +58,12 @@ public enum ConnectorMode implements StringRepresentable {
 	}
 	
 	public static ConnectorMode test(Level level, BlockPos pos, Direction face) {
-		BlockEntity be = level.getBlockEntity(pos);
-		if(be == null) return None;
-		LazyOptional<IEnergyStorage> optional = be.getCapability(CapabilityEnergy.ENERGY, face);
-		if(!optional.isPresent()) optional = be.getCapability(CapabilityEnergy.ENERGY);
-		if(!optional.isPresent()) return None;
-		if(optional.orElse(null) == null) return None;
+		EnergyStorage e = EnergyStorage.SIDED.find(level, pos, face);
+		if(e == null) return None;
 		
-		IEnergyStorage e = optional.orElse(null);
-		
-		if(e.canExtract() && e.canReceive()) return Passive;
-		if(e.canExtract()) return Pull;
-		if(e.canReceive()) return Push;
+		if(e.supportsExtraction() && e.supportsInsertion()) return Passive;
+		if(e.supportsExtraction()) return Pull;
+		if(e.supportsInsertion()) return Push;
 		
 		return None;
 	}

@@ -113,7 +113,7 @@ public class ElectricMotorPeripheral implements IPeripheral {
     }
 
     @LuaFunction(mainThread = true)
-    public int getMaxInsert() {
+    public long getMaxInsert() {
         return Config.ELECTRIC_MOTOR_MAX_INPUT.get();
     }
 

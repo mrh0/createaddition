@@ -25,6 +25,20 @@ import com.simibubi.create.foundation.utility.VecHelper;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -36,26 +50,17 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHaveGoggleInformation, IObserveTileEntity {
+public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHaveGoggleInformation, IObserveTileEntity, FluidTransferable {
 	public static final int MAX_HEAT_CAPACITY = 10000;
 
 	protected FuelType activeFuel;
@@ -79,7 +84,6 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 			.orElse(Direction.SOUTH)) + 180) % 360);
 		
 		tankInventory = createInventory();
-		fluidCapability = LazyOptional.of(() -> tankInventory);
 	}
 
 	@Override
@@ -88,7 +92,6 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 	}
 
 	// Custom fluid handling
-	protected LazyOptional<IFluidHandler> fluidCapability;
 	protected FluidTank tankInventory;
 	
 	private Optional<LiquidBurningRecipe> recipeCache = Optional.empty();
@@ -126,10 +129,8 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 	}
 	
 	@Override
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-			return fluidCapability.cast();
-		return super.getCapability(cap, side);
+	public Storage<FluidVariant> getFluidStorage(@Nullable Direction side) {
+		return tankInventory;
 	}
 	
 	public boolean first = true;
@@ -159,7 +160,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 		catch(Exception e) {
 			return;
 		}
-		tankInventory.drain(100, FluidAction.EXECUTE);
+		TransferUtil.extractAnyFluid(tankInventory, 8100);
 
 		BlazeBurnerBlock.HeatLevel prev = getHeatLevelFromBlock();
 		playSound();
@@ -219,7 +220,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 		updateBlockState();
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	private void tickAnimation() {
 		boolean active = getHeatLevelFromBlock().isAtLeast(BlazeBurnerBlock.HeatLevel.FADING) && isValidBlockAbove();
 
@@ -295,26 +296,30 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 		notifyUpdate();
 	}
 
-	private boolean tryUpdateLiquid(ItemStack itemStack) {
-		LazyOptional<IFluidHandlerItem> cap = itemStack
-				.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
-		if (!cap.isPresent())
+	private boolean tryUpdateLiquid(ItemStack itemStack, Player player, InteractionHand hand) {
+		Storage<FluidVariant> handler = FluidStorage.ITEM.find(itemStack, ContainerItemContext.ofPlayerHand(player, hand));
+		if (handler == null)
 			return false;
-		IFluidHandlerItem handler = cap.orElse(null);
-		if (handler.getFluidInTank(0).isEmpty())
+		FluidStack stack = TransferUtil.firstOrEmpty(handler);
+		if (stack.isEmpty())
 			return false;
-		FluidStack stack = handler.getFluidInTank(0);
 		Optional<LiquidBurningRecipe> recipe = find(stack, level);
 		if (!recipe.isPresent())
 			return false;
 
-		LazyOptional<IFluidHandler> tecap = getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
-		if (!tecap.isPresent())
+		Storage<FluidVariant> tehandler = getFluidStorage(null);
+		if (tehandler == null)
 			return false;
-		IFluidHandler tehandler = tecap.orElse(null);
-		if (tehandler.getTankCapacity(0) - tehandler.getFluidInTank(0).getAmount() < 1000)
-			return false;
-		tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), FluidAction.EXECUTE);
+		try (Transaction t = TransferUtil.getTransaction()) {
+			for (StorageView<FluidVariant> view : tehandler.iterable(t)) {
+				if (view.getCapacity() - view.getAmount() < FluidConstants.BUCKET)
+					return false;
+				break;
+			}
+
+			tehandler.insert(stack.getType(), FluidConstants.BUCKET, t);
+			t.commit();
+		}
 		//if (!player.isCreative())
 		//	player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
 		level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
@@ -325,7 +330,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 	 * @return true if the heater updated its burn time and an item should be
 	 *         consumed
 	 */
-	protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate) {
+	protected boolean tryUpdateFuel(ItemStack itemStack, Player player, InteractionHand hand, boolean forceOverflow, boolean simulate) {
 		if (isCreative)
 			return false;
 
@@ -333,14 +338,15 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 		int newBurnTime;
 
 		// Liquid Fluid Logic
-		if(tryUpdateLiquid(itemStack))
+		if(tryUpdateLiquid(itemStack, player, hand))
 			return true;
 		
 		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
 			newBurnTime = 1000;
 			newFuel = FuelType.SPECIAL;
 		} else {
-			newBurnTime = ForgeHooks.getBurnTime(itemStack, null);
+			var burn = FuelRegistry.INSTANCE.get(itemStack.getItem());
+			newBurnTime = burn != null ? burn : 0;
 			if (newBurnTime > 0)
 				newFuel = FuelType.NORMAL;
 			else if (AllItemTags.BLAZE_BURNER_FUEL_REGULAR.matches(itemStack)) {
@@ -492,7 +498,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
-		return containedFluidTooltip(tooltip, isPlayerSneaking, this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
+		return containedFluidTooltip(tooltip, isPlayerSneaking, this.getFluidStorage(null));
 	}
 
 	@Override

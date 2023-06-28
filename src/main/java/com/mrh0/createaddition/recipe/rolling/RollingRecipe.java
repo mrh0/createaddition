@@ -2,11 +2,13 @@ package com.mrh0.createaddition.recipe.rolling;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.compat.jei.RollingMillAssemblySubCategory;
+import com.mrh0.createaddition.compat.rei.ReiRollingMillAssemblySubCategory;
 import com.mrh0.createaddition.index.CABlocks;
-import com.simibubi.create.compat.jei.category.sequencedAssembly.SequencedAssemblySubCategory;
+import com.simibubi.create.compat.recipeViewerCommon.SequencedAssemblySubCategoryType;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.sequenced.IAssemblyRecipe;
+import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
@@ -21,7 +23,6 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IAssemblyRecipe {
 
@@ -120,7 +121,7 @@ public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IA
     }
 
     @Override
-    public Supplier<Supplier<SequencedAssemblySubCategory>> getJEISubCategory() {
-        return () -> RollingMillAssemblySubCategory::new;
+    public SequencedAssemblySubCategoryType getJEISubCategory() {
+        return new SequencedAssemblySubCategoryType(() -> RollingMillAssemblySubCategory::new, () -> ReiRollingMillAssemblySubCategory::new, () -> null);
     }
 }

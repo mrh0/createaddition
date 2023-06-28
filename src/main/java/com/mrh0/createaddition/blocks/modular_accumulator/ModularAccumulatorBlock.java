@@ -5,6 +5,8 @@ import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
 
+import io.github.fabricators_of_create.porting_lib.block.CustomSoundTypeBlock;
+import io.github.fabricators_of_create.porting_lib.util.LazySoundType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -27,9 +29,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.util.ForgeSoundType;
 
-public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<ModularAccumulatorTileEntity> {
+public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<ModularAccumulatorTileEntity>, CustomSoundTypeBlock {
 
 	public static final BooleanProperty TOP = BooleanProperty.create("top");
 	public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom");
@@ -225,13 +226,13 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<M
 
 	// Blocks are less noisy when placed in batch
 	public static final SoundType SILENCED_METAL =
-		new ForgeSoundType(0.1F, 1.5F, () -> SoundEvents.METAL_BREAK, () -> SoundEvents.METAL_STEP,
+		new LazySoundType(0.1F, 1.5F, () -> SoundEvents.METAL_BREAK, () -> SoundEvents.METAL_STEP,
 			() -> SoundEvents.METAL_PLACE, () -> SoundEvents.METAL_HIT, () -> SoundEvents.METAL_FALL);
 
 	@Override
 	public SoundType getSoundType(BlockState state, LevelReader world, BlockPos pos, Entity entity) {
-		SoundType soundType = super.getSoundType(state, world, pos, entity);
-		if (entity != null && entity.getPersistentData()
+		SoundType soundType = super.getSoundType(state);
+		if (entity != null && entity.getExtraCustomData()
 			.contains("SilenceTankSound"))
 			return SILENCED_METAL;
 		return soundType;

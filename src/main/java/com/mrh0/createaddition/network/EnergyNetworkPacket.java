@@ -1,10 +1,5 @@
 package com.mrh0.createaddition.network;
 
-import java.util.function.Supplier;
-
-import com.mrh0.createaddition.CreateAddition;
-
-import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.Minecraft;
@@ -14,14 +9,14 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class EnergyNetworkPacket {
 	private BlockPos pos;
-	private int demand;
-	private int buff;
+	private long demand;
+	private long buff;
 	
 	public static double clientSaturation = 0;
-	public static int clientDemand = 0;
-	public static int clientBuff = 0;
+	public static long clientDemand = 0;
+	public static long clientBuff = 0;
 	
-	public EnergyNetworkPacket(BlockPos pos, int demand, int buff) {
+	public EnergyNetworkPacket(BlockPos pos, long demand, long buff) {
 		this.pos = pos;
 		this.demand = demand;
 		this.buff = buff;
@@ -30,13 +25,13 @@ public class EnergyNetworkPacket {
 	public FriendlyByteBuf encode() {
 		FriendlyByteBuf tag = PacketByteBufs.create();
         tag.writeBlockPos(pos);
-        tag.writeInt(demand);
-        tag.writeInt(buff);
+        tag.writeLong(demand);
+        tag.writeLong(buff);
 		return tag;
     }
 	
 	public static EnergyNetworkPacket decode(FriendlyByteBuf buf) {
-		EnergyNetworkPacket scp = new EnergyNetworkPacket(buf.readBlockPos(), buf.readInt(), buf.readInt());
+		EnergyNetworkPacket scp = new EnergyNetworkPacket(buf.readBlockPos(), buf.readLong(), buf.readLong());
         return scp;
     }
 	
@@ -50,13 +45,13 @@ public class EnergyNetworkPacket {
 		});
 	}
 	
-	private static void updateClientCache(BlockPos pos, int demand, int buff) {
+	private static void updateClientCache(BlockPos pos, long demand, long buff) {
 		clientDemand = demand;
 		clientBuff = buff;
 		clientSaturation = buff - demand;
     }
 	
-	public static void send(BlockPos pos, int demand, int buff, ServerPlayer player) {
+	public static void send(BlockPos pos, long demand, long buff, ServerPlayer player) {
 		ServerPlayNetworking.send(player, CANetwork.ENERGY_NETWORK, new EnergyNetworkPacket(pos, demand, buff).encode());
 	}
 }

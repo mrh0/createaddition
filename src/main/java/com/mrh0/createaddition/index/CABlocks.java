@@ -54,7 +54,7 @@ public class CABlocks {
 			.initialProperties(SharedProperties::softMetal)
 			.tag(AllBlockTags.SAFE_NBT.tag) //Dono what this tag means (contraption safe?).
 			.transform(BlockStressDefaults.setCapacity(Config.MAX_STRESS.get()/256f))
-			.transform(BlockStressDefaults.setGeneratorSpeed(() -> Couple.create(0, 256.0)))
+			.transform(BlockStressDefaults.setGeneratorSpeed(() -> Couple.create(0, 256)))
 			.item()
 			.transform(customItemModel())
 			.register();

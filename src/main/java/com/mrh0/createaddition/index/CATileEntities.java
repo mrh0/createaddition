@@ -28,8 +28,12 @@ import com.mrh0.createaddition.blocks.rolling_mill.*;
 import com.mrh0.createaddition.blocks.accumulator.*;
 import com.mrh0.createaddition.blocks.connector.*;
 import com.mrh0.createaddition.blocks.redstone_relay.*;
+import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.content.kinetics.base.HalfShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 @SuppressWarnings("UnstableApiUsage")
 public class CATileEntities {
@@ -105,11 +109,6 @@ public class CATileEntities {
 	public static final BlockEntityEntry<DigitalAdapterTileEntity> DIGITAL_ADAPTER = CreateAddition.REGISTRATE
 			.blockEntity("digital_adapter", DigitalAdapterTileEntity::new)
 			.validBlocks(CABlocks.DIGITAL_ADAPTER)
-			.register();
-	public static final BlockEntityEntry<LiquidBlazeBurnerTileEntity> LIQUID_BLAZE_BURNER = CreateAddition.registrate()
-			.tileEntity("liquid_blaze_burner", LiquidBlazeBurnerTileEntity::new)
-			.validBlocks(CABlocks.LIQUID_BLAZE_BURNER)
-			.renderer(() -> LiquidBlazeBurnerRenderer::new)
 			.register();
 
 	public static void register() {

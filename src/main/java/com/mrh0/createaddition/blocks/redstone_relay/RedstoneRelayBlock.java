@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
+import java.util.Objects;
 import java.util.Random;
 
 import com.mrh0.createaddition.energy.IWireNode;
@@ -39,7 +40,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
 
-public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEntity>, IWrenchable, ITransformableBlock {
+public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEntity>, IWrenchable, ITransformableBlock, ConnectableRedstoneBlock {
 
 	public static final BooleanProperty VERTICAL = BooleanProperty.create("vertical");
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;

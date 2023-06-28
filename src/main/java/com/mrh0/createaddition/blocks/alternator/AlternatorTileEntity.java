@@ -26,11 +26,12 @@ import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.EnergyStorageUtil;
 
-public class AlternatorTileEntity extends KineticBlockEntity {
+import java.util.List;
+
+public class AlternatorTileEntity extends KineticBlockEntity implements EnergyTransferable {
 	
 	protected final InternalEnergyStorage energy;
-	private final LazyOptional<EnergyStorage> lazyEnergy;
-	
+
 	/*private static final long
 		MAX_IN = 0,
 		MAX_OUT = Config.ALTERNATOR_MAX_OUTPUT.get(),
@@ -41,7 +42,6 @@ public class AlternatorTileEntity extends KineticBlockEntity {
 	public AlternatorTileEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);
 		energy = new InternalEnergyStorage(Config.ALTERNATOR_CAPACITY.get(), 0, Config.ALTERNATOR_MAX_OUTPUT.get());
-		lazyEnergy = LazyOptional.of(() -> energy);
 	}
 	
 	@Override
@@ -63,10 +63,8 @@ public class AlternatorTileEntity extends KineticBlockEntity {
 	}
 	
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY)// && (isEnergyInput(side) || isEnergyOutput(side))
-			return lazyEnergy.cast();
-		return super.getCapability(cap, side);
+	public EnergyStorage getEnergyStorage(Direction side) {
+		return energy;
 	}
 	
 	public boolean isEnergyInput(Direction side) {
@@ -135,12 +133,6 @@ public class AlternatorTileEntity extends KineticBlockEntity {
 		return AllBlocks.MECHANICAL_MIXER.get();
 	}
 	
-	@Override
-	public void remove() {
-		lazyEnergy.invalidate();
-		super.remove();
-	}
-	
 	public void firstTick() {
 		updateCache();
 	}
@@ -187,13 +179,5 @@ public class AlternatorTileEntity extends KineticBlockEntity {
 			case UP -> escacheUp.orElse((EnergyStorage.EMPTY));
 			case WEST -> escacheWest.orElse(EnergyStorage.EMPTY);
 		};
-	}
-
-	@Nullable
-	@Override
-	public EnergyStorage getEnergyStorage(@Nullable Direction side) {
-		if((isEnergyInput(side) || isEnergyOutput(side)))
-			return lazyEnergy.getValueUnsafer();
-		return null;
 	}
 }

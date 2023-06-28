@@ -1,9 +1,5 @@
 package com.mrh0.createaddition.blocks.connector;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.debug.IDebugDrawer;
@@ -12,10 +8,11 @@ import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
-import com.simibubi.create.CreateClient;
-
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import com.simibubi.create.CreateClient;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,17 +23,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.energy.CapabilityEnergy;
-import team.reborn.energy.api.EnergyStorage;
 import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.EnergyStorage;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("UnstableApiUsage")
 public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation, IDebugDrawer {
@@ -45,7 +42,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	private final LocalNode[] localNodes;
 	private final IWireNode[] nodeCache;
 	private EnergyNetwork network;
-	private int demand = 0;
+	private long demand = 0;
 
 	private boolean wasContraption = false;
 	private boolean firstTick = true;
@@ -240,25 +237,33 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			return;
 
 		Direction d = getBlockState().getValue(ConnectorBlock.FACING);
-		IEnergyStorage ies = getCachedEnergy(d).orElse(null);
+		EnergyStorage ies = getCachedEnergy(d);
 		if(ies == null) return;
 
 		if (mode == ConnectorMode.Push || mode == ConnectorMode.Passive) {
-			int pull = network.pull(demand);
-			ies.receiveEnergy(pull, false);
+			long pull = network.pull(demand);
+			try (Transaction t = TransferUtil.getTransaction()) {
+				ies.insert(pull, t);
+				t.commit();
+			}
 
-			int testInsert = ies.receiveEnergy(MAX_OUT, true);
-			demand = network.demand(testInsert);
+			try (Transaction t = TransferUtil.getTransaction()) {
+				long testInsert = ies.insert(MAX_OUT, t);
+				demand = network.demand(testInsert);
+			}
 		}
 
 		if (mode == ConnectorMode.Pull) {
-			int extracted = ies.extractEnergy(localEnergy.getSpace(), false);
-			localEnergy.internalProduceEnergy(extracted);
+			try (Transaction t = TransferUtil.getTransaction()) {
+				long extracted = ies.extract(localEnergy.getSpace(), t);
+				localEnergy.internalProduceEnergy(extracted);
+				t.commit();
+			}
 		}
 
 		if (mode == ConnectorMode.Pull || mode == ConnectorMode.Passive) {
-			int testExtract = localEnergy.extractEnergy(Integer.MAX_VALUE, true);
-			int push = network.push(testExtract);
+			long testExtract = localEnergy.simulateExtract(Long.MAX_VALUE);
+			long push = network.push(testExtract);
 			localEnergy.internalConsumeEnergy(push);
 		}
 	}
@@ -354,14 +359,13 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			CreateClient.OUTLINER.chaseAABB("ca_nodes_" + i, shape.bounds().move(pos)).lineWidth(0.0625F).colored(color);
 		}
 		// Outline connected power
-		BlockEntity te = level.getBlockEntity(worldPosition.relative(getBlockState().getValue(ConnectorBlock.FACING)));
-		if(te == null) return;
+		BlockPos pos = worldPosition.relative(getBlockState().getValue(ConnectorBlock.FACING));
+		EnergyStorage cap = EnergyStorage.SIDED.find(level, pos, getBlockState().getValue(ConnectorBlock.FACING).getOpposite());
+		if(cap == null) return;
 
-		var cap = te.getCapability(CapabilityEnergy.ENERGY, getBlockState().getValue(ConnectorBlock.FACING).getOpposite());
-		if(ignoreCapSide() && !cap.isPresent()) cap = te.getCapability(CapabilityEnergy.ENERGY);
+//		if(ignoreCapSide() && !cap.isPresent()) cap = te.getCapability(CapabilityEnergy.ENERGY);
 
-		if (!cap.isPresent()) return;
-		VoxelShape shape = level.getBlockState(te.getBlockPos()).getBlockSupportShape(level, te.getBlockPos());
-		CreateClient.OUTLINER.chaseAABB("ca_output", shape.bounds().move(te.getBlockPos())).lineWidth(0.0625F).colored(0x5B5BFF);
+		VoxelShape shape = level.getBlockState(pos).getBlockSupportShape(level, pos);
+		CreateClient.OUTLINER.chaseAABB("ca_output", shape.bounds().move(pos)).lineWidth(0.0625F).colored(0x5B5BFF);
 	}
 }

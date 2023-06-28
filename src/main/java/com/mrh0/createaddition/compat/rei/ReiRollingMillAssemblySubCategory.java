@@ -1,15 +1,15 @@
-package com.mrh0.createaddition.compat.jei;
+package com.mrh0.createaddition.compat.rei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrh0.createaddition.compat.jei.category.AnimatedRollingMill;
-import com.simibubi.create.compat.jei.category.sequencedAssembly.JeiSequencedAssemblySubCategory;
+import com.simibubi.create.compat.rei.category.sequencedAssembly.ReiSequencedAssemblySubCategory;
 import com.simibubi.create.content.processing.sequenced.SequencedRecipe;
 
-public class RollingMillAssemblySubCategory extends JeiSequencedAssemblySubCategory {
+public class ReiRollingMillAssemblySubCategory extends ReiSequencedAssemblySubCategory {
 
     AnimatedRollingMill mill;
 
-    public RollingMillAssemblySubCategory() {
+    public ReiRollingMillAssemblySubCategory() {
         super(20);
         mill = new AnimatedRollingMill(false);
     }

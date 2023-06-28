@@ -23,7 +23,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 public class CAConnectivityHandler {
 
@@ -239,7 +238,7 @@ public class CAConnectivityHandler {
 
 					if (part instanceof ModularAccumulatorTileEntity ienergyPart && ienergyPart.hasAccumulator()) {
 						InternalEnergyStorage storageAt = ienergyPart.getEnergy();
-						int energyAt = storageAt.getEnergyStored();
+						long energyAt = storageAt.getAmount();
 						if (energyAt > 0) {
 							// making this generic would be a rather large mess, unfortunately
 							if (be instanceof ModularAccumulatorTileEntity ienergyBE && ienergyBE.hasAccumulator()
@@ -247,7 +246,7 @@ public class CAConnectivityHandler {
 								beEnergy.internalProduceEnergy(energyAt);
 							}
 						}
-						storageAt.internalConsumeEnergy(storageAt.getMaxEnergyStored());
+						storageAt.internalConsumeEnergy(storageAt.getCapacity());
 					}
 
 					splitMultiAndInvalidate(part, cache, false);
@@ -290,10 +289,10 @@ public class CAConnectivityHandler {
 		Direction.Axis axis = be.getMainConnectionAxis();
 
 		// fluid handling, if present
-		int toDistribute = 0;
-		int maxCapacity = 0;
+		long toDistribute = 0;
+		long maxCapacity = 0;
 		if (be instanceof ModularAccumulatorTileEntity ienergyBE && ienergyBE.hasAccumulator()) {
-			toDistribute = ienergyBE.getEnergy().getEnergyStored();
+			toDistribute = ienergyBE.getEnergy().getAmount();
 			maxCapacity = ienergyBE.getSize(0);
 			
 			if (!be.isRemoved())
@@ -323,10 +322,10 @@ public class CAConnectivityHandler {
 					partAt.removeController(true);
 
 					if (partAt != be) {
-						int copy = toDistribute;
+						long copy = toDistribute;
 						InternalEnergyStorage tank =
 							(partAt instanceof ModularAccumulatorTileEntity ienergyPart ? ienergyPart.getEnergy() : null);
-							int split = Math.min(maxCapacity, toDistribute);
+							long split = Math.min(maxCapacity, toDistribute);
 							copy = split;
 							toDistribute -= split;
 							if (tank != null)
@@ -347,8 +346,7 @@ public class CAConnectivityHandler {
 		}
 		
 		if (be instanceof ModularAccumulatorTileEntity ienergy && ienergy.hasAccumulator())
-			be.getCapability(CapabilityEnergy.ENERGY)
-				.invalidate();
+			ienergy.updateCache();
 		
 		if (tryReconnect)
 			formMulti(be.getType(), level, cache == null ? new SearchCache<>() : cache, frontier);

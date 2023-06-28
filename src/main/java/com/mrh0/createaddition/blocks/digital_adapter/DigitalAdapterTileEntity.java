@@ -1,8 +1,5 @@
 package com.mrh0.createaddition.blocks.digital_adapter;
 
-import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.compat.computercraft.DigitalAdapterPeripheral;
-import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.simibubi.create.content.contraptions.bearing.MechanicalBearingBlockEntity;
 import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyBlockEntity;
 import com.simibubi.create.content.contraptions.piston.MechanicalPistonBlockEntity;
@@ -18,10 +15,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,15 +24,10 @@ public class DigitalAdapterTileEntity extends BlockEntity {
     public static final int MAX_LINES = 16;
     public static final MutableComponent EMPTY_LINE = new TextComponent("");
 
-    protected LazyOptional<DigitalAdapterPeripheral> peripheral;
-
     public DigitalAdapterTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
         super(tileEntityTypeIn, pos, state);
         textLines = new ArrayList<>();
         for(int i = 0; i < MAX_LINES; i++) textLines.add(EMPTY_LINE);
-
-        if (CreateAddition.CC_ACTIVE)
-            this.peripheral = LazyOptional.of(() -> Peripherals.createDigitalAdapterPeripheral(this));
     }
 
     private int line = 1;
@@ -76,13 +65,6 @@ public class DigitalAdapterTileEntity extends BlockEntity {
 
     public int setLine(int ln) {
         return line = ln < 1 || ln > DigitalAdapterTileEntity.MAX_LINES ? line : ln;
-    }
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @javax.annotation.Nullable Direction side) {
-        if (CreateAddition.CC_ACTIVE && Peripherals.isPeripheral(cap)) return this.peripheral.cast();
-        return super.getCapability(cap, side);
     }
 
     public SpeedControllerBlockEntity getSpeedController(Direction dir) {

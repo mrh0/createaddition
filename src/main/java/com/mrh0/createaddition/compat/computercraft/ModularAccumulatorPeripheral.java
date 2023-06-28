@@ -35,15 +35,15 @@ public class ModularAccumulatorPeripheral implements IPeripheral {
     }
 
     @LuaFunction(mainThread = true)
-    public final int getEnergy() {
+    public final long getEnergy() {
         if(this.tileEntity.getControllerBE() == null) return 0;
-        return this.tileEntity.getControllerBE().getEnergy().getEnergyStored();
+        return this.tileEntity.getControllerBE().getEnergy().getAmount();
     }
 
     @LuaFunction(mainThread = true)
-    public final int getCapacity() {
+    public final long getCapacity() {
         if(this.tileEntity.getControllerBE() == null) return 0;
-        return this.tileEntity.getControllerBE().getEnergy().getMaxEnergyStored();
+        return this.tileEntity.getControllerBE().getEnergy().getCapacity();
     }
 
     @LuaFunction(mainThread = true)
@@ -53,12 +53,12 @@ public class ModularAccumulatorPeripheral implements IPeripheral {
     }
 
     @LuaFunction(mainThread = true)
-    public int getMaxInsert() {
+    public long getMaxInsert() {
         return Config.ACCUMULATOR_MAX_INPUT.get();
     }
 
     @LuaFunction(mainThread = true)
-    public int getMaxExtract() {
+    public long getMaxExtract() {
         return Config.ACCUMULATOR_MAX_OUTPUT.get();
     }
 

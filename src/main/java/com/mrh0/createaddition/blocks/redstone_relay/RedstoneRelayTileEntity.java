@@ -35,8 +35,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -51,8 +49,8 @@ public class RedstoneRelayTileEntity extends SmartBlockEntity implements IWireNo
 	private final IWireNode[] nodeCache;
 	private EnergyNetwork networkIn;
 	private EnergyNetwork networkOut;
-	private int demand = 0;
-	private int throughput = 0;
+	private long demand = 0;
+	private long throughput = 0;
 
 	private boolean wasContraption = false;
 	private boolean firstTick = true;
@@ -74,16 +72,11 @@ public class RedstoneRelayTileEntity extends SmartBlockEntity implements IWireNo
 
 	public static final int NODE_COUNT = 8;
 
-	protected LazyOptional<RedstoneRelayPeripheral> peripheral;
-
 	public RedstoneRelayTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 
 		this.localNodes = new LocalNode[getNodeCount()];
 		this.nodeCache = new IWireNode[getNodeCount()];
-
-		if (CreateAddition.CC_ACTIVE)
-			this.peripheral = LazyOptional.of(() -> Peripherals.createRedstoneRelayPeripheral(this));
 	}
 
 	@Override
@@ -323,7 +316,7 @@ if (changed) {
 			demand = networkIn.demand(networkOut.getDemand());
 		}
 	}
-public int getThroughput() {
+	public long getThroughput() {
 		return throughput;
 	}
 
@@ -367,22 +360,16 @@ public int getThroughput() {
 		return isNodeInput(in) == isNodeInput(other);
 	}
 
-	public int getDemand() {
+	public long getDemand() {
 		return demand;
 	}
 
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
-		if(isNetworkValid(pack.getNode()))
-			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
+		if(isNetworkValid(pack.node()))
+			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.node()).getPulled(), getNetwork(pack.node()).getPushed(), player);
 	}
 
-	@Nonnull
-	@Override
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @javax.annotation.Nullable Direction side) {
-		if (CreateAddition.CC_ACTIVE && Peripherals.isPeripheral(cap)) return this.peripheral.cast();
-		return super.getCapability(cap, side);
-	}
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		HitResult ray = Minecraft.getInstance().hitResult;

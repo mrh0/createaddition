@@ -11,6 +11,8 @@ import com.simibubi.create.content.contraptions.render.ContraptionRenderDispatch
 import com.simibubi.create.content.trains.entity.CarriageContraption;
 import com.simibubi.create.foundation.utility.VecHelper;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,8 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -44,7 +44,7 @@ public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld, ContraptionMatrices matrices, MultiBufferSource buffer) {
 		if (!ContraptionRenderDispatcher.canInstance()) {
 			PortableEnergyInterfaceRenderer.renderInContraption(context, renderWorld, matrices, buffer);

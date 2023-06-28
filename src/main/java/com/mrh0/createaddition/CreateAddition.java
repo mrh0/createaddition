@@ -1,63 +1,34 @@
 package com.mrh0.createaddition;
 
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
+import com.mrh0.createaddition.commands.CCApiCommand;
+import com.mrh0.createaddition.config.Config;
+import com.mrh0.createaddition.event.GameEvents;
+import com.mrh0.createaddition.groups.ModGroup;
+import com.mrh0.createaddition.index.*;
+import com.mrh0.createaddition.network.CANetwork;
 import com.mrh0.createaddition.trains.schedule.CASchedule;
 import com.simibubi.create.content.fluids.tank.BoilerHeaters;
 import com.simibubi.create.content.kinetics.BlockStressValues;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;
+import com.simibubi.create.foundation.item.TooltipModifier;
 import com.simibubi.create.infrastructure.config.AllConfigs;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.commands.CommandSourceStack;
+import io.github.fabricators_of_create.porting_lib.event.common.ModsLoadedCallback;
+import me.pepperbell.simplenetworking.SimpleChannel;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.RegistryEvent.Register;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
-import com.mrh0.createaddition.commands.CCApiCommand;
-import com.mrh0.createaddition.config.Config;
-import com.mrh0.createaddition.groups.ModGroup;
-import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.index.CAEffects;
-import com.mrh0.createaddition.index.CAFluids;
-import com.mrh0.createaddition.index.CAItemProperties;
-import com.mrh0.createaddition.index.CAItems;
-import com.mrh0.createaddition.index.CAPartials;
-import com.mrh0.createaddition.index.CAPonder;
-import com.mrh0.createaddition.index.CAPotatoCannonProjectiles;
-import com.mrh0.createaddition.index.CARecipes;
-import com.mrh0.createaddition.index.CATileEntities;
-import com.mrh0.createaddition.network.EnergyNetworkPacket;
-import com.mrh0.createaddition.network.ObservePacket;
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import com.simibubi.create.foundation.item.TooltipModifier;
-
-@Mod(CreateAddition.MODID)
-public class CreateAddition {
+public class CreateAddition implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     
     public static final String MODID = "createaddition";
@@ -69,11 +40,7 @@ public class CreateAddition {
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(CreateAddition.MODID);
     
     private static final String PROTOCOL = "1";
-	public static final SimpleChannel Network = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(MODID, "main"))
-            .clientAcceptedVersions(PROTOCOL::equals)
-            .serverAcceptedVersions(PROTOCOL::equals)
-            .networkProtocolVersion(() -> PROTOCOL)
-            .simpleChannel();
+	public static final SimpleChannel Network = new SimpleChannel(new ResourceLocation(MODID, "main"));
 
     static {
         REGISTRATE.setTooltipModifierFactory(item ->
@@ -82,34 +49,38 @@ public class CreateAddition {
         );
     }
 
-    public CreateAddition() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(MobEffect.class, CreateAddition::onRegisterEffectEvent);
+    @Override
+    public void onInitialize() {
+        ModsLoadedCallback.EVENT.register(envType -> setup());
+        onRegisterEffectEvent();
 
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        MinecraftForge.EVENT_BUS.register(this);
+        CommandRegistrationCallback.EVENT.register(CCApiCommand::register);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
-        Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("createaddition-common.toml"));
+        ModLoadingContext.registerConfig(MODID, ModConfig.Type.COMMON, Config.COMMON_CONFIG);
+        Config.loadConfig(Config.COMMON_CONFIG, FabricLoader.getInstance().getConfigDir().resolve("createaddition-common.toml"));
         
-        IE_ACTIVE = ModList.get().isLoaded("immersiveengineering");
-        CC_ACTIVE = ModList.get().isLoaded("computercraft");
-        AE2_ACTIVE = ModList.get().isLoaded("ae2");
+        IE_ACTIVE = FabricLoader.getInstance().isModLoaded("immersiveengineering");
+        CC_ACTIVE = FabricLoader.getInstance().isModLoaded("computercraft");
+        AE2_ACTIVE = FabricLoader.getInstance().isModLoaded("ae2");
         
         new ModGroup("main");
-        REGISTRATE.registerEventListeners(eventBus);
         CABlocks.register();
         CATileEntities.register();
         CAItems.register();
         CAFluids.register();
-        CARecipes.register(eventBus);
+        CARecipes.register();
         CASchedule.register();
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CAPartials.init());
+        REGISTRATE.register();
+
+        //  Setup events
+        GameEvents.initCommon();
+
+        CANetwork.initServer();
+
+        System.out.println("Create Crafts & Additions Initialized!");
     }
 
-    private void setup(final FMLCommonSetupEvent event) {
+    private void setup() {
     	CAPotatoCannonProjectiles.register();
     	BlockStressValues.registerProvider(MODID, AllConfigs.server().kinetics.stressValues);
     	BoilerHeaters.registerHeater(CABlocks.LIQUID_BLAZE_BURNER.get(), (level, pos, state) -> {
@@ -126,33 +97,9 @@ public class CreateAddition {
 			return 0;
     	});
     }
-
-    private void doClientStuff(final FMLClientSetupEvent event) {
-    	event.enqueueWork(CAPonder::register);
-        event.enqueueWork(CAItemProperties::register);
-        
-        RenderType cutout = RenderType.cutoutMipped();       
-		
-        ItemBlockRenderTypes.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(CABlocks.BARBED_WIRE.get(), cutout);
-    }
     
-    public void postInit(FMLLoadCompleteEvent evt) {
-    	int i = 0;
-        Network.registerMessage(i++, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
-        Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
-        
-    	System.out.println("Create Crafts & Additions Initialized!");
-    }
-    
-    @SubscribeEvent
-    public void onRegisterCommandEvent(RegisterCommandsEvent event) {
-    	CommandDispatcher<CommandSourceStack> dispather = event.getDispatcher();
-    	CCApiCommand.register(dispather);
-    }
-    
-    public static void onRegisterEffectEvent(Register<MobEffect> event) {
-    	CAEffects.register(event.getRegistry());
+    public static void onRegisterEffectEvent() {
+    	CAEffects.register();
     }
 
     public static ResourceLocation asResource(String path) {

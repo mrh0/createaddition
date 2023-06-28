@@ -1,15 +1,17 @@
 package com.mrh0.createaddition.index;
 
+import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.item.BiomassPellet;
 import com.mrh0.createaddition.item.DiamondGritSandpaper;
+import com.mrh0.createaddition.item.WireSpool;
+import com.simibubi.create.content.equipment.sandPaper.SandPaperItemRenderer;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.world.item.Item;
 
-import static com.mrh0.createaddition.CreateAddition.registrate;
 import static com.simibubi.create.AllTags.AllItemTags.PLATES;
 import static com.simibubi.create.AllTags.forgeItemTag;
 

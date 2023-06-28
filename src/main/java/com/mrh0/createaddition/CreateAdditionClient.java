@@ -8,6 +8,7 @@ import com.mrh0.createaddition.index.CAPonder;
 import com.mrh0.createaddition.network.CANetwork;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 
 public class CreateAdditionClient implements ClientModInitializer {
@@ -17,11 +18,11 @@ public class CreateAdditionClient implements ClientModInitializer {
         GameEvents.initClient();
         CAPonder.register();
         //CAEntities.registerRenderers();
-        CAPartials.initClass();
+        CAPartials.init();
         CAItemProperties.register();
 
         RenderType cutout = RenderType.cutoutMipped();
 
-        BlockRenderLayerMap.INSTANCE.putBlock(CABlocks.TESLA_COIL.get(), cutout);
+        BlockRenderLayerMap.INSTANCE.putBlocks(cutout, CABlocks.TESLA_COIL.get(), CABlocks.BARBED_WIRE.get());
     }
 }

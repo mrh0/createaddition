@@ -1,23 +1,12 @@
 package com.mrh0.createaddition.compat.computercraft;
 
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
+import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorTileEntity;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
-import net.minecraftforge.common.capabilities.Capability;
-
-import static dan200.computercraft.shared.Capabilities.CAPABILITY_PERIPHERAL;
-
-import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.Level;
 
 public class Peripherals {
-	public static boolean isPeripheral(Level world, BlockPos pos, Direction side) {
-		return side != null && dan200.computercraft.shared.Peripherals.getPeripheral(world, pos, side) != null;
-	}
-
 	public static ElectricMotorPeripheral createElectricMotorPeripheral(ElectricMotorTileEntity te) {
 		return new ElectricMotorPeripheral("electric_motor", te);
 	}

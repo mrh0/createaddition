@@ -23,9 +23,10 @@ public class EnergyNetworkManager {
 	}
 	
 	public void tick() {
-		List<EnergyNetwork> keep = new ArrayList<>();
-		for (EnergyNetwork en : networks) {
-			if (en.isValid()) {
+		List<EnergyNetwork> keep = new ArrayList<EnergyNetwork>();
+		for(int i = 0; i < networks.size(); i++) {
+			EnergyNetwork en = networks.get(i);
+			if(en.isValid()) {
 				en.tick(i);
 				keep.add(en);
 				continue;

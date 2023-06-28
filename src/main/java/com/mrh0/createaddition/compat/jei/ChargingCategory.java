@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mrh0.createaddition.compat.jei.category.AnimatedTeslaCoil;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.util.Util;

@@ -15,6 +15,7 @@ import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.Create;
 import com.simibubi.create.CreateClient;
@@ -26,6 +27,9 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,12 +45,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
+import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.EnergyStorageUtil;
 
-public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer, ThresholdSwitchObservable {
+public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer, ThresholdSwitchObservable, EnergyTransferable {
 
 	/*public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(),
 			MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(),
@@ -54,7 +56,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 			MAX_HEIGHT = Config.ACCUMULATOR_MAX_HEIGHT.get(),
 			MAX_WIDTH = Config.ACCUMULATOR_MAX_WIDTH.get();*/
 
-	protected LazyOptional<IEnergyStorage> energyCap;
+	protected LazyOptional<EnergyStorage> energyCap;
 	protected InternalEnergyStorage energyStorage;
 	protected BlockPos controller;
 	protected BlockPos lastKnownPos;
@@ -66,9 +68,8 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	protected int syncCooldown;
 	protected boolean queuedSync;
 	
-	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
-	protected LazyOptional<ModularAccumulatorPeripheral> peripheral;
+	private EnergyStorage escacheUp = null;
+	private EnergyStorage escacheDown = null;
 
 	public ModularAccumulatorTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -78,16 +79,13 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		height = 1;
 		width = 1;
 		refreshCapability();
-
-		if (CreateAddition.CC_ACTIVE)
-			this.peripheral = LazyOptional.of(() -> Peripherals.createModularAccumulatorPeripheral(this));
 	}
 
 	protected InternalEnergyStorage createEnergyStorage() {
 		return new InternalEnergyStorage(getCapacityMultiplier(), Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get());
 	}
 	
-	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
+	public void setCache(Direction side, EnergyStorage storage) {
 		switch(side) {
 			case DOWN:
 				escacheDown = storage;
@@ -98,14 +96,14 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		}
 	}
 	
-	public LazyOptional<IEnergyStorage> getCachedEnergy(Direction side) {
+	public EnergyStorage getCachedEnergy(Direction side) {
 		switch(side) {
 			case DOWN:
 				return escacheDown;
 			case UP:
 				return escacheUp;
 		}
-		return LazyOptional.empty();
+		return null;
 	}
 	
 	public void firstTick() {
@@ -125,21 +123,20 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		if (isRemoved()) return;
 		// Make sure the side we're checking is loaded.
 		if (!level.isLoaded(worldPosition.relative(side))) {
-			setCache(side, LazyOptional.empty());
+			setCache(side, null);
 			return;
 		}
-		BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
-		if(te == null) {
-			setCache(side, LazyOptional.empty());
+
+		EnergyStorage le = EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite());
+		if(le == null) {
+			setCache(side, null);
 			return;
 		}
-		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
 		// Make sure that the side we're caching can actually be cached.
 		if (side != Direction.UP && side != Direction.DOWN) return;
 		// Make sure the side isn't already cached.
 		if (le.equals(getCachedEnergy(side))) return;
 		setCache(side, le);
-		le.addListener((es) -> updateCache(side));
 	}
 
 	protected void updateConnectivity() {
@@ -153,7 +150,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	
 	public LerpedFloat gauge = LerpedFloat.linear();
 
-	int lastEnergy = 0;
+	long lastEnergy = 0;
 	boolean firstTickState = true;
 	@Override
 	public void tick() {
@@ -183,8 +180,8 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		// Tick Logic:
 		if (!isController()) return;
 		
-		if(Math.abs(lastEnergy - energyStorage.getEnergyStored()) > 256) {
-			lastEnergy = energyStorage.getEnergyStored();
+		if(Math.abs(lastEnergy - energyStorage.getAmount()) > 256) {
+			lastEnergy = energyStorage.getAmount();
 			onEnergyChanged();
 		}
 		
@@ -209,11 +206,13 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	}
 	
 	public void tickOutputSide(Direction side) {
-		IEnergyStorage ies = getCachedEnergy(side).orElse(null);
+		EnergyStorage ies = getCachedEnergy(side);
 		if(ies == null)
 			return;
-		int ext = getControllerBE().energyStorage.extractEnergy(ies.receiveEnergy(Config.ACCUMULATOR_MAX_OUTPUT.get(), true), false);
-		int rec = ies.receiveEnergy(ext, false);
+		try (Transaction t = TransferUtil.getTransaction()) {
+			EnergyStorageUtil.move(getControllerBE().energyStorage, ies, Config.ACCUMULATOR_MAX_OUTPUT.get(), t);
+			t.commit();
+		}
 	} 
 
 	@Override
@@ -276,9 +275,12 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 
 	public void applySize(int blocks) {
 		energyStorage.setCapacity(blocks * getCapacityMultiplier());
-		int overflow = energyStorage.getEnergyStored() - energyStorage.getMaxEnergyStored();
-		if (overflow > 0)
-			energyStorage.extractEnergy(overflow, false);
+		long overflow = energyStorage.getAmount() - energyStorage.getCapacity();
+		try (Transaction t = TransferUtil.getTransaction()) {
+			if (overflow > 0)
+				energyStorage.extract(overflow, t);
+			t.commit();
+		}
 	}
 
 	public void removeController(boolean keepEnergy) {
@@ -335,7 +337,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	}
 
 	private void refreshCapability() {
-		LazyOptional<IEnergyStorage> oldCap = energyCap;
+		LazyOptional<EnergyStorage> oldCap = energyCap;
 		energyCap = LazyOptional.of(() -> handlerForCapability());
 		oldCap.invalidate();
 	}
@@ -389,8 +391,10 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 			height = compound.getInt("Height");
 			energyStorage.setCapacity(getTotalAccumulatorSize() * getCapacityMultiplier());
 			energyStorage.read(compound.getCompound("EnergyContent"));
-			if (energyStorage.getSpace() < 0)
-				energyStorage.extractEnergy(-energyStorage.getSpace(), true);
+			try (Transaction t = TransferUtil.getTransaction()) {
+				if (energyStorage.getSpace() < 0)
+					energyStorage.extract(-energyStorage.getSpace(), t);
+			}
 		}
 
 
@@ -412,7 +416,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	}
 
 	public float getFillState() {
-		return (float) energyStorage.getEnergyStored() / energyStorage.getMaxEnergyStored();
+		return (float) energyStorage.getAmount() / energyStorage.getCapacity();
 	}
 
 	@Override
@@ -426,7 +430,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		if (isController()) {
 			compound.put("EnergyContent", energyStorage.write(new CompoundTag()));
 			// Used by contraptions.
-			compound.putInt("EnergyCapacity", getTotalAccumulatorSize() * getCapacityMultiplier());
+			compound.putLong("EnergyCapacity", getTotalAccumulatorSize() * getCapacityMultiplier());
 			compound.putInt("Size", width);
 			compound.putInt("Height", height);
 		}
@@ -440,11 +444,9 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 
 	@Nonnull
 	@Override
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+	public EnergyStorage getEnergyStorage(@Nullable Direction side) {
 		if (!energyCap.isPresent()) refreshCapability();
-		if (cap == CapabilityEnergy.ENERGY) return energyCap.cast();
-		if (CreateAddition.CC_ACTIVE && Peripherals.isPeripheral(cap)) return this.peripheral.cast();
-		return super.getCapability(cap, side);
+		return energyCap.getValueUnsafer();
 	}
 
 	@Override
@@ -457,7 +459,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		return width * width * height;
 	}
 
-	public static int getCapacityMultiplier() {
+	public static long getCapacityMultiplier() {
 		return Config.ACCUMULATOR_CAPACITY.get();
 	}
 
@@ -540,7 +542,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		tooltip.add(new TextComponent(spacing)
 				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.capacity").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
-				.append(Util.format((int)controllerTE.energyStorage.getMaxEnergyStored())).append("fe").withStyle(ChatFormatting.AQUA));
+				.append(Util.format((int)controllerTE.energyStorage.getCapacity())).append("fe").withStyle(ChatFormatting.AQUA));
 		return true;
 	}
 	
@@ -555,7 +557,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		if (controllerTE == null)
 			return;
 		
-		EnergyNetworkPacket.send(worldPosition, 0, controllerTE.energyStorage.getEnergyStored(), player);
+		EnergyNetworkPacket.send(worldPosition, 0, controllerTE.energyStorage.getAmount(), player);
 		// causeBlockUpdate();
 	}
 	
@@ -563,7 +565,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		return true;
 	}
 
-	public int getSize(int accumulator) {
+	public long getSize(int accumulator) {
 		return getCapacityMultiplier();
 	}
 

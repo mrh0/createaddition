@@ -1,6 +1,8 @@
 package com.mrh0.createaddition.blocks.barbed_wire;
 
 import com.mrh0.createaddition.config.Config;
+import io.github.fabricators_of_create.porting_lib.extensions.IShearable;
+import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.DamageSourceAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -18,11 +20,11 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
 
-public class BarbedWireBlock extends Block implements net.minecraftforge.common.IForgeShearable {
+public class BarbedWireBlock extends Block implements IShearable {
 	public static final BooleanProperty VERTICAL = BooleanProperty.create("vertical");
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	private static DamageSource DMG_SOURCE = new DamageSource("barbed_wire");
+	private static DamageSource DMG_SOURCE = DamageSourceAccessor.port_lib$init("barbed_wire");
 
 	public BarbedWireBlock(Properties props) {
 		super(props);

@@ -13,6 +13,9 @@ import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.block.IBE;
 
+import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvents;
@@ -37,9 +40,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.FakePlayer;
 
 public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implements IBE<LiquidBlazeBurnerTileEntity>, IWrenchable {
 
@@ -88,7 +88,7 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return IBE.super.newBlockEntity(pos, state);
 	}
-	
+
 	@Override
 	public Item asItem() {
 		return AllBlocks.BLAZE_BURNER.get().asItem();
@@ -97,8 +97,8 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
 		BlockHitResult blockRayTraceResult) {
-		
-		
+
+
 		/*if (world.isClientSide())
 			return InteractionResult.CONSUME;
 		BlockEntity tileentity = world.getBlockEntity(pos);
@@ -131,9 +131,9 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 			player.playSound(SoundEvents.BUCKET_EMPTY, 1f, 1f);
 		}
 		return InteractionResult.PASS;*/
-		
-		
-		
+
+
+
 		ItemStack heldItem = player.getItemInHand(hand);
 		BlazeBurnerBlock.HeatLevel heat = state.getValue(HEAT_LEVEL);
 
@@ -159,7 +159,7 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 		boolean forceOverflow = !(player instanceof FakePlayer);
 
 		InteractionResultHolder<ItemStack> res =
-			tryInsert(state, world, pos, heldItem, doNotConsume, forceOverflow, false);
+			tryInsert(state, world, pos, heldItem, player, hand, doNotConsume, forceOverflow, false);
 		ItemStack leftover = res.getObject();
 		if (!world.isClientSide && !doNotConsume && !leftover.isEmpty()) {
 			if (heldItem.isEmpty()) {
@@ -174,7 +174,7 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	}
 
 	public static InteractionResultHolder<ItemStack> tryInsert(BlockState state, Level world, BlockPos pos,
-		ItemStack stack, boolean doNotConsume, boolean forceOverflow, boolean simulate) {
+		ItemStack stack, Player player, InteractionHand hand, boolean doNotConsume, boolean forceOverflow, boolean simulate) {
 		if (!state.hasBlockEntity())
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 
@@ -188,11 +188,11 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 				burnerTE.applyCreativeFuel();
 			return InteractionResultHolder.success(ItemStack.EMPTY);
 		}
-		if (!burnerTE.tryUpdateFuel(stack, forceOverflow, simulate))
+		if (!burnerTE.tryUpdateFuel(stack, player, hand, forceOverflow, simulate))
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 
 		if (!doNotConsume) {
-			ItemStack container = stack.hasContainerItem() ? stack.getContainerItem() : ItemStack.EMPTY;
+			ItemStack container = stack.getRecipeRemainder();
 			if (!world.isClientSide) {
 				stack.shrink(1);
 			}
@@ -229,10 +229,10 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
 		return false;
 	}
-	
-	
 
-	@OnlyIn(Dist.CLIENT)
+
+
+	@Environment(EnvType.CLIENT)
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
 		if (random.nextInt(10) != 0)
 			return;

@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.data.CreateEntityBuilder;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.utility.Lang;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.world.entity.Entity;
