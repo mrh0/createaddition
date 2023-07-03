@@ -8,7 +8,7 @@
 	{
 		"R":
 		{
-			"tag": "forge:rods/copper"
+			"tag": "c:rods/copper"
 		},
 		"B":
 		{
@@ -20,7 +20,7 @@
 		},
 		"W":
 		{
-			"tag": "forge:wires/gold"
+			"tag": "c:wires/gold"
 		}
 	},
 	"result":{

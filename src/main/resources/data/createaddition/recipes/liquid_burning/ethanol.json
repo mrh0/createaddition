@@ -1,14 +1,16 @@
 {
 	"type":"createaddition:liquid_burning",
 	"input": {
-      	"fluidTag": "forge:ethanol",
-      	"amount": 1000
+      	"fluidTag": "c:ethanol",
+      	"amount": 81000
 	},
 	"burnTime": 6000,
-	"conditions": [
-	    {
-	        "fluidTag": "forge:ethanol",
-	        "type": "createaddition:has_fluid_tag"
-	    }
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:fluid_tags_populated",
+			"values": [
+				"c:ethanol"
+			]
+		}
 	]
 }

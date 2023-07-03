@@ -6,10 +6,10 @@
   ],
   "key": {
     "F": {
-      "tag": "forge:fabric_hemp"
+      "tag": "c:fabric_hemp"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     },
     "A": {
       "item": "create:andesite_alloy"
@@ -19,9 +19,13 @@
     "item": "create:white_sail",
     "count": 2
   },
-  "conditions": [ {
-    "type": "forge:mod_loaded",
-    "modid": "immersiveengineering"
-  } ]
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "immersiveengineering"
+      ]
+    }
+  ]
 }
 

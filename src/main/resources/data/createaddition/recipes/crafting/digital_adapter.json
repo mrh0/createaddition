@@ -5,7 +5,7 @@
 		    "tag": "computercraft:wired_modem"
 		},
 		{
-			"tag": "forge:plates/brass"
+			"tag": "c:plates/brass"
 		},
 		{
 		    "item": "minecraft:redstone_torch"
@@ -15,10 +15,12 @@
 		"item": "createaddition:digital_adapter",
 		"count": 1
 	},
-	"conditions": [
+	"fabric:load_conditions": [
 		{
-			"type": "forge:mod_loaded",
-			"modid": "computercraft"
+			"condition": "fabric:all_mods_loaded",
+			"values": [
+				"computercraft"
+			]
 		}
 	]
 }

@@ -1,13 +1,17 @@
 {
 	"type":"create:pressing",
 	"ingredients": [{
-      	"tag": "forge:ingots/silver"
+      	"tag": "c:ingots/silver"
 	}],
 	"results": [{
 		"item": "immersiveengineering:plate_silver"
 	}],
-	"conditions": [{
-		"type": "forge:mod_loaded",
-		"modid": "immersiveengineering"
-    }]
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:all_mods_loaded",
+			"values": [
+				"immersiveengineering"
+			]
+		}
+	]
 }

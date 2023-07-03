@@ -2,14 +2,14 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "tag": "forge:cobblestone"
+      "tag": "c:cobblestone"
     },
     {
       "item": "create:cinder_flour"
     },
     {
       "fluid": "minecraft:lava",
-      "amount": 25
+      "amount": 2025
     }
   ],
   "results": [

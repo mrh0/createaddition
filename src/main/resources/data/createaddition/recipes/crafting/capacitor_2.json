@@ -9,11 +9,11 @@
 	{
 		"Z":
 		{
-			"tag": "forge:plates/zinc"
+			"tag": "c:plates/zinc"
 		},
 		"C":
 		{
-			"tag": "forge:plates/copper"
+			"tag": "c:plates/copper"
 		},
 		"T":
 		{

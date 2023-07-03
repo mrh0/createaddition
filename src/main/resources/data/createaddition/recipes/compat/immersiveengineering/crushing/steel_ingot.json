@@ -2,7 +2,7 @@
   "type": "create:crushing",
   "ingredients": [
     {
-      "tag": "forge:ingots/steel"
+      "tag": "c:ingots/steel"
     }
   ],
   "results": [
@@ -11,10 +11,12 @@
     }
   ],
   "processingTime": 300,
-  "conditions": [
+  "fabric:load_conditions": [
     {
-    	"type": "forge:mod_loaded",
-    	"modid": "immersiveengineering"
-  	}
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "immersiveengineering"
+      ]
+    }
   ]
 }

@@ -2,13 +2,15 @@
 	"type":"createaddition:liquid_burning",
 	"input": {
       	"fluid": "thermal:tree_oil",
-      	"amount": 1000
+      	"amount": 81000
 	},
 	"burnTime": 4800,
-	"conditions": [
-    {
-    	"type": "forge:mod_loaded",
-    	"modid": "thermal"
-  	}
-  ]
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:all_mods_loaded",
+			"values": [
+				"thermal"
+			]
+		}
+	]
 }

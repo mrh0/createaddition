@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "createaddition:iron_rod",
-    "createaddition:copper_rod",
-    "createaddition:gold_rod",
-    "createaddition:brass_rod"
-  ]
-}

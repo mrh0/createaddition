@@ -2,7 +2,7 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "tag": "c:iron_ingots"
+      "tag": "c:ingots/iron"
     },
     {
       "tag": "c:slimeball/blood"

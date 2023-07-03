@@ -1,13 +1,17 @@
 {
 	"type":"create:pressing",
 	"ingredients": [{
-      	"tag": "forge:ingots/nickel"
+      	"tag": "c:ingots/nickel"
 	}],
 	"results": [{
 		"item": "immersiveengineering:plate_nickel"
 	}],
-	"conditions": [{
-		"type": "forge:mod_loaded",
-		"modid": "immersiveengineering"
-    }]
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:all_mods_loaded",
+			"values": [
+				"immersiveengineering"
+			]
+		}
+	]
 }

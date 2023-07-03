@@ -2,14 +2,14 @@
   "type": "create:mixing",
   "ingredients": [
 	{
-      "tag": "forge:crops"
+      "tag": "c:crops"
     },
     {
-      "tag": "forge:crops"
+      "tag": "c:crops"
     },
     {
-      "fluidTag": "forge:plantoil",
-      "amount": 100
+      "fluidTag": "c:plantoil",
+      "amount": 8100
     }
   ],
   "results": [

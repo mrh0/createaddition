@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:rolling",
 	"input": {
-      	"tag": "c:gold_plates"
+      	"tag": "c:plates/gold"
 	},
 	"result": {
 		"item": "createaddition:gold_wire",
