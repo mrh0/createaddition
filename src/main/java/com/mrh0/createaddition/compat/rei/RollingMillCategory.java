@@ -1,33 +1,33 @@
-package com.mrh0.createaddition.compat.rei.category;
-
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
-import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.compat.rei.category.CreateRecipeCategory;
-import com.simibubi.create.compat.rei.display.CreateDisplay;
-import com.simibubi.create.foundation.gui.AllGuiTextures;
-import me.shedaniel.math.Point;
-import me.shedaniel.rei.api.client.gui.widgets.Widget;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.item.ItemStack;
+package com.mrh0.createaddition.compat.rei;
 
 import java.util.List;
 
-public class ChargingCategory extends CreateRecipeCategory<ChargingRecipe> {
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mrh0.createaddition.compat.rei.AnimatedRollingMill;
+import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
+import com.simibubi.create.compat.rei.category.CreateRecipeCategory;
+import com.simibubi.create.compat.rei.display.CreateDisplay;
+import com.simibubi.create.foundation.gui.AllGuiTextures;
 
-    private final AnimatedTeslaCoil tesla_coil = new AnimatedTeslaCoil();
+import me.shedaniel.math.Point;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+import net.minecraft.world.item.ItemStack;
 
-    public ChargingCategory(Info<ChargingRecipe> info) {
+public class RollingMillCategory extends CreateRecipeCategory<RollingRecipe> {
+
+    private final AnimatedRollingMill rolling_mill = new AnimatedRollingMill();
+
+    public RollingMillCategory(Info<RollingRecipe> info) {
         super(info);
     }
 
 
     @Override
-    public void addWidgets(CreateDisplay<ChargingRecipe> display, List<Widget> ingredients, Point origin) {
+    public void addWidgets(CreateDisplay<RollingRecipe> display, List<Widget> ingredients, Point origin) {
         ingredients.add(basicSlot(origin.x + 15, origin.y + 9)
                 .markInput()
-                .entries(EntryIngredients.of(display.getRecipe().ingredient.getItems()[0])));
+                .entries(EntryIngredients.ofIngredient(display.getRecipe().getIngredient())));
 
         ItemStack result = display.getRecipe().getResultItem();
         int yOffset = 0;
@@ -38,13 +38,11 @@ public class ChargingCategory extends CreateRecipeCategory<ChargingRecipe> {
     }
 
     @Override
-    public void draw(ChargingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+    public void draw(RollingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
         AllGuiTextures.JEI_SLOT.render(matrixStack, 14, 8);
         AllGuiTextures.JEI_ARROW.render(matrixStack, 85, 32);
         AllGuiTextures.JEI_DOWN_ARROW.render(matrixStack, 43, 4);
-        tesla_coil.draw(matrixStack, 48, 27);
-
-        Minecraft.getInstance().font.draw(matrixStack, Util.format(recipe.energy) + "fe", 86, 9, 4210752);
+        rolling_mill.draw(matrixStack, 48, 27);
 
         getRenderedSlot(recipe, 0).render(matrixStack, 139, 27);
     }

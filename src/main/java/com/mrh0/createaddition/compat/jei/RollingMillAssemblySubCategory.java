@@ -1,7 +1,6 @@
 package com.mrh0.createaddition.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mrh0.createaddition.compat.jei.category.AnimatedRollingMill;
 import com.simibubi.create.compat.jei.category.sequencedAssembly.JeiSequencedAssemblySubCategory;
 import com.simibubi.create.content.processing.sequenced.SequencedRecipe;
 

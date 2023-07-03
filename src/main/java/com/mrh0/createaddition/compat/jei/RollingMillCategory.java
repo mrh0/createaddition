@@ -1,7 +1,6 @@
 package com.mrh0.createaddition.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mrh0.createaddition.compat.jei.category.AnimatedRollingMill;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
