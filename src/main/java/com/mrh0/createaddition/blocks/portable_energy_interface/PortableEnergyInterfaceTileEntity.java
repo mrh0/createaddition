@@ -4,7 +4,7 @@ import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.actors.psi.PortableStorageInterfaceBlockEntity;
-import io.github.fabricators_of_create.porting_lib.transfer.callbacks.TransactionSuccessCallback;
+import io.github.fabricators_of_create.porting_lib.transfer.callbacks.TransactionCallback;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,7 +16,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceBlockEntity implements EnergyTransferable {
 
-	protected EnergyStorage capability = this.createEmptyHandler();
+	protected InterfaceEnergyHandler capability = this.createEmptyHandler();
 
 	// Default limits for PortableEnergyManager.
 	//public int maxInput = Config.PEI_MAX_INPUT.get();
@@ -27,22 +27,22 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 	}
 
 	public void startTransferringTo(Contraption contraption, float distance) {
-		this.capability = new InterfaceEnergyHandler(PortableEnergyManager.get(contraption));
+		this.capability.setWrapped(new InterfaceEnergyHandler(PortableEnergyManager.get(contraption)));
 		super.startTransferringTo(contraption, distance);
 	}
 
 	@Override
 	protected void stopTransferring() {
-		this.capability = this.createEmptyHandler();
+		this.capability.setWrapped(EnergyStorage.EMPTY);
 		super.stopTransferring();
 	}
 
 	@Override
 	protected void invalidateCapability() {
-
+		capability.setWrapped(EnergyStorage.EMPTY);
 	}
 
-	private EnergyStorage createEmptyHandler() {
+	private InterfaceEnergyHandler createEmptyHandler() {
 		return new InterfaceEnergyHandler(new SimpleEnergyStorage(0, 0, 0));
 	}
 
@@ -88,7 +88,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 
 	public class InterfaceEnergyHandler implements EnergyStorage {
 
-		private final EnergyStorage wrapped;
+		private EnergyStorage wrapped;
 
 		public InterfaceEnergyHandler(EnergyStorage wrapped) {
 			this.wrapped = wrapped;
@@ -101,7 +101,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 			if (this.wrapped == null) return 0;
 			long received = this.wrapped.insert(maxReceive, transaction);
 			if (received != 0)
-				transaction.addCloseCallback(new TransactionSuccessCallback(transaction, this::keepAlive));
+				TransactionCallback.onSuccess(transaction, this::keepAlive);
 			return received;
 		}
 
@@ -113,7 +113,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 			long extracted = this.wrapped.extract(maxExtract, transaction);
 
 			if (extracted != 0)
-				transaction.addCloseCallback(new TransactionSuccessCallback(transaction, this::keepAlive));
+				TransactionCallback.onSuccess(transaction, this::keepAlive);
 			return extracted;
 		}
 
@@ -141,6 +141,10 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 
 		public void keepAlive() {
 			PortableEnergyInterfaceTileEntity.this.onContentTransferred();
+		}
+
+		private void setWrapped(EnergyStorage wrapped) {
+			this.wrapped = wrapped;
 		}
 	}
 }

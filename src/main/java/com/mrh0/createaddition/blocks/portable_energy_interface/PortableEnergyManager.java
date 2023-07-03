@@ -3,6 +3,7 @@ package com.mrh0.createaddition.blocks.portable_energy_interface;
 import com.mrh0.createaddition.config.Config;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
+import io.github.fabricators_of_create.porting_lib.transfer.callbacks.TransactionSuccessCallback;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.core.BlockPos;
@@ -51,6 +52,7 @@ public class PortableEnergyManager {
 		return CONTRAPTIONS.get(contraption.entity.getUUID());
 	}
 
+	@SuppressWarnings("UnstableApiUsage")
 	public static class EnergyStorageHolder extends SnapshotParticipant<Long> implements EnergyStorage {
 
 		private long energy = 0;
@@ -91,36 +93,40 @@ public class PortableEnergyManager {
 		}
 
 		@Override
-		public long insert(long maxReceive, TransactionContext transaction) {
+		public long insert(long maxReceive, TransactionContext ctx) {
 			if (!this.supportsInsertion()) return 0;
 			long energyReceived = Math.min(this.capacity - this.energy, Math.min(this.maxReceive, maxReceive));
-			updateSnapshots(transaction);
+			updateSnapshots(ctx);
 			this.energy += energyReceived;
 			// Store NBT
-			long energyLeft = energyReceived;
-			for (EnergyData data : energyHolders.values()) {
-				energyLeft -= data.receiveEnergy(energyLeft);
-				if (energyLeft <= 0) break; // It shouldn't be possible to go below 0, but just in case.
-			}
-			// In case we didn't store all the energy.
-			if (energyLeft > 0) throw new IllegalStateException("Failed to store energy.");
+			TransactionSuccessCallback.onSuccess(ctx, () -> {
+				long energyLeft = energyReceived;
+				for (EnergyData data : energyHolders.values()) {
+					energyLeft -= data.receiveEnergy(energyLeft);
+					if (energyLeft <= 0) break; // It shouldn't be possible to go below 0, but just in case.
+				}
+				// In case we didn't store all the energy.
+				if (energyLeft > 0) throw new IllegalStateException("Failed to store energy.");
+			});
 			return energyReceived;
 		}
 
 		@Override
-		public long extract(long maxExtract, TransactionContext transaction) {
+		public long extract(long maxExtract, TransactionContext ctx) {
 			if (!this.supportsExtraction()) return 0;
 			long energyExtracted = Math.min(this.energy, Math.min(this.maxExtract, maxExtract));
-			updateSnapshots(transaction);
+			updateSnapshots(ctx);
 			this.energy -= energyExtracted;
 			// Store NBT
-			long energyLeft = energyExtracted;
-			for (EnergyData data : energyHolders.values()) {
-				energyLeft -= data.extractEnergy(energyLeft);
-				if (energyLeft <= 0) break; // It shouldn't be possible to go below 0, but just in case.
-			}
-			// In case we didn't store all the energy.
-			if (energyLeft > 0) throw new IllegalStateException("Failed to store energy.");
+			TransactionSuccessCallback.onSuccess(ctx, () -> {
+				long energyLeft = energyExtracted;
+				for (EnergyData data : energyHolders.values()) {
+					energyLeft -= data.extractEnergy(energyLeft);
+					if (energyLeft <= 0) break; // It shouldn't be possible to go below 0, but just in case.
+				}
+				// In case we didn't store all the energy.
+				if (energyLeft > 0) throw new IllegalStateException("Failed to store energy.");
+			});
 			return energyExtracted;
 		}
 
