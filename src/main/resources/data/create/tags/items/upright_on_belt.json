@@ -6,6 +6,7 @@
     "createaddition:chocolate_cake",
     "createaddition:honey_cake",
     "minecraft:cake",
-    "createaddition:seed_oil_bucket"
+    "createaddition:seed_oil_bucket",
+    "createaddition:bioethanol_bucket"
   ]
 }

@@ -1,0 +1,17 @@
+{
+	"type":"create:pressing",
+	"ingredients": [{
+      	"tag": "c:ingots/aluminum"
+	}],
+	"results": [{
+		"item": "immersiveengineering:plate_aluminum"
+	}],
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:all_mods_loaded",
+			"values": [
+				"immersiveengineering"
+			]
+		}
+	]
+}

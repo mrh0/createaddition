@@ -83,14 +83,14 @@ dependencies {
     modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}")
     modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
 
-    modImplementation("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+    modCompileOnly("mezz.jei:jei-$minecraft_version-fabric:$jei_version") { transitive = false }
 
     modImplementation("dev.architectury:architectury-fabric:${project.architectury_version}")
 
     modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")
 
     modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:" +
-            "${project.create_version}+${project.minecraft_version}")
+            "${project.create_version}+mc${project.minecraft_version}")
 
     modCompileOnly("curse.maven:cc-restitched-462672:3723736")
 

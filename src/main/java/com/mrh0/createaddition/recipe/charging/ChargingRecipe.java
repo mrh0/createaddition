@@ -22,7 +22,6 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	public static RecipeType<ChargingRecipe> TYPE = new ChargingRecipeType();
 	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "charging"));
 	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy) {
-		System.out.println("CHARGING " + id + " " + ingredient + " " + output + " " + energy);
 		this.id = id;
 		this.ingredient = ingredient;
 		this.output = output;

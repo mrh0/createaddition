@@ -7,9 +7,8 @@ import com.mrh0.createaddition.energy.IWireNode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
-
 public class EnergyNetwork {
-	
+	private int id;
 	// Input
 	private long inBuff;
 	private long inDemand;
@@ -22,7 +21,7 @@ public class EnergyNetwork {
 	private int pulled = 0;
 	private int pushed = 0;
 	
-	private static long MAX_BUFF = 10000;//Math.max(Config.CONNECTOR_MAX_INPUT.get(), Config.CONNECTOR_MAX_OUTPUT.get());
+	private static long MAX_BUFF = 80000;
 	
 	public EnergyNetwork(Level world) {
 		this.inBuff = 0;
@@ -36,8 +35,8 @@ public class EnergyNetwork {
 		EnergyNetworkManager.instances.get(world).add(this);
 	}
 	
-	public void tick() {
-		//System.out.println("NetTick: " + getBuff() + "/" + getDemand() + " " + pulled + "/" + pushed);
+	public void tick(int index) {
+		this.id = index;
 		long t = outBuff;
 		outBuff = inBuff;
 		outBuffRetained = outBuff;
@@ -47,16 +46,16 @@ public class EnergyNetwork {
 				
 		pulled = 0;
 		pushed = 0;
-		//saturation = outDemand > 0 ? saturation : 0;
 	}
 	
 	public long getBuff() {
 		return outBuffRetained;
 	}
-	
+
+	// Returns the amount of energy pushed
 	public long push(long energy) {
 		energy = Math.min(MAX_BUFF - inBuff, energy);
-		energy = energy > 0 ? energy : 0;
+		energy = Math.max(energy, 0);
 		inBuff += energy;
 		pushed += energy;
 		return energy;
@@ -85,37 +84,15 @@ public class EnergyNetwork {
 		pulled += r;
 		return r;
 	}
-	
-	/*public static EnergyNetwork buildNetwork(World world, IWireNode root) {
-		if(world.isRemote())
-			return null;
-		EnergyNetwork en = new EnergyNetwork(world);
-		Map<String, IWireNode> visited = new HashMap<>();
-		
-		for(int i = 0; i < root.getNodeCount(); i++) {
-			//if(!root.isNodeIndicesConnected(i-1, i))
-			//	en = new EnergyNetwork(world);
-			//nextNode(world, en, visited, root, i);
-			//System.out.println(root.getMyPos() + ":" + i);
-		}
-		return en;
-	}*/
-	
-	/*public static EnergyNetwork buildNetwork(World world, IWireNode root, int index) {
-		EnergyNetwork en = new EnergyNetwork(world);
-		Map<String, IWireNode> visited = new HashMap<>();
-		nextNode(world, en, visited, root, index);
-		return en;
-	}*/
-	
+
 	public static EnergyNetwork nextNode(Level world, EnergyNetwork en, Map<String, IWireNode> visited, IWireNode current, int index) {
-		if(visited.containsKey(posKey(current.getMyPos(), index)))
+		if(visited.containsKey(posKey(current.getPos(), index)))
 			return null; // should never matter?
 		current.setNetwork(index, en);
-		visited.put(posKey(current.getMyPos(), index), current);
+		visited.put(posKey(current.getPos(), index), current);
 		
 		for(int i = 0; i < current.getNodeCount(); i++) {
-			IWireNode next = current.getNode(i);
+			IWireNode next = current.getWireNode(i);
 			if(next == null)
 				continue;
 			if(!current.isNodeIndicesConnected(index, i)) {
@@ -144,5 +121,9 @@ public class EnergyNetwork {
 	
 	public void removed() {
 		
+	}
+
+	public int getId() {
+		return id;
 	}
 }

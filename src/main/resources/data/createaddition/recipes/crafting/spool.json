@@ -9,11 +9,11 @@
 	{
 		"P":
 		{
-			"tag": "c:iron_plates"
+			"tag": "c:plates/iron"
 		},
 		"N":
 		{
-			"tag": "c:iron_nuggets"
+			"tag": "c:nuggets/iron"
 		}
 	},
 	"result":{

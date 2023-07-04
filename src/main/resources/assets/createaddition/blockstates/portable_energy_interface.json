@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createaddition:block/portable_energy_interface/block",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "createaddition:block/portable_energy_interface/block"
+    },
+    "facing=north": {
+      "model": "createaddition:block/portable_energy_interface/block",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "createaddition:block/portable_energy_interface/block",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "createaddition:block/portable_energy_interface/block",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "createaddition:block/portable_energy_interface/block",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

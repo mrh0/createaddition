@@ -1,0 +1,48 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "createaddition:block/accumulator/accumulator",
+		"particle": "create:block/andesite_casing"
+	},
+	"elements": [
+		{
+			"name": "Core",
+			"from": [7, 1, 7],
+			"to": [9, 5, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [15, 9, 15]},
+			"faces": {
+				"north": {"uv": [0, 0, 0.5, 1], "texture": "#0"},
+				"east": {"uv": [1.5, 0, 2, 1], "texture": "#0"},
+				"south": {"uv": [1, 0, 1.5, 1], "texture": "#0"},
+				"west": {"uv": [0.5, 0, 1, 1], "texture": "#0"},
+				"up": {"uv": [1.5, 0, 2, 0.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Outer",
+			"from": [6, 0, 6],
+			"to": [10, 2, 10],
+			"faces": {
+				"north": {"uv": [1, 1.5, 2, 2], "texture": "#0"},
+				"east": {"uv": [1, 1.5, 2, 2], "texture": "#0"},
+				"south": {"uv": [1, 1.5, 2, 2], "texture": "#0"},
+				"west": {"uv": [1, 1.5, 2, 2], "texture": "#0"},
+				"up": {"uv": [1, 1, 2, 2], "texture": "#0"},
+				"down": {"uv": [1, 1, 2, 2], "texture": "#0", "cullface": "down"}
+			}
+		},
+		{
+			"name": "OuterCap",
+			"from": [6, 3, 6],
+			"to": [10, 4, 10],
+			"faces": {
+				"north": {"uv": [0, 1, 1, 1.25], "texture": "#0"},
+				"east": {"uv": [0, 1, 1, 1.25], "texture": "#0"},
+				"south": {"uv": [0, 1, 1, 1.25], "texture": "#0"},
+				"west": {"uv": [0, 1, 1, 1.25], "texture": "#0"},
+				"up": {"uv": [0, 1, 1, 2], "texture": "#0"},
+				"down": {"uv": [0, 1, 1, 2], "texture": "#0"}
+			}
+		}
+	]
+}

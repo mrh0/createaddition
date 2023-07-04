@@ -1,0 +1,17 @@
+{
+	"type":"create:pressing",
+	"ingredients": [{
+      	"tag": "c:ingots/uranium"
+	}],
+	"results": [{
+		"item": "immersiveengineering:plate_uranium"
+	}],
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:all_mods_loaded",
+			"values": [
+				"immersiveengineering"
+			]
+		}
+	]
+}

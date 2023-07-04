@@ -1,0 +1,16 @@
+{
+	"type":"createaddition:liquid_burning",
+	"input": {
+      	"fluidTag": "c:ethanol",
+      	"amount": 81000
+	},
+	"burnTime": 6000,
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:fluid_tags_populated",
+			"values": [
+				"c:ethanol"
+			]
+		}
+	]
+}

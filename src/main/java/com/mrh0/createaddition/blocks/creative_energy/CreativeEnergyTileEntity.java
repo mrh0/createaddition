@@ -2,29 +2,24 @@ package com.mrh0.createaddition.blocks.creative_energy;
 
 import com.mrh0.createaddition.energy.CreativeEnergyStorage;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
-import com.simibubi.create.content.logistics.block.inventories.CrateTileEntity;
-
-import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
-public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyTransferable {
+public class CreativeEnergyTileEntity extends CrateBlockEntity implements EnergyTransferable {
 
 	protected final CreativeEnergyStorage energy;
-	private LazyOptional<EnergyStorage> lazyEnergy;
 	
 	public CreativeEnergyTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 		energy = new CreativeEnergyStorage();
-		lazyEnergy = LazyOptional.of(() -> energy);
 	}
-	
+
 	private boolean firstTickState = true;
 	
 	@Override
@@ -55,25 +50,18 @@ public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyT
 		if(level.isClientSide())
 			return;
 		for(Direction side : Direction.values()) {
-			BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
-			if(te == null) {
-				setCache(side, LazyOptional.empty());
-				continue;
-			}
-			LazyOptional<EnergyStorage> le = LazyOptional.ofObject(EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite()));
-			setCache(side, le);
-			
+			setCache(side, EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite()));
 		}
 	}
 	
-	private LazyOptional<EnergyStorage> escacheUp = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheDown = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheNorth = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheEast = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheSouth = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheWest = LazyOptional.empty();
+	private EnergyStorage escacheUp = null;
+	private EnergyStorage escacheDown = null;
+	private EnergyStorage escacheNorth = null;
+	private EnergyStorage escacheEast = null;
+	private EnergyStorage escacheSouth = null;
+	private EnergyStorage escacheWest = null;
 	
-	public void setCache(Direction side, LazyOptional<EnergyStorage> storage) {
+	public void setCache(Direction side, EnergyStorage storage) {
 		switch(side) {
 			case DOWN:
 				escacheDown = storage;
@@ -97,21 +85,14 @@ public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyT
 	}
 	
 	public EnergyStorage getCachedEnergy(Direction side) {
-		switch(side) {
-			case DOWN:
-				return escacheDown.orElse(null);
-			case EAST:
-				return escacheEast.orElse(null);
-			case NORTH:
-				return escacheNorth.orElse(null);
-			case SOUTH:
-				return escacheSouth.orElse(null);
-			case UP:
-				return escacheUp.orElse(null);
-			case WEST:
-				return escacheWest.orElse(null);
-		}
-		return null;
+		return switch (side) {
+			case DOWN -> escacheDown;
+			case EAST -> escacheEast;
+			case NORTH -> escacheNorth;
+			case SOUTH -> escacheSouth;
+			case UP -> escacheUp;
+			case WEST -> escacheWest;
+		};
 	}
 
 	@Override

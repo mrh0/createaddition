@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "top": "create:block/copper_casing",
-    "front": "createaddition:block/crude_burner/front_on",
-    "side": "createaddition:block/crude_burner/side"
-  }
-}

@@ -23,6 +23,13 @@
     "minecraft:red_mushroom",
     "minecraft:crimson_fungus",
     "minecraft:warped_fungus",
-    "minecraft:sugar_cane"
+    "minecraft:sugar_cane",
+    "minecraft:dead_bush",
+    "minecraft:sea_pickle",
+    "minecraft:moss_block",
+    "minecraft:moss_carpet",
+    "minecraft:big_dripleaf",
+    "minecraft:small_dripleaf",
+    "minecraft:glow_lichen"
   ]
 }

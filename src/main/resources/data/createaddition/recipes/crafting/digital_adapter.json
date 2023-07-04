@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+		    "tag": "computercraft:wired_modem"
+		},
+		{
+			"tag": "c:plates/brass"
+		},
+		{
+		    "item": "minecraft:redstone_torch"
+		}
+	],
+	"result":{
+		"item": "createaddition:digital_adapter",
+		"count": 1
+	},
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:all_mods_loaded",
+			"values": [
+				"computercraft"
+			]
+		}
+	]
+}

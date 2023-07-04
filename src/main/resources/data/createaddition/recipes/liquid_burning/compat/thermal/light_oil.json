@@ -1,0 +1,16 @@
+{
+	"type":"createaddition:liquid_burning",
+	"input": {
+      	"fluid": "thermal:light_oil",
+      	"amount": 81000
+	},
+	"burnTime": 9600,
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:all_mods_loaded",
+			"values": [
+				"thermal"
+			]
+		}
+	]
+}
