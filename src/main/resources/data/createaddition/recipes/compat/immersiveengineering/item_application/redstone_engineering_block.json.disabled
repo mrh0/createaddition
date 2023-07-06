@@ -1,0 +1,22 @@
+{
+  "type": "create:item_application",
+  "ingredients": [
+    {
+      "item": "immersiveengineering:sheetmetal_iron"
+    },
+    {
+      "item": "create:electron_tube"
+    }
+  ],
+  "results": [
+    {
+      "item": "immersiveengineering:rs_engineering"
+    }
+  ],
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ]
+}
