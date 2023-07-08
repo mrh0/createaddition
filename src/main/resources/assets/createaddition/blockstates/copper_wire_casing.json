@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "createaddition:block/copper_wire_casing/block"
+    }
+  }
+}

@@ -12,13 +12,13 @@
     },
     {
       "fluidTag": "c:plantoil",
-      "amount": 9000
+      "amount": 8100
     }
   ],
   "results": [
     {
       "item": "createaddition:biomass",
-      "count": 2
+      "count": 1
     }
   ],
   "heatRequirement": "heated"

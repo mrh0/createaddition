@@ -1,0 +1,26 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "c:ingots/copper"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    }
+  ],
+  "results": [
+    {
+      "item": "tconstruct:amethyst_bronze_ingot",
+      "count": 1
+    }
+  ],
+  "heatRequirement": "heated",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "tconstruct"
+      ]
+    }
+  ]
+}

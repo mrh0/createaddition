@@ -6,7 +6,7 @@ import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.base.KineticTileEntity;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.utility.Lang;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
@@ -16,6 +16,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,23 +28,20 @@ import team.reborn.energy.api.EnergyStorageUtil;
 
 import java.util.List;
 
-@SuppressWarnings({"CommentedOutCode", "UnstableApiUsage"})
-public class AlternatorTileEntity extends KineticTileEntity implements EnergyTransferable {
+public class AlternatorTileEntity extends KineticBlockEntity implements EnergyTransferable {
 	
 	protected final InternalEnergyStorage energy;
-	private final LazyOptional<EnergyStorage> lazyEnergy;
-	
-	private static final long
+
+	/*private static final long
 		MAX_IN = 0,
 		MAX_OUT = Config.ALTERNATOR_MAX_OUTPUT.get(),
 		CAPACITY = Config.ALTERNATOR_CAPACITY.get(),
 		STRESS = Config.BASELINE_STRESS.get();
-	private static final double EFFICIENCY = Config.ALTERNATOR_EFFICIENCY.get();
+	private static final double EFFICIENCY = Config.ALTERNATOR_EFFICIENCY.get();*/
 
 	public AlternatorTileEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);
-		energy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
-		lazyEnergy = LazyOptional.of(() -> energy);
+		energy = new InternalEnergyStorage(Config.ALTERNATOR_CAPACITY.get(), 0, Config.ALTERNATOR_MAX_OUTPUT.get());
 	}
 	
 	@Override
@@ -50,25 +49,30 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
 		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
-		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
+		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
 				.withStyle(ChatFormatting.AQUA)).append(Lang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
 		return true;
 	}
 	
 	@Override
 	public float calculateStressApplied() {
-		float impact = STRESS/256f;
+		float impact = Config.MAX_STRESS.get()/256f;
 		this.lastStressApplied = impact;
 		return impact;
 	}
-
-	public boolean isEnergyInput(Direction ignoredSide) {
+	
+	@Override
+	public EnergyStorage getEnergyStorage(Direction side) {
+		return energy;
+	}
+	
+	public boolean isEnergyInput(Direction side) {
 		return false;
 	}
 
 	public boolean isEnergyOutput(Direction side) {
-		return side != getBlockState().getValue(AlternatorBlock.FACING);
+		return true; //side != getBlockState().getValue(AlternatorBlock.FACING);
 	}
 	
 	@Override
@@ -112,7 +116,7 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 			if(ies == null)
 				continue;
 			try(Transaction t = Transaction.openOuter()) {
-				EnergyStorageUtil.move(energy, ies, MAX_OUT, t);
+				EnergyStorageUtil.move(energy, ies, Config.ALTERNATOR_MAX_OUTPUT.get(), t);
 				t.commit();
 			}
 			//System.out.println(ext + ":" + getEnergyProductionRate((int)getSpeed()) + ":" + rec + ":" + d);
@@ -121,7 +125,7 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 	
 	public static int getEnergyProductionRate(int rpm) {
 		rpm = Math.abs(rpm);
-		return (int)((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d) * EFFICIENCY);//return (int)((double)Config.FE_TO_SU.get() * ((double)Math.abs(rpm)/256d) * EFFICIENCY);
+		return (int)((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d) * Config.ALTERNATOR_EFFICIENCY.get());//return (int)((double)Config.FE_TO_SU.get() * ((double)Math.abs(rpm)/256d) * EFFICIENCY);
 	}
 	
 	@Override
@@ -175,13 +179,5 @@ public class AlternatorTileEntity extends KineticTileEntity implements EnergyTra
 			case UP -> escacheUp.orElse((EnergyStorage.EMPTY));
 			case WEST -> escacheWest.orElse(EnergyStorage.EMPTY);
 		};
-	}
-
-	@Nullable
-	@Override
-	public EnergyStorage getEnergyStorage(@Nullable Direction side) {
-		if((isEnergyInput(side) || isEnergyOutput(side)))
-			return lazyEnergy.getValueUnsafer();
-		return null;
 	}
 }

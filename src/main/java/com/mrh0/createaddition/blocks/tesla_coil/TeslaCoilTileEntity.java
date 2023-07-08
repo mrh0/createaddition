@@ -1,23 +1,16 @@
 package com.mrh0.createaddition.blocks.tesla_coil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
-
+import com.mrh0.createaddition.util.Util;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
+import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.DamageSourceAccessor;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
@@ -40,41 +33,54 @@ import net.minecraft.world.phys.AABB;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.EnergyStorageUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 @SuppressWarnings("UnstableApiUsage")
 public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	private Optional<ChargingRecipe> recipeCache = Optional.empty();
+	private Optional<ChargingRecipe> recipeCache;
 
 	private final ItemStackHandler inputInv;
 	private int chargeAccumulator;
 
-	private static final long
+	/*private static final long
 		MAX_IN = Config.TESLA_COIL_MAX_INPUT.get(),
 		CHARGE_RATE = Config.TESLA_COIL_CHARGE_RATE.get(),
 		CHARGE_RATE_RECIPE = Config.TESLA_COIL_RECIPE_CHARGE_RATE.get(),
-		CAPACITY = Math.max(Config.TESLA_COIL_CAPACITY.get(), CHARGE_RATE),
+		CAPACITY = Util.max(Config.TESLA_COIL_CAPACITY.get(), CHARGE_RATE, CHARGE_RATE_RECIPE),
 		HURT_ENERGY_REQUIRED = Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get(),
 		HURT_DMG_MOB = Config.TESLA_COIL_HURT_DMG_MOB.get(),
 		HURT_DMG_PLAYER = Config.TESLA_COIL_HURT_DMG_PLAYER.get(),
 		HURT_RANGE = Config.TESLA_COIL_HURT_RANGE.get(),
 		HURT_EFFECT_TIME_MOB = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get(),
 		HURT_EFFECT_TIME_PLAYER = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get(),
-		HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();
-
+		HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();*/
+	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
 	
-	private static final DamageSource dmgSource = DamageSourceAccessor.port_lib$init("tesla_coil");
+	private static final DamageSource DMG_SOURCE = DamageSourceAccessor.port_lib$init("tesla_coil");
 	
 	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
-		super(tileEntityTypeIn, pos, state, CAPACITY, MAX_IN, 0);
+		super(
+				tileEntityTypeIn,
+				pos,
+				state,
+				Util.max(Config.TESLA_COIL_CAPACITY.get(), Config.TESLA_COIL_CHARGE_RATE.get(), Config.TESLA_COIL_RECIPE_CHARGE_RATE.get()),
+				Config.TESLA_COIL_MAX_INPUT.get(),
+				0)
+		;
 		inputInv = new ItemStackHandler(1);
+		recipeCache = Optional.empty();
 	}
 	
 	public BeltProcessingBehaviour processingBehaviour;
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
 		super.addBehaviours(behaviours);
 		processingBehaviour =
 			new BeltProcessingBehaviour(this).whenItemEnters((s, i) -> TeslaCoilBeltCallbacks.onItemReceived(s, i, this))
@@ -84,7 +90,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 
 	@Override
 	public boolean isEnergyInput(Direction side) {
-		return side != getBlockState().getValue(TeslaCoil.FACING).getOpposite();
+		return side != getBlockState().getValue(TeslaCoilBlock.FACING).getOpposite();
 	}
 
 	@Override
@@ -93,46 +99,60 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}
 	
 	public long getConsumption() {
-		return CHARGE_RATE;
+		return Config.TESLA_COIL_CHARGE_RATE.get();
+	}
+	
+	protected float getItemCharge(EnergyStorage energy) {
+		if (energy == null)
+			return 0f;
+		return (float) energy.getAmount() / (float) energy.getCapacity();
 	}
 
-	protected ProcessingResult onCharge(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		return chargeCompoundAndStack(transported, handler);
+	protected BeltProcessingBehaviour.ProcessingResult onCharge(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+		BeltProcessingBehaviour.ProcessingResult res = chargeCompundAndStack(transported, handler);
+		return res;
 	}
 	
 	private void doDmg() {
-		energy.internalConsumeEnergy(HURT_ENERGY_REQUIRED);
-		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoil.FACING).getOpposite());
-		List<LivingEntity> ents = Objects.requireNonNull(getLevel()).getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(HURT_RANGE));
+		localEnergy.internalConsumeEnergy(Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get());
+		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoilBlock.FACING).getOpposite());
+		List<LivingEntity> ents = Objects.requireNonNull(getLevel()).getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(Config.TESLA_COIL_HURT_RANGE.get()));
 		for(LivingEntity e : ents) {
-			long dmg = HURT_DMG_MOB;
-			long time = HURT_EFFECT_TIME_MOB;
+			if(e == null) return;
+			int dmg = Config.TESLA_COIL_HURT_DMG_MOB.get();
+			int time = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get();
 			if(e instanceof Player) {
-				dmg = HURT_DMG_PLAYER;
-				time = HURT_EFFECT_TIME_PLAYER;
+				dmg = Config.TESLA_COIL_HURT_DMG_PLAYER.get();
+				time = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get();
 			}
 			if(dmg > 0)
-				e.hurt(dmgSource, dmg);
+				e.hurt(DMG_SOURCE, dmg);
 			if(time > 0)
 				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING, (int) time));
 		}
 	}
 	
 	int dmgTick = 0;
-	
+	int soundTimeout = 0;
+
 	@Override
 	public void tick() {
 		super.tick();
 		assert level != null;
-		if(level.isClientSide())
+		if (level != null && level.isClientSide()) {
+			if(isPoweredState() && soundTimeout++ > 20) {
+				//level.playLocalSound(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), SoundEvents.BEE_LOOP, SoundSource.BLOCKS, 1f, 16f, false);
+				soundTimeout = 0;
+			}
 			return;
+		}
 		int signal = Objects.requireNonNull(getLevel()).getBestNeighborSignal(getBlockPos());
 		//System.out.println(signal + ":" + (energy.getEnergyStored() >= HURT_ENERGY_REQUIRED));
-		if(signal > 0 && energy.getAmount() >= HURT_ENERGY_REQUIRED)
+		if(signal > 0 && localEnergy.getAmount() >= Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get())
 			poweredTimer = 10;
 		
 		dmgTick++;
-		if((dmgTick%=HURT_FIRE_COOLDOWN) == 0 && energy.getAmount() >= HURT_ENERGY_REQUIRED && signal > 0)
+		if((dmgTick%=Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get()) == 0 && localEnergy.getAmount() >= Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get() && signal > 0)
 			doDmg();
 		
 		if(poweredTimer > 0) {
@@ -146,23 +166,23 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}
 	
 	public boolean isPoweredState() {
-		return getBlockState().getValue(TeslaCoil.POWERED);
+		return getBlockState().getValue(TeslaCoilBlock.POWERED);
 	}
 	
-	protected ProcessingResult chargeCompoundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+	protected BeltProcessingBehaviour.ProcessingResult chargeCompoundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		
 		ItemStack stack = transported.stack;
 		if(stack == null)
-			return ProcessingResult.PASS;
+			return BeltProcessingBehaviour.ProcessingResult.PASS;
 		if(chargeStack(stack, transported, handler)) {
 			poweredTimer = 10;
-			return ProcessingResult.HOLD;
+			return BeltProcessingBehaviour.ProcessingResult.HOLD;
 		}
 		else if(chargeRecipe(stack, transported, handler)) {
 			poweredTimer = 10;
-			return ProcessingResult.HOLD;
+			return BeltProcessingBehaviour.ProcessingResult.HOLD;
 		}
-		return ProcessingResult.PASS;
+		return BeltProcessingBehaviour.ProcessingResult.PASS;
 	}
 
 	protected final boolean chargeStack(
@@ -170,45 +190,23 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			final TransportedItemStack ignoredTransported,
 			final TransportedItemStackHandlerBehaviour ignoredHandler
 	) {
-		final var energyTag = "energy";
-		final EnergyStorage itemEnergy =  EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+		ContainerItemContext context = ContainerItemContext.withInitial(stack);
+		final EnergyStorage es =  EnergyStorage.ITEM.find(stack, context);
 
-		if (itemEnergy == null)
+		if (es == null)
 			return false;
-
-		if (stack.getTag() == null)
-			stack.setTag(new CompoundTag());
-
-		// Make sure the targeted stack is energy storage
-		if (EnergyStorageUtil.isEnergyStorage(stack)) {
-			if (energy.getAmount() < stack.getCount())
+		try (Transaction t = TransferUtil.getTransaction()) {
+			if (es.insert(1, t) != 1)
 				return false;
-
-			try (Transaction t = TransferUtil.getTransaction()) {
-				final var amountToUse = Math.min(getConsumption(), energy.getAmount());
-				final var compoundTag = stack.getTag();
-				final var energyAmount  = compoundTag.getDouble(energyTag);
-				final var energyCapacity = itemEnergy.getCapacity();
-				final var newAmount = energyAmount + amountToUse;
-
-				if (newAmount < itemEnergy.getCapacity()) {
-					energy.internalConsumeEnergy(itemEnergy.insert(amountToUse, t));
-					compoundTag.put(energyTag, DoubleTag.valueOf(newAmount));
-					t.commit();
-				} else if (energyAmount < energyCapacity) {
-					final long energyDiff = energyCapacity - (long) energyAmount;
-					System.out.println(energyDiff);
-					energy.internalConsumeEnergy(itemEnergy.insert(energyDiff, t));
-					compoundTag.put(energyTag, DoubleTag.valueOf(energyAmount + energyDiff));
-					t.commit();
-				} else {
-					return false;
-				}
-			}
-			return true;
-		} else {
-			return false;
 		}
+		if(localEnergy.getAmount() < stack.getCount())
+			return false;
+		try (Transaction t = TransferUtil.getTransaction()) {
+			localEnergy.internalConsumeEnergy(es.insert(Math.min(getConsumption(), localEnergy.getAmount()), t));
+			t.commit();
+		}
+		stack.setTag(context.getItemVariant().copyNbt());
+		return true;
 	}
 	
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
@@ -219,7 +217,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		}
 		if(recipeCache.isPresent()) {
 			ChargingRecipe recipe = recipeCache.get();
-			long energyRemoved = energy.internalConsumeEnergy(Math.min(CHARGE_RATE_RECIPE, recipe.getEnergy() - chargeAccumulator));
+			long energyRemoved = localEnergy.internalConsumeEnergy(Math.min( Config.TESLA_COIL_RECIPE_CHARGE_RATE.get(), recipe.getEnergy() - chargeAccumulator));
 			chargeAccumulator += energyRemoved;
 			if(chargeAccumulator >= recipe.getEnergy()) {
 				TransportedItemStack remainingStack = transported.copy();
@@ -228,7 +226,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 				remainingStack.stack.shrink(1);
 				List<TransportedItemStack> outList = new ArrayList<>();
 				outList.add(result);
-				handler.handleProcessingOnItem(transported, TransportedResult.convertToAndLeaveHeld(outList, remainingStack));
+				handler.handleProcessingOnItem(transported, TransportedItemStackHandlerBehaviour.TransportedResult.convertToAndLeaveHeld(outList, remainingStack));
 				chargeAccumulator = 0;
 			}
 			return true;

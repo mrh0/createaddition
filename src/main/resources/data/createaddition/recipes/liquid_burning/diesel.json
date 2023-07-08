@@ -1,0 +1,17 @@
+{
+	"type":"createaddition:liquid_burning",
+	"input": {
+      	"fluidTag": "c:diesel",
+      	"amount": 81000
+	},
+	"burnTime": 48000,
+	"superheated": true,
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:fluid_tags_populated",
+			"values": [
+				"c:diesel"
+			]
+		}
+	]
+}

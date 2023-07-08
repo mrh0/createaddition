@@ -9,6 +9,10 @@
     "createaddition:connector",
     "createaddition:redstone_relay",
     "createaddition:tesla_coil",
-    "createaddition:liquid_blaze_burner"
+    "createaddition:liquid_blaze_burner",
+    "createaddition:barbed_wire",
+    "createaddition:modular_accumulator",
+    "createaddition:portable_energy_interface",
+    "createaddition:digital_adapter"
   ]
 }

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "createaddition:block/overcharged_casing/overcharged_casing"
-  }
-}

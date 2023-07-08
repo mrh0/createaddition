@@ -1,7 +1,11 @@
 package com.mrh0.createaddition.energy;
 
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -9,22 +13,41 @@ import net.minecraft.world.level.Level;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class InternalEnergyStorage extends SimpleEnergyStorage {
+public class InternalEnergyStorage extends SnapshotParticipant<Long> implements EnergyStorage {
+    public long amount = 0;
+    public long capacity;
+    public final long maxReceive, maxExtract;
 	public InternalEnergyStorage(long capacity) {
-        super(capacity, capacity, capacity);
+        this(capacity, capacity, capacity);
     }
 
     public InternalEnergyStorage(long capacity, long maxTransfer) {
-        super(capacity, maxTransfer, maxTransfer);
+        this(capacity, maxTransfer, maxTransfer);
     }
 
     public InternalEnergyStorage(long capacity, long maxReceive, long maxExtract) {
-        super(capacity, maxReceive, maxExtract);
+        StoragePreconditions.notNegative(capacity);
+        StoragePreconditions.notNegative(maxReceive);
+        StoragePreconditions.notNegative(maxExtract);
+
+        this.capacity = capacity;
+        this.maxReceive = maxReceive;
+        this.maxExtract = maxExtract;
     }
 
     public InternalEnergyStorage(long capacity, long maxReceive, long maxExtract, long energy) {
-        super(capacity, maxReceive, maxExtract);
+        this(capacity, maxReceive, maxExtract);
         this.amount = energy;
+    }
+
+    @Override
+    protected Long createSnapshot() {
+        return amount;
+    }
+
+    @Override
+    protected void readSnapshot(Long snapshot) {
+        amount = snapshot;
     }
     
     public CompoundTag write(CompoundTag nbt) {
@@ -44,15 +67,64 @@ public class InternalEnergyStorage extends SimpleEnergyStorage {
     public void read(CompoundTag nbt, String name) {
     	setEnergy(nbt.getInt("energy_"+name));
     }
+    public long getSpace() {
+    	return Math.max(getCapacity() - getAmount(), 0);
+    }
 
     @Override
     public boolean supportsExtraction() {
-        return true;
+        return maxExtract > 0;
     }
 
     @Override
     public boolean supportsInsertion() {
-        return true;
+        return maxReceive > 0;
+    }
+
+    @Override
+    public long insert(long maxAmount, TransactionContext transaction) {
+        StoragePreconditions.notNegative(maxAmount);
+
+        long inserted = Math.min(maxReceive, Math.min(maxAmount, capacity - amount));
+
+        if (inserted > 0) {
+            updateSnapshots(transaction);
+            amount += inserted;
+            return inserted;
+        }
+
+        return 0;
+    }
+
+    @Override
+    public long extract(long maxAmount, TransactionContext transaction) {
+        StoragePreconditions.notNegative(maxAmount);
+
+        long extracted = Math.min(maxExtract, Math.min(maxAmount, amount));
+
+        if (extracted > 0) {
+            updateSnapshots(transaction);
+            amount -= extracted;
+            return extracted;
+        }
+
+        return 0;
+    }
+
+    public long simulateExtract(long maxAmount) {
+        try (Transaction t = TransferUtil.getTransaction()) {
+            StoragePreconditions.notNegative(maxAmount);
+
+            long extracted = Math.min(maxExtract, Math.min(maxAmount, amount));
+
+            if (extracted > 0) {
+                updateSnapshots(t);
+                amount -= extracted;
+                return extracted;
+            }
+
+            return 0;
+        }
     }
 
     public long internalConsumeEnergy(long consume) {
@@ -71,6 +143,20 @@ public class InternalEnergyStorage extends SimpleEnergyStorage {
     	this.amount = energy;
     }
     
+    public void setCapacity(long capacity) {
+    	this.capacity = capacity;
+    }
+
+    @Override
+    public long getAmount() {
+        return amount;
+    }
+
+    @Override
+    public long getCapacity() {
+        return capacity;
+    }
+
     @Deprecated
     public void outputToSide(Level world, BlockPos pos, Direction side, int max) {
 		EnergyStorage ies = EnergyStorage.SIDED.find(world, pos.relative(side), side.getOpposite());
@@ -85,6 +171,6 @@ public class InternalEnergyStorage extends SimpleEnergyStorage {
     
     @Override
     public String toString() {
-    	return getAmount() + "/" + getCapacity();
+    	return getAmount() + "/" + getCapacity() + " <-" + maxExtract + " ->" + maxReceive;
     }
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+	  "name": "createaddition:modular_accumulator",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createaddition:modular_accumulator"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

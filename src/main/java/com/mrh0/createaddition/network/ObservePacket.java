@@ -56,11 +56,12 @@ public record ObservePacket(BlockPos pos, int node) {
 			cooldown = 0;
 	}
 
-	public static void send(BlockPos pos, int node) {
+	public static boolean send(BlockPos pos, int node) {
 		if (cooldown > 0)
-			return;
+			return false;
 		cooldown = 10;
 		ClientPlayNetworking.send(CANetwork.OBSERVE_PACKET, new ObservePacket(pos, node).encode());
+		return true;
 	}
 
 

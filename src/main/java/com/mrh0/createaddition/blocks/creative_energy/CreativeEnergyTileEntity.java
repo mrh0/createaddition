@@ -2,79 +2,66 @@ package com.mrh0.createaddition.blocks.creative_energy;
 
 import com.mrh0.createaddition.energy.CreativeEnergyStorage;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
-import com.simibubi.create.content.logistics.block.inventories.CrateTileEntity;
-
-import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
 @SuppressWarnings("UnstableApiUsage")
-public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyTransferable {
+public class CreativeEnergyTileEntity extends CrateBlockEntity implements EnergyTransferable {
 
 	protected final CreativeEnergyStorage energy;
-
 	public CreativeEnergyTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 		energy = new CreativeEnergyStorage();
 	}
-	
+
 	private boolean firstTickState = true;
 	
 	@Override
 	public void tick() {
 		super.tick();
-		if (level != null) {
-			if (level.isClientSide())
-				return;
-			if (firstTickState)
-				firstTick();
-			firstTickState = false;
-
-			for (Direction d : Direction.values()) {
-				EnergyStorage ies = getCachedEnergy(d);
-				if (ies == null)
-					continue;
-				try (Transaction t = Transaction.openOuter()) {
-					t.commit();
-				}
+		if(level.isClientSide())
+			return;
+		if(firstTickState)
+			firstTick();
+		firstTickState = false;
+		
+		for(Direction d : Direction.values()) {
+			EnergyStorage ies = getCachedEnergy(d);
+			if(ies == null)
+				continue;
+			try(Transaction t = Transaction.openOuter()) {
+				long r = ies.insert(Integer.MAX_VALUE, t);
+				t.commit();
 			}
 		}
 	}
-	
+
 	public void firstTick() {
 		updateCache();
 	}
 
 	public void updateCache() {
-		if (level != null) {
-			if (level.isClientSide())
-				return;
-			for (Direction side : Direction.values()) {
-				BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
-				if (te == null) {
-					setCache(side, LazyOptional.empty());
-					continue;
-				}
-				LazyOptional<EnergyStorage> le = LazyOptional.ofObject(EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite()));
-				setCache(side, le);
-			}
+		if(level.isClientSide())
+			return;
+		for(Direction side : Direction.values()) {
+			setCache(side, EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite()));
 		}
 	}
 	
-	private LazyOptional<EnergyStorage> escacheUp = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheDown = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheNorth = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheEast = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheSouth = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheWest = LazyOptional.empty();
+	private EnergyStorage escacheUp = null;
+	private EnergyStorage escacheDown = null;
+	private EnergyStorage escacheNorth = null;
+	private EnergyStorage escacheEast = null;
+	private EnergyStorage escacheSouth = null;
+	private EnergyStorage escacheWest = null;
 	
-	public void setCache(Direction side, LazyOptional<EnergyStorage> storage) {
+	public void setCache(Direction side, EnergyStorage storage) {
 		switch (side) {
 			case DOWN -> escacheDown = storage;
 			case EAST -> escacheEast = storage;
@@ -88,12 +75,12 @@ public class CreativeEnergyTileEntity extends CrateTileEntity implements EnergyT
 	@SuppressWarnings("DataFlowIssue")
 	public EnergyStorage getCachedEnergy(Direction side) {
 		return switch (side) {
-			case DOWN -> escacheDown.orElse(null);
-			case EAST -> escacheEast.orElse(null);
-			case NORTH -> escacheNorth.orElse(null);
-			case SOUTH -> escacheSouth.orElse(null);
-			case UP -> escacheUp.orElse(null);
-			case WEST -> escacheWest.orElse(null);
+			case DOWN -> escacheDown;
+			case EAST -> escacheEast;
+			case NORTH -> escacheNorth;
+			case SOUTH -> escacheSouth;
+			case UP -> escacheUp;
+			case WEST -> escacheWest;
 		};
 	}
 

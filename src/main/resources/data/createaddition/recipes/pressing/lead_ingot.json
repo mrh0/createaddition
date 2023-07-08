@@ -1,0 +1,17 @@
+{
+	"type":"create:pressing",
+	"ingredients": [{
+      	"tag": "c:ingots/lead"
+	}],
+	"results": [{
+		"item": "immersiveengineering:plate_lead"
+	}],
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:all_mods_loaded",
+			"values": [
+				"immersiveengineering"
+			]
+		}
+	]
+}
