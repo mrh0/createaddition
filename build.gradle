@@ -52,7 +52,7 @@ repositories {
     maven { url = "https://maven.cafeteria.dev/releases" }
     maven {
         name = 'Ladysnake Mods'
-        url = 'https://ladysnake.jfrog.io/artifactory/mods'
+        url = 'https://maven.ladysnake.org/releases'
     }
     maven {
         name = "Progwml6 maven"
