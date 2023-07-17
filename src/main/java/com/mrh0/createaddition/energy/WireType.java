@@ -15,7 +15,7 @@ public enum WireType {
 	private final int ID, TRANSFER, CR, CG, CB;
 	private final ItemStack DROP;
 	private final ItemStack SOURCE_DROP;
-	
+
 	private WireType(int id, int transfer, int red, int green, int blue, ItemStack drop, ItemStack source) {
 		ID = id;
 		TRANSFER = transfer;
@@ -25,7 +25,7 @@ public enum WireType {
 		DROP = drop;
 		SOURCE_DROP = source;
 	}
-	
+
 	public static WireType fromIndex(int index) {
 		return switch (index) {
 			case 0 -> COPPER;
@@ -35,35 +35,35 @@ public enum WireType {
 			default -> null;
 		};
 	}
-	
+
 	public int getIndex() {
 		return ID;
 	}
-	
+
 	public ItemStack getDrop() {
 		return DROP.copy();
 	}
-	
+
 	public ItemStack getSourceDrop() {
 		return SOURCE_DROP.copy();
 	}
-	
+
 	public int transfer() {
 		return TRANSFER;
 	}
-	
+
 	public int getRed() {
 		return CR;
 	}
-	
+
 	public int getGreen() {
 		return CG;
 	}
-	
+
 	public int getBlue() {
 		return CB;
 	}
-	
+
 	public boolean isFestive( ) {
 		return this == FESTIVE;
 	}

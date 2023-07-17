@@ -33,8 +33,8 @@ public final class FluidTagRecipeComparator {
                crashOnLow = false;
            }
            BurnableTagProperties tagProperties = new BurnableTagProperties(
-                   i,
-                   crashOnLow
+                   crashOnLow,
+                   i
            );
            Boolean bl = args.args(tagProperties, tagKey);
            if (bl != null && bl && tagProperties.getTime() != 0) {

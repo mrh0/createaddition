@@ -59,11 +59,11 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		HURT_EFFECT_TIME_MOB = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get(),
 		HURT_EFFECT_TIME_PLAYER = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get(),
 		HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();*/
+
 	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
-	
+
 	private static final DamageSource DMG_SOURCE = DamageSourceAccessor.port_lib$init("tesla_coil");
-	
 	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(
 				tileEntityTypeIn,
@@ -76,7 +76,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		inputInv = new ItemStackHandler(1);
 		recipeCache = Optional.empty();
 	}
-	
+
 	public BeltProcessingBehaviour processingBehaviour;
 
 	@Override
@@ -97,11 +97,11 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	public boolean isEnergyOutput(Direction side) {
 		return false;
 	}
-	
+
 	public long getConsumption() {
 		return Config.TESLA_COIL_CHARGE_RATE.get();
 	}
-	
+
 	protected float getItemCharge(EnergyStorage energy) {
 		if (energy == null)
 			return 0f;
@@ -112,7 +112,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		BeltProcessingBehaviour.ProcessingResult res = chargeCompundAndStack(transported, handler);
 		return res;
 	}
-	
+
 	private void doDmg() {
 		localEnergy.internalConsumeEnergy(Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get());
 		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoilBlock.FACING).getOpposite());
@@ -128,10 +128,10 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			if(dmg > 0)
 				e.hurt(DMG_SOURCE, dmg);
 			if(time > 0)
-				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING, (int) time));
+				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), (int) time));
 		}
 	}
-	
+
 	int dmgTick = 0;
 	int soundTimeout = 0;
 
@@ -150,11 +150,11 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		//System.out.println(signal + ":" + (energy.getEnergyStored() >= HURT_ENERGY_REQUIRED));
 		if(signal > 0 && localEnergy.getAmount() >= Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get())
 			poweredTimer = 10;
-		
+
 		dmgTick++;
 		if((dmgTick%=Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get()) == 0 && localEnergy.getAmount() >= Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get() && signal > 0)
 			doDmg();
-		
+
 		if(poweredTimer > 0) {
 			if(!isPoweredState())
 				CABlocks.TESLA_COIL.get().setPowered(level, getBlockPos(), true);
@@ -164,13 +164,12 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			if(isPoweredState())
 				CABlocks.TESLA_COIL.get().setPowered(level, getBlockPos(), false);
 	}
-	
+
 	public boolean isPoweredState() {
 		return getBlockState().getValue(TeslaCoilBlock.POWERED);
 	}
-	
-	protected BeltProcessingBehaviour.ProcessingResult chargeCompoundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		
+
+	protected BeltProcessingBehaviour.ProcessingResult chargeCompundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		ItemStack stack = transported.stack;
 		if(stack == null)
 			return BeltProcessingBehaviour.ProcessingResult.PASS;
@@ -190,7 +189,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			final TransportedItemStack ignoredTransported,
 			final TransportedItemStackHandlerBehaviour ignoredHandler
 	) {
-		ContainerItemContext context = ContainerItemContext.withInitial(stack);
+		ContainerItemContext context = ContainerItemContext.withConstant(stack);
 		final EnergyStorage es =  EnergyStorage.ITEM.find(stack, context);
 
 		if (es == null)
@@ -208,7 +207,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		stack.setTag(context.getItemVariant().copyNbt());
 		return true;
 	}
-	
+
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		if(!inputInv.getStackInSlot(0).sameItem(stack)) {
 			inputInv.setStackInSlot(0, stack);

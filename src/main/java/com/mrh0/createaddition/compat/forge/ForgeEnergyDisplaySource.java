@@ -1,17 +1,27 @@
-package com.mrh0.createaddition.blocks.modular_accumulator;
-
-import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
-import com.simibubi.create.content.redstone.displayLink.source.PercentOrProgressBarDisplaySource;
-import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-
+package com.mrh0.createaddition.compat.forge;
+/*
 import java.util.List;
 
-public class ModularAccumulatorDisplaySource extends PercentOrProgressBarDisplaySource {
+import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.util.Util;
+import com.simibubi.create.content.logistics.block.display.AllDisplayBehaviours;
+import com.simibubi.create.content.logistics.block.display.DisplayBehaviour;
+import com.simibubi.create.content.logistics.block.display.DisplayLinkContext;
+import com.simibubi.create.content.logistics.block.display.source.PercentOrProgressBarDisplaySource;
+import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
+
+public class ForgeEnergyDisplaySource extends PercentOrProgressBarDisplaySource {
+	public final static ForgeEnergyDisplaySource INSTANCE = new ForgeEnergyDisplaySource();
+	//private final static DisplayBehaviour BEHAVIOUR = AllDisplayBehaviours.register(CreateAddition.asResource(INSTANCE.getTranslationKey()), INSTANCE);
 
 	@Override
 	protected MutableComponent formatNumeric(DisplayLinkContext context, Float currentLevel) {
@@ -28,12 +38,15 @@ public class ModularAccumulatorDisplaySource extends PercentOrProgressBarDisplay
 
 	@Override
 	protected Float getProgress(DisplayLinkContext context) {
-		if (!(context.getSourceBlockEntity() instanceof ModularAccumulatorTileEntity te)) return null;
-		te = te.getControllerBE();
-		if(te == null) return null;
-
-		float capacity = te.energyStorage.getCapacity();
-		float stored = te.energyStorage.getAmount();
+		BlockEntity be = context.getSourceTE();
+		if (be == null) return null;
+		LazyOptional<IEnergyStorage> cap = be.getCapability(ForgeCapabilities.ENERGY).cast();
+		if(!cap.isPresent()) return null;
+		IEnergyStorage es = cap.orElse(null);
+		if(es == null) return null;
+		
+		float capacity = es.getMaxEnergyStored();
+		float stored = es.getEnergyStored();
 
 		if (capacity == 0) return 0f;
 
@@ -57,7 +70,7 @@ public class ModularAccumulatorDisplaySource extends PercentOrProgressBarDisplay
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void initConfigurationWidgets(DisplayLinkContext context, ModularGuiLineBuilder builder,
 		boolean isFirstLine) {
 		super.initConfigurationWidgets(context, builder, isFirstLine);
@@ -77,6 +90,8 @@ public class ModularAccumulatorDisplaySource extends PercentOrProgressBarDisplay
 
 	@Override
 	protected String getTranslationKey() {
-		return "modular_accumulator";
+		return "forge_energy";
 	}
-}
+	
+	public static void register() {}
+}*/

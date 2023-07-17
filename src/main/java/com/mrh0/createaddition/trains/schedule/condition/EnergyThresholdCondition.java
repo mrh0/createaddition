@@ -19,7 +19,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -73,8 +72,8 @@ public class EnergyThresholdCondition extends CargoThresholdCondition {
                 Lang.translateDirect("schedule.condition.threshold.train_holds",
                         Lang.translateDirect("schedule.condition.threshold." + Lang.asId(getOperator().name()))),
                 Lang.translateDirect("schedule.condition.threshold.x_units_of_item", getThreshold(),
-                                new TranslatableComponent("createaddition.schedule.condition.threshold.unit"),
-                                new TranslatableComponent("createaddition.schedule.condition.threshold.energy"))
+                                Component.translatable("createaddition.schedule.condition.threshold.unit"),
+                                Component.translatable("createaddition.schedule.condition.threshold.energy"))
                         .withStyle(ChatFormatting.DARK_AQUA));
     }
 
@@ -88,7 +87,7 @@ public class EnergyThresholdCondition extends CargoThresholdCondition {
     public void initConfigurationWidgets(ModularGuiLineBuilder builder) {
         super.initConfigurationWidgets(builder);
         builder.addSelectionScrollInput(71, 50, (i, l) -> {
-            i.forOptions(ImmutableList.of(new TranslatableComponent("createaddition.schedule.condition.threshold.unit")))
+            i.forOptions(ImmutableList.of(Component.translatable("createaddition.schedule.condition.threshold.unit")))
                     .titled(null);
         }, "Measure");
     }
@@ -100,7 +99,7 @@ public class EnergyThresholdCondition extends CargoThresholdCondition {
             return Components.empty();
         int offset = getOperator() == Ops.LESS ? -1 : getOperator() == Ops.GREATER ? 1 : 0;
         return Lang.translateDirect("schedule.condition.threshold.status", lastDisplaySnapshot,
-                Math.max(0, getThreshold() + offset), new TranslatableComponent("createaddition.schedule.condition.threshold.unit"));
+                Math.max(0, getThreshold() + offset), Component.translatable("createaddition.schedule.condition.threshold.unit"));
     }
 
 }

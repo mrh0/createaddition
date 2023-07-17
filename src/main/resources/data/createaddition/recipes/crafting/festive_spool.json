@@ -5,7 +5,7 @@
 		    "item": "createaddition:copper_spool"
 		},
 		{
-		    "tag": "c:dusts/redstone"
+		    "tag": "c:redstone_dusts"
 		},
 		{
 		    "item": "createaddition:biomass"

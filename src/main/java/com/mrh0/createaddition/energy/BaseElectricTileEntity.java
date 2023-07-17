@@ -57,7 +57,7 @@ public abstract class BaseElectricTileEntity extends SmartBlockEntity implements
 		super.write(compound, clientPacket);
 		localEnergy.write(compound);
 	}
-	
+
 	@Deprecated
 	public void outputTick(int max) {
 		for(Direction side : Direction.values()) {
@@ -79,30 +79,28 @@ public abstract class BaseElectricTileEntity extends SmartBlockEntity implements
 	public void firstTick() {
 		updateCache();
 	}
-public boolean ignoreCapSide() {
+	public boolean ignoreCapSide() {
 		return false;
 	}
 	public void updateCache() {
-		if (level != null) {
+		if (level != null)
 			if (Objects.requireNonNull(level).isClientSide)
 				return;
-			for (Direction side : Direction.values()) {
-				updateCache(side);
-				}
-					}
+		for (Direction side : Direction.values())
+			updateCache(side);
+	}
 
-				public void updateCache(Direction side) {
-				if (!level.isLoaded(worldPosition.relative(side))) {
-				setCache(side, null);
+	public void updateCache(Direction side) {
+		if (!level.isLoaded(worldPosition.relative(side))) {
+			setCache(side, null);
 			return;
-			}
 		}
 		EnergyStorage e = EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite());
 		if(e == null) {
 			setCache(side, null);
 			return;
 		}
-//		if(ignoreCapSide()) le = te.getCapability(CapabilityEnergy.ENERGY); TODO: null directions are only supported on later versions
+		if(ignoreCapSide() && e != null) e = EnergyStorage.SIDED.find(level, worldPosition.relative(side), null);
 		// Make sure the side isn't already cached.
 		if (e.equals(getCachedEnergy(side))) return;
 		setCache(side, e);

@@ -12,7 +12,6 @@ import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -107,7 +106,7 @@ public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IA
 
 	@Override
     public Component getDescriptionForAssembly() {
-        return new TranslatableComponent("createaddition.recipe.rolling.sequence").withStyle(ChatFormatting.DARK_GREEN);
+        return Component.translatable("createaddition.recipe.rolling.sequence").withStyle(ChatFormatting.DARK_GREEN);
     }
 
     @Override

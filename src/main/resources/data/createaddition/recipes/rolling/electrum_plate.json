@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:rolling",
 	"input": {
-      	"tag": "c:plates/electrum"
+      	"tag": "c:electrum_plates"
 	},
 	"result": {
 		"item": "immersiveengineering:wire_electrum",

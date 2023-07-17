@@ -6,7 +6,7 @@
 >我已经尽量保证译名与模组翻译文件同步。
 >内容可能不是最新，请以英文版本为准。
 
->This document is a purely manual translation. If there are any shortcomings or errors, please feel free to modify them. 
+>This document is a purely manual translation. If there are any shortcomings or errors, please feel free to modify them.
 >I have tried my best to ensure that the translated name is synchronized with the mod translation file.
 >The content may not be the latest, please refer to the English version.
 
@@ -129,7 +129,7 @@ local blocks = accumulator.getHeight()
 ```lua
 local blocks = accumulator.getWidth()
 ```
-函数 `getType()` 将返回蓄电池的设备名称，该名称将始终为  "modular_accumulator"。 
+函数 `getType()` 将返回蓄电池的设备名称，该名称将始终为  "modular_accumulator"。
 ```lua
 print("Peripheral: " .. accumulator.getType())
 ```

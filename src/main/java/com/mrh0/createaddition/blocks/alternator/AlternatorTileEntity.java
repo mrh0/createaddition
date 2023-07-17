@@ -16,8 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -29,7 +28,6 @@ import team.reborn.energy.api.EnergyStorageUtil;
 import java.util.List;
 
 public class AlternatorTileEntity extends KineticBlockEntity implements EnergyTransferable {
-	
 	protected final InternalEnergyStorage energy;
 
 	/*private static final long
@@ -43,30 +41,30 @@ public class AlternatorTileEntity extends KineticBlockEntity implements EnergyTr
 		super(typeIn, pos, state);
 		energy = new InternalEnergyStorage(Config.ALTERNATOR_CAPACITY.get(), 0, Config.ALTERNATOR_MAX_OUTPUT.get());
 	}
-	
+
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
 		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
-		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(new TextComponent(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
+		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
 				.withStyle(ChatFormatting.AQUA)).append(Lang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
 		return true;
 	}
-	
+
 	@Override
 	public float calculateStressApplied() {
 		float impact = Config.MAX_STRESS.get()/256f;
 		this.lastStressApplied = impact;
 		return impact;
 	}
-	
+
 	@Override
 	public EnergyStorage getEnergyStorage(Direction side) {
 		return energy;
 	}
-	
+
 	public boolean isEnergyInput(Direction side) {
 		return false;
 	}
@@ -74,21 +72,21 @@ public class AlternatorTileEntity extends KineticBlockEntity implements EnergyTr
 	public boolean isEnergyOutput(Direction side) {
 		return true; //side != getBlockState().getValue(AlternatorBlock.FACING);
 	}
-	
+
 	@Override
 	public void read(CompoundTag compound, boolean clientPacket) {
 		super.read(compound, clientPacket);
 		energy.read(compound);
 	}
-	
+
 	@Override
 	public void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
 		energy.write(compound);
 	}
-	
+
 	private boolean firstTickState = true;
-	
+
 	@Override
 	public void tick() {
 		super.tick();
@@ -101,9 +99,8 @@ public class AlternatorTileEntity extends KineticBlockEntity implements EnergyTr
 
 		if (Math.abs(getSpeed()) > 0 && isSpeedRequirementFulfilled())
 			energy.internalProduceEnergy(getEnergyProductionRate((int) getSpeed()));
-		
+
 		//System.out.println(energy.getAmount());
-		
 		for(Direction d : Direction.values()) {
 			if(!isEnergyOutput(d))
 				continue;
@@ -122,21 +119,20 @@ public class AlternatorTileEntity extends KineticBlockEntity implements EnergyTr
 			//System.out.println(ext + ":" + getEnergyProductionRate((int)getSpeed()) + ":" + rec + ":" + d);
 		}
 	}
-	
+
 	public static int getEnergyProductionRate(int rpm) {
 		rpm = Math.abs(rpm);
 		return (int)((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d) * Config.ALTERNATOR_EFFICIENCY.get());//return (int)((double)Config.FE_TO_SU.get() * ((double)Math.abs(rpm)/256d) * EFFICIENCY);
 	}
-	
+
 	@Override
 	protected Block getStressConfigKey() {
 		return AllBlocks.MECHANICAL_MIXER.get();
 	}
-	
+
 	public void firstTick() {
 		updateCache();
 	}
-
 	public void updateCache() {
 		assert level != null;
 		if(level.isClientSide())
@@ -151,14 +147,14 @@ public class AlternatorTileEntity extends KineticBlockEntity implements EnergyTr
 			setCache(side, le);
 		}
 	}
-	
+
 	private LazyOptional<EnergyStorage> escacheUp = LazyOptional.empty();
 	private LazyOptional<EnergyStorage> escacheDown = LazyOptional.empty();
 	private LazyOptional<EnergyStorage> escacheNorth = LazyOptional.empty();
 	private LazyOptional<EnergyStorage> escacheEast = LazyOptional.empty();
 	private LazyOptional<EnergyStorage> escacheSouth = LazyOptional.empty();
 	private LazyOptional<EnergyStorage> escacheWest = LazyOptional.empty();
-	
+
 	public void setCache(Direction side, LazyOptional<EnergyStorage> storage) {
 		switch (side) {
 			case DOWN -> escacheDown = storage;
@@ -169,7 +165,7 @@ public class AlternatorTileEntity extends KineticBlockEntity implements EnergyTr
 			case WEST -> escacheWest = storage;
 		}
 	}
-	
+
 	public EnergyStorage getCachedEnergy(Direction side) {
 		return switch (side) {
 			case DOWN -> escacheDown.orElse(EnergyStorage.EMPTY);

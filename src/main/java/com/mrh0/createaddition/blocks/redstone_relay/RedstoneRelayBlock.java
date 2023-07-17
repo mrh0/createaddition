@@ -1,8 +1,5 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
-import java.util.Objects;
-import java.util.Random;
-
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.NodeRotation;
 import com.mrh0.createaddition.index.CATileEntities;
@@ -41,20 +38,22 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEntity>, IWrenchable, ITransformableBlock, ConnectableRedstoneBlock {
 
 	public static final BooleanProperty VERTICAL = BooleanProperty.create("vertical");
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	
+
 	public static final VoxelShape HORIZONTAL_SHAPE_MAIN = Block.box(0, 0, 0, 16, 2, 16);
 	public static final VoxelShape HORIZONTAL_SHAPE_X = Shapes.or(HORIZONTAL_SHAPE_MAIN, Block.box(1, 0, 6, 5, 7, 10), Block.box(11, 0, 6, 15, 7, 10));
 	public static final VoxelShape HORIZONTAL_SHAPE_Z = Shapes.or(HORIZONTAL_SHAPE_MAIN, Block.box(6, 0, 1, 10, 7, 5), Block.box(6, 0, 11, 10, 7, 15));
-	
+
 	//public static final VoxelShaper VERTICAL_SHAPE = CAShapes.shape(0, 0, 14, 16, 16, 16).add(1, 6, 9, 5, 10, 16).add(11, 6, 9, 15, 10, 16).forDirectional();
-	
+
 	public static final VoxelShaper VERTICAL_SHAPE = CAShapes.shape(0, 0, 0, 16, 2, 16).add(1, 0, 6, 5, 7, 10).add(11, 0, 6, 15, 7, 10).forDirectional();
-	
+
 	@SuppressWarnings("unused")
 	protected static final VoxelShape WEST_SHAPE = Block.box(0, 0, 0, 2, 16, 16);
 	@SuppressWarnings("unused")
@@ -63,8 +62,8 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 	protected static final VoxelShape NORTH_SHAPE = Block.box(0, 0, 0, 16, 16, 2);
 	@SuppressWarnings("unused")
 	protected static final VoxelShape SOUTH_SHAPE = Block.box(0, 0, 14, 16, 16, 16);
-	
-	
+
+
 	public RedstoneRelayBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState()
@@ -73,7 +72,7 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 				.setValue(POWERED, false)
 				.setValue(NodeRotation.ROTATION, NodeRotation.NONE));
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		Direction dir = state.getValue(HORIZONTAL_FACING);
@@ -92,12 +91,12 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 	public BlockEntityType<? extends RedstoneRelayTileEntity> getBlockEntityType() {
 		return CATileEntities.REDSTONE_RELAY.get();
 	}
-	
+
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(VERTICAL, HORIZONTAL_FACING, POWERED, NodeRotation.ROTATION);
 	}
-	
+
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext c) {
 		if(c.getClickedFace().getAxis() == Axis.Y)
@@ -107,7 +106,7 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
 		boolean flag = state.getValue(POWERED);
 		boolean flag1 = this.shouldBePowered(worldIn, pos, state);
 		if (flag && !flag1) {
@@ -117,7 +116,7 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.TRUE), 2);
 		}
 	}
-	
+
 	@Override
 	public void neighborChanged(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull Block blockIn, @NotNull BlockPos fromPos, boolean isMoving) {
 		if (state.canSurvive(worldIn, pos))
@@ -131,7 +130,7 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 				worldIn.updateNeighborsAt(pos.relative(direction), this);
 		}
 	}
-	
+
 	public boolean canSurvive(BlockState state, @NotNull LevelReader world, @NotNull BlockPos pos) {
 		boolean vertical = state.getValue(VERTICAL);
 		Direction direction = state.getValue(HORIZONTAL_FACING);
@@ -151,19 +150,19 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 	private int getDelay() {
 		return 2;
 	}
-	
+
 	protected boolean shouldBePowered(Level worldIn, BlockPos pos, BlockState state) {
 		return this.calculateInputStrength(worldIn, pos, state) > 0;
 	}
 
 	protected int calculateInputStrength(Level worldIn, BlockPos pos, BlockState state) {
 		boolean vertical = state.getValue(VERTICAL);
-		
+
 		if(vertical) {
 			BlockPos blockpos1 = pos.relative(Direction.UP);
 			BlockPos blockpos2 = pos.relative(Direction.DOWN);
 			int i = Math.max(worldIn.getSignal(blockpos1, Direction.DOWN), worldIn.getSignal(blockpos2, Direction.UP));
-			
+
 			BlockState blockstate1 = worldIn.getBlockState(blockpos1);
 			BlockState blockstate2 = worldIn.getBlockState(blockpos2);
 			return Math.max(i, Math.max(blockstate1.is(Blocks.REDSTONE_WIRE) ? blockstate1.getValue(RedStoneWireBlock.POWER) : 0, blockstate2.is(Blocks.REDSTONE_WIRE) ? blockstate2.getValue(RedStoneWireBlock.POWER) : 0));
@@ -174,7 +173,7 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 			BlockPos blockpos2 = pos.relative(direction.getCounterClockWise());
 			int i = Math.max(worldIn.getSignal(blockpos1, direction.getClockWise()), worldIn.getSignal(blockpos2, direction.getCounterClockWise()));
 			int j = Math.max(worldIn.getDirectSignal(blockpos1, direction.getClockWise()), worldIn.getDirectSignal(blockpos2, direction.getCounterClockWise()));
-			
+
 			BlockState blockstate1 = worldIn.getBlockState(blockpos1);
 			BlockState blockstate2 = worldIn.getBlockState(blockpos2);
 			return Math.max(Math.max(i, j), Math.max(blockstate1.is(Blocks.REDSTONE_WIRE) ? blockstate1.getValue(RedStoneWireBlock.POWER) : 0, blockstate2.is(Blocks.REDSTONE_WIRE) ? blockstate2.getValue(RedStoneWireBlock.POWER) : 0));
@@ -197,7 +196,7 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 		} else
 			return 0;
 	}
-	
+
 	protected boolean isAlternateInput(BlockState state) {
 		return state.isSignalSource();
 	}
@@ -209,7 +208,7 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 		}
 
 	}
-	
+
 	@Override
 	public void playerWillDestroy(@NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
 		super.playerWillDestroy(worldIn, pos, state, player);
@@ -223,7 +222,7 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 
 		cte.dropWires(worldIn, !player.isCreative());
 	}
-	
+
 	@Override
 	public InteractionResult onSneakWrenched(BlockState state, UseOnContext c) {
 		BlockEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
@@ -236,23 +235,23 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 			cte.dropWires(c.getLevel(), c.getPlayer(), !c.getPlayer().isCreative());
 		return IWrenchable.super.onSneakWrenched(state, c);
 	}
-	
+
 	@Override
 	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
 		if(pos == null || side == null || state == null || world == null)
 			return false;
 		return !state.getValue(VERTICAL) && side.getAxis() != state.getValue(HORIZONTAL_FACING).getAxis();
 	}
-	
+
 	private BlockState fromRotation(BlockState state, Direction dir) {
 		return state.setValue(HORIZONTAL_FACING, dir);
 	}
-	
+
 	@Override
 	public BlockState rotate(@NotNull BlockState state, Rotation direction) {
 		return fromRotation(state, direction.rotate(state.getValue(HORIZONTAL_FACING)));
 	}
-	
+
 	@Override
 	public BlockState mirror(@NotNull BlockState state, Mirror mirror) {
 		return fromRotation(state, mirror.mirror(state.getValue(HORIZONTAL_FACING)));

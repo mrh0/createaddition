@@ -2,7 +2,7 @@
 	"type": "minecraft:crafting_shapeless",
 	"ingredients": [
 		{
-		    "tag": "c:rods/copper"
+		    "tag": "c:copper_rods"
 		},
 		{
 		    "item": "create:andesite_alloy"

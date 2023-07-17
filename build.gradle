@@ -52,7 +52,7 @@ repositories {
     maven { url = "https://maven.cafeteria.dev/releases" }
     maven {
         name = 'Ladysnake Mods'
-        url = 'https://ladysnake.jfrog.io/artifactory/mods'
+        url = 'https://maven.ladysnake.org/releases'
     }
     maven {
         name = "Progwml6 maven"
@@ -66,7 +66,13 @@ repositories {
         name = 'ParchmentMC'
         url = 'https://maven.parchmentmc.org'
     }
-    maven { url "https://maven.bai.lol" }
+    maven {
+        url "https://maven2.bai.lol"
+        content {
+            includeGroup "lol.bai"
+            includeGroup "mcp.mobius.waila"
+        }
+    }
 }
 
 dependencies {
@@ -103,7 +109,7 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    include modApi('teamreborn:energy:2.2.0') {
+    include modApi('teamreborn:energy:2.3.0') {
         exclude(group: "net.fabricmc.fabric-api")
     }
 }

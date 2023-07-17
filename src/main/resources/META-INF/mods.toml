@@ -55,7 +55,7 @@ AlphaMode, BobDole, legoatoom, StockiesLad, THEREDSTONEBRO, and Uraxys.
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[0.5h,0.6)"
+    versionRange="[0.5.0h,0.6.0)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
@@ -64,6 +64,12 @@ AlphaMode, BobDole, legoatoom, StockiesLad, THEREDSTONEBRO, and Uraxys.
     versionRange="[0.6,0.7)"
     ordering="AFTER"
     side="CLIENT"
+[[dependencies.createaddition]]
+    modId="jei"
+    mandatory=false
+    versionRange="[11.4.0.274,)"
+    ordering="NONE"
+    side="BOTH"
 [[dependencies.createaddition]]
     modId="computercraft"
     mandatory=false
@@ -74,6 +80,6 @@ AlphaMode, BobDole, legoatoom, StockiesLad, THEREDSTONEBRO, and Uraxys.
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.18.2,1.19)"
+    versionRange="[1.19.2,1.20)"
     ordering="NONE"
     side="BOTH"

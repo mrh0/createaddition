@@ -26,8 +26,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,19 +44,18 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 
 	private boolean wasContraption = false;
 	private boolean firstTick = true;
-	
+
 	public static Vec3 OFFSET_NORTH = new Vec3(	0f, 	9f/16f, 	-5f/16f);
 	public static Vec3 OFFSET_WEST = new Vec3(	-5f/16f, 	9f/16f, 	0f);
 	public static Vec3 OFFSET_SOUTH = new Vec3(	0f, 	9f/16f, 	5f/16f);
 	public static Vec3 OFFSET_EAST = new Vec3(	5f/16f, 	9f/16f, 	0f);
-	
+
 	public static final int NODE_COUNT = 8;
 
 	//public static final long CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
-	
 	public AccumulatorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state, Config.ACCUMULATOR_CAPACITY.get(), Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get());
-		
+
 		setLazyTickRate(20);
 
 		this.localNodes = new LocalNode[getNodeCount()];
@@ -74,7 +71,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public @Nullable LocalNode getLocalNode(int index) {
 		return this.localNodes[index];
 	}
-	
+
 	@Override
 	public Vec3 getNodeOffset(int node) {
 		if(node > 3) {
@@ -117,17 +114,17 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public boolean isEnergyOutput(Direction side) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isNodeInput(int node) {
 		return node < 4;
 	}
-	
+
 	@Override
 	public boolean isNodeOutput(int node) {
 		return !isNodeInput(node);
 	}
-	
+
 	@Override
 	public int getAvailableNode(Vec3 pos) {
 		assert level != null;
@@ -142,7 +139,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			default -> {
 			}
 		}
-		
+
 		for(int i = upper ? 4 : 0; i < (upper ? 8 : 4); i++) {
 			if(hasConnection(i))
 				continue;
@@ -186,7 +183,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public BlockPos getPos() {
 		return getBlockPos();
 	}
-	
+
 	@Override
 	public void read(CompoundTag nbt, boolean clientPacket) {
 		super.read(nbt, clientPacket);
@@ -224,7 +221,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			this.networkOut.invalidate();
 		}
 	}
-	
+
 	@Override
 	public void write(CompoundTag nbt, boolean clientPacket) {
 		super.write(nbt, clientPacket);
@@ -239,7 +236,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		}
 		nbt.put(LocalNode.NODES, nodes);
 	}
-	
+
 	@Override
 	public int getNodeCount() {
 		return NODE_COUNT;
@@ -255,26 +252,25 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		for(int i = 0; i < getNodeCount(); i++)
 			this.nodeCache[i] = null;
 	}
-	
+
 	private int lastComparator = 0;
 	//int lastEnergy = 0;
-
 	@Override
 	public void lazyTick() {
 		super.lazyTick();
-		
+
 		int comp = getComparatorOverride();
 		if(comp != lastComparator) {
 			assert level != null;
 			level.updateNeighborsAt(worldPosition, CABlocks.ACCUMULATOR.get());
 		}
 		lastComparator = comp;
-		
+
 		//if(energy.getEnergyStored() != lastEnergy)
 		//	causeBlockUpdate();
 		//lastEnergy = energy.getEnergyStored();
 	}
-	
+
 	private boolean firstTickState = true;
 
 	/**
@@ -320,7 +316,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			return;
 		networkTick();
 	}
-	
+
 	private long demandOut = 0;
 	private long demandIn = 0;
 	private void networkTick() {
@@ -343,7 +339,6 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			t.commit();
 		}
 
-
 		/*energy.receiveEnergy(networkOut.push(energy.extractEnergy(demandOut, false)), false);*/
 		demandOut = networkOut.getDemand();
 		try (Transaction t = TransferUtil.getTransaction()) {
@@ -356,7 +351,7 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		}
 		try (Transaction t = TransferUtil.getTransaction()) {
 			demandIn = networkIn.demand(localEnergy.insert(MAX_IN, t));
-		}
+}
 	}
 
 	@Override
@@ -379,10 +374,10 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		if(networkOut != null)
 			networkOut.invalidate();
 	}
-			
+
 	private EnergyNetwork networkIn;
 	private EnergyNetwork networkOut;
-	
+
 	@Override
 	public EnergyNetwork getNetwork(int node) {
 		return isNodeInput(node) ? networkIn : networkOut;
@@ -395,12 +390,12 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		if(isNodeOutput(node))
 			networkOut = network;
 	}
-	
+
 	@Override
 	public boolean isNodeIndicesConnected(int in, int other) {
 		return isNodeInput(in) == isNodeInput(other);
 	}
-	
+
 	public void setEnergy(int energy) {
 		this.localEnergy.setEnergy(energy);
 	}
@@ -409,32 +404,31 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public int getComparatorOverride() {
 		return (int)((double)localEnergy.getAmount() / (double)localEnergy.getCapacity() * 15d);
 	}
-	
+
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		HitResult ray = Minecraft.getInstance().hitResult;
 		if(ray == null)
 			return false;
 		int node = getAvailableNode(ray.getLocation());
-		
+
 		ObservePacket.send(worldPosition, node);
 
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.accumulator.info").withStyle(ChatFormatting.WHITE)));
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.accumulator.info").withStyle(ChatFormatting.WHITE)));
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
 				.append(Util.getTextComponent(localEnergy)));
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
-				.append(new TranslatableComponent(isNodeInput(node) ? "createaddition.tooltip.energy.input" : "createaddition.tooltip.energy.output").withStyle(ChatFormatting.AQUA)));
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.selected").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
+				.append(Component.translatable(isNodeInput(node) ? "createaddition.tooltip.energy.push" : "createaddition.tooltip.energy.pull").withStyle(ChatFormatting.AQUA)));
 
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(" ")
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(" ")
 				.append(Util.format(EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
-
 		return true;
 	}
 

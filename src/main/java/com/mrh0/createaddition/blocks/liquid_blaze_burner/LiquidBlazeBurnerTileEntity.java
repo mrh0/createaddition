@@ -1,12 +1,5 @@
 package com.mrh0.createaddition.blocks.liquid_blaze_burner;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
@@ -24,11 +17,10 @@ import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.VecHelper;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
-
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
-import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity.FuelType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
@@ -38,6 +30,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -50,8 +43,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -60,7 +53,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
 
-public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHaveGoggleInformation, IObserveTileEntity, FluidTransferable {
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Optional;
+
+public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHaveGoggleInformation, IObserveTileEntity, SidedStorageBlockEntity {
 	public static final int MAX_HEAT_CAPACITY;
 	protected FuelType activeFuel;
 	protected int remainingBurnTime;
@@ -288,7 +285,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 	}
 
 	public void updateBlockState() {
-		setBlockHeat(getHeatLevelFromFuelType());
+		setBlockHeat(getHeatLevelFromFuelType(activeFuel));
 	}
 
 	protected void setBlockHeat(BlazeBurnerBlock.HeatLevel heat) {
@@ -314,7 +311,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 		if (tehandler == null)
 			return false;
 		try (Transaction t = TransferUtil.getTransaction()) {
-			for (StorageView<FluidVariant> view : tehandler.iterable(t)) {
+			for (StorageView<FluidVariant> view : tehandler) {
 				if (view.getCapacity() - view.getAmount() < FluidConstants.BUCKET)
 					return false;
 				break;
@@ -448,7 +445,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 		if (heatLevel == BlazeBurnerBlock.HeatLevel.NONE)
 			return;
 
-		Random r = level.getRandom();
+		RandomSource r = level.getRandom();
 
 		Vec3 c = VecHelper.getCenterOf(worldPosition);
 		Vec3 v = c.add(VecHelper.offsetRandomly(Vec3.ZERO, r, .125f)
@@ -480,7 +477,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 
 	public void spawnParticleBurst(boolean soulFlame) {
 		Vec3 c = VecHelper.getCenterOf(worldPosition);
-		Random r = level.random;
+		RandomSource r = level.random;
 		for (int i = 0; i < 20; i++) {
 			Vec3 offset = VecHelper.offsetRandomly(Vec3.ZERO, r, .5f)
 				.multiply(1, .25f, 1)

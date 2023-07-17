@@ -57,25 +57,25 @@ public class GameEvents {
 		new EnergyNetworkManager(world);
 	}
 
-    public static InteractionResult interact(Player player, Level world, InteractionHand hand, BlockHitResult hitResult) {
+    public static InteractionResult interact(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
 		try {
 			BlockPos pos = hitResult.getBlockPos();
 			ItemStack item = player.getItemInHand(hand);
-			if(world.isClientSide()) return InteractionResult.PASS;
-			BlockState state = world.getBlockState(pos);
+			if(level.isClientSide()) return InteractionResult.PASS;
+			BlockState state = level.getBlockState(pos);
 			if(item.getItem() == CAItems.STRAW.get()) {
 				if(state.is(AllBlocks.BLAZE_BURNER.get())) {
 					BlockState newState = CABlocks.LIQUID_BLAZE_BURNER.getDefaultState()
 							.setValue(LiquidBlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING/*state.getValue(BlazeBurnerBlock.HEAT_LEVEL)*/)
 							.setValue(LiquidBlazeBurnerBlock.FACING, state.getValue(BlazeBurnerBlock.FACING));
-					world.setBlockAndUpdate(pos, newState);
+					level.setBlockAndUpdate(pos, newState);
 					//if(!evt.getEntity().isCreative())
 						item.shrink(1);
 					return InteractionResult.SUCCESS;
 				}
 			}
 		}
-		catch(Exception e)  {
+		catch(Exception e) {
 			e.printStackTrace();
 		}
 		return InteractionResult.PASS;

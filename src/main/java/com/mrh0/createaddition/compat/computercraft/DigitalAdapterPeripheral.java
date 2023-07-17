@@ -14,7 +14,8 @@ import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -62,7 +63,7 @@ public class DigitalAdapterPeripheral implements IPeripheral {
 
     @LuaFunction(mainThread = true)
     public final void print(String text) {
-        this.tileEntity.setTextLine(this.tileEntity.getLine(), new TextComponent(text.substring(0, Math.min(text.length(), 128))));
+        this.tileEntity.setTextLine(this.tileEntity.getLine(), Component.literal(text.substring(0, Math.min(text.length(), 128))));
         this.tileEntity.incrementLine();
     }
 

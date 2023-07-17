@@ -3,23 +3,27 @@ package com.mrh0.createaddition.commands;
 import com.mojang.brigadier.CommandDispatcher;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 
 public class CCApiCommand {
 
-	public static void register(CommandDispatcher<CommandSourceStack> commandSourceStackCommandDispatcher, boolean ignoredB) {
-		commandSourceStackCommandDispatcher .register(Commands.literal("cca_api").requires(source -> source.hasPermission(0))
+	public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+		dispatcher.register(Commands.literal("cca_api").requires(source -> source.hasPermission(0))
 				.executes(context -> {
 							Player p =  context.getSource().getPlayerOrException();
 							String link = "https://github.com/mrh0/createaddition/blob/main/COMPUTERCRAFT.md";
-							MutableComponent text = new TranslatableComponent("createaddition.command.cca_api.link");
+							MutableComponent text = Component.translatable("createaddition.command.cca_api.link");
 							text.withStyle(style -> style.applyFormats(ChatFormatting.AQUA, ChatFormatting.UNDERLINE)
-									.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent(link)))
+									.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(link)))
 									.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link)));
-							p.sendMessage(text, Player.createPlayerUUID(p.getGameProfile()));
+							p.sendSystemMessage(text); //Player.createPlayerUUID(p.getGameProfile())
 							return 1;
 						}
 				));

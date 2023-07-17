@@ -58,7 +58,7 @@ public class CABlocks {
 			.item()
 			.transform(customItemModel())
 			.register();
-	
+
 	public static final BlockEntry<AlternatorBlock> ALTERNATOR = CreateAddition.REGISTRATE.block("alternator", AlternatorBlock::new)
 			.initialProperties(SharedProperties::softMetal)
 			.transform(BlockStressDefaults.setImpact(Config.MAX_STRESS.get()/256f))
@@ -66,7 +66,7 @@ public class CABlocks {
 			.item()
 			.transform(customItemModel())
 			.register();
-	
+
 	public static final BlockEntry<RollingMillBlock> ROLLING_MILL = CreateAddition.REGISTRATE.block("rolling_mill", RollingMillBlock::new)
 			.initialProperties(SharedProperties::stone)
 			.transform(BlockStressDefaults.setImpact(Config.ROLLING_MILL_STRESS.get()))
@@ -74,14 +74,14 @@ public class CABlocks {
 			.item()
 			.transform(customItemModel())
 			.register();
-	
+
 	public static final BlockEntry<CreativeEnergyBlock> CREATIVE_ENERGY = CreateAddition.REGISTRATE.block("creative_energy", CreativeEnergyBlock::new)
 			.initialProperties(SharedProperties::softMetal)
 			.item()
 			.properties(p -> p.rarity(Rarity.EPIC))
 			.transform(customItemModel())
 			.register();
-	
+
 	public static final BlockEntry<ConnectorBlock> CONNECTOR_COPPER = CreateAddition.REGISTRATE.block("connector",  ConnectorBlock::new)
 			.initialProperties(SharedProperties::stone)
 			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
@@ -116,7 +116,7 @@ public class CABlocks {
 			.item()
 			.transform(customItemModel())
 			.register();
-	
+
 	public static final BlockEntry<CACakeBlock> HONEY_CAKE = CreateAddition.REGISTRATE.block("honey_cake",  CACakeBlock::new)
 			.initialProperties(Material.CAKE)
 			.properties(props -> props.sound(SoundType.WOOL).strength(0.5f))
@@ -178,7 +178,6 @@ public class CABlocks {
 			.item(DigitalAdapterBlockItem::new)
 			.transform(customItemModel())
 			.register();
-
 
 	public static void register() {
 

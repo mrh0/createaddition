@@ -21,7 +21,7 @@ import com.simibubi.create.infrastructure.config.AllConfigs;
 import io.github.fabricators_of_create.porting_lib.event.common.ModsLoadedCallback;
 import me.pepperbell.simplenetworking.SimpleChannel;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.ModLoadingContext;
@@ -33,11 +33,11 @@ public class CreateAddition implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
 
     public static final String MODID = "createaddition";
-    
+
     public static boolean IE_ACTIVE = false;
     public static boolean CC_ACTIVE = false;
     public static boolean AE2_ACTIVE = false;
-    
+
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(CreateAddition.MODID);
 
     private static final String PROTOCOL = "1";
@@ -53,22 +53,21 @@ public class CreateAddition implements ModInitializer {
     @Override
     public void onInitialize() {
         ModsLoadedCallback.EVENT.register(envType -> setup());
-        onRegisterEffectEvent();
 
         CommandRegistrationCallback.EVENT.register(CCApiCommand::register);
 
         ModLoadingContext.registerConfig(MODID, ModConfig.Type.COMMON, Config.COMMON_CONFIG);
         Config.loadConfig(Config.COMMON_CONFIG, FabricLoader.getInstance().getConfigDir().resolve("createaddition-common.toml"));
-        
+
         IE_ACTIVE = FabricLoader.getInstance().isModLoaded("immersiveengineering");
         CC_ACTIVE = FabricLoader.getInstance().isModLoaded("computercraft");
         AE2_ACTIVE = FabricLoader.getInstance().isModLoaded("ae2");
-
         new ModGroup("main");
         CABlocks.register();
         CATileEntities.register();
         CAItems.register();
         CAFluids.register();
+        CAEffects.register();
         CARecipes.register();
         CASchedule.register();
         REGISTRATE.register();
@@ -97,10 +96,6 @@ public class CreateAddition implements ModInitializer {
 			}
 			return 0;
     	});
-    }
-
-    public static void onRegisterEffectEvent() {
-    	CAEffects.register();
     }
 
     public static ResourceLocation asResource(String path) {

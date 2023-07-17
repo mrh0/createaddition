@@ -52,7 +52,7 @@ public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, I
 				.setValue(MODE, ConnectorMode.Passive)
 				.setValue(NodeRotation.ROTATION, NodeRotation.NONE));
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return CONNECTOR_SHAPE.get(state.getValue(FACING).getOpposite());
@@ -67,21 +67,21 @@ public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, I
 	public BlockEntityType<? extends ConnectorTileEntity> getBlockEntityType() {
 		return CATileEntities.CONNECTOR.get();
 	}
-	
+
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, MODE, NodeRotation.ROTATION);
 	}
-	
+
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext c) {
 		Direction dir = c.getClickedFace().getOpposite();
-		
+
 		ConnectorMode mode = ConnectorMode.test(c.getLevel(), c.getClickedPos().relative(dir), c.getClickedFace());
-		
+
 		return this.defaultBlockState().setValue(FACING, dir).setValue(MODE, mode);
 	}
-	
+
 	@Override
 	public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
 		super.playerWillDestroy(worldIn, pos, state, player);
@@ -92,7 +92,7 @@ public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, I
 		if (!(te instanceof IWireNode cte)) return;
 		cte.dropWires(worldIn, !player.isCreative());
 	}
-	
+
 	@Override
 	public InteractionResult onWrenched(BlockState state, UseOnContext c) {
 		if (c.getLevel().isClientSide()) {
@@ -101,7 +101,7 @@ public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, I
 		c.getLevel().setBlockAndUpdate(c.getClickedPos(), state.setValue(MODE, state.getValue(MODE).getNext()));
 		return InteractionResult.SUCCESS;
 	}
-	
+
 	@Override
 	public InteractionResult onSneakWrenched(BlockState state, UseOnContext c) {
 		BlockEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
@@ -116,7 +116,7 @@ public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, I
 
 		return IWrenchable.super.onSneakWrenched(state, c);
 	}
-	
+
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
@@ -127,17 +127,17 @@ public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, I
 		}
 		if (!state.canSurvive(worldIn, pos)) {
 			dropResources(state, worldIn, pos, tileentity);
-			
+
 			if(tileentity instanceof IWireNode)
 				((IWireNode) tileentity).dropWires(worldIn, true);
-			
+
 			worldIn.removeBlock(pos, false);
 
 			for (Direction direction : Direction.values())
 				worldIn.updateNeighborsAt(pos.relative(direction), this);
 		}
 	}
-	
+
 	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
 		Direction dir = state.getValue(FACING);
 		return
@@ -145,13 +145,12 @@ public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, I
 				!Shapes.joinIsNotEmpty(world.getBlockState(pos.relative(dir)).getBlockSupportShape(world,pos.relative(dir)).getFaceShape(dir.getOpposite()), boxsn, BooleanOp.ONLY_SECOND) ||
 				world.getBlockState(pos.relative(dir)).isFaceSturdy(world, pos, dir.getOpposite(), SupportType.CENTER) || IGNORE_FACE_CHECK;
 	}
-	
+
 	@Override
 	public BlockState rotate(BlockState state, Rotation direction) {
 		// Handle old rotation.
 		return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
 	}
-
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));

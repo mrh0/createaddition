@@ -9,7 +9,7 @@ public class ClientMinecraftWrapper {
 	public static Level getClientLevel() {
 		return Minecraft.getInstance().level;
 	}
-	
+
 	@SuppressWarnings("resource")
 	public static Font getFont() {
 		return Minecraft.getInstance().font;

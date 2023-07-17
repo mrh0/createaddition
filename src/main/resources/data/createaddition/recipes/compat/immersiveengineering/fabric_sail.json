@@ -9,7 +9,7 @@
       "tag": "c:fabric_hemp"
     },
     "S": {
-      "tag": "c:rods/wooden"
+      "tag": "c:wooden_rods"
     },
     "A": {
       "item": "create:andesite_alloy"

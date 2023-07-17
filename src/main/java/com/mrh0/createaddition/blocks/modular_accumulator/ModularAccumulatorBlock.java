@@ -34,7 +34,7 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<M
 
 	public static final BooleanProperty TOP = BooleanProperty.create("top");
 	public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom");
-	
+
 	private boolean creative;
 
 	public static ModularAccumulatorBlock regular(Properties props) {
@@ -50,7 +50,7 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<M
 		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
 		// AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
 	}
-	
+
 	public static boolean isAccumulator(BlockState state) {
 		return state.getBlock() instanceof ModularAccumulatorBlock;
 	}
@@ -249,7 +249,7 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<M
 			.map(te -> ComparatorUtil.fractionToRedstoneLevel(te.getFillState()))
 			.orElse(0);
 	}
-	
+
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;

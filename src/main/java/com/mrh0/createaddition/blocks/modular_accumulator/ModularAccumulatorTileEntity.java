@@ -36,8 +36,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -67,7 +65,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	private static final int SYNC_RATE = 8;
 	protected int syncCooldown;
 	protected boolean queuedSync;
-	
+
 	private EnergyStorage escacheUp = null;
 	private EnergyStorage escacheDown = null;
 
@@ -84,7 +82,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	protected InternalEnergyStorage createEnergyStorage() {
 		return new InternalEnergyStorage(getCapacityMultiplier(), Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get());
 	}
-	
+
 	public void setCache(Direction side, EnergyStorage storage) {
 		switch(side) {
 			case DOWN:
@@ -95,7 +93,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 				break;
 		}
 	}
-	
+
 	public EnergyStorage getCachedEnergy(Direction side) {
 		switch(side) {
 			case DOWN:
@@ -105,11 +103,11 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		}
 		return null;
 	}
-	
+
 	public void firstTick() {
 		updateCache();
 	};
-	
+
 	public void updateCache() {
 		if(level.isClientSide())
 			return;
@@ -117,7 +115,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 			updateCache(side);
 		}
 	}
-	
+
 	public void updateCache(Direction side) {
 		// No need to update the cache if we're removed.
 		if (isRemoved()) return;
@@ -147,7 +145,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 			return;
 		CAConnectivityHandler.formMulti(this);
 	}
-	
+
 	public LerpedFloat gauge = LerpedFloat.linear();
 
 	long lastEnergy = 0;
@@ -158,9 +156,9 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		if(firstTickState)
 			firstTick();
 		firstTickState = false;
-		
+
 		tickOutput();
-		
+
 		if (syncCooldown > 0) {
 			syncCooldown--;
 			if (syncCooldown == 0 && queuedSync)
@@ -176,15 +174,15 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 
 		if (updateConnectivity)
 			updateConnectivity();
-		
+
 		// Tick Logic:
 		if (!isController()) return;
-		
+
 		if(Math.abs(lastEnergy - energyStorage.getAmount()) > 256) {
 			lastEnergy = energyStorage.getAmount();
 			onEnergyChanged();
 		}
-		
+
 		if (level.isClientSide()) {
 			gauge.tickChaser();
 			float current = gauge.getValue(1);
@@ -193,7 +191,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 			return;
 		}
 	}
-	
+
 	public void tickOutput() {
 		if(getControllerBE() == null) return;
 		BlockState state = this.getBlockState();
@@ -204,7 +202,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 			tickOutputSide(Direction.DOWN);
 		}
 	}
-	
+
 	public void tickOutputSide(Direction side) {
 		EnergyStorage ies = getCachedEnergy(side);
 		if(ies == null)
@@ -213,7 +211,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 			EnergyStorageUtil.move(getControllerBE().energyStorage, ies, Config.ACCUMULATOR_MAX_OUTPUT.get(), t);
 			t.commit();
 		}
-	} 
+	}
 
 	@Override
 	public BlockPos getLastKnownPos() {
@@ -260,7 +258,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 			sendData();
 		}
 	}
-	
+
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -410,7 +408,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 				energyStorage.setCapacity(getCapacityMultiplier() * getTotalAccumulatorSize());
 			invalidateRenderBoundingBox();
 		}
-		
+
 		if (isController())
 			gauge.chase(getFillState(), 0.125f, Chaser.EXP);
 	}
@@ -466,7 +464,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	public static int getMaxHeight() {
 		return Config.ACCUMULATOR_MAX_HEIGHT.get();
 	}
-	
+
 	@Override
 	public int getMaxWidth() {
 		return Config.ACCUMULATOR_MAX_WIDTH.get();
@@ -523,29 +521,29 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	@Override
 	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
 	}
-	
+
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ModularAccumulatorTileEntity controllerTE = getControllerBE();
 		if (controllerTE == null)
 			return false;
-		
+
 		ObservePacket.send(worldPosition, 0);
-		
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.accumulator.info").withStyle(ChatFormatting.WHITE)));
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
+
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.accumulator.info").withStyle(ChatFormatting.WHITE)));
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
 				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe").withStyle(ChatFormatting.AQUA));
-		
-		tooltip.add(new TextComponent(spacing)
-				.append(new TranslatableComponent(CreateAddition.MODID + ".tooltip.energy.capacity").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(new TextComponent(spacing).append(new TextComponent(" "))
+
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.capacity").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
 				.append(Util.format((int)controllerTE.energyStorage.getCapacity())).append("fe").withStyle(ChatFormatting.AQUA));
 		return true;
 	}
-	
+
 	public void observe() {
 		if(!isController()) return;
 		// ObservePacket.send(worldPosition, 0);
@@ -556,11 +554,11 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		ModularAccumulatorTileEntity controllerTE = getControllerBE();
 		if (controllerTE == null)
 			return;
-		
+
 		EnergyNetworkPacket.send(worldPosition, 0, controllerTE.energyStorage.getAmount(), player);
 		// causeBlockUpdate();
 	}
-	
+
 	public boolean hasAccumulator() {
 		return true;
 	}

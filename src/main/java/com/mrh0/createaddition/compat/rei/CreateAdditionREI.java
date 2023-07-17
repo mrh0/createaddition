@@ -18,7 +18,7 @@ import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -172,7 +172,7 @@ public class CreateAdditionREI implements REIClientPlugin {
                 };
             CreateRecipeCategory.Info<T> info = new CreateRecipeCategory.Info<>(
                     CategoryIdentifier.of(CreateAddition.asResource(name)),
-                    new TranslatableComponent(CreateAddition.MODID + ".recipe." + name), background, icon, recipesSupplier, catalysts, width, height, displayFactory == null ? (recipe) -> new CreateDisplay<>(recipe, CategoryIdentifier.of(CreateAddition.asResource(name))) : displayFactory);
+                    Component.translatable(CreateAddition.MODID + ".recipe." + name), background, icon, recipesSupplier, catalysts, width, height, displayFactory == null ? (recipe) -> new CreateDisplay<>(recipe, CategoryIdentifier.of(CreateAddition.asResource(name))) : displayFactory);
             CreateRecipeCategory<T> category = factory.create(info);
             ALL.add(category);
             return category;

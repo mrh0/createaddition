@@ -345,7 +345,7 @@ public class PonderScenes {
 				.pointAt(util.vector.topOf(burner));
 		scene.idle(10);
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(burner), Pointing.DOWN).rightClick()
-				.withItem(new ItemStack(CAFluids.BIOETHANOL.get().getBucket())), 40);
+				.withItem(new ItemStack(CAFluids.BIOETHANOL.getBucket().get())), 40);
 		scene.idle(60);
 		scene.overlay.showText(50)
 				.text("- or by pipes.")
@@ -400,7 +400,6 @@ public class PonderScenes {
 				.text("Configure an input connector,")
 				.placeNearTarget()
 				.pointAt(util.vector.centerOf(cIn));
-
 		scene.idle(60);
 		scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(cOut), Pointing.DOWN).rightClick()
 				.withItem(new ItemStack(AllItems.WRENCH.get())), 40);

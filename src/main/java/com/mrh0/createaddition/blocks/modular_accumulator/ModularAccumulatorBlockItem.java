@@ -125,7 +125,7 @@ public class ModularAccumulatorBlockItem extends BlockItem {
 			}
 		}
 	}
-	
+
 	private static int getOrCreateEnergy(ItemStack stack) {
 		var tag = stack.getTag();
 		if(tag == null)

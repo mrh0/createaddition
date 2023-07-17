@@ -14,7 +14,7 @@
       "tag": "c:iron_plates"
     },
     "R": {
-      "tag": "c:rods/iron"
+      "tag": "c:iron_rods"
     },
     "S": {
       "item": "createaddition:copper_spool"
