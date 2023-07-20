@@ -96,15 +96,14 @@ public abstract class BaseElectricTileEntity extends SmartBlockEntity implements
 			return;
 		}
 		EnergyStorage e = EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite());
-		if(e == null) {
-			setCache(side, null);
-			return;
+		if (e == null && ignoreCapSide()) {
+			e = EnergyStorage.SIDED.find(level, worldPosition.relative(side), null);
 		}
-		if(ignoreCapSide() && e != null) e = EnergyStorage.SIDED.find(level, worldPosition.relative(side), null);
 		// Make sure the side isn't already cached.
-		if (e.equals(getCachedEnergy(side))) return;
+		if (Objects.equals(e, getCachedEnergy(side))) return;
 		setCache(side, e);
 	}
+
 
 	private EnergyStorage escacheUp = null;
 	private EnergyStorage escacheDown = null;
