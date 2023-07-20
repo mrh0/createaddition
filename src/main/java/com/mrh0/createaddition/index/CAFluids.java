@@ -21,7 +21,7 @@ public class CAFluids {
 	
 	public static void register() {
 		var seedOil = CreateAddition.REGISTRATE.fluid("seed_oil", new ResourceLocation("createaddition","fluid/seed_oil_still"), new ResourceLocation("createaddition","fluid/seed_oil_flow"))//.standardFluid("seed_oil", NoColorFluidAttributes::new)
-				.fluidAttributes(() -> new CreateAdditionsAttributeHandler("fluid.createaddition.bioethanol", 2000, 1400))
+				.fluidAttributes(() -> new CreateAdditionsAttributeHandler("fluid.createaddition.seed_oil", 2000, 1400))
 				.fluidProperties(p -> p.levelDecreasePerBlock(2)
 						.tickRate(15)
 						.flowSpeed(6)
@@ -34,7 +34,7 @@ public class CAFluids {
 		SEED_OIL = seedOil.register();
 		
 		var bioethanol = CreateAddition.REGISTRATE.fluid("bioethanol", new ResourceLocation("createaddition","fluid/bioethanol_still"), new ResourceLocation("createaddition","fluid/bioethanol_flow"))
-				.fluidAttributes(() -> new CreateAdditionsAttributeHandler("fluid.createaddition.seed_oil", 2500, 1600))
+				.fluidAttributes(() -> new CreateAdditionsAttributeHandler("fluid.createaddition.bioethanol", 2500, 1600))
 				.fluidProperties(p -> p.levelDecreasePerBlock(2)
 						.tickRate(15)
 						.flowSpeed(6)
