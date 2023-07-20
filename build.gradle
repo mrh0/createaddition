@@ -73,6 +73,7 @@ repositories {
             includeGroup "mcp.mobius.waila"
         }
     }
+    maven { url = "https://maven.terraformersmc.com/" } // Mod Menu, Trinkets
 }
 
 dependencies {
@@ -112,6 +113,8 @@ dependencies {
     include modApi('teamreborn:energy:2.3.0') {
         exclude(group: "net.fabricmc.fabric-api")
     }
+
+    modLocalRuntime("com.terraformersmc:modmenu:$modmenu_version")
 }
 
 processResources {

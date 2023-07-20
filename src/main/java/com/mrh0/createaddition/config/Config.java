@@ -72,7 +72,7 @@ public class Config {
 					.comment(" as the config isnt synced between Clients and Server.");
 		COMMON_BUILDER.comment("General Settings").push(CATAGORY_GENERAL);
 		FE_RPM = COMMON_BUILDER.comment("Forge Energy conversion rate (in E/t at 256 RPM, value is the E/t generated and consumed is at 256rpm).")
-				.defineInRange("fe_at_max_rpm", 480, 0, Integer.MAX_VALUE);
+				.defineInRange("fe_at_max_rpm", 240, 0, Integer.MAX_VALUE);
 
 		MAX_STRESS = COMMON_BUILDER.comment("Max stress for the Alternator and Electric Motor (in SU at 256 RPM).")
 				.defineInRange("max_stress", 16384, 0, Integer.MAX_VALUE);
