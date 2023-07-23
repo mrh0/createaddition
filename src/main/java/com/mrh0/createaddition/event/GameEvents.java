@@ -10,6 +10,7 @@ import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.AllBlocks;
 
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -64,12 +65,12 @@ public class GameEvents {
 			if(world.isClientSide()) return InteractionResult.PASS;
 			BlockState state = world.getBlockState(pos);
 			if(item.getItem() == CAItems.STRAW.get()) {
-				if(state.is(AllBlocks.BLAZE_BURNER.get())) {
+				if(state.is(AllBlocks.BLAZE_BURNER.get()) && world.getBlockEntity(hitResult.getBlockPos()) instanceof BlazeBurnerBlockEntity) {
 					BlockState newState = CABlocks.LIQUID_BLAZE_BURNER.getDefaultState()
 							.setValue(LiquidBlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING/*state.getValue(BlazeBurnerBlock.HEAT_LEVEL)*/)
 							.setValue(LiquidBlazeBurnerBlock.FACING, state.getValue(BlazeBurnerBlock.FACING));
 					world.setBlockAndUpdate(pos, newState);
-					//if(!evt.getEntity().isCreative())
+					if(!player.isCreative())
 						item.shrink(1);
 					return InteractionResult.SUCCESS;
 				}
