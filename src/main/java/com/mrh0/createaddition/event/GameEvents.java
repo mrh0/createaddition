@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.event;
 
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyManager;
 import com.mrh0.createaddition.debug.CADebugger;
 import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
@@ -64,12 +65,12 @@ public class GameEvents {
 			if(level.isClientSide()) return InteractionResult.PASS;
 			BlockState state = level.getBlockState(pos);
 			if(item.getItem() == CAItems.STRAW.get()) {
-				if(state.is(AllBlocks.BLAZE_BURNER.get())) {
+				if(state.is(AllBlocks.BLAZE_BURNER.get()) && world.getBlockEntity(hitResult.getBlockPos()) instanceof BlazeBurnerBlockEntity) {
 					BlockState newState = CABlocks.LIQUID_BLAZE_BURNER.getDefaultState()
 							.setValue(LiquidBlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING/*state.getValue(BlazeBurnerBlock.HEAT_LEVEL)*/)
 							.setValue(LiquidBlazeBurnerBlock.FACING, state.getValue(BlazeBurnerBlock.FACING));
 					level.setBlockAndUpdate(pos, newState);
-					//if(!evt.getEntity().isCreative())
+					if(!player.isCreative())
 						item.shrink(1);
 					return InteractionResult.SUCCESS;
 				}
