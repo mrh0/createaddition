@@ -3,15 +3,15 @@ package com.mrh0.createaddition.energy;
 import net.minecraft.network.chat.Component;
 
 public enum WireConnectResult {
-	
+
 	LINKED(Component.translatable("statusbar.createaddition.wire.linked")),
 	LINKED_IN(Component.translatable("statusbar.createaddition.wire.linked_in")),
 	LINKED_OUT(Component.translatable("statusbar.createaddition.wire.linked_out")),
-	
+
 	CONNECT(Component.translatable("statusbar.createaddition.wire.connect")),
 	CONNECT_IN(Component.translatable("statusbar.createaddition.wire.connect_in")),
 	CONNECT_OUT(Component.translatable("statusbar.createaddition.wire.connect_out")),
-	
+
 	LONG(Component.translatable("statusbar.createaddition.wire.long")),
 	OBSTRUCTED(Component.translatable("statusbar.createaddition.wire.obstructed")),
 	COUNT(Component.translatable("statusbar.createaddition.wire.count")),

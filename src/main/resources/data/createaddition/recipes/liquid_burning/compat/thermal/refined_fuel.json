@@ -1,0 +1,17 @@
+{
+	"type":"createaddition:liquid_burning",
+	"input": {
+      	"fluid": "thermal:refined_fuel",
+      	"amount": 91000
+	},
+	"burnTime": 24000,
+	"superheated": true,
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:all_mods_loaded",
+			"values": [
+				"thermal"
+			]
+		}
+	]
+}

@@ -1,0 +1,16 @@
+{
+	"type":"createaddition:liquid_burning",
+	"input": {
+      	"fluidTag": "c:creosote",
+      	"amount": 81000
+	},
+	"burnTime": 4800,
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:fluid_tags_populated",
+			"values": [
+				"c:creosote"
+			]
+		}
+	]
+}

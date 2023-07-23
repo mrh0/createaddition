@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:rolling",
 	"input": {
-      	"tag": "c:plates/aluminum"
+      	"tag": "c:aluminum_plates"
 	},
 	"result": {
 		"item": "immersiveengineering:wire_aluminum",
@@ -9,9 +9,10 @@
 	},
 	"fabric:load_conditions": [
 		{
-			"condition": "fabric:fluid_tags_populated",
+			"condition": "fabric:all_mods_loaded",
 			"values": [
 				"immersiveengineering"
 			]
-    } ]
+		}
+	]
 }

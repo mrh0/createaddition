@@ -1,27 +1,31 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "SSS",
-    "SFS",
-    "SSS"
+    "FS",
+    "SA"
   ],
   "key": {
-    "S": {
-      "item": "create:sail_frame"
-    },
     "F": {
       "tag": "c:fabric_hemp"
+    },
+    "S": {
+      "tag": "c:wooden_rods"
+    },
+    "A": {
+      "item": "create:andesite_alloy"
     }
   },
   "result": {
     "item": "create:white_sail",
-    "count": 8
+    "count": 2
   },
   "fabric:load_conditions": [
     {
-      "condition": "fabric:fluid_tags_populated",
+      "condition": "fabric:all_mods_loaded",
       "values": [
-          "immersiveengineering"
-        ]
-  } ]
+        "immersiveengineering"
+      ]
+    }
+  ]
 }
+

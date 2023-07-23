@@ -52,7 +52,7 @@ repositories {
     maven { url = "https://maven.cafeteria.dev/releases" }
     maven {
         name = 'Ladysnake Mods'
-        url = 'https://ladysnake.jfrog.io/artifactory/mods'
+        url = 'https://maven.ladysnake.org/releases'
     }
     maven {
         name = "Progwml6 maven"
@@ -66,6 +66,14 @@ repositories {
         name = 'ParchmentMC'
         url = 'https://maven.parchmentmc.org'
     }
+    maven {
+        url "https://maven2.bai.lol"
+        content {
+            includeGroup "lol.bai"
+            includeGroup "mcp.mobius.waila"
+        }
+    }
+    maven { url = "https://maven.terraformersmc.com/" } // Mod Menu, Trinkets
 }
 
 dependencies {
@@ -82,27 +90,31 @@ dependencies {
     modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}")
     modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
 
-    modImplementation("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+    modCompileOnly("mezz.jei:jei-$minecraft_version-fabric:$jei_version") { transitive = false }
 
     modImplementation("dev.architectury:architectury-fabric:${project.architectury_version}")
 
     modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")
 
-    modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_version}+${project.minecraft_version}")
+    modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:" +
+            "${project.create_version}+mc${project.minecraft_version}")
 
     modImplementation("curse.maven:cc-restitched-462672:3908334")
 
     modImplementation("appeng:appliedenergistics2-fabric:${project.ae2_version}")
 
-    modImplementation("com.tterrag.registrate_fabric:Registrate:${project.registrate_version}-MC${project.minecraft_version}")
+    modImplementation("com.tterrag.registrate_fabric:Registrate:MC${project.minecraft_version}-${project.registrate_version}")
+    modCompileOnly"mcp.mobius.waila:wthit-api:fabric-${wthit_version}"
 
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    include modApi('teamreborn:energy:2.2.0') {
+    include modApi('teamreborn:energy:2.3.0') {
         exclude(group: "net.fabricmc.fabric-api")
     }
+
+    modLocalRuntime("com.terraformersmc:modmenu:$modmenu_version")
 }
 
 processResources {

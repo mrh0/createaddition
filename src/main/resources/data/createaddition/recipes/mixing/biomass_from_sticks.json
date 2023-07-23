@@ -3,6 +3,12 @@
   "ingredients": [
     {
       "item": "minecraft:stick"
+	},
+    {
+      "item": "minecraft:stick"
+    },
+    {
+      "item": "minecraft:stick"
     },
     {
       "item": "minecraft:stick"
@@ -21,7 +27,7 @@
     },
     {
       "fluidTag": "c:plantoil",
-      "amount": 18000
+      "amount": 8100
     }
   ],
   "results": [

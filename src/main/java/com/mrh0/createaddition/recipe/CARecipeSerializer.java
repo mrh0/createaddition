@@ -1,5 +1,7 @@
 package com.mrh0.createaddition.recipe;
 
+import javax.annotation.Nonnull;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 

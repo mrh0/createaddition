@@ -37,5 +37,4 @@ public class RollingRecipeSerializer extends CARecipeSerializer<RollingRecipe>{
 		Ingredient input = Ingredient.fromJson(json.get("input"));
 		return new RollingRecipe(input, output, recipeId);
 	}
-
 }

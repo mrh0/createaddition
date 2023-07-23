@@ -1,6 +1,10 @@
 package com.mrh0.createaddition.compat.computercraft;
 
+import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
+import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorTileEntity;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
+import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import net.minecraft.core.BlockPos;
@@ -15,10 +19,18 @@ public class PeripheralProvider implements IPeripheralProvider {
     @Nullable
     @Override
     public IPeripheral getPeripheral(@NotNull Level level, @NotNull BlockPos blockPos, @NotNull Direction direction) {
-        BlockEntity block = level.getBlockEntity(blockPos);
+        BlockEntity be = level.getBlockEntity(blockPos);
 
-        if(block instanceof ElectricMotorTileEntity) {
-            return new ElectricMotorPeripheral("electric_motor", (ElectricMotorTileEntity)block);
+        if(be instanceof ElectricMotorTileEntity electricMotorTile) {
+            return Peripherals.createElectricMotorPeripheral(electricMotorTile);
+        } else if (be instanceof PortableEnergyInterfaceTileEntity portableEnergyInterfaceTile) {
+            return Peripherals.createPortableEnergyInterfacePeripheral(portableEnergyInterfaceTile);
+        } else if (be instanceof ModularAccumulatorTileEntity modularAccumulatorTile) {
+            return Peripherals.createModularAccumulatorPeripheral(modularAccumulatorTile);
+        } else if (be instanceof RedstoneRelayTileEntity redstoneRelayTile) {
+            return Peripherals.createRedstoneRelayPeripheral(redstoneRelayTile);
+        } else if (be instanceof DigitalAdapterTileEntity digitalAdapterTileEntity) {
+            return Peripherals.createDigitalAdapterPeripheral(digitalAdapterTileEntity);
         }
 
         return null;

@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:rolling",
 	"input": {
-      	"tag": "c:plates/steel"
+      	"tag": "c:steel_plates"
 	},
 	"result": {
 		"item": "immersiveengineering:wire_steel",
@@ -9,9 +9,10 @@
 	},
 	"fabric:load_conditions": [
 		{
-			"condition": "fabric:fluid_tags_populated",
+			"condition": "fabric:all_mods_loaded",
 			"values": [
 				"immersiveengineering"
 			]
-    } ]
+		}
+	]
 }

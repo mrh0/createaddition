@@ -1,22 +1,24 @@
 package com.mrh0.createaddition.compat.rei;
 
-import com.mrh0.createaddition.compat.rei.category.ChargingCategory;
-import com.mrh0.createaddition.compat.rei.category.RollingMillCategory;
+import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
+import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
-import com.simibubi.create.Create;
 import com.simibubi.create.compat.rei.CreateREI;
 import com.simibubi.create.compat.rei.EmptyBackground;
 import com.simibubi.create.compat.rei.ItemIcon;
 import com.simibubi.create.compat.rei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.rei.display.CreateDisplay;
-import com.simibubi.create.foundation.utility.Lang;
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -50,7 +52,26 @@ public class CreateAdditionREI implements REIClientPlugin {
                 .catalyst(CABlocks.TESLA_COIL::get)
                 .itemIcon(CABlocks.TESLA_COIL.get())
                 .emptyBackground(178, 63)
-                .build("charging", ChargingCategory::new);
+                .build("charging", ChargingCategory::new),
+
+        liquidBurning = builder(LiquidBurningRecipe.class)
+                .addTypedRecipes(LiquidBurningRecipe.TYPE)
+                .catalyst(CABlocks.LIQUID_BLAZE_BURNER::get)
+                .itemIcon(CABlocks.LIQUID_BLAZE_BURNER.get())
+                .emptyBackground(177, 58)
+                .displayFactory(recipe -> {
+                    List<ItemStack> buckets = recipe.getFluidIngredient().getMatchingFluidStacks().stream()
+                            .filter(e -> e != null)
+                            .map((e) -> new ItemStack(e.getFluid().getBucket()))
+                            .toList();
+
+                    return new CreateDisplay<>(recipe, CategoryIdentifier.of(CreateAddition.asResource("liquid_burning")), List.of(
+                            EntryIngredients.of(CAItems.STRAW.get()),
+                            EntryIngredients.ofItemStacks(buckets),
+                            EntryIngredients.of(VanillaEntryTypes.FLUID, CreateRecipeCategory.convertToREIFluids(recipe.getFluidIngredient().getMatchingFluidStacks()))
+                    ), List.of());
+                })
+                .build("liquid_burning", LiquidBurningCategory::new);
     }
 
     @Override
@@ -109,6 +130,10 @@ public class CreateAdditionREI implements REIClientPlugin {
             return addRecipeListConsumer(recipes -> CreateREI.<T>consumeTypedRecipes(recipes::add, recipeType));
         }
 
+        public CategoryBuilder<T> displayFactory(Function<T, ? extends CreateDisplay<T>> factory) {
+            this.displayFactory = factory;
+            return this;
+        }
 
         public void background(Renderer background) {
             this.background = background;
@@ -146,8 +171,8 @@ public class CreateAdditionREI implements REIClientPlugin {
                 return recipes;
                 };
             CreateRecipeCategory.Info<T> info = new CreateRecipeCategory.Info<>(
-                    CategoryIdentifier.of(Create.asResource(name)),
-                    Lang.translateDirect("recipe." + name), background, icon, recipesSupplier, catalysts, width, height, displayFactory == null ? (recipe) -> new CreateDisplay<>(recipe, CategoryIdentifier.of(Create.asResource(name))) : displayFactory);
+                    CategoryIdentifier.of(CreateAddition.asResource(name)),
+                    Component.translatable(CreateAddition.MODID + ".recipe." + name), background, icon, recipesSupplier, catalysts, width, height, displayFactory == null ? (recipe) -> new CreateDisplay<>(recipe, CategoryIdentifier.of(CreateAddition.asResource(name))) : displayFactory);
             CreateRecipeCategory<T> category = factory.create(info);
             ALL.add(category);
             return category;

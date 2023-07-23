@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "bottom=false,top=false": {
+      "model": "createaddition:block/modular_accumulator/block_middle"
+    },
+    "bottom=true,top=false": {
+      "model": "createaddition:block/modular_accumulator/block_bottom"
+    },
+    "bottom=false,top=true": {
+      "model": "createaddition:block/modular_accumulator/block_top"
+    },
+    "bottom=true,top=true": {
+      "model": "createaddition:block/modular_accumulator/block_single"
+    }
+  }
+}

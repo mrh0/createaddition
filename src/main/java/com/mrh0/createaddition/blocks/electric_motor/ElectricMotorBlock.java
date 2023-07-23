@@ -1,11 +1,9 @@
 package com.mrh0.createaddition.blocks.electric_motor;
 
-import java.util.Random;
-
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
-import com.simibubi.create.content.contraptions.base.DirectionalKineticBlock;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import io.github.fabricators_of_create.porting_lib.block.ConnectableRedstoneBlock;
@@ -13,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -27,7 +26,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<ElectricMotorTileEntity>, ConnectableRedstoneBlock {
+public class ElectricMotorBlock extends DirectionalKineticBlock implements IBE<ElectricMotorTileEntity>, ConnectableRedstoneBlock {
 
 	public static final VoxelShaper ELECTRIC_MOTOR_SHAPE = CAShapes.shape(0, 5, 0, 16, 11, 16).add(3, 0, 3, 13, 14, 13)
 			.forDirectional();
@@ -58,13 +57,13 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.ELECTRIC_MOTOR.create(pos, state);
+	public Class<ElectricMotorTileEntity> getBlockEntityClass() {
+		return ElectricMotorTileEntity.class;
 	}
 
 	@Override
-	public Class<ElectricMotorTileEntity> getTileEntityClass() {
-		return ElectricMotorTileEntity.class;
+	public BlockEntityType<? extends ElectricMotorTileEntity> getBlockEntityType() {
+		return CATileEntities.ELECTRIC_MOTOR.get();
 	}
 
 	@Override
@@ -91,11 +90,8 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 		return true;
 	}
 
+	/*
 	@Override
-	public BlockEntityType<? extends ElectricMotorTileEntity> getTileEntityType() {
-		return CATileEntities.ELECTRIC_MOTOR.get();
-	}
-
 	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos from, boolean b) {
 		if (!world.isClientSide) {
 			boolean flag = state.getValue(POWERED);
@@ -107,9 +103,32 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements ITE<E
 			}
 		}
 	}
+	*/
 
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos from, boolean b) {
+		if (!world.isClientSide) {
+			boolean flag = state.getValue(POWERED);
+			if (flag != world.hasNeighborSignal(pos)) {
+				if (flag){
+					setPowered(world, pos, false);
+					world.scheduleTick(pos, this, 4);
+				}
+				else{
+					setPowered(world, pos, true);
+					world.setBlock(pos, state.cycle(POWERED), 2);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource pRandom) {
 		if (state.getValue(POWERED) && !world.hasNeighborSignal(pos))
 			world.setBlock(pos, state.cycle(POWERED), 2);
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return CATileEntities.ELECTRIC_MOTOR.create(pos, state);
 	}
 }

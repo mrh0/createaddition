@@ -6,7 +6,7 @@
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader="javafml" #mandatory
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[39,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[40,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
 license="MIT License, Copyright 2022 MRH0"
@@ -34,8 +34,11 @@ credits="Special Thanks to the Forge Discord and the Create Team." #optional
 authors="MRH0" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Create Crafts & Additions extends Create and acts as a bridge between electricity and kinetic energy from Create by adding an Electric Motor which generates kinetic energy from Forge energy and an Alternator which does the opposite.
+Create Crafts & Additions extends Create and acts as a bridge between electric and kinetic energy from Create.
 Join the Discord: https://discord.gg/mRbNnyKTEu
+Special thanks to:
+the Create team, the Forge team, and all contributors on the CC&A discord including: 
+AlphaMode, BobDole, legoatoom, StockiesLad, THEREDSTONEBRO, and Uraxys.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.createaddition]] #optional
@@ -52,19 +55,19 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.18.1_v0.4.1,)"
+    versionRange="[0.5.0h,0.6.0)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
     modId="flywheel"
     mandatory=true
-    versionRange="[1.18-0.6.2,1.18-0.7.0)"
+    versionRange="[0.6,0.7)"
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.createaddition]]
-    modId="immersiveengineering"
+    modId="jei"
     mandatory=false
-    versionRange="[1.18,)"
+    versionRange="[11.4.0.274,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
@@ -74,15 +77,9 @@ Join the Discord: https://discord.gg/mRbNnyKTEu
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
-    modId="appliedenergistics2"
-    mandatory=false
-    versionRange="[10.0.0,)"
-    ordering="NONE"
-    side="BOTH"
-[[dependencies.createaddition]]
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.18.2,1.19)"
+    versionRange="[1.19.2,1.20)"
     ordering="NONE"
     side="BOTH"

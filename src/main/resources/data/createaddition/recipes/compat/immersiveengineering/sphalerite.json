@@ -4,19 +4,39 @@
     {
       "chance": 0.6,
       "output": {
-        "tag": "c:ores/zinc"
+        "tag": "c:zinc_ores"
       }
     },
     {
       "chance": 0.2,
       "output": {
-        "tag": "c:dusts/sulfur"
+        "tag": "c:sulfur_dusts"
       }
     },
     {
       "chance": 0.2,
       "output": {
-        "tag": "c:ores/iron"
+        "tag": "c:iron_ores"
+      }
+    }
+  ],
+  "spoils": [
+  	{
+      "chance": 0.2,
+      "output": {
+        "item": "minecraft:gravel"
+      }
+    },
+    {
+      "chance": 0.5,
+      "output": {
+        "item": "minecraft:cobblestone"
+      }
+    },
+    {
+      "chance": 0.3,
+      "output": {
+        "item": "minecraft:cobbled_deepslate"
       }
     }
   ],

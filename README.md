@@ -6,23 +6,28 @@ Minecraft Forge Mod by MRH0
 
 # Download
 
-Minecraft 1.16, 1.17, 1.18
+Minecraft 1.16, 1.17, 1.18, 1.19
 
 At: https://www.curseforge.com/minecraft/mc-mods/createaddition
 
 # About
 
-Create Crafts & Additions extends Create and acts as a bridge between electricity and kinetic energy from Create by adding an Electric Motor which generates kinetic energy from Forge energy and an Alternator which does the opposite at 75% efficency. To crafts these items you need to make a Rolling Mill which is a kinetic machine that is used to make rods and wires. All the recipes are available through JEI.
+Create Crafts & Additions extends Create and acts as a bridge between electricity and kinetic energy from Create.
 
 # Content
 
-![Items](https://github.com/mrh0/createaddition/blob/1.18/createaddition_items_20220401a.png?raw=true)
+![Items](https://raw.githubusercontent.com/mrh0/createaddition/1.18.2/cca_20230412a.png)
 
 - Electric Motor.
 - Alternator.
 - Rolling Mill.
 - Creative Generator.
+- Telsa Coil.
+- Accumulator.
+- Digital Adapter.
+- Energy transport.
 - Diamond Grit Sandpaper.
+
 And more!
 
 # License

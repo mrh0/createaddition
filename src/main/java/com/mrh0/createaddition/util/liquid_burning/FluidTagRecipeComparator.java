@@ -17,39 +17,32 @@ import javax.annotation.Nullable;
  * don't need to worry about breaking changes.
  */
 public final class FluidTagRecipeComparator {
-    public static boolean argsToTag(Fluid fluid, Args args) {
-        for (TagKey<Fluid> tagKey : fluid.defaultFluidState().getTags().toList()) {
-            if (!tagKey.toString().contains("burnable_fuel")) {
-                continue;
-            }
-            boolean superheated = false;
-            int timePerBucket = 0;
-            boolean crashOnLow = true;
-            if (tagKey.toString().contains("superheated")) {
-                superheated = true;
-            }
-            try {
-                timePerBucket = Integer.parseInt(tagKey
-                        .toString()
-                        .replaceAll("[^0-9]+", " ")
-                        .trim()
-                );
-            } catch (NumberFormatException e) {
-                crashOnLow = false;
-            }
-            BurnableTagProperties tagProperties = new BurnableTagProperties(
-                    superheated,
-                    timePerBucket,
-                    crashOnLow
-            );
-            Boolean bl = args.args(tagProperties, tagKey);
-            if (bl != null && bl && tagProperties.getTime() != 0) {
-                return true;
-            }
-        }
-        return false;
-    }
 
+   public static boolean argsToTag(Fluid fluid, Args args) {
+       for (TagKey<Fluid> tagKey : fluid.defaultFluidState().getTags().toList()) {
+           int i;
+           boolean crashOnLow = true;
+           try {
+               i = Integer.parseInt(tagKey
+                       .toString()
+                       .replaceAll("[^0-9]+", " ")
+                       .trim()
+               );
+           } catch (NumberFormatException e) {
+               i = 0;
+               crashOnLow = false;
+           }
+           BurnableTagProperties tagProperties = new BurnableTagProperties(
+                   crashOnLow,
+                   i
+           );
+           Boolean bl = args.args(tagProperties, tagKey);
+           if (bl != null && bl && tagProperties.getTime() != 0) {
+               return true;
+           }
+       }
+       return false;
+   }
 
     public interface Args {
         @Nullable Boolean args(BurnableTagProperties tagProperties, TagKey<Fluid> tagKey);
