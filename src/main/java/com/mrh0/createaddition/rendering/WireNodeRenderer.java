@@ -29,11 +29,14 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 
 	private static final float HANG = 0.5f;
 	private static final boolean OVERHEAD_WIRE = false;
+	private float time = 0f;
 
 	@Override
 	public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-			int combinedLightIn, int combindOverlayIn) {
+			int combinedLightIn, int combinedOverlayIn) {
 		IWireNode te = (IWireNode) tileEntityIn;
+
+		time += partialTicks;
 
 		for (int i = 0; i < te.getNodeCount(); i++) {
 			if (te.hasConnection(i)) {

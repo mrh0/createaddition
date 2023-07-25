@@ -192,8 +192,8 @@ dependencies {
     //runtimeOnly fg.deobf("curse.maven:mekanism-268560:3875976")
     //runtimeOnly fg.deobf("curse.maven:radon-596879:3707321")
 
-    implementation fg.deobf("curse.maven:create-328085:4547146")
-    implementation fg.deobf("curse.maven:flywheel-486392:4174748")
+    implementation fg.deobf("curse.maven:create-328085:4550986")
+    implementation fg.deobf("curse.maven:flywheel-486392:4341461")
 	//implementation fg.deobf("curse.maven:immersive-engineering-231951:3579169")
     implementation fg.deobf("curse.maven:cc-tweaked-282001:3709268")
 	//implementation fg.deobf("curse.maven:applied-energistics-2-223794:3736294")

@@ -55,13 +55,13 @@ AlphaMode, BobDole, legoatoom, StockiesLad, THEREDSTONEBRO, and Uraxys.
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[0.5h,0.6)"
+    versionRange="[0.5.1.b,0.5.2)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
     modId="flywheel"
     mandatory=true
-    versionRange="[0.6,0.7)"
+    versionRange="[0.6.8.a,0.7)"
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.createaddition]]
