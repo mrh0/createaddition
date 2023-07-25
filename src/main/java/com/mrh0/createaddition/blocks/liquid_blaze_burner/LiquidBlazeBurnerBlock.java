@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
@@ -41,7 +41,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 
-public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implements IBE<LiquidBlazeBurnerTileEntity>, IWrenchable {
+public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implements IBE<LiquidBlazeBurnerBlockEntity>, IWrenchable {
 
 	public static final EnumProperty<BlazeBurnerBlock.HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", BlazeBurnerBlock.HeatLevel.class);
 
@@ -74,13 +74,13 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	}
 
 	@Override
-	public Class<LiquidBlazeBurnerTileEntity> getBlockEntityClass() {
-		return LiquidBlazeBurnerTileEntity.class;
+	public Class<LiquidBlazeBurnerBlockEntity> getBlockEntityClass() {
+		return LiquidBlazeBurnerBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends LiquidBlazeBurnerTileEntity> getBlockEntityType() {
-		return CATileEntities.LIQUID_BLAZE_BURNER.get();
+	public BlockEntityType<? extends LiquidBlazeBurnerBlockEntity> getBlockEntityType() {
+		return CABlockEntities.LIQUID_BLAZE_BURNER.get();
 	}
 
 	@Nullable
@@ -179,9 +179,9 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 
 		BlockEntity te = world.getBlockEntity(pos);
-		if (!(te instanceof LiquidBlazeBurnerTileEntity))
+		if (!(te instanceof LiquidBlazeBurnerBlockEntity))
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
-		LiquidBlazeBurnerTileEntity burnerTE = (LiquidBlazeBurnerTileEntity) te;
+		LiquidBlazeBurnerBlockEntity burnerTE = (LiquidBlazeBurnerBlockEntity) te;
 
 		if (burnerTE.isCreativeFuel(stack)) {
 			if (!simulate)

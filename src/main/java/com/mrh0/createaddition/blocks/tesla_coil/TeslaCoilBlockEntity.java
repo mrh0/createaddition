@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.mrh0.createaddition.config.Config;
-import com.mrh0.createaddition.energy.BaseElectricTileEntity;
+import com.mrh0.createaddition.energy.BaseElectricBlockEntity;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
@@ -33,43 +33,36 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHaveGoggleInformation {
+public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHaveGoggleInformation {
 
 	private Optional<ChargingRecipe> recipeCache = Optional.empty();
 	
 	private ItemStackHandler inputInv;
 	private int chargeAccumulator;
-	
-	/*private static final int
-		MAX_IN = Config.TESLA_COIL_MAX_INPUT.get(),
-		CHARGE_RATE = Config.TESLA_COIL_CHARGE_RATE.get(),
-		CHARGE_RATE_RECIPE = Config.TESLA_COIL_RECIPE_CHARGE_RATE.get(),
-		CAPACITY = Util.max(Config.TESLA_COIL_CAPACITY.get(), CHARGE_RATE, CHARGE_RATE_RECIPE),
-		HURT_ENERGY_REQUIRED = Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get(), 
-		HURT_DMG_MOB = Config.TESLA_COIL_HURT_DMG_MOB.get(),
-		HURT_DMG_PLAYER = Config.TESLA_COIL_HURT_DMG_PLAYER.get(),
-		HURT_RANGE = Config.TESLA_COIL_HURT_RANGE.get(), 
-		HURT_EFFECT_TIME_MOB = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get(),
-		HURT_EFFECT_TIME_PLAYER = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get(),
-		HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();*/
-	
-	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
 	
 	private static DamageSource DMG_SOURCE = new DamageSource("tesla_coil");
 	
-	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
-		super(
-				tileEntityTypeIn,
-				pos,
-				state,
-				Util.max(Config.TESLA_COIL_CAPACITY.get(), Config.TESLA_COIL_CHARGE_RATE.get(), Config.TESLA_COIL_RECIPE_CHARGE_RATE.get()),
-				Config.TESLA_COIL_MAX_INPUT.get(),
-				0)
-		;
+	public TeslaCoilBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+		super(tileEntityTypeIn, pos, state);
 		inputInv = new ItemStackHandler(1);
 	}
-	
+
+	@Override
+	public int getCapacity() {
+		return Util.max(Config.TESLA_COIL_CAPACITY.get(), Config.TESLA_COIL_CHARGE_RATE.get(), Config.TESLA_COIL_RECIPE_CHARGE_RATE.get());
+	}
+
+	@Override
+	public int getMaxIn() {
+		return Config.TESLA_COIL_MAX_INPUT.get();
+	}
+
+	@Override
+	public int getMaxOut() {
+		return 0;
+	}
+
 	public BeltProcessingBehaviour processingBehaviour;
 
 	@Override
@@ -139,7 +132,6 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			return;
 		}
 		int signal = getLevel().getBestNeighborSignal(getBlockPos());
-		//System.out.println(signal + ":" + (energy.getEnergyStored() >= HURT_ENERGY_REQUIRED));
 		if(signal > 0 && localEnergy.getEnergyStored() >= Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get())
 			poweredTimer = 10;
 		

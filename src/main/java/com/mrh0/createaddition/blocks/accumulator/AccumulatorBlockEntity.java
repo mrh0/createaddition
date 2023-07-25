@@ -33,7 +33,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWireNode, IHaveGoggleInformation, IComparatorOverride, IObserveTileEntity {
+public class AccumulatorBlockEntity extends BaseElectricBlockEntity implements IWireNode, IHaveGoggleInformation, IComparatorOverride, IObserveTileEntity {
 
 	private final Set<LocalNode> wireCache = new HashSet<>();
 	private final LocalNode[] localNodes;
@@ -50,13 +50,28 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 	public static final int NODE_COUNT = 8;
 	//public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(), MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(), MAX_OUT = Config.ACCUMULATOR_MAX_OUTPUT.get();
 	
-	public AccumulatorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
-		super(tileEntityTypeIn, pos, state, Config.ACCUMULATOR_CAPACITY.get(), Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get());
+	public AccumulatorBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+		super(tileEntityTypeIn, pos, state);
 		
 		setLazyTickRate(20);
 
 		this.localNodes = new LocalNode[getNodeCount()];
 		this.nodeCache = new IWireNode[getNodeCount()];
+	}
+
+	@Override
+	public int getCapacity() {
+		return Config.ACCUMULATOR_CAPACITY.get();
+	}
+
+	@Override
+	public int getMaxIn() {
+		return Config.ACCUMULATOR_MAX_INPUT.get();
+	}
+
+	@Override
+	public int getMaxOut() {
+		return Config.ACCUMULATOR_MAX_OUTPUT.get();
 	}
 
 	@Override
@@ -337,8 +352,8 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 		
 		/*energy.receiveEnergy(networkOut.push(energy.extractEnergy(demandOut, false)), false);*/
 		demandOut = networkOut.getDemand();
-		localEnergy.receiveEnergy(networkIn.pull(Math.min(demandIn, localEnergy.receiveEnergy(MAX_IN, true))), false);
-		demandIn = networkIn.demand(localEnergy.receiveEnergy(MAX_IN, true));
+		localEnergy.receiveEnergy(networkIn.pull(Math.min(demandIn, localEnergy.receiveEnergy(getMaxIn(), true))), false);
+		demandIn = networkIn.demand(localEnergy.receiveEnergy(getMaxIn(), true));
 		
 	}
 

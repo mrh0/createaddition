@@ -25,14 +25,14 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DigitalAdapterTileEntity extends BlockEntity {
+public class DigitalAdapterBlockEntity extends BlockEntity {
     public final List<MutableComponent> textLines;
     public static final int MAX_LINES = 16;
     public static final MutableComponent EMPTY_LINE = new TextComponent("");
 
     protected LazyOptional<DigitalAdapterPeripheral> peripheral;
 
-    public DigitalAdapterTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+    public DigitalAdapterBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
         super(tileEntityTypeIn, pos, state);
         textLines = new ArrayList<>();
         for(int i = 0; i < MAX_LINES; i++) textLines.add(EMPTY_LINE);
@@ -44,7 +44,7 @@ public class DigitalAdapterTileEntity extends BlockEntity {
     private int line = 1;
 
     public void incrementLine() {
-        line = Math.min(line + 1, DigitalAdapterTileEntity.MAX_LINES);
+        line = Math.min(line + 1, DigitalAdapterBlockEntity.MAX_LINES);
     }
 
     public void setTextLine(int ln, MutableComponent text) {
@@ -75,7 +75,7 @@ public class DigitalAdapterTileEntity extends BlockEntity {
     }
 
     public int setLine(int ln) {
-        return line = ln < 1 || ln > DigitalAdapterTileEntity.MAX_LINES ? line : ln;
+        return line = ln < 1 || ln > DigitalAdapterBlockEntity.MAX_LINES ? line : ln;
     }
 
     @Nonnull

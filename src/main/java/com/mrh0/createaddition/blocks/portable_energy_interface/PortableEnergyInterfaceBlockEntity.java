@@ -18,7 +18,7 @@ import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 
-public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceBlockEntity {
+public class PortableEnergyInterfaceBlockEntity extends PortableStorageInterfaceBlockEntity {
 
 	protected LazyOptional<IEnergyStorage> capability = this.createEmptyHandler();
 	protected LazyOptional<PortableEnergyInterfacePeripheral> peripheral;
@@ -27,7 +27,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 	//public int maxInput = Config.PEI_MAX_INPUT.get();
 	//public int maxOutput = Config.PEI_MAX_OUTPUT.get();
 
-	public PortableEnergyInterfaceTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+	public PortableEnergyInterfaceBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 
 		if (CreateAddition.CC_ACTIVE)
@@ -108,7 +108,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 
 		@Override
 		public int receiveEnergy(int maxReceive, boolean simulate) {
-			if (!PortableEnergyInterfaceTileEntity.this.canTransfer()) return 0;
+			if (!PortableEnergyInterfaceBlockEntity.this.canTransfer()) return 0;
 			maxReceive = Math.min(maxReceive, Config.PEI_MAX_INPUT.get());
 			if (this.wrapped == null) return 0;
 			int received = this.wrapped.receiveEnergy(maxReceive, simulate);
@@ -118,7 +118,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 
 		@Override
 		public int extractEnergy(int maxExtract, boolean simulate) {
-			if (!PortableEnergyInterfaceTileEntity.this.canTransfer()) return 0;
+			if (!PortableEnergyInterfaceBlockEntity.this.canTransfer()) return 0;
 			maxExtract = Math.min(maxExtract, Config.PEI_MAX_OUTPUT.get());
 			if (this.wrapped == null) return 0;
 			int extracted = this.wrapped.extractEnergy(maxExtract, simulate);
@@ -149,7 +149,7 @@ public class PortableEnergyInterfaceTileEntity extends PortableStorageInterfaceB
 		}
 
 		public void keepAlive() {
-			PortableEnergyInterfaceTileEntity.this.onContentTransferred();
+			PortableEnergyInterfaceBlockEntity.this.onContentTransferred();
 		}
 	}
 }

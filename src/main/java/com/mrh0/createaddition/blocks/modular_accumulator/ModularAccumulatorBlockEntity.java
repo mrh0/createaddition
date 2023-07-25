@@ -20,7 +20,6 @@ import com.simibubi.create.Create;
 import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.redstone.thresholdSwitch.ThresholdSwitchObservable;
-import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
@@ -46,7 +45,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer, ThresholdSwitchObservable {
+public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer, ThresholdSwitchObservable {
 
 	/*public static final int CAPACITY = Config.ACCUMULATOR_CAPACITY.get(),
 			MAX_IN = Config.ACCUMULATOR_MAX_INPUT.get(),
@@ -70,7 +69,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
 	protected LazyOptional<ModularAccumulatorPeripheral> peripheral;
 
-	public ModularAccumulatorTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+	public ModularAccumulatorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		energyStorage = createEnergyStorage();
 		energyCap = LazyOptional.of(() -> energyStorage);
@@ -248,7 +247,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 			for (int xOffset = 0; xOffset < width; xOffset++) {
 				for (int zOffset = 0; zOffset < width; zOffset++) {
 					BlockPos pos = this.worldPosition.offset(xOffset, yOffset, zOffset);
-					ModularAccumulatorTileEntity acc = CAConnectivityHandler.partAt(getType(), level, pos);
+					ModularAccumulatorBlockEntity acc = CAConnectivityHandler.partAt(getType(), level, pos);
 					if (acc == null)
 						continue;
 					level.updateNeighbourForOutputSignal(pos, acc.getBlockState().getBlock());
@@ -265,12 +264,12 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ModularAccumulatorTileEntity getControllerBE() {
+	public ModularAccumulatorBlockEntity getControllerBE() {
 		if (isController())
 			return this;
 		BlockEntity tileEntity = level.getBlockEntity(controller);
-		if (tileEntity instanceof ModularAccumulatorTileEntity)
-			return (ModularAccumulatorTileEntity) tileEntity;
+		if (tileEntity instanceof ModularAccumulatorBlockEntity)
+			return (ModularAccumulatorBlockEntity) tileEntity;
 		return null;
 	}
 
@@ -360,10 +359,10 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	}
 
 	@Nullable
-	public ModularAccumulatorTileEntity getOtherTileEntity(Direction direction) {
+	public ModularAccumulatorBlockEntity getOtherTileEntity(Direction direction) {
 		BlockEntity otherTE = level.getBlockEntity(worldPosition.relative(direction));
-		if (otherTE instanceof ModularAccumulatorTileEntity)
-			return (ModularAccumulatorTileEntity) otherTE;
+		if (otherTE instanceof ModularAccumulatorBlockEntity)
+			return (ModularAccumulatorBlockEntity) otherTE;
 		return null;
 	}
 
@@ -524,7 +523,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		ModularAccumulatorTileEntity controllerTE = getControllerBE();
+		ModularAccumulatorBlockEntity controllerTE = getControllerBE();
 		if (controllerTE == null)
 			return false;
 		
@@ -551,7 +550,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
-		ModularAccumulatorTileEntity controllerTE = getControllerBE();
+		ModularAccumulatorBlockEntity controllerTE = getControllerBE();
 		if (controllerTE == null)
 			return;
 		
@@ -578,7 +577,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 	@Override
 	public void drawDebug() {
 		if (level == null) return;
-		ModularAccumulatorTileEntity controller = getControllerBE();
+		ModularAccumulatorBlockEntity controller = getControllerBE();
 		if (controller == null) return;
 		// Outline controller.
 		VoxelShape shape = level.getBlockState(controller.getBlockPos()).getBlockSupportShape(level, controller.getBlockPos());
@@ -587,7 +586,7 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 
 	@Override
 	public float getPercent() {
-		ModularAccumulatorTileEntity controllerTE = getControllerBE();
+		ModularAccumulatorBlockEntity controllerTE = getControllerBE();
 		if (controllerTE == null) return 0f;
 		return controllerTE.getFillState() * 100f;
 	}

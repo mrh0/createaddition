@@ -1,6 +1,6 @@
 package com.mrh0.createaddition.mixin;
 
-import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorTileEntity;
+import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlockEntity;
 import com.simibubi.create.content.contraptions.Contraption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -26,7 +26,7 @@ public abstract class ContraptionMixin {
 			locals = LocalCapture.CAPTURE_FAILSOFT
 	)
 	protected void getTileEntityNBT(Level world, BlockPos pos, CallbackInfoReturnable<CompoundTag> info, BlockEntity tileentity, CompoundTag nbt) {
-		if (tileentity instanceof ModularAccumulatorTileEntity && nbt.contains("Controller")) {
+		if (tileentity instanceof ModularAccumulatorBlockEntity && nbt.contains("Controller")) {
 			nbt.put("Controller", NbtUtils.writeBlockPos(NbtUtils.readBlockPos(nbt.getCompound("Controller")).subtract(anchor)));
 		}
 	}

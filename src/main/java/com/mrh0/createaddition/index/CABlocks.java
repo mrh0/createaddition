@@ -7,7 +7,7 @@ import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.barbed_wire.BarbedWireBlock;
 import com.mrh0.createaddition.blocks.cake.CACakeBlock;
-import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
+import com.mrh0.createaddition.blocks.connector.LowCurrentConnectorBlock;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlock;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterDisplaySource;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlockItem;
@@ -80,7 +80,7 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
-	public static final BlockEntry<ConnectorBlock> CONNECTOR_COPPER = CreateAddition.REGISTRATE.block("connector",  ConnectorBlock::new)
+	public static final BlockEntry<LowCurrentConnectorBlock> LV_CONNECTOR = CreateAddition.REGISTRATE.block("connector",  LowCurrentConnectorBlock::new)
 			.initialProperties(SharedProperties::stone)
 			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
 			.item()

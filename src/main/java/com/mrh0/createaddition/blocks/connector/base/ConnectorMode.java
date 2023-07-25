@@ -1,8 +1,7 @@
-package com.mrh0.createaddition.blocks.connector;
+package com.mrh0.createaddition.blocks.connector.base;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.StringRepresentable;
@@ -20,7 +19,7 @@ public enum ConnectorMode implements StringRepresentable {
 
 	private String name;
 	
-	private ConnectorMode(String name) {
+	ConnectorMode(String name) {
 		this.name = name;
 	}
 
@@ -31,14 +30,14 @@ public enum ConnectorMode implements StringRepresentable {
 	
 	public ConnectorMode getNext() {
 		switch (this) {
-			case Passive:
-				return None;
+			//case Passive:
+			//	return None;
 			case None:
 				return Pull;
 			case Pull:
 				return Push;
 			case Push:
-				return Passive;
+				return None;
 		}
 		return None;
 	}
@@ -71,7 +70,7 @@ public enum ConnectorMode implements StringRepresentable {
 		
 		IEnergyStorage e = optional.orElse(null);
 		
-		if(e.canExtract() && e.canReceive()) return Passive;
+		// if(e.canExtract() && e.canReceive()) return Passive;
 		if(e.canExtract()) return Pull;
 		if(e.canReceive()) return Push;
 		

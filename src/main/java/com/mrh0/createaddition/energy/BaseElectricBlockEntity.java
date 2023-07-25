@@ -15,23 +15,24 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.List;
 
-public abstract class BaseElectricTileEntity extends SmartBlockEntity {
+public abstract class BaseElectricBlockEntity extends SmartBlockEntity {
 
 	protected final InternalEnergyStorage localEnergy;
 	protected LazyOptional<IEnergyStorage> lazyEnergy;
 
 	private boolean firstTickState = true;
-	protected final int CAPACITY, MAX_IN, MAX_OUT;
+	// protected final int CAPACITY, MAX_IN, MAX_OUT;
 
-	public BaseElectricTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state, int CAPACITY, int MAX_IN, int MAX_OUT) {
+	public BaseElectricBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
-		localEnergy = new InternalEnergyStorage(CAPACITY, MAX_IN, MAX_OUT);
-		this.CAPACITY = CAPACITY;
-		this.MAX_IN = MAX_IN;
-		this.MAX_OUT = MAX_OUT;
+		localEnergy = new InternalEnergyStorage(getCapacity(), getMaxIn(), getMaxOut());
 		lazyEnergy = LazyOptional.of(() -> localEnergy);
 		setLazyTickRate(20);
 	}
+
+	public abstract int getCapacity();
+	public abstract int getMaxIn();
+	public abstract int getMaxOut();
 
 	@Override
 	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}

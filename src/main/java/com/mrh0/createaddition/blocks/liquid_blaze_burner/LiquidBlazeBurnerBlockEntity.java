@@ -55,7 +55,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHaveGoggleInformation, IObserveTileEntity {
+public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation, IObserveTileEntity {
 	public static final int MAX_HEAT_CAPACITY = 10000;
 
 	protected FuelType activeFuel;
@@ -66,7 +66,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 	protected boolean goggles;
 	protected boolean hat;
 
-	public LiquidBlazeBurnerTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+	public LiquidBlazeBurnerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		activeFuel = FuelType.NONE;
 		remainingBurnTime = 0;

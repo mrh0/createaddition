@@ -1,9 +1,9 @@
-package com.mrh0.createaddition.blocks.connector;
+package com.mrh0.createaddition.blocks.connector.base;
 
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.NodeRotation;
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -25,7 +25,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -36,7 +35,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, IWrenchable, ITransformableBlock {
+public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEntity> extends Block implements IBE<BE>, IWrenchable, ITransformableBlock {
 	boolean IGNORE_FACE_CHECK = Config.CONNECTOR_IGNORE_FACE_CHECK.get();
 
 	public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).forDirectional();
@@ -45,7 +44,7 @@ public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, I
 	private static final VoxelShape boxwe = Block.box(0,7,7,10,9,9);
 	private static final VoxelShape boxsn = Block.box(7,7,0,9,9,10);
 
-	public ConnectorBlock(Properties properties) {
+	public AbstractConnectorBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState()
 				.setValue(FACING, Direction.NORTH)
@@ -58,15 +57,17 @@ public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, I
 		return CONNECTOR_SHAPE.get(state.getValue(FACING).getOpposite());
 	}
 
+	/*
 	@Override
-	public Class<ConnectorTileEntity> getBlockEntityClass() {
-		return ConnectorTileEntity.class;
+	public Class<AbstractConnectorTileEntity> getBlockEntityClass() {
+		return AbstractConnectorTileEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends ConnectorTileEntity> getBlockEntityType() {
+	public BlockEntityType<? extends AbstractConnectorTileEntity> getBlockEntityType() {
 		return CATileEntities.CONNECTOR.get();
 	}
+	*/
 	
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
@@ -121,8 +122,8 @@ public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, I
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
 		if(tileentity != null) {
-			if(tileentity instanceof ConnectorTileEntity) {
-				((ConnectorTileEntity)tileentity).updateCache();
+			if(tileentity instanceof AbstractConnectorBlockEntity) {
+				((AbstractConnectorBlockEntity)tileentity).updateCache();
 			}
 		}
 		if (!state.canSurvive(worldIn, pos)) {
@@ -174,6 +175,6 @@ public class ConnectorBlock extends Block implements IBE<ConnectorTileEntity>, I
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.CONNECTOR.create(pos, state);
+		return CABlockEntities.LV_CONNECTOR.create(pos, state);
 	}
 }

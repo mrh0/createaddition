@@ -49,11 +49,10 @@ import com.mrh0.createaddition.index.CAPartials;
 import com.mrh0.createaddition.index.CAPonder;
 import com.mrh0.createaddition.index.CAPotatoCannonProjectiles;
 import com.mrh0.createaddition.index.CARecipes;
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import com.simibubi.create.foundation.item.TooltipModifier;
 
 @Mod(CreateAddition.MODID)
@@ -101,7 +100,7 @@ public class CreateAddition {
         new ModGroup("main");
         REGISTRATE.registerEventListeners(eventBus);
         CABlocks.register();
-        CATileEntities.register();
+        CABlockEntities.register();
         CAItems.register();
         CAFluids.register();
         CARecipes.register(eventBus);

@@ -37,8 +37,10 @@
 	
 	"item.createaddition.copper_spool": "Copper Spool",
 	"item.createaddition.copper_spool.tooltip": "SPOOL",
-	"item.createaddition.copper_spool.tooltip.condition1": "R-Clicking two Connectors",
-	"item.createaddition.copper_spool.tooltip.behaviour1": "Will create a wire link between them and return an _Empty Spool_.",
+	"item.createaddition.copper_spool.tooltip.condition1": "Low Current",
+	"item.createaddition.copper_spool.tooltip.behaviour1": "Connects to _Low Current_ connectors.",
+	"item.createaddition.copper_spool.tooltip.condition2": "R-Clicking two Connectors",
+	"item.createaddition.copper_spool.tooltip.behaviour2": "Will create a wire link between them, while retaining the _Empty Spool_.",
 	
 	"item.createaddition.iron_wire": "Iron Wire",
 	"item.createaddition.iron_spool": "Iron Spool",
@@ -49,8 +51,10 @@
 	
 	"item.createaddition.gold_spool": "Gold Spool",
 	"item.createaddition.gold_spool.tooltip": "SPOOL",
-	"item.createaddition.gold_spool.tooltip.condition1": "R-Clicking two Connectors",
-	"item.createaddition.gold_spool.tooltip.behaviour1": "Will create a wire link between them and return an _Empty Spool_.",
+	"item.createaddition.gold_spool.tooltip.condition1": "High Current",
+	"item.createaddition.gold_spool.tooltip.behaviour1": "Connects to _High Current_ connectors.",
+	"item.createaddition.gold_spool.tooltip.condition2": "R-Clicking two Connectors",
+	"item.createaddition.gold_spool.tooltip.behaviour2": "Will create a wire link between them and return an _Empty Spool_.",
 	
 	"item.createaddition.gold_wire": "Gold Wire",
 	"item.createaddition.gold_rod": "Gold Rod",
@@ -62,6 +66,7 @@
 	
 	"item.createaddition.brass_rod": "Brass Rod",
 	"item.createaddition.bronze_rod": "Bronze Rod",
+	"item.createaddition.electrum_rod": "Electrum Rod",
 	
 	"item.createaddition.cake_base": "Cake Base",
 	"item.createaddition.cake_base_baked": "Baked Cake Base",

@@ -1,6 +1,6 @@
 package com.mrh0.createaddition.blocks.alternator;
 
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.content.kinetics.base.IRotate;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class AlternatorBlock extends DirectionalKineticBlock implements IBE<AlternatorTileEntity>, IRotate {
+public class AlternatorBlock extends DirectionalKineticBlock implements IBE<AlternatorBlockEntity>, IRotate {
 	
 	public static final VoxelShaper ALTERNATOR_SHAPE = CAShapes.shape(0, 3, 0, 16, 13, 16).add(2, 0, 2, 14, 14, 14).forDirectional();
 	
@@ -55,18 +55,18 @@ public class AlternatorBlock extends DirectionalKineticBlock implements IBE<Alte
 	}
 	
 	@Override
-	public BlockEntityType<? extends AlternatorTileEntity> getBlockEntityType() {
-		return CATileEntities.ALTERNATOR.get();
+	public BlockEntityType<? extends AlternatorBlockEntity> getBlockEntityType() {
+		return CABlockEntities.ALTERNATOR.get();
 	}
 
 	@Override
-	public Class<AlternatorTileEntity> getBlockEntityClass() {
-		return AlternatorTileEntity.class;
+	public Class<AlternatorBlockEntity> getBlockEntityClass() {
+		return AlternatorBlockEntity.class;
 	}
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.ALTERNATOR.create(pos, state);
+		return CABlockEntities.ALTERNATOR.create(pos, state);
 	}
 
 	@Override
@@ -78,8 +78,8 @@ public class AlternatorBlock extends DirectionalKineticBlock implements IBE<Alte
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
 		if(tileentity != null) {
-			if(tileentity instanceof AlternatorTileEntity) {
-				((AlternatorTileEntity)tileentity).updateCache();
+			if(tileentity instanceof AlternatorBlockEntity) {
+				((AlternatorBlockEntity)tileentity).updateCache();
 			}
 		}
 	}

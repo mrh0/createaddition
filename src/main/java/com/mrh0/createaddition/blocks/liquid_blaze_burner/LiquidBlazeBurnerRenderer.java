@@ -30,13 +30,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBlazeBurnerTileEntity> {
+public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBlazeBurnerBlockEntity> {
 
 	public LiquidBlazeBurnerRenderer(BlockEntityRendererProvider.Context context) {}
 
 	@Override
-	protected void renderSafe(LiquidBlazeBurnerTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource bufferSource,
-		int light, int overlay) {
+	protected void renderSafe(LiquidBlazeBurnerBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource bufferSource,
+							  int light, int overlay) {
 		BlazeBurnerBlock.HeatLevel heatLevel = te.getHeatLevelFromBlock();
 		if (heatLevel == BlazeBurnerBlock.HeatLevel.NONE)
 			return;

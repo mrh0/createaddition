@@ -42,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
-public class RedstoneRelayTileEntity extends SmartBlockEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
+public class RedstoneRelayBlockEntity extends SmartBlockEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
 
 	//private final InternalEnergyStorage energyBufferIn;
 	//private final InternalEnergyStorage energyBufferOut;
@@ -77,7 +77,7 @@ public class RedstoneRelayTileEntity extends SmartBlockEntity implements IWireNo
 
 	protected LazyOptional<RedstoneRelayPeripheral> peripheral;
 
-	public RedstoneRelayTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+	public RedstoneRelayBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 
 		this.localNodes = new LocalNode[getNodeCount()];

@@ -11,7 +11,7 @@ public class DigitalAdapterDisplaySource extends DisplaySource {
     @Override
     public List<MutableComponent> provideText(DisplayLinkContext context, DisplayTargetStats stats) {
         if(context.getSourceBlockEntity() == null) return List.of();
-        if(context.getSourceBlockEntity() instanceof DigitalAdapterTileEntity date)
+        if(context.getSourceBlockEntity() instanceof DigitalAdapterBlockEntity date)
             return date.textLines;
         return List.of();
     }
