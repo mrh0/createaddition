@@ -7,7 +7,8 @@ import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.barbed_wire.BarbedWireBlock;
 import com.mrh0.createaddition.blocks.cake.CACakeBlock;
-import com.mrh0.createaddition.blocks.connector.LowCurrentConnectorBlock;
+import com.mrh0.createaddition.blocks.connector.LargeConnectorBlock;
+import com.mrh0.createaddition.blocks.connector.SmallConnectorBlock;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlock;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterDisplaySource;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlockItem;
@@ -80,18 +81,19 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 	
-	public static final BlockEntry<LowCurrentConnectorBlock> LV_CONNECTOR = CreateAddition.REGISTRATE.block("connector",  LowCurrentConnectorBlock::new)
+	public static final BlockEntry<SmallConnectorBlock> SMALL_CONNECTOR = CreateAddition.REGISTRATE.block("connector",  SmallConnectorBlock::new)
 			.initialProperties(SharedProperties::stone)
 			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
 			.register();
-	
-	/*public static final BlockEntry<ConnectorBlock> CONNECTOR_GOLD = REGISTRATE.block("connector_gold",  ConnectorBlock::new)
+
+	public static final BlockEntry<LargeConnectorBlock> LARGE_CONNECTOR = CreateAddition.REGISTRATE.block("large_connector",  LargeConnectorBlock::new)
 			.initialProperties(SharedProperties::stone)
+			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
-			.register();*/
+			.register();
 	
 	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = CreateAddition.REGISTRATE.block("accumulator",  AccumulatorBlock::new)
 			.initialProperties(SharedProperties::softMetal)

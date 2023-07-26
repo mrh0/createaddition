@@ -86,7 +86,6 @@ public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IA
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-
         return SERIALIZER;
     }
 

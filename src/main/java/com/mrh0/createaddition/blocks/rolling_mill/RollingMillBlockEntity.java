@@ -188,7 +188,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity {
 		ItemStack result = lastRecipe.assemble(inventoryIn).copy();
 		ItemHandlerHelper.insertItemStacked(outputInv, result, false);
 		ItemStack stackInSlot = inputInv.getStackInSlot(0);
-		stackInSlot.shrink(1);
+		stackInSlot.shrink(1); //lastRecipe.getIngredient().getItems()[0].getCount()
 		inputInv.setStackInSlot(0, stackInSlot);
 		sendData();
 		setChanged();

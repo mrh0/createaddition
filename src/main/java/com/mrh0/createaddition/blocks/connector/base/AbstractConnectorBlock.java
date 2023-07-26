@@ -3,13 +3,10 @@ package com.mrh0.createaddition.blocks.connector.base;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.NodeRotation;
-import com.mrh0.createaddition.index.CABlockEntities;
-import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,7 +16,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -31,14 +27,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEntity> extends Block implements IBE<BE>, IWrenchable, ITransformableBlock {
-	boolean IGNORE_FACE_CHECK = Config.CONNECTOR_IGNORE_FACE_CHECK.get();
-
-	public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).forDirectional();
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	public static final EnumProperty<ConnectorMode> MODE = EnumProperty.create("mode", ConnectorMode.class);
 	private static final VoxelShape boxwe = Block.box(0,7,7,10,9,9);
@@ -51,13 +43,13 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 				.setValue(MODE, ConnectorMode.Passive)
 				.setValue(NodeRotation.ROTATION, NodeRotation.NONE));
 	}
-	
+
+	/*
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return CONNECTOR_SHAPE.get(state.getValue(FACING).getOpposite());
 	}
 
-	/*
 	@Override
 	public Class<AbstractConnectorTileEntity> getBlockEntityClass() {
 		return AbstractConnectorTileEntity.class;
@@ -77,9 +69,7 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext c) {
 		Direction dir = c.getClickedFace().getOpposite();
-		
 		ConnectorMode mode = ConnectorMode.test(c.getLevel(), c.getClickedPos().relative(dir), c.getClickedFace());
-		
 		return this.defaultBlockState().setValue(FACING, dir).setValue(MODE, mode);
 	}
 	
@@ -120,17 +110,17 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 	
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-		if(tileentity != null) {
-			if(tileentity instanceof AbstractConnectorBlockEntity) {
-				((AbstractConnectorBlockEntity)tileentity).updateCache();
+		BlockEntity blockEntity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
+		if(blockEntity != null) {
+			if(blockEntity instanceof AbstractConnectorBlockEntity) {
+				((AbstractConnectorBlockEntity)blockEntity).updateCache();
 			}
 		}
 		if (!state.canSurvive(worldIn, pos)) {
-			dropResources(state, worldIn, pos, tileentity);
+			dropResources(state, worldIn, pos, blockEntity);
 			
-			if(tileentity instanceof IWireNode)
-				((IWireNode) tileentity).dropWires(worldIn, true);
+			if(blockEntity instanceof IWireNode)
+				((IWireNode) blockEntity).dropWires(worldIn, true);
 			
 			worldIn.removeBlock(pos, false);
 
@@ -144,7 +134,7 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 		return
 				!Shapes.joinIsNotEmpty(world.getBlockState(pos.relative(dir)).getBlockSupportShape(world,pos.relative(dir)).getFaceShape(dir.getOpposite()), boxwe, BooleanOp.ONLY_SECOND) ||
 				!Shapes.joinIsNotEmpty(world.getBlockState(pos.relative(dir)).getBlockSupportShape(world,pos.relative(dir)).getFaceShape(dir.getOpposite()), boxsn, BooleanOp.ONLY_SECOND) ||
-				world.getBlockState(pos.relative(dir)).isFaceSturdy(world, pos, dir.getOpposite(), SupportType.CENTER) || IGNORE_FACE_CHECK;
+				world.getBlockState(pos.relative(dir)).isFaceSturdy(world, pos, dir.getOpposite(), SupportType.CENTER) || Config.CONNECTOR_IGNORE_FACE_CHECK.get();
 	}
 	
 	@Override
@@ -171,10 +161,5 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 		state = state.setValue(FACING, rotation.rotate(state.getValue(FACING), false));
 		// Set the rotation state, which will be used to update the nodes.
 		return state.setValue(NodeRotation.ROTATION, rotation);
-	}
-
-	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CABlockEntities.LV_CONNECTOR.create(pos, state);
 	}
 }

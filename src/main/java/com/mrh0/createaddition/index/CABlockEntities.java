@@ -1,7 +1,8 @@
 package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlockEntity;
-import com.mrh0.createaddition.blocks.connector.LowCurrentConnectorBlockEntity;
+import com.mrh0.createaddition.blocks.connector.LargeConnectorBlockEntity;
+import com.mrh0.createaddition.blocks.connector.SmallConnectorBlockEntity;
 import com.mrh0.createaddition.blocks.connector.base.ConnectorRenderer;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlockEntity;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlockEntity;
@@ -51,9 +52,15 @@ public class CABlockEntities {
 			.validBlocks(CABlocks.CREATIVE_ENERGY)
 			.register();
 	
-	public static final BlockEntityEntry<LowCurrentConnectorBlockEntity> LV_CONNECTOR = CreateAddition.REGISTRATE
-			.blockEntity("connector", LowCurrentConnectorBlockEntity::new)
-			.validBlocks(CABlocks.LV_CONNECTOR)
+	public static final BlockEntityEntry<SmallConnectorBlockEntity> SMALL_CONNECTOR = CreateAddition.REGISTRATE
+			.blockEntity("connector", SmallConnectorBlockEntity::new)
+			.validBlocks(CABlocks.SMALL_CONNECTOR)
+			.renderer(() -> ConnectorRenderer::new)
+			.register();
+
+	public static final BlockEntityEntry<LargeConnectorBlockEntity> LARGE_CONNECTOR = CreateAddition.REGISTRATE
+			.blockEntity("large_connector", LargeConnectorBlockEntity::new)
+			.validBlocks(CABlocks.LARGE_CONNECTOR)
 			.renderer(() -> ConnectorRenderer::new)
 			.register();
 	
