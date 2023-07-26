@@ -10,15 +10,9 @@
   ],
   "results": [
     {
-      "item": "immersiveengineering:ingot_electrum",
+      "item": "createaddition:electrum_ingot",
       "count": 2
     }
   ],
-  "heatRequirement": "heated",
-  "conditions": [
-    {
-    	"type": "forge:mod_loaded",
-    	"modid": "immersiveengineering"
-  	}
-  ]
+  "heatRequirement": "heated"
 }

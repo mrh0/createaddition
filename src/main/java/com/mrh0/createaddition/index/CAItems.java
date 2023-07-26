@@ -37,6 +37,11 @@ public class CAItems {
 			CreateAddition.REGISTRATE.item("zinc_sheet", Item::new)
 			.tag(forgeItemTag("plates/zinc"), PLATES.tag)
 			.register();
+
+	public static final ItemEntry<Item> ELECTRUM_SHEET =
+			CreateAddition.REGISTRATE.item("electrum_sheet", Item::new)
+					.tag(forgeItemTag("plates/electrum"), PLATES.tag)
+					.register();
 	
 	public static final ItemEntry<Item> BIOMASS =
 			CreateAddition.REGISTRATE.item("biomass", Item::new)
@@ -47,48 +52,18 @@ public class CAItems {
 			CreateAddition.REGISTRATE.item("biomass_pellet", BiomassPellet::new)
 			.register();
 	
-	/*public static final ItemEntry<Multimeter> MULTIMETER =
-		REGISTRATE.item("multimeter", Multimeter::new)
-			.properties((p) -> p.stacksTo(1))
-			.register();*/
-	
-	/*public static final ItemEntry<OverchargedAlloy> OVERCHARGED_ALLOY =
-			REGISTRATE.item("overcharged_alloy", OverchargedAlloy::new)
-			.properties(p -> p.rarity(Rarity.UNCOMMON))
-			.register();*/
-	
-	/*public static final ItemEntry<ChargingChromaticCompound> CHARGING_CHROMATIC_COMPOUND =
-			REGISTRATE.item("charging_chromatic_compound", ChargingChromaticCompound::new)
-			.properties(p -> p.rarity(Rarity.UNCOMMON))
-			.properties(p -> p.stacksTo(16))
-			.model(AssetLookup.existingItemModel())
-			.color(() -> ChromaticCompoundColor::new)
-			.register();*/
-
-	/*public static final ItemEntry<OverchargedHammer> OVERCHARGED_HAMMER =
-			REGISTRATE.item("overcharged_hammer", OverchargedHammer::new)
-			//.transform(CreateRegistrate.customRenderedItem(() -> HammerRenderer::new))
-			.model(AssetLookup.itemModelWithPartials())
-			//.properties(p -> p.addToolType(ToolType.PICKAXE, 4))
-			.properties(p -> p.fireResistant())
-			.properties(p -> p.stacksTo(1))
-			.properties(p -> p.rarity(Rarity.UNCOMMON))
-			.register();*/
-	
 	public static final ItemEntry<WireSpool> SPOOL =
 			CreateAddition.REGISTRATE.item("spool", WireSpool::new).register();
 	
 	public static final ItemEntry<WireSpool> COPPER_SPOOL =
-			CreateAddition.REGISTRATE.item("copper_spool", WireSpool::new)
-			.register();
-	
+			CreateAddition.REGISTRATE.item("copper_spool", WireSpool::new).register();
 	public static final ItemEntry<Item> COPPER_WIRE =
 			CreateAddition.REGISTRATE.item("copper_wire", Item::new).register();
 	public static final ItemEntry<Item> COPPER_ROD =
 			CreateAddition.REGISTRATE.item("copper_rod", Item::new).register();
 
-	//public static final ItemEntry<Item> IRON_SPOOL =
-	//		REGISTRATE.item("iron_spool", Item::new).register();
+	public static final ItemEntry<WireSpool> IRON_SPOOL =
+			CreateAddition.REGISTRATE.item("iron_spool", WireSpool::new).register();
 	public static final ItemEntry<Item> IRON_WIRE =
 			CreateAddition.REGISTRATE.item("iron_wire", Item::new).register();
 	public static final ItemEntry<Item> IRON_ROD =
@@ -100,6 +75,15 @@ public class CAItems {
 			CreateAddition.REGISTRATE.item("gold_wire", Item::new).register();
 	public static final ItemEntry<Item> GOLD_ROD =
 			CreateAddition.REGISTRATE.item("gold_rod", Item::new).register();
+
+	public static final ItemEntry<Item> ELECTRUM_INGOT =
+			CreateAddition.REGISTRATE.item("electrum_ingot", Item::new).register();
+	public static final ItemEntry<WireSpool> ELECTRUM_SPOOL =
+			CreateAddition.REGISTRATE.item("electrum_spool", WireSpool::new).register();
+	public static final ItemEntry<Item> ELECTRUM_WIRE =
+			CreateAddition.REGISTRATE.item("electrum_wire", Item::new).register();
+	public static final ItemEntry<Item> ELECTRUM_ROD =
+			CreateAddition.REGISTRATE.item("electrum_rod", Item::new).register();
 	
 	public static final ItemEntry<Item> BRASS_ROD =
 			CreateAddition.REGISTRATE.item("brass_rod", Item::new).register();
@@ -120,17 +104,6 @@ public class CAItems {
 			.register();
 	
 	public static void register() {
-		/*REGISTRATE.addToSection(DIAMOND_GRIT_SANDPAPER, AllSections.MATERIALS);
-		//Create.registrate().addToSection(MULTIMETER, AllSections.KINETICS);
-		REGISTRATE.addToSection(COPPER_SPOOL, AllSections.MATERIALS);
-		REGISTRATE.addToSection(GOLD_SPOOL, AllSections.MATERIALS);
-		REGISTRATE.addToSection(FESTIVE_SPOOL, AllSections.MATERIALS);
-		REGISTRATE.addToSection(SPOOL, AllSections.MATERIALS);
-		
-		REGISTRATE.addToSection(BIOMASS_PELLET, AllSections.MATERIALS);
-		//Create.registrate().addToSection(OVERCHARGED_ALLOY, AllSections.MATERIALS);
-		//Create.registrate().addToSection(OVERCHARGED_HAMMER, AllSections.CURIOSITIES);
-		
-		REGISTRATE.addToSection(STRAW, AllSections.MATERIALS);*/
+
 	}
 }

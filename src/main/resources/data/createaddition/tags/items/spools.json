@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "createaddition:iron_spool",
+    "createaddition:copper_spool",
+    "createaddition:gold_spool",
+    "createaddition:electrum_spool"
+  ]
+}
