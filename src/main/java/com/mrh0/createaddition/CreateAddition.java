@@ -113,15 +113,9 @@ public class CreateAddition {
     	BlockStressValues.registerProvider(MODID, AllConfigs.server().kinetics.stressValues);
     	BoilerHeaters.registerHeater(CABlocks.LIQUID_BLAZE_BURNER.get(), (level, pos, state) -> {
     		BlazeBurnerBlock.HeatLevel value = state.getValue(LiquidBlazeBurnerBlock.HEAT_LEVEL);
-			if (value == BlazeBurnerBlock.HeatLevel.NONE) {
-				return -1;
-			}
-			if (value == BlazeBurnerBlock.HeatLevel.SEETHING) {
-				return 2;
-			}
-			if (value.isAtLeast(BlazeBurnerBlock.HeatLevel.FADING)) {
-				return 1;
-			}
+			if (value == BlazeBurnerBlock.HeatLevel.NONE) return -1;
+			if (value == BlazeBurnerBlock.HeatLevel.SEETHING) return 2;
+			if (value.isAtLeast(BlazeBurnerBlock.HeatLevel.FADING)) return 1;
 			return 0;
     	});
     }

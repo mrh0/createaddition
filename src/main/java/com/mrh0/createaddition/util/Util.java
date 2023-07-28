@@ -84,4 +84,19 @@ public class Util {
 	public static MutableComponent getTextComponent(int value, String unit) {
 		return new TextComponent(format(value)+unit);
 	}
+
+	public static class Triple<A, B, C> {
+		public final A a;
+		public final B b;
+		public final C c;
+		private Triple(A a, B b, C c) {
+			this.a = a;
+			this.b = b;
+			this.c = c;
+		}
+
+		public static <A, B, C> Triple<A, B, C> of(A a, B b, C c) {
+			return new Triple<A, B, C>(a, b, c);
+		}
+	}
 }

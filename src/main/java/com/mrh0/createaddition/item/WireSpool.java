@@ -12,6 +12,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -28,9 +30,6 @@ public class WireSpool extends Item {
 	
 	@Override
 	public InteractionResult useOn(UseOnContext c) {
-		//if(c.getWorld().isRemote())
-		//	return ActionResultType.PASS;
-		
 		CompoundTag nbt = c.getItemInHand().getTag();
 		if(nbt == null)
 			nbt = new CompoundTag();
@@ -42,15 +41,6 @@ public class WireSpool extends Item {
 			return InteractionResult.PASS;
 		IWireNode node = (IWireNode) te;
 		
-		/*if(c.getPlayer().isSneaking()) {
-			for(int i = 0; i < node.getNodeCount(); i++) {
-				int index = node.getNodeIndex(i);
-				if(index != -1)
-					System.out.println(i+"->"+node.isNodeInput(i));
-			}
-			return ActionResultType.CONSUME;
-		}*/
-		
 		if(hasPos(nbt)) {
 			WireConnectResult result;
 			
@@ -60,6 +50,21 @@ public class WireSpool extends Item {
 				result = IWireNode.disconnect(c.getLevel(), c.getClickedPos(), getPos(nbt));
 			else
 				result = IWireNode.connect(c.getLevel(), getPos(nbt), getNode(nbt), c.getClickedPos(), node.getAvailableNode(c.getClickLocation()), getWireType(c.getItemInHand().getItem()));
+
+			// Play sound
+			if(result.isLinked()) {
+				c.getLevel().playLocalSound(c.getClickedPos().getX(), c.getClickedPos().getY(), c.getClickedPos().getZ(), SoundEvents.NOTE_BLOCK_XYLOPHONE, SoundSource.BLOCKS, .7f, 1f, false);
+			}
+			else if(result.isConnect()) {
+				System.out.println("Connect");
+				c.getLevel().playLocalSound(c.getClickedPos().getX(), c.getClickedPos().getY(), c.getClickedPos().getZ(), SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1f, 1f, false);
+			}
+			else if(result == WireConnectResult.REMOVED) {
+				c.getLevel().playLocalSound(c.getClickedPos().getX(), c.getClickedPos().getY(), c.getClickedPos().getZ(), SoundEvents.NOTE_BLOCK_XYLOPHONE, SoundSource.BLOCKS, .7f, .5f, false);
+			}
+			else {
+				c.getLevel().playLocalSound(c.getClickedPos().getX(), c.getClickedPos().getY(), c.getClickedPos().getZ(), SoundEvents.NOTE_BLOCK_DIDGERIDOO, SoundSource.BLOCKS, .7f, 1f, false);
+			}
 
 			te.setChanged();
 			
@@ -92,7 +97,6 @@ public class WireSpool extends Item {
 			c.getItemInHand().setTag(null);
 			c.getItemInHand().setTag(setContent(nbt, node.getPos(), index));
 		}
-		
 		return InteractionResult.CONSUME;
 	}
 	

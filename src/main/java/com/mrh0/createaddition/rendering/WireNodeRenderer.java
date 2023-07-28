@@ -7,22 +7,30 @@ import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.index.CAPartials;
+import com.mrh0.createaddition.item.WireSpool;
+import com.mrh0.createaddition.util.ClientMinecraftWrapper;
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.utility.Color;
 
+import com.simibubi.create.foundation.utility.Pair;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {//extends BlockEntityRenderer<T> {
-	
+
+	public static boolean clientRenderHeldWire = true;
 	public WireNodeRenderer(BlockEntityRendererProvider.Context context) {
 		super();
 	}
@@ -53,27 +61,78 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 				float ox2 = ((float) d2.x());
 				float oy2 = ((float) d2.y());
 				float oz2 = ((float) d2.z());
-
 				BlockPos other = te.getNodePos(i);
 				
 				float tx = other.getX() - te.getPos().getX();
 				float ty = other.getY() - te.getPos().getY();
 				float tz = other.getZ() - te.getPos().getZ();
-
 				matrixStackIn.pushPose();
-
-				// IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.getLines());
-				// Matrix4f matrix4f1 = matrixStackIn.peek().getModel();
 
 				float dis = distanceFromZero(tx, ty, tz);
 
 				matrixStackIn.translate(tx + .5f + ox2, ty + .5f + oy2, tz + .5f + oz2);
-				wireRender(tileEntityIn, other, matrixStackIn, bufferIn, -tx - ox2 + ox1, -ty - oy2 + oy1, -tz - oz2 + oz1,
-						te.getNodeType(i), dis);
-
+				wireRender(
+						tileEntityIn,
+						other,
+						matrixStackIn,
+						bufferIn,
+						-tx - ox2 + ox1,
+						-ty - oy2 + oy1,
+						-tz - oz2 + oz1,
+						te.getNodeType(i),
+						dis
+				);
 				matrixStackIn.popPose();
 			}
 		}
+
+		if(clientRenderHeldWire) {
+			LocalPlayer player = ClientMinecraftWrapper.getPlayer();
+			Util.Triple<BlockPos, Integer, WireType> wireNode = getWireNodeOfSpools(player.getInventory().getSelected());
+			if(wireNode == null) return;
+
+			BlockPos nodePos = wireNode.a;
+			int nodeIndex = wireNode.b;
+			WireType wireType = wireNode.c;
+			if(!nodePos.equals(te.getPos())) return;
+
+			Vec3 d1 = te.getNodeOffset(nodeIndex);
+			float ox1 = ((float) d1.x());
+			float oy1 = ((float) d1.y());
+			float oz1 = ((float) d1.z());
+
+			Vec3 playerPos = player.getPosition(partialTicks);
+			float tx = (float)playerPos.x - te.getPos().getX();
+			float ty = (float)playerPos.y - te.getPos().getY();
+			float tz = (float)playerPos.z - te.getPos().getZ();
+			matrixStackIn.pushPose();
+
+			float dis = distanceFromZero(tx, ty, tz);
+
+			matrixStackIn.translate(tx + .5f, ty + .5f, tz + .5f);
+			wireRender(
+					tileEntityIn,
+					player.blockPosition(),
+					matrixStackIn,
+					bufferIn,
+					-tx + ox1,
+					-ty + oy1,
+					-tz + oz1,
+					wireType,
+					dis
+			);
+			matrixStackIn.popPose();
+		}
+	}
+
+	private Util.Triple<BlockPos, Integer, WireType> getWireNodeOfSpools(ItemStack...stacks) {
+		for(ItemStack stack : stacks) {
+			if(stack.getTag() == null) continue;
+			if(WireSpool.hasPos(stack.getTag())) {
+				return Util.Triple.of(WireSpool.getPos(stack.getTag()), WireSpool.getNode(stack.getTag()), WireSpool.getWireType(stack.getItem()));
+			}
+		}
+		return null;
 	}
 
 	private static float divf(int a, int b) {
