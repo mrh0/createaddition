@@ -1,7 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "createaddition:block/connector/large_pull"
+		"0": "createaddition:block/connector/large_pull",
+		"particle": "create:block/andesite_casing"
 	},
 	"elements": [
 		{

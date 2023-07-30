@@ -24,17 +24,17 @@ public class LargeConnectorBlockEntity extends AbstractConnectorBlockEntity {
 
     @Override
     public int getCapacity() {
-        return Config.CONNECTOR_CAPACITY.get();
+        return Config.LARGE_CONNECTOR_CAPACITY.get();
     }
 
     @Override
     public int getMaxIn() {
-        return Config.CONNECTOR_MAX_INPUT.get();
+        return Config.LARGE_CONNECTOR_MAX_INPUT.get();
     }
 
     @Override
     public int getMaxOut() {
-        return Config.CONNECTOR_MAX_OUTPUT.get();
+        return Config.LARGE_CONNECTOR_MAX_OUTPUT.get();
     }
 
     @Override
@@ -52,5 +52,10 @@ public class LargeConnectorBlockEntity extends AbstractConnectorBlockEntity {
             case SOUTH -> OFFSET_SOUTH;
             case EAST -> OFFSET_EAST;
         };
+    }
+
+    @Override
+    public ConnectorType getConnectorType() {
+        return ConnectorType.Large;
     }
 }

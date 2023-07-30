@@ -33,42 +33,43 @@ public class WireSpool extends Item {
 		CompoundTag nbt = c.getItemInHand().getTag();
 		if(nbt == null)
 			nbt = new CompoundTag();
-		
-		BlockEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
+
+		var clickedPos = c.getClickedPos();
+		BlockEntity te = c.getLevel().getBlockEntity(clickedPos);
 		if(te == null)
 			return InteractionResult.PASS;
 		if(!(te instanceof IWireNode))
 			return InteractionResult.PASS;
 		IWireNode node = (IWireNode) te;
-		
+		var heldItem = c.getItemInHand().getItem();
+
 		if(hasPos(nbt)) {
 			WireConnectResult result;
 			
-			WireType connectionType = IWireNode.getTypeOfConnection(c.getLevel(), c.getClickedPos(), getPos(nbt));
+			WireType connectionType = IWireNode.getTypeOfConnection(c.getLevel(), clickedPos, getPos(nbt));
 			
-			if(isRemover(c.getItemInHand().getItem()))
-				result = IWireNode.disconnect(c.getLevel(), c.getClickedPos(), getPos(nbt));
+			if(isRemover(heldItem))
+				result = IWireNode.disconnect(c.getLevel(), clickedPos, getPos(nbt));
 			else
-				result = IWireNode.connect(c.getLevel(), getPos(nbt), getNode(nbt), c.getClickedPos(), node.getAvailableNode(c.getClickLocation()), getWireType(c.getItemInHand().getItem()));
+				result = IWireNode.connect(c.getLevel(), getPos(nbt), getNode(nbt), clickedPos, node.getAvailableNode(c.getClickLocation()), getWireType(c.getItemInHand().getItem()));
 
 			// Play sound
 			if(result.isLinked()) {
-				c.getLevel().playLocalSound(c.getClickedPos().getX(), c.getClickedPos().getY(), c.getClickedPos().getZ(), SoundEvents.NOTE_BLOCK_XYLOPHONE, SoundSource.BLOCKS, .7f, 1f, false);
+				c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_XYLOPHONE, SoundSource.BLOCKS, .7f, 1f, false);
 			}
 			else if(result.isConnect()) {
-				System.out.println("Connect");
-				c.getLevel().playLocalSound(c.getClickedPos().getX(), c.getClickedPos().getY(), c.getClickedPos().getZ(), SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1f, 1f, false);
+				c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1f, 1f, false);
 			}
 			else if(result == WireConnectResult.REMOVED) {
-				c.getLevel().playLocalSound(c.getClickedPos().getX(), c.getClickedPos().getY(), c.getClickedPos().getZ(), SoundEvents.NOTE_BLOCK_XYLOPHONE, SoundSource.BLOCKS, .7f, .5f, false);
+				c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_XYLOPHONE, SoundSource.BLOCKS, .7f, .5f, false);
 			}
 			else {
-				c.getLevel().playLocalSound(c.getClickedPos().getX(), c.getClickedPos().getY(), c.getClickedPos().getZ(), SoundEvents.NOTE_BLOCK_DIDGERIDOO, SoundSource.BLOCKS, .7f, 1f, false);
+				c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_DIDGERIDOO, SoundSource.BLOCKS, .7f, 1f, false);
 			}
 
 			te.setChanged();
 			
-			if(!c.getPlayer().isCreative()) {
+			if(c.getPlayer() != null && !c.getPlayer().isCreative()) {
 				if(result == WireConnectResult.REMOVED) {
 					c.getItemInHand().shrink(1);
 					ItemStack stack = connectionType.getSourceDrop();
@@ -89,10 +90,17 @@ public class WireSpool extends Item {
 			
 		}
 		else {
+			if(c.getPlayer() == null) return InteractionResult.PASS;
+			if(isRemover(heldItem)) {
+				if (!node.hasAnyConnection()) {
+					c.getPlayer().displayClientMessage(WireConnectResult.NO_CONNECTION.getMessage(), true);
+					return InteractionResult.CONSUME;
+				}
+			}
 			int index = node.getAvailableNode(c.getClickLocation());
 			if(index < 0)
 				return InteractionResult.PASS;
-			if(!isRemover(c.getItemInHand().getItem()))
+			if(!isRemover(heldItem))
 				c.getPlayer().displayClientMessage(WireConnectResult.getConnect(node.isNodeInput(index), node.isNodeOutput(index)).getMessage(), true);
 			c.getItemInHand().setTag(null);
 			c.getItemInHand().setTag(setContent(nbt, node.getPos(), index));

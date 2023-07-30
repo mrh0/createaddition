@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.connector.ConnectorType;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.*;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
@@ -445,5 +446,10 @@ public class AccumulatorBlockEntity extends BaseElectricBlockEntity implements I
 			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.getNode()).getPulled(), getNetwork(pack.getNode()).getPushed(), player);
 		//causeBlockUpdate();
 		notifyUpdate();
+	}
+
+	@Override
+	public ConnectorType getConnectorType() {
+		return ConnectorType.Small;
 	}
 }

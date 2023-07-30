@@ -1,8 +1,10 @@
 package com.mrh0.createaddition;
 
+import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.trains.schedule.CASchedule;
 import com.simibubi.create.content.fluids.tank.BoilerHeaters;
 import com.simibubi.create.content.kinetics.BlockStressValues;
+import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
@@ -13,10 +15,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -55,6 +61,8 @@ import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.TooltipModifier;
 
+import javax.annotation.Nullable;
+
 @Mod(CreateAddition.MODID)
 public class CreateAddition {
     public static final Logger LOGGER = LogManager.getLogger();
@@ -74,10 +82,23 @@ public class CreateAddition {
             .networkProtocolVersion(() -> PROTOCOL)
             .simpleChannel();
 
+
+    @Nullable
+    public static KineticStats create(Item item) {
+        if (item instanceof BlockItem blockItem) {
+            Block block = blockItem.getBlock();
+            if (block instanceof ElectricMotorBlock) {
+                System.out.println("TEST1");
+                return new KineticStats(block);
+            }
+        }
+        return null;
+    }
+
     static {
         REGISTRATE.setTooltipModifierFactory(item ->
             new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
-                    .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
+                    .andThen(TooltipModifier.mapNull(CreateAddition.create(item)))
         );
     }
 
@@ -105,7 +126,7 @@ public class CreateAddition {
         CAFluids.register();
         CARecipes.register(eventBus);
         CASchedule.register();
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CAPartials.init());
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> CAPartials::init);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -131,9 +152,8 @@ public class CreateAddition {
     }
     
     public void postInit(FMLLoadCompleteEvent evt) {
-    	int i = 0;
-        Network.registerMessage(i++, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
-        Network.registerMessage(i++, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
+        Network.registerMessage(0, ObservePacket.class, ObservePacket::encode, ObservePacket::decode, ObservePacket::handle);
+        Network.registerMessage(1, EnergyNetworkPacket.class, EnergyNetworkPacket::encode, EnergyNetworkPacket::decode, EnergyNetworkPacket::handle);
         
     	System.out.println("Create Crafts & Additions Initialized!");
     }

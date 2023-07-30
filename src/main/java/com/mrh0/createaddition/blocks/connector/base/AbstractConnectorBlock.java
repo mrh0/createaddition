@@ -43,23 +43,6 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 				.setValue(MODE, ConnectorMode.Passive)
 				.setValue(NodeRotation.ROTATION, NodeRotation.NONE));
 	}
-
-	/*
-	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		return CONNECTOR_SHAPE.get(state.getValue(FACING).getOpposite());
-	}
-
-	@Override
-	public Class<AbstractConnectorTileEntity> getBlockEntityClass() {
-		return AbstractConnectorTileEntity.class;
-	}
-
-	@Override
-	public BlockEntityType<? extends AbstractConnectorTileEntity> getBlockEntityType() {
-		return CATileEntities.CONNECTOR.get();
-	}
-	*/
 	
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {

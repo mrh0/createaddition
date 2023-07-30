@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.connector.ConnectorType;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.compat.computercraft.RedstoneRelayPeripheral;
 import com.mrh0.createaddition.energy.IWireNode;
@@ -362,6 +363,11 @@ public class RedstoneRelayBlockEntity extends SmartBlockEntity implements IWireN
 	@Override
 	public boolean isNodeIndeciesConnected(int in, int other) {
 		return isNodeInput(in) == isNodeInput(other);
+	}
+
+	@Override
+	public ConnectorType getConnectorType() {
+		return ConnectorType.Small;
 	}
 
 	public int getDemand() {

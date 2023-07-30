@@ -5,18 +5,16 @@ import com.mrh0.createaddition.index.*;
 import net.minecraft.world.item.ItemStack;;
 
 public enum WireType {
-	COPPER(0, 256, 78, 37, 30, new ItemStack(CAItems.COPPER_WIRE.get(), 4), new ItemStack(CAItems.COPPER_SPOOL.get())),
-	GOLD(1, 1024, 98, 83, 29, new ItemStack(CAItems.GOLD_WIRE.get(), 4), new ItemStack(CAItems.GOLD_SPOOL.get())),
-	ELECTRUM(2, 8196, 0, 0, 0, ItemStack.EMPTY, ItemStack.EMPTY),
-	FESTIVE(3, 256, 26, 94, 12, new ItemStack(CAItems.COPPER_WIRE.get(), 4), new ItemStack(CAItems.FESTIVE_SPOOL.get()));
-	// Hanging lightbulbs?
-	// Festive lights?
+	COPPER(0, 256, 78, 37, 30, CAItems.COPPER_WIRE.asStack(4), CAItems.COPPER_SPOOL.asStack()),
+	GOLD(1, 1024, 98, 83, 29, CAItems.GOLD_WIRE.asStack(4), CAItems.GOLD_SPOOL.asStack()),
+	ELECTRUM(2, 8196, 0, 0, 0, CAItems.ELECTRUM_WIRE.asStack(4), CAItems.ELECTRUM_SPOOL.asStack()),
+	FESTIVE(3, 256, 26, 94, 12, CAItems.COPPER_WIRE.asStack(4), CAItems.FESTIVE_SPOOL.asStack());
 
 	private final int ID, TRANSFER, CR, CG, CB;
 	private final ItemStack DROP;
 	private final ItemStack SOURCE_DROP;
 	
-	private WireType(int id, int transfer, int red, int green, int blue, ItemStack drop, ItemStack source) {
+	WireType(int id, int transfer, int red, int green, int blue, ItemStack drop, ItemStack source) {
 		ID = id;
 		TRANSFER = transfer;
 		CR = red;

@@ -1,7 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "createaddition:block/connector/gold_none"
+		"0": "createaddition:block/connector/gold_none",
+		"particle": "create:block/andesite_casing"
 	},
 	"elements": [
 		{

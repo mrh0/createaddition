@@ -6,14 +6,13 @@ import com.mojang.math.Matrix4f;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
+import com.mrh0.createaddition.event.ClientEventHandler;
 import com.mrh0.createaddition.index.CAPartials;
-import com.mrh0.createaddition.item.WireSpool;
 import com.mrh0.createaddition.util.ClientMinecraftWrapper;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.utility.Color;
 
-import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,16 +20,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {//extends BlockEntityRenderer<T> {
-
-	public static boolean clientRenderHeldWire = true;
 	public WireNodeRenderer(BlockEntityRendererProvider.Context context) {
 		super();
 	}
@@ -86,9 +81,9 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 			}
 		}
 
-		if(clientRenderHeldWire) {
+		if(ClientEventHandler.clientRenderHeldWire) {
 			LocalPlayer player = ClientMinecraftWrapper.getPlayer();
-			Util.Triple<BlockPos, Integer, WireType> wireNode = getWireNodeOfSpools(player.getInventory().getSelected());
+			Util.Triple<BlockPos, Integer, WireType> wireNode = Util.getWireNodeOfSpools(player.getInventory().getSelected());
 			if(wireNode == null) return;
 
 			BlockPos nodePos = wireNode.a;
@@ -125,22 +120,14 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 		}
 	}
 
-	private Util.Triple<BlockPos, Integer, WireType> getWireNodeOfSpools(ItemStack...stacks) {
-		for(ItemStack stack : stacks) {
-			if(stack.getTag() == null) continue;
-			if(WireSpool.hasPos(stack.getTag())) {
-				return Util.Triple.of(WireSpool.getPos(stack.getTag()), WireSpool.getNode(stack.getTag()), WireSpool.getWireType(stack.getItem()));
-			}
-		}
-		return null;
-	}
+
 
 	private static float divf(int a, int b) {
 		return (float) a / (float) b;
 	}
 
 	private static float hang(float f, float dis) {
-		return (float) Math.sin(-f * (float) Math.PI) * (HANG * dis / (float) Config.CONNECTOR_MAX_LENGTH.get());
+		return (float) Math.sin(-f * (float) Math.PI) * (HANG * dis / (float) Config.SMALL_CONNECTOR_MAX_LENGTH.get());
 	}
 
 	public static float distanceFromZero(float x, float y, float z) {

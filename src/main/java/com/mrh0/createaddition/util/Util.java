@@ -1,5 +1,7 @@
 package com.mrh0.createaddition.util;
 
+import com.mrh0.createaddition.energy.WireType;
+import com.mrh0.createaddition.item.WireSpool;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
@@ -98,5 +100,15 @@ public class Util {
 		public static <A, B, C> Triple<A, B, C> of(A a, B b, C c) {
 			return new Triple<A, B, C>(a, b, c);
 		}
+	}
+
+	public static Util.Triple<BlockPos, Integer, WireType> getWireNodeOfSpools(ItemStack...stacks) {
+		for(ItemStack stack : stacks) {
+			if(stack.getTag() == null) continue;
+			if(WireSpool.hasPos(stack.getTag())) {
+				return Util.Triple.of(WireSpool.getPos(stack.getTag()), WireSpool.getNode(stack.getTag()), WireSpool.getWireType(stack.getItem()));
+			}
+		}
+		return null;
 	}
 }

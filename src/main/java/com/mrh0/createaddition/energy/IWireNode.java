@@ -3,6 +3,7 @@ package com.mrh0.createaddition.energy;
 import java.util.HashMap;
 import java.util.Set;
 
+import com.mrh0.createaddition.blocks.connector.ConnectorType;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CAItems;
@@ -10,7 +11,6 @@ import com.mrh0.createaddition.util.Util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -212,6 +212,18 @@ public interface IWireNode {
 	 */
 	default boolean hasConnection(int index) {
 		return getLocalNode(index) != null;
+	}
+
+	/**
+	 * Check if this {@link IWireNode} has any connection.
+	 *
+	 * @return  True if any node exists, false otherwise.
+	 */
+	default boolean hasAnyConnection() {
+		for (int i = 0; i < getNodeCount(); i++) {
+			if(hasConnection(i)) return true;
+		}
+		return false;
 	}
 
 	/**
@@ -450,6 +462,8 @@ public interface IWireNode {
 		}
 	}
 
+	ConnectorType getConnectorType();
+
 	// Static Helpers
 
 	/**
@@ -541,7 +555,10 @@ public interface IWireNode {
 			return WireConnectResult.INVALID;
 		if (node1 < 0 || node2 < 0)
 			return WireConnectResult.COUNT;
-		if (pos1.distSqr(pos2) > Config.CONNECTOR_MAX_LENGTH.get() * Config.CONNECTOR_MAX_LENGTH.get())
+
+		int maxLength = Math.min(wn1.getConnectorType().getMaxWireLength(), wn2.getConnectorType().getMaxWireLength());
+
+		if (pos1.distSqr(pos2) > maxLength * maxLength)
 			return WireConnectResult.LONG;
 		
 		if (wn1.hasConnectionTo(pos2))

@@ -25,6 +25,10 @@
 	"createaddition.recipe.rolling.sequence": "Rolling in Mill",
 	"createaddition.recipe.charging": "Charging",
 	"createaddition.recipe.liquid_burning": "Liquid Burning",
+
+	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
+
+	"createaddition.command.cca_api.link": "Click here to open API documentation",
 	
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
 	
@@ -120,7 +124,6 @@
 	"statusbar.createaddition.wire.connect_out": "Wire connector output selected",
 	
 	"statusbar.createaddition.wire.long": "Wire is too long",
-	"statusbar.createaddition.wire.obstructed": "Wire path is obstructed",
 	"statusbar.createaddition.wire.count": "Wire node is full",
 	"statusbar.createaddition.wire.removed": "Wire removed",
 	"statusbar.createaddition.wire.exists": "Wire connection already exists",
@@ -128,12 +131,8 @@
 	"statusbar.createaddition.wire.invalid": "Invalid connection",
 	
 	"block.createaddition.electric_motor": "Electric Motor",
-	"deprecated.block.createaddition.electric_motor.tooltip": "ELECTRIC MOTOR",
-	"deprecated.block.createaddition.electric_motor.tooltip.summary": "Generates _SU_ from _FE_ and has configurable _speed_. The energy consumption is based on the set _RPM_.",
 	
 	"block.createaddition.alternator": "Alternator",
-	"deprecated.block.createaddition.alternator.tooltip": "ALTERNATOR",
-	"deprecated.block.createaddition.alternator.tooltip.summary": "Generates _FE_ from _SU_. The amount of energy produced is based on _RPM_.",
 	
 	"block.createaddition.creative_energy": "Creative Generator",
 	"block.createaddition.creative_energy.tooltip": "CREATIVE_GENERATOR",
@@ -197,15 +196,11 @@
 	"block.createaddition.barbed_wire.tooltip": "BARBED_WIRE",
 	"block.createaddition.barbed_wire.tooltip.summary": "Inflicts damage when walked through.",
 	
-	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
-	
 	"block.createaddition.tesla_coil": "Tesla Coil",
 
 	"block.createaddition.liquid_blaze_burner": "Blaze Burner with Straw",
 	
 	"itemGroup.createaddition:main":"Create Crafts & Additions",
-	
-	"createaddition.command.cca_api.link": "Click here to open API documentation",
 	
 	"createaddition.ponder.tag.electric": "Electric Appliances",
 	"createaddition.ponder.tag.electric.description": "Components which use electricity",
