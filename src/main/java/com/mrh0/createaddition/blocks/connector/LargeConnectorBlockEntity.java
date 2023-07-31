@@ -58,4 +58,8 @@ public class LargeConnectorBlockEntity extends AbstractConnectorBlockEntity {
     public ConnectorType getConnectorType() {
         return ConnectorType.Large;
     }
+
+    public int getMaxWireLength() {
+        return Config.LARGE_CONNECTOR_MAX_LENGTH.get();
+    }
 }

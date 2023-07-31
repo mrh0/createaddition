@@ -124,29 +124,29 @@ public class Config {
 		
 		COMMON_BUILDER.comment("Wires").push(CATAGORY_WIRES);
 		SMALL_CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Small Connector max input in FE/t (Energy transfer).")
-				.defineInRange("small_connector_max_input", 5000, 0, Integer.MAX_VALUE);
+				.defineInRange("small_connector_max_input", 4000, 0, Integer.MAX_VALUE);
 		
 		SMALL_CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Small Connector max output in FE/t (Energy transfer).")
-				.defineInRange("small_connector_max_output", 5000, 0, Integer.MAX_VALUE);
+				.defineInRange("small_connector_max_output", 4000, 0, Integer.MAX_VALUE);
 		
 		SMALL_CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Small Connector internal input buffer in FE.")
-				.defineInRange("small_connector_input_capacity", 5000, 0, Integer.MAX_VALUE);
+				.defineInRange("small_connector_input_capacity", 4000, 0, Integer.MAX_VALUE);
 		
 		SMALL_CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Small Connector max wire length in blocks.")
-				.defineInRange("small_connector_wire_length", 12, 0, 256);
+				.defineInRange("small_connector_wire_length", 10, 0, 256);
 
 
 		LARGE_CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Large Connector max input in FE/t (Energy transfer).")
-				.defineInRange("large_connector_max_input", 5000, 0, Integer.MAX_VALUE);
+				.defineInRange("large_connector_max_input", 10000, 0, Integer.MAX_VALUE);
 
 		LARGE_CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Large Connector max output in FE/t (Energy transfer).")
-				.defineInRange("large_connector_max_output", 5000, 0, Integer.MAX_VALUE);
+				.defineInRange("large_connector_max_output", 10000, 0, Integer.MAX_VALUE);
 
 		LARGE_CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Large Connector internal input buffer in FE.")
-				.defineInRange("large_connector_input_capacity", 5000, 0, Integer.MAX_VALUE);
+				.defineInRange("large_connector_input_capacity", 10000, 0, Integer.MAX_VALUE);
 
 		LARGE_CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Large Connector max wire length in blocks.")
-				.defineInRange("large_connector_wire_length", 12, 0, 256);
+				.defineInRange("large_connector_wire_length", 24, 0, 256);
 
 		
 		CONNECTOR_IGNORE_FACE_CHECK = COMMON_BUILDER.comment("Ignore checking if block face can support connector.")

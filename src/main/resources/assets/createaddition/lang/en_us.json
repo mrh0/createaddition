@@ -129,6 +129,7 @@
 	"statusbar.createaddition.wire.exists": "Wire connection already exists",
 	"statusbar.createaddition.wire.no_connection": "Wire not connected here",
 	"statusbar.createaddition.wire.invalid": "Invalid connection",
+	"statusbar.createaddition.wire.requires_high_current": "This connection requires a high current wire",
 	
 	"block.createaddition.electric_motor": "Electric Motor",
 	

@@ -545,6 +545,8 @@ public interface IWireNode {
 		}
 		return null;
 	}
+
+	int getMaxWireLength();
 	
 	static WireConnectResult connect(Level world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
 		BlockEntity te1 = world.getBlockEntity(pos1);
@@ -556,7 +558,7 @@ public interface IWireNode {
 		if (node1 < 0 || node2 < 0)
 			return WireConnectResult.COUNT;
 
-		int maxLength = Math.min(wn1.getConnectorType().getMaxWireLength(), wn2.getConnectorType().getMaxWireLength());
+		int maxLength = Math.min(wn1.getMaxWireLength(), wn2.getMaxWireLength());
 
 		if (pos1.distSqr(pos2) > maxLength * maxLength)
 			return WireConnectResult.LONG;

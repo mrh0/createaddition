@@ -11,11 +11,4 @@ public enum ConnectorType {
     ConnectorType(String name) {
         this.name = name;
     }
-
-    public int getMaxWireLength() {
-        return switch (this) {
-            case Small -> Config.SMALL_CONNECTOR_MAX_LENGTH.get();
-            case Large -> Config.LARGE_CONNECTOR_MAX_LENGTH.get();
-        };
-    }
 }
