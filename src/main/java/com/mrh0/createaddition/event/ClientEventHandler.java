@@ -2,6 +2,7 @@ package com.mrh0.createaddition.event;
 
 import com.mrh0.createaddition.CreateAddition;
 
+import com.mrh0.createaddition.item.WireSpool;
 import com.mrh0.createaddition.util.ClientMinecraftWrapper;
 import com.mrh0.createaddition.util.Util;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +20,8 @@ public class ClientEventHandler {
     public static void playerRendererEvent(TickEvent.ClientTickEvent evt) {
         if(ClientMinecraftWrapper.getPlayer() == null) return;
         ItemStack stack = ClientMinecraftWrapper.getPlayer().getInventory().getSelected();
+        if(stack.isEmpty()) return;
+        if(WireSpool.isRemover(stack.getItem())) return;
         clientRenderHeldWire = Util.getWireNodeOfSpools(stack) != null;
     }
 	

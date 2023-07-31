@@ -19,7 +19,8 @@ public enum WireConnectResult {
 	REMOVED(new TranslatableComponent("statusbar.createaddition.wire.removed")),
 	EXISTS(new TranslatableComponent("statusbar.createaddition.wire.exists")),
 	NO_CONNECTION(new TranslatableComponent("statusbar.createaddition.wire.no_connection")),
-	INVALID(new TranslatableComponent("statusbar.createaddition.wire.invalid"))
+	INVALID(new TranslatableComponent("statusbar.createaddition.wire.invalid")),
+	REQUIRES_HIGH_CURRENT(new TranslatableComponent("statusbar.createaddition.wire.requires_high_current"))
 	;
 	
 	private final Component message;

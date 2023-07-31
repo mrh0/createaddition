@@ -65,8 +65,8 @@ public class CAItems {
 			CreateAddition.REGISTRATE.item("spool", WireSpool::new).register();
 	public static final ItemEntry<WireSpool> COPPER_SPOOL =
 			CreateAddition.REGISTRATE.item("copper_spool", WireSpool::new).register();
-	public static final ItemEntry<WireSpool> IRON_SPOOL =
-			CreateAddition.REGISTRATE.item("iron_spool", WireSpool::new).register();
+	//public static final ItemEntry<WireSpool> IRON_SPOOL =
+	//		CreateAddition.REGISTRATE.item("iron_spool", WireSpool::new).register();
 	public static final ItemEntry<WireSpool> GOLD_SPOOL =
 			CreateAddition.REGISTRATE.item("gold_spool", WireSpool::new).register();
 	public static final ItemEntry<WireSpool> ELECTRUM_SPOOL =

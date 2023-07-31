@@ -51,7 +51,7 @@ public class WireSpool extends Item {
 			if(isRemover(heldItem))
 				result = IWireNode.disconnect(c.getLevel(), clickedPos, getPos(nbt));
 			else
-				result = IWireNode.connect(c.getLevel(), getPos(nbt), getNode(nbt), clickedPos, node.getAvailableNode(c.getClickLocation()), getWireType(c.getItemInHand().getItem()));
+				result = IWireNode.connect(c.getLevel(), getPos(nbt), getNode(nbt), clickedPos, node.getAvailableNode(c.getClickLocation()), WireType.of(c.getItemInHand().getItem()));
 
 			// Play sound
 			if(result.isLinked()) {
@@ -94,6 +94,7 @@ public class WireSpool extends Item {
 			if(isRemover(heldItem)) {
 				if (!node.hasAnyConnection()) {
 					c.getPlayer().displayClientMessage(WireConnectResult.NO_CONNECTION.getMessage(), true);
+					c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_DIDGERIDOO, SoundSource.BLOCKS, .7f, 1f, false);
 					return InteractionResult.CONSUME;
 				}
 			}
@@ -143,16 +144,6 @@ public class WireSpool extends Item {
     	if(hasPos(nbt))
     		tooltip.add(new TranslatableComponent("item."+CreateAddition.MODID+".spool.nbt"));
     }
-	
-	public static WireType getWireType(Item item) {
-		if(item == CAItems.COPPER_SPOOL.get())
-			return WireType.COPPER;
-		if(item == CAItems.GOLD_SPOOL.get())
-			return WireType.GOLD;
-		if(item == CAItems.FESTIVE_SPOOL.get())
-			return WireType.FESTIVE;
-		return WireType.COPPER;
-	}
 	
 	public static boolean isRemover(Item item) {
 		return item == CAItems.SPOOL.get();

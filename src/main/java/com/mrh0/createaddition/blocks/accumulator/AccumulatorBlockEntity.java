@@ -452,4 +452,9 @@ public class AccumulatorBlockEntity extends BaseElectricBlockEntity implements I
 	public ConnectorType getConnectorType() {
 		return ConnectorType.Small;
 	}
+
+	@Override
+	public int getMaxWireLength() {
+		return Config.SMALL_CONNECTOR_MAX_LENGTH.get();
+	}
 }

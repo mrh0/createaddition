@@ -104,9 +104,10 @@ public class Util {
 
 	public static Util.Triple<BlockPos, Integer, WireType> getWireNodeOfSpools(ItemStack...stacks) {
 		for(ItemStack stack : stacks) {
+			if(stack.isEmpty()) continue;
 			if(stack.getTag() == null) continue;
 			if(WireSpool.hasPos(stack.getTag())) {
-				return Util.Triple.of(WireSpool.getPos(stack.getTag()), WireSpool.getNode(stack.getTag()), WireSpool.getWireType(stack.getItem()));
+				return Util.Triple.of(WireSpool.getPos(stack.getTag()), WireSpool.getNode(stack.getTag()), WireType.of(stack.getItem()));
 			}
 		}
 		return null;

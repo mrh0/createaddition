@@ -31,7 +31,6 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 	}
 
 	private static final float HANG = 0.5f;
-	private static final boolean OVERHEAD_WIRE = false;
 	private float time = 0f;
 
 	@Override
@@ -150,13 +149,8 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 		int j = tileEntityIn.getLevel().getBrightness(LightLayer.BLOCK, blockpos2);
 		int k = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos1);
 		int l = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos2);
-		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.025F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 0, OVERHEAD_WIRE ? 2f : 1f);
-		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.0F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 1, OVERHEAD_WIRE ? 2f : 1f);
-		
-		if(OVERHEAD_WIRE) {
-			wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.025F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 0, 0f);
-			wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.0F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 1, 0f);
-		}
+		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.025F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 0, 1f);
+		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.0F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 1, 1f);
 		//light
 		//matrix.popPose();
 	}
@@ -179,15 +173,6 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 			boolean main = x + y + z > 0;
 			for (int j = 0; j < 24; ++j) {
 				lights(vertBuilder, x, y, z, a, b, 24, j + 1, o1, o2, type, dis, state, stack, lightOffset, main);
-			}
-			stack.popPose();
-		}
-		
-		if (OVERHEAD_WIRE) {
-			stack.pushPose();
-			boolean main = x + y + z > 0;
-			for (int j = 0; j < 24; ++j) {
-				supports(vertBuilder, x, y, z, a, b, 24, j + 1, o1, o2, type, dis, state, stack, lightOffset, main);
 			}
 			stack.popPose();
 		}

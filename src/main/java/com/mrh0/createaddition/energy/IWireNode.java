@@ -560,11 +560,11 @@ public interface IWireNode {
 
 		int maxLength = Math.min(wn1.getMaxWireLength(), wn2.getMaxWireLength());
 
-		if (pos1.distSqr(pos2) > maxLength * maxLength)
-			return WireConnectResult.LONG;
-		
-		if (wn1.hasConnectionTo(pos2))
-			return WireConnectResult.EXISTS;
+		if (pos1.distSqr(pos2) > maxLength * maxLength) return WireConnectResult.LONG;
+		if (wn1.hasConnectionTo(pos2)) return WireConnectResult.EXISTS;
+		if(wn1.getConnectorType() == ConnectorType.Large && wn2.getConnectorType() == ConnectorType.Large) {
+			if(type == WireType.COPPER) return WireConnectResult.REQUIRES_HIGH_CURRENT;
+		}
 		
 		wn1.setNode(node1, node2, wn2.getPos(), type);
 		wn2.setNode(node2, node1, wn1.getPos(), type);
