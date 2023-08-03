@@ -78,25 +78,23 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 	
 	@Override
 	public InteractionResult onSneakWrenched(BlockState state, UseOnContext c) {
-		BlockEntity te = c.getLevel().getBlockEntity(c.getClickedPos());
-		if(te == null)
-			return IWrenchable.super.onSneakWrenched(state, c);
-		if(!(te instanceof IWireNode))
-			return IWrenchable.super.onSneakWrenched(state, c);
-		IWireNode cte = (IWireNode) te;
+		BlockEntity be = c.getLevel().getBlockEntity(c.getClickedPos());
+		if(be == null) return IWrenchable.super.onSneakWrenched(state, c);
+		if(!(be instanceof IWireNode cbe)) return IWrenchable.super.onSneakWrenched(state, c);
+		// if(be instanceof AbstractConnectorBlockEntity acbe) acbe.updateExternalEnergyStorage();
 
-		if (!c.getLevel().isClientSide())
-			cte.dropWires(c.getLevel(), c.getPlayer(), !c.getPlayer().isCreative());
+		if (!c.getLevel().isClientSide() && c.getPlayer() != null)
+			cbe.dropWires(c.getLevel(), c.getPlayer(), !c.getPlayer().isCreative());
 
 		return IWrenchable.super.onSneakWrenched(state, c);
 	}
-	
+
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockEntity blockEntity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
 		if(blockEntity != null) {
 			if(blockEntity instanceof AbstractConnectorBlockEntity) {
-				((AbstractConnectorBlockEntity)blockEntity).updateCache();
+				((AbstractConnectorBlockEntity)blockEntity).updateExternalEnergyStorage();
 			}
 		}
 		if (!state.canSurvive(worldIn, pos)) {

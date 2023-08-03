@@ -129,9 +129,6 @@ public class Config {
 		SMALL_CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Small Connector max output in FE/t (Energy transfer).")
 				.defineInRange("small_connector_max_output", 4000, 0, Integer.MAX_VALUE);
 		
-		SMALL_CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Small Connector internal input buffer in FE.")
-				.defineInRange("small_connector_input_capacity", 4000, 0, Integer.MAX_VALUE);
-		
 		SMALL_CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Small Connector max wire length in blocks.")
 				.defineInRange("small_connector_wire_length", 10, 0, 256);
 
@@ -141,9 +138,6 @@ public class Config {
 
 		LARGE_CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Large Connector max output in FE/t (Energy transfer).")
 				.defineInRange("large_connector_max_output", 10000, 0, Integer.MAX_VALUE);
-
-		LARGE_CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Large Connector internal input buffer in FE.")
-				.defineInRange("large_connector_input_capacity", 10000, 0, Integer.MAX_VALUE);
 
 		LARGE_CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Large Connector max wire length in blocks.")
 				.defineInRange("large_connector_wire_length", 24, 0, 256);

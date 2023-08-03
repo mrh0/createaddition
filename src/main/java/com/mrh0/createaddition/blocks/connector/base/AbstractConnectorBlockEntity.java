@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.debug.IDebugDrawer;
 import com.mrh0.createaddition.energy.*;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
@@ -15,6 +16,7 @@ import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.CreateClient;
 
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,11 +32,15 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractConnectorBlockEntity extends BaseElectricBlockEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation, IDebugDrawer {
+public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation, IDebugDrawer {
 
 	private final Set<LocalNode> wireCache = new HashSet<>();
 	private final LocalNode[] localNodes;
@@ -45,11 +51,71 @@ public abstract class AbstractConnectorBlockEntity extends BaseElectricBlockEnti
 	private boolean wasContraption = false;
 	private boolean firstTick = true;
 
+	protected LazyOptional<IEnergyStorage> capability = this.createEmptyHandler();
+	protected LazyOptional<IEnergyStorage> external = LazyOptional.empty();
+
 	public AbstractConnectorBlockEntity(BlockEntityType<?> blockEntityTypeIn, BlockPos pos, BlockState state) {
 		super(blockEntityTypeIn, pos, state);
 
 		this.localNodes = new LocalNode[getNodeCount()];
 		this.nodeCache = new IWireNode[getNodeCount()];
+	}
+
+	private LazyOptional<IEnergyStorage> createEmptyHandler() {
+		return LazyOptional.of(InterfaceEnergyHandler::new);
+	}
+
+	@Override
+	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
+		if (cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side))) return this.capability.cast();
+		return super.getCapability(cap, side);
+	}
+
+	public abstract int getMaxIn();
+	public abstract int getMaxOut();
+	public int getCapacity() {
+		return Math.min(getMaxIn(), getMaxOut());
+	}
+
+	private class InterfaceEnergyHandler implements IEnergyStorage {
+		public InterfaceEnergyHandler() {}
+
+		@Override
+		public int receiveEnergy(int maxReceive, boolean simulate) {
+			if(getMode() != ConnectorMode.Pull) return 0;
+			if (network == null) return 0;
+			maxReceive = Math.min(maxReceive, getMaxIn());
+			return network.push(maxReceive, simulate);
+		}
+
+		@Override
+		public int extractEnergy(int maxExtract, boolean simulate) {
+			if(getMode() != ConnectorMode.Push) return 0;
+			if (network == null) return 0;
+			maxExtract = Math.min(maxExtract, getMaxOut());
+			return network.pull(maxExtract, simulate);
+		}
+
+		@Override
+		public int getEnergyStored() {
+			if (network == null) return 0;
+			return Math.min(getCapacity(), network.getBuff());
+		}
+
+		@Override
+		public int getMaxEnergyStored() {
+			return getCapacity();
+		}
+
+		@Override
+		public boolean canExtract() {
+			return true;
+		}
+
+		@Override
+		public boolean canReceive() {
+			return true;
+		}
 	}
 
 	@Override
@@ -102,12 +168,10 @@ public abstract class AbstractConnectorBlockEntity extends BaseElectricBlockEnti
 		return network;
 	}
 
-	@Override
 	public boolean isEnergyInput(Direction side) {
 		return getBlockState().getValue(AbstractConnectorBlock.FACING) == side;
 	}
 
-	@Override
 	public boolean isEnergyOutput(Direction side) {
 		return getBlockState().getValue(AbstractConnectorBlock.FACING) == side;
 	}
@@ -134,6 +198,7 @@ public abstract class AbstractConnectorBlockEntity extends BaseElectricBlockEnti
 		if (nbt.contains("contraption") && !clientPacket) {
 			this.wasContraption = nbt.getBoolean("contraption");
 			NodeRotation rotation = getBlockState().getValue(NodeRotation.ROTATION);
+			if(level == null) return;
 			if (rotation != NodeRotation.NONE)
 				level.setBlock(getBlockPos(), getBlockState().setValue(NodeRotation.ROTATION, NodeRotation.NONE), 0);
 			// Loop over all nodes and update their relative positions.
@@ -179,17 +244,21 @@ public abstract class AbstractConnectorBlockEntity extends BaseElectricBlockEnti
 		}
 	}
 
+	public void firstTick() {
+		this.firstTick = false;
+		// Check if this blockentity was a part of a contraption.
+		// If it was, then make sure all the nodes are valid.
+		if(level == null) return;
+		if (this.wasContraption && !level.isClientSide()) {
+			this.wasContraption = false;
+			validateNodes();
+		}
+		updateExternalEnergyStorage();
+	}
+
 	@Override
 	public void tick() {
-		if (this.firstTick) {
-			this.firstTick = false;
-			// Check if this blockentity was a part of a contraption.
-			// If it was, then make sure all the nodes are valid.
-			if (this.wasContraption && !level.isClientSide()) {
-				this.wasContraption = false;
-				validateNodes();
-			}
-		}
+		if (this.firstTick) firstTick();
 
 		// Check if we need to drop any wires due to contraption.
 		if (!this.wireCache.isEmpty() && !isRemoved()) handleWireCache(level, this.wireCache);
@@ -197,43 +266,33 @@ public abstract class AbstractConnectorBlockEntity extends BaseElectricBlockEnti
 		if (getMode() == ConnectorMode.None) return;
 		super.tick();
 
+		if(level == null) return;
 		if(level.isClientSide()) return;
 		if(awakeNetwork(level)) notifyUpdate();
 
 		networkTick(network);
 	}
 
+	private final static IEnergyStorage NULL_ES = new EnergyStorage(0, 0, 0);
 	private void networkTick(EnergyNetwork network) {
 		ConnectorMode mode = getMode();
-		if(level.isClientSide())
-			return;
+		if(level == null) return;
+		if(level.isClientSide()) return;
 
-		Direction d = getBlockState().getValue(AbstractConnectorBlock.FACING);
-		IEnergyStorage ies = getCachedEnergy(d).orElse(null);
-		if(ies == null) return;
-
-		if (mode == ConnectorMode.Push || mode == ConnectorMode.Passive) {
-			int pull = network.pull(demand);
-			ies.receiveEnergy(pull, false);
-
-			int testInsert = ies.receiveEnergy(getMaxOut(), true);
-			demand = network.demand(testInsert);
+		if (mode == ConnectorMode.Push) {
+			int pulled = network.pull(network.demand(external.orElse(NULL_ES).receiveEnergy(getMaxOut(), true)));
+			external.orElse(NULL_ES).receiveEnergy(pulled, false);
 		}
 
 		if (mode == ConnectorMode.Pull) {
-			int extracted = ies.extractEnergy(localEnergy.getSpace(), false);
-			localEnergy.internalProduceEnergy(extracted);
-		}
-
-		if (mode == ConnectorMode.Pull || mode == ConnectorMode.Passive) {
-			int testExtract = localEnergy.extractEnergy(Integer.MAX_VALUE, true);
-			int push = network.push(testExtract);
-			localEnergy.internalConsumeEnergy(push);
+			int toPush = external.orElse(NULL_ES).extractEnergy(network.push(getMaxIn(), true), false);
+			network.push(toPush);
 		}
 	}
 
 	@Override
 	public void remove() {
+		if(level == null) return;
 		if (level.isClientSide()) return;
 		// Remove all nodes.
 		for (int i = 0; i < getNodeCount(); i++) {
@@ -295,9 +354,27 @@ public abstract class AbstractConnectorBlockEntity extends BaseElectricBlockEnti
 		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 	}
 
-	@Override
 	public boolean ignoreCapSide() {
 		return this.getBlockState().getValue(AbstractConnectorBlock.MODE).isActive();
+	}
+
+	public void updateExternalEnergyStorage() {
+		var side = getBlockState().getValue(AbstractConnectorBlock.FACING);
+		if (!level.isLoaded(worldPosition.relative(side))) {
+			external = LazyOptional.empty();
+			return;
+		}
+		BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
+		if(te == null) {
+			external = LazyOptional.empty();
+			return;
+		}
+		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		if(ignoreCapSide() && !le.isPresent()) le = te.getCapability(CapabilityEnergy.ENERGY);
+		// Make sure the side isn't already cached.
+		if (le.equals(external)) return;
+		external = le;
+		le.addListener((es) -> updateExternalEnergyStorage());
 	}
 
 	@Override

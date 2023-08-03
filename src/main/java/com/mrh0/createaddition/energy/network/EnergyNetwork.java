@@ -52,13 +52,19 @@ public class EnergyNetwork {
 		return outBuffRetained;
 	}
 
-	// Returns the amount of energy pushed
-	public int push(int energy) {
+	// Returns the amount of energy pushed to network
+	public int push(int energy, boolean simulate) {
 		energy = Math.min(MAX_BUFF - inBuff, energy);
 		energy = Math.max(energy, 0);
-		inBuff += energy;
-		pushed += energy;
+		if(!simulate) {
+			inBuff += energy;
+			pushed += energy;
+		}
 		return energy;
+	}
+
+	public int push(int energy) {
+		return push(energy, false);
 	}
 	
 	public int demand(int demand) {
@@ -77,12 +83,19 @@ public class EnergyNetwork {
 	public int getPushed() {
 		return pushed;
 	}
-	
-	public int pull(int max) {
-		int r = (int) ( (double) Math.max(Math.min(max, outBuff), 0) );
-		outBuff -= r;
-		pulled += r;
+
+	// Returns amount of energy pulled from network
+	public int pull(int energy, boolean simulate) {
+		int r = Math.max(Math.min(energy, outBuff), 0);
+		if(!simulate) {
+			outBuff -= r;
+			pulled += r;
+		}
 		return r;
+	}
+
+	public int pull(int max) {
+		return pull(max, false);
 	}
 	
 	public static EnergyNetwork nextNode(Level world, EnergyNetwork en, Map<String, IWireNode> visited, IWireNode current, int index) {
