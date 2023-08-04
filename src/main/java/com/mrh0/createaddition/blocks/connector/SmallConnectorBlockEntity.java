@@ -29,11 +29,6 @@ public class SmallConnectorBlockEntity extends AbstractConnectorBlockEntity {
     public void addBehaviours(List<BlockEntityBehaviour> list) {}
 
     @Override
-    public int getCapacity() {
-        return Config.SMALL_CONNECTOR_CAPACITY.get();
-    }
-
-    @Override
     public int getMaxIn() {
         return Config.SMALL_CONNECTOR_MAX_INPUT.get();
     }

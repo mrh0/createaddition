@@ -29,11 +29,6 @@ public class LargeConnectorBlockEntity extends AbstractConnectorBlockEntity {
     public void addBehaviours(List<BlockEntityBehaviour> list) {}
 
     @Override
-    public int getCapacity() {
-        return Config.LARGE_CONNECTOR_CAPACITY.get();
-    }
-
-    @Override
     public int getMaxIn() {
         return Config.LARGE_CONNECTOR_MAX_INPUT.get();
     }

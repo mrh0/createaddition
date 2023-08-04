@@ -82,6 +82,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 
 		@Override
 		public int receiveEnergy(int maxReceive, boolean simulate) {
+			if(!Config.CONNECTOR_ALLOW_PASSIVE_IO.get()) return 0;
 			if(getMode() != ConnectorMode.Pull) return 0;
 			if (network == null) return 0;
 			maxReceive = Math.min(maxReceive, getMaxIn());
@@ -90,6 +91,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 
 		@Override
 		public int extractEnergy(int maxExtract, boolean simulate) {
+			if(!Config.CONNECTOR_ALLOW_PASSIVE_IO.get()) return 0;
 			if(getMode() != ConnectorMode.Push) return 0;
 			if (network == null) return 0;
 			maxExtract = Math.min(maxExtract, getMaxOut());
