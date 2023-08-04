@@ -40,7 +40,7 @@ public class LargeConnectorBlockEntity extends AbstractConnectorBlockEntity {
 
     @Override
     public int getNodeCount() {
-        return 8;
+        return 6;
     }
 
     @Override
