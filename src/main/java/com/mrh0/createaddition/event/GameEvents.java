@@ -10,6 +10,7 @@ import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.AllBlocks;
 
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.TickEvent;
@@ -53,15 +54,15 @@ public class GameEvents {
 	@SubscribeEvent
     public static void interact(PlayerInteractEvent.RightClickBlock evt) {
 		try {
-			if(evt.getLevel().isClientSide()) return;
-			BlockState state = evt.getLevel().getBlockState(evt.getPos());
-			if(evt.getItemStack().getItem() == CAItems.STRAW.get()) {
+			if(evt.getWorld().isClientSide()) return;
+			BlockState state = evt.getWorld().getBlockState(evt.getPos());
+			if(evt.getItemStack().getItem() == CAItems.STRAW.get() && evt.getWorld().getBlockEntity(evt.getPos()) instanceof BlazeBurnerBlockEntity) {
 				if(state.is(AllBlocks.BLAZE_BURNER.get())) {
 					BlockState newState = CABlocks.LIQUID_BLAZE_BURNER.getDefaultState()
 							.setValue(LiquidBlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING/*state.getValue(BlazeBurnerBlock.HEAT_LEVEL)*/)
 							.setValue(LiquidBlazeBurnerBlock.FACING, state.getValue(BlazeBurnerBlock.FACING));
-					evt.getLevel().setBlockAndUpdate(evt.getPos(), newState);
-					//if(!evt.getEntity().isCreative())
+					evt.getWorld().setBlockAndUpdate(evt.getPos(), newState);
+					if(evt.getPlayer().isCreative())
 						evt.getItemStack().shrink(1);
 					evt.setCancellationResult(InteractionResult.SUCCESS);
 	            	evt.setCanceled(true);

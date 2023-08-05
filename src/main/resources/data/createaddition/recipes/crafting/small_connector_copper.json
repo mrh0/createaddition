@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+		    "tag": "forge:rods/copper"
+		},
+		{
+		    "item": "create:andesite_alloy"
+		},
+		{
+		    "tag": "forge:slimeballs"
+		}
+	],
+	"result":{
+		"item": "createaddition:connector",
+		"count": 3
+	}
+}

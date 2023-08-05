@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
-import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
+import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlockEntity;
 
 import com.mrh0.createaddition.config.Config;
 import dan200.computercraft.api.lua.LuaException;
@@ -16,9 +15,9 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 public class ElectricMotorPeripheral implements IPeripheral {
 	protected final List<IComputerAccess> connected = new ArrayList<>();
     protected String type;
-    protected ElectricMotorTileEntity tileEntity;
+    protected ElectricMotorBlockEntity tileEntity;
 
-    public ElectricMotorPeripheral(String type, ElectricMotorTileEntity tileEntity) {
+    public ElectricMotorPeripheral(String type, ElectricMotorBlockEntity tileEntity) {
         this.type = type;
         this.tileEntity = tileEntity;
     }
@@ -94,7 +93,7 @@ public class ElectricMotorPeripheral implements IPeripheral {
     		int _rpm = rpm.orElse(getSpeed());
     		if(rpm.isPresent())
     			setSpeed(deg < 0 ? -_rpm : _rpm);
-    		return ElectricMotorTileEntity.getDurationAngle(deg, 0, _rpm) / 20f;
+    		return ElectricMotorBlockEntity.getDurationAngle(deg, 0, _rpm) / 20f;
     	}
     	return 0f;
     }
@@ -105,7 +104,7 @@ public class ElectricMotorPeripheral implements IPeripheral {
     		int _rpm = rpm.orElse(getSpeed());
     		if(rpm.isPresent())
     			setSpeed(blocks < 0 ? -_rpm : _rpm);
-    		return ElectricMotorTileEntity.getDurationDistance(blocks, 0, _rpm) / 20f;
+    		return ElectricMotorBlockEntity.getDurationDistance(blocks, 0, _rpm) / 20f;
     	}
     	return 0f;
     }

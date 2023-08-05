@@ -4,10 +4,6 @@
       	"tag": "forge:ingots/electrum"
 	}],
 	"results": [{
-		"item": "immersiveengineering:plate_electrum"
-	}],
-	"conditions": [{
-		"type": "forge:mod_loaded",
-		"modid": "immersiveengineering"
-    }]
+		"item": "createaddition:electrum_sheet"
+	}]
 }

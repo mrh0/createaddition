@@ -2,67 +2,28 @@ package com.mrh0.createaddition.event;
 
 import com.mrh0.createaddition.CreateAddition;
 
+import com.mrh0.createaddition.item.WireSpool;
+import com.mrh0.createaddition.util.ClientMinecraftWrapper;
+import com.mrh0.createaddition.util.Util;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = CreateAddition.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientEventHandler {
-	
-	// Old Wiring renderer
-	/*
-	@SubscribeEvent
-	public static void playerRendererEvent(RenderWorldLastEvent evt) {
-		MatrixStack matrixStackIn = evt.getMatrixStack();
-		IRenderTypeBuffer bufferIn = Minecraft.getInstance().renderBuffers().bufferSource();//.outlineBufferSource();//evt.getBuffers();
-		ItemStack stack = Minecraft.getInstance().player.getItemInHand(Hand.MAIN_HAND);//evt.getItemStack();
-		if(stack.isEmpty())
-			return;
-		if(!(stack.getItem() instanceof WireSpool))
-			return;
-		if(WireSpool.isRemover(stack.getItem()))
-			return;
-		if(!WireSpool.hasPos(stack.getTag()))
-			return;
-		BlockPos pos = WireSpool.getPos(stack.getTag());
-		int node = WireSpool.getNode(stack.getTag());
-		
-		World world = Minecraft.getInstance().level;
-		
-		
-		TileEntity te = world.getBlockEntity(pos);
-		if(te == null)
-			return;
-		if(!(te instanceof IWireNode))
-			return;
-		
-		IWireNode wn = (IWireNode) te;
-		
-		
-		ClientPlayerEntity p = Minecraft.getInstance().player;
-		
-		float doubleX = (float) (p.xOld + (p.position().x() - p.xOld) * evt.getPartialTicks()); 
-		float doubleY = (float) (p.yOld + (p.position().y() - p.yOld) * evt.getPartialTicks()); 
-		float doubleZ = (float) (p.zOld + (p.position().z() - p.zOld) * evt.getPartialTicks()); 
-		
-		float tx = te.getBlockPos().getX() + wn.getNodeOffset(node).x() + 0.5f;
-		float ty = te.getBlockPos().getY() + wn.getNodeOffset(node).y() - 1f;
-		float tz = te.getBlockPos().getZ() + wn.getNodeOffset(node).z() + 0.5f;
 
-		//matrixStackIn.pushPose();
+    public static boolean clientRenderHeldWire = false;
 
-		// IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.getLines());
-		// Matrix4f matrix4f1 = matrixStackIn.peek().getModel();
-
-		float dis = WireNodeRenderer.distanceFromZero(-doubleX + tx, -doubleY + ty, -doubleZ + tz);
-		if(dis > IWireNode.MAX_LENGTH)
-			return;
-
-		//matrixStackIn.translate(tx + .5f, ty + .5f, tz + .5f);
-		matrixStackIn.translate(0,-0.2f,0);
-		WireNodeRenderer.wireRender(te, p.blockPosition(), matrixStackIn, bufferIn, -doubleX + tx, -doubleY + ty, -doubleZ + tz, WireSpool.getWireType(stack.getItem()), dis);
-		//matrixStackIn.popPose();
-	}
-	*/
+    @SubscribeEvent
+    public static void playerRendererEvent(TickEvent.ClientTickEvent evt) {
+        if(ClientMinecraftWrapper.getPlayer() == null) return;
+        ItemStack stack = ClientMinecraftWrapper.getPlayer().getInventory().getSelected();
+        if(stack.isEmpty()) return;
+        if(WireSpool.isRemover(stack.getItem())) return;
+        clientRenderHeldWire = Util.getWireNodeOfSpools(stack) != null;
+    }
 	
 	// Fluid Fog TODO: update!
 	/*@SubscribeEvent

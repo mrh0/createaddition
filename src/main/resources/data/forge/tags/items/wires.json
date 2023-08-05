@@ -3,6 +3,7 @@
   "values": [
     "createaddition:copper_wire",
     "createaddition:iron_wire",
-    "createaddition:gold_wire"
+    "createaddition:gold_wire",
+    "createaddition:electrum_wire"
   ]
 }

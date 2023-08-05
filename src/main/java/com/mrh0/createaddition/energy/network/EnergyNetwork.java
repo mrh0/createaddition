@@ -21,7 +21,7 @@ public class EnergyNetwork {
 	private int pulled = 0;
 	private int pushed = 0;
 	
-	private static int MAX_BUFF = 80000;
+	private static final int MAX_BUFF = 80000;
 	
 	public EnergyNetwork(Level world) {
 		this.inBuff = 0;
@@ -52,13 +52,19 @@ public class EnergyNetwork {
 		return outBuffRetained;
 	}
 
-	// Returns the amount of energy pushed
-	public int push(int energy) {
+	// Returns the amount of energy pushed to network
+	public int push(int energy, boolean simulate) {
 		energy = Math.min(MAX_BUFF - inBuff, energy);
 		energy = Math.max(energy, 0);
-		inBuff += energy;
-		pushed += energy;
+		if (!simulate) {
+			inBuff += energy;
+			pushed += energy;
+		}
 		return energy;
+	}
+
+	public int push(int energy) {
+		return push(energy, false);
 	}
 	
 	public int demand(int demand) {
@@ -77,32 +83,31 @@ public class EnergyNetwork {
 	public int getPushed() {
 		return pushed;
 	}
-	
-	public int pull(int max) {
-		int r = (int) ( (double) Math.max(Math.min(max, outBuff), 0) );
-		outBuff -= r;
-		pulled += r;
+
+	// Returns amount of energy pulled from network
+	public int pull(int energy, boolean simulate) {
+		int r = Math.max(Math.min(energy, outBuff), 0);
+		if (!simulate) {
+			outBuff -= r;
+			pulled += r;
+		}
 		return r;
 	}
+
+	public int pull(int max) {
+		return pull(max, false);
+	}
 	
-	public static EnergyNetwork nextNode(Level world, EnergyNetwork en, Map<String, IWireNode> visited, IWireNode current, int index) {
-		if(visited.containsKey(posKey(current.getPos(), index)))
-			return null; // should never matter?
+	public static EnergyNetwork nextNode(Level level, EnergyNetwork en, Map<String, IWireNode> visited, IWireNode current, int index) {
+		if (visited.containsKey(posKey(current.getPos(), index))) return null; // should never matter?
 		current.setNetwork(index, en);
 		visited.put(posKey(current.getPos(), index), current);
 		
-		for(int i = 0; i < current.getNodeCount(); i++) {
+		for (int i = 0; i < current.getNodeCount(); i++) {
 			IWireNode next = current.getWireNode(i);
-			if(next == null)
-				continue;
-			if(!current.isNodeIndeciesConnected(index, i)) {
-				/*if(current.getNetwork(i) == null) {
-					nextNode(world, new EnergyNetwork(world), new HashMap<String, IWireNode>(), current, i);
-					System.out.println(current.getMyPos() + ":" + i);
-				}*/
-				continue;
-			}
-			nextNode(world, en, visited, next, current.getOtherNodeIndex(i));
+			if (next == null) continue;
+			if (!current.isNodeIndeciesConnected(index, i)) continue;
+			nextNode(level, en, visited, next, current.getOtherNodeIndex(i));
 		}
 		return en;
 	}

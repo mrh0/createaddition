@@ -1,0 +1,103 @@
+{
+  "variants": {
+    "facing=down,mode=none": {
+      "model": "createaddition:block/connector/large/none",
+      "x": 0, "y": 90
+    },
+    "facing=up,mode=none": {
+      "model": "createaddition:block/connector/large/none",
+      "x": 180, "y": 90
+    },
+    "facing=north,mode=none": {
+      "model": "createaddition:block/connector/large/none",
+      "x": 90, "y": 180
+    },
+    "facing=south,mode=none": {
+      "model": "createaddition:block/connector/large/none",
+      "x": 90, "y": 0
+    },
+    "facing=west,mode=none": {
+      "model": "createaddition:block/connector/large/none",
+      "x": 90, "y": 90
+    },
+    "facing=east,mode=none": {
+      "model": "createaddition:block/connector/large/none",
+      "x": 90, "y": 270
+    },
+    
+    "facing=down,mode=passive": {
+      "model": "createaddition:block/connector/large/passive",
+      "x": 0, "y": 90
+    },
+    "facing=up,mode=passive": {
+      "model": "createaddition:block/connector/large/passive",
+      "x": 180, "y": 90
+    },
+    "facing=north,mode=passive": {
+      "model": "createaddition:block/connector/large/passive",
+      "x": 90, "y": 180
+    },
+    "facing=south,mode=passive": {
+      "model": "createaddition:block/connector/large/passive",
+      "x": 90, "y": 0
+    },
+    "facing=west,mode=passive": {
+      "model": "createaddition:block/connector/large/passive",
+      "x": 90, "y": 90
+    },
+    "facing=east,mode=passive": {
+      "model": "createaddition:block/connector/large/passive",
+      "x": 90, "y": 270
+    },
+    
+    "facing=down,mode=pull": {
+      "model": "createaddition:block/connector/large/pull",
+      "x": 0, "y": 90
+    },
+    "facing=up,mode=pull": {
+      "model": "createaddition:block/connector/large/pull",
+      "x": 180, "y": 90
+    },
+    "facing=north,mode=pull": {
+      "model": "createaddition:block/connector/large/pull",
+      "x": 90, "y": 180
+    },
+    "facing=south,mode=pull": {
+      "model": "createaddition:block/connector/large/pull",
+      "x": 90, "y": 0
+    },
+    "facing=west,mode=pull": {
+      "model": "createaddition:block/connector/large/pull",
+      "x": 90, "y": 90
+    },
+    "facing=east,mode=pull": {
+      "model": "createaddition:block/connector/large/pull",
+      "x": 90, "y": 270
+    },
+    
+    "facing=down,mode=push": {
+      "model": "createaddition:block/connector/large/push",
+      "x": 0, "y": 90
+    },
+    "facing=up,mode=push": {
+      "model": "createaddition:block/connector/large/push",
+      "x": 180, "y": 90
+    },
+    "facing=north,mode=push": {
+      "model": "createaddition:block/connector/large/push",
+      "x": 90, "y": 180
+    },
+    "facing=south,mode=push": {
+      "model": "createaddition:block/connector/large/push",
+      "x": 90, "y": 0
+    },
+    "facing=west,mode=push": {
+      "model": "createaddition:block/connector/large/push",
+      "x": 90, "y": 90
+    },
+    "facing=east,mode=push": {
+      "model": "createaddition:block/connector/large/push",
+      "x": 90, "y": 270
+    }
+  }
+}

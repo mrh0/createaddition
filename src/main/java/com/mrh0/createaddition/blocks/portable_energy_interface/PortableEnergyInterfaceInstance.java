@@ -14,11 +14,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class PortableEnergyInterfaceInstance extends BlockEntityInstance<PortableEnergyInterfaceTileEntity> implements DynamicInstance, TickableInstance {
+public class PortableEnergyInterfaceInstance extends BlockEntityInstance<PortableEnergyInterfaceBlockEntity> implements DynamicInstance, TickableInstance {
 
 	private final PIInstance instance;
 
-	public PortableEnergyInterfaceInstance(MaterialManager materialManager, PortableEnergyInterfaceTileEntity tile) {
+	public PortableEnergyInterfaceInstance(MaterialManager materialManager, PortableEnergyInterfaceBlockEntity tile) {
 		super(materialManager, tile);
 
 		instance = new PIInstance(materialManager, blockState, getInstancePosition());

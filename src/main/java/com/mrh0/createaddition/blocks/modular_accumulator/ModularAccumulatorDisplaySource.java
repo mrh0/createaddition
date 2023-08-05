@@ -7,7 +7,6 @@ import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
 import com.simibubi.create.content.redstone.displayLink.source.PercentOrProgressBarDisplaySource;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -29,7 +28,7 @@ public class ModularAccumulatorDisplaySource extends PercentOrProgressBarDisplay
 
 	@Override
 	protected Float getProgress(DisplayLinkContext context) {
-		if (!(context.getSourceBlockEntity() instanceof ModularAccumulatorTileEntity te)) return null;
+		if (!(context.getSourceBlockEntity() instanceof ModularAccumulatorBlockEntity te)) return null;
 		te = te.getControllerBE();
 		if(te == null) return null;
 

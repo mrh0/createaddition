@@ -1,6 +1,6 @@
 package com.mrh0.createaddition.compat.computercraft;
 
-import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlockEntity;
 import com.mrh0.createaddition.config.Config;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IPeripheral;
@@ -10,9 +10,9 @@ import org.jetbrains.annotations.Nullable;
 public class PortableEnergyInterfacePeripheral implements IPeripheral {
 
 	private final String type;
-	private final PortableEnergyInterfaceTileEntity tileEntity;
+	private final PortableEnergyInterfaceBlockEntity tileEntity;
 
-	public PortableEnergyInterfacePeripheral(String type, PortableEnergyInterfaceTileEntity tileEntity) {
+	public PortableEnergyInterfacePeripheral(String type, PortableEnergyInterfaceBlockEntity tileEntity) {
 		this.type = type;
 		this.tileEntity = tileEntity;
 	}

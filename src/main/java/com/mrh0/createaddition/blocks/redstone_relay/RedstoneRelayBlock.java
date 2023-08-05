@@ -2,7 +2,7 @@ package com.mrh0.createaddition.blocks.redstone_relay;
 
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.NodeRotation;
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -42,7 +42,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 
-public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEntity>, IWrenchable, ITransformableBlock {
+public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayBlockEntity>, IWrenchable, ITransformableBlock {
 
 	public static final BooleanProperty VERTICAL = BooleanProperty.create("vertical");
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -81,13 +81,13 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 	}
 
 	@Override
-	public Class<RedstoneRelayTileEntity> getBlockEntityClass() {
-		return RedstoneRelayTileEntity.class;
+	public Class<RedstoneRelayBlockEntity> getBlockEntityClass() {
+		return RedstoneRelayBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends RedstoneRelayTileEntity> getBlockEntityType() {
-		return CATileEntities.REDSTONE_RELAY.get();
+	public BlockEntityType<? extends RedstoneRelayBlockEntity> getBlockEntityType() {
+		return CABlockEntities.REDSTONE_RELAY.get();
 	}
 
 	@Override
@@ -270,6 +270,6 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.REDSTONE_RELAY.create(pos, state);
+		return CABlockEntities.REDSTONE_RELAY.create(pos, state);
 	}
 }

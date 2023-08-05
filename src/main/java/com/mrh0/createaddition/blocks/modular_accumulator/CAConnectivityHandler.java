@@ -128,7 +128,7 @@ public class CAConnectivityHandler {
 				return bestAmount;
 
 			splitMultiAndInvalidate(be, cache, false);
-			if (be instanceof ModularAccumulatorTileEntity ienergy && ienergy.hasAccumulator())
+			if (be instanceof ModularAccumulatorBlockEntity ienergy && ienergy.hasAccumulator())
 				ienergy.setSize(0, bestAmount);
 
 			tryToFormNewMultiOfWidth(be, bestWidth, cache, false);
@@ -153,7 +153,7 @@ public class CAConnectivityHandler {
 
 		// optional energy handling
 		InternalEnergyStorage beEnergy = null;
-		if (be instanceof ModularAccumulatorTileEntity ienergy && ienergy.hasAccumulator()) {
+		if (be instanceof ModularAccumulatorBlockEntity ienergy && ienergy.hasAccumulator()) {
 			beEnergy = ienergy.getEnergy();
 		}
 		Direction.Axis axis = be.getMainConnectionAxis();
@@ -207,7 +207,7 @@ public class CAConnectivityHandler {
 								break Search;
 						}
 					}
-					if (controller instanceof ModularAccumulatorTileEntity ienergyCon && ienergyCon.hasAccumulator()) {
+					if (controller instanceof ModularAccumulatorBlockEntity ienergyCon && ienergyCon.hasAccumulator()) {
 						//break Search;
 					}
 				}
@@ -237,12 +237,12 @@ public class CAConnectivityHandler {
 
 					extraData = be.modifyExtraData(extraData);
 
-					if (part instanceof ModularAccumulatorTileEntity ienergyPart && ienergyPart.hasAccumulator()) {
+					if (part instanceof ModularAccumulatorBlockEntity ienergyPart && ienergyPart.hasAccumulator()) {
 						InternalEnergyStorage storageAt = ienergyPart.getEnergy();
 						int energyAt = storageAt.getEnergyStored();
 						if (energyAt > 0) {
 							// making this generic would be a rather large mess, unfortunately
-							if (be instanceof ModularAccumulatorTileEntity ienergyBE && ienergyBE.hasAccumulator()
+							if (be instanceof ModularAccumulatorBlockEntity ienergyBE && ienergyBE.hasAccumulator()
 								&& beEnergy != null) {
 								beEnergy.internalProduceEnergy(energyAt);
 							}
@@ -292,7 +292,7 @@ public class CAConnectivityHandler {
 		// fluid handling, if present
 		int toDistribute = 0;
 		int maxCapacity = 0;
-		if (be instanceof ModularAccumulatorTileEntity ienergyBE && ienergyBE.hasAccumulator()) {
+		if (be instanceof ModularAccumulatorBlockEntity ienergyBE && ienergyBE.hasAccumulator()) {
 			toDistribute = ienergyBE.getEnergy().getEnergyStored();
 			maxCapacity = ienergyBE.getSize(0);
 
@@ -325,7 +325,7 @@ public class CAConnectivityHandler {
 					if (partAt != be) {
 						int copy = toDistribute;
 						InternalEnergyStorage tank =
-							(partAt instanceof ModularAccumulatorTileEntity ienergyPart ? ienergyPart.getEnergy() : null);
+							(partAt instanceof ModularAccumulatorBlockEntity ienergyPart ? ienergyPart.getEnergy() : null);
 							int split = Math.min(maxCapacity, toDistribute);
 							copy = split;
 							toDistribute -= split;
@@ -342,12 +342,12 @@ public class CAConnectivityHandler {
 			}
 		}
 
-		if (be instanceof ModularAccumulatorTileEntity ienergyBE && ienergyBE.hasAccumulator()) {
+		if (be instanceof ModularAccumulatorBlockEntity ienergyBE && ienergyBE.hasAccumulator()) {
 			ienergyBE.getEnergy().setEnergy(toDistribute);
 		}
 
-		if (be instanceof ModularAccumulatorTileEntity ienergy && ienergy.hasAccumulator())
-			be.getCapability(ForgeCapabilities.ENERGY)
+		if (be instanceof ModularAccumulatorBlockEntity ienergy && ienergy.hasAccumulator())
+			be.getCapability(CapabilityEnergy.ENERGY)
 				.invalidate();
 
 		if (tryReconnect)

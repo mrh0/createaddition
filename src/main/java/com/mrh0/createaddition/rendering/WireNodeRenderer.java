@@ -6,10 +6,14 @@ import com.mojang.math.Matrix4f;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
+import com.mrh0.createaddition.event.ClientEventHandler;
 import com.mrh0.createaddition.index.CAPartials;
+import com.mrh0.createaddition.util.ClientMinecraftWrapper;
+import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.utility.Color;
 
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -22,18 +26,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {//extends BlockEntityRenderer<T> {
-
 	public WireNodeRenderer(BlockEntityRendererProvider.Context context) {
 		super();
 	}
 
 	private static final float HANG = 0.5f;
-	private static final boolean OVERHEAD_WIRE = false;
+	private float time = 0f;
 
 	@Override
 	public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-			int combinedLightIn, int combindOverlayIn) {
+			int combinedLightIn, int combinedOverlayIn) {
 		IWireNode te = (IWireNode) tileEntityIn;
+
+		time += partialTicks;
 
 		for (int i = 0; i < te.getNodeCount(); i++) {
 			if (!te.hasConnection(i)) continue;
@@ -46,38 +51,82 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 			if (wn == null)
 				return;
 
-			Vec3 d2 = wn.getNodeOffset(te.getOtherNodeIndex(i)); // get other
-			float ox2 = ((float) d2.x());
-			float oy2 = ((float) d2.y());
-			float oz2 = ((float) d2.z());
+				Vec3 d2 = wn.getNodeOffset(te.getOtherNodeIndex(i)); // get other
+				float ox2 = ((float) d2.x());
+				float oy2 = ((float) d2.y());
+				float oz2 = ((float) d2.z());
+				BlockPos other = te.getNodePos(i);
 
-			BlockPos other = te.getNodePos(i);
+				float tx = other.getX() - te.getPos().getX();
+				float ty = other.getY() - te.getPos().getY();
+				float tz = other.getZ() - te.getPos().getZ();
+				matrixStackIn.pushPose();
 
-			float tx = other.getX() - te.getPos().getX();
-			float ty = other.getY() - te.getPos().getY();
-			float tz = other.getZ() - te.getPos().getZ();
+				float dis = distanceFromZero(tx, ty, tz);
 
+				matrixStackIn.translate(tx + .5f + ox2, ty + .5f + oy2, tz + .5f + oz2);
+				wireRender(
+						tileEntityIn,
+						other,
+						matrixStackIn,
+						bufferIn,
+						-tx - ox2 + ox1,
+						-ty - oy2 + oy1,
+						-tz - oz2 + oz1,
+						te.getNodeType(i),
+						dis
+				);
+				matrixStackIn.popPose();
+			}
+		}
+
+		if(ClientEventHandler.clientRenderHeldWire) {
+			LocalPlayer player = ClientMinecraftWrapper.getPlayer();
+			Util.Triple<BlockPos, Integer, WireType> wireNode = Util.getWireNodeOfSpools(player.getInventory().getSelected());
+			if(wireNode == null) return;
+
+			BlockPos nodePos = wireNode.a;
+			int nodeIndex = wireNode.b;
+			WireType wireType = wireNode.c;
+			if(!nodePos.equals(te.getPos())) return;
+
+			Vec3 d1 = te.getNodeOffset(nodeIndex);
+			float ox1 = ((float) d1.x());
+			float oy1 = ((float) d1.y());
+			float oz1 = ((float) d1.z());
+
+			Vec3 playerPos = player.getPosition(partialTicks);
+			float tx = (float)playerPos.x - te.getPos().getX();
+			float ty = (float)playerPos.y - te.getPos().getY();
+			float tz = (float)playerPos.z - te.getPos().getZ();
 			matrixStackIn.pushPose();
-
-			// IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.getLines());
-			// Matrix4f matrix4f1 = matrixStackIn.peek().getModel();
 
 			float dis = distanceFromZero(tx, ty, tz);
 
-			matrixStackIn.translate(tx + .5f + ox2, ty + .5f + oy2, tz + .5f + oz2);
-			wireRender(tileEntityIn, other, matrixStackIn, bufferIn, -tx - ox2 + ox1, -ty - oy2 + oy1, -tz - oz2 + oz1,
-					te.getNodeType(i), dis);
-
+			matrixStackIn.translate(tx + .5f, ty + .5f, tz + .5f);
+			wireRender(
+					tileEntityIn,
+					player.blockPosition(),
+					matrixStackIn,
+					bufferIn,
+					-tx + ox1,
+					-ty + oy1,
+					-tz + oz1,
+					wireType,
+					dis
+			);
 			matrixStackIn.popPose();
 		}
 	}
+
+
 
 	private static float divf(int a, int b) {
 		return (float) a / (float) b;
 	}
 
 	private static float hang(float f, float dis) {
-		return (float) Math.sin(-f * (float) Math.PI) * (HANG * dis / (float) Config.CONNECTOR_MAX_LENGTH.get());
+		return (float) Math.sin(-f * (float) Math.PI) * (HANG * dis / (float) Config.SMALL_CONNECTOR_MAX_LENGTH.get());
 	}
 
 	public static float distanceFromZero(float x, float y, float z) {
@@ -100,13 +149,8 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 		int j = tileEntityIn.getLevel().getBrightness(LightLayer.BLOCK, blockpos2);
 		int k = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos1);
 		int l = tileEntityIn.getLevel().getBrightness(LightLayer.SKY, blockpos2);
-		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.025F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 0, OVERHEAD_WIRE ? 2f : 1f);
-		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.0F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 1, OVERHEAD_WIRE ? 2f : 1f);
-
-		if(OVERHEAD_WIRE) {
-			wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.025F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 0, 0f);
-			wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.0F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 1, 0f);
-		}
+		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.025F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 0, 1f);
+		wirePart(ivertexbuilder, matrix4f, x, y, z, j, i, l, k, 0.025F, 0.0F, o1, o2, type, dis, tileEntityIn.getBlockState(), stack, 1, 1f);
 		//light
 		//matrix.popPose();
 	}
@@ -129,15 +173,6 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 			boolean main = x + y + z > 0;
 			for (int j = 0; j < 24; ++j) {
 				lights(vertBuilder, x, y, z, a, b, 24, j + 1, o1, o2, type, dis, state, stack, lightOffset, main);
-			}
-			stack.popPose();
-		}
-
-		if (OVERHEAD_WIRE) {
-			stack.pushPose();
-			boolean main = x + y + z > 0;
-			for (int j = 0; j < 24; ++j) {
-				supports(vertBuilder, x, y, z, a, b, 24, j + 1, o1, o2, type, dis, state, stack, lightOffset, main);
 			}
 			stack.popPose();
 		}

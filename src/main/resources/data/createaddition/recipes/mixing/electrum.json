@@ -1,0 +1,18 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/gold"
+    },
+    {
+      "tag": "forge:ingots/silver"
+    }
+  ],
+  "results": [
+    {
+      "item": "createaddition:electrum_ingot",
+      "count": 2
+    }
+  ],
+  "heatRequirement": "heated"
+}

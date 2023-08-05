@@ -1,6 +1,6 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -46,7 +46,7 @@ public class ModularAccumulatorBlockItem extends BlockItem {
 			if (nbt.contains("EnergyContent")) {
 				int energy = nbt.getCompound("EnergyContent").getInt("energy");
 				if (energy > 0) {
-					energy = Math.min(ModularAccumulatorTileEntity.getCapacityMultiplier(), energy);
+					energy = Math.min(ModularAccumulatorBlockEntity.getCapacityMultiplier(), energy);
 					CompoundTag ec = new CompoundTag();
 					ec.putInt("energy", energy);
 					nbt.put("EnergyContent", ec);
@@ -74,10 +74,10 @@ public class ModularAccumulatorBlockItem extends BlockItem {
 
 		if (!ModularAccumulatorBlock.isAccumulator(placedOnState))
 			return;
-		ModularAccumulatorTileEntity accumulatorAt = CAConnectivityHandler.partAt(CATileEntities.MODULAR_ACCUMULATOR.get(), world, placedOnPos);
+		ModularAccumulatorBlockEntity accumulatorAt = CAConnectivityHandler.partAt(CABlockEntities.MODULAR_ACCUMULATOR.get(), world, placedOnPos);
 		if (accumulatorAt == null)
 			return;
-		ModularAccumulatorTileEntity controllerTE = accumulatorAt.getControllerBE();
+		ModularAccumulatorBlockEntity controllerTE = accumulatorAt.getControllerBE();
 		if (controllerTE == null)
 			return;
 
