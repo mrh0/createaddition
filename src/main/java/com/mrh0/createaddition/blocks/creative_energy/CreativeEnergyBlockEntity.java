@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class CreativeEnergyBlockEntity extends CrateBlockEntity {
@@ -26,7 +26,7 @@ public class CreativeEnergyBlockEntity extends CrateBlockEntity {
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityEnergy.ENERGY)// && !level.isClientSide
+		if(cap == ForgeCapabilities.ENERGY)// && !level.isClientSide
 			return lazyEnergy.cast();
 		return super.getCapability(cap, side);
 	}
@@ -68,7 +68,7 @@ public class CreativeEnergyBlockEntity extends CrateBlockEntity {
 				setCache(side, LazyOptional.empty());
 				continue;
 			}
-			LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+			LazyOptional<IEnergyStorage> le = te.getCapability(ForgeCapabilities.ENERGY, side.getOpposite());
 			setCache(side, le);
 			
 		}

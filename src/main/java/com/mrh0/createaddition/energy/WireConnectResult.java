@@ -18,11 +18,12 @@ public enum WireConnectResult {
 	REMOVED(Component.translatable("statusbar.createaddition.wire.removed")),
 	EXISTS(Component.translatable("statusbar.createaddition.wire.exists")),
 	NO_CONNECTION(Component.translatable("statusbar.createaddition.wire.no_connection")),
-	INVALID(Component.translatable("statusbar.createaddition.wire.invalid"))	;
+	INVALID(Component.translatable("statusbar.createaddition.wire.invalid")),
+	REQUIRES_HIGH_CURRENT(Component.translatable("statusbar.createaddition.wire.requires_high_current"));
 
 	private final Component message;
 
-	private WireConnectResult(Component message) {
+	WireConnectResult(Component message) {
 		this.message = message;
 	}
 

@@ -27,12 +27,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
-
 
 public class RollingMillBlock extends HorizontalKineticBlock implements IBE<RollingMillBlockEntity> {
 
@@ -99,7 +98,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 			return;
 
 		ItemEntity itemEntity = (ItemEntity) entityIn;
-		LazyOptional<IItemHandler> capability = rollingMill.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+		LazyOptional<IItemHandler> capability = rollingMill.getCapability(ForgeCapabilities.ITEM_HANDLER);
 		if (!capability.isPresent())
 			return;
 

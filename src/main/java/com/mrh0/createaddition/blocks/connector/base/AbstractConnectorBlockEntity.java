@@ -31,8 +31,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
@@ -65,7 +65,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 
 	@Override
 	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-		if (cap == CapabilityEnergy.ENERGY && (isEnergyInput(side) || isEnergyOutput(side))) return this.capability.cast();
+		if (cap == ForgeCapabilities.ENERGY && (isEnergyInput(side) || isEnergyOutput(side))) return this.capability.cast();
 		return super.getCapability(cap, side);
 	}
 
@@ -369,8 +369,8 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 			external = LazyOptional.empty();
 			return;
 		}
-		LazyOptional<IEnergyStorage> le = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
-		if(ignoreCapSide() && !le.isPresent()) le = te.getCapability(CapabilityEnergy.ENERGY);
+		LazyOptional<IEnergyStorage> le = te.getCapability(ForgeCapabilities.ENERGY, side.getOpposite());
+		if(ignoreCapSide() && !le.isPresent()) le = te.getCapability(ForgeCapabilities.ENERGY);
 		// Make sure the side isn't already cached.
 		if (le.equals(external)) return;
 		external = le;
@@ -404,8 +404,8 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		BlockEntity te = level.getBlockEntity(worldPosition.relative(getBlockState().getValue(AbstractConnectorBlock.FACING)));
 		if(te == null) return;
 
-		var cap = te.getCapability(CapabilityEnergy.ENERGY, getBlockState().getValue(AbstractConnectorBlock.FACING).getOpposite());
-		if(ignoreCapSide() && !cap.isPresent()) cap = te.getCapability(CapabilityEnergy.ENERGY);
+		var cap = te.getCapability(ForgeCapabilities.ENERGY, getBlockState().getValue(AbstractConnectorBlock.FACING).getOpposite());
+		if(ignoreCapSide() && !cap.isPresent()) cap = te.getCapability(ForgeCapabilities.ENERGY);
 
 		if (!cap.isPresent()) return;
 		VoxelShape shape = level.getBlockState(te.getBlockPos()).getBlockSupportShape(level, te.getBlockPos());

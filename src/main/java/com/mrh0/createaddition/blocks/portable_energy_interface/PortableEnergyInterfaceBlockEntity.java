@@ -12,8 +12,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
@@ -22,10 +22,6 @@ public class PortableEnergyInterfaceBlockEntity extends PortableStorageInterface
 
 	protected LazyOptional<IEnergyStorage> capability = this.createEmptyHandler();
 	protected LazyOptional<PortableEnergyInterfacePeripheral> peripheral;
-
-	// Default limits for PortableEnergyManager.
-	//public int maxInput = Config.PEI_MAX_INPUT.get();
-	//public int maxOutput = Config.PEI_MAX_OUTPUT.get();
 
 	public PortableEnergyInterfaceBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -60,7 +56,7 @@ public class PortableEnergyInterfaceBlockEntity extends PortableStorageInterface
 
 	@Override
 	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-		if (cap == CapabilityEnergy.ENERGY) return this.capability.cast();
+		if (cap == ForgeCapabilities.ENERGY) return this.capability.cast();
 		if (CreateAddition.CC_ACTIVE && Peripherals.isPeripheral(cap)) return this.peripheral.cast();
 		return super.getCapability(cap, side);
 	}

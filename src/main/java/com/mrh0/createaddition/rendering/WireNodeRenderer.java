@@ -78,7 +78,6 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 				);
 				matrixStackIn.popPose();
 			}
-		}
 
 		if(ClientEventHandler.clientRenderHeldWire) {
 			LocalPlayer player = ClientMinecraftWrapper.getPlayer();

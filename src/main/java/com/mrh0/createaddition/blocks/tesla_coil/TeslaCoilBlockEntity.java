@@ -28,7 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
@@ -170,9 +170,9 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	}
 
 	protected boolean chargeStack(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		if(!stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
+		if(!stack.getCapability(ForgeCapabilities.ENERGY).isPresent())
 			return false;
-		IEnergyStorage es = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
+		IEnergyStorage es = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
 		if(es.receiveEnergy(1, true) != 1)
 			return false;
 		if(localEnergy.getEnergyStored() < stack.getCount())

@@ -4,8 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class CreativeEnergyStorage implements IEnergyStorage {
@@ -42,12 +42,10 @@ public class CreativeEnergyStorage implements IEnergyStorage {
 
 	public void outputToSide(Level world, BlockPos pos, Direction side) {
     	BlockEntity te = world.getBlockEntity(pos.relative(side));
-		if(te == null)
-			return;
-		LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		if(te == null) return;
+		LazyOptional<IEnergyStorage> opt = te.getCapability(ForgeCapabilities.ENERGY, side.getOpposite());
 		IEnergyStorage ies = opt.orElse(null);
-		if(ies == null)
-			return;
+		if(ies == null) return;
 		ies.receiveEnergy(Integer.MAX_VALUE, false);
     }
 }

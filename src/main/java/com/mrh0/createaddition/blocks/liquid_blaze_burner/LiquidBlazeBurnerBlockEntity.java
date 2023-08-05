@@ -36,7 +36,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -47,9 +46,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -127,7 +126,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+		if (cap == ForgeCapabilities.FLUID_HANDLER)
 			return fluidCapability.cast();
 		return super.getCapability(cap, side);
 	}
@@ -297,7 +296,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 
 	private boolean tryUpdateLiquid(ItemStack itemStack) {
 		LazyOptional<IFluidHandlerItem> cap = itemStack
-				.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+				.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
 		if (!cap.isPresent())
 			return false;
 		IFluidHandlerItem handler = cap.orElse(null);
@@ -308,7 +307,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		if (!recipe.isPresent())
 			return false;
 
-		LazyOptional<IFluidHandler> tecap = getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+		LazyOptional<IFluidHandler> tecap = getCapability(ForgeCapabilities.FLUID_HANDLER);
 		if (!tecap.isPresent())
 			return false;
 		IFluidHandler tehandler = tecap.orElse(null);
@@ -492,7 +491,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
-		return containedFluidTooltip(tooltip, isPlayerSneaking, this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
+		return containedFluidTooltip(tooltip, isPlayerSneaking, this.getCapability(ForgeCapabilities.FLUID_HANDLER));
 	}
 
 	@Override
