@@ -113,6 +113,7 @@ public class CreateAddition {
         CARecipes.register(eventBus);
         CASchedule.register();
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> CAPartials::init);
+        CADamageTypes.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {

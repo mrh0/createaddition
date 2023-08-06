@@ -22,7 +22,6 @@ public class AnimatedRollingMill extends AnimatedKinetics {
 
 	@Override
 	public void draw(GuiGraphics gg, int xOffset, int yOffset) {
-		super.draw(gg);
 		var matrixStack = gg.pose();
 		matrixStack.pushPose();
 		matrixStack.translate(xOffset, yOffset, 0);
