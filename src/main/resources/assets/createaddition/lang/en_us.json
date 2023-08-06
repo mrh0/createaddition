@@ -195,7 +195,7 @@
 
 	"block.createaddition.liquid_blaze_burner": "Blaze Burner with Straw",
 
-	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	"itemGroup.createaddition.main":"Create Crafts & Additions",
 
 	"createaddition.ponder.tag.electric": "Electric Appliances",
 	"createaddition.ponder.tag.electric.description": "Components which use electricity",

@@ -17,10 +17,8 @@ import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlockEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlockEntity;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlockEntity;
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlockEntity;
 import com.mrh0.createaddition.blocks.alternator.*;
 import com.mrh0.createaddition.blocks.rolling_mill.*;
-import com.mrh0.createaddition.blocks.accumulator.*;
 import com.mrh0.createaddition.blocks.redstone_relay.*;
 import com.simibubi.create.content.kinetics.base.HalfShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
@@ -64,11 +62,11 @@ public class CABlockEntities {
 			.renderer(() -> ConnectorRenderer::new)
 			.register();
 	
-	public static final BlockEntityEntry<AccumulatorBlockEntity> ACCUMULATOR = CreateAddition.REGISTRATE
+	/*public static final BlockEntityEntry<AccumulatorBlockEntity> ACCUMULATOR = CreateAddition.REGISTRATE
 			.blockEntity("accumulator", AccumulatorBlockEntity::new)
 			.validBlocks(CABlocks.ACCUMULATOR)
 			.renderer(() -> AccumulatorRenderer::new)
-			.register();
+			.register();*/
 	
 	public static final BlockEntityEntry<RedstoneRelayBlockEntity> REDSTONE_RELAY = CreateAddition.REGISTRATE
 			.blockEntity("redstone_relay", RedstoneRelayBlockEntity::new)

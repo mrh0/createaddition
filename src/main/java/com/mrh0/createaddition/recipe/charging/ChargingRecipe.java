@@ -1,7 +1,9 @@
 package com.mrh0.createaddition.recipe.charging;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.index.CARecipes;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -20,7 +22,6 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	
 	public static RecipeType<ChargingRecipe> TYPE = new ChargingRecipeType();
 	@SuppressWarnings("deprecation")
-	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "charging"));
 	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy) {
 		this.id = id;
 		this.ingredient = ingredient;
@@ -40,24 +41,24 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 		return ingredient.test(wrapper.getItem(0));
 	}
 
-
 	@Override
-	public ItemStack assemble(RecipeWrapper wrapper) {
+	public ItemStack assemble(RecipeWrapper pContainer, RegistryAccess pRegistryAccess) {
 		return output;
 	}
-
 
 	@Override
 	public boolean canCraftInDimensions(int w, int h) {
 		return true;
 	}
 
-
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
 		return output;
 	}
 
+	public ItemStack getResultItem() {
+		return output;
+	}
 
 	@Override
 	public ResourceLocation getId() {
@@ -67,7 +68,7 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return CARecipes.CHARGING.get();
 	}
 
 

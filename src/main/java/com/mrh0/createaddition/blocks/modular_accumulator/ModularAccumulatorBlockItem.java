@@ -100,8 +100,7 @@ public class ModularAccumulatorBlockItem extends BlockItem {
 				BlockState blockState = world.getBlockState(offsetPos);
 				if (ModularAccumulatorBlock.isAccumulator(blockState))
 					continue;
-				if (!blockState.getMaterial()
-					.isReplaceable())
+				if (!blockState.canBeReplaced())
 					return;
 				blocksToPlace++;
 			}

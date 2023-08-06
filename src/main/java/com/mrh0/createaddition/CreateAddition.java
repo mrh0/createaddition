@@ -1,6 +1,7 @@
 package com.mrh0.createaddition;
 
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
+import com.mrh0.createaddition.index.*;
 import com.mrh0.createaddition.trains.schedule.CASchedule;
 import com.simibubi.create.content.fluids.tank.BoilerHeaters;
 import com.simibubi.create.content.kinetics.BlockStressValues;
@@ -41,17 +42,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.config.Config;
-import com.mrh0.createaddition.groups.ModGroup;
-import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.index.CAEffects;
-import com.mrh0.createaddition.index.CAFluids;
-import com.mrh0.createaddition.index.CAItemProperties;
-import com.mrh0.createaddition.index.CAItems;
-import com.mrh0.createaddition.index.CAPartials;
-import com.mrh0.createaddition.index.CAPonder;
-import com.mrh0.createaddition.index.CAPotatoCannonProjectiles;
-import com.mrh0.createaddition.index.CARecipes;
-import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -84,7 +74,6 @@ public class CreateAddition {
         if (item instanceof BlockItem blockItem) {
             Block block = blockItem.getBlock();
             if (block instanceof ElectricMotorBlock) {
-                System.out.println("TEST1");
                 return new KineticStats(block);
             }
         }
@@ -114,7 +103,7 @@ public class CreateAddition {
         CC_ACTIVE = ModList.get().isLoaded("computercraft");
         AE2_ACTIVE = ModList.get().isLoaded("ae2");
 
-        new ModGroup("main");
+        CACreativeModeTabs.register(eventBus);
         REGISTRATE.registerEventListeners(eventBus);
         CABlocks.register();
         CABlockEntities.register();

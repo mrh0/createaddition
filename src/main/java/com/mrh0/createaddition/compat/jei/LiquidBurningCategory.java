@@ -16,6 +16,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 
 public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe> {
@@ -48,24 +49,23 @@ public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe>
 	}
 
 	@Override
-	public void draw(LiquidBurningRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX,
+	public void draw(LiquidBurningRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gg, double mouseX,
 			double mouseY) {
 
-		ClientMinecraftWrapper.getFont().draw(stack, formatTime(recipe.getBurnTime()), getBackground().getWidth() / 2 + 48, 86 - 50, 4210752);
-
+		gg.drawString(ClientMinecraftWrapper.getFont(), formatTime(recipe.getBurnTime()), getBackground().getWidth() / 2 + 48, 86 - 50, 4210752);
 
 		HeatCondition requiredHeat = recipe.isSuperheated() ? HeatCondition.SUPERHEATED : HeatCondition.HEATED;
 
-		AllGuiTextures.JEI_LIGHT.render(stack, 81, 58 + 30 - 50);
+		AllGuiTextures.JEI_LIGHT.render(gg, 81, 58 + 30 - 50);
 
-		AllGuiTextures.JEI_HEAT_BAR.render(stack, 4, 80 - 50);
-		ClientMinecraftWrapper.getFont().draw(stack, Lang.translateDirect(requiredHeat.getTranslationKey()), 9,
+		AllGuiTextures.JEI_HEAT_BAR.render(gg, 4, 80 - 50);
+		gg.drawString(ClientMinecraftWrapper.getFont(), Lang.translateDirect(requiredHeat.getTranslationKey()), 9,
 				86 - 50, requiredHeat.getColor());
 
 		heater.withHeat(requiredHeat.visualizeAsBlazeBurner())
-			.draw(stack, getBackground().getWidth() / 2 + 3, 55 - 50);
+			.draw(gg, getBackground().getWidth() / 2 + 3, 55 - 50);
 
-		AllGuiTextures.JEI_DOWN_ARROW.render(stack, getBackground().getWidth() / 2 + 3, 8);
+		AllGuiTextures.JEI_DOWN_ARROW.render(gg, getBackground().getWidth() / 2 + 3, 8);
 	}
 
 	public static String formatTime(int ticks) {

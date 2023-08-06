@@ -24,14 +24,14 @@ public class CARecipes {
 	public static final DeferredRegister<RecipeSerializer<?>> TYPES =
             DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, CreateAddition.MODID);
 	
-	static RegistryObject<RecipeSerializer<?>> ROLLING = TYPES.register("rolling", () ->
+	public static RegistryObject<RecipeSerializer<?>> ROLLING = TYPES.register("rolling", () ->
 		new SequencedAssemblyRollingRecipeSerializer(new RollingRecipeProcessingFactory()));
-	
-	static RegistryObject<RecipeSerializer<?>> CHARGING = TYPES.register("charging", () ->
+
+	public static RegistryObject<RecipeSerializer<?>> CHARGING = TYPES.register("charging", () ->
 		new ChargingRecipeSerializer());
-	
-	static RegistryObject<RecipeSerializer<?>> LIQUID_BURNING = TYPES.register("liquid_burning", () ->
-	new LiquidBurningRecipeSerializer());
+
+	public static RegistryObject<RecipeSerializer<?>> LIQUID_BURNING = TYPES.register("liquid_burning", () ->
+		new LiquidBurningRecipeSerializer());
 	
     public static void register(IEventBus event) {
     	

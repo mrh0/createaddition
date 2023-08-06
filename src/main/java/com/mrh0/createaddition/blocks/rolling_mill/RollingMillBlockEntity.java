@@ -161,9 +161,10 @@ public class RollingMillBlockEntity extends KineticBlockEntity {
 	}
 	
 	private void process() {
+		if(getLevel() == null) return;
 		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
 
-		var sequenced = SequencedAssemblyRecipe.getRecipe(level,inventoryIn.getItem(0), RollingRecipe.TYPE,RollingRecipe.class);
+		var sequenced = SequencedAssemblyRecipe.getRecipe(getLevel(), inventoryIn.getItem(0), RollingRecipe.TYPE,RollingRecipe.class);
 		if(sequenced.isPresent()) {
 			var recipe = sequenced.get();
 			var results = recipe.rollResults();
@@ -185,7 +186,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity {
 			lastRecipe = recipe.get();
 		}
 
-		ItemStack result = lastRecipe.assemble(inventoryIn).copy();
+		ItemStack result = lastRecipe.assemble(inventoryIn, getLevel().registryAccess()).copy();
 		ItemHandlerHelper.insertItemStacked(outputInv, result, false);
 		ItemStack stackInSlot = inputInv.getStackInSlot(0);
 		stackInSlot.shrink(1); //lastRecipe.getIngredient().getItems()[0].getCount()

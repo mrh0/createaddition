@@ -1,8 +1,7 @@
 package com.mrh0.createaddition.compat.jei;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
+import com.mrh0.createaddition.util.ClientMinecraftWrapper;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
@@ -10,7 +9,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class ChargingCategory extends CARecipeCategory<ChargingRecipe> {
 
@@ -34,11 +33,12 @@ public class ChargingCategory extends CARecipeCategory<ChargingRecipe> {
 	}
 
 	@Override
-	public void draw(ChargingRecipe recipe, IRecipeSlotsView iRecipeSlotsView, PoseStack matrixStack, double mouseX, double mouseY) {
-		AllGuiTextures.JEI_ARROW.render(matrixStack, 85, 32);
-		AllGuiTextures.JEI_DOWN_ARROW.render(matrixStack, 43, 4);
-		tesla_coil.draw(matrixStack, 48, 27);
-		
-		Minecraft.getInstance().font.draw(matrixStack, Util.format(recipe.energy) + "fe", 86, 9, 4210752);
+	public void draw(ChargingRecipe recipe, IRecipeSlotsView iRecipeSlotsView, GuiGraphics gg, double mouseX, double mouseY) {
+		var matrixStack = gg.pose();
+		AllGuiTextures.JEI_ARROW.render(gg, 85, 32);
+		AllGuiTextures.JEI_DOWN_ARROW.render(gg, 43, 4);
+		tesla_coil.draw(gg, 48, 27);
+
+		gg.drawString(ClientMinecraftWrapper.getFont(), Util.format(recipe.energy) + "fe", 86, 9, 4210752);
 	}
 }

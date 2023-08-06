@@ -3,12 +3,9 @@ package com.mrh0.createaddition.index;
 import static com.simibubi.create.AllTags.forgeItemTag;
 import static com.simibubi.create.AllTags.AllItemTags.PLATES;
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.item.WireSpool;
 import com.mrh0.createaddition.item.BiomassPellet;
 import com.mrh0.createaddition.item.DiamondGritSandpaper;
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.world.item.Item;
@@ -17,7 +14,7 @@ import net.minecraft.world.item.Item;
 public class CAItems {
 
 	static {
-		CreateAddition.REGISTRATE.creativeModeTab(() -> ModGroup.MAIN);
+		CreateAddition.REGISTRATE.useCreativeTab(CACreativeModeTabs.MAIN_TAB);
 	}
 	
 	public static final ItemEntry<Item> CAPACITOR =
@@ -85,11 +82,11 @@ public class CAItems {
 	public static final ItemEntry<Item> BRASS_ROD =
 			CreateAddition.REGISTRATE.item("brass_rod", Item::new).register();
 	
-	public static final ItemEntry<HiddenIngredientItem> CAKE_BASE =
-			CreateAddition.REGISTRATE.item("cake_base", HiddenIngredientItem::new)
+	public static final ItemEntry<Item> CAKE_BASE =
+			CreateAddition.REGISTRATE.item("cake_base", Item::new) // TODO: Hide in Tab
 				.register();
-	public static final ItemEntry<HiddenIngredientItem> CAKE_BASE_BAKED =
-			CreateAddition.REGISTRATE.item("cake_base_baked", HiddenIngredientItem::new)
+	public static final ItemEntry<Item> CAKE_BASE_BAKED =
+			CreateAddition.REGISTRATE.item("cake_base_baked", Item::new) // TODO: Hide in Tab
 				.register();
 	
 	public static final ItemEntry<Item> STRAW =

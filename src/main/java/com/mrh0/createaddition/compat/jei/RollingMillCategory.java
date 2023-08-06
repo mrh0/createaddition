@@ -8,6 +8,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 
@@ -31,10 +32,10 @@ public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 	}
 
 	@Override
-	public void draw(RollingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX,
-			double mouseY) {
-		AllGuiTextures.JEI_ARROW.render(stack, 85, 32);
-		AllGuiTextures.JEI_DOWN_ARROW.render(stack, 43, 4);
-		rolling_mill.draw(stack, 48, 27);
+	public void draw(RollingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gg, double mouseX,
+					 double mouseY) {
+		AllGuiTextures.JEI_ARROW.render(gg, 85, 32);
+		AllGuiTextures.JEI_DOWN_ARROW.render(gg, 43, 4);
+		rolling_mill.draw(gg, 48, 27);
 	}
 }

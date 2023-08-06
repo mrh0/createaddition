@@ -73,7 +73,7 @@ public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 		if (!onCarriage || !(context.motion.length() > 0.25D)) {
 			BlockPos pos;
 			if (context.world.isClientSide) {
-				pos = new BlockPos(context.position);
+				pos = new BlockPos((int)context.position.x, (int)context.position.y, (int)context.position.z); // was new BlockPos(context.position)
 				if (!this.findInterface(context, pos)) {
 					this.reset(context);
 				}

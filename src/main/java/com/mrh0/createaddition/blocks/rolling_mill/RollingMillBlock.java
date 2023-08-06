@@ -83,7 +83,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 	public void updateEntityAfterFallOn(BlockGetter worldIn, Entity entityIn) {
 		super.updateEntityAfterFallOn(worldIn, entityIn);
 
-		if (entityIn.level.isClientSide)
+		if (entityIn.level().isClientSide)
 			return;
 		if (!(entityIn instanceof ItemEntity))
 			return;

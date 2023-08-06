@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricBlockEntity;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CADamageTypes;
 import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.util.Util;
@@ -40,8 +41,6 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	private ItemStackHandler inputInv;
 	private int chargeAccumulator;
 	protected int poweredTimer = 0;
-
-	private static DamageSource DMG_SOURCE = new DamageSource("tesla_coil");
 
 	public TeslaCoilBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
@@ -112,7 +111,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 				time = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get();
 			}
 			if(dmg > 0)
-				e.hurt(DMG_SOURCE, dmg);
+				e.hurt(CADamageTypes.TESLA_COIL.source(level), dmg);
 			if(time > 0)
 				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), time));
 		}
@@ -182,7 +181,8 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	}
 
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		if(!inputInv.getStackInSlot(0).sameItem(stack)) {
+		if(this.getLevel() == null) return false;
+		if(!inputInv.getStackInSlot(0).is(stack.getItem())) {
 			inputInv.setStackInSlot(0, stack);
 			recipeCache = find(new RecipeWrapper(inputInv), this.getLevel());
 			chargeAccumulator = 0;
@@ -194,7 +194,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 			if(chargeAccumulator >= recipe.getEnergy()) {
 				TransportedItemStack remainingStack = transported.copy();
 				TransportedItemStack result = transported.copy();
-				result.stack = recipe.getResultItem().copy();
+				result.stack = recipe.getResultItem(this.getLevel().registryAccess()).copy();
 				remainingStack.stack.shrink(1);
 				List<TransportedItemStack> outList = new ArrayList<>();
 				outList.add(result);

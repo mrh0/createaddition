@@ -1,25 +1,19 @@
 package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.groups.ModGroup;
 import com.simibubi.create.AllFluids;
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.builders.FluidBuilder;
 import com.tterrag.registrate.util.entry.FluidEntry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.FluidType.Properties;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 public class CAFluids {
 	static {
-		CreateAddition.REGISTRATE.creativeModeTab(() -> ModGroup.MAIN);
+		CreateAddition.REGISTRATE.useCreativeTab(CACreativeModeTabs.MAIN_TAB);
 	}
 
 	public static FluidEntry<ForgeFlowingFluid.Flowing> SEED_OIL;
