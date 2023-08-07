@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.energy;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 
@@ -13,14 +14,14 @@ public enum WireConnectResult {
 	CONNECT_IN(new TranslatableComponent("statusbar.createaddition.wire.connect_in")),
 	CONNECT_OUT(new TranslatableComponent("statusbar.createaddition.wire.connect_out")),
 	
-	LONG(new TranslatableComponent("statusbar.createaddition.wire.long")),
-	OBSTRUCTED(new TranslatableComponent("statusbar.createaddition.wire.obstructed")),
-	COUNT(new TranslatableComponent("statusbar.createaddition.wire.count")),
+	LONG(new TranslatableComponent("statusbar.createaddition.wire.long").withStyle(ChatFormatting.RED)),
+	OBSTRUCTED(new TranslatableComponent("statusbar.createaddition.wire.obstructed").withStyle(ChatFormatting.RED)),
+	COUNT(new TranslatableComponent("statusbar.createaddition.wire.count").withStyle(ChatFormatting.RED)),
 	REMOVED(new TranslatableComponent("statusbar.createaddition.wire.removed")),
-	EXISTS(new TranslatableComponent("statusbar.createaddition.wire.exists")),
-	NO_CONNECTION(new TranslatableComponent("statusbar.createaddition.wire.no_connection")),
-	INVALID(new TranslatableComponent("statusbar.createaddition.wire.invalid")),
-	REQUIRES_HIGH_CURRENT(new TranslatableComponent("statusbar.createaddition.wire.requires_high_current"))
+	EXISTS(new TranslatableComponent("statusbar.createaddition.wire.exists").withStyle(ChatFormatting.RED)),
+	NO_CONNECTION(new TranslatableComponent("statusbar.createaddition.wire.no_connection").withStyle(ChatFormatting.RED)),
+	INVALID(new TranslatableComponent("statusbar.createaddition.wire.invalid").withStyle(ChatFormatting.RED)),
+	REQUIRES_HIGH_CURRENT(new TranslatableComponent("statusbar.createaddition.wire.requires_high_current").withStyle(ChatFormatting.RED))
 	;
 	
 	private final Component message;
