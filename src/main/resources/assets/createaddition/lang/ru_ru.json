@@ -263,7 +263,7 @@
 	"createaddition.ponder.pei_transfer.text_3": "Поместите второй с промежутком в 1 или 2 блока между ними",
 	"createaddition.ponder.pei_transfer.text_4": "Когда они пройдут мимо друг друга, они соединятся",
 	"createaddition.ponder.pei_transfer.text_5": "Пока они соединены, портативный интерфейс будет представлять собой ВСЕ аккумаляторы на штуковине",
-	"createaddition.ponder.pei_transfer.text_6": "Теперь обмен энергией может осуществляться в соответствии режимом разъема...",
+	"createaddition.ponder.pei_transfer.text_6": "Теперь обмен энергией может осуществляться в соответствии с режимом разъема...",
 	"createaddition.ponder.pei_transfer.text_7": "После того, как в течение некоторого времени не будет произведен обмен энергией, устройство продолжит свой путь.",
 
 	"createaddition.ponder.pei_redstone.header": "Редстоун-контролированием",
