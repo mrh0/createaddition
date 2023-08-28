@@ -71,7 +71,7 @@ public class RollingMillTileEntity extends KineticBlockEntity implements SidedSt
 
 		if (getSpeed() == 0)
 			return;
-		for (int i = 0; i < outputInv.getSlots(); i++)
+		for (int i = 0; i < outputInv.getSlotCount(); i++)
 			if (outputInv.getStackInSlot(i)
 					.getCount() == outputInv.getSlotLimit(i))
 				return;
@@ -92,7 +92,7 @@ public class RollingMillTileEntity extends KineticBlockEntity implements SidedSt
 		//Note: this code below is taken and adapted from the Create repo, specifically:
 		//https://github.com/Creators-of-Create/Create/blob/a92855254c9a7b85ba28781e2e3ce7169549cbf7/src/main/java/com/simibubi/create/content/contraptions/components/saw/SawTileEntity.java#L190,
 		var ejectDirection = getEjectDirection();
-		for (int slot = 0; slot < outputInv.getSlots(); slot++) {
+		for (int slot = 0; slot < outputInv.getSlotCount(); slot++) {
 			var stack = outputInv.getStackInSlot(slot);
 			if(stack.isEmpty())
 				continue;
@@ -113,12 +113,12 @@ public class RollingMillTileEntity extends KineticBlockEntity implements SidedSt
 			boolean changed = false;
 			if(level.isClientSide && !isVirtual())
 				return;
-			for (int slot = 0; slot < outputInv.getSlots(); slot++) {
+			for (int slot = 0; slot < outputInv.getSlotCount(); slot++) {
 				var stack = outputInv.getStackInSlot(slot);
 				if(stack.isEmpty())
 					continue;
 				ItemStack rest = behaviour.handleInsertion(stack,ejectDirection,false);
-				if(!stack.isEmpty() && rest.getCount() == stack.getCount() && rest.getItem() == stack.getItem() && ItemStack.tagMatches(rest, stack))
+				if(!stack.isEmpty() && rest.getCount() == stack.getCount() && rest.getItem() == stack.getItem() && ItemStack.isSameItemSameTags(rest, stack))
 					continue;
 				outputInv.setStackInSlot(slot,rest);
 				changed = true;
@@ -197,7 +197,7 @@ public class RollingMillTileEntity extends KineticBlockEntity implements SidedSt
 			lastRecipe = recipe.get();
 		}
 
-		ItemStack result = lastRecipe.assemble(inventoryIn).copy();
+		ItemStack result = lastRecipe.assemble(inventoryIn, null).copy();
 		try(Transaction t = TransferUtil.getTransaction()) {
 			outputInv.insert(ItemVariant.of(result), result.getCount(), t);
 			t.commit();

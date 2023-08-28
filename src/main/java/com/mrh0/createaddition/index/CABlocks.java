@@ -2,6 +2,7 @@ package com.mrh0.createaddition.index;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
+
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
@@ -36,18 +37,18 @@ import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehavio
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 
 
 @SuppressWarnings("CommentedOutCode")
 public class CABlocks {
 
 	static {
-		CreateAddition.REGISTRATE.creativeModeTab(() -> ModGroup.MAIN);
+		CreateAddition.REGISTRATE.useCreativeTab(ModGroup.MAIN_KEY);
 	}
 
 	public static final BlockEntry<ElectricMotorBlock> ELECTRIC_MOTOR = CreateAddition.REGISTRATE.block("electric_motor", ElectricMotorBlock::new)
@@ -95,11 +96,11 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();*/
 
-	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = CreateAddition.REGISTRATE.block("accumulator",  AccumulatorBlock::new)
+	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = (BlockEntry<AccumulatorBlock>) CreateAddition.REGISTRATE.block("accumulator",  AccumulatorBlock::new)
 			.initialProperties(SharedProperties::softMetal)
 			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
 			.item()
-			.tab(() -> null)
+			.tab(ModGroup.MAIN_KEY)
 			.transform(customItemModel())
 			.register();
 
@@ -111,21 +112,21 @@ public class CABlocks {
 			.register();
 
 	public static final BlockEntry<CACakeBlock> CHOCOLATE_CAKE = CreateAddition.REGISTRATE.block("chocolate_cake",  CACakeBlock::new)
-			.initialProperties(Material.CAKE)
+			.initialProperties(() -> Blocks.CAKE)
 			.properties(props -> props.sound(SoundType.WOOL).strength(0.5f))
 			.item()
 			.transform(customItemModel())
 			.register();
 
 	public static final BlockEntry<CACakeBlock> HONEY_CAKE = CreateAddition.REGISTRATE.block("honey_cake",  CACakeBlock::new)
-			.initialProperties(Material.CAKE)
+			.initialProperties(() -> Blocks.CAKE)
 			.properties(props -> props.sound(SoundType.WOOL).strength(0.5f))
 			.item()
 			.transform(customItemModel())
 			.register();
 
 	public static final BlockEntry<BarbedWireBlock> BARBED_WIRE = CreateAddition.REGISTRATE.block("barbed_wire",  BarbedWireBlock::new)
-			.initialProperties(Material.WEB)
+			.initialProperties(() -> Blocks.COBWEB)
 			.properties(props -> props.noCollission().requiresCorrectToolForDrops().strength(4.0F))
 			.item()
 			.transform(customItemModel())
@@ -151,7 +152,7 @@ public class CABlocks {
 
 	public static final BlockEntry<LiquidBlazeBurnerBlock> LIQUID_BLAZE_BURNER = CreateAddition.REGISTRATE.block("liquid_blaze_burner",  LiquidBlazeBurnerBlock::new)
 			.initialProperties(SharedProperties::softMetal)
-			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
+			.properties(p -> p.mapColor(DyeColor.GRAY))
 			.properties(p -> p.lightLevel(BlazeBurnerBlock::getLight))
 			.transform(pickaxeOnly())
 			.addLayer(() -> RenderType::cutoutMipped)
@@ -174,7 +175,7 @@ public class CABlocks {
 	public static final BlockEntry<DigitalAdapterBlock> DIGITAL_ADAPTER = CreateAddition.REGISTRATE.block("digital_adapter",  DigitalAdapterBlock::new)
 			.initialProperties(SharedProperties::softMetal)
 			.onRegister(assignDataBehaviour(new DigitalAdapterDisplaySource(), "digital_adapter"))
-			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
+			.properties(p -> p.mapColor(DyeColor.GRAY))
 			.item(DigitalAdapterBlockItem::new)
 			.transform(customItemModel())
 			.register();

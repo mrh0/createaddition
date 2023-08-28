@@ -144,7 +144,7 @@
 	"createaddition.recipe.liquid_burning.burn_time": "Brennzeit",
 	"block.createaddition.tesla_coil": "Teslaspule",
 	"block.createaddition.liquid_blaze_burner": "Lohenbrenner mit Strohhalm",
-	"itemGroup.createaddition:main": "Create Crafts & Additions",
+	"itemGroup.createaddition.main": "Create Crafts & Additions",
 	"createaddition.command.cca_api.link": "Klick hier für eine Api Dokumentation",
 	"createaddition.ponder.tag.electric": "Elektrische Geräte",
 	"createaddition.ponder.tag.electric.description": "Komponente die Strom nutzen",
@@ -207,10 +207,10 @@
 	"createaddition.schedule.condition.energy_threshold": "Energieladung Bedingung",
 	"createaddition.schedule.condition.threshold.unit": "Kfe",
 	"createaddition.schedule.condition.threshold.energy": "Energie",
-	"death.attack.barbed_wire": "%1$s versuchte über Stacheldraht zu klettern",
-	"death.attack.barbed_wire.player": "%1$s versuchte über Stacheldraht zu klettern während einem Kampf mit %2$s",
+	"death.attack.createaddition.barbed_wire": "%1$s versuchte über Stacheldraht zu klettern",
+	"death.attack.createaddition.barbed_wire.player": "%1$s versuchte über Stacheldraht zu klettern während einem Kampf mit %2$s",
 	"effect.createaddition.shocking": "Geschockt",
-	"death.attack.tesla_coil": "%1$s erhielt einen tödlichen Stromschlag",
-	"death.attack.tesla_coil.player": "%1$serhielt einen tödlichen Stromschlag während einem Kampf mit %2$s",
+	"death.attack.createaddition.tesla_coil": "%1$s erhielt einen tödlichen Stromschlag",
+	"death.attack.createaddition.tesla_coil.player": "%1$serhielt einen tödlichen Stromschlag während einem Kampf mit %2$s",
 	"effect.createaddition.shocking.description": "Verursacht stark verminderte Bewegungsgeschwindigkeit"
 }

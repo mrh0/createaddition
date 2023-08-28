@@ -10,6 +10,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class ChargingCategory extends CARecipeCategory<ChargingRecipe> {
 
@@ -29,15 +30,15 @@ public class ChargingCategory extends CARecipeCategory<ChargingRecipe> {
 		builder
 				.addSlot(RecipeIngredientRole.OUTPUT, 140, 28)
 				.setBackground(getRenderedSlot(), -1, -1)
-				.addItemStack(recipe.getResultItem());
+				.addItemStack(recipe.getResultItem(null));
 	}
 
 	@Override
-	public void draw(ChargingRecipe recipe, IRecipeSlotsView iRecipeSlotsView, PoseStack matrixStack, double mouseX, double mouseY) {
+	public void draw(ChargingRecipe recipe, IRecipeSlotsView iRecipeSlotsView, GuiGraphics matrixStack, double mouseX, double mouseY) {
 		AllGuiTextures.JEI_ARROW.render(matrixStack, 85, 32);
 		AllGuiTextures.JEI_DOWN_ARROW.render(matrixStack, 43, 4);
 		tesla_coil.draw(matrixStack, 48, 27);
-		
-		Minecraft.getInstance().font.draw(matrixStack, Util.format(recipe.energy) + "fe", 86, 9, 4210752);
+
+		matrixStack.drawString(Minecraft.getInstance().font, Util.format(recipe.energy) + "fe", 86, 9, 4210752);
 	}
 }

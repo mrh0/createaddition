@@ -2,7 +2,6 @@ package com.mrh0.createaddition.rendering;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireType;
@@ -20,6 +19,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix4f;
 
 public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {//extends BlockEntityRenderer<T> {
 
@@ -90,7 +90,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 
 		VertexConsumer ivertexbuilder = buffer.getBuffer(CARenderType.WIRE);
 		Matrix4f matrix4f = stack.last().pose();
-		float f = Mth.fastInvSqrt(x * x + z * z) * 0.025F / 2.0F;
+		float f = Mth.invSqrt(x * x + z * z) * 0.025F / 2.0F;//fastInvSqrt
 		float o1 = z * f;
 		float o2 = x * f;
 		BlockPos blockpos1 = tileEntityIn.getBlockPos();

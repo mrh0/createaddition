@@ -3,7 +3,7 @@ package com.mrh0.createaddition.rendering;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
-import io.github.fabricators_of_create.porting_lib.mixin.client.accessor.RenderTypeAccessor;
+import io.github.fabricators_of_create.porting_lib.mixin.accessors.client.accessor.RenderTypeAccessor;
 import net.minecraft.client.renderer.RenderType;
 
 public class CARenderType extends RenderType {

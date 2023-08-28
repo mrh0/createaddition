@@ -12,9 +12,9 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class CAFluids {
-	static {
+	/*static {
 		CreateAddition.REGISTRATE.creativeModeTab(() -> ModGroup.MAIN);
-	}
+	}*/
 
 	public static FluidEntry<SimpleFlowableFluid.Flowing> SEED_OIL;
 	public static FluidEntry<SimpleFlowableFluid.Flowing> BIOETHANOL;

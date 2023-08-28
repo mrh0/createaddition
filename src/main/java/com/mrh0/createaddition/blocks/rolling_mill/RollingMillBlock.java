@@ -58,7 +58,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 		withBlockEntityDo(worldIn, pos, rollingMill -> {
 			boolean emptyOutput = true;
 			ItemStackHandler inv = rollingMill.outputInv;
-			for (int slot = 0; slot < inv.getSlots(); slot++) {
+			for (int slot = 0; slot < inv.getSlotCount(); slot++) {
 				ItemStack stackInSlot = inv.getStackInSlot(slot);
 				if (!stackInSlot.isEmpty())
 					emptyOutput = false;
@@ -68,7 +68,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 
 			if (emptyOutput) {
 				inv = rollingMill.inputInv;
-				for (int slot = 0; slot < inv.getSlots(); slot++) {
+				for (int slot = 0; slot < inv.getSlotCount(); slot++) {
 					player.getInventory().placeItemBackInInventory(inv.getStackInSlot(slot));
 					inv.setStackInSlot(slot, ItemStack.EMPTY);
 				}
@@ -85,7 +85,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 	public void updateEntityAfterFallOn(@NotNull BlockGetter worldIn, @NotNull Entity entityIn) {
 		super.updateEntityAfterFallOn(worldIn, entityIn);
 
-		if (entityIn.level.isClientSide)
+		if (entityIn.level().isClientSide)
 			return;
 		if (!(entityIn instanceof ItemEntity itemEntity))
 			return;

@@ -37,7 +37,7 @@ public record ObservePacket(BlockPos pos, int node) {
 	}
 
 	private static void sendUpdate(ObservePacket pkt, ServerPlayer player) {
-		BlockEntity te = player.level.getBlockEntity(pkt.pos);
+		BlockEntity te = player.level().getBlockEntity(pkt.pos);
 		if (te != null) {
 			if (te instanceof IObserveTileEntity ote) {
 				ote.onObserved(player, pkt);

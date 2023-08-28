@@ -13,12 +13,12 @@ public class DigitalAdapterBlockItem extends BlockItem {
         super(block, props);
     }
 
-    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
+    /*public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
         if (tab == CreativeModeTab.TAB_SEARCH) {
             super.fillItemCategory(tab, stacks);
         }
         if(tab == ModGroup.MAIN && CreateAddition.CC_ACTIVE) {
             super.fillItemCategory(tab, stacks);
         }
-    }
+    }*/
 }

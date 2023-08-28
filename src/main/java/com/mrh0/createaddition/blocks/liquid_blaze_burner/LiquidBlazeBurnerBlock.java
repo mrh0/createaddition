@@ -67,11 +67,11 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 		basin.notifyChangeOfContents();
 	}
 
-	@Override
+	/*@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> list) {
 		list.add(AllItems.EMPTY_BLAZE_BURNER.asStack());
 		super.fillItemCategory(group, list);
-	}
+	}*/
 
 	@Override
 	public Class<LiquidBlazeBurnerTileEntity> getBlockEntityClass() {

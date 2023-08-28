@@ -3,6 +3,7 @@ package com.mrh0.createaddition.blocks.tesla_coil;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CADamageTypes;
 import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.util.Util;
@@ -11,17 +12,14 @@ import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehavio
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.DamageSourceAccessor;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandlerContainer;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.DoubleTag;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +29,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import team.reborn.energy.api.EnergyStorage;
-import team.reborn.energy.api.EnergyStorageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +59,6 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 
 	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
-
-	private static final DamageSource DMG_SOURCE = DamageSourceAccessor.port_lib$init("tesla_coil");
 	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(
 				tileEntityTypeIn,
@@ -126,7 +121,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 				time = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get();
 			}
 			if(dmg > 0)
-				e.hurt(DMG_SOURCE, dmg);
+				e.hurt(CADamageTypes.TESLA_COIL.source(level), dmg);
 			if(time > 0)
 				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), (int) time));
 		}
@@ -209,7 +204,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	}
 
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		if(!inputInv.getStackInSlot(0).sameItem(stack)) {
+		if(!inputInv.getStackInSlot(0).is(stack.getItem())) {
 			inputInv.setStackInSlot(0, stack);
 			recipeCache = find(new RecipeWrapper(inputInv), Objects.requireNonNull(this.getLevel()));
 			chargeAccumulator = 0;
@@ -221,7 +216,7 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 			if(chargeAccumulator >= recipe.getEnergy()) {
 				TransportedItemStack remainingStack = transported.copy();
 				TransportedItemStack result = transported.copy();
-				result.stack = recipe.getResultItem().copy();
+				result.stack = recipe.getResultItem(null).copy();
 				remainingStack.stack.shrink(1);
 				List<TransportedItemStack> outList = new ArrayList<>();
 				outList.add(result);
