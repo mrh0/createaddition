@@ -98,8 +98,8 @@ dependencies {
 
     modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:" +
             "${project.create_version}+mc${project.minecraft_version}")
-
-    modImplementation("curse.maven:cc-restitched-462672:3908334")
+    
+    modImplementation("curse.maven:cc-tweaked-282001:4726253")
 
     modImplementation("appeng:appliedenergistics2-fabric:${project.ae2_version}")
 

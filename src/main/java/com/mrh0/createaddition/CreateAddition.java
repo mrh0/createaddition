@@ -2,6 +2,7 @@ package com.mrh0.createaddition;
 
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.commands.CCApiCommand;
+import com.mrh0.createaddition.compat.computercraft.ComputerCraftCompat;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.event.GameEvents;
 import com.mrh0.createaddition.groups.ModGroup;
@@ -70,6 +71,10 @@ public class CreateAddition implements ModInitializer {
         CASchedule.register();
         ModGroup.register();
         REGISTRATE.register();
+
+        if(CC_ACTIVE){
+            ComputerCraftCompat.registerCompat();
+        }
 
         //  Setup events
         GameEvents.initCommon();

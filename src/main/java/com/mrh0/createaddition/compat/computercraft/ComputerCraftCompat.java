@@ -1,9 +1,9 @@
 package com.mrh0.createaddition.compat.computercraft;
 
-import dan200.computercraft.api.ComputerCraftAPI;
+import dan200.computercraft.api.peripheral.PeripheralLookup;
 
 public class ComputerCraftCompat {
     public static void registerCompat() {
-        ComputerCraftAPI.registerPeripheralProvider(new PeripheralProvider());
+        PeripheralLookup.get().registerFallback(PeripheralProvider::getPeripheral);
     }
 }
