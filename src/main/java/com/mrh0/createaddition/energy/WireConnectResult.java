@@ -26,7 +26,7 @@ public enum WireConnectResult {
 	
 	private final Component message;
 	
-	private WireConnectResult(Component message) {
+	WireConnectResult(Component message) {
 		this.message = message;
 	}
 	
