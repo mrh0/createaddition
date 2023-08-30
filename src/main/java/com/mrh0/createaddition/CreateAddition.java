@@ -72,9 +72,6 @@ public class CreateAddition implements ModInitializer {
         ModGroup.register();
         REGISTRATE.register();
 
-        if(CC_ACTIVE){
-            ComputerCraftCompat.registerCompat();
-        }
 
         //  Setup events
         GameEvents.initCommon();
@@ -100,6 +97,10 @@ public class CreateAddition implements ModInitializer {
 			}
 			return 0;
     	});
+
+        if(CC_ACTIVE){
+            ComputerCraftCompat.registerCompat();
+        }
     }
 
     public static ResourceLocation asResource(String path) {
