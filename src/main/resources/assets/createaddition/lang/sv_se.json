@@ -143,7 +143,7 @@
 	"block.createaddition.barbed_wire.tooltip.summary": "Inflicts damage when walked through.",
 	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
 	"block.createaddition.tesla_coil": "Tesla Coil",
-	"itemGroup.createaddition:main": "Create Crafts & Additions",
+	"itemGroup.createaddition.main": "Create Crafts & Additions",
 	"createaddition.command.cca_api.link": "Click here to open API documentation",
 	"createaddition.ponder.tag.electric": "Electric Appliances",
 	"createaddition.ponder.tag.electric.description": "Components which use electricity",
@@ -206,10 +206,10 @@
 	"createaddition.schedule.condition.energy_threshold": "Energy Cargo Condition",
 	"createaddition.schedule.condition.threshold.unit": "Kfe",
 	"createaddition.schedule.condition.threshold.energy": "Energy",
-	"death.attack.barbed_wire": "%1$s tried to cross barbed wire",
-	"death.attack.barbed_wire.player": "%1$s tried to cross barbed wire while fighting %2$s",
+	"death.attack.createaddition.barbed_wire": "%1$s tried to cross barbed wire",
+	"death.attack.createaddition.barbed_wire.player": "%1$s tried to cross barbed wire while fighting %2$s",
 	"effect.createaddition.shocking": "Shocked",
-	"death.attack.tesla_coil": "%1$s received a lethal electric shock",
-	"death.attack.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",
+	"death.attack.createaddition.tesla_coil": "%1$s received a lethal electric shock",
+	"death.attack.createaddition.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",
 	"effect.createaddition.shocking.description": "Causes severely reduced movement speed"
 }

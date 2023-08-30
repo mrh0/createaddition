@@ -3,6 +3,8 @@ package com.mrh0.createaddition.recipe.charging;
 import com.mrh0.createaddition.CreateAddition;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -20,7 +22,7 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	public int energy;
 
 	public static RecipeType<ChargingRecipe> TYPE = new ChargingRecipeType();
-	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "charging"));
+	public static RecipeSerializer<?> SERIALIZER = BuiltInRegistries.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "charging"));
 	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy) {
 		this.id = id;
 		this.ingredient = ingredient;
@@ -40,7 +42,7 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 
 
 	@Override
-	public ItemStack assemble(@NotNull RecipeWrapper wrapper) {
+	public ItemStack assemble(@NotNull RecipeWrapper wrapper, RegistryAccess access) {
 		return output;
 	}
 
@@ -52,7 +54,7 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access) {
 		return output;
 	}
 

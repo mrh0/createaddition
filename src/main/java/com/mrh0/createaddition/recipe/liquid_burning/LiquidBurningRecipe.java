@@ -5,6 +5,9 @@ import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -22,7 +25,7 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 	
 	public static RecipeType<LiquidBurningRecipe> TYPE = new LiquidBurningRecipeType();
 	@SuppressWarnings("deprecation")
-	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "liquid_burning"));
+	public static RecipeSerializer<?> SERIALIZER = BuiltInRegistries.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "liquid_burning"));
 	public LiquidBurningRecipe(ResourceLocation id, FluidIngredient fluid, int burnTime, boolean superheated) {
 		this.id = id;
 		this.fluidIngredients = fluid;
@@ -42,7 +45,7 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 	}
 
 	@Override
-	public ItemStack assemble(FluidRecipeWrapper wrapper) {
+	public ItemStack assemble(FluidRecipeWrapper wrapper, RegistryAccess registryAccess) {
 		return new ItemStack(Items.AIR);
 	}
 
@@ -52,7 +55,7 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access) {
 		return new ItemStack(Items.AIR);
 	}
 

@@ -31,8 +31,10 @@ import com.mrh0.createaddition.blocks.redstone_relay.*;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.content.kinetics.base.HalfShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
-import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import team.reborn.energy.api.EnergyStorage;
 
 @SuppressWarnings({"UnstableApiUsage", "removal"})
@@ -118,7 +120,7 @@ public class CATileEntities {
 			return null;
 		});
 		FluidStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
-			if (blockEntity instanceof FluidTransferable transferable)
+			if (blockEntity instanceof SidedStorageBlockEntity  transferable)
 				return transferable.getFluidStorage(context);
 			return null;
 		});

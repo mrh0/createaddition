@@ -1,6 +1,6 @@
 //file:noinspection GroovyUnusedAssignment
 plugins {
-    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'fabric-loom' version '1.3-SNAPSHOT'
     id 'eclipse'
     id 'maven-publish'
     //id 'io.github.juuxel.loom-quiltflower' version '1.+'
@@ -54,10 +54,10 @@ repositories {
         name = 'Ladysnake Mods'
         url = 'https://maven.ladysnake.org/releases'
     }
-    maven {
+    /*maven {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
-    }
+    }*/
     maven {
         name = "ModMaven"
         url = "https://modmaven.dev"
@@ -98,8 +98,8 @@ dependencies {
 
     modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:" +
             "${project.create_version}+mc${project.minecraft_version}")
-
-    modImplementation("curse.maven:cc-restitched-462672:3908334")
+    
+    modImplementation("curse.maven:cc-tweaked-282001:4726253")
 
     modImplementation("appeng:appliedenergistics2-fabric:${project.ae2_version}")
 
@@ -109,6 +109,7 @@ dependencies {
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
+
 
     include modApi('teamreborn:energy:2.3.0') {
         exclude(group: "net.fabricmc.fabric-api")

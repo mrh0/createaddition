@@ -16,6 +16,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -73,7 +74,7 @@ public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 		if (!onCarriage || !(context.motion.length() > 0.25D)) {
 			BlockPos pos;
 			if (context.world.isClientSide) {
-				pos = new BlockPos(context.position);
+				pos = new BlockPos((int)context.position.x, (int)context.position.y, (int)context.position.z);
 				if (!this.findInterface(context, pos)) {
 					this.reset(context);
 				}

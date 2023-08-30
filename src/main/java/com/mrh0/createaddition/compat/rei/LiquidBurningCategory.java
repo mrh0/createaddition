@@ -48,26 +48,25 @@ public class LiquidBurningCategory extends CreateRecipeCategory<LiquidBurningRec
     public List<Widget> setupDisplay(CreateDisplay<LiquidBurningRecipe> display, Rectangle bounds) {
         List<Widget> widgets = new ArrayList<>();
         widgets.add(Widgets.createRecipeBase(bounds));
-        widgets.add(Widgets.createDrawableWidget((helper, stack, mouseX, mouseY, partialTick) -> {
-            stack.pushPose();
-            stack.translate(bounds.getX(), bounds.getY() + 4, 0);
+        widgets.add(Widgets.createDrawableWidget((helper, mouseX, mouseY, partialTick) -> {
+            helper.pose().pushPose();
+            helper.pose().translate(bounds.getX(), bounds.getY() + 4, 0);
             LiquidBurningRecipe recipe = display.getRecipe();
-            ClientMinecraftWrapper.getFont().draw(stack, formatTime(recipe.getBurnTime()), bounds.getWidth() / 2 + 48, 86 - 50, 4210752);
-
+            helper.drawString(ClientMinecraftWrapper.getFont(), formatTime(recipe.getBurnTime()), bounds.getWidth() / 2 + 48, 86 - 50, 4210752);
 
             HeatCondition requiredHeat = recipe.isSuperheated() ? HeatCondition.SUPERHEATED : HeatCondition.HEATED;
 
-            AllGuiTextures.JEI_LIGHT.render(stack, 81, 58 + 30 - 50);
+            AllGuiTextures.JEI_LIGHT.render(helper, 81, 58 + 30 - 50);
 
-            AllGuiTextures.JEI_HEAT_BAR.render(stack, 4, 80 - 50);
-            ClientMinecraftWrapper.getFont().draw(stack, Lang.translateDirect(requiredHeat.getTranslationKey()), 9,
+            AllGuiTextures.JEI_HEAT_BAR.render(helper, 4, 80 - 50);
+            helper.drawString(ClientMinecraftWrapper.getFont(), Lang.translateDirect(requiredHeat.getTranslationKey()), 9,
                     86 - 50, requiredHeat.getColor());
 
             heater.withHeat(requiredHeat.visualizeAsBlazeBurner())
-                    .draw(stack, bounds.getWidth() / 2 + 3, 55 - 50);
+                    .draw(helper, bounds.getWidth() / 2 + 3, 55 - 50);
 
-            AllGuiTextures.JEI_DOWN_ARROW.render(stack, bounds.getWidth() / 2 + 3, 8);
-            stack.popPose();
+            AllGuiTextures.JEI_DOWN_ARROW.render(helper, bounds.getWidth() / 2 + 3, 8);
+            helper.pose().popPose();
         }));
         addWidgets(display, widgets, new Point(bounds.getX(), bounds.getY() + 4));
         addWidgets(display, widgets, new Point(bounds.getX(), bounds.getY() + 4), bounds);

@@ -12,6 +12,7 @@ import com.simibubi.create.foundation.gui.AllGuiTextures;
 import me.shedaniel.math.Point;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 
 public class RollingMillCategory extends CreateRecipeCategory<RollingRecipe> {
@@ -29,7 +30,7 @@ public class RollingMillCategory extends CreateRecipeCategory<RollingRecipe> {
                 .markInput()
                 .entries(EntryIngredients.ofIngredient(display.getRecipe().getIngredient())));
 
-        ItemStack result = display.getRecipe().getResultItem();
+        ItemStack result = display.getRecipe().getResultItem(null);
         int yOffset = 0;
 
         ingredients.add(basicSlot(origin.x + 140, origin.y + 28 + yOffset)
@@ -38,7 +39,7 @@ public class RollingMillCategory extends CreateRecipeCategory<RollingRecipe> {
     }
 
     @Override
-    public void draw(RollingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+    public void draw(RollingRecipe recipe, GuiGraphics matrixStack, double mouseX, double mouseY) {
         AllGuiTextures.JEI_SLOT.render(matrixStack, 14, 8);
         AllGuiTextures.JEI_ARROW.render(matrixStack, 85, 32);
         AllGuiTextures.JEI_DOWN_ARROW.render(matrixStack, 43, 4);

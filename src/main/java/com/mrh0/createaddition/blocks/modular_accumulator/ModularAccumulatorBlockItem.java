@@ -100,8 +100,7 @@ public class ModularAccumulatorBlockItem extends BlockItem {
 				BlockState blockState = world.getBlockState(offsetPos);
 				if (ModularAccumulatorBlock.isAccumulator(blockState))
 					continue;
-				if (!blockState.getMaterial()
-					.isReplaceable())
+				if (!blockState.canBeReplaced())
 					return;
 				blocksToPlace++;
 			}
@@ -117,10 +116,10 @@ public class ModularAccumulatorBlockItem extends BlockItem {
 				if (ModularAccumulatorBlock.isAccumulator(blockState))
 					continue;
 				BlockPlaceContext context = BlockPlaceContext.at(ctx, offsetPos, face);
-				player.getExtraCustomData()
+				player.getCustomData()
 					.putBoolean("SilenceTankSound", true);
 				super.place(context);
-				player.getExtraCustomData()
+				player.getCustomData()
 					.remove("SilenceTankSound");
 			}
 		}

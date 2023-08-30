@@ -7,12 +7,12 @@ import com.mrh0.createaddition.recipe.rolling.RollingRecipeProcessingFactory;
 import com.mrh0.createaddition.recipe.rolling.SequencedAssemblyRollingRecipeSerializer;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class CARecipes {
 	public static final LazyRegistrar<RecipeSerializer<?>> TYPES =
-			LazyRegistrar.create(Registry.RECIPE_SERIALIZER, CreateAddition.MODID);
+			LazyRegistrar.create(Registries.RECIPE_SERIALIZER, CreateAddition.MODID);
 	
 	static RegistryObject<RecipeSerializer<?>> ROLLING = TYPES.register("rolling", () ->
 		new SequencedAssemblyRollingRecipeSerializer(new RollingRecipeProcessingFactory()));

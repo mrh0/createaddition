@@ -1,13 +1,12 @@
 package com.mrh0.createaddition.blocks.barbed_wire;
 
 import com.mrh0.createaddition.config.Config;
-import io.github.fabricators_of_create.porting_lib.extensions.IShearable;
-import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.DamageSourceAccessor;
+import com.mrh0.createaddition.index.CADamageTypes;
+import io.github.fabricators_of_create.porting_lib.extensions.extensions.IShearable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -24,8 +23,6 @@ public class BarbedWireBlock extends Block implements IShearable {
 	public static final BooleanProperty VERTICAL = BooleanProperty.create("vertical");
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	private static DamageSource DMG_SOURCE = DamageSourceAccessor.port_lib$init("barbed_wire");
-
 	public BarbedWireBlock(Properties props) {
 		super(props);
 		this.registerDefaultState(this.defaultBlockState().setValue(VERTICAL, false).setValue(HORIZONTAL_FACING, Direction.NORTH));
@@ -35,7 +32,7 @@ public class BarbedWireBlock extends Block implements IShearable {
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		double delta = Math.abs(entity.getX() - entity.xOld) + Math.abs(entity.getY() - entity.yOld) + Math.abs(entity.getZ() - entity.zOld);
 		if((entity instanceof LivingEntity) && delta > 0d) {
-			if(entity.hurt(DMG_SOURCE, Config.BARBED_WIRE_DAMAGE.get().floatValue()))
+			if(entity.hurt(CADamageTypes.BARBED_WIRE.source(level), Config.BARBED_WIRE_DAMAGE.get().floatValue()))
 				entity.playSound(SoundEvents.PLAYER_HURT_SWEET_BERRY_BUSH, 1f, 1f);
 		}
 		entity.makeStuckInBlock(state, new Vec3(0.25D, (double)0.05F, 0.25D));
