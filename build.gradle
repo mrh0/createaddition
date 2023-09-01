@@ -74,6 +74,14 @@ repositories {
         }
     }
     maven { url = "https://maven.terraformersmc.com/" } // Mod Menu, Trinkets
+    //ComputerCraft
+    maven {
+        url "https://squiddev.cc/maven/"
+        content {
+            includeGroup("cc.tweaked")
+            includeModule("org.squiddev", "Cobalt")
+        }
+    }
 }
 
 dependencies {
@@ -98,8 +106,9 @@ dependencies {
 
     modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:" +
             "${project.create_version}+mc${project.minecraft_version}")
-    
-    modImplementation("curse.maven:cc-tweaked-282001:4726253")
+
+    modCompileOnly("cc.tweaked:cc-tweaked-$minecraft_version-fabric-api:$cc_tweaked_version")
+    modRuntimeOnly("cc.tweaked:cc-tweaked-$minecraft_version-fabric:$cc_tweaked_version")
 
     modImplementation("appeng:appliedenergistics2-fabric:${project.ae2_version}")
 
