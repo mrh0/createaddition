@@ -100,7 +100,7 @@ public class LiquidBlazeBurnerTileEntity extends SmartBlockEntity implements IHa
 	private boolean changed = true;
 
 	protected SmartFluidTank createInventory() {
-		return new SmartFluidTank(4000, this::onFluidStackChanged);
+		return new SmartFluidTank(4*FluidConstants.BUCKET, this::onFluidStackChanged);
 	}
 
 	protected void onFluidStackChanged(FluidStack newFluidStack) {
