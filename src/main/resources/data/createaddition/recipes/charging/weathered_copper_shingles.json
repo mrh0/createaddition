@@ -1,0 +1,13 @@
+{
+	"type":"createaddition:charging",
+	"input": {
+      	"item": "create:oxidized_copper_shingles",
+		"count": 1
+	},
+	"result": {
+		"item": "create:weathered_copper_shingles",
+		"count": 1
+	},
+	"energy": 4000,
+	"maxChargeRate": 200
+}

@@ -17,15 +17,17 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	public Ingredient ingredient;
 	public ItemStack output;
 	public int energy;
+	public int maxChargeRate;
 	
 	public static RecipeType<ChargingRecipe> TYPE = new ChargingRecipeType();
 	@SuppressWarnings("deprecation")
 	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "charging"));
-	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy) {
+	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy, int maxChargeRate) {
 		this.id = id;
 		this.ingredient = ingredient;
 		this.output = output;
 		this.energy = energy;
+		this.maxChargeRate = maxChargeRate;
 	}
 
 
@@ -78,6 +80,10 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	
 	public int getEnergy() {
 		return energy;
+	}
+
+	public int getMaxChargeRate() {
+		return maxChargeRate;
 	}
 
 }
