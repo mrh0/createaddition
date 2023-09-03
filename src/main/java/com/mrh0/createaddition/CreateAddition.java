@@ -84,7 +84,6 @@ public class CreateAddition {
         if (item instanceof BlockItem blockItem) {
             Block block = blockItem.getBlock();
             if (block instanceof ElectricMotorBlock) {
-                System.out.println("TEST1");
                 return new KineticStats(block);
             }
         }
