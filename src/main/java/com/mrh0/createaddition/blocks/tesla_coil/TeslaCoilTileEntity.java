@@ -168,40 +168,66 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		ItemStack stack = transported.stack;
 		if(stack == null)
 			return BeltProcessingBehaviour.ProcessingResult.PASS;
+		//first check if it can charge, if so then charge
 		if(chargeStack(stack, transported, handler)) {
 			poweredTimer = 10;
 			return BeltProcessingBehaviour.ProcessingResult.HOLD;
 		}
+		//then check if it has recipe, then energize
 		else if(chargeRecipe(stack, transported, handler)) {
 			poweredTimer = 10;
 			return BeltProcessingBehaviour.ProcessingResult.HOLD;
 		}
 		return BeltProcessingBehaviour.ProcessingResult.PASS;
 	}
-
-	protected final boolean chargeStack(
-			final ItemStack stack,
-			final TransportedItemStack ignoredTransported,
-			final TransportedItemStackHandlerBehaviour ignoredHandler
+	protected final boolean chargeStack( 
+		final ItemStack stack,
+		final TransportedItemStack ignoredTransported,
+		final TransportedItemStackHandlerBehaviour ignoredHandler
 	) {
-		ContainerItemContext context = ContainerItemContext.withConstant(stack);
-		final EnergyStorage es =  EnergyStorage.ITEM.find(stack, context);
+        ContainerItemContext context = ContainerItemContext.withInitial(stack);
+        final EnergyStorage es =  EnergyStorage.ITEM.find(stack, context);
 
-		if (es == null)
-			return false;
-		try (Transaction t = TransferUtil.getTransaction()) {
-			if (es.insert(1, t) != 1)
+		// False = Belt Moves
+		// True = Belt Pause
+		
+		// check if energystorage exist on the depot/belt
+        if (es == null)
+        {
+            return false;
+        }
+        else
+        {
+			long Energy = localEnergy.getAmount();
+            final long toTransfer = Math.min(Energy,getConsumption());
+			// check for valid transaction
+			try (Transaction t = TransferUtil.getTransaction()) 
+			{
+				if (es.insert(1, t) != 1)
+					return false;
+			}
+			// check if the tesla coil has enough energy
+			if(localEnergy.getAmount() < stack.getCount())
 				return false;
-		}
-		if(localEnergy.getAmount() < stack.getCount())
-			return false;
-		try (Transaction t = TransferUtil.getTransaction()) {
-			localEnergy.internalConsumeEnergy(es.insert(Math.min(getConsumption(), localEnergy.getAmount()), t));
-			t.commit();
-		}
-		stack.setTag(context.getItemVariant().copyNbt());
-		return true;
-	}
+
+			//
+            try (Transaction t = TransferUtil.getTransaction()) 
+            {
+                int transferred = (int)localEnergy.internalConsumeEnergy((int)es.insert(toTransfer, t));
+                if(transferred > 0)
+                {
+					t.commit();
+                }
+                else
+                {
+					t.abort();
+                    return false;
+                }
+            }
+			stack.setTag(context.getItemVariant().copyNbt());
+			return true;
+        }
+    }
 
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		if(!inputInv.getStackInSlot(0).is(stack.getItem())) {
