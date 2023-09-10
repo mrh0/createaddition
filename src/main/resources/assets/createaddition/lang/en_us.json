@@ -88,6 +88,22 @@
 
 	"item.createaddition.straw": "Straw",
 
+	"item.createaddition.electrum_amulet": "Pale Gold Amulet",
+	"item.createaddition.electrum_amulet.tooltip": "ELECTRUM_AMULET",
+	"item.createaddition.electrum_amulet.tooltip.summary": "When _life_ has got you down, clutching this _amulet_ in your pocket will make you feel like your _luck_ is about to change.",
+
+	"item.createaddition.brass_figurine": "Brass Figurine",
+	"item.createaddition.brass_figurine.tooltip": "BRASS_FIGURINE",
+	"item.createaddition.brass_figurine.tooltip.summary": ".",
+
+	"item.createaddition.copper_goblet": "Copper Goblet",
+	"item.createaddition.copper_goblet.tooltip": "COPPER_GOBLET",
+	"item.createaddition.copper_goblet.tooltip.summary": "The extraordinary heat transfer ability of this _goblet_ will keep you cool when you need it the most.",
+
+	"item.createaddition.gold_goblet": "Ornate Goblet",
+	"item.createaddition.gold_goblet.tooltip": "GOLD_GOBLET",
+	"item.createaddition.gold_goblet.tooltip.summary": "Drinking from this _goblet_ will satisfy more than any regular bottle.",
+
 	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
 	"item.createaddition.seed_oil_bucket.tooltip": "SEED_OIL_BUCKET",
 	"item.createaddition.seed_oil_bucket.tooltip.summary": "A simple _flammable liquid_.",

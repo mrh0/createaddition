@@ -4,6 +4,7 @@ import static com.simibubi.create.AllTags.forgeItemTag;
 import static com.simibubi.create.AllTags.AllItemTags.PLATES;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.groups.ModGroup;
+import com.mrh0.createaddition.item.ElectrumAmulet;
 import com.mrh0.createaddition.item.WireSpool;
 import com.mrh0.createaddition.item.BiomassPellet;
 import com.mrh0.createaddition.item.DiamondGritSandpaper;
@@ -37,6 +38,10 @@ public class CAItems {
 	public static final ItemEntry<BiomassPellet> BIOMASS_PELLET =
 			CreateAddition.REGISTRATE.item("biomass_pellet", BiomassPellet::new)
 			.register();
+
+	public static final ItemEntry<ElectrumAmulet> ELECTRUM_AMULET =
+			CreateAddition.REGISTRATE.item("electrum_amulet", ElectrumAmulet::new)
+					.register();
 
 	public static final ItemEntry<Item> ELECTRUM_INGOT =
 			CreateAddition.REGISTRATE.item("electrum_ingot", Item::new).register();
