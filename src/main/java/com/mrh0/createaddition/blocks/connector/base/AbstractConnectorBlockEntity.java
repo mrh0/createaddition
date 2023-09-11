@@ -302,8 +302,10 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 			if(otherNode == null) continue;
 
 			int ourNode = localNode.getOtherIndex();
-			if (localNode.isInvalid()) otherNode.removeNode(ourNode);
-			else otherNode.removeNode(ourNode, true); // Make the other node drop the wires.
+			if (localNode.isInvalid())
+				otherNode.removeNode(ourNode);
+			else
+				otherNode.removeNode(ourNode, true); // Make the other node drop the wires.
 		}
 
 		invalidateNodeCache();

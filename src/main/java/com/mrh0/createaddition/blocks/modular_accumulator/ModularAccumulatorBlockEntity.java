@@ -73,29 +73,26 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 			this.peripheral = LazyOptional.of(() -> Peripherals.createModularAccumulatorPeripheral(this));
 	}
 
+	@Override
+	public void onChunkUnloaded() {}
+
 	protected InternalEnergyStorage createEnergyStorage() {
 		return new InternalEnergyStorage(getCapacityMultiplier(), Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get());
 	}
 
 	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
-		switch(side) {
-			case DOWN:
-				escacheDown = storage;
-				break;
-			case UP:
-				escacheUp = storage;
-				break;
+		switch (side) {
+			case DOWN -> escacheDown = storage;
+			case UP -> escacheUp = storage;
 		}
 	}
 
 	public LazyOptional<IEnergyStorage> getCachedEnergy(Direction side) {
-		switch(side) {
-			case DOWN:
-				return escacheDown;
-			case UP:
-				return escacheUp;
-		}
-		return LazyOptional.empty();
+		return switch (side) {
+			case DOWN -> escacheDown;
+			case UP -> escacheUp;
+			default -> LazyOptional.empty();
+		};
 	}
 
 	public void firstTick() {
@@ -103,8 +100,7 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 	};
 
 	public void updateCache() {
-		if(level.isClientSide())
-			return;
+		if(level.isClientSide()) return;
 		for(Direction side : Direction.values()) {
 			updateCache(side);
 		}
@@ -134,10 +130,10 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 
 	protected void updateConnectivity() {
 		updateConnectivity = false;
-		if (level.isClientSide)
-			return;
-		if (!isController())
-			return;
+		if (level == null) return;
+		if (level.isClientSide) return;
+		if (!level.isLoaded(getBlockPos())) return;
+		if (!isController()) return;
 		CAConnectivityHandler.formMulti(this);
 	}
 
@@ -167,8 +163,7 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 			return;
 		}
 
-		if (updateConnectivity)
-			updateConnectivity();
+		if (updateConnectivity) updateConnectivity();
 
 		// Tick Logic:
 		if (!isController()) return;
@@ -178,12 +173,12 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 			onEnergyChanged();
 		}
 
+		if (level == null) return;
 		if (level.isClientSide()) {
 			gauge.tickChaser();
 			float current = gauge.getValue(1);
 			if (current > 1 && Create.RANDOM.nextFloat() < 1 / 2f)
 				gauge.setValueNoUpdate(current + Math.min(-(current - 1) * Create.RANDOM.nextFloat(), 0));
-			return;
 		}
 	}
 
@@ -199,9 +194,11 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 	}
 
 	public void tickOutputSide(Direction side) {
+		if (level == null) return;
+		if (!level.isLoaded(getBlockPos())) return;
+		if (!level.isLoaded(getBlockPos().relative(side))) return;
 		IEnergyStorage ies = getCachedEnergy(side).orElse(null);
-		if(ies == null)
-			return;
+		if(ies == null) return;
 		int ext = getControllerBE().energyStorage.extractEnergy(ies.receiveEnergy(Config.ACCUMULATOR_MAX_OUTPUT.get(), true), false);
 		int rec = ies.receiveEnergy(ext, false);
 	}
@@ -221,8 +218,8 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 	public void initialize() {
 		super.initialize();
 		sendData();
-		if (level.isClientSide)
-			invalidateRenderBoundingBox();
+		if (level == null) return;
+		if (level.isClientSide) invalidateRenderBoundingBox();
 	}
 
 	private void onPositionChanged() {
@@ -231,16 +228,17 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 	}
 
 	protected void onEnergyChanged() {
-		if (!hasLevel())
-			return;
+		if (level == null) return;
+		if (!level.isLoaded(getBlockPos())) return;
+		if (!hasLevel()) return;
 
 		for (int yOffset = 0; yOffset < height; yOffset++) {
 			for (int xOffset = 0; xOffset < width; xOffset++) {
 				for (int zOffset = 0; zOffset < width; zOffset++) {
 					BlockPos pos = this.worldPosition.offset(xOffset, yOffset, zOffset);
+					if (!level.isLoaded(pos)) return;
 					ModularAccumulatorBlockEntity acc = CAConnectivityHandler.partAt(getType(), level, pos);
-					if (acc == null)
-						continue;
+					if (acc == null) continue;
 					level.updateNeighbourForOutputSignal(pos, acc.getBlockState().getBlock());
 				}
 			}
@@ -256,8 +254,9 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 	@SuppressWarnings("unchecked")
 	@Override
 	public ModularAccumulatorBlockEntity getControllerBE() {
-		if (isController())
-			return this;
+		if (isController()) return this;
+		if (level == null) return null;
+		if (!level.isLoaded(getBlockPos())) return null;
 		BlockEntity tileEntity = level.getBlockEntity(controller);
 		if (tileEntity instanceof ModularAccumulatorBlockEntity)
 			return (ModularAccumulatorBlockEntity) tileEntity;
@@ -272,8 +271,9 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 	}
 
 	public void removeController(boolean keepEnergy) {
-		if (level.isClientSide)
-			return;
+		if (level == null) return;
+		if (level.isClientSide) return;
+		if (!level.isLoaded(getBlockPos())) return;
 		updateConnectivity = true;
 		if (!keepEnergy)
 			applySize(1);
@@ -314,10 +314,9 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 
 	@Override
 	public void setController(BlockPos controller) {
-		if (level.isClientSide && !isVirtual())
-			return;
-		if (controller.equals(this.controller))
-			return;
+		if (level == null) return;
+		if (level.isClientSide && !isVirtual()) return;
+		if (controller.equals(this.controller)) return;
 		this.controller = controller;
 		refreshCapability();
 		setChanged();
@@ -326,7 +325,7 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 
 	private void refreshCapability() {
 		LazyOptional<IEnergyStorage> oldCap = energyCap;
-		energyCap = LazyOptional.of(() -> handlerForCapability());
+		energyCap = LazyOptional.of(this::handlerForCapability);
 		oldCap.invalidate();
 	}
 
@@ -347,14 +346,6 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 			return super.createRenderBoundingBox().expandTowards(width - 1, height - 1, width - 1);
 		else
 			return super.createRenderBoundingBox();
-	}
-
-	@Nullable
-	public ModularAccumulatorBlockEntity getOtherTileEntity(Direction direction) {
-		BlockEntity otherTE = level.getBlockEntity(worldPosition.relative(direction));
-		if (otherTE instanceof ModularAccumulatorBlockEntity)
-			return (ModularAccumulatorBlockEntity) otherTE;
-		return null;
 	}
 
 	@Override
@@ -471,6 +462,7 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 		if (ModularAccumulatorBlock.isAccumulator(state)) { // safety
 			state = state.setValue(ModularAccumulatorBlock.BOTTOM, getController().getY() == getBlockPos().getY());
 			state = state.setValue(ModularAccumulatorBlock.TOP, getController().getY() + height - 1 == getBlockPos().getY());
+			if (level == null) return;
 			level.setBlock(getBlockPos(), state, Block.UPDATE_NEIGHBORS | Block.UPDATE_CLIENTS | Block.UPDATE_INVISIBLE);
 		}
 		setChanged();
@@ -515,8 +507,7 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ModularAccumulatorBlockEntity controllerTE = getControllerBE();
-		if (controllerTE == null)
-			return false;
+		if (controllerTE == null) return false;
 
 		ObservePacket.send(worldPosition, 0);
 
@@ -534,19 +525,14 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 		return true;
 	}
 
-	public void observe() {
-		if(!isController()) return;
-		// ObservePacket.send(worldPosition, 0);
-	}
+	public void observe() {}
 
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
 		ModularAccumulatorBlockEntity controllerTE = getControllerBE();
-		if (controllerTE == null)
-			return;
+		if (controllerTE == null) return;
 
 		EnergyNetworkPacket.send(worldPosition, 0, controllerTE.energyStorage.getEnergyStored(), player);
-		// causeBlockUpdate();
 	}
 
 	public boolean hasAccumulator() {
