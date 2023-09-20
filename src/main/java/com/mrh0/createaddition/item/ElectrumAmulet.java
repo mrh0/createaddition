@@ -10,8 +10,8 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 
 public class ElectrumAmulet extends Item {
-    public ElectrumAmulet(Properties pProperties) {
-        super(pProperties);
+    public ElectrumAmulet(Properties props) {
+        super(props.stacksTo(1));
     }
 
     @Override
