@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern":
+	[" WW",
+	 "EEW",
+	 "GE "],
+	"key":
+	{
+		"W":
+		{
+			"tag": "forge:wires/electrum"
+		},
+		"E":
+		{
+			"tag": "forge:ingots/electrum"
+		},
+		"G":
+		{
+			"tag": "forge:gems/emerald"
+		}
+	},
+	"result":{
+		"item": "createaddition:electrum_amulet",
+		"count": 1
+	}
+}

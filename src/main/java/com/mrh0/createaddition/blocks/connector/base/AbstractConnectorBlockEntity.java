@@ -253,12 +253,17 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 			this.wasContraption = false;
 			validateNodes();
 		}
+
 		updateExternalEnergyStorage();
 	}
 
+
+	boolean externalStorageInvalid = false;
 	@Override
 	public void tick() {
 		if (this.firstTick) firstTick();
+		if (level == null) return;
+		if (!level.isLoaded(getBlockPos())) return;
 
 		// Check if we need to drop any wires due to contraption.
 		if (!this.wireCache.isEmpty() && !isRemoved()) handleWireCache(level, this.wireCache);
@@ -271,6 +276,8 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		if(awakeNetwork(level)) notifyUpdate();
 
 		networkTick(network);
+
+		if (externalStorageInvalid) updateExternalEnergyStorage();
 	}
 
 	private final static IEnergyStorage NULL_ES = new EnergyStorage(0, 0, 0);
@@ -302,8 +309,10 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 			if(otherNode == null) continue;
 
 			int ourNode = localNode.getOtherIndex();
-			if (localNode.isInvalid()) otherNode.removeNode(ourNode);
-			else otherNode.removeNode(ourNode, true); // Make the other node drop the wires.
+			if (localNode.isInvalid())
+				otherNode.removeNode(ourNode);
+			else
+				otherNode.removeNode(ourNode, true); // Make the other node drop the wires.
 		}
 
 		invalidateNodeCache();
@@ -359,6 +368,9 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 	}
 
 	public void updateExternalEnergyStorage() {
+		if (level == null) return;
+		if (!level.isLoaded(getBlockPos())) return;
+		externalStorageInvalid = false;
 		var side = getBlockState().getValue(AbstractConnectorBlock.FACING);
 		if (!level.isLoaded(worldPosition.relative(side))) {
 			external = LazyOptional.empty();
@@ -374,7 +386,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		// Make sure the side isn't already cached.
 		if (le.equals(external)) return;
 		external = le;
-		le.addListener((es) -> updateExternalEnergyStorage());
+		le.addListener((es) -> { externalStorageInvalid = true; });
 	}
 
 	@Override

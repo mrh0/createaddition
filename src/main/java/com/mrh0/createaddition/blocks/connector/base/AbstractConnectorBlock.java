@@ -33,6 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEntity> extends Block implements IBE<BE>, IWrenchable, ITransformableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	public static final EnumProperty<ConnectorMode> MODE = EnumProperty.create("mode", ConnectorMode.class);
+	public static final EnumProperty<ConnectorVariant> VARIANT = EnumProperty.create("variant", ConnectorVariant.class);
 	private static final VoxelShape boxwe = Block.box(0,7,7,10,9,9);
 	private static final VoxelShape boxsn = Block.box(7,7,0,9,9,10);
 
@@ -40,20 +41,22 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState()
 				.setValue(FACING, Direction.NORTH)
-				.setValue(MODE, ConnectorMode.Passive)
-				.setValue(NodeRotation.ROTATION, NodeRotation.NONE));
+				.setValue(MODE, ConnectorMode.None)
+				.setValue(NodeRotation.ROTATION, NodeRotation.NONE)
+				.setValue(VARIANT, ConnectorVariant.Default));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING, MODE, NodeRotation.ROTATION);
+		builder.add(FACING, MODE, NodeRotation.ROTATION, VARIANT);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext c) {
 		Direction dir = c.getClickedFace().getOpposite();
 		ConnectorMode mode = ConnectorMode.test(c.getLevel(), c.getClickedPos().relative(dir), c.getClickedFace());
-		return this.defaultBlockState().setValue(FACING, dir).setValue(MODE, mode);
+		ConnectorVariant variant = ConnectorVariant.test(c.getLevel(), c.getClickedPos().relative(dir), c.getClickedFace());
+		return this.defaultBlockState().setValue(FACING, dir).setValue(MODE, mode).setValue(VARIANT, variant);
 	}
 
 	@Override

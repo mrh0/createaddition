@@ -19,7 +19,8 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	public Ingredient ingredient;
 	public ItemStack output;
 	public int energy;
-	
+	public int maxChargeRate;
+
 	public static RecipeType<ChargingRecipe> TYPE = new ChargingRecipeType();
 	@SuppressWarnings("deprecation")
 	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy) {
@@ -27,6 +28,7 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 		this.ingredient = ingredient;
 		this.output = output;
 		this.energy = energy;
+		this.maxChargeRate = maxChargeRate;
 	}
 
 
@@ -76,9 +78,13 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	public RecipeType<?> getType() {
 		return TYPE;
 	}
-	
+
 	public int getEnergy() {
 		return energy;
+	}
+
+	public int getMaxChargeRate() {
+		return maxChargeRate;
 	}
 
 }

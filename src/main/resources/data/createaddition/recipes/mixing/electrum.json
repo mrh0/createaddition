@@ -14,5 +14,14 @@
       "count": 2
     }
   ],
-  "heatRequirement": "heated"
+  "heatRequirement": "heated",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/silver"
+      }
+    }
+  ]
 }

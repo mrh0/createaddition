@@ -3,6 +3,7 @@ package com.mrh0.createaddition.index;
 import static com.simibubi.create.AllTags.forgeItemTag;
 import static com.simibubi.create.AllTags.AllItemTags.PLATES;
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.item.ElectrumAmulet;
 import com.mrh0.createaddition.item.WireSpool;
 import com.mrh0.createaddition.item.BiomassPellet;
 import com.mrh0.createaddition.item.DiamondGritSandpaper;
@@ -16,17 +17,17 @@ public class CAItems {
 	static {
 		CreateAddition.REGISTRATE.useCreativeTab(CACreativeModeTabs.MAIN_TAB);
 	}
-	
+
 	public static final ItemEntry<Item> CAPACITOR =
 			CreateAddition.REGISTRATE.item("capacitor", Item::new)
 			.register();
-	
+
 	public static final ItemEntry<Item> DIAMOND_GRIT =
 			CreateAddition.REGISTRATE.item("diamond_grit", Item::new)
 			.register();
 	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER = CreateAddition.REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new)
 			.register();
-	
+
 	public static final ItemEntry<Item> BIOMASS =
 			CreateAddition.REGISTRATE.item("biomass", Item::new)
 			.properties(p -> p.stacksTo(16))
@@ -34,6 +35,10 @@ public class CAItems {
 	public static final ItemEntry<BiomassPellet> BIOMASS_PELLET =
 			CreateAddition.REGISTRATE.item("biomass_pellet", BiomassPellet::new)
 			.register();
+
+	public static final ItemEntry<ElectrumAmulet> ELECTRUM_AMULET =
+			CreateAddition.REGISTRATE.item("electrum_amulet", ElectrumAmulet::new)
+					.register();
 
 	public static final ItemEntry<Item> ELECTRUM_INGOT =
 			CreateAddition.REGISTRATE.item("electrum_ingot", Item::new).register();
@@ -81,19 +86,19 @@ public class CAItems {
 			CreateAddition.REGISTRATE.item("electrum_rod", Item::new).register();
 	public static final ItemEntry<Item> BRASS_ROD =
 			CreateAddition.REGISTRATE.item("brass_rod", Item::new).register();
-	
+
 	public static final ItemEntry<Item> CAKE_BASE =
 			CreateAddition.REGISTRATE.item("cake_base", Item::new) // TODO: Hide in Tab
 				.register();
 	public static final ItemEntry<Item> CAKE_BASE_BAKED =
 			CreateAddition.REGISTRATE.item("cake_base_baked", Item::new) // TODO: Hide in Tab
 				.register();
-	
+
 	public static final ItemEntry<Item> STRAW =
 			CreateAddition.REGISTRATE.item("straw", Item::new)
 			.properties(p -> p.stacksTo(16))
 			.register();
-	
+
 	public static void register() {
 
 	}

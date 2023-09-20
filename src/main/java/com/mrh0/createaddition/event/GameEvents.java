@@ -62,7 +62,7 @@ public class GameEvents {
 							.setValue(LiquidBlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING/*state.getValue(BlazeBurnerBlock.HEAT_LEVEL)*/)
 							.setValue(LiquidBlazeBurnerBlock.FACING, state.getValue(BlazeBurnerBlock.FACING));
 					evt.getLevel().setBlockAndUpdate(evt.getPos(), newState);
-					if(evt.getEntity().isCreative())
+					if(!evt.getEntity().isCreative())
 						evt.getItemStack().shrink(1);
 					evt.setCancellationResult(InteractionResult.SUCCESS);
 	            	evt.setCanceled(true);
