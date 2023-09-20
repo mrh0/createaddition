@@ -1,8 +1,6 @@
 package com.mrh0.createaddition.recipe.charging;
 
-import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CARecipes;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -22,8 +20,7 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	public int maxChargeRate;
 
 	public static RecipeType<ChargingRecipe> TYPE = new ChargingRecipeType();
-	@SuppressWarnings("deprecation")
-	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy) {
+	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy, int maxChargeRate) {
 		this.id = id;
 		this.ingredient = ingredient;
 		this.output = output;

@@ -123,20 +123,20 @@ public class Config {
 
 		COMMON_BUILDER.comment("Wires").push(CATAGORY_WIRES);
 		SMALL_CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Small Connector max input in FE/t (Energy transfer).")
-				.defineInRange("small_connector_max_input", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("small_connector_max_input", 1000, 0, Integer.MAX_VALUE);
 
 		SMALL_CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Small Connector max output in FE/t (Energy transfer).")
-				.defineInRange("small_connector_max_output", 1024, 0, Integer.MAX_VALUE);
+				.defineInRange("small_connector_max_output", 1000, 0, Integer.MAX_VALUE);
 
 		SMALL_CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Small Connector max wire length in blocks.")
 				.defineInRange("small_connector_wire_length", 16, 0, 256);
 
 
 		LARGE_CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Large Connector max input in FE/t (Energy transfer).")
-				.defineInRange("large_connector_max_input", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("large_connector_max_input", 5000, 0, Integer.MAX_VALUE);
 
 		LARGE_CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Large Connector max output in FE/t (Energy transfer).")
-				.defineInRange("large_connector_max_output", 4096, 0, Integer.MAX_VALUE);
+				.defineInRange("large_connector_max_output", 5000, 0, Integer.MAX_VALUE);
 
 		LARGE_CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Large Connector max wire length in blocks.")
 				.defineInRange("large_connector_wire_length", 32, 0, 256);
