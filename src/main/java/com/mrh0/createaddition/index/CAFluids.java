@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 public class CAFluids {
 	static {
-		CreateAddition.REGISTRATE.useCreativeTab(CACreativeModeTabs.MAIN_TAB);
+		CreateAddition.REGISTRATE.setCreativeTab(CACreativeModeTabs.MAIN_TAB);
 	}
 
 	public static FluidEntry<ForgeFlowingFluid.Flowing> SEED_OIL;

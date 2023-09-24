@@ -34,7 +34,7 @@ public class BarbedWireBlock extends Block implements net.minecraftforge.common.
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		double delta = Math.abs(entity.getX() - entity.xOld) + Math.abs(entity.getY() - entity.yOld) + Math.abs(entity.getZ() - entity.zOld);
 		if((entity instanceof LivingEntity) && delta > 0d) {
-			if(entity.hurt(CADamageTypes.BARBED_WIRE.source(level), Config.BARBED_WIRE_DAMAGE.get().floatValue()))
+			if(entity.hurt(CADamageTypes.barbedWire(level), Config.BARBED_WIRE_DAMAGE.get().floatValue()))
 				entity.playSound(SoundEvents.PLAYER_HURT_SWEET_BERRY_BUSH, 1f, 1f);
 		}
 		entity.makeStuckInBlock(state, new Vec3(0.25D, (double)0.05F, 0.25D));

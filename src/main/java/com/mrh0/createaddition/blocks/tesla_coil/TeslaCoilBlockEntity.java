@@ -124,7 +124,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 				time = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get();
 			}
 			if(dmg > 0)
-				e.hurt(CADamageTypes.TESLA_COIL.source(level), dmg);
+				e.hurt(CADamageTypes.barbedWire(level), dmg);
 			if(time > 0)
 				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), time));
 		}

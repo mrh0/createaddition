@@ -44,7 +44,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 public class CABlocks {
 
 	static {
-		CreateAddition.REGISTRATE.useCreativeTab(CACreativeModeTabs.MAIN_TAB);
+		CreateAddition.REGISTRATE.setCreativeTab(CACreativeModeTabs.MAIN_TAB);
 	}
 
 	public static final BlockEntry<ElectricMotorBlock> ELECTRIC_MOTOR = CreateAddition.REGISTRATE.block("electric_motor", ElectricMotorBlock::new)

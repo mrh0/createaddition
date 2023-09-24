@@ -15,7 +15,7 @@ import net.minecraft.world.item.Item;
 public class CAItems {
 
 	static {
-		CreateAddition.REGISTRATE.useCreativeTab(CACreativeModeTabs.MAIN_TAB);
+		CreateAddition.REGISTRATE.setCreativeTab(CACreativeModeTabs.MAIN_TAB);
 	}
 
 	public static final ItemEntry<Item> CAPACITOR =

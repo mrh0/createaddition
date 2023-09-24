@@ -188,7 +188,7 @@ dependencies {
     //implementation fg.deobf("curse.maven:create-328085:4341479")
     //implementation fg.deobf("curse.maven:flywheel-486392:4341471")
 	//implementation fg.deobf("curse.maven:immersive-engineering-231951:3579169")
-    implementation fg.deobf("curse.maven:cc-tweaked-282001:4631334")
+    implementation fg.deobf("curse.maven:cc-tweaked-282001:4740605")
 	//implementation fg.deobf("curse.maven:applied-energistics-2-223794:4013348")
 
 	runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:4599236")
