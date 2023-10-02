@@ -39,6 +39,11 @@ public class AlternatorBlock extends DirectionalKineticBlock implements IBE<Alte
 		return defaultBlockState().setValue(FACING, preferred);
 	}
 
+	@Override
+	public boolean hideStressImpact() {
+		return false;
+	}
+
 	public AlternatorBlock(Properties properties) {
 		super(properties);
 	}

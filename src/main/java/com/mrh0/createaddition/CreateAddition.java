@@ -78,23 +78,9 @@ public class CreateAddition {
             .networkProtocolVersion(() -> PROTOCOL)
             .simpleChannel();
 
-
-    @Nullable
-    public static KineticStats create(Item item) {
-        if (item instanceof BlockItem blockItem) {
-            Block block = blockItem.getBlock();
-            if (block instanceof ElectricMotorBlock) {
-                return new KineticStats(block);
-            }
-        }
-        return null;
-    }
-
     static {
-        REGISTRATE.setTooltipModifierFactory(item ->
-            new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
-                    .andThen(TooltipModifier.mapNull(CreateAddition.create(item)))
-        );
+        REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
+                .andThen(TooltipModifier.mapNull(KineticStats.create(item))));
     }
 
     public CreateAddition() {
