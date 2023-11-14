@@ -77,7 +77,7 @@
 	"item.createaddition.electrum_spool.tooltip.behaviour1": "Подключается к _высоковольтным коннекторам_.",
 	"item.createaddition.electrum_spool.tooltip.condition2": "Нажатие ПКМ по двум коннерторам",
 	"item.createaddition.electrum_spool.tooltip.behaviour2": "создаст проводную связь между ними, сохранив при этом пустую катушку.",
-	"item.createaddition.electrum_wire": "Электтрумовый провод",
+	"item.createaddition.electrum_wire": "Электрумовый провод",
 	"item.createaddition.electrum_rod": "Электрумовый стержень",
 
 	"item.createaddition.brass_rod": "Латунный стержень",
