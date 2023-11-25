@@ -109,10 +109,10 @@
 	"item.createaddition.seed_oil_bucket.tooltip.summary": "A simple _flammable liquid_.",
 	"fluid.createaddition.seed_oil": "Seed Oil",
 
-	"item.createaddition.bioethanol_bucket": "Bucket of Bioethanol",
+	"item.createaddition.bioethanol_bucket": "Bucket of Biofuel",
 	"item.createaddition.bioethanol_bucket.tooltip": "BIOETHANOL_BUCKET",
 	"item.createaddition.bioethanol_bucket.tooltip.summary": "An efficient _flammable liquid_.",
-	"fluid.createaddition.bioethanol": "Bioethanol",
+	"fluid.createaddition.bioethanol": "Biofuel",
 
 	"item.createaddition.biomass": "Biomass",
 	"item.createaddition.biomass_pellet": "Biomass Pellet",

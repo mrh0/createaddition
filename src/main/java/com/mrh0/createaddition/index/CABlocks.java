@@ -129,12 +129,12 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 
-	public static final BlockEntry<HarmfulPlantBlock> HARMFUL_PLANT = CreateAddition.REGISTRATE.block("harmful_plant",  HarmfulPlantBlock::new)
+	/*public static final BlockEntry<HarmfulPlantBlock> HARMFUL_PLANT = CreateAddition.REGISTRATE.block("harmful_plant",  HarmfulPlantBlock::new)
 			.initialProperties(Material.PLANT)
 			.properties(props -> props.sound(SoundType.CROP).strength(0.5f))
 			.item()
 			.transform(customItemModel())
-			.register();
+			.register();*/
 
 	public static final BlockEntry<BarbedWireBlock> BARBED_WIRE = CreateAddition.REGISTRATE.block("barbed_wire",  BarbedWireBlock::new)
 			.initialProperties(Material.WEB)

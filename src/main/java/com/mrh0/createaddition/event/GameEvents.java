@@ -81,7 +81,7 @@ public class GameEvents {
 
 
 	private static final Direction[] horizontalDirections = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void grow(BlockEvent.CropGrowEvent.Pre evt) {
 		try {
 			double chance = 0.001d;
@@ -96,5 +96,5 @@ public class GameEvents {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 }

@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.mrh0.createaddition.config.Config;
+import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
-import com.mrh0.createaddition.recipe.rolling.RollingRecipeType;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
@@ -163,7 +163,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity {
 	private void process() {
 		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
 
-		var sequenced = SequencedAssemblyRecipe.getRecipe(level,inventoryIn.getItem(0), RollingRecipe.TYPE,RollingRecipe.class);
+		var sequenced = SequencedAssemblyRecipe.getRecipe(level, inventoryIn.getItem(0), CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
 		if(sequenced.isPresent()) {
 			var recipe = sequenced.get();
 			var results = recipe.rollResults();
@@ -241,7 +241,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity {
 		tester.setStackInSlot(0, stack);
 		RecipeWrapper inventoryIn = new RecipeWrapper(tester);
 
-		var sequenced = SequencedAssemblyRecipe.getRecipe(level,stack,RollingRecipe.TYPE,RollingRecipe.class);
+		var sequenced = SequencedAssemblyRecipe.getRecipe(level, stack, CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
 		if(sequenced.isPresent()) {
 			return true;
 		}
@@ -283,11 +283,11 @@ public class RollingMillBlockEntity extends KineticBlockEntity {
 
 	}
 	public Optional<RollingRecipe> find(RecipeWrapper inv, Level world) {
-		var sequenced = SequencedAssemblyRecipe.getRecipe(level,inv.getItem(0), new RollingRecipeType(),RollingRecipe.class);
+		var sequenced = SequencedAssemblyRecipe.getRecipe(level, inv.getItem(0), CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
 		if(sequenced.isPresent()) {
 			return sequenced;
 		}
-		return world.getRecipeManager().getRecipeFor(RollingRecipe.TYPE, inv, world);
+		return world.getRecipeManager().getRecipeFor(CARecipes.ROLLING_TYPE.get(), inv, world);
 	}
 	
 	public static int getProcessingDuration() {

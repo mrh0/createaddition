@@ -8,6 +8,7 @@ import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricBlockEntity;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAEffects;
+import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.util.Util;
 
@@ -38,11 +39,11 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 
 	private Optional<ChargingRecipe> recipeCache = Optional.empty();
 
-	private ItemStackHandler inputInv;
+	private final ItemStackHandler inputInv;
 	private int chargeAccumulator;
 	protected int poweredTimer = 0;
 
-	private static DamageSource DMG_SOURCE = new DamageSource("tesla_coil");
+	private static final DamageSource DMG_SOURCE = new DamageSource("tesla_coil");
 
 	public TeslaCoilBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
@@ -220,6 +221,6 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	}
 
 	public Optional<ChargingRecipe> find(RecipeWrapper wrapper, Level world) {
-		return world.getRecipeManager().getRecipeFor(ChargingRecipe.TYPE, wrapper, world);
+		return world.getRecipeManager().getRecipeFor(CARecipes.CHARGING_TYPE.get(), wrapper, world);
 	}
 }

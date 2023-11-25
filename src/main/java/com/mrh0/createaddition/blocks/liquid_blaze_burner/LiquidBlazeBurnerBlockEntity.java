@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
@@ -119,9 +120,9 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 			return Optional.empty();
 		if(world == null)
 			return Optional.empty();
-		if(LiquidBurningRecipe.TYPE == null)
+		if(CARecipes.LIQUID_BURNING_TYPE.get() == null)
 			return Optional.empty();
-		return world.getRecipeManager().getRecipeFor(LiquidBurningRecipe.TYPE, new FluidRecipeWrapper(stack), world);
+		return world.getRecipeManager().getRecipeFor(CARecipes.LIQUID_BURNING_TYPE.get(), new FluidRecipeWrapper(stack), world);
 	}
 
 	@Override
