@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.recipe.rolling;
 
-import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.compat.jei.RollingMillAssemblySubCategory;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CARecipes;
@@ -9,7 +8,6 @@ import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.sequenced.IAssemblyRecipe;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -26,14 +24,12 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IAssemblyRecipe {
-
-    @SuppressWarnings("deprecation")
     protected final ItemStack output;
     protected final ResourceLocation id;
     protected final Ingredient ingredient;
 
     protected RollingRecipe(Ingredient ingredient, ItemStack output, ResourceLocation id) {
-        super(new RollingRecipeInfo(id, (SequencedAssemblyRollingRecipeSerializer) CARecipes.ROLLING.get(), TYPE), new RollingMillRecipeParams(id, ingredient, new ProcessingOutput(output, 1f)));
+        super(new RollingRecipeInfo(id, (SequencedAssemblyRollingRecipeSerializer) CARecipes.ROLLING.get(), CARecipes.ROLLING_TYPE.get()), new RollingMillRecipeParams(id, ingredient, new ProcessingOutput(output, 1f)));
         this.output = output;
         this.id = id;
         this.ingredient = ingredient;

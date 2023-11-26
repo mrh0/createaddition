@@ -187,12 +187,12 @@ public class CABlocks {
 			.transform(BuilderTransformers.casing(() -> CASpriteShifts.COPPER_WIRE_CASING))
 			.register();*/
 
-	public static final BlockEntry<Block> COPPER_WIRE_CASING = CreateAddition.REGISTRATE.block("biomass_pellet_block", Block::new)
+	/*public static final BlockEntry<Block> COPPER_WIRE_CASING = CreateAddition.REGISTRATE.block("biomass_pellet_block", Block::new)
 			.initialProperties(() -> Blocks.DRIED_KELP_BLOCK)
 			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
 			.item(BiomassPelletBlock::new)
 			.transform(customItemModel())
-			.register();
+			.register();*/
 
 	public static final BlockEntry<DigitalAdapterBlock> DIGITAL_ADAPTER = CreateAddition.REGISTRATE.block("digital_adapter",  DigitalAdapterBlock::new)
 			.initialProperties(SharedProperties::softMetal)

@@ -3,6 +3,7 @@ package com.mrh0.createaddition.recipe.charging;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CARecipes;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -20,8 +21,6 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	public int energy;
 	public int maxChargeRate;
 
-	@SuppressWarnings("deprecation")
-	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "charging"));
 	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy, int maxChargeRate) {
 		this.id = id;
 		this.ingredient = ingredient;

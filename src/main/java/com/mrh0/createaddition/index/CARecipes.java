@@ -34,16 +34,14 @@ public class CARecipes {
 	}
 
 	public static final Supplier<RecipeType<RollingRecipe>> ROLLING_TYPE = register("rolling");
-	static RegistryObject<RecipeSerializer<?>> ROLLING = SERIALIZERS.register("rolling", () ->
-		new SequencedAssemblyRollingRecipeSerializer(new RollingRecipeProcessingFactory()));
+	public static RegistryObject<RecipeSerializer<?>> ROLLING = SERIALIZERS.register("rolling", () ->
+			new SequencedAssemblyRollingRecipeSerializer(new RollingRecipeProcessingFactory()));
 
 	public static final Supplier<RecipeType<ChargingRecipe>> CHARGING_TYPE = register("charging");
-	static RegistryObject<RecipeSerializer<?>> CHARGING = SERIALIZERS.register("charging", () ->
-		new ChargingRecipeSerializer());
+	public static final RegistryObject<RecipeSerializer<?>> CHARGING = SERIALIZERS.register("charging", ChargingRecipeSerializer::new);
 
 	public static final Supplier<RecipeType<LiquidBurningRecipe>> LIQUID_BURNING_TYPE = register("liquid_burning");
-	static RegistryObject<RecipeSerializer<?>> LIQUID_BURNING = SERIALIZERS.register("liquid_burning", () ->
-	new LiquidBurningRecipeSerializer());
+	public static final RegistryObject<RecipeSerializer<?>> LIQUID_BURNING = SERIALIZERS.register("liquid_burning", LiquidBurningRecipeSerializer::new);
 
     public static void register(IEventBus event) {
 
