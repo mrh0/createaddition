@@ -257,6 +257,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		updateExternalEnergyStorage();
 	}
 
+	protected void specialTick() {}
 
 	boolean externalStorageInvalid = false;
 	@Override
@@ -268,6 +269,8 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		// Check if we need to drop any wires due to contraption.
 		if (!this.wireCache.isEmpty() && !isRemoved()) handleWireCache(level, this.wireCache);
 
+		specialTick();
+
 		if (getMode() == ConnectorMode.None) return;
 		super.tick();
 
@@ -278,6 +281,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		networkTick(network);
 
 		if (externalStorageInvalid) updateExternalEnergyStorage();
+
 	}
 
 	private final static IEnergyStorage NULL_ES = new EnergyStorage(0, 0, 0);

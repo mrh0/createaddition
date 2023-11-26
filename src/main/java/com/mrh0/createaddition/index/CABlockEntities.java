@@ -3,6 +3,7 @@ package com.mrh0.createaddition.index;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlockEntity;
 import com.mrh0.createaddition.blocks.connector.LargeConnectorBlockEntity;
 import com.mrh0.createaddition.blocks.connector.SmallConnectorBlockEntity;
+import com.mrh0.createaddition.blocks.connector.SmallLightConnectorBlockEntity;
 import com.mrh0.createaddition.blocks.connector.base.ConnectorRenderer;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlockEntity;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlockEntity;
@@ -55,6 +56,12 @@ public class CABlockEntities {
 	public static final BlockEntityEntry<SmallConnectorBlockEntity> SMALL_CONNECTOR = CreateAddition.REGISTRATE
 			.blockEntity("connector", SmallConnectorBlockEntity::new)
 			.validBlocks(CABlocks.SMALL_CONNECTOR)
+			.renderer(() -> ConnectorRenderer::new)
+			.register();
+
+	public static final BlockEntityEntry<SmallLightConnectorBlockEntity> SMALL_LIGHT_CONNECTOR = CreateAddition.REGISTRATE
+			.blockEntity("small_light_connector", SmallLightConnectorBlockEntity::new)
+			.validBlocks(CABlocks.SMALL_LIGHT_CONNECTOR)
 			.renderer(() -> ConnectorRenderer::new)
 			.register();
 

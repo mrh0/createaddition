@@ -2,6 +2,7 @@ package com.mrh0.createaddition.energy.network;
 
 import java.util.Map;
 
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 
 import net.minecraft.core.BlockPos;
@@ -20,6 +21,8 @@ public class EnergyNetwork {
 	
 	private int pulled = 0;
 	private int pushed = 0;
+
+	private int nodeCount = 0;
 	
 	private static final int MAX_BUFF = 80000;
 	
@@ -31,8 +34,11 @@ public class EnergyNetwork {
 		this.outDemand = 0;
 		this.valid = true;
 		
-		
 		EnergyNetworkManager.instances.get(world).add(this);
+	}
+
+	public int getMaxBuff() {
+		return Math.min(nodeCount * (outDemand + inDemand * 2 + 10), MAX_BUFF);
 	}
 	
 	public void tick(int index) {
@@ -54,7 +60,7 @@ public class EnergyNetwork {
 
 	// Returns the amount of energy pushed to network
 	public int push(int energy, boolean simulate) {
-		energy = Math.min(MAX_BUFF - inBuff, energy);
+		energy = Math.min(getMaxBuff() - inBuff, energy);
 		energy = Math.max(energy, 0);
 		if (!simulate) {
 			inBuff += energy;
@@ -102,6 +108,7 @@ public class EnergyNetwork {
 		if (visited.containsKey(posKey(current.getPos(), index))) return null; // should never matter?
 		current.setNetwork(index, en);
 		visited.put(posKey(current.getPos(), index), current);
+		en.nodeCount++;
 		
 		for (int i = 0; i < current.getNodeCount(); i++) {
 			IWireNode next = current.getWireNode(i);
@@ -124,9 +131,7 @@ public class EnergyNetwork {
 		return this.valid;
 	}
 	
-	public void removed() {
-		
-	}
+	public void removed() {}
 	
 	public int getId() {
 		return id;
