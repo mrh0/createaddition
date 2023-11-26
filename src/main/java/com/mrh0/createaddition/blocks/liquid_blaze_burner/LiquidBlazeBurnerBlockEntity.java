@@ -115,14 +115,14 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		changed = true;
 	}
 
-	public Optional<LiquidBurningRecipe> find(FluidStack stack, Level world) {
+	public Optional<LiquidBurningRecipe> find(FluidStack stack, Level level) {
 		if(stack == null)
 			return Optional.empty();
-		if(world == null)
+		if(level == null)
 			return Optional.empty();
 		if(CARecipes.LIQUID_BURNING_TYPE.get() == null)
 			return Optional.empty();
-		return world.getRecipeManager().getRecipeFor(CARecipes.LIQUID_BURNING_TYPE.get(), new FluidRecipeWrapper(stack), world);
+		return level.getRecipeManager().getRecipeFor(CARecipes.LIQUID_BURNING_TYPE.get(), new FluidRecipeWrapper(stack), level);
 	}
 
 	@Override
@@ -295,29 +295,27 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		notifyUpdate();
 	}
 
-	private boolean tryUpdateLiquid(ItemStack itemStack) {
+	private boolean tryUpdateLiquid(ItemStack itemStack, boolean simulate) {
 		LazyOptional<IFluidHandlerItem> cap = itemStack
 				.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-		if (!cap.isPresent())
-			return false;
+		if (!cap.isPresent()) return false;
 		IFluidHandlerItem handler = cap.orElse(null);
-		if (handler.getFluidInTank(0).isEmpty())
-			return false;
+		if (handler.getFluidInTank(0).isEmpty()) return false;
 		FluidStack stack = handler.getFluidInTank(0);
 		Optional<LiquidBurningRecipe> recipe = find(stack, level);
-		if (!recipe.isPresent())
-			return false;
+		if (!recipe.isPresent()) return false;
 
 		LazyOptional<IFluidHandler> tecap = getCapability(ForgeCapabilities.FLUID_HANDLER);
-		if (!tecap.isPresent())
-			return false;
+		if (!tecap.isPresent()) return false;
 		IFluidHandler tehandler = tecap.orElse(null);
-		if (tehandler.getTankCapacity(0) - tehandler.getFluidInTank(0).getAmount() < 1000)
-			return false;
-		tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), FluidAction.EXECUTE);
+		if (tehandler.getTankCapacity(0) - tehandler.getFluidInTank(0).getAmount() < 1000) return false;
+
+		if(!simulate)
+			tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), FluidAction.EXECUTE);
 		//if (!player.isCreative())
 		//	player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
-		level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
+		if(!simulate)
+			level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
 		return true;
 	}
 
@@ -326,15 +324,13 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	 *         consumed
 	 */
 	protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate) {
-		if (isCreative)
-			return false;
+		if (isCreative) return false;
 
 		FuelType newFuel = FuelType.NONE;
 		int newBurnTime;
 
 		// Liquid Fluid Logic
-		if(tryUpdateLiquid(itemStack))
-			return true;
+		if(tryUpdateLiquid(itemStack, simulate)) return true;
 
 		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
 			newBurnTime = 1000;
@@ -349,21 +345,16 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 			}
 		}
 
-		if (newFuel == FuelType.NONE)
-			return false;
-		if (newFuel.ordinal() < activeFuel.ordinal())
-			return false;
-		if (activeFuel == FuelType.SPECIAL && remainingBurnTime > 20)
-			return false;
+		if (newFuel == FuelType.NONE) return false;
+		if (newFuel.ordinal() < activeFuel.ordinal()) return false;
+		if (activeFuel == FuelType.SPECIAL && remainingBurnTime > 20) return false;
 
 		if (newFuel == activeFuel) {
-			if (remainingBurnTime + newBurnTime > MAX_HEAT_CAPACITY && !forceOverflow)
-				return false;
+			if (remainingBurnTime + newBurnTime > MAX_HEAT_CAPACITY && !forceOverflow) return false;
 			newBurnTime = Mth.clamp(remainingBurnTime + newBurnTime, 0, MAX_HEAT_CAPACITY);
 		}
 
-		if (simulate)
-			return true;
+		if (simulate) return true;
 
 		activeFuel = newFuel;
 		remainingBurnTime = newBurnTime;

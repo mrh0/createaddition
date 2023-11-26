@@ -91,8 +91,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	}
 
 	protected float getItemCharge(IEnergyStorage energy) {
-		if (energy == null)
-			return 0f;
+		if (energy == null) return 0f;
 		return (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored();
 	}
 
@@ -125,10 +124,8 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 				dmg = Config.TESLA_COIL_HURT_DMG_PLAYER.get();
 				time = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get();
 			}
-			if(dmg > 0)
-				e.hurt(DMG_SOURCE, dmg);
-			if(time > 0)
-				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), time));
+			if(dmg > 0) e.hurt(DMG_SOURCE, dmg);
+			if(time > 0) e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), time));
 		}
 	}
 
@@ -138,6 +135,8 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	@Override
 	public void tick() {
 		super.tick();
+		if(level == null) return;
+
 		if(level.isClientSide()) {
 			if(isPoweredState() && soundTimeout++ > 20) {
 				//level.playLocalSound(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), SoundEvents.BEE_LOOP, SoundSource.BLOCKS, 1f, 16f, false);
@@ -184,18 +183,16 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	}
 
 	protected boolean chargeStack(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		if(!stack.getCapability(ForgeCapabilities.ENERGY).isPresent())
-			return false;
+		if(!stack.getCapability(ForgeCapabilities.ENERGY).isPresent()) return false;
 		IEnergyStorage es = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
-		if(es.receiveEnergy(1, true) != 1)
-			return false;
-		if(localEnergy.getEnergyStored() < stack.getCount())
-			return false;
+		if(es.receiveEnergy(1, true) != 1) return false;
+		if(localEnergy.getEnergyStored() < stack.getCount()) return false;
 		localEnergy.internalConsumeEnergy(es.receiveEnergy(Math.min(getConsumption(), localEnergy.getEnergyStored()), false));
 		return true;
 	}
 
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+		if (this.getLevel() == null) return false;
 		if(!inputInv.getStackInSlot(0).sameItem(stack)) {
 			inputInv.setStackInSlot(0, stack);
 			recipeCache = find(new RecipeWrapper(inputInv), this.getLevel());
