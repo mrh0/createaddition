@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.event;
 
+import com.mrh0.createaddition.blocks.crops.HarmfulPlantBlock;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyManager;
 import com.mrh0.createaddition.debug.CADebugger;
@@ -11,6 +12,8 @@ import com.simibubi.create.AllBlocks;
 
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.TickEvent;
@@ -20,6 +23,8 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.Random;
 
 @Mod.EventBusSubscriber
 public class GameEvents {
@@ -47,8 +52,7 @@ public class GameEvents {
 
 	@SubscribeEvent
 	public static void loadEvent(LevelEvent.Load evt) {
-		if(evt.getLevel().isClientSide())
-			return;
+		if(evt.getLevel().isClientSide()) return;
 		new EnergyNetworkManager(evt.getLevel());
 	}
 
@@ -74,4 +78,23 @@ public class GameEvents {
 			e.printStackTrace();
 		}
 	}
+
+
+	private static final Direction[] horizontalDirections = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+	/*@SubscribeEvent
+	public static void grow(BlockEvent.CropGrowEvent.Pre evt) {
+		try {
+			double chance = 0.001d;
+			for(Direction dir : horizontalDirections) {
+				BlockState state = evt.getLevel().getBlockState(evt.getPos().relative(dir));
+				if(state.is(CABlocks.HARMFUL_PLANT.get()))
+					chance *= state.getValue(HarmfulPlantBlock.AGE)*3;
+			}
+			if(Math.random() < chance)
+				evt.getLevel().setBlock(evt.getPos(), CABlocks.HARMFUL_PLANT.getDefaultState(), 3);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}*/
 }

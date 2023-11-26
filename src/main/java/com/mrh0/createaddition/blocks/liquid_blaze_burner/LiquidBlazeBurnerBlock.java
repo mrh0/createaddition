@@ -90,63 +90,27 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-		BlockHitResult blockRayTraceResult) {
-
-
-		/*if (world.isClientSide())
-			return InteractionResult.CONSUME;
-		BlockEntity tileentity = world.getBlockEntity(pos);
-		if (tileentity instanceof LiquidBlazeBurnerTileEntity) {
-			LiquidBlazeBurnerTileEntity cbte = (LiquidBlazeBurnerTileEntity) tileentity;
-			ItemStack held = player.getMainHandItem();
-			if (!(held.getItem() instanceof BucketItem))
-				return InteractionResult.SUCCESS;
-			LazyOptional<IFluidHandlerItem> cap = held
-					.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
-			if (!cap.isPresent())
-				return InteractionResult.SUCCESS;
-			IFluidHandlerItem handler = cap.orElse(null);
-			if (handler.getFluidInTank(0).isEmpty())
-				return InteractionResult.CONSUME;
-			FluidStack stack = handler.getFluidInTank(0);
-			Optional<LiquidBurningRecipe> recipe = cbte.find(stack, world);
-			if (!recipe.isPresent())
-				return InteractionResult.SUCCESS;
-
-			LazyOptional<IFluidHandler> tecap = cbte.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
-			if (!tecap.isPresent())
-				return InteractionResult.SUCCESS;
-			IFluidHandler tehandler = tecap.orElse(null);
-			if (tehandler.getTankCapacity(0) - tehandler.getFluidInTank(0).getAmount() < 1000)
-				return InteractionResult.SUCCESS;
-			tehandler.fill(new FluidStack(handler.getFluidInTank(0).getFluid(), 1000), FluidAction.EXECUTE);
-			if (!player.isCreative())
-				player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
-			player.playSound(SoundEvents.BUCKET_EMPTY, 1f, 1f);
-		}
-		return InteractionResult.PASS;*/
-
-
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
+		BlockHitResult hit) {
 
 		ItemStack heldItem = player.getItemInHand(hand);
 		BlazeBurnerBlock.HeatLevel heat = state.getValue(HEAT_LEVEL);
 
 		if (AllItems.GOGGLES.isIn(heldItem) && heat != BlazeBurnerBlock.HeatLevel.NONE)
-			return onBlockEntityUse(world, pos, bbte -> {
-				if (bbte.goggles)
+			return onBlockEntityUse(level, pos, be -> {
+				if (be.goggles)
 					return InteractionResult.PASS;
-				bbte.goggles = true;
-				bbte.notifyUpdate();
+				be.goggles = true;
+				be.notifyUpdate();
 				return InteractionResult.SUCCESS;
 			});
 
 		if (heldItem.isEmpty() && heat != BlazeBurnerBlock.HeatLevel.NONE)
-			return onBlockEntityUse(world, pos, bbte -> {
-				if (!bbte.goggles)
+			return onBlockEntityUse(level, pos, be -> {
+				if (!be.goggles)
 					return InteractionResult.PASS;
-				bbte.goggles = false;
-				bbte.notifyUpdate();
+				be.goggles = false;
+				be.notifyUpdate();
 				return InteractionResult.SUCCESS;
 			});
 
@@ -154,9 +118,9 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 		boolean forceOverflow = !(player instanceof FakePlayer);
 
 		InteractionResultHolder<ItemStack> res =
-			tryInsert(state, world, pos, heldItem, doNotConsume, forceOverflow, false);
+			tryInsert(state, level, pos, heldItem, doNotConsume, forceOverflow, false);
 		ItemStack leftover = res.getObject();
-		if (!world.isClientSide && !doNotConsume && !leftover.isEmpty()) {
+		if (!level.isClientSide && !doNotConsume && !leftover.isEmpty()) {
 			if (heldItem.isEmpty()) {
 				player.setItemInHand(hand, leftover);
 			} else if (!player.getInventory()
@@ -168,12 +132,12 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 		return res.getResult() == InteractionResult.SUCCESS ? InteractionResult.SUCCESS : InteractionResult.PASS;
 	}
 
-	public static InteractionResultHolder<ItemStack> tryInsert(BlockState state, Level world, BlockPos pos,
+	public static InteractionResultHolder<ItemStack> tryInsert(BlockState state, Level level, BlockPos pos,
 		ItemStack stack, boolean doNotConsume, boolean forceOverflow, boolean simulate) {
 		if (!state.hasBlockEntity())
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity te = level.getBlockEntity(pos);
 		if (!(te instanceof LiquidBlazeBurnerBlockEntity))
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 		LiquidBlazeBurnerBlockEntity burnerTE = (LiquidBlazeBurnerBlockEntity) te;
@@ -188,7 +152,7 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 
 		if (!doNotConsume) {
 			ItemStack container = stack.hasCraftingRemainingItem() ? stack.getCraftingRemainingItem() : ItemStack.EMPTY;
-			if (!world.isClientSide) {
+			if (!level.isClientSide) {
 				stack.shrink(1);
 			}
 			return InteractionResultHolder.success(container);
@@ -197,31 +161,31 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return AllShapes.HEATER_BLOCK_SHAPE;
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState p_220071_1_, BlockGetter p_220071_2_, BlockPos p_220071_3_,
-		CollisionContext p_220071_4_) {
-		if (p_220071_4_ == CollisionContext.empty())
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos,
+		CollisionContext context) {
+		if (context == CollisionContext.empty())
 			return AllShapes.HEATER_BLOCK_SPECIAL_COLLISION_SHAPE;
-		return getShape(p_220071_1_, p_220071_2_, p_220071_3_, p_220071_4_);
+		return getShape(state, getter, pos, context);
 	}
 
 	@Override
-	public boolean hasAnalogOutputSignal(BlockState p_149740_1_) {
+	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getAnalogOutputSignal(BlockState state, Level p_180641_2_, BlockPos p_180641_3_) {
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
 		return Math.max(0, state.getValue(HEAT_LEVEL)
 			.ordinal() - 1);
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
+	public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
 		return false;
 	}
 

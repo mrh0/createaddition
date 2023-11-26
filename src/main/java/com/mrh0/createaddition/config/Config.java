@@ -42,6 +42,8 @@ public class Config {
 	public static ForgeConfigSpec.IntValue SMALL_CONNECTOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.IntValue SMALL_CONNECTOR_MAX_LENGTH;
 
+	public static ForgeConfigSpec.IntValue SMALL_LIGHT_CONNECTOR_CONSUMPTION;
+
 	public static ForgeConfigSpec.IntValue LARGE_CONNECTOR_MAX_INPUT;
 	public static ForgeConfigSpec.IntValue LARGE_CONNECTOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.IntValue LARGE_CONNECTOR_MAX_LENGTH;
@@ -130,6 +132,9 @@ public class Config {
 
 		SMALL_CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Small Connector max wire length in blocks.")
 				.defineInRange("small_connector_wire_length", 16, 0, 256);
+
+		SMALL_LIGHT_CONNECTOR_CONSUMPTION = COMMON_BUILDER.comment("Small Connector With Light energy consumption in FE/t.")
+				.defineInRange("small_light_connector_consumption", 1, 0, Integer.MAX_VALUE);
 
 
 		LARGE_CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Large Connector max input in FE/t (Energy transfer).")

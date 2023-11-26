@@ -9,6 +9,7 @@ import com.mrh0.createaddition.energy.BaseElectricBlockEntity;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CADamageTypes;
 import com.mrh0.createaddition.index.CAEffects;
+import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.util.Util;
 
@@ -39,7 +40,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 
 	private Optional<ChargingRecipe> recipeCache = Optional.empty();
 
-	private ItemStackHandler inputInv;
+	private final ItemStackHandler inputInv;
 	private int chargeAccumulator;
 	protected int poweredTimer = 0;
 
@@ -89,8 +90,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	}
 
 	protected float getItemCharge(IEnergyStorage energy) {
-		if (energy == null)
-			return 0f;
+		if (energy == null) return 0f;
 		return (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored();
 	}
 
@@ -123,10 +123,8 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 				dmg = Config.TESLA_COIL_HURT_DMG_PLAYER.get();
 				time = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get();
 			}
-			if(dmg > 0)
-				e.hurt(CADamageTypes.barbedWire(level), dmg);
-			if(time > 0)
-				e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), time));
+			if(dmg > 0) e.hurt(CADamageTypes.barbedWire(level), dmg);
+			if(time > 0) e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), time));
 		}
 	}
 
@@ -136,6 +134,8 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	@Override
 	public void tick() {
 		super.tick();
+		if(level == null) return;
+
 		if(level.isClientSide()) {
 			if(isPoweredState() && soundTimeout++ > 20) {
 				//level.playLocalSound(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), SoundEvents.BEE_LOOP, SoundSource.BLOCKS, 1f, 16f, false);
@@ -168,8 +168,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	protected BeltProcessingBehaviour.ProcessingResult chargeCompundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 
 		ItemStack stack = transported.stack;
-		if(stack == null)
-			return BeltProcessingBehaviour.ProcessingResult.PASS;
+		if(stack == null) return BeltProcessingBehaviour.ProcessingResult.PASS;
 		if(chargeStack(stack, transported, handler)) {
 			poweredTimer = 10;
 			return BeltProcessingBehaviour.ProcessingResult.HOLD;
@@ -182,13 +181,10 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	}
 
 	protected boolean chargeStack(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		if(!stack.getCapability(ForgeCapabilities.ENERGY).isPresent())
-			return false;
+		if(!stack.getCapability(ForgeCapabilities.ENERGY).isPresent()) return false;
 		IEnergyStorage es = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
-		if(es.receiveEnergy(1, true) != 1)
-			return false;
-		if(localEnergy.getEnergyStored() < stack.getCount())
-			return false;
+		if(es.receiveEnergy(1, true) != 1) return false;
+		if(localEnergy.getEnergyStored() < stack.getCount()) return false;
 		localEnergy.internalConsumeEnergy(es.receiveEnergy(Math.min(getConsumption(), localEnergy.getEnergyStored()), false));
 		return true;
 	}
@@ -220,6 +216,6 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	}
 
 	public Optional<ChargingRecipe> find(RecipeWrapper wrapper, Level world) {
-		return world.getRecipeManager().getRecipeFor(ChargingRecipe.TYPE, wrapper, world);
+		return world.getRecipeManager().getRecipeFor(CARecipes.CHARGING_TYPE.get(), wrapper, world);
 	}
 }

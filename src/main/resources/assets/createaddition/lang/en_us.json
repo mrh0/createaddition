@@ -109,10 +109,10 @@
 	"item.createaddition.seed_oil_bucket.tooltip.summary": "A simple _flammable liquid_.",
 	"fluid.createaddition.seed_oil": "Seed Oil",
 
-	"item.createaddition.bioethanol_bucket": "Bucket of Bioethanol",
+	"item.createaddition.bioethanol_bucket": "Bucket of Biofuel",
 	"item.createaddition.bioethanol_bucket.tooltip": "BIOETHANOL_BUCKET",
 	"item.createaddition.bioethanol_bucket.tooltip.summary": "An efficient _flammable liquid_.",
-	"fluid.createaddition.bioethanol": "Bioethanol",
+	"fluid.createaddition.bioethanol": "Biofuel",
 
 	"item.createaddition.biomass": "Biomass",
 	"item.createaddition.biomass_pellet": "Biomass Pellet",
@@ -173,6 +173,16 @@
 	"block.createaddition.connector.tooltip.condition3": "R-click with Wrench",
 	"block.createaddition.connector.tooltip.behaviour3": "To cycle between _Push_, _Pull_, and _None_ modes.",
 
+	"block.createaddition.small_light_connector": "Small Connector With Light",
+	"block.createaddition.small_light_connector.tooltip": "CONNECTOR",
+	"block.createaddition.small_light_connector.tooltip.summary": "Connects _Forge Energy_ compatible blocks with _wires_ to transfer _FE_, provides light when receiving power.",
+	"block.createaddition.small_light_connector.tooltip.condition1": "Low Current",
+	"block.createaddition.small_light_connector.tooltip.behaviour1": "Connected with _low current wires_.",
+	"block.createaddition.small_light_connector.tooltip.condition2": "R-click",
+	"block.createaddition.small_light_connector.tooltip.behaviour2": "While holding a _Copper Spool_, _Gold Spool_, or _Electrum Spool_ to create a _wire link_ with up to 4 other connectors.",
+	"block.createaddition.small_light_connector.tooltip.condition3": "R-click with Wrench",
+	"block.createaddition.small_light_connector.tooltip.behaviour3": "To cycle between _Push_, _Pull_, and _None_ modes.",
+
 	"block.createaddition.large_connector": "Large Connector",
 	"block.createaddition.large_connector.tooltip": "CONNECTOR",
 	"block.createaddition.large_connector.tooltip.summary": "Connects _Forge Energy_ compatible blocks with _wires_ to transfer _FE_.",
@@ -199,6 +209,8 @@
 
 	"block.createaddition.chocolate_cake": "Chocolate Cake",
 	"block.createaddition.honey_cake": "Honey Cake",
+
+	"block.createaddition.biomass_pellet_block": "Biomass Pallet",
 
 	"block.createaddition.seed_oil": "Seed Oil",
 	"block.createaddition.bioethanol": "Bioethanol",

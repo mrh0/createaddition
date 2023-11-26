@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern":
+	["PPP",
+	 "PPP",
+	 "PPP"],
+	"key":
+	{
+		"P":
+		{
+			"item": "createaddition:biomass_pellet"
+		}
+	},
+	"result":{
+		"item": "createaddition:biomass_pellet_block",
+		"count": 1
+	}
+}

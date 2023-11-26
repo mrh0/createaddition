@@ -22,7 +22,6 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 	protected int burnTime;
 	protected boolean superheated;
 	
-	public static RecipeType<LiquidBurningRecipe> TYPE = new LiquidBurningRecipeType();
 	@SuppressWarnings("deprecation")
 	public LiquidBurningRecipe(ResourceLocation id, FluidIngredient fluid, int burnTime, boolean superheated) {
 		this.id = id;
@@ -69,7 +68,7 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 
 	@Override
 	public RecipeType<?> getType() {
-		return TYPE;
+		return CARecipes.LIQUID_BURNING_TYPE.get();
 	}
 
 	public FluidIngredient getFluidIngredient() {

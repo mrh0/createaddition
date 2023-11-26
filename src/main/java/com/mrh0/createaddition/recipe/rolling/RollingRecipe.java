@@ -27,7 +27,6 @@ import java.util.function.Supplier;
 
 public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IAssemblyRecipe {
 
-    public static RecipeType<RollingRecipe> TYPE = new RollingRecipeType();
     @SuppressWarnings("deprecation")
     protected final ItemStack output;
     protected final ResourceLocation id;
@@ -95,7 +94,7 @@ public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IA
 
     @Override
     public RecipeType<?> getType() {
-        return TYPE;
+        return CARecipes.ROLLING_TYPE.get();
     }
 
     @Override

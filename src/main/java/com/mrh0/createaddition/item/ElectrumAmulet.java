@@ -26,6 +26,4 @@ public class ElectrumAmulet extends Item {
             player.addEffect(new MobEffectInstance(MobEffects.LUCK, 3, 0, true, true, true));
         }
     }
-
-
 }

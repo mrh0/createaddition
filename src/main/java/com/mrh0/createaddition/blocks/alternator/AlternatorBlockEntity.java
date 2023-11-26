@@ -47,12 +47,12 @@ public class AlternatorBlockEntity extends KineticBlockEntity {
 		return added;
 	}
 
-	@Override
+	/*@Override
 	public float calculateStressApplied() {
 		float impact = Config.MAX_STRESS.get()/256f;
 		this.lastStressApplied = impact;
 		return impact;
-	}
+	}*/
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {

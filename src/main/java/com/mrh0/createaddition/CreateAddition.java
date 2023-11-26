@@ -68,23 +68,9 @@ public class CreateAddition {
             .networkProtocolVersion(() -> PROTOCOL)
             .simpleChannel();
 
-
-    @Nullable
-    public static KineticStats create(Item item) {
-        if (item instanceof BlockItem blockItem) {
-            Block block = blockItem.getBlock();
-            if (block instanceof ElectricMotorBlock) {
-                return new KineticStats(block);
-            }
-        }
-        return null;
-    }
-
     static {
-        REGISTRATE.setTooltipModifierFactory(item ->
-            new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
-                    .andThen(TooltipModifier.mapNull(CreateAddition.create(item)))
-        );
+        REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
+                .andThen(TooltipModifier.mapNull(KineticStats.create(item))));
     }
 
     public CreateAddition() {
@@ -112,8 +98,10 @@ public class CreateAddition {
         CAEffects.register(eventBus);
         CARecipes.register(eventBus);
         CASchedule.register();
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> CAPartials::init);
         CADamageTypes.register();
+        CAArmInteractions.register();
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> CAPartials::init);
+
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -136,6 +124,7 @@ public class CreateAddition {
 
         ItemBlockRenderTypes.setRenderLayer(CABlocks.TESLA_COIL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(CABlocks.BARBED_WIRE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(CABlocks.SMALL_LIGHT_CONNECTOR.get(), cutout);
     }
 
     public void postInit(FMLLoadCompleteEvent evt) {
