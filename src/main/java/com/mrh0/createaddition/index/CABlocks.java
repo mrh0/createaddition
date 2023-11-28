@@ -191,7 +191,7 @@ public class CABlocks {
 			.transform(BuilderTransformers.casing(() -> CASpriteShifts.COPPER_WIRE_CASING))
 			.register();*/
 
-	public static final BlockEntry<Block> COPPER_WIRE_CASING = CreateAddition.REGISTRATE.block("biomass_pellet_block", Block::new)
+	public static final BlockEntry<Block> BIOMASS_PALLET = CreateAddition.REGISTRATE.block("biomass_pellet_block", Block::new)
 			.initialProperties(() -> Blocks.DRIED_KELP_BLOCK)
 			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
 			.item(BiomassPelletBlock::new)
