@@ -44,6 +44,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 
 public class CABlocks {
 
@@ -187,12 +188,12 @@ public class CABlocks {
 			.transform(BuilderTransformers.casing(() -> CASpriteShifts.COPPER_WIRE_CASING))
 			.register();*/
 
-	/*public static final BlockEntry<Block> COPPER_WIRE_CASING = CreateAddition.REGISTRATE.block("biomass_pellet_block", Block::new)
+	public static final BlockEntry<Block> BIOMASS_PALLET  = CreateAddition.REGISTRATE.block("biomass_pellet_block", Block::new)
 			.initialProperties(() -> Blocks.DRIED_KELP_BLOCK)
-			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
+			.properties(p -> p.mapColor(MapColor.COLOR_GREEN))
 			.item(BiomassPelletBlock::new)
 			.transform(customItemModel())
-			.register();*/
+			.register();
 
 	public static final BlockEntry<DigitalAdapterBlock> DIGITAL_ADAPTER = CreateAddition.REGISTRATE.block("digital_adapter",  DigitalAdapterBlock::new)
 			.initialProperties(SharedProperties::softMetal)
