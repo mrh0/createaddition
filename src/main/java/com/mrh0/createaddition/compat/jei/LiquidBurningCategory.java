@@ -1,8 +1,5 @@
 package com.mrh0.createaddition.compat.jei;
 
-import java.util.List;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.util.ClientMinecraftWrapper;
@@ -10,7 +7,6 @@ import com.simibubi.create.compat.jei.category.animations.AnimatedBlazeBurner;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.utility.Lang;
-
 import mezz.jei.api.fabric.constants.FabricTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -18,6 +14,8 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.List;
 
 public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe> {
 

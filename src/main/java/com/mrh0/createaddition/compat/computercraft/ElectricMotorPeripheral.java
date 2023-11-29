@@ -1,9 +1,7 @@
 package com.mrh0.createaddition.compat.computercraft;
 
 
-import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
-
 import com.mrh0.createaddition.config.Config;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;

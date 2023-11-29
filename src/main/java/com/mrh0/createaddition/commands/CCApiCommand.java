@@ -1,7 +1,6 @@
 package com.mrh0.createaddition.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;

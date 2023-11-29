@@ -1,7 +1,6 @@
 package com.mrh0.createaddition.event;
 
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
-import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyManager;
 import com.mrh0.createaddition.debug.CADebugger;
 import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
@@ -9,8 +8,8 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.AllBlocks;
-
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;

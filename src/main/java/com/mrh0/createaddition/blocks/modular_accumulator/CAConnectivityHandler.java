@@ -1,28 +1,18 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.PriorityQueue;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
-import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
+import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
 import com.simibubi.create.foundation.utility.Iterate;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import org.apache.commons.lang3.tuple.Pair;
+
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class CAConnectivityHandler {
 

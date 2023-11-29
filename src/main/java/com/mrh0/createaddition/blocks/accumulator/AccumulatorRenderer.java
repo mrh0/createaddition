@@ -1,7 +1,6 @@
 package com.mrh0.createaddition.blocks.accumulator;
 
 import com.mrh0.createaddition.rendering.WireNodeRenderer;
-
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
 

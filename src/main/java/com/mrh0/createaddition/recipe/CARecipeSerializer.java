@@ -1,10 +1,7 @@
 package com.mrh0.createaddition.recipe;
 
-import javax.annotation.Nonnull;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

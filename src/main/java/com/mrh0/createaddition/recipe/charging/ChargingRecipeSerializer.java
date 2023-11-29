@@ -3,7 +3,6 @@ package com.mrh0.createaddition.recipe.charging;
 import com.google.gson.JsonObject;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.CARecipeSerializer;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -21,9 +20,9 @@ public class ChargingRecipeSerializer extends CARecipeSerializer<ChargingRecipe>
 
 	@Override
 	public void toNetwork(FriendlyByteBuf buffer, ChargingRecipe recipe) {
-		buffer.writeInt(recipe.energy);
-		buffer.writeItem(recipe.output);
 		recipe.ingredient.toNetwork(buffer);
+		buffer.writeItem(recipe.output);
+		buffer.writeInt(recipe.energy);
 	}
 	
 	@Override
@@ -34,7 +33,7 @@ public class ChargingRecipeSerializer extends CARecipeSerializer<ChargingRecipe>
 	@Override
 	public ChargingRecipe readFromJson(ResourceLocation recipeId, JsonObject json) {
 		int energy = json.get("energy").getAsInt();
-		ItemStack output = readOutput(json.get("result"));
+		ItemStack output = readOutput(json.getAsJsonObject("result"));
 		Ingredient input = Ingredient.fromJson(json.get("input"));
 		return new ChargingRecipe(recipeId, input, output, energy);
 	}

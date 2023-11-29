@@ -1,13 +1,6 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.compat.computercraft.ModularAccumulatorPeripheral;
-import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.debug.IDebugDrawer;
 import com.mrh0.createaddition.energy.IMultiTileEnergyContainer;
@@ -21,12 +14,10 @@ import com.simibubi.create.Create;
 import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.redstone.thresholdSwitch.ThresholdSwitchObservable;
-import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
-
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -45,6 +36,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.EnergyStorageUtil;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer, ThresholdSwitchObservable, EnergyTransferable {
 
@@ -535,12 +530,15 @@ public class ModularAccumulatorTileEntity extends SmartBlockEntity implements IH
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
-				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe").withStyle(ChatFormatting.AQUA));
+				.append(Util.format(controllerTE.energyStorage.amount)).append("fe / ").append(Util.format((int)controllerTE.energyStorage.getCapacity())).append("fe").withStyle(ChatFormatting.AQUA));
 
+		/*
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.capacity").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
 				.append(Util.format((int)controllerTE.energyStorage.getCapacity())).append("fe").withStyle(ChatFormatting.AQUA));
+
+		 */
 		return true;
 	}
 

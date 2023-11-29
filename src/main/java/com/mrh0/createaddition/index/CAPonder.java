@@ -6,7 +6,6 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
 import com.simibubi.create.foundation.ponder.PonderTag;
-
 import com.simibubi.create.infrastructure.ponder.AllPonderTags;
 import net.minecraft.resources.ResourceLocation;
 

@@ -1,7 +1,5 @@
 package com.mrh0.createaddition.item;
 
-import java.util.List;
-
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireConnectResult;

@@ -7,9 +7,7 @@ import com.mrh0.createaddition.item.DiamondGritSandpaper;
 import com.mrh0.createaddition.item.WireSpool;
 import com.simibubi.create.content.equipment.sandPaper.SandPaperItemRenderer;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-//import com.simibubi.create.foundation.item.HiddenIngredientItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
-
 import net.minecraft.world.item.Item;
 
 import static com.simibubi.create.AllTags.AllItemTags.PLATES;

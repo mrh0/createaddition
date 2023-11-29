@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.recipe.rolling;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.compat.emi.EmiRollingMillAssemblySubCategory;
 import com.mrh0.createaddition.compat.jei.RollingMillAssemblySubCategory;
 import com.mrh0.createaddition.compat.rei.ReiRollingMillAssemblySubCategory;
 import com.mrh0.createaddition.index.CABlocks;
@@ -10,7 +11,6 @@ import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.sequenced.IAssemblyRecipe;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -30,9 +30,9 @@ public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IA
     public static RecipeType<RollingRecipe> TYPE = new RollingRecipeType();
     @SuppressWarnings("deprecation")
     public static RecipeSerializer<?> SERIALIZER = BuiltInRegistries.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "rolling"));
-    protected final ItemStack output;
     protected final ResourceLocation id;
     protected final Ingredient ingredient;
+    protected final ItemStack output;
 
     protected RollingRecipe(Ingredient ingredient, ItemStack output, ResourceLocation id) {
         super(new RollingRecipeInfo(id, (SequencedAssemblyRollingRecipeSerializer) SERIALIZER, TYPE), new RollingMillRecipeParams(id, ingredient, new ProcessingOutput(output, 1f)));
@@ -123,6 +123,9 @@ public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IA
 
     @Override
     public SequencedAssemblySubCategoryType getJEISubCategory() {
-        return new SequencedAssemblySubCategoryType(() -> RollingMillAssemblySubCategory::new, () -> ReiRollingMillAssemblySubCategory::new, () -> null);
+        return new SequencedAssemblySubCategoryType(
+                () -> RollingMillAssemblySubCategory::new,
+                () -> ReiRollingMillAssemblySubCategory::new,
+                () -> EmiRollingMillAssemblySubCategory::new);
     }
 }

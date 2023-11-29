@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.compat.computercraft;
 
-import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
 import com.mrh0.createaddition.config.Config;

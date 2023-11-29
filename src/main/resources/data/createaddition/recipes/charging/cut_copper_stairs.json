@@ -1,0 +1,13 @@
+{
+	"type":"createaddition:charging",
+	"input": {
+      	"item": "minecraft:exposed_cut_copper_stairs",
+		"count": 1
+	},
+	"result": {
+		"item": "minecraft:cut_copper_stairs",
+		"count": 1
+	},
+	"energy": 4000,
+	"maxChargeRate": 200
+}

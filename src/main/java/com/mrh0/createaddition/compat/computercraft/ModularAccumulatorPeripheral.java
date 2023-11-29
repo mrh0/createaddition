@@ -1,7 +1,6 @@
 package com.mrh0.createaddition.compat.computercraft;
 
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorTileEntity;
-import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
 import com.mrh0.createaddition.config.Config;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IPeripheral;

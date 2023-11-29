@@ -2,7 +2,6 @@ package com.mrh0.createaddition.compat.computercraft;
 
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.elevator.ElevatorColumn;
 import com.simibubi.create.content.contraptions.elevator.ElevatorContactBlock;
 import com.simibubi.create.content.contraptions.elevator.ElevatorContraption;
@@ -15,13 +14,10 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public class DigitalAdapterPeripheral implements IPeripheral {
     private final String type;

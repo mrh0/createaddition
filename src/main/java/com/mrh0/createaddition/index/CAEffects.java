@@ -1,15 +1,13 @@
 package com.mrh0.createaddition.index;
 
+import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.effect.ShockingEffect;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-
-import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.effect.ShockingEffect;
 
 
 public class CAEffects {

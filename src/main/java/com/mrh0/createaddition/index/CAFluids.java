@@ -1,7 +1,6 @@
 package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.groups.ModGroup;
 import com.tterrag.registrate.fabric.SimpleFlowableFluid;
 import com.tterrag.registrate.util.entry.FluidEntry;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;

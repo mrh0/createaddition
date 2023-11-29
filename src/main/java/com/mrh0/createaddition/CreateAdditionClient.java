@@ -8,7 +8,6 @@ import com.mrh0.createaddition.index.CAPonder;
 import com.mrh0.createaddition.network.CANetwork;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 
 public class CreateAdditionClient implements ClientModInitializer {

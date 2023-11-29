@@ -1,9 +1,7 @@
 package com.mrh0.createaddition.compat.jei;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
