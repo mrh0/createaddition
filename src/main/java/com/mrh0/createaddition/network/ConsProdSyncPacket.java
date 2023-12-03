@@ -1,10 +1,5 @@
 package com.mrh0.createaddition.network;
 
-import java.util.function.Supplier;
-
-import com.mrh0.createaddition.CreateAddition;
-
-import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.Minecraft;

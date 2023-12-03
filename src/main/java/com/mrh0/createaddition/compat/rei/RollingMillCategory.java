@@ -1,19 +1,16 @@
 package com.mrh0.createaddition.compat.rei;
 
-import java.util.List;
-
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mrh0.createaddition.compat.rei.AnimatedRollingMill;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.compat.rei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.rei.display.CreateDisplay;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-
 import me.shedaniel.math.Point;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.List;
 
 public class RollingMillCategory extends CreateRecipeCategory<RollingRecipe> {
 

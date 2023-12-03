@@ -3,7 +3,6 @@ package com.mrh0.createaddition.recipe.rolling;
 import com.google.gson.JsonObject;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.recipe.CARecipeSerializer;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

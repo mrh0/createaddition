@@ -3,11 +3,8 @@ package com.mrh0.createaddition.recipe.liquid_burning;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;

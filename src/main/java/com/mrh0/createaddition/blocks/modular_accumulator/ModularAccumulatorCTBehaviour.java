@@ -1,9 +1,8 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
-import com.simibubi.create.foundation.block.connected.HorizontalCTBehaviour;
 import com.mrh0.createaddition.index.CASpriteShifts;
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
-
+import com.simibubi.create.foundation.block.connected.HorizontalCTBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;

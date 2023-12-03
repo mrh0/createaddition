@@ -1,29 +1,34 @@
 package com.mrh0.createaddition.blocks.tesla_coil;
 
+import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricTileEntity;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CADamageTypes;
 import com.mrh0.createaddition.index.CAEffects;
+import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
-import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandlerContainer;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,28 +48,13 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 
 	private final ItemStackHandler inputInv;
 	private int chargeAccumulator;
-
-	/*private static final long
-		MAX_IN = Config.TESLA_COIL_MAX_INPUT.get(),
-		CHARGE_RATE = Config.TESLA_COIL_CHARGE_RATE.get(),
-		CHARGE_RATE_RECIPE = Config.TESLA_COIL_RECIPE_CHARGE_RATE.get(),
-		CAPACITY = Util.max(Config.TESLA_COIL_CAPACITY.get(), CHARGE_RATE, CHARGE_RATE_RECIPE),
-		HURT_ENERGY_REQUIRED = Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get(),
-		HURT_DMG_MOB = Config.TESLA_COIL_HURT_DMG_MOB.get(),
-		HURT_DMG_PLAYER = Config.TESLA_COIL_HURT_DMG_PLAYER.get(),
-		HURT_RANGE = Config.TESLA_COIL_HURT_RANGE.get(),
-		HURT_EFFECT_TIME_MOB = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get(),
-		HURT_EFFECT_TIME_PLAYER = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get(),
-		HURT_FIRE_COOLDOWN = Config.TESLA_COIL_HURT_FIRE_COOLDOWN.get();*/
-
-	protected ItemStack chargedStackCache;
 	protected int poweredTimer = 0;
+
 	public TeslaCoilTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
-		super(
-				tileEntityTypeIn,
-				pos,
-				state,
-				Util.max(Config.TESLA_COIL_CAPACITY.get(), Config.TESLA_COIL_CHARGE_RATE.get(), Config.TESLA_COIL_RECIPE_CHARGE_RATE.get()),
+		super(tileEntityTypeIn, pos, state,
+				Util.max(Config.TESLA_COIL_CAPACITY.get(),
+						Config.TESLA_COIL_CHARGE_RATE.get(),
+						Config.TESLA_COIL_RECIPE_CHARGE_RATE.get()),
 				Config.TESLA_COIL_MAX_INPUT.get(),
 				0)
 		;
@@ -114,6 +104,18 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		List<LivingEntity> ents = Objects.requireNonNull(getLevel()).getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(Config.TESLA_COIL_HURT_RANGE.get()));
 		for(LivingEntity e : ents) {
 			if(e == null) return;
+
+			boolean allChain = true;
+			for(ItemStack armor : e.getArmorSlots()) {
+				if(armor.is(Items.CHAINMAIL_BOOTS)) continue;
+				if(armor.is(Items.CHAINMAIL_LEGGINGS)) continue;
+				if(armor.is(Items.CHAINMAIL_CHESTPLATE)) continue;
+				if(armor.is(Items.CHAINMAIL_HELMET)) continue;
+				allChain = false;
+				break;
+			}
+			if(allChain) continue;
+
 			int dmg = Config.TESLA_COIL_HURT_DMG_MOB.get();
 			int time = Config.TESLA_COIL_HURT_EFFECT_TIME_MOB.get();
 			if(e instanceof Player) {
@@ -183,8 +185,8 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 	protected final boolean chargeStack( 
 		final ItemStack stack,
 		final TransportedItemStack ignoredTransported,
-		final TransportedItemStackHandlerBehaviour ignoredHandler
-	) {
+		final TransportedItemStackHandlerBehaviour ignoredHandler) {
+
         ContainerItemContext context = ContainerItemContext.withInitial(stack);
         final EnergyStorage es =  EnergyStorage.ITEM.find(stack, context);
 
@@ -230,14 +232,15 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
     }
 
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+		final var inventoryIn = new RecipeWrapper(inputInv);
 		if(!inputInv.getStackInSlot(0).is(stack.getItem())) {
 			inputInv.setStackInSlot(0, stack);
-			recipeCache = find(new RecipeWrapper(inputInv), Objects.requireNonNull(this.getLevel()));
+			recipeCache = find(stack, inventoryIn, level);
 			chargeAccumulator = 0;
 		}
 		if(recipeCache.isPresent()) {
 			ChargingRecipe recipe = recipeCache.get();
-			long energyRemoved = localEnergy.internalConsumeEnergy(Math.min( Config.TESLA_COIL_RECIPE_CHARGE_RATE.get(), recipe.getEnergy() - chargeAccumulator));
+			long energyRemoved = localEnergy.internalConsumeEnergy(Math.min(Config.TESLA_COIL_RECIPE_CHARGE_RATE.get(), recipe.getEnergy() - chargeAccumulator));
 			chargeAccumulator += energyRemoved;
 			if(chargeAccumulator >= recipe.getEnergy()) {
 				TransportedItemStack remainingStack = transported.copy();
@@ -254,7 +257,34 @@ public class TeslaCoilTileEntity extends BaseElectricTileEntity implements IHave
 		return false;
 	}
 
-	public Optional<ChargingRecipe> find(RecipeWrapper wrapper, Level world) {
-		return world.getRecipeManager().getRecipeFor(ChargingRecipe.TYPE, wrapper, world);
+	public Optional<ChargingRecipe> find(ItemStack item, RecipeWrapper wrapper, Level level) {
+		Optional<ChargingRecipe> assemblyRecipe =
+				SequencedAssemblyRecipe.getRecipe(level, item, ChargingRecipe.TYPE, ChargingRecipe.class);
+		if (assemblyRecipe.isPresent())
+			return assemblyRecipe;
+		return level.getRecipeManager().getRecipeFor(ChargingRecipe.TYPE, wrapper, level);
+	}
+
+	@Override
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		ObservePacket.send(worldPosition, 0);
+
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.tesla_coil.info").withStyle(ChatFormatting.WHITE)));
+
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
+				.append(Util.format(localEnergy.getAmount())).append("fe / ").append(Util.format(Config.TESLA_COIL_CAPACITY.get())).append("fe").withStyle(ChatFormatting.AQUA));
+
+		/*
+		tooltip.add(Component.literal(spacing)
+				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
+		tooltip.add(Component.literal(spacing).append(" ")
+				.append(Util.format(EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
+
+		 */
+
+		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 	}
 }

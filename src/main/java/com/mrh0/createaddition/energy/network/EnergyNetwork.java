@@ -1,11 +1,10 @@
 package com.mrh0.createaddition.energy.network;
 
-import java.util.Map;
-
 import com.mrh0.createaddition.energy.IWireNode;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+
+import java.util.Map;
 
 public class EnergyNetwork {
 	private int id;

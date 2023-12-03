@@ -8,7 +8,6 @@ import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.index.CAPartials;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.utility.Color;
-
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;

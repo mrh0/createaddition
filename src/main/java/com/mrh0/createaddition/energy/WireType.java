@@ -1,8 +1,9 @@
 package com.mrh0.createaddition.energy;
 
-import com.mrh0.createaddition.index.*;
+import com.mrh0.createaddition.index.CAItems;
+import net.minecraft.world.item.ItemStack;
 
-import net.minecraft.world.item.ItemStack;;
+;
 
 public enum WireType {
 	COPPER(0, 256, 78, 37, 30, new ItemStack(CAItems.COPPER_WIRE.get(), 4), new ItemStack(CAItems.COPPER_SPOOL.get())),

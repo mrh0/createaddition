@@ -3,7 +3,6 @@ package com.mrh0.createaddition.blocks.creative_energy;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.logistics.crate.CrateBlock;
-
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;

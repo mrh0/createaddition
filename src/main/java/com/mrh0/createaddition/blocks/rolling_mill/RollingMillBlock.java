@@ -4,20 +4,13 @@ import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.item.ItemHelper;
-import com.simibubi.create.foundation.utility.Iterate;
-
-import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -57,7 +50,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 
 		withBlockEntityDo(worldIn, pos, rollingMill -> {
 			boolean emptyOutput = true;
-			ItemStackHandler inv = rollingMill.outputInv;
+			ItemStackHandler inv = rollingMill.inventory;
 			for (int slot = 0; slot < inv.getSlotCount(); slot++) {
 				ItemStack stackInSlot = inv.getStackInSlot(slot);
 				if (!stackInSlot.isEmpty())
@@ -67,7 +60,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 			}
 
 			if (emptyOutput) {
-				inv = rollingMill.inputInv;
+				inv = rollingMill.inventory;
 				for (int slot = 0; slot < inv.getSlotCount(); slot++) {
 					player.getInventory().placeItemBackInInventory(inv.getStackInSlot(slot));
 					inv.setStackInSlot(slot, ItemStack.EMPTY);
@@ -81,47 +74,35 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 		return InteractionResult.SUCCESS;
 	}
 
-	@Override
-	public void updateEntityAfterFallOn(@NotNull BlockGetter worldIn, @NotNull Entity entityIn) {
+	public void updateEntityAfterFallOn(BlockGetter worldIn, Entity entityIn) {
 		super.updateEntityAfterFallOn(worldIn, entityIn);
-
+		if (!(entityIn instanceof ItemEntity))
+			return;
 		if (entityIn.level().isClientSide)
 			return;
-		if (!(entityIn instanceof ItemEntity itemEntity))
-			return;
-		if (!entityIn.isAlive())
-			return;
 
-		RollingMillTileEntity rollingMill = null;
-		for (BlockPos pos : Iterate.hereAndBelow(entityIn.blockPosition())) {
-			rollingMill = getBlockEntity(worldIn, pos);
-		}
-		if (rollingMill == null)
-			return;
+		BlockPos pos = entityIn.blockPosition().below();
+		RollingMillTileEntity be = (RollingMillTileEntity)entityIn.level().getBlockEntity(pos);
+		if (be == null) return;
+		if (be.getSpeed() == 0) return;
+		be.insertItem((ItemEntity) entityIn);
 
-		Storage<ItemVariant> storage = TransferUtil.getItemStorage(rollingMill);
-		if (storage == null)
-			return;
-
-		ItemStack remainder = itemEntity.getItem().copy();
-		remainder.setCount((int) (remainder.getCount() - TransferUtil.insertItem(storage, itemEntity.getItem())));
-		if (remainder.isEmpty())
-			itemEntity.remove(RemovalReason.KILLED);
-		if (remainder.getCount() < itemEntity.getItem().getCount())
-			itemEntity.setItem(remainder);
 	}
 
+
+	/*
 	@Override
 	public void onRemove(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
 		if (state.hasBlockEntity() && state.getBlock() != newState.getBlock()) {
 			withBlockEntityDo(worldIn, pos, te -> {
-				ItemHelper.dropContents(worldIn, pos, te.inputInv);
-				ItemHelper.dropContents(worldIn, pos, te.outputInv);
+				ItemHelper.dropContents(worldIn, pos, te.inventory);
+				//ItemHelper.dropContents(worldIn, pos, te.outputInv);
 			});
 
 			worldIn.removeBlockEntity(pos);
 		}
 	}
+	 */
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {

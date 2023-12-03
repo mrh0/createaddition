@@ -1,7 +1,8 @@
 package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.recipe.charging.ChargingRecipeSerializer;
+import com.mrh0.createaddition.recipe.charging.ChargingRecipeProcessingFactory;
+import com.mrh0.createaddition.recipe.charging.SequencedAssemblyChargingRecipeSerializer;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipeSerializer;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipeProcessingFactory;
 import com.mrh0.createaddition.recipe.rolling.SequencedAssemblyRollingRecipeSerializer;
@@ -18,7 +19,7 @@ public class CARecipes {
 		new SequencedAssemblyRollingRecipeSerializer(new RollingRecipeProcessingFactory()));
 	
 	static RegistryObject<RecipeSerializer<?>> CHARGING = TYPES.register("charging", () ->
-		new ChargingRecipeSerializer());
+			new SequencedAssemblyChargingRecipeSerializer(new ChargingRecipeProcessingFactory()));
 	
 	static RegistryObject<RecipeSerializer<?>> LIQUID_BURNING = TYPES.register("liquid_burning", () ->
 	new LiquidBurningRecipeSerializer());

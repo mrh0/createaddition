@@ -2,7 +2,6 @@ package com.mrh0.createaddition.index;
 
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mrh0.createaddition.CreateAddition;
-
 import net.minecraft.resources.ResourceLocation;
 
 public class CAPartials {

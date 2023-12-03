@@ -20,11 +20,20 @@
 	"createaddition.tooltip.accumulator.info": "Accumulator Info:",
 	"createaddition.tooltip.relay.info": "Relay Info:",
 	"createaddition.tooltip.connector.info": "Connector Info:",
+	"createaddition.tooltip.tesla_coil.info": "Tesla Coil Info:",
 
 	"createaddition.recipe.rolling": "Rolling",
+	"emi.category.createaddition.rolling": "Rolling",
 	"createaddition.recipe.rolling.sequence": "Rolling in Mill",
+
 	"createaddition.recipe.charging": "Charging",
+	"emi.category.createaddition.charging": "Charging",
+	"createaddition.recipe.charging.sequence_0": "Charge ",
+	"createaddition.recipe.charging.sequence_1": "at a Tesla Coil",
+
 	"createaddition.recipe.liquid_burning": "Liquid Burning",
+	"emi.category.createaddition.liquid_burning": "Liquid Burning",
+
 
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
 
