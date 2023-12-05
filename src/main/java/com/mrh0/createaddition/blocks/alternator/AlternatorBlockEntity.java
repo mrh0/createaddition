@@ -5,6 +5,7 @@ import java.util.List;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
+import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -37,22 +38,19 @@ public class AlternatorBlockEntity extends KineticBlockEntity {
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		//tooltip.add(new StringTextComponent(spacing).append(new TranslationTextComponent(CreateAddition.MODID + ".tooltip.energy.stored").formatted(TextFormatting.GRAY)));
-		//tooltip.add(new StringTextComponent(spacing).append(new StringTextComponent(" " + Multimeter.getString(energy) + "fe").formatted(TextFormatting.AQUA)));
+
 		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
 				.withStyle(ChatFormatting.AQUA)).append(Lang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
-		added = true;
-		return added;
+		return true;
 	}
 
-	/*@Override
+	@Override
 	public float calculateStressApplied() {
 		float impact = Config.MAX_STRESS.get()/256f;
 		this.lastStressApplied = impact;
 		return impact;
-	}*/
+	}
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
@@ -113,7 +111,7 @@ public class AlternatorBlockEntity extends KineticBlockEntity {
 
 	@Override
 	protected Block getStressConfigKey() {
-		return AllBlocks.MECHANICAL_MIXER.get();
+		return CABlocks.ALTERNATOR.get();
 	}
 
 	@Override
