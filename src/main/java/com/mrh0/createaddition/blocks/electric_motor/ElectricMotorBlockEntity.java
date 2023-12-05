@@ -75,12 +75,9 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity {
 		if (!context.shift) {
 			int magnitude = Math.abs(current) - (context.forward == current > 0 ? 0 : 1);
 
-			if (magnitude >= 4)
-				step *= 4;
-			if (magnitude >= 32)
-				step *= 4;
-			if (magnitude >= 128)
-				step *= 4;
+			if (magnitude >= 4) step *= 4;
+			if (magnitude >= 32) step *= 4;
+			if (magnitude >= 128) step *= 4;
 		}
 
 		return step;
@@ -115,8 +112,7 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity {
 
 	@Override
 	public float getGeneratedSpeed() {
-		if (!CABlocks.ELECTRIC_MOTOR.has(getBlockState()))
-			return 0;
+		if (!CABlocks.ELECTRIC_MOTOR.has(getBlockState())) return 0;
 		return convertToDirection(active ? generatedSpeed.getValue() : 0, getBlockState().getValue(ElectricMotorBlock.FACING));
 	}
 
@@ -131,17 +127,15 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity {
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == ForgeCapabilities.ENERGY)// && (isEnergyInput(side) || isEnergyOutput(side))
-			return lazyEnergy.cast();
+		if(cap == ForgeCapabilities.ENERGY) return lazyEnergy.cast();
 		if(CreateAddition.CC_ACTIVE) {
-			if(Peripherals.isPeripheral(cap))
-				return lazyPeripheral.cast();
+			if(Peripherals.isPeripheral(cap)) return lazyPeripheral.cast();
 		}
 		return super.getCapability(cap, side);
 	}
 
 	public boolean isEnergyInput(Direction side) {
-		return true;// side != getBlockState().getValue(ElectricMotorBlock.FACING);
+		return true;
 	}
 
 	public boolean isEnergyOutput(Direction side) {
@@ -176,8 +170,7 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity {
 	@Override
 	public void remove() {
 		lazyEnergy.invalidate();
-		if(lazyPeripheral != null)
-			lazyPeripheral.invalidate();
+		if(lazyPeripheral != null) lazyPeripheral.invalidate();
 		super.remove();
 	}
 
@@ -201,8 +194,7 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity {
 		}
 
 		//Old Lazy
-		if(level.isClientSide())
-			return;
+		if(level.isClientSide()) return;
 		int con = getEnergyConsumptionRate(generatedSpeed.getValue());
 		if(!active) {
 			if(energy.getEnergyStored() > con * 2 && !getBlockState().getValue(ElectricMotorBlock.POWERED)) {
@@ -222,8 +214,7 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity {
 	public static int getDurationAngle(int deg, float initialProgress, float speed) {
 		speed = Math.abs(speed);
 		deg = Math.abs(deg);
-		if(speed < 0.1f)
-			return 0;
+		if(speed < 0.1f) return 0;
 		double degreesPerTick = (speed * 360) / 60 / 20;
 		return (int) ((1 - initialProgress) * deg / degreesPerTick + 1);
 	}
@@ -231,8 +222,7 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity {
 	public static int getDurationDistance(int dis, float initialProgress, float speed) {
 		speed = Math.abs(speed);
 		dis = Math.abs(dis);
-		if(speed < 0.1f)
-			return 0;
+		if(speed < 0.1f) return 0;
 		double metersPerTick = speed / 512;
 		return (int) ((1 - initialProgress) * dis / metersPerTick);
 	}

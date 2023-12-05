@@ -38,7 +38,6 @@ public class AlternatorBlockEntity extends KineticBlockEntity {
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-
 		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
 				.withStyle(ChatFormatting.AQUA)).append(Lang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
@@ -54,8 +53,7 @@ public class AlternatorBlockEntity extends KineticBlockEntity {
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == ForgeCapabilities.ENERGY)// && (isEnergyInput(side) || isEnergyOutput(side))
-			return lazyEnergy.cast();
+		if(cap == ForgeCapabilities.ENERGY) return lazyEnergy.cast();
 		return super.getCapability(cap, side);
 	}
 
@@ -84,21 +82,17 @@ public class AlternatorBlockEntity extends KineticBlockEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if(level.isClientSide())
-			return;
-		if(firstTickState)
-			firstTick();
+		if(level.isClientSide()) return;
+		if(firstTickState) firstTick();
 		firstTickState = false;
 
 		if(Math.abs(getSpeed()) > 0 && isSpeedRequirementFulfilled())
 			energy.internalProduceEnergy(getEnergyProductionRate((int)getSpeed()));
 
 		for(Direction d : Direction.values()) {
-			if(!isEnergyOutput(d))
-				continue;
+			if(!isEnergyOutput(d)) continue;
 			IEnergyStorage ies = getCachedEnergy(d);
-			if(ies == null)
-				continue;
+			if(ies == null) continue;
 			int ext = energy.extractEnergy(ies.receiveEnergy(Config.ALTERNATOR_MAX_OUTPUT.get(), true), false);
 			ies.receiveEnergy(ext, false);
 		}
@@ -125,8 +119,7 @@ public class AlternatorBlockEntity extends KineticBlockEntity {
 	};
 
 	public void updateCache() {
-		if(level.isClientSide())
-			return;
+		if(level.isClientSide()) return;
 		for(Direction side : Direction.values()) {
 			BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
 			if(te == null) {
@@ -146,43 +139,24 @@ public class AlternatorBlockEntity extends KineticBlockEntity {
 	private LazyOptional<IEnergyStorage> escacheWest = LazyOptional.empty();
 
 	public void setCache(Direction side, LazyOptional<IEnergyStorage> storage) {
-		switch(side) {
-			case DOWN:
-				escacheDown = storage;
-				break;
-			case EAST:
-				escacheEast = storage;
-				break;
-			case NORTH:
-				escacheNorth = storage;
-				break;
-			case SOUTH:
-				escacheSouth = storage;
-				break;
-			case UP:
-				escacheUp = storage;
-				break;
-			case WEST:
-				escacheWest = storage;
-				break;
+		switch (side) {
+			case DOWN -> escacheDown = storage;
+			case EAST -> escacheEast = storage;
+			case NORTH -> escacheNorth = storage;
+			case SOUTH -> escacheSouth = storage;
+			case UP -> escacheUp = storage;
+			case WEST -> escacheWest = storage;
 		}
 	}
 
 	public IEnergyStorage getCachedEnergy(Direction side) {
-		switch(side) {
-			case DOWN:
-				return escacheDown.orElse(null);
-			case EAST:
-				return escacheEast.orElse(null);
-			case NORTH:
-				return escacheNorth.orElse(null);
-			case SOUTH:
-				return escacheSouth.orElse(null);
-			case UP:
-				return escacheUp.orElse(null);
-			case WEST:
-				return escacheWest.orElse(null);
-		}
-		return null;
+		return switch (side) {
+			case DOWN -> escacheDown.orElse(null);
+			case EAST -> escacheEast.orElse(null);
+			case NORTH -> escacheNorth.orElse(null);
+			case SOUTH -> escacheSouth.orElse(null);
+			case UP -> escacheUp.orElse(null);
+			case WEST -> escacheWest.orElse(null);
+		};
 	}
 }
