@@ -37,11 +37,18 @@ public class Config {
 	public static ForgeConfigSpec.IntValue ROLLING_MILL_PROCESSING_DURATION;
 	public static ForgeConfigSpec.IntValue ROLLING_MILL_STRESS;
 
-	public static ForgeConfigSpec.LongValue CONNECTOR_MAX_INPUT;
-	public static ForgeConfigSpec.LongValue CONNECTOR_MAX_OUTPUT;
-	public static ForgeConfigSpec.LongValue CONNECTOR_CAPACITY;
-	public static ForgeConfigSpec.IntValue CONNECTOR_MAX_LENGTH;
+	public static ForgeConfigSpec.IntValue SMALL_CONNECTOR_MAX_INPUT;
+	public static ForgeConfigSpec.IntValue SMALL_CONNECTOR_MAX_OUTPUT;
+	public static ForgeConfigSpec.IntValue SMALL_CONNECTOR_MAX_LENGTH;
+
+	public static ForgeConfigSpec.IntValue SMALL_LIGHT_CONNECTOR_CONSUMPTION;
+
+	public static ForgeConfigSpec.IntValue LARGE_CONNECTOR_MAX_INPUT;
+	public static ForgeConfigSpec.IntValue LARGE_CONNECTOR_MAX_OUTPUT;
+	public static ForgeConfigSpec.IntValue LARGE_CONNECTOR_MAX_LENGTH;
+
 	public static ForgeConfigSpec.BooleanValue CONNECTOR_IGNORE_FACE_CHECK;
+	public static ForgeConfigSpec.BooleanValue CONNECTOR_ALLOW_PASSIVE_IO;
 
 	public static ForgeConfigSpec.LongValue ACCUMULATOR_MAX_INPUT;
 	public static ForgeConfigSpec.LongValue ACCUMULATOR_MAX_OUTPUT;
@@ -115,19 +122,34 @@ public class Config {
 
 
 		COMMON_BUILDER.comment("Wires").push(CATAGORY_WIRES);
-		CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Connector max input in E/t (Energy transfer).")
-				.defineInRange("connector_max_input", 5000, 0, Long.MAX_VALUE);
+		SMALL_CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Small Connector max input in FE/t (Energy transfer).")
+				.defineInRange("small_connector_max_input", 1000, 0, Integer.MAX_VALUE);
 
-		CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Connector max output in E/t (Energy transfer).")
-				.defineInRange("connector_max_output", 5000, 0, Long.MAX_VALUE);
+		SMALL_CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Small Connector max output in FE/t (Energy transfer).")
+				.defineInRange("small_connector_max_output", 1000, 0, Integer.MAX_VALUE);
 
-		CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Connector internal input buffer in E.")
-				.defineInRange("connector_input_capacity", 5000, 0, Long.MAX_VALUE);
-		CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Max wire length in blocks.")
-				.defineInRange("wire_length", 12, 0, 256);
+		SMALL_CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Small Connector max wire length in blocks.")
+				.defineInRange("small_connector_wire_length", 16, 0, 256);
+
+		SMALL_LIGHT_CONNECTOR_CONSUMPTION = COMMON_BUILDER.comment("Small Connector With Light energy consumption in FE/t.")
+				.defineInRange("small_light_connector_consumption", 1, 0, Integer.MAX_VALUE);
+
+
+		LARGE_CONNECTOR_MAX_INPUT = COMMON_BUILDER.comment("Large Connector max input in FE/t (Energy transfer).")
+				.defineInRange("large_connector_max_input", 5000, 0, Integer.MAX_VALUE);
+
+		LARGE_CONNECTOR_MAX_OUTPUT = COMMON_BUILDER.comment("Large Connector max output in FE/t (Energy transfer).")
+				.defineInRange("large_connector_max_output", 5000, 0, Integer.MAX_VALUE);
+
+		LARGE_CONNECTOR_MAX_LENGTH = COMMON_BUILDER.comment("Large Connector max wire length in blocks.")
+				.defineInRange("large_connector_wire_length", 32, 0, 256);
+
 
 		CONNECTOR_IGNORE_FACE_CHECK = COMMON_BUILDER.comment("Ignore checking if block face can support connector.")
 				.define("connector_ignore_face_check", true);
+
+		CONNECTOR_ALLOW_PASSIVE_IO = COMMON_BUILDER.comment("Allows blocks attached to a connector to freely pass energy to and from the connector network.")
+				.define("connector_allow_passive_io", true);
 		COMMON_BUILDER.pop();
 
 

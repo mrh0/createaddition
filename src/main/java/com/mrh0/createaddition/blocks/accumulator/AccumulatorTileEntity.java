@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.connector.ConnectorType;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.*;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
@@ -438,5 +439,15 @@ public class AccumulatorTileEntity extends BaseElectricTileEntity implements IWi
 			EnergyNetworkPacket.send(worldPosition, getNetwork(pack.node()).getPulled(), getNetwork(pack.node()).getPushed(), player);
 		//causeBlockUpdate();
 		notifyUpdate();
+	}
+
+	@Override
+	public ConnectorType getConnectorType() {
+		return ConnectorType.Small;
+	}
+
+	@Override
+	public int getMaxWireLength() {
+		return Config.SMALL_CONNECTOR_MAX_LENGTH.get();
 	}
 }

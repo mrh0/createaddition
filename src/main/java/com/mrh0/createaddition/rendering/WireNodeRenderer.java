@@ -77,7 +77,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 	}
 
 	private static float hang(float f, float dis) {
-		return (float) Math.sin(-f * (float) Math.PI) * (HANG * dis / (float) Config.CONNECTOR_MAX_LENGTH.get());
+		return (float) Math.sin(-f * (float) Math.PI) * (HANG * dis / (float) Config.SMALL_CONNECTOR_MAX_LENGTH.get());
 	}
 
 	public static float distanceFromZero(float x, float y, float z) {

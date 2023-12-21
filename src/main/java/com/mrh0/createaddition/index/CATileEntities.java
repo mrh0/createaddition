@@ -5,8 +5,10 @@ import com.mrh0.createaddition.blocks.accumulator.AccumulatorRenderer;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorTileEntity;
 import com.mrh0.createaddition.blocks.alternator.AlternatorRenderer;
 import com.mrh0.createaddition.blocks.alternator.AlternatorTileEntity;
-import com.mrh0.createaddition.blocks.connector.ConnectorRenderer;
-import com.mrh0.createaddition.blocks.connector.ConnectorTileEntity;
+import com.mrh0.createaddition.blocks.connector.LargeConnectorBlockEntity;
+import com.mrh0.createaddition.blocks.connector.SmallConnectorBlockEntity;
+import com.mrh0.createaddition.blocks.connector.SmallLightConnectorBlockEntity;
+import com.mrh0.createaddition.blocks.connector.base.ConnectorRenderer;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyTileEntity;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
 import com.mrh0.createaddition.blocks.electric_motor.*;
@@ -62,10 +64,22 @@ public class CATileEntities {
 			.blockEntity("creative_energy", CreativeEnergyTileEntity::new)
 			.validBlocks(CABlocks.CREATIVE_ENERGY)
 			.register();
-	
-	public static final BlockEntityEntry<ConnectorTileEntity> CONNECTOR = CreateAddition.REGISTRATE
-			.blockEntity("connector", ConnectorTileEntity::new)
-			.validBlocks(CABlocks.CONNECTOR_COPPER)
+
+	public static final BlockEntityEntry<SmallConnectorBlockEntity> SMALL_CONNECTOR = CreateAddition.REGISTRATE
+			.blockEntity("connector", SmallConnectorBlockEntity::new)
+			.validBlocks(CABlocks.SMALL_CONNECTOR)
+			.renderer(() -> ConnectorRenderer::new)
+			.register();
+
+	public static final BlockEntityEntry<SmallLightConnectorBlockEntity> SMALL_LIGHT_CONNECTOR = CreateAddition.REGISTRATE
+			.blockEntity("small_light_connector", SmallLightConnectorBlockEntity::new)
+			.validBlocks(CABlocks.SMALL_LIGHT_CONNECTOR)
+			.renderer(() -> ConnectorRenderer::new)
+			.register();
+
+	public static final BlockEntityEntry<LargeConnectorBlockEntity> LARGE_CONNECTOR = CreateAddition.REGISTRATE
+			.blockEntity("large_connector", LargeConnectorBlockEntity::new)
+			.validBlocks(CABlocks.LARGE_CONNECTOR)
 			.renderer(() -> ConnectorRenderer::new)
 			.register();
 	

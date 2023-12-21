@@ -3,42 +3,42 @@
     {
       "when": { "AND": [{ "facing": "down", "mode": "none" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/none",
+        "model": "createaddition:block/connector/small_light/none",
         "x": 0, "y": 90
       }
     },
     {
       "when": { "AND": [{ "facing": "up", "mode": "none" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/none",
+        "model": "createaddition:block/connector/small_light/none",
         "x": 180, "y": 90
       }
     },
     {
       "when": { "AND": [{ "facing": "north", "mode": "none" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/none",
+        "model": "createaddition:block/connector/small_light/none",
         "x": 90, "y": 180
       }
     },
     {
       "when": { "AND": [{ "facing": "south", "mode": "none" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/none",
+        "model": "createaddition:block/connector/small_light/none",
         "x": 90, "y": 0
       }
     },
     {
       "when": { "AND": [{ "facing": "west", "mode": "none" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/none",
+        "model": "createaddition:block/connector/small_light/none",
         "x": 90, "y": 90
       }
     },
     {
       "when": { "AND": [{ "facing": "east", "mode": "none" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/none",
+        "model": "createaddition:block/connector/small_light/none",
         "x": 90, "y": 270
       }
     },
@@ -46,42 +46,42 @@
     {
       "when": { "AND": [{ "facing": "down", "mode": "push" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/push",
+        "model": "createaddition:block/connector/small_light/push",
         "x": 0, "y": 90
       }
     },
     {
       "when": { "AND": [{ "facing": "up", "mode": "push" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/push",
+        "model": "createaddition:block/connector/small_light/push",
         "x": 180, "y": 90
       }
     },
     {
       "when": { "AND": [{ "facing": "north", "mode": "push" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/push",
+        "model": "createaddition:block/connector/small_light/push",
         "x": 90, "y": 180
       }
     },
     {
       "when": { "AND": [{ "facing": "south", "mode": "push" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/push",
+        "model": "createaddition:block/connector/small_light/push",
         "x": 90, "y": 0
       }
     },
     {
       "when": { "AND": [{ "facing": "west", "mode": "push" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/push",
+        "model": "createaddition:block/connector/small_light/push",
         "x": 90, "y": 90
       }
     },
     {
       "when": { "AND": [{ "facing": "east", "mode": "push" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/push",
+        "model": "createaddition:block/connector/small_light/push",
         "x": 90, "y": 270
       }
     },
@@ -89,42 +89,42 @@
     {
       "when": { "AND": [{ "facing": "down", "mode": "pull" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/pull",
+        "model": "createaddition:block/connector/small_light/pull",
         "x": 0, "y": 90
       }
     },
     {
       "when": { "AND": [{ "facing": "up", "mode": "pull" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/pull",
+        "model": "createaddition:block/connector/small_light/pull",
         "x": 180, "y": 90
       }
     },
     {
       "when": { "AND": [{ "facing": "north", "mode": "pull" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/pull",
+        "model": "createaddition:block/connector/small_light/pull",
         "x": 90, "y": 180
       }
     },
     {
       "when": { "AND": [{ "facing": "south", "mode": "pull" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/pull",
+        "model": "createaddition:block/connector/small_light/pull",
         "x": 90, "y": 0
       }
     },
     {
       "when": { "AND": [{ "facing": "west", "mode": "pull" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/pull",
+        "model": "createaddition:block/connector/small_light/pull",
         "x": 90, "y": 90
       }
     },
     {
       "when": { "AND": [{ "facing": "east", "mode": "pull" }] },
       "apply": {
-        "model": "createaddition:block/connector/small/pull",
+        "model": "createaddition:block/connector/small_light/pull",
         "x": 90, "y": 270
       }
     },

@@ -1,12 +1,8 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.compat.computercraft.Peripherals;
-import com.mrh0.createaddition.compat.computercraft.RedstoneRelayPeripheral;
+import com.mrh0.createaddition.blocks.connector.ConnectorType;
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.LocalNode;
 import com.mrh0.createaddition.energy.NodeRotation;
@@ -35,7 +31,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class RedstoneRelayTileEntity extends SmartBlockEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
 
@@ -358,6 +356,11 @@ if (changed) {
 		return isNodeInput(in) == isNodeInput(other);
 	}
 
+	@Override
+	public ConnectorType getConnectorType() {
+		return ConnectorType.Small;
+	}
+
 	public long getDemand() {
 		return demand;
 	}
@@ -389,5 +392,10 @@ if (changed) {
 		tooltip.add(Component.literal(spacing).append(" ")
 				.append(Util.format(EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		return true;
+	}
+
+	@Override
+	public int getMaxWireLength() {
+		return Config.SMALL_CONNECTOR_MAX_LENGTH.get();
 	}
 }
