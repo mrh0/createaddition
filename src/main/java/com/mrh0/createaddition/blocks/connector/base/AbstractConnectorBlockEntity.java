@@ -1,7 +1,7 @@
-package com.mrh0.createaddition.blocks.connector;
+package com.mrh0.createaddition.blocks.connector.base;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.config.Config;
+import com.mrh0.createaddition.blocks.connector.ConnectorType;
 import com.mrh0.createaddition.debug.IDebugDrawer;
 import com.mrh0.createaddition.energy.*;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
@@ -23,7 +23,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -33,8 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("UnstableApiUsage")
-public class ConnectorTileEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation, IDebugDrawer {
+public abstract class AbstractConnectorBlockEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation, IDebugDrawer {
 
 	private final Set<LocalNode> wireCache = new HashSet<>();
 	private final LocalNode[] localNodes;
@@ -45,19 +43,8 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	private boolean wasContraption = false;
 	private boolean firstTick = true;
 
-	public static Vec3 OFFSET_DOWN = new Vec3(0f, -3f/16f, 0f);
-	public static Vec3 OFFSET_UP = new Vec3(0f, 3f/16f, 0f);
-	public static Vec3 OFFSET_NORTH = new Vec3(0f, 0f, -3f/16f);
-	public static Vec3 OFFSET_WEST = new Vec3(-3f/16f, 0f, 0f);
-	public static Vec3 OFFSET_SOUTH = new Vec3(0f, 0f, 3f/16f);
-	public static Vec3 OFFSET_EAST = new Vec3(3f/16f, 0f, 0f);
-
-	public static final int NODE_COUNT = 4;
-
-	//public static final long CAPACITY = Config.CONNECTOR_CAPACITY.get(), MAX_IN = Config.CONNECTOR_MAX_INPUT.get(), MAX_OUT = Config.CONNECTOR_MAX_OUTPUT.get();
-	public ConnectorTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
-		super(tileEntityTypeIn, pos, state, Config.CONNECTOR_CAPACITY.get(), Config.CONNECTOR_MAX_INPUT.get(), Config.CONNECTOR_MAX_OUTPUT.get());
-
+	public AbstractConnectorBlockEntity(BlockEntityType<?> blockEntityTypeIn, BlockPos pos, BlockState state, long capacity, long maxInput, long maxOutput) {
+		super(blockEntityTypeIn, pos, state, capacity, maxInput, maxOutput);
 		this.localNodes = new LocalNode[getNodeCount()];
 		this.nodeCache = new IWireNode[getNodeCount()];
 	}
@@ -98,23 +85,6 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 
 	@Override
-	public int getNodeCount() {
-		return NODE_COUNT;
-	}
-
-	@Override
-	public Vec3 getNodeOffset(int node) {
-		return switch (getBlockState().getValue(ConnectorBlock.FACING)) {
-			case DOWN -> OFFSET_DOWN;
-			case UP -> OFFSET_UP;
-			case NORTH -> OFFSET_NORTH;
-			case WEST -> OFFSET_WEST;
-			case SOUTH -> OFFSET_SOUTH;
-			case EAST -> OFFSET_EAST;
-		};
-	}
-
-	@Override
 	public BlockPos getPos() {
 		return getBlockPos();
 	}
@@ -129,14 +99,12 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		return network;
 	}
 
-	@Override
 	public boolean isEnergyInput(Direction side) {
-		return getBlockState().getValue(ConnectorBlock.FACING) == side;
+		return getBlockState().getValue(AbstractConnectorBlock.FACING) == side;
 	}
 
-	@Override
 	public boolean isEnergyOutput(Direction side) {
-		return getBlockState().getValue(ConnectorBlock.FACING) == side;
+		return getBlockState().getValue(AbstractConnectorBlock.FACING) == side;
 	}
 
 	@Override
@@ -161,6 +129,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		if (nbt.contains("contraption") && !clientPacket) {
 			this.wasContraption = nbt.getBoolean("contraption");
 			NodeRotation rotation = getBlockState().getValue(NodeRotation.ROTATION);
+			if(level == null) return;
 			if (rotation != NodeRotation.NONE)
 				level.setBlock(getBlockPos(), getBlockState().setValue(NodeRotation.ROTATION, NodeRotation.NONE), 0);
 			// Loop over all nodes and update their relative positions.
@@ -206,35 +175,46 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		}
 	}
 
+	public void firstTick() {
+		this.firstTick = false;
+		// Check if this blockentity was a part of a contraption.
+		// If it was, then make sure all the nodes are valid.
+		if(level == null) return;
+		if (this.wasContraption && !level.isClientSide()) {
+			this.wasContraption = false;
+			validateNodes();
+		}
+	}
+
+	protected void specialTick() {}
+
 	@Override
 	public void tick() {
-		if (this.firstTick) {
-			this.firstTick = false;
-			// Check if this blockentity was a part of a contraption.
-			// If it was, then make sure all the nodes are valid.
-			if (this.wasContraption && !level.isClientSide()) {
-				this.wasContraption = false;
-				validateNodes();
-			}
-		}
+		if (this.firstTick) firstTick();
+		if (level == null) return;
+		if (!level.isLoaded(getBlockPos())) return;
 
 		// Check if we need to drop any wires due to contraption.
 		if (!this.wireCache.isEmpty() && !isRemoved()) handleWireCache(level, this.wireCache);
 
+		specialTick();
+
 		if (getMode() == ConnectorMode.None) return;
 		super.tick();
 
-		if (level != null && level.isClientSide()) return;
+		if(level == null) return;
+		if(level.isClientSide()) return;
 		if(awakeNetwork(level)) notifyUpdate();
 		networkTick(network);
 	}
 
 	private void networkTick(EnergyNetwork network) {
 		ConnectorMode mode = getMode();
-		if(level.isClientSide())
+        if(level == null) return;
+        if(level.isClientSide())
 			return;
 
-		Direction d = getBlockState().getValue(ConnectorBlock.FACING);
+		Direction d = getBlockState().getValue(AbstractConnectorBlock.FACING);
 		EnergyStorage ies = getCachedEnergy(d);
 		if(ies == null) return;
 
@@ -268,6 +248,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 
 	@Override
 	public void remove() {
+		if(level == null) return;
 		if (level.isClientSide()) return;
 		// Remove all nodes.
 		for (int i = 0; i < getNodeCount(); i++) {
@@ -277,8 +258,10 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			if(otherNode == null) continue;
 
 			int ourNode = localNode.getOtherIndex();
-			if (localNode.isInvalid()) otherNode.removeNode(ourNode);
-			else otherNode.removeNode(ourNode, true); // Make the other node drop the wires.
+			if (localNode.isInvalid())
+				otherNode.removeNode(ourNode);
+			else
+				otherNode.removeNode(ourNode, true); // Make the other node drop the wires.
 		}
 
 		invalidateNodeCache();
@@ -300,7 +283,7 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 	}
 
 	public ConnectorMode getMode() {
-		return getBlockState().getValue(ConnectorBlock.MODE);
+		return getBlockState().getValue(AbstractConnectorBlock.MODE);
 	}
 
 	@Override
@@ -319,25 +302,25 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.mode").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
-				.append(getBlockState().getValue(ConnectorBlock.MODE).getTooltip().withStyle(ChatFormatting.AQUA)));
+				.append(getBlockState().getValue(AbstractConnectorBlock.MODE).getTooltip().withStyle(ChatFormatting.AQUA)));
 
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(" ")
-				.append(Util.format(EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
+				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
+
 		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 	}
 
-	@Override
 	public boolean ignoreCapSide() {
-		return this.getBlockState().getValue(ConnectorBlock.MODE).isActive();
+		return this.getBlockState().getValue(AbstractConnectorBlock.MODE).isActive();
 	}
 
 	@Override
 	public void drawDebug() {
 		if (level == null) return;
 		// Outline all connected nodes.
-		for (int i = 0; i < NODE_COUNT; i++) {
+		for (int i = 0; i < getNodeCount(); i++) {
 			LocalNode localNode = this.localNodes[i];
 			if (localNode == null) continue;
 			BlockPos pos = localNode.getPos();
@@ -357,8 +340,8 @@ public class ConnectorTileEntity extends BaseElectricTileEntity implements IWire
 			CreateClient.OUTLINER.chaseAABB("ca_nodes_" + i, shape.bounds().move(pos)).lineWidth(0.0625F).colored(color);
 		}
 		// Outline connected power
-		BlockPos pos = worldPosition.relative(getBlockState().getValue(ConnectorBlock.FACING));
-		EnergyStorage cap = EnergyStorage.SIDED.find(level, pos, getBlockState().getValue(ConnectorBlock.FACING).getOpposite());
+		BlockPos pos = worldPosition.relative(getBlockState().getValue(AbstractConnectorBlock.FACING));
+		EnergyStorage cap = EnergyStorage.SIDED.find(level, pos, getBlockState().getValue(AbstractConnectorBlock.FACING).getOpposite());
 		if(cap == null) return;
 
 //		if(ignoreCapSide() && !cap.isPresent()) cap = te.getCapability(CapabilityEnergy.ENERGY);

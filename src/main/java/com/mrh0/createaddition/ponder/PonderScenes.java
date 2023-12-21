@@ -1,7 +1,7 @@
 package com.mrh0.createaddition.ponder;
 
-import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
-import com.mrh0.createaddition.blocks.connector.ConnectorMode;
+import com.mrh0.createaddition.blocks.connector.base.AbstractConnectorBlock;
+import com.mrh0.createaddition.blocks.connector.base.ConnectorMode;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
@@ -389,7 +389,7 @@ public class PonderScenes {
 		scene.idle(15);
 		scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(cIn), Pointing.DOWN).rightClick()
 				.withItem(new ItemStack(AllItems.WRENCH.get())), 40);
-		scene.world.setBlock(cIn, CABlocks.CONNECTOR_COPPER.getDefaultState().setValue(ConnectorBlock.FACING, Direction.DOWN).setValue(ConnectorBlock.MODE, ConnectorMode.Push), false);
+		scene.world.setBlock(cIn, CABlocks.SMALL_CONNECTOR.getDefaultState().setValue(AbstractConnectorBlock.FACING, Direction.DOWN).setValue(AbstractConnectorBlock.MODE, ConnectorMode.Push), false);
 		scene.overlay.showText(50)
 				.attachKeyFrame()
 				.text("Configure an input connector,")
@@ -398,7 +398,7 @@ public class PonderScenes {
 		scene.idle(60);
 		scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(cOut), Pointing.DOWN).rightClick()
 				.withItem(new ItemStack(AllItems.WRENCH.get())), 40);
-		scene.world.setBlock(cOut, CABlocks.CONNECTOR_COPPER.getDefaultState().setValue(ConnectorBlock.FACING, Direction.DOWN).setValue(ConnectorBlock.MODE, ConnectorMode.Pull), false);
+		scene.world.setBlock(cOut, CABlocks.SMALL_CONNECTOR.getDefaultState().setValue(AbstractConnectorBlock.FACING, Direction.DOWN).setValue(AbstractConnectorBlock.MODE, ConnectorMode.Pull), false);
 		scene.overlay.showText(50)
 				.text("and an output connector.")
 				.placeNearTarget()

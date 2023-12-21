@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.energy;
 
+import com.mrh0.createaddition.blocks.connector.ConnectorType;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CAItems;
@@ -448,6 +449,8 @@ public interface IWireNode {
 		}
 	}
 
+	ConnectorType getConnectorType();
+
 	// Static Helpers
 
 	/**
@@ -530,6 +533,7 @@ public interface IWireNode {
 		return null;
 	}
 
+	int getMaxWireLength();
 	static WireConnectResult connect(Level world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
 		BlockEntity te1 = world.getBlockEntity(pos1);
 		BlockEntity te2 = world.getBlockEntity(pos2);
@@ -539,12 +543,15 @@ public interface IWireNode {
 			return WireConnectResult.INVALID;
 		if (node1 < 0 || node2 < 0)
 			return WireConnectResult.COUNT;
-		if (pos1.distSqr(pos2) > Config.CONNECTOR_MAX_LENGTH.get() * Config.CONNECTOR_MAX_LENGTH.get())
-			return WireConnectResult.LONG;
-		
-		if (wn1.hasConnectionTo(pos2))
-			return WireConnectResult.EXISTS;
-		
+
+		int maxLength = Math.min(wn1.getMaxWireLength(), wn2.getMaxWireLength());
+
+		if (pos1.distSqr(pos2) > maxLength * maxLength) return WireConnectResult.LONG;
+		if (wn1.hasConnectionTo(pos2)) return WireConnectResult.EXISTS;
+		if(wn1.getConnectorType() == ConnectorType.Large && wn2.getConnectorType() == ConnectorType.Large) {
+			if(type == WireType.COPPER) return WireConnectResult.REQUIRES_HIGH_CURRENT;
+		}
+
 		wn1.setNode(node1, node2, wn2.getPos(), type);
 		wn2.setNode(node2, node1, wn1.getPos(), type);
 		return WireConnectResult.getLink(wn2.isNodeInput(node2), wn2.isNodeOutput(node2));

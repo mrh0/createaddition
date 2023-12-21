@@ -1,4 +1,4 @@
-package com.mrh0.createaddition.blocks.connector;
+package com.mrh0.createaddition.blocks.connector.base;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,14 +27,14 @@ public enum ConnectorMode implements StringRepresentable {
 
 	public ConnectorMode getNext() {
 		switch (this) {
-			case Passive:
-				return None;
+			//case Passive:
+			//	return None;
 			case None:
 				return Pull;
 			case Pull:
 				return Push;
 			case Push:
-				return Passive;
+				return None;
 		}
 		return None;
 	}
@@ -61,7 +61,6 @@ public enum ConnectorMode implements StringRepresentable {
 		EnergyStorage e = EnergyStorage.SIDED.find(level, pos, face);
 		if(e == null) return None;
 
-		if(e.supportsExtraction() && e.supportsInsertion()) return Passive;
 		if(e.supportsExtraction()) return Pull;
 		if(e.supportsInsertion()) return Push;
 		

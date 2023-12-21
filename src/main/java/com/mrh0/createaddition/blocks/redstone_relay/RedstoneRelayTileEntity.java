@@ -1,6 +1,8 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.blocks.connector.ConnectorType;
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.LocalNode;
 import com.mrh0.createaddition.energy.NodeRotation;
@@ -354,6 +356,11 @@ if (changed) {
 		return isNodeInput(in) == isNodeInput(other);
 	}
 
+	@Override
+	public ConnectorType getConnectorType() {
+		return ConnectorType.Small;
+	}
+
 	public long getDemand() {
 		return demand;
 	}
@@ -385,5 +392,10 @@ if (changed) {
 		tooltip.add(Component.literal(spacing).append(" ")
 				.append(Util.format(EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 		return true;
+	}
+
+	@Override
+	public int getMaxWireLength() {
+		return Config.SMALL_CONNECTOR_MAX_LENGTH.get();
 	}
 }

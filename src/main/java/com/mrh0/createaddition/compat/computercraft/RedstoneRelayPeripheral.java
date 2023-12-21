@@ -36,12 +36,12 @@ public class RedstoneRelayPeripheral implements IPeripheral {
 
     @LuaFunction(mainThread = true)
     public long getMaxInsert() {
-        return Config.CONNECTOR_MAX_INPUT.get();
+        return Config.SMALL_CONNECTOR_MAX_INPUT.get();
     }
 
     @LuaFunction(mainThread = true)
     public long getMaxExtract() {
-        return Config.CONNECTOR_MAX_OUTPUT.get();
+        return Config.SMALL_CONNECTOR_MAX_OUTPUT.get();
     }
 
     @LuaFunction(mainThread = true)
