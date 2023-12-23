@@ -26,17 +26,17 @@ public class SmallConnectorBlockEntity extends AbstractConnectorBlockEntity {
     }
 
     @Override
-    public int getMaxIn() {
-        return Config.LARGE_CONNECTOR_MAX_INPUT.get();
-    }
-
-    @Override
-    public int getMaxOut() {
-        return Config.LARGE_CONNECTOR_MAX_OUTPUT.get();
-    }
-
-    @Override
     public void addBehaviours(List<BlockEntityBehaviour> list) {}
+
+    @Override
+    public long getMaxIn() {
+        return Config.SMALL_CONNECTOR_MAX_INPUT.get();
+    }
+
+    @Override
+    public long getMaxOut() {
+        return Config.SMALL_CONNECTOR_MAX_OUTPUT.get();
+    }
 
     @Override
     public int getNodeCount() {

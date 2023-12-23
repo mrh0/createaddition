@@ -7,7 +7,7 @@ import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -17,11 +17,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SupportType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -96,17 +94,17 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-		if(tileentity != null) {
-			if(tileentity instanceof AbstractConnectorBlockEntity) {
-				((AbstractConnectorBlockEntity)tileentity).updateExternalEnergyStorage();
+		BlockEntity blockEntity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
+		if(blockEntity != null) {
+			if(blockEntity instanceof AbstractConnectorBlockEntity) {
+				((AbstractConnectorBlockEntity)blockEntity).updateExternalEnergyStorage();
 			}
 		}
 		if (!state.canSurvive(worldIn, pos)) {
-			dropResources(state, worldIn, pos, tileentity);
+			dropResources(state, worldIn, pos, blockEntity);
 
-			if(tileentity instanceof IWireNode)
-				((IWireNode) tileentity).dropWires(worldIn, true);
+			if(blockEntity instanceof IWireNode)
+				((IWireNode) blockEntity).dropWires(worldIn, true);
 
 			worldIn.removeBlock(pos, false);
 
@@ -129,10 +127,10 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 		return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
 	}
 
-	/*@Override
+	@Override
 	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
 		return rotate(state, direction);
-	}*/
+	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {

@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.recipe.liquid_burning;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
@@ -20,7 +21,6 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 	protected int burnTime;
 	protected boolean superheated;
 	
-	public static RecipeType<LiquidBurningRecipe> TYPE = new LiquidBurningRecipeType();
 	@SuppressWarnings("deprecation")
 	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "liquid_burning"));
 	public LiquidBurningRecipe(ResourceLocation id, FluidIngredient fluid, int burnTime, boolean superheated) {
@@ -68,7 +68,7 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 
 	@Override
 	public RecipeType<?> getType() {
-		return TYPE;
+		return CARecipes.LIQUID_BURNING_TYPE.get();
 	}
 
 	public FluidIngredient getFluidIngredient() {

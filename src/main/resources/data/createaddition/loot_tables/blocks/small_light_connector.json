@@ -2,7 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "createaddition:small_light_connector",
+	  "name": "createaddition:small_light_connector",
       "rolls": 1,
       "entries": [
         {

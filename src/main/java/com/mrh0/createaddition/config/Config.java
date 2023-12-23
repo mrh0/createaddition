@@ -11,11 +11,9 @@ public class Config {
 	public static final String CATAGORY_ELECTRIC_MOTOR = "electric_motor";
 	public static final String CATAGORY_ALTERNATOR = "alternator";
 	public static final String CATAGORY_ROLLING_MILL = "rolling_mill";
-	public static final String CATAGORY_HEATER = "heater";
 	public static final String CATAGORY_WIRES = "wires";
 	public static final String CATAGORY_ACCUMULATOR = "accumulator";
 	public static final String CATAGORY_PEI = "portable_energy_interface";
-	public static final String CATAGORY_CHARGER = "charger";
 	public static final String CATAGORY_TESLA_COIL = "tesla_coil";
 	public static final String CATAGORY_MISC = "misc";
 
@@ -37,14 +35,14 @@ public class Config {
 	public static ForgeConfigSpec.IntValue ROLLING_MILL_PROCESSING_DURATION;
 	public static ForgeConfigSpec.IntValue ROLLING_MILL_STRESS;
 
-	public static ForgeConfigSpec.IntValue SMALL_CONNECTOR_MAX_INPUT;
-	public static ForgeConfigSpec.IntValue SMALL_CONNECTOR_MAX_OUTPUT;
+	public static ForgeConfigSpec.LongValue SMALL_CONNECTOR_MAX_INPUT;
+	public static ForgeConfigSpec.LongValue SMALL_CONNECTOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.IntValue SMALL_CONNECTOR_MAX_LENGTH;
 
-	public static ForgeConfigSpec.IntValue SMALL_LIGHT_CONNECTOR_CONSUMPTION;
+	public static ForgeConfigSpec.LongValue SMALL_LIGHT_CONNECTOR_CONSUMPTION;
 
-	public static ForgeConfigSpec.IntValue LARGE_CONNECTOR_MAX_INPUT;
-	public static ForgeConfigSpec.IntValue LARGE_CONNECTOR_MAX_OUTPUT;
+	public static ForgeConfigSpec.LongValue LARGE_CONNECTOR_MAX_INPUT;
+	public static ForgeConfigSpec.LongValue LARGE_CONNECTOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.IntValue LARGE_CONNECTOR_MAX_LENGTH;
 
 	public static ForgeConfigSpec.BooleanValue CONNECTOR_IGNORE_FACE_CHECK;

@@ -1,8 +1,12 @@
 package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipeSerializer;
+import com.mrh0.createaddition.recipe.conditions.HasFluidTagCondition;
+import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipeSerializer;
+import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipeProcessingFactory;
 import com.mrh0.createaddition.recipe.rolling.SequencedAssemblyRollingRecipeSerializer;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;

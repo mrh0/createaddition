@@ -1,0 +1,10 @@
+{
+	"type":"createaddition:rolling",
+	"input": {
+      	"tag": "forge:ingots/electrum"
+	},
+	"result": {
+		"item": "createaddition:electrum_rod",
+		"count": 2
+	}
+}

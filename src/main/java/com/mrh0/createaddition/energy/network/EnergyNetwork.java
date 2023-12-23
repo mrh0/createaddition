@@ -18,14 +18,13 @@ public class EnergyNetwork {
 	private int outBuffRetained;
 	private int outDemand;
 	private boolean valid;
-
+	
 	private int pulled = 0;
 	private int pushed = 0;
 
 	private int nodeCount = 0;
 
 	private static final int MAX_BUFF = 80000;
-
 	public EnergyNetwork(Level world) {
 		this.inBuff = 0;
 		this.outBuff = 0;
@@ -33,7 +32,6 @@ public class EnergyNetwork {
 		this.inDemand = 0;
 		this.outDemand = 0;
 		this.valid = true;
-
 		EnergyNetworkManager.instances.get(world).add(this);
 	}
 
@@ -49,7 +47,7 @@ public class EnergyNetwork {
 		inBuff = t;
 		outDemand = inDemand;
 		inDemand = 0;
-
+				
 		pulled = 0;
 		pushed = 0;
 	}
@@ -77,15 +75,15 @@ public class EnergyNetwork {
 		this.inDemand += demand;
 		return demand;
 	}
-
+	
 	public int getDemand() {
 		return outDemand;
 	}
-
+	
 	public int getPulled() {
 		return pulled;
 	}
-
+	
 	public int getPushed() {
 		return pushed;
 	}
@@ -118,21 +116,21 @@ public class EnergyNetwork {
 		}
 		return en;
 	}
-
+	
 	private static String posKey(BlockPos pos, int index) {
 		return pos.getX()+","+pos.getY()+","+pos.getZ()+":"+index;
 	}
-
+	
 	public void invalidate() {
 		this.valid = false;
 	}
-
+	
 	public boolean isValid() {
 		return this.valid;
 	}
-
+	
 	public void removed() {}
-
+	
 	public int getId() {
 		return id;
 	}

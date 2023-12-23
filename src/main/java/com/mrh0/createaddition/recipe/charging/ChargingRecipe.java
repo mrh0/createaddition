@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.recipe.charging;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.index.CARecipes;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -18,20 +19,25 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	public Ingredient ingredient;
 	public ItemStack output;
 	public int energy;
-
+    public int maxChargeRate;
+	
 	public static RecipeType<ChargingRecipe> TYPE = new ChargingRecipeType();
+	@SuppressWarnings("deprecation")
 	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "charging"));
-	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy) {
+	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy, int maxChargeRate) {
 		this.id = id;
 		this.ingredient = ingredient;
 		this.output = output;
 		this.energy = energy;
+		this.maxChargeRate = maxChargeRate;
 	}
 
 
 	@Override
-	public boolean matches(@NotNull RecipeWrapper wrapper, @NotNull Level world) {
+	public boolean matches(RecipeWrapper wrapper, Level world) {
 		if(ingredient == null)
+			return false;
+		if(wrapper == null)
 			return false;
 		if(wrapper.getItem(0) == null)
 			return false;
@@ -40,7 +46,7 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 
 
 	@Override
-	public ItemStack assemble(@NotNull RecipeWrapper wrapper) {
+	public ItemStack assemble(RecipeWrapper wrapper) {
 		return output;
 	}
 
@@ -71,11 +77,15 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 
 	@Override
 	public RecipeType<?> getType() {
-		return TYPE;
+		return CARecipes.CHARGING_TYPE.get();
 	}
-
+	
 	public int getEnergy() {
 		return energy;
+	}
+
+	public int getMaxChargeRate() {
+		return maxChargeRate;
 	}
 
 }

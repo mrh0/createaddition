@@ -87,7 +87,7 @@ public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 
 				Optional<Direction> currentFacingIfValid = this.getCurrentFacingIfValid(context);
 				if (currentFacingIfValid.isPresent()) {
-					PortableEnergyInterfaceTileEntity stationaryInterface = this.getStationaryInterfaceAt(context.world, pos, context.state, currentFacingIfValid.get());
+					PortableEnergyInterfaceBlockEntity stationaryInterface = this.getStationaryInterfaceAt(context.world, pos, context.state, currentFacingIfValid.get());
 					if (stationaryInterface == null) {
 						this.reset(context);
 					} else {
@@ -120,7 +120,7 @@ public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 			return false;
 		} else {
 			Direction currentFacing = currentFacingIfValid.get();
-			PortableEnergyInterfaceTileEntity psi = this.findStationaryInterface(context.world, pos, context.state, currentFacing);
+			PortableEnergyInterfaceBlockEntity psi = this.findStationaryInterface(context.world, pos, context.state, currentFacing);
 			if (psi == null) {
 				return false;
 			} else if (psi.isPowered()) {
@@ -160,9 +160,9 @@ public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 		getAnimation(context).chase(0.0D, 0.25D, LerpedFloat.Chaser.LINEAR);
 	}
 
-	private PortableEnergyInterfaceTileEntity findStationaryInterface(Level world, BlockPos pos, BlockState state, Direction facing) {
+	private PortableEnergyInterfaceBlockEntity findStationaryInterface(Level world, BlockPos pos, BlockState state, Direction facing) {
 		for(int i = 0; i < 2; ++i) {
-			PortableEnergyInterfaceTileEntity interfaceAt = this.getStationaryInterfaceAt(world, pos.relative(facing, i), state, facing);
+			PortableEnergyInterfaceBlockEntity interfaceAt = this.getStationaryInterfaceAt(world, pos.relative(facing, i), state, facing);
 			if (interfaceAt != null) {
 				return interfaceAt;
 			}
@@ -171,10 +171,10 @@ public class PortableEnergyInterfaceMovement implements MovementBehaviour {
 		return null;
 	}
 
-	private PortableEnergyInterfaceTileEntity getStationaryInterfaceAt(Level world, BlockPos pos, BlockState state, Direction facing) {
+	private PortableEnergyInterfaceBlockEntity getStationaryInterfaceAt(Level world, BlockPos pos, BlockState state, Direction facing) {
 		BlockEntity te = world.getBlockEntity(pos);
-		if (te instanceof PortableEnergyInterfaceTileEntity) {
-			PortableEnergyInterfaceTileEntity psi = (PortableEnergyInterfaceTileEntity)te;
+		if (te instanceof PortableEnergyInterfaceBlockEntity) {
+			PortableEnergyInterfaceBlockEntity psi = (PortableEnergyInterfaceBlockEntity)te;
 			BlockState blockState = world.getBlockState(pos);
 			if (blockState.getBlock() != state.getBlock()) {
 				return null;

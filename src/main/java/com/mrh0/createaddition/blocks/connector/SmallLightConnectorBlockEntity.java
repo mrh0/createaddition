@@ -32,16 +32,6 @@ public class SmallLightConnectorBlockEntity extends AbstractConnectorBlockEntity
     }
 
     @Override
-    public int getMaxIn() {
-        return Config.SMALL_CONNECTOR_MAX_INPUT.get();
-    }
-
-    @Override
-    public int getMaxOut() {
-        return Config.SMALL_CONNECTOR_MAX_OUTPUT.get();
-    }
-
-    @Override
     public void read(CompoundTag nbt, boolean clientPacket) {
         tickToggleTimer = nbt.getInt("tick_toggle_timer");
         super.read(nbt, clientPacket);
@@ -55,6 +45,16 @@ public class SmallLightConnectorBlockEntity extends AbstractConnectorBlockEntity
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> list) {}
+
+    @Override
+    public long getMaxIn() {
+        return Config.SMALL_CONNECTOR_MAX_INPUT.get();
+    }
+
+    @Override
+    public long getMaxOut() {
+        return Config.SMALL_CONNECTOR_MAX_OUTPUT.get();
+    }
 
     @Override
     public int getNodeCount() {

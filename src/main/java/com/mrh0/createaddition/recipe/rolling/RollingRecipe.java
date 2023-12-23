@@ -4,6 +4,7 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.compat.jei.RollingMillAssemblySubCategory;
 import com.mrh0.createaddition.compat.rei.ReiRollingMillAssemblySubCategory;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CARecipes;
 import com.simibubi.create.compat.recipeViewerCommon.SequencedAssemblySubCategoryType;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
@@ -25,7 +26,6 @@ import java.util.Set;
 
 public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IAssemblyRecipe {
 
-    public static RecipeType<RollingRecipe> TYPE = new RollingRecipeType();
     @SuppressWarnings("deprecation")
     public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "rolling"));
     protected final ItemStack output;
@@ -33,7 +33,7 @@ public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IA
     protected final Ingredient ingredient;
 
     protected RollingRecipe(Ingredient ingredient, ItemStack output, ResourceLocation id) {
-        super(new RollingRecipeInfo(id, (SequencedAssemblyRollingRecipeSerializer) SERIALIZER, TYPE), new RollingMillRecipeParams(id, ingredient, new ProcessingOutput(output, 1f)));
+        super(new RollingRecipeInfo(id, (SequencedAssemblyRollingRecipeSerializer) SERIALIZER, CARecipes.ROLLING_TYPE.get()), new RollingMillRecipeParams(id, ingredient, new ProcessingOutput(output, 1f)));
         this.output = output;
         this.id = id;
         this.ingredient = ingredient;
@@ -85,13 +85,12 @@ public class RollingRecipe extends ProcessingRecipe<RecipeWrapper> implements IA
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-
         return SERIALIZER;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return TYPE;
+        return CARecipes.ROLLING_TYPE.get();
     }
 
     @Override

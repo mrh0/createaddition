@@ -35,7 +35,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 
 	@Override
 	public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-					   int combinedLightIn, int combinedOverlayIn) {
+			int combinedLightIn, int combinedOverlayIn) {
 		IWireNode te = (IWireNode) tileEntityIn;
 
 		time += partialTicks;
@@ -50,33 +50,33 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 			IWireNode wn = te.getWireNode(i);
 			if (wn == null) return;
 
-			Vec3 d2 = wn.getNodeOffset(te.getOtherNodeIndex(i)); // get other
-			float ox2 = ((float) d2.x());
-			float oy2 = ((float) d2.y());
-			float oz2 = ((float) d2.z());
-			BlockPos other = te.getNodePos(i);
+				Vec3 d2 = wn.getNodeOffset(te.getOtherNodeIndex(i)); // get other
+				float ox2 = ((float) d2.x());
+				float oy2 = ((float) d2.y());
+				float oz2 = ((float) d2.z());
+				BlockPos other = te.getNodePos(i);
 
-			float tx = other.getX() - te.getPos().getX();
-			float ty = other.getY() - te.getPos().getY();
-			float tz = other.getZ() - te.getPos().getZ();
-			matrixStackIn.pushPose();
+				float tx = other.getX() - te.getPos().getX();
+				float ty = other.getY() - te.getPos().getY();
+				float tz = other.getZ() - te.getPos().getZ();
+				matrixStackIn.pushPose();
 
-			float dis = distanceFromZero(tx, ty, tz);
+				float dis = distanceFromZero(tx, ty, tz);
 
-			matrixStackIn.translate(tx + .5f + ox2, ty + .5f + oy2, tz + .5f + oz2);
-			wireRender(
-					tileEntityIn,
-					other,
-					matrixStackIn,
-					bufferIn,
-					-tx - ox2 + ox1,
-					-ty - oy2 + oy1,
-					-tz - oz2 + oz1,
-					te.getNodeType(i),
-					dis
-			);
-			matrixStackIn.popPose();
-		}
+				matrixStackIn.translate(tx + .5f + ox2, ty + .5f + oy2, tz + .5f + oz2);
+				wireRender(
+						tileEntityIn,
+						other,
+						matrixStackIn,
+						bufferIn,
+						-tx - ox2 + ox1,
+						-ty - oy2 + oy1,
+						-tz - oz2 + oz1,
+						te.getNodeType(i),
+						dis
+				);
+				matrixStackIn.popPose();
+			}
 
 		if(ClientEventHandler.clientRenderHeldWire) {
 			LocalPlayer player = ClientMinecraftWrapper.getPlayer();
@@ -132,7 +132,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 	}
 
 	public static void wireRender(BlockEntity tileEntityIn, BlockPos other, PoseStack stack, MultiBufferSource buffer, float x, float y, float z,
-								  WireType type, float dis) {
+			WireType type, float dis) {
 		//matrix.pushPose();
 
 		VertexConsumer ivertexbuilder = buffer.getBuffer(CARenderType.WIRE);
@@ -154,7 +154,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 	}
 
 	public static void wirePart(VertexConsumer vertBuilder, Matrix4f matrix, float x, float y, float z, int l1, int l2,
-								int l3, int l4, float a, float b, float o1, float o2, WireType type, float dis, BlockState state, PoseStack stack, int lightOffset, float hangFactor) {
+			int l3, int l4, float a, float b, float o1, float o2, WireType type, float dis, BlockState state, PoseStack stack, int lightOffset, float hangFactor) {
 		for (int j = 0; j < 24; ++j) {
 			float f = (float) j / 23.0F;
 			int k = (int) Mth.lerp(f, (float) l1, (float) l2);
@@ -180,7 +180,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 	static float LIGHT_Y_OFFSET = -0.03f;
 
 	public static void lights(VertexConsumer vertBuilder,float x, float y, float z,
-							  float a, float b, int count, int index, float o1, float o2, WireType type, float dis, BlockState state, PoseStack stack, int lightOffset, boolean main) {
+			float a, float b, int count, int index, float o1, float o2, WireType type, float dis, BlockState state, PoseStack stack, int lightOffset, boolean main) {
 		float part = (float) index / (float) count;
 		float fx = x * part;
 		float fy = (y > 0.0F ? y * part * part : y - y * (1.0F - part) * (1.0F - part)) + hang(divf(index, count), dis) + LIGHT_Y_OFFSET;
@@ -192,7 +192,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 	}
 
 	public static void supports(VertexConsumer vertBuilder,float x, float y, float z,
-								float a, float b, int count, int index, float o1, float o2, WireType type, float dis, BlockState state, PoseStack stack, int lightOffset, boolean main) {
+			float a, float b, int count, int index, float o1, float o2, WireType type, float dis, BlockState state, PoseStack stack, int lightOffset, boolean main) {
 		float part = (float) index / (float) count;
 		float fx = x * part;
 		float fyh = (y > 0.0F ? y * part * part : y - y * (1.0F - part) * (1.0F - part)) + 2*hang(divf(index, count), dis);
@@ -206,7 +206,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 	}
 
 	public static void wireVert(VertexConsumer vertBuilder, Matrix4f matrix, int light, float x, float y, float z,
-								float a, float b, int count, int index, boolean sw, float o1, float o2, WireType type, float dis, BlockState state, PoseStack stack, int lightOffset, float hangFactor) {
+			float a, float b, int count, int index, boolean sw, float o1, float o2, WireType type, float dis, BlockState state, PoseStack stack, int lightOffset, float hangFactor) {
 		int cr = type.getRed();
 		int cg = type.getGreen();
 		int cb = type.getBlue();

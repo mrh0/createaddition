@@ -59,52 +59,6 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		this.nodeCache = new IWireNode[getNodeCount()];
 	}
 
-	public EnergyStorage getEnergyStorage(Direction side){
-		if(isEnergyInput(side)||isEnergyOutput(side)) {
-			return networkStorage;
-		}
-		return null;
-	}
-
-
-	public abstract int getMaxIn();
-	public abstract int getMaxOut();
-	//Renamed to prevent name conflict
-	public int getCapacityOutside() {
-		return Math.min(getMaxIn(), getMaxOut());
-	}
-	private class NetworkEnergyStorage implements EnergyStorage {
-
-		@Override
-		public long insert(long maxAmount, TransactionContext transaction) {
-			if(!Config.CONNECTOR_ALLOW_PASSIVE_IO.get()) return 0;
-			if(getMode() != ConnectorMode.Pull) return 0;
-			if (network == null) return 0;
-			maxAmount = Math.min(maxAmount, getMaxIn());
-			return network.push(maxAmount);
-		}
-
-		@Override
-		public long extract(long maxAmount, TransactionContext transaction) {
-			if(!Config.CONNECTOR_ALLOW_PASSIVE_IO.get()) return 0;
-			if(getMode() != ConnectorMode.Push) return 0;
-			if (network == null) return 0;
-			maxAmount = Math.min(maxAmount, getMaxOut());
-			return network.pull(maxAmount);
-		}
-
-		@Override
-		public long getAmount() {
-			if (network == null) return 0;
-			return Math.min(getCapacity(), network.getBuff());
-		}
-
-		@Override
-		public long getCapacity() {
-			return getCapacityOutside();
-		}
-	}
-
 	@Override
 	public @Nullable IWireNode getWireNode(int index) {
 		return IWireNode.getWireNodeFrom(index, this, this.localNodes, this.nodeCache, level);
@@ -270,6 +224,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		if (externalStorageInvalid) updateExternalEnergyStorage();
 	}
 
+	private final static IEnergyStorage NULL_ES = new EnergyStorage(0, 0, 0);
 	private void networkTick(EnergyNetwork network) {
 		ConnectorMode mode = getMode();
 		if(level == null) return;
@@ -366,28 +321,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 	}
 
 	public boolean ignoreCapSide() {
-		return this.getBlockState().getValue(AbstractConnectorBlock.MODE).isActive();
-	}
-
-	public void updateExternalEnergyStorage() {
-		if (level == null) return;
-		if (!level.isLoaded(getBlockPos())) return;
-		externalStorageInvalid = false;
-		var side = getBlockState().getValue(AbstractConnectorBlock.FACING);
-		BlockPos externalPos = worldPosition.relative(side);
-		if (!level.isLoaded(externalPos)) {
-			externalStorage = EnergyStorage.EMPTY;
-			return;
-		}
-		EnergyStorage es = EnergyStorage.SIDED.find(level, externalPos, side.getOpposite());
-		if(ignoreCapSide() && es == null) {
-			es = EnergyStorage.SIDED.find(level, externalPos, null);
-		}
-		if(es == null){
-			externalStorage = EnergyStorage.EMPTY;
-		} else {
-			externalStorage = es;
-		}
+		return this.getBlockState().getValue(ConnectorBlock.MODE).isActive();
 	}
 
 	@Override
@@ -418,7 +352,8 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		EnergyStorage cap = EnergyStorage.SIDED.find(level, pos, getBlockState().getValue(AbstractConnectorBlock.FACING).getOpposite());
 		if(cap == null) return;
 
-//		if(ignoreCapSide() && !cap.isPresent()) cap = te.getCapability(CapabilityEnergy.ENERGY);
+		var cap = te.getCapability(CapabilityEnergy.ENERGY, getBlockState().getValue(ConnectorBlock.FACING).getOpposite());
+		if(ignoreCapSide() && !cap.isPresent()) cap = te.getCapability(CapabilityEnergy.ENERGY);
 
 		VoxelShape shape = level.getBlockState(pos).getBlockSupportShape(level, pos);
 		CreateClient.OUTLINER.chaseAABB("ca_output", shape.bounds().move(pos)).lineWidth(0.0625F).colored(0x5B5BFF);

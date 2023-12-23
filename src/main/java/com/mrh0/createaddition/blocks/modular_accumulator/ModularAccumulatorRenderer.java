@@ -14,20 +14,20 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ModularAccumulatorRenderer extends SafeBlockEntityRenderer<ModularAccumulatorTileEntity> {
+public class ModularAccumulatorRenderer extends SafeBlockEntityRenderer<ModularAccumulatorBlockEntity> {
 
 	public ModularAccumulatorRenderer(BlockEntityRendererProvider.Context context) {}
 
 	@Override
-	protected void renderSafe(ModularAccumulatorTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer,
-		int light, int overlay) {
+	protected void renderSafe(ModularAccumulatorBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer,
+							  int light, int overlay) {
 		if (!te.isController()) return;
 		renderDial(te, partialTicks, ms, buffer, light, overlay);
 		te.observe();
 	}
 
-	protected void renderDial(ModularAccumulatorTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer,
-		int light, int overlay) {
+	protected void renderDial(ModularAccumulatorBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer,
+							  int light, int overlay) {
 		BlockState blockState = te.getBlockState();
 		VertexConsumer vb = buffer.getBuffer(RenderType.solid());
 		ms.pushPose();
@@ -62,7 +62,7 @@ public class ModularAccumulatorRenderer extends SafeBlockEntityRenderer<ModularA
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(ModularAccumulatorTileEntity te) {
+	public boolean shouldRenderOffScreen(ModularAccumulatorBlockEntity te) {
 		return te.isController();
 	}
 }

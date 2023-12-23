@@ -2,7 +2,7 @@ package com.mrh0.createaddition.blocks.connector;
 
 import com.mrh0.createaddition.blocks.connector.base.AbstractConnectorBlock;
 import com.mrh0.createaddition.energy.NodeRotation;
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.core.BlockPos;
@@ -43,12 +43,12 @@ public class SmallLightConnectorBlock extends AbstractConnectorBlock<SmallLightC
 
     @Override
     public BlockEntityType<? extends SmallLightConnectorBlockEntity> getBlockEntityType() {
-        return CATileEntities.SMALL_LIGHT_CONNECTOR.get();
+        return CABlockEntities.SMALL_LIGHT_CONNECTOR.get();
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return CATileEntities.SMALL_LIGHT_CONNECTOR.create(pos, state);
+        return CABlockEntities.SMALL_LIGHT_CONNECTOR.create(pos, state);
     }
 
     @Override

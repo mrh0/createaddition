@@ -1,8 +1,11 @@
 package com.mrh0.createaddition.blocks.electric_motor;
 
-import com.mrh0.createaddition.index.CATileEntities;
+import java.util.Random;
+
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
+import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
@@ -26,7 +29,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ElectricMotorBlock extends DirectionalKineticBlock implements IBE<ElectricMotorTileEntity>, ConnectableRedstoneBlock {
+public class ElectricMotorBlock extends DirectionalKineticBlock implements IBE<ElectricMotorBlockEntity>, ConnectableRedstoneBlock {
 
 	public static final VoxelShaper ELECTRIC_MOTOR_SHAPE = CAShapes.shape(0, 5, 0, 16, 11, 16).add(3, 0, 3, 13, 14, 13)
 			.forDirectional();
@@ -57,13 +60,13 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements IBE<E
 	}
 
 	@Override
-	public Class<ElectricMotorTileEntity> getBlockEntityClass() {
-		return ElectricMotorTileEntity.class;
+	public Class<ElectricMotorBlockEntity> getBlockEntityClass() {
+		return ElectricMotorBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends ElectricMotorTileEntity> getBlockEntityType() {
-		return CATileEntities.ELECTRIC_MOTOR.get();
+	public BlockEntityType<? extends ElectricMotorBlockEntity> getBlockEntityType() {
+		return CABlockEntities.ELECTRIC_MOTOR.get();
 	}
 
 	@Override
@@ -129,6 +132,6 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements IBE<E
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.ELECTRIC_MOTOR.create(pos, state);
+		return CABlockEntities.ELECTRIC_MOTOR.create(pos, state);
 	}
 }

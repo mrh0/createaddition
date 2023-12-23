@@ -1,0 +1,23 @@
+{
+	"parent": "block/cube_all",
+	"textures": {
+		"bottom": "createaddition:block/biomass_pellet_block/bottom",
+		"top": "createaddition:block/biomass_pellet_block/top",
+		"side": "createaddition:block/biomass_pellet_block/side",
+		"particle": "createaddition:block/biomass_pellet_block/top"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"down": {"texture": "#bottom", "cullface": "down"},
+				"up": {"texture": "#top", "cullface": "up"},
+				"north": {"texture": "#side", "cullface": "north"},
+				"east": {"texture": "#side", "cullface": "east"},
+				"south": {"texture": "#side", "cullface": "south"},
+				"west": {"texture": "#side", "cullface": "west"}
+			}
+		}
+	]
+}

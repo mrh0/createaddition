@@ -1,0 +1,22 @@
+{
+  "type": "create:item_application",
+  "ingredients": [
+    {
+      "item": "immersiveengineering:sheetmetal_iron"
+    },
+    {
+      "item": "create:precision_mechanism"
+    }
+  ],
+  "results": [
+    {
+      "item": "immersiveengineering:light_engineering"
+    }
+  ],
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ]
+}

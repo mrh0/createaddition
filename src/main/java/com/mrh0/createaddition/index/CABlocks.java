@@ -1,5 +1,7 @@
 package com.mrh0.createaddition.index;
 
+import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
+import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
@@ -8,21 +10,23 @@ import com.mrh0.createaddition.blocks.cake.CACakeBlock;
 import com.mrh0.createaddition.blocks.connector.LargeConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.SmallConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.SmallLightConnectorBlock;
-import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
+import com.mrh0.createaddition.blocks.crops.HarmfulPlantBlock;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlock;
-import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlockItem;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterDisplaySource;
-import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
-import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
+import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlockItem;
 import com.mrh0.createaddition.blocks.modular_accumulator.*;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlock;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceMovement;
+import com.mrh0.createaddition.energy.NodeMovementBehaviour;
+import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
+import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlock;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.config.Config;
-import com.mrh0.createaddition.energy.NodeMovementBehaviour;
 import com.mrh0.createaddition.groups.ModGroup;
+import com.mrh0.createaddition.item.BiomassPelletBlock;
 import com.simibubi.create.AllMovementBehaviours;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
@@ -30,10 +34,15 @@ import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.item.TooltipModifier;
 import com.simibubi.create.foundation.utility.Couple;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours.assignDataBehaviour;
+import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
+
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -94,7 +103,7 @@ public class CABlocks {
 	public static final BlockEntry<SmallLightConnectorBlock> SMALL_LIGHT_CONNECTOR = CreateAddition.REGISTRATE.block("small_light_connector",  SmallLightConnectorBlock::new)
 			.initialProperties(SharedProperties::stone)
 			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
-			.properties(properties -> properties.lightLevel(blockstate -> blockstate.getValue(SmallLightConnectorBlock.POWERED)?15:0))
+            .properties(properties -> properties.lightLevel(blockstate -> blockstate.getValue(SmallLightConnectorBlock.POWERED)?15:0))
 			.item()
 			.transform(customItemModel())
 			.register();
@@ -106,11 +115,11 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 
-	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = (BlockEntry<AccumulatorBlock>) CreateAddition.REGISTRATE.block("accumulator",  AccumulatorBlock::new)
+	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = CreateAddition.REGISTRATE.block("accumulator",  AccumulatorBlock::new)
 			.initialProperties(SharedProperties::softMetal)
 			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
 			.item()
-			.tab(()->ModGroup.MAIN)
+			.tab(() -> null)
 			.transform(customItemModel())
 			.register();
 
@@ -134,6 +143,13 @@ public class CABlocks {
 			.item()
 			.transform(customItemModel())
 			.register();
+
+	/*public static final BlockEntry<HarmfulPlantBlock> HARMFUL_PLANT = CreateAddition.REGISTRATE.block("harmful_plant",  HarmfulPlantBlock::new)
+			.initialProperties(Material.PLANT)
+			.properties(props -> props.sound(SoundType.CROP).strength(0.5f))
+			.item()
+			.transform(customItemModel())
+			.register();*/
 
 	public static final BlockEntry<BarbedWireBlock> BARBED_WIRE = CreateAddition.REGISTRATE.block("barbed_wire",  BarbedWireBlock::new)
 			.initialProperties(() -> Blocks.COBWEB)
@@ -181,6 +197,13 @@ public class CABlocks {
 			.properties(p -> p.color(MaterialColor.PODZOL))
 			.transform(BuilderTransformers.casing(() -> CASpriteShifts.COPPER_WIRE_CASING))
 			.register();*/
+
+	public static final BlockEntry<Block> BIOMASS_PALLET = CreateAddition.REGISTRATE.block("biomass_pellet_block", Block::new)
+			.initialProperties(() -> Blocks.DRIED_KELP_BLOCK)
+			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
+			.item(BiomassPelletBlock::new)
+			.transform(customItemModel())
+			.register();
 
 	public static final BlockEntry<DigitalAdapterBlock> DIGITAL_ADAPTER = CreateAddition.REGISTRATE.block("digital_adapter",  DigitalAdapterBlock::new)
 			.initialProperties(SharedProperties::softMetal)
