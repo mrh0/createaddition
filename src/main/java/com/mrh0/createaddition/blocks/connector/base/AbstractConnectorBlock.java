@@ -99,7 +99,7 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
 		if(tileentity != null) {
 			if(tileentity instanceof AbstractConnectorBlockEntity) {
-				((AbstractConnectorBlockEntity)tileentity).updateCache();
+				((AbstractConnectorBlockEntity)tileentity).updateExternalEnergyStorage();
 			}
 		}
 		if (!state.canSurvive(worldIn, pos)) {

@@ -2,6 +2,7 @@ package com.mrh0.createaddition.energy;
 
 import com.mrh0.createaddition.index.*;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;;
 
 public enum WireType {
@@ -66,5 +67,19 @@ public enum WireType {
 
 	public boolean isFestive( ) {
 		return this == FESTIVE;
+	}
+
+	public static WireType of(Item item) {
+		if(item == CAItems.COPPER_SPOOL.get())
+			return WireType.COPPER;
+		if(item == CAItems.GOLD_SPOOL.get())
+			return WireType.GOLD;
+		if(item == CAItems.FESTIVE_SPOOL.get())
+			return WireType.FESTIVE;
+		//if(item == CAItems.IRON_SPOOL.get())
+		//	return WireType.IRON;
+		//if(item == CAItems.ELECTRUM_SPOOL.get())
+		//	return WireType.ELECTRUM;
+		return WireType.COPPER;
 	}
 }

@@ -22,7 +22,17 @@ public class SmallConnectorBlockEntity extends AbstractConnectorBlockEntity {
     public final static Vec3 OFFSET_EAST = new Vec3(OFFSET_HEIGHT/16f, 0f, 0f);
 
     public SmallConnectorBlockEntity(BlockEntityType<?> blockEntityTypeIn, BlockPos pos, BlockState state) {
-        super(blockEntityTypeIn, pos, state, Config.LARGE_CONNECTOR_MAX_INPUT.get(), Config.LARGE_CONNECTOR_MAX_OUTPUT.get(), Math.max(Config.LARGE_CONNECTOR_MAX_INPUT.get(), Config.LARGE_CONNECTOR_MAX_OUTPUT.get()));
+        super(blockEntityTypeIn, pos, state);
+    }
+
+    @Override
+    public int getMaxIn() {
+        return Config.LARGE_CONNECTOR_MAX_INPUT.get();
+    }
+
+    @Override
+    public int getMaxOut() {
+        return Config.LARGE_CONNECTOR_MAX_OUTPUT.get();
     }
 
     @Override

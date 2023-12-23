@@ -5,15 +5,12 @@ import com.mrh0.createaddition.energy.NodeRotation;
 import com.mrh0.createaddition.index.CATileEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.foundation.utility.VoxelShaper;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RedstoneLampBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,7 +24,6 @@ public class SmallLightConnectorBlock extends AbstractConnectorBlock<SmallLightC
     public static final VoxelShaper CONNECTOR_SHAPE = CAShapes.shape(6, 0, 6, 10, 5, 10).add(5, 4, 5, 11, 10, 11).forDirectional();
     public SmallLightConnectorBlock(Properties properties) {
         super(properties);
-        FabricBlockSettings.copyOf(properties).luminance((blockState)->blockState.getValue(POWERED)?15:0);
     }
 
     @Override
@@ -58,6 +54,5 @@ public class SmallLightConnectorBlock extends AbstractConnectorBlock<SmallLightC
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return CONNECTOR_SHAPE.get(state.getValue(FACING).getOpposite());
-
     }
 }
