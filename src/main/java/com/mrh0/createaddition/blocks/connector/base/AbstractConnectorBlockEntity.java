@@ -1,7 +1,6 @@
 package com.mrh0.createaddition.blocks.connector.base;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.blocks.connector.ConnectorType;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.debug.IDebugDrawer;
 import com.mrh0.createaddition.energy.*;
@@ -25,7 +24,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -37,6 +35,7 @@ import team.reborn.energy.api.EnergyStorage;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity implements EnergyTransferable, IWireNode, IObserveTileEntity, IHaveGoggleInformation, IDebugDrawer {
 
@@ -241,10 +240,13 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 			this.wasContraption = false;
 			validateNodes();
 		}
+
+		updateExternalEnergyStorage();
 	}
 
 	protected void specialTick() {}
 
+	boolean externalStorageInvalid = false;
 	@Override
 	public void tick() {
 		if (this.firstTick) firstTick();
@@ -262,7 +264,10 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		if(level == null) return;
 		if(level.isClientSide()) return;
 		if(awakeNetwork(level)) notifyUpdate();
+
 		networkTick(network);
+
+		if (externalStorageInvalid) updateExternalEnergyStorage();
 	}
 
 	private void networkTick(EnergyNetwork network) {
@@ -370,14 +375,21 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 			externalStorage = EnergyStorage.EMPTY;
 			return;
 		}
-		EnergyStorage le = EnergyStorage.SIDED.find(level, getBlockPos(), side.getOpposite());
-		if(ignoreCapSide() && le == null) le = EnergyStorage.SIDED.find(level, getBlockPos(), null);
-		// Make sure the side isn't already cached.
-		if (le.equals(externalStorage)) return;
-		if(le == null){
+		EnergyStorage es = EnergyStorage.SIDED.find(level, getBlockPos(), side.getOpposite());
+		if(ignoreCapSide() && es == null) {
+			//In 1.20, replace with EnergyStorage es = EnergyStorage.SIDED.find(level, getBlockPos(), null);
+			for(Direction otherSide: Direction.values()){
+				EnergyStorage maybeEs = EnergyStorage.SIDED.find(level, getBlockPos(), otherSide);
+				if(maybeEs!=null){
+					es=maybeEs;
+					break;
+				}
+			}
+		}
+		if(es == null){
 			externalStorage = EnergyStorage.EMPTY;
-		}else {
-			externalStorage = le;
+		} else {
+			externalStorage = es;
 		}
 	}
 

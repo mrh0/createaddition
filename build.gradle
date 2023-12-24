@@ -110,7 +110,7 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    include modApi('teamreborn:energy:3.0.0') {
+    include modApi('teamreborn:energy:2.3.0') {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
