@@ -116,10 +116,10 @@ public class Config {
 
 		COMMON_BUILDER.comment("Rolling Mill").push(CATAGORY_ROLLING_MILL);
 		ROLLING_MILL_PROCESSING_DURATION = COMMON_BUILDER.comment("Rolling Mill duration in ticks.")
-				.defineInRange("rolling_mill_processing_duration", 100, 0, Integer.MAX_VALUE);
+				.defineInRange("rolling_mill_processing_duration", 120, 0, Integer.MAX_VALUE);
 
 		ROLLING_MILL_STRESS = COMMON_BUILDER.comment("Rolling Mill base stress impact.")
-				.defineInRange("rolling_mill_stress", 16, 0, 1024);
+				.defineInRange("rolling_mill_stress", 8, 0, 1024);
 		COMMON_BUILDER.pop();
 
 

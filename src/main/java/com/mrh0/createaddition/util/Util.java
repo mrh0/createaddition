@@ -80,7 +80,7 @@ public class Util {
 	}
 
 	public static MutableComponent getTextComponent(IEnergyStorage ies) {
-		return getTextComponent(ies, "NaN", "fe");
+		return getTextComponent(ies, "NaN", "⚡");
 	}
 
 	public static MutableComponent getTextComponent(int value, String unit) {
