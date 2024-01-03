@@ -1,4 +1,4 @@
-package com.mrh0.createaddition.sound;
+package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.CreateAddition;
 import net.minecraft.resources.ResourceLocation;

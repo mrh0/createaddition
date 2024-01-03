@@ -1,7 +1,7 @@
 package com.mrh0.createaddition;
 
 import com.mrh0.createaddition.index.*;
-import com.mrh0.createaddition.sound.CASounds;
+import com.mrh0.createaddition.index.CASounds;
 import com.mrh0.createaddition.trains.schedule.CASchedule;
 import com.simibubi.create.content.fluids.tank.BoilerHeaters;
 import com.simibubi.create.content.kinetics.BlockStressValues;
