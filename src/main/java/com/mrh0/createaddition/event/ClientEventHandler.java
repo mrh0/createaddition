@@ -3,10 +3,12 @@ package com.mrh0.createaddition.event;
 import com.mrh0.createaddition.CreateAddition;
 
 import com.mrh0.createaddition.item.WireSpool;
+import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.util.ClientMinecraftWrapper;
 import com.mrh0.createaddition.util.Util;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,7 +26,12 @@ public class ClientEventHandler {
         if(WireSpool.isRemover(stack.getItem())) return;
         clientRenderHeldWire = Util.getWireNodeOfSpools(stack) != null;
     }
-	
+
+    @SubscribeEvent
+    public static void tickSoundscapes(TickEvent.ClientTickEvent event) {
+        CASoundScapes.tick();
+    }
+
 	// Fluid Fog TODO: update!
 	/*@SubscribeEvent
 	public static void getFogDensity(EntityViewRenderEvent.FogDensity event) {
@@ -55,4 +62,12 @@ public class ClientEventHandler {
 			event.setBlue(52 / 256f);
 		}
 	}*/
+
+    @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class ModBusEvents {
+        @SubscribeEvent
+        public static void registerReloadListener(RegisterClientReloadListenersEvent event) {
+            event.registerReloadListener(new ResourceReloadListener());
+        }
+    }
 }
