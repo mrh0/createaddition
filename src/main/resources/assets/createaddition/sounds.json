@@ -1,11 +1,12 @@
 {
   "electric_motor_buzz": {
-    "subtitle": "createaddition.subtitle.electric_motor_buzz",
     "sounds": [
-      {
-        "name": "createaddition:electric_motor_buzz",
-        "stream": true
-      }
+      "createaddition:electric_motor_buzz"
+    ]
+  },
+  "tesla_coil": {
+    "sounds": [
+      "createaddition:tesla_coil"
     ]
   }
 }

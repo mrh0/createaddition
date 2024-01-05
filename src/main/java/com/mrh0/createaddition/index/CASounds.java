@@ -13,6 +13,7 @@ public class CASounds {
             DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, CreateAddition.MODID);
 
     public static final RegistryObject<SoundEvent> ELECTRIC_MOTOR_BUZZ = registerSoundEvent("electric_motor_buzz");
+    public static final RegistryObject<SoundEvent> TESLA_COIL = registerSoundEvent("tesla_coil");
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
         ResourceLocation id = new ResourceLocation(CreateAddition.MODID, name);
