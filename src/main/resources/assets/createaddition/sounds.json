@@ -8,5 +8,19 @@
     "sounds": [
       "createaddition:tesla_coil"
     ]
+  },
+  "loud_zap": {
+    "sounds": [
+      "createaddition:loud_zap_1",
+      "createaddition:loud_zap_2",
+      "createaddition:loud_zap_3"
+    ]
+  },
+  "little_zap": {
+    "sounds": [
+      "createaddition:little_zap_1",
+      "createaddition:little_zap_2",
+      "createaddition:little_zap_3"
+    ]
   }
 }
