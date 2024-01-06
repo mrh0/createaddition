@@ -6,8 +6,9 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.sound.CASoundScapes;
+import com.mrh0.createaddition.sound.CASoundScapes.AmbienceGroup;
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.utility.Lang;
 
@@ -16,10 +17,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -96,6 +100,19 @@ public class AlternatorBlockEntity extends KineticBlockEntity {
 			int ext = energy.extractEnergy(ies.receiveEnergy(Config.ALTERNATOR_MAX_OUTPUT.get(), true), false);
 			ies.receiveEnergy(ext, false);
 		}
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public void tickAudio() {
+		super.tickAudio();
+
+		float componentSpeed = Math.abs(getSpeed());
+		if (componentSpeed == 0 || !isSpeedRequirementFulfilled())
+			return;
+
+		float pitch = Mth.clamp((componentSpeed / 256f) + .5f, .5f, 1.5f);
+		CASoundScapes.play(AmbienceGroup.DYNAMO, worldPosition, pitch);
 	}
 
 	public static int getEnergyProductionRate(int rpm) {

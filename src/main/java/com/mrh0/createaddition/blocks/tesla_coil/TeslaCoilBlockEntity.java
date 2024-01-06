@@ -10,6 +10,7 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
+import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.util.Util;
 
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
@@ -30,8 +31,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
@@ -130,7 +134,6 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	}
 
 	int dmgTick = 0;
-	int soundTimeout = 0;
 
 	@Override
 	public void tick() {
@@ -138,10 +141,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 		if(level == null) return;
 
 		if(level.isClientSide()) {
-			if(isPoweredState() && soundTimeout++ > 20) {
-				//level.playLocalSound(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), SoundEvents.BEE_LOOP, SoundSource.BLOCKS, 1f, 16f, false);
-				soundTimeout = 0;
-			}
+			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::tickAudio);
 			return;
 		}
 		int signal = getLevel().getBestNeighborSignal(getBlockPos());
@@ -160,6 +160,12 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 		else
 			if(isPoweredState())
 				CABlocks.TESLA_COIL.get().setPowered(level, getBlockPos(), false);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public void tickAudio() {
+		if (!isPoweredState()) return;
+		CASoundScapes.play(CASoundScapes.AmbienceGroup.TESLA, worldPosition, 1f);
 	}
 
 	public boolean isPoweredState() {
