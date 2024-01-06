@@ -117,9 +117,7 @@ public class CASoundScapes {
 	}
 
 	public static int getSoundCount(AmbienceGroup group, PitchGroup pitchGroup) {
-		int count = getAllLocations(group, pitchGroup).size();
-		CreateAddition.LOGGER.info("count of all sounds in " + group.name() + ": " + count);
-		return count;
+		return getAllLocations(group, pitchGroup).size();
 	}
 
 	public static Set<BlockPos> getAllLocations(AmbienceGroup group, PitchGroup pitchGroup) {
