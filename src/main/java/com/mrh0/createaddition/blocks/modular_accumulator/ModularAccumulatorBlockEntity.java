@@ -15,6 +15,7 @@ import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.Create;
 import com.simibubi.create.CreateClient;
@@ -32,16 +33,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.DistExecutor;
 
 public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer, ThresholdSwitchObservable {
 	protected LazyOptional<IEnergyStorage> energyCap;
@@ -141,6 +145,7 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 
 	int lastEnergy = 0;
 	boolean firstTickState = true;
+	int energyChangeTick = 0;
 	@Override
 	public void tick() {
 		super.tick();
@@ -173,8 +178,11 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 			onEnergyChanged();
 		}
 
+		if (energyChangeTick > 0) energyChangeTick--;
+
 		if (level == null) return;
 		if (level.isClientSide()) {
+			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::tickAudio);
 			gauge.tickChaser();
 			float current = gauge.getValue(1);
 			if (current > 1 && Create.RANDOM.nextFloat() < 1 / 2f)
@@ -201,6 +209,15 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 		if(ies == null) return;
 		int ext = getControllerBE().energyStorage.extractEnergy(ies.receiveEnergy(Config.ACCUMULATOR_MAX_OUTPUT.get(), true), false);
 		int rec = ies.receiveEnergy(ext, false);
+	}
+
+	public void tickAudio() {
+		if (energyChangeTick == 0) return;
+		int sizeInBlocks = getTotalAccumulatorSize();
+		float pitch = 0.75f;
+		if (sizeInBlocks < 4) pitch = 1.25f;
+		if (sizeInBlocks < 9) pitch = 1f;
+		CASoundScapes.play(CASoundScapes.AmbienceGroup.CHARGE, worldPosition, pitch);
 	}
 
 	@Override
@@ -231,6 +248,8 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 		if (level == null) return;
 		if (!level.isLoaded(getBlockPos())) return;
 		if (!hasLevel()) return;
+
+		energyChangeTick = 20;
 
 		for (int yOffset = 0; yOffset < height; yOffset++) {
 			for (int xOffset = 0; xOffset < width; xOffset++) {
