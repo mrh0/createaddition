@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.sound;
 
-import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CASounds;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import com.simibubi.create.foundation.utility.Pair;
@@ -24,13 +23,13 @@ public class CASoundScapes {
 
 		;
 
-		private BiFunction<Float, AmbienceGroup, CASoundScape> factory;
+		private final BiFunction<Float, AmbienceGroup, CASoundScape> factory;
 
 		AmbienceGroup(BiFunction<Float, AmbienceGroup, CASoundScape> factory) {
 			this.factory = factory;
 		}
 
-		public CASoundScape instantiate(float pitch) {
+		CASoundScape instantiate(float pitch) {
 			return factory.apply(pitch, this);
 		}
 	}
@@ -44,12 +43,12 @@ public class CASoundScapes {
 	}
 
 
-	enum PitchGroup {
+	public enum PitchGroup {
 		VERY_LOW, LOW, NORMAL, HIGH, VERY_HIGH
 	}
 
-	private static Map<AmbienceGroup, Map<PitchGroup, Set<BlockPos>>> counter = new IdentityHashMap<>();
-	private static Map<Pair<AmbienceGroup, PitchGroup>, CASoundScape> activeSounds = new HashMap<>();
+	private static final Map<AmbienceGroup, Map<PitchGroup, Set<BlockPos>>> counter = new IdentityHashMap<>();
+	private static final Map<Pair<AmbienceGroup, PitchGroup>, CASoundScape> activeSounds = new HashMap<>();
 
 	public static void play(AmbienceGroup group, BlockPos pos, float pitch) {
 		if (!AllConfigs.client().enableAmbientSounds.get())
@@ -112,8 +111,7 @@ public class CASoundScapes {
 		Entity renderViewEntity = Minecraft.getInstance().cameraEntity;
 		if (renderViewEntity == null)
 			return BlockPos.ZERO;
-		BlockPos playerLocation = renderViewEntity.blockPosition();
-		return playerLocation;
+        return renderViewEntity.blockPosition();
 	}
 
 	public static int getSoundCount(AmbienceGroup group, PitchGroup pitchGroup) {

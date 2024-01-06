@@ -22,10 +22,10 @@ import java.util.List;
 class CASoundScape {
 	List<CAContinuousSound> continuous;
 //	List<RepeatingSound> repeating;
-	private float pitch;
-	private AmbienceGroup group;
+	private final float pitch;
+	private final AmbienceGroup group;
 	private Vec3 meanPos;
-	private PitchGroup pitchGroup;
+	private final PitchGroup pitchGroup;
 
 	public CASoundScape(float pitch, AmbienceGroup group) {
 		this.pitchGroup = CASoundScapes.getGroupFromPitch(pitch);

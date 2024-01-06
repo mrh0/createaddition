@@ -6,13 +6,13 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 
 public class CAContinuousSound extends AbstractTickableSoundInstance {
-	private float sharedPitch;
-	private CASoundScape scape;
-	private float relativeVolume;
+	private final float sharedPitch;
+	private final CASoundScape soundScape;
+	private final float relativeVolume;
 
-	protected CAContinuousSound(SoundEvent event, CASoundScape scape, float sharedPitch, float relativeVolume) {
+	protected CAContinuousSound(SoundEvent event, CASoundScape soundScape, float sharedPitch, float relativeVolume) {
 		super(event, SoundSource.AMBIENT, SoundInstance.createUnseededRandom());
-		this.scape = scape;
+		this.soundScape = soundScape;
 		this.sharedPitch = sharedPitch;
 		this.relativeVolume = relativeVolume;
 		this.looping = true;
@@ -26,7 +26,7 @@ public class CAContinuousSound extends AbstractTickableSoundInstance {
 
 	@Override
 	public float getVolume() {
-		return scape.getVolume() * relativeVolume;
+		return soundScape.getVolume() * relativeVolume;
 	}
 
 	@Override
@@ -36,17 +36,17 @@ public class CAContinuousSound extends AbstractTickableSoundInstance {
 
 	@Override
 	public double getX() {
-		return scape.getMeanPos().x;
+		return soundScape.getMeanPos().x;
 	}
 
 	@Override
 	public double getY() {
-		return scape.getMeanPos().y;
+		return soundScape.getMeanPos().y;
 	}
 
 	@Override
 	public double getZ() {
-		return scape.getMeanPos().z;
+		return soundScape.getMeanPos().z;
 	}
 
 	@Override
