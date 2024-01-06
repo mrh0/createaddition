@@ -9,6 +9,11 @@
       "createaddition:tesla_coil"
     ]
   },
+  "electric_charge": {
+    "sounds": [
+      "createaddition:electric_charge"
+    ]
+  },
   "loud_zap": {
     "sounds": [
       "createaddition:loud_zap_1",

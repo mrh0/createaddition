@@ -14,6 +14,7 @@ public class CASounds {
 
     public static final RegistryObject<SoundEvent> ELECTRIC_MOTOR_BUZZ = registerSoundEvent("electric_motor_buzz");
     public static final RegistryObject<SoundEvent> TESLA_COIL = registerSoundEvent("tesla_coil");
+    public static final RegistryObject<SoundEvent> ELECTRIC_CHARGE = registerSoundEvent("electric_charge");
     public static final RegistryObject<SoundEvent> LOUD_ZAP = registerSoundEvent("loud_zap");
     public static final RegistryObject<SoundEvent> LITTLE_ZAP = registerSoundEvent("little_zap");
 

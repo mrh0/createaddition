@@ -12,7 +12,6 @@ import java.util.*;
 import java.util.function.BiFunction;
 
 public class CASoundScapes {
-
 	static final int MAX_AMBIENT_SOURCE_DISTANCE = 16;
 	static final int UPDATE_INTERVAL = 5;
 	static final int SOUND_VOLUME_ARG_MAX = 15;
@@ -20,6 +19,7 @@ public class CASoundScapes {
 	public enum AmbienceGroup {
 		DYNAMO(CASoundScapes::dynamo),
 		TESLA(CASoundScapes::tesla),
+		CHARGE(CASoundScapes::charge),
 
 		;
 
@@ -35,13 +35,16 @@ public class CASoundScapes {
 	}
 
 	private static CASoundScape dynamo(float pitch, AmbienceGroup group) {
-		return new CASoundScape(pitch, group).continuous(CASounds.ELECTRIC_MOTOR_BUZZ.get(), 0.75f, 1);
+		return new CASoundScape(pitch, group).continuous(CASounds.ELECTRIC_MOTOR_BUZZ.get(), 0.75f, 1f);
 	}
 
 	private static CASoundScape tesla(float pitch, AmbienceGroup group) {
-		return new CASoundScape(pitch, group).continuous(CASounds.TESLA_COIL.get(), 1f, 1);
+		return new CASoundScape(pitch, group).continuous(CASounds.TESLA_COIL.get(), 1f, 1f);
 	}
 
+	private static CASoundScape charge(float pitch, AmbienceGroup group) {
+		return new CASoundScape(pitch, group).continuous(CASounds.ELECTRIC_CHARGE.get(), 1f, 1f);
+	}
 
 	public enum PitchGroup {
 		VERY_LOW, LOW, NORMAL, HIGH, VERY_HIGH
