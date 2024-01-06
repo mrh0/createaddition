@@ -39,7 +39,7 @@ public class CASoundScapes {
 	}
 
 	private static CASoundScape tesla(float pitch, AmbienceGroup group) {
-		return new CASoundScape(pitch, group).continuous(CASounds.TESLA_COIL.get(), 3f, 1);
+		return new CASoundScape(pitch, group).continuous(CASounds.TESLA_COIL.get(), 1f, 1);
 	}
 
 
