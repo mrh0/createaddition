@@ -54,11 +54,6 @@ class CASoundScape {
 //	}
 
 	public void play() {
-		for (CAContinuousSound ting : continuous) {
-			Sound sound = ting.getSound();
-			if (sound == null) continue;
-			CreateAddition.LOGGER.info(sound.getPath().toString());
-		}
 		continuous.forEach(Minecraft.getInstance()
 			.getSoundManager()::play);
 	}
