@@ -183,7 +183,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	@OnlyIn(Dist.CLIENT)
 	public void tickAudio() {
 		if (!isPoweredState()) return;
-		CASoundScapes.play(CASoundScapes.AmbienceGroup.CHARGE, worldPosition, 1f);
+		CASoundScapes.play(CASoundScapes.AmbienceGroup.TESLA, worldPosition, 1f);
 	}
 
 	public boolean isPoweredState() {

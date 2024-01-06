@@ -38,12 +38,16 @@ public class CASoundScapes {
 		return new CASoundScape(pitch, group).continuous(CASounds.ELECTRIC_MOTOR_BUZZ.get(), 0.75f, 1f);
 	}
 
+//	private static CASoundScape tesla(float pitch, AmbienceGroup group) {
+//		return new CASoundScape(pitch, group).continuous(CASounds.TESLA_COIL.get(), 1f, 1f);
+//	}
+
 	private static CASoundScape tesla(float pitch, AmbienceGroup group) {
-		return new CASoundScape(pitch, group).continuous(CASounds.TESLA_COIL.get(), 1f, 1f);
+		return new CASoundScape(pitch, group).continuous(CASounds.ELECTRIC_CHARGE.get(), 1f, 1f);
 	}
 
 	private static CASoundScape charge(float pitch, AmbienceGroup group) {
-		return new CASoundScape(pitch, group).continuous(CASounds.ELECTRIC_CHARGE.get(), 1f, 1f);
+		return new CASoundScape(pitch, group).continuous(CASounds.ELECTRIC_CHARGE.get(), 0.2f, 1f);
 	}
 
 	public enum PitchGroup {
