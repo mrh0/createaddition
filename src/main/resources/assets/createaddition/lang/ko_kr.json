@@ -87,6 +87,10 @@
 	"item.createaddition.cake_base_baked": "구운 케이크 베이스",
 	
 	"item.createaddition.straw": "빨대",
+
+	"item.createaddition.electrum_amulet": "연한 금 애뮬럿",
+	"item.createaddition.electrum_amulet.tooltip": "호박금 애뮬럿",
+	"item.createaddition.electrum_amulet.tooltip.summary": "_인생_이 당신을 지치게 할 때, 이 _애뮬럿_을 주머니에 쥐고 있으면 당신의 _행운_이 곧 바뀔 것 같은 느낌을 받게 될 것입니다.",
 	
 	"item.createaddition.seed_oil_bucket": "종자유 양동이",
 	"item.createaddition.seed_oil_bucket.tooltip": "종자유 양동이",
@@ -157,6 +161,16 @@
 	"block.createaddition.connector.tooltip.condition3": "렌치로 우클릭",
 	"block.createaddition.connector.tooltip.behaviour3": "단자의 모드를 _입력_, _출력_, _없음_ 사이에서 전환합니다.",
 
+	"block.createaddition.small_light_connector": "전구가 달린 단자",
+	"block.createaddition.small_light_connector.tooltip": "단자",
+	"block.createaddition.small_light_connector.tooltip.summary": "_포지 에너지_를 사용하는 블록에 _전선_을 연결하여 _FE_를 전송하고, 전원을 받을 때 빛이 납니다.",
+	"block.createaddition.small_light_connector.tooltip.condition1": "저전류",
+	"block.createaddition.small_light_connector.tooltip.behaviour1": "_저전류 전선_으로 연결할 수 있습니다.",
+	"block.createaddition.small_light_connector.tooltip.condition2": "우클릭",
+	"block.createaddition.small_light_connector.tooltip.behaviour2": "_구리 전선 타래_, _금 전선 타래_, 또는 _호박금 전선 타래_를 사용하여 최대 4개의 단자에 전선을 연결합니다.",
+	"block.createaddition.small_light_connector.tooltip.condition3": "렌치로 우클릭",
+	"block.createaddition.small_light_connector.tooltip.behaviour3": "단자의 모드를 _입력_, _출력_, _없음_ 사이에서 전환합니다.",
+
 	"block.createaddition.large_connector": "대형 단자",
 	"block.createaddition.large_connector.tooltip": "단자",
 	"block.createaddition.large_connector.tooltip.summary": "_포지 에너지_를 사용하는 블록에 _전선_을 연결하여 _FE_를 전송합니다.",
@@ -183,6 +197,8 @@
 	
 	"block.createaddition.chocolate_cake": "초콜릿 케이크",
 	"block.createaddition.honey_cake": "꿀 케이크",
+
+	"block.createaddition.biomass_pellet_block": "바이오매스 파렛트",
 	
 	"block.createaddition.seed_oil": "종자유",
 	"block.createaddition.bioethanol": "바이오에탄올",
