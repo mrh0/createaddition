@@ -132,7 +132,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 			if(dmg > 0) {
 				e.hurt(DMG_SOURCE, dmg);
 				if (!zapped) {
-					level.playSound(null, worldPosition, CASounds.LOUD_ZAP.get(), SoundSource.BLOCKS, 0.75f, 1f);
+					level.playSound(null, worldPosition, CASounds.LOUD_ZAP.get(), SoundSource.BLOCKS, 0.6f, 1f);
 					zapped = true;
 				}
 			}
