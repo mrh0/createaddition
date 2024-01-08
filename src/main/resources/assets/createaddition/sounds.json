@@ -15,6 +15,7 @@
     ]
   },
   "loud_zap": {
+    "subtitle": "createaddition.subtitle.loud_zap",
     "sounds": [
       "createaddition:loud_zap_1",
       "createaddition:loud_zap_2",
@@ -22,6 +23,7 @@
     ]
   },
   "little_zap": {
+    "subtitle": "createaddition.subtitle.little_zap",
     "sounds": [
       "createaddition:little_zap_1",
       "createaddition:little_zap_2",
