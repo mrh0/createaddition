@@ -338,8 +338,11 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
-		if(isNetworkValid(0))
+		if(isNetworkValid(0)) {
 			EnergyNetworkPacket.send(worldPosition, getNetwork(0).getPulled(), getNetwork(0).getPushed(), player);
+		} else {
+			EnergyNetworkPacket.send(worldPosition, 0, 0, player);
+		}
 	}
 
 	@Override
@@ -359,7 +362,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		tooltip.add(Component.literal(spacing).append(" ")
 				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 
-		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+		return true;
 	}
 
 	public boolean ignoreCapSide() {
@@ -377,14 +380,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		}
 		EnergyStorage es = EnergyStorage.SIDED.find(level, getBlockPos(), side.getOpposite());
 		if(ignoreCapSide() && es == null) {
-			//In 1.20, replace with EnergyStorage es = EnergyStorage.SIDED.find(level, getBlockPos(), null);
-			for(Direction otherSide: Direction.values()){
-				EnergyStorage maybeEs = EnergyStorage.SIDED.find(level, getBlockPos(), otherSide);
-				if(maybeEs!=null){
-					es=maybeEs;
-					break;
-				}
-			}
+			es = EnergyStorage.SIDED.find(level, getBlockPos(), null);
 		}
 		if(es == null){
 			externalStorage = EnergyStorage.EMPTY;
