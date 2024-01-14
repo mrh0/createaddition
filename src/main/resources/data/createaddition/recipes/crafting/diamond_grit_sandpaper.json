@@ -5,7 +5,7 @@
 		    "item": "minecraft:paper"
 		},
 		{
-		    "tag": "c:diamond_dusts"
+		    "tag": "c:dusts/diamond"
 		}
 	],
 	"result":{
