@@ -374,13 +374,14 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		if (!level.isLoaded(getBlockPos())) return;
 		externalStorageInvalid = false;
 		var side = getBlockState().getValue(AbstractConnectorBlock.FACING);
-		if (!level.isLoaded(worldPosition.relative(side))) {
+		BlockPos externalPos = worldPosition.relative(side);
+		if (!level.isLoaded(externalPos)) {
 			externalStorage = EnergyStorage.EMPTY;
 			return;
 		}
-		EnergyStorage es = EnergyStorage.SIDED.find(level, getBlockPos(), side.getOpposite());
+		EnergyStorage es = EnergyStorage.SIDED.find(level, externalPos, side.getOpposite());
 		if(ignoreCapSide() && es == null) {
-			es = EnergyStorage.SIDED.find(level, getBlockPos(), null);
+			es = EnergyStorage.SIDED.find(level, externalPos, null);
 		}
 		if(es == null){
 			externalStorage = EnergyStorage.EMPTY;
