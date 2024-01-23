@@ -9,6 +9,7 @@ import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
@@ -209,6 +210,13 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity {
 				updateGeneratedRotation();
 			}
 		}
+	}
+
+	@Override
+	public void tickAudio() {
+		super.tickAudio();
+		if (!active) return;
+		CASoundScapes.play(CASoundScapes.AmbienceGroup.DYNAMO, worldPosition, 1);
 	}
 
 	public static int getDurationAngle(int deg, float initialProgress, float speed) {

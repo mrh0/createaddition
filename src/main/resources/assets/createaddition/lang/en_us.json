@@ -307,5 +307,8 @@
 	"effect.createaddition.shocking":"Shocked",
 	"death.attack.tesla_coil": "%1$s received a lethal electric shock",
   	"death.attack.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",
-  	"effect.createaddition.shocking.description": "Causes severely reduced movement speed"
+  	"effect.createaddition.shocking.description": "Causes severely reduced movement speed",
+
+	"createaddition.subtitle.loud_zap": "Tesla Coil zaps",
+	"createaddition.subtitle.little_zap": "Tesla Coil sparks"
 }
