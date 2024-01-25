@@ -28,6 +28,14 @@ public class Util {
 		return m;
 	}
 
+	public static long min(long...v) {
+		long m = Long.MAX_VALUE;
+		for(long i : v)
+			if(i < m)
+				m = i;
+		return m;
+	}
+
 	public static int minIndex(int...v) {
 		int m = 0;
 		for(int i = 0; i < v.length; i++)

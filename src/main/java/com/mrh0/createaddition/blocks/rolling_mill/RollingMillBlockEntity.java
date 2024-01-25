@@ -1,19 +1,13 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
-import com.mrh0.createaddition.recipe.rolling.RollingRecipeType;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.VecHelper;
-
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.ViewOnlyWrappedStorageView;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
@@ -22,6 +16,7 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
@@ -40,7 +35,11 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class RollingMillBlockEntity extends KineticBlockEntity {
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+
+public class RollingMillBlockEntity extends KineticBlockEntity implements SidedStorageBlockEntity {
 
 	public ItemStackHandler inputInv;
 	public ItemStackHandler outputInv;
@@ -173,7 +172,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity {
 			var results = recipe.rollResults();
 			if(!results.isEmpty()) {
 				var result = results.get(0);
-				ItemHandlerHelper.insertItemStacked(outputInv, result, false);
+				TransferUtil.insertItem(outputInv, result);
 				ItemStack stackInSlot = inputInv.getStackInSlot(0);
 				stackInSlot.shrink(1);
 				inputInv.setStackInSlot(0, stackInSlot);

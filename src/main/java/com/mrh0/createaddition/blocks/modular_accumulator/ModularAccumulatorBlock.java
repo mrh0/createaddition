@@ -30,8 +30,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<ModularAccumulatorBlockEntity> {
-
+public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<ModularAccumulatorBlockEntity>, CustomSoundTypeBlock {
+	public ModularAccumulatorBlock(Properties properties){
+        super(properties);
+    }
 	public static final BooleanProperty TOP = BooleanProperty.create("top");
 	public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom");
 

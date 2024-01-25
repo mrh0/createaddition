@@ -23,8 +23,12 @@ import com.mrh0.createaddition.blocks.alternator.*;
 import com.mrh0.createaddition.blocks.rolling_mill.*;
 import com.mrh0.createaddition.blocks.accumulator.*;
 import com.mrh0.createaddition.blocks.redstone_relay.*;
+import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.content.kinetics.base.HalfShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 public class CABlockEntities {
 	public static final BlockEntityEntry<ElectricMotorBlockEntity> ELECTRIC_MOTOR = CreateAddition.REGISTRATE
@@ -113,5 +117,11 @@ public class CABlockEntities {
 			.validBlocks(CABlocks.DIGITAL_ADAPTER)
 			.register();
 	
-	public static void register() {}
+	public static void register() {
+		EnergyStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
+			if(blockEntity instanceof EnergyTransferable transferable)
+				return transferable.getEnergyStorage(context);
+			return null;
+		});
+	}
 }

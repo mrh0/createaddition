@@ -3,6 +3,7 @@ package com.mrh0.createaddition.compat.rei;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
+import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
@@ -41,21 +42,21 @@ public class CreateAdditionREI implements REIClientPlugin {
         CreateRecipeCategory<?>
 
         rolling = builder(RollingRecipe.class)
-                .addTypedRecipes(RollingRecipe.TYPE)
+                .addTypedRecipes(CARecipes.ROLLING_TYPE.get())
                 .catalyst(CABlocks.ROLLING_MILL::get)
                 .itemIcon(CABlocks.ROLLING_MILL.get())
                 .emptyBackground(178, 63)
                 .build("rolling", RollingMillCategory::new),
 
         charging = builder(ChargingRecipe.class)
-                .addTypedRecipes(ChargingRecipe.TYPE)
+                .addTypedRecipes(CARecipes.CHARGING_TYPE.get())
                 .catalyst(CABlocks.TESLA_COIL::get)
                 .itemIcon(CABlocks.TESLA_COIL.get())
                 .emptyBackground(178, 63)
                 .build("charging", ChargingCategory::new),
 
         liquidBurning = builder(LiquidBurningRecipe.class)
-                .addTypedRecipes(LiquidBurningRecipe.TYPE)
+                .addTypedRecipes(CARecipes.LIQUID_BURNING_TYPE.get())
                 .catalyst(CABlocks.LIQUID_BLAZE_BURNER::get)
                 .itemIcon(CABlocks.LIQUID_BLAZE_BURNER.get())
                 .emptyBackground(177, 58)

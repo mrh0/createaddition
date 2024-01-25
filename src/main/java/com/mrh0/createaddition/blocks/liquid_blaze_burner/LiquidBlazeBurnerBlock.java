@@ -17,6 +17,7 @@ import com.simibubi.create.foundation.block.IBE;
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvents;
@@ -124,7 +125,7 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 		boolean forceOverflow = !(player instanceof FakePlayer);
 
 		InteractionResultHolder<ItemStack> res =
-			tryInsert(state, level, pos, heldItem, player, hand, doNotConsume, forceOverflow, false);
+			tryInsert(state, level, pos, heldItem, ContainerItemContext.ofPlayerHand(player, hand), doNotConsume, forceOverflow, false);
 		ItemStack leftover = res.getObject();
 		if (!level.isClientSide && !doNotConsume && !leftover.isEmpty()) {
 			if (heldItem.isEmpty()) {
@@ -139,7 +140,7 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	}
 
 	public static InteractionResultHolder<ItemStack> tryInsert(BlockState state, Level level, BlockPos pos,
-		ItemStack stack, Player player, InteractionHand hand, boolean doNotConsume, boolean forceOverflow, boolean simulate) {
+				ItemStack stack, ContainerItemContext context, boolean doNotConsume, boolean forceOverflow, boolean simulate) {
 		if (!state.hasBlockEntity())
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 
@@ -153,7 +154,7 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 				burnerTE.applyCreativeFuel();
 			return InteractionResultHolder.success(ItemStack.EMPTY);
 		}
-		if (!burnerTE.tryUpdateFuel(stack, player, hand, forceOverflow, simulate))
+		if (!burnerTE.tryUpdateFuel(stack, context, forceOverflow, simulate))
 			return InteractionResultHolder.fail(ItemStack.EMPTY);
 
 		if (!doNotConsume) {

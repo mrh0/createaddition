@@ -35,9 +35,11 @@ import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -100,7 +102,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	private boolean changed = true;
 
 	protected SmartFluidTank createInventory() {
-		return new SmartFluidTank(4000, this::onFluidStackChanged);
+		return new SmartFluidTank(4* FluidConstants.BUCKET, this::onFluidStackChanged);
 	}
 
 	protected void onFluidStackChanged(FluidStack newFluidStack) {
@@ -296,8 +298,9 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		notifyUpdate();
 	}
 
-	private boolean tryUpdateLiquid(ItemStack itemStack, Player player, InteractionHand hand) {
-		Storage<FluidVariant> handler = FluidStorage.ITEM.find(itemStack, ContainerItemContext.ofPlayerHand(player, hand));
+	private boolean tryUpdateLiquid(ItemStack itemStack, ContainerItemContext context) {
+		Storage<FluidVariant> handler = FluidStorage.ITEM.find(itemStack, context);
+
 		if (handler == null)
 			return false;
 		FluidStack stack = TransferUtil.firstOrEmpty(handler);
@@ -329,7 +332,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	 * @return true if the heater updated its burn time and an item should be
 	 *         consumed
 	 */
-	protected boolean tryUpdateFuel(ItemStack itemStack, Player player, InteractionHand hand, boolean forceOverflow, boolean simulate) {
+	protected boolean tryUpdateFuel(ItemStack itemStack, ContainerItemContext context, boolean forceOverflow, boolean simulate) {
 		if (isCreative)
 			return false;
 
@@ -337,7 +340,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		int newBurnTime;
 
 		// Liquid Fluid Logic
-		if(tryUpdateLiquid(itemStack, player, hand))
+		if(tryUpdateLiquid(itemStack, context))
 			return true;
 
 		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {

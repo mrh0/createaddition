@@ -246,7 +246,7 @@ public class CAConnectivityHandler {
 								beEnergy.internalProduceEnergy(energyAt);
 							}
 						}
-						storageAt.internalConsumeEnergy(storageAt.getMaxEnergyStored());
+						storageAt.internalConsumeEnergy(storageAt.getCapacity());
 					}
 
 					splitMultiAndInvalidate(part, cache, false);

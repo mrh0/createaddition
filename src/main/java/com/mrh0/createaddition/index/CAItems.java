@@ -12,6 +12,9 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.world.item.Item;
 
+import static com.simibubi.create.AllTags.AllItemTags.PLATES;
+import static com.simibubi.create.AllTags.forgeItemTag;
+
 
 public class CAItems {
 

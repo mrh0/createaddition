@@ -1,7 +1,7 @@
 {
 	"type":"createaddition:rolling",
 	"input": {
-      	"tag": "forge:plates/electrum"
+      	"tag": "c:electrum_plates"
 	},
 	"result": {
 		"item": "createaddition:electrum_wire",

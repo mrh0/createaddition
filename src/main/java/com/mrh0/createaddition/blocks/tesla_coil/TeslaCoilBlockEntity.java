@@ -54,17 +54,17 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	}
 
 	@Override
-	public int getCapacity() {
+	public long getCapacity() {
 		return Util.max(Config.TESLA_COIL_CAPACITY.get(), Config.TESLA_COIL_CHARGE_RATE.get(), Config.TESLA_COIL_RECIPE_CHARGE_RATE.get());
 	}
 
 	@Override
-	public int getMaxIn() {
+	public long getMaxIn() {
 		return Config.TESLA_COIL_MAX_INPUT.get();
 	}
 
 	@Override
-	public int getMaxOut() {
+	public long getMaxOut() {
 		return 0;
 	}
 

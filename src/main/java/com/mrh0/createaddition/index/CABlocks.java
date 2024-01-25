@@ -40,6 +40,7 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours.assignDataBehaviour;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;

@@ -9,7 +9,7 @@
 	{
 		"W":
 		{
-			"tag": "forge:wires/electrum"
+			"tag": "c:electrum_wires"
 		},
 		"S":
 		{

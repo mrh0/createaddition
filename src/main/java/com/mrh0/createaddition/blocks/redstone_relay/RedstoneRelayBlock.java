@@ -9,6 +9,7 @@ import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
+import io.github.fabricators_of_create.porting_lib.block.ConnectableRedstoneBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -40,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 @SuppressWarnings("deprecated")
-public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayBlockEntity>, IWrenchable, ITransformableBlock {
+public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayBlockEntity>, IWrenchable, ITransformableBlock, ConnectableRedstoneBlock {
 
 	public static final BooleanProperty VERTICAL = BooleanProperty.create("vertical");
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;

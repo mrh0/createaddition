@@ -16,7 +16,7 @@ import team.reborn.energy.api.EnergyStorage;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class BaseElectricBlockEntity extends SmartBlockEntity {
+public abstract class BaseElectricBlockEntity extends SmartBlockEntity implements EnergyTransferable{
 
 	protected final InternalEnergyStorage localEnergy;
 	private boolean firstTickState = true;
@@ -25,13 +25,12 @@ public abstract class BaseElectricBlockEntity extends SmartBlockEntity {
 	public BaseElectricBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 		localEnergy = new InternalEnergyStorage(getCapacity(), getMaxIn(), getMaxOut());
-		lazyEnergy = LazyOptional.of(() -> localEnergy);
 		setLazyTickRate(20);
 	}
 
-	public abstract int getCapacity();
-	public abstract int getMaxIn();
-	public abstract int getMaxOut();
+	public abstract long getCapacity();
+	public abstract long getMaxIn();
+	public abstract long getMaxOut();
 
 	@Override
 	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
@@ -107,13 +106,6 @@ public abstract class BaseElectricBlockEntity extends SmartBlockEntity {
 		if (Objects.equals(e, getCachedEnergy(side))) return;
 		setCache(side, e);
 	}
-
-	private LazyOptional<IEnergyStorage> escacheUp = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheDown = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheNorth = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheEast = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheSouth = LazyOptional.empty();
-	private LazyOptional<IEnergyStorage> escacheWest = LazyOptional.empty();
 
 	private EnergyStorage escacheUp = null;
 	private EnergyStorage escacheDown = null;

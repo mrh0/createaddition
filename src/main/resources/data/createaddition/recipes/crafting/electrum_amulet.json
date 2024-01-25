@@ -9,15 +9,15 @@
 	{
 		"W":
 		{
-			"tag": "forge:wires/electrum"
+			"tag": "c:electrum_wires"
 		},
 		"E":
 		{
-			"tag": "forge:ingots/electrum"
+			"tag": "c:electrum_ingots"
 		},
 		"G":
 		{
-			"tag": "forge:gems/emerald"
+			"tag": "c:emerald_gems"
 		}
 	},
 	"result":{

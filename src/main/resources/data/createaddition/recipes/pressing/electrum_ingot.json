@@ -1,7 +1,7 @@
 {
 	"type":"create:pressing",
 	"ingredients": [{
-      	"tag": "forge:ingots/electrum"
+      	"tag": "c:electrum_ingots"
 	}],
 	"results": [{
 		"item": "createaddition:electrum_sheet"

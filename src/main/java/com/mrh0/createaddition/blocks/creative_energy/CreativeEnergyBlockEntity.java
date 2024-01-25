@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
 @SuppressWarnings("UnstableApiUsage")
-public class CreativeEnergyBlockEntity extends CrateBlockEntity {
+public class CreativeEnergyBlockEntity extends CrateBlockEntity implements EnergyTransferable{
 
 	protected final CreativeEnergyStorage energy;
 	public CreativeEnergyBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {

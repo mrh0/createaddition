@@ -20,8 +20,7 @@ public class ChargingRecipe implements Recipe<RecipeWrapper> {
 	public ItemStack output;
 	public int energy;
     public int maxChargeRate;
-	
-	public static RecipeType<ChargingRecipe> TYPE = new ChargingRecipeType();
+
 	@SuppressWarnings("deprecation")
 	public static RecipeSerializer<?> SERIALIZER = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "charging"));
 	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy, int maxChargeRate) {

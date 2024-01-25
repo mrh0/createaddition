@@ -2,7 +2,7 @@
 	"type": "minecraft:crafting_shapeless",
 	"ingredients": [
 		{
-		    "tag": "forge:rods/gold"
+		    "tag": "c:gold_rods"
 		},
 		{
 		    "item": "create:andesite_alloy"

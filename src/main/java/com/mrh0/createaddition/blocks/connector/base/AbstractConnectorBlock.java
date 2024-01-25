@@ -7,7 +7,6 @@ import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -17,9 +16,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -125,11 +126,6 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 	public BlockState rotate(BlockState state, Rotation direction) {
 		// Handle old rotation.
 		return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
-	}
-
-	@Override
-	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
-		return rotate(state, direction);
 	}
 
 	@Override

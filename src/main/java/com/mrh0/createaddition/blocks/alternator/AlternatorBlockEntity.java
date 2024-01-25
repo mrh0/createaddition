@@ -34,7 +34,6 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyT
 	public AlternatorBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);
 		energy = new InternalEnergyStorage(Config.ALTERNATOR_CAPACITY.get(), 0, Config.ALTERNATOR_MAX_OUTPUT.get());
-		lazyEnergy = LazyOptional.of(() -> energy);
 	}
 
 	@Override

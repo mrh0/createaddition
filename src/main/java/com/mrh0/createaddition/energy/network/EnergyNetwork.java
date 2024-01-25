@@ -111,7 +111,7 @@ public class EnergyNetwork {
 		for (int i = 0; i < current.getNodeCount(); i++) {
 			IWireNode next = current.getWireNode(i);
 			if (next == null) continue;
-			if (!current.isNodeIndicesConnected(index, i)) continue;
+			if (!current.isNodeIndeciesConnected(index, i)) continue;
 			nextNode(level, en, visited, next, current.getOtherNodeIndex(i));
 		}
 		return en;

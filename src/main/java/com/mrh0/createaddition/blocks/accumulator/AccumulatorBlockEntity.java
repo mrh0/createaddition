@@ -34,6 +34,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("UnstableApiUsage")
 public class AccumulatorBlockEntity extends BaseElectricBlockEntity implements IWireNode, IHaveGoggleInformation, IComparatorOverride, IObserveTileEntity {
 
 	private final Set<LocalNode> wireCache = new HashSet<>();
@@ -60,17 +61,17 @@ public class AccumulatorBlockEntity extends BaseElectricBlockEntity implements I
 	}
 
 	@Override
-	public int getCapacity() {
+	public long getCapacity() {
 		return Config.ACCUMULATOR_CAPACITY.get();
 	}
 
 	@Override
-	public int getMaxIn() {
+	public long getMaxIn() {
 		return Config.ACCUMULATOR_MAX_INPUT.get();
 	}
 
 	@Override
-	public int getMaxOut() {
+	public long getMaxOut() {
 		return Config.ACCUMULATOR_MAX_OUTPUT.get();
 	}
 
@@ -350,13 +351,27 @@ public class AccumulatorBlockEntity extends BaseElectricBlockEntity implements I
 		}
 
 
-		localEnergy.extractEnergy(networkOut.push(localEnergy.extractEnergy(demandOut, true)), false);
+		try (Transaction t = TransferUtil.getTransaction()) {
+			long toExtract = 0;
+			try (Transaction nested = TransferUtil.getTransaction()) {
+				toExtract = localEnergy.extract(demandOut, nested);
+			}
+			localEnergy.extract(networkOut.push(toExtract), t);
+			t.commit();
+		}
 
-		/*energy.receiveEnergy(networkOut.push(energy.extractEnergy(demandOut, false)), false);*/
 		demandOut = networkOut.getDemand();
-		localEnergy.receiveEnergy(networkIn.pull(Math.min(demandIn, localEnergy.receiveEnergy(getMaxIn(), true))), false);
-		demandIn = networkIn.demand(localEnergy.receiveEnergy(getMaxIn(), true));
-
+		try (Transaction t = TransferUtil.getTransaction()) {
+			long toInsert = 0;
+			try (Transaction nested = TransferUtil.getTransaction()) {
+				toInsert = localEnergy.insert(getMaxIn(), nested);
+			}
+			localEnergy.insert(networkIn.pull(Math.min(demandIn, toInsert)), t);
+			t.commit();
+		}
+		try (Transaction t = TransferUtil.getTransaction()) {
+			demandIn = networkIn.demand(localEnergy.insert(getMaxIn(), t));
+		}
 	}
 
 	@Override

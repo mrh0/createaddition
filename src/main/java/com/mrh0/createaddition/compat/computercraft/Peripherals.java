@@ -2,6 +2,8 @@ package com.mrh0.createaddition.compat.computercraft;
 
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlockEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlockEntity;
+import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlockEntity;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlockEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlockEntity;
 
 public class Peripherals {

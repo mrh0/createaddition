@@ -31,7 +31,6 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.Random;
 
-@Mod.EventBusSubscriber
 public class GameEvents {
 
 	public static void initCommon() {

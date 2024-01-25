@@ -16,8 +16,4 @@ public class ClientMinecraftWrapper {
 	public static Font getFont() {
 		return Minecraft.getInstance().font;
 	}
-
-	public static LocalPlayer getPlayer() {
-		return Minecraft.getInstance().player;
-	}
 }
