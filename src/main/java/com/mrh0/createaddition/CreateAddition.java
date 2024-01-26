@@ -64,6 +64,7 @@ public class CreateAddition implements ModInitializer {
         CC_ACTIVE = FabricLoader.getInstance().isModLoaded("computercraft");
         AE2_ACTIVE = FabricLoader.getInstance().isModLoaded("ae2");
         new ModGroup("main");
+        CAArmInteractions.register();
         CABlocks.register();
         CABlockEntities.register();
         CAItems.register();

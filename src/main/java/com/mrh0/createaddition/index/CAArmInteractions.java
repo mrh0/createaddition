@@ -25,7 +25,7 @@ public class CAArmInteractions {
         return type;
     }
 
-    public static final LiquidBlazeBurnerType LIQUID_BLAZE_BURNER = register("liquid_blaze_burner", LiquidBlazeBurnerType::new);
+    public static LiquidBlazeBurnerType LIQUID_BLAZE_BURNER;
 
     public static class LiquidBlazeBurnerType extends ArmInteractionPointType {
         public LiquidBlazeBurnerType(ResourceLocation id) {
@@ -72,5 +72,7 @@ public class CAArmInteractions {
         }
     }
 
-    public static void register() {}
+    public static void register() {
+        LIQUID_BLAZE_BURNER = register("liquid_blaze_burner", LiquidBlazeBurnerType::new);
+    }
 }
