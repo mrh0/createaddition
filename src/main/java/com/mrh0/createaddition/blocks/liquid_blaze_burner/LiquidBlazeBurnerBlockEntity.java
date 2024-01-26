@@ -25,6 +25,7 @@ import com.simibubi.create.foundation.utility.VecHelper;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import io.github.fabricators_of_create.porting_lib.transfer.callbacks.TransactionCallback;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity.FuelType;
@@ -35,12 +36,14 @@ import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.fluid.base.FullItemFluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -64,6 +67,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation, IObserveTileEntity, SidedStorageBlockEntity {
 	public static final int MAX_HEAT_CAPACITY = 10000;
+
+	public static final long FLUID_CONSUMPTION_THRESHOLD = FluidConstants.BUCKET / 10;
+	public static final long FLUID_CAPACITY = FluidConstants.BUCKET * 4;
 
 	protected FuelType activeFuel;
 	protected int remainingBurnTime;
@@ -102,7 +108,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	private boolean changed = true;
 
 	protected SmartFluidTank createInventory() {
-		return new SmartFluidTank(4* FluidConstants.BUCKET, this::onFluidStackChanged);
+		return new SmartFluidTank(FLUID_CAPACITY, this::onFluidStackChanged);
 	}
 
 	protected void onFluidStackChanged(FluidStack newFluidStack) {
@@ -144,25 +150,22 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 			update(tankInventory.getFluid());
 		first = false;
 
-		if(remainingBurnTime < 1)
-
-		if(recipeCache.isEmpty())
+		if(remainingBurnTime >= 1)
 			return;
 
-		if(tankInventory.getFluidAmount() < 100)
-			return;
-		if(remainingBurnTime > MAX_HEAT_CAPACITY)
+		if (recipeCache.isEmpty())
 			return;
 
-		// Added try catch because this crashes for some reason for a minority of players, very strange.
-		try {
-			remainingBurnTime += recipeCache.get().getBurnTime() / 10;
-			activeFuel = recipeCache.get().isSuperheated() ? FuelType.SPECIAL : FuelType.NORMAL;
-		}
-		catch(Exception e) {
+		if (tankInventory.getFluidAmount() < FLUID_CONSUMPTION_THRESHOLD)
 			return;
-		}
-		TransferUtil.extractAnyFluid(tankInventory, 8100);
+		if (remainingBurnTime > MAX_HEAT_CAPACITY)
+			return;
+
+		remainingBurnTime += recipeCache.get().getBurnTime() / 10;
+		activeFuel = recipeCache.get().isSuperheated() ? FuelType.SPECIAL : FuelType.NORMAL;
+
+		TransferUtil.extractAnyFluid(tankInventory, FLUID_CONSUMPTION_THRESHOLD);
+
 
 		BlazeBurnerBlock.HeatLevel prev = getHeatLevelFromBlock();
 		playSound();
@@ -298,41 +301,35 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		notifyUpdate();
 	}
 
-	private boolean tryUpdateLiquid(ItemStack itemStack, ContainerItemContext context) {
-		Storage<FluidVariant> handler = FluidStorage.ITEM.find(itemStack, context);
-
+	private boolean tryUpdateLiquid(ContainerItemContext context, TransactionContext t) {
+		Storage<FluidVariant> handler = context.find(FluidStorage.ITEM);
 		if (handler == null)
 			return false;
 		FluidStack stack = TransferUtil.firstOrEmpty(handler);
 		if (stack.isEmpty())
 			return false;
 		Optional<LiquidBurningRecipe> recipe = find(stack, level);
-		if (!recipe.isPresent()) return false;
+		if (recipe.isEmpty()) return false;
 
-		Storage<FluidVariant> tehandler = getFluidStorage(null);
-		if (tehandler == null)
+		if (tankInventory == null)
 			return false;
-		try (Transaction t = TransferUtil.getTransaction()) {
-			for (StorageView<FluidVariant> view : tehandler) {
-				if (view.getCapacity() - view.getAmount() < FluidConstants.BUCKET)
-					return false;
-				break;
-			}
 
-			tehandler.insert(stack.getType(), FluidConstants.BUCKET, t);
-			t.commit();
+		long extracted = handler.extract(stack.getType(),
+				tankInventory.getCapacity() - tankInventory.getFluidAmount(), t);
+		if(extracted > 0) {
+			tankInventory.insert(stack.getType(), extracted, t);
+			level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
+			return true;
+		} else {
+			return false;
 		}
-		//if (!player.isCreative())
-		//	player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
-		level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
-		return true;
 	}
 
 	/**
 	 * @return true if the heater updated its burn time and an item should be
 	 *         consumed
 	 */
-	protected boolean tryUpdateFuel(ItemStack itemStack, ContainerItemContext context, boolean forceOverflow, boolean simulate) {
+	protected boolean tryUpdateFuel(ItemStack itemStack, ContainerItemContext context, TransactionContext t, boolean forceOverflow) {
 		if (isCreative)
 			return false;
 
@@ -340,7 +337,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		int newBurnTime;
 
 		// Liquid Fluid Logic
-		if(tryUpdateLiquid(itemStack, context))
+		if(tryUpdateLiquid(context, t))
 			return true;
 
 		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
@@ -365,24 +362,27 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 			if (remainingBurnTime + newBurnTime > MAX_HEAT_CAPACITY && !forceOverflow) return false;
 			newBurnTime = Mth.clamp(remainingBurnTime + newBurnTime, 0, MAX_HEAT_CAPACITY);
 		}
+		context.extract(context.getItemVariant(), 1, t);
 
-		if (simulate) return true;
+		int finalNewBurnTime = newBurnTime;
+		FuelType finalNewFuel = newFuel;
+		TransactionCallback.onSuccess(t, () -> {
+			activeFuel = finalNewFuel;
+			remainingBurnTime = finalNewBurnTime;
 
-		activeFuel = newFuel;
-		remainingBurnTime = newBurnTime;
+			if (level.isClientSide) {
+				spawnParticleBurst(activeFuel == FuelType.SPECIAL);
+				return;
+			}
 
-		if (level.isClientSide) {
-			spawnParticleBurst(activeFuel == FuelType.SPECIAL);
-			return true;
-		}
+			BlazeBurnerBlock.HeatLevel prev = getHeatLevelFromBlock();
+			playSound();
+			updateBlockState();
 
-		BlazeBurnerBlock.HeatLevel prev = getHeatLevelFromBlock();
-		playSound();
-		updateBlockState();
-
-		if (prev != getHeatLevelFromBlock())
-			level.playSound(null, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
-				.125f + level.random.nextFloat() * .125f, 1.15f - level.random.nextFloat() * .25f);
+			if (prev != getHeatLevelFromBlock())
+				level.playSound(null, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
+						.125f + level.random.nextFloat() * .125f, 1.15f - level.random.nextFloat() * .25f);
+        });
 
 		return true;
 	}
