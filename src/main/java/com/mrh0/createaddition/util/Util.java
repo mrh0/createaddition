@@ -64,11 +64,11 @@ public class Util {
 	}
 
 	public static String format(int n) {
-		if(n > 1000_000_000)
+		if(n >= 1000_000_000)
 			return Math.round((double)n/100_000_000d)/10d + "G";
-		if(n > 1000_000)
+		if(n >= 1000_000)
 			return Math.round((double)n/100_000d)/10d + "M";
-		if(n > 1000)
+		if(n >= 1000)
 			return Math.round((double)n/100d)/10d + "K";
 		return n + "";
 	}
