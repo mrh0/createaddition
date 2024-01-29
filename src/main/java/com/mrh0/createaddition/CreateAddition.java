@@ -1,7 +1,7 @@
 package com.mrh0.createaddition;
 
-import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
 import com.mrh0.createaddition.index.*;
+import com.mrh0.createaddition.index.CASounds;
 import com.mrh0.createaddition.trains.schedule.CASchedule;
 import com.simibubi.create.content.fluids.tank.BoilerHeaters;
 import com.simibubi.create.content.kinetics.BlockStressValues;
@@ -14,9 +14,6 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -46,8 +43,6 @@ import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.TooltipModifier;
-
-import javax.annotation.Nullable;
 
 @Mod(CreateAddition.MODID)
 public class CreateAddition {
@@ -97,6 +92,7 @@ public class CreateAddition {
         CAFluids.register();
         CAEffects.register(eventBus);
         CARecipes.register(eventBus);
+        CASounds.register(eventBus);
         CASchedule.register();
         CADamageTypes.register();
         CAArmInteractions.register();

@@ -9,8 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 
-public class ElectrumAmulet extends Item {
-    public ElectrumAmulet(Properties props) {
+public class BrassAmulet extends Item {
+    public BrassAmulet(Properties props) {
         super(props.stacksTo(1));
     }
 
@@ -22,9 +22,9 @@ public class ElectrumAmulet extends Item {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int pSlotId, boolean pIsSelected) {
         if(!(entity instanceof Player player)) return;
-        if(player.getHealth() <= 8) {
-            player.addEffect(new MobEffectInstance(MobEffects.LUCK, 3, 0, true, true, true));
-            player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 3, 0, true, true, true));
+        System.out.println(player.getFoodData().getSaturationLevel());
+        if(player.getFoodData().getSaturationLevel() > 1f) {
+            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3, 0, true, true, true));
         }
     }
 }
