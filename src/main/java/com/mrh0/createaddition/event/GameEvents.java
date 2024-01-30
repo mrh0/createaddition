@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.event;
 
+import com.mrh0.createaddition.blocks.crops.HarmfulPlantBlock;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyManager;
@@ -17,6 +18,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -26,6 +28,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+
+import java.util.Random;
 
 public class GameEvents {
 
@@ -81,4 +85,23 @@ public class GameEvents {
 		}
 		return InteractionResult.PASS;
 	}
+
+
+	private static final Direction[] horizontalDirections = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+	/*@SubscribeEvent
+	public static void grow(BlockEvent.CropGrowEvent.Pre evt) {
+		try {
+			double chance = 0.001d;
+			for(Direction dir : horizontalDirections) {
+				BlockState state = evt.getLevel().getBlockState(evt.getPos().relative(dir));
+				if(state.is(CABlocks.HARMFUL_PLANT.get()))
+					chance *= state.getValue(HarmfulPlantBlock.AGE)*3;
+			}
+			if(Math.random() < chance)
+				evt.getLevel().setBlock(evt.getPos(), CABlocks.HARMFUL_PLANT.getDefaultState(), 3);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}*/
 }

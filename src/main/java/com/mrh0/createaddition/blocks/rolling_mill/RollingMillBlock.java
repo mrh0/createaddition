@@ -1,6 +1,6 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
@@ -33,9 +33,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-
 @SuppressWarnings({"deprecation", "UnstableApiUsage"})
-public class RollingMillBlock extends HorizontalKineticBlock implements IBE<RollingMillTileEntity> {
+public class RollingMillBlock extends HorizontalKineticBlock implements IBE<RollingMillBlockEntity> {
 
 	public static final VoxelShape ROLLING_MILL_SHAPE = CAShapes.shape(0,0,0,16,5,16).add(2,0,2,14,16,14).build();
 	
@@ -44,12 +43,12 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 	}
 
 	@Override
-	public VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+	public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return ROLLING_MILL_SHAPE;
 	}
 	
 	@Override
-	public InteractionResult use(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, Player player, @NotNull InteractionHand handIn, @NotNull BlockHitResult hit) {
+	public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, Player player, @NotNull InteractionHand handIn, @NotNull BlockHitResult hit) {
 		if (!player.getItemInHand(handIn).isEmpty())
 			return InteractionResult.PASS;
 		if (worldIn.isClientSide)
@@ -92,7 +91,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 		if (!entityIn.isAlive())
 			return;
 
-		RollingMillTileEntity rollingMill = null;
+		RollingMillBlockEntity rollingMill = null;
 		for (BlockPos pos : Iterate.hereAndBelow(entityIn.blockPosition())) {
 			rollingMill = getBlockEntity(worldIn, pos);
 		}
@@ -125,9 +124,9 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		Direction preferredSide = getPreferredHorizontalFacing(context);
-		if (preferredSide != null)
-			return defaultBlockState().setValue(HORIZONTAL_FACING, preferredSide);
+		Direction prefferedSide = getPreferredHorizontalFacing(context);
+		if (prefferedSide != null)
+			return defaultBlockState().setValue(HORIZONTAL_FACING, prefferedSide);
 		return super.getStateForPlacement(context);
 	}
 
@@ -144,17 +143,17 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 	}
 
 	@Override
-	public BlockEntityType<? extends RollingMillTileEntity> getBlockEntityType() {
-		return CATileEntities.ROLLING_MILL.get();
+	public BlockEntityType<? extends RollingMillBlockEntity> getBlockEntityType() {
+		return CABlockEntities.ROLLING_MILL.get();
 	}
 
 	@Override
-	public Class<RollingMillTileEntity> getBlockEntityClass() {
-		return RollingMillTileEntity.class;
+	public Class<RollingMillBlockEntity> getBlockEntityClass() {
+		return RollingMillBlockEntity.class;
 	}
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.ROLLING_MILL.create(pos, state);
+		return CABlockEntities.ROLLING_MILL.create(pos, state);
 	}
 }

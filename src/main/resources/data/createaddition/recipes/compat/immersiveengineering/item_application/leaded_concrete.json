@@ -1,0 +1,22 @@
+{
+  "type": "create:item_application",
+  "ingredients": [
+    {
+      "item": "immersiveengineering:concrete"
+    },
+    {
+      "tag": "forge:plates/lead"
+    }
+  ],
+  "results": [
+    {
+      "item": "immersiveengineering:concrete_leaded"
+    }
+  ],
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ]
+}

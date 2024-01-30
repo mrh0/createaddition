@@ -1,0 +1,13 @@
+{
+	"type":"createaddition:charging",
+	"input": {
+      	"item": "create:exposed_copper_shingle_stairs",
+		"count": 1
+	},
+	"result": {
+		"item": "create:copper_shingle_stairs",
+		"count": 1
+	},
+	"energy": 4000,
+	"maxChargeRate": 200
+}

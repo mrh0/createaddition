@@ -70,12 +70,12 @@ public class InternalEnergyStorage extends SnapshotParticipant<Long> implements 
     public long getSpace() {
     	return Math.max(getCapacity() - getAmount(), 0);
     }
-
+    
     @Override
     public boolean supportsExtraction() {
         return maxExtract > 0;
     }
-
+    
     @Override
     public boolean supportsInsertion() {
         return maxReceive > 0;
@@ -142,7 +142,7 @@ public class InternalEnergyStorage extends SnapshotParticipant<Long> implements 
     public void setEnergy(long energy) {
     	this.amount = energy;
     }
-    
+
     public void setCapacity(long capacity) {
     	this.capacity = capacity;
     }

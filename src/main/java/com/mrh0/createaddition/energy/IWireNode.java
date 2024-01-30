@@ -3,6 +3,7 @@ package com.mrh0.createaddition.energy;
 import java.util.HashMap;
 import java.util.Set;
 
+import com.mrh0.createaddition.blocks.connector.ConnectorType;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CAItems;
@@ -10,7 +11,6 @@ import com.mrh0.createaddition.util.Util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -215,6 +215,18 @@ public interface IWireNode {
 	}
 
 	/**
+	 * Check if this {@link IWireNode} has any connection.
+	 *
+	 * @return  True if any node exists, false otherwise.
+	 */
+	default boolean hasAnyConnection() {
+		for (int i = 0; i < getNodeCount(); i++) {
+			if(hasConnection(i)) return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Check if this {@link IWireNode} has a node at the given position.
 	 *
 	 * @param   pos
@@ -310,7 +322,7 @@ public interface IWireNode {
 			return getNetwork(node).isValid();
 	}
 
-	default boolean isNodeIndicesConnected(int in, int other) {
+	default boolean isNodeIndeciesConnected(int in, int other) {
 		return true;
 	}
 
@@ -450,6 +462,8 @@ public interface IWireNode {
 		}
 	}
 
+	ConnectorType getConnectorType();
+
 	// Static Helpers
 
 	/**
@@ -532,6 +546,8 @@ public interface IWireNode {
 		return null;
 	}
 
+	int getMaxWireLength();
+
 	static WireConnectResult connect(Level world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
 		BlockEntity te1 = world.getBlockEntity(pos1);
 		BlockEntity te2 = world.getBlockEntity(pos2);
@@ -541,11 +557,14 @@ public interface IWireNode {
 			return WireConnectResult.INVALID;
 		if (node1 < 0 || node2 < 0)
 			return WireConnectResult.COUNT;
-		if (pos1.distSqr(pos2) > Config.CONNECTOR_MAX_LENGTH.get() * Config.CONNECTOR_MAX_LENGTH.get())
-			return WireConnectResult.LONG;
-		
-		if (wn1.hasConnectionTo(pos2))
-			return WireConnectResult.EXISTS;
+
+		int maxLength = Math.min(wn1.getMaxWireLength(), wn2.getMaxWireLength());
+
+		if (pos1.distSqr(pos2) > maxLength * maxLength) return WireConnectResult.LONG;
+		if (wn1.hasConnectionTo(pos2)) return WireConnectResult.EXISTS;
+		if(wn1.getConnectorType() == ConnectorType.Large && wn2.getConnectorType() == ConnectorType.Large) {
+			if(type == WireType.COPPER) return WireConnectResult.REQUIRES_HIGH_CURRENT;
+		}
 		
 		wn1.setNode(node1, node2, wn2.getPos(), type);
 		wn2.setNode(node2, node1, wn1.getPos(), type);
@@ -582,7 +601,7 @@ public interface IWireNode {
 		if (ln == null) return null;
 		return ln.getType();
 	}
-
+	
 	static IWireNode getWireNode(Level world, BlockPos pos) {
 		if(pos == null)
 			return null;

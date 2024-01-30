@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "createaddition:zinc_sheet"
+    "createaddition:zinc_sheet",
+    "createaddition:electrum_sheet"
   ]
 }

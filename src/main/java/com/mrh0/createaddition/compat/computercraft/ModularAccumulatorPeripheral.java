@@ -1,7 +1,6 @@
 package com.mrh0.createaddition.compat.computercraft;
 
-import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorTileEntity;
-import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
+import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlockEntity;
 import com.mrh0.createaddition.config.Config;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IPeripheral;
@@ -10,9 +9,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class ModularAccumulatorPeripheral implements IPeripheral {
     private final String type;
-    private final ModularAccumulatorTileEntity tileEntity;
+    private final ModularAccumulatorBlockEntity tileEntity;
 
-    public ModularAccumulatorPeripheral(String type, ModularAccumulatorTileEntity tileEntity) {
+    public ModularAccumulatorPeripheral(String type, ModularAccumulatorBlockEntity tileEntity) {
         this.type = type;
         this.tileEntity = tileEntity;
     }

@@ -1,0 +1,21 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+		    "tag": "forge:rods/electrum"
+		},
+		{
+		    "item": "create:andesite_alloy"
+		},
+		{
+		    "item": "create:andesite_alloy"
+		},
+		{
+		    "tag": "forge:slimeballs"
+		}
+	],
+	"result":{
+		"item": "createaddition:large_connector",
+		"count": 2
+	}
+}

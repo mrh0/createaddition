@@ -2,13 +2,12 @@ package com.mrh0.createaddition.blocks.accumulator;
 
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.NodeRotation;
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.util.IComparatorOverride;
 import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 
-import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,7 +22,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -37,7 +35,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class AccumulatorBlock extends Block implements IBE<AccumulatorTileEntity>, IWrenchable, ITransformableBlock {
+public class AccumulatorBlock extends Block implements IBE<AccumulatorBlockEntity>, IWrenchable, ITransformableBlock {
 
 	public static final VoxelShape ACCUMULATOR_SHAPE_MAIN = Block.box(0, 0, 0, 16, 12, 16);
 	public static final VoxelShape ACCUMULATOR_SHAPE_X = Shapes.or(ACCUMULATOR_SHAPE_MAIN, Block.box(1, 0, 6, 5, 16, 10), Block.box(11, 0, 6, 15, 16, 10));
@@ -72,8 +70,8 @@ public class AccumulatorBlock extends Block implements IBE<AccumulatorTileEntity
 	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		BlockEntity te = world.getBlockEntity(pos);
 		if(te != null) {
-			if(te instanceof AccumulatorTileEntity) {
-				AccumulatorTileEntity ate = (AccumulatorTileEntity) te;
+			if(te instanceof AccumulatorBlockEntity) {
+				AccumulatorBlockEntity ate = (AccumulatorBlockEntity) te;
 				if(stack.hasTag()) {
 					CompoundTag nbt = stack.getTag();
 					if(nbt.contains("energy"))
@@ -142,17 +140,17 @@ public class AccumulatorBlock extends Block implements IBE<AccumulatorTileEntity
 	}
 
 	@Override
-	public Class<AccumulatorTileEntity> getBlockEntityClass() {
-		return AccumulatorTileEntity.class;
+	public Class<AccumulatorBlockEntity> getBlockEntityClass() {
+		return AccumulatorBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends AccumulatorTileEntity> getBlockEntityType() {
-		return CATileEntities.ACCUMULATOR.get();
+	public BlockEntityType<? extends AccumulatorBlockEntity> getBlockEntityType() {
+		return CABlockEntities.ACCUMULATOR.get();
 	}
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.ACCUMULATOR.create(pos, state);
+		return CABlockEntities.ACCUMULATOR.create(pos, state);
 	}
 }

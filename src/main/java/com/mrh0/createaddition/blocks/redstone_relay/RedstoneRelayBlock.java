@@ -2,7 +2,7 @@ package com.mrh0.createaddition.blocks.redstone_relay;
 
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.NodeRotation;
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -40,7 +40,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEntity>, IWrenchable, ITransformableBlock, ConnectableRedstoneBlock {
+@SuppressWarnings("deprecated")
+public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayBlockEntity>, IWrenchable, ITransformableBlock, ConnectableRedstoneBlock {
 
 	public static final BooleanProperty VERTICAL = BooleanProperty.create("vertical");
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -54,13 +55,9 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 
 	public static final VoxelShaper VERTICAL_SHAPE = CAShapes.shape(0, 0, 0, 16, 2, 16).add(1, 0, 6, 5, 7, 10).add(11, 0, 6, 15, 7, 10).forDirectional();
 
-	@SuppressWarnings("unused")
 	protected static final VoxelShape WEST_SHAPE = Block.box(0, 0, 0, 2, 16, 16);
-	@SuppressWarnings("unused")
 	protected static final VoxelShape EAST_SHAPE = Block.box(14, 0, 0, 16, 16, 16);
-	@SuppressWarnings("unused")
 	protected static final VoxelShape NORTH_SHAPE = Block.box(0, 0, 0, 16, 16, 2);
-	@SuppressWarnings("unused")
 	protected static final VoxelShape SOUTH_SHAPE = Block.box(0, 0, 14, 16, 16, 16);
 
 
@@ -83,13 +80,13 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 	}
 
 	@Override
-	public Class<RedstoneRelayTileEntity> getBlockEntityClass() {
-		return RedstoneRelayTileEntity.class;
+	public Class<RedstoneRelayBlockEntity> getBlockEntityClass() {
+		return RedstoneRelayBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends RedstoneRelayTileEntity> getBlockEntityType() {
-		return CATileEntities.REDSTONE_RELAY.get();
+	public BlockEntityType<? extends RedstoneRelayBlockEntity> getBlockEntityType() {
+		return CABlockEntities.REDSTONE_RELAY.get();
 	}
 
 	@Override
@@ -215,11 +212,8 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 
 		if (worldIn.isClientSide()) return;
 		BlockEntity te = worldIn.getBlockEntity(pos);
-		if(te == null)
-			return;
-		if(!(te instanceof IWireNode cte))
-			return;
-
+		if (te == null) return;
+		if (!(te instanceof IWireNode cte)) return;
 		cte.dropWires(worldIn, !player.isCreative());
 	}
 
@@ -233,6 +227,7 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 
 		if (!c.getLevel().isClientSide())
 			cte.dropWires(c.getLevel(), c.getPlayer(), !c.getPlayer().isCreative());
+
 		return IWrenchable.super.onSneakWrenched(state, c);
 	}
 
@@ -269,6 +264,6 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayTileEn
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.REDSTONE_RELAY.create(pos, state);
+		return CABlockEntities.REDSTONE_RELAY.create(pos, state);
 	}
 }
