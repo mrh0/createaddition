@@ -91,11 +91,11 @@ public class CAItems {
 	public static final ItemEntry<Item> BRASS_ROD =
 			CreateAddition.REGISTRATE.item("brass_rod", Item::new).register();
 
-	public static final ItemEntry<HiddenIngredientItem> CAKE_BASE =
-			CreateAddition.REGISTRATE.item("cake_base", HiddenIngredientItem::new)
+	public static final ItemEntry<Item> CAKE_BASE =
+			CreateAddition.REGISTRATE.item("cake_base", Item::new)
 				.register();
-	public static final ItemEntry<HiddenIngredientItem> CAKE_BASE_BAKED =
-			CreateAddition.REGISTRATE.item("cake_base_baked", HiddenIngredientItem::new)
+	public static final ItemEntry<Item> CAKE_BASE_BAKED =
+			CreateAddition.REGISTRATE.item("cake_base_baked", Item::new)
 				.register();
 
 	public static final ItemEntry<Item> STRAW =

@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
-import com.mrh0.createaddition.recipe.rolling.RollingRecipeType;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
@@ -22,15 +21,11 @@ import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import io.github.fabricators_of_create.porting_lib.util.NBTSerializer;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -43,13 +38,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -280,12 +273,6 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		ItemHelper.dropContents(level, worldPosition, inventory);
 	}
 
-	@Nullable
-	@Override
-	public Storage<ItemVariant> getItemStorage(@Nullable Direction face) {
-		return inventory;
-	}
-
 	public void spawnParticles() {
 		ItemStack stackInSlot = playEvent.copy();
 		if (stackInSlot.isEmpty())
@@ -342,11 +329,11 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 
 	private List<? extends Recipe<?>> getRecipes() {
 		Optional<RollingRecipe> assemblyRecipe = SequencedAssemblyRecipe.getRecipe(level, inventory.getStackInSlot(0),
-				RollingRecipe.TYPE, RollingRecipe.class);
+				CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
 		if (assemblyRecipe.isPresent())
 			return ImmutableList.of(assemblyRecipe.get());
 
-		Predicate<Recipe<?>> types = RecipeConditions.isOfType(RollingRecipe.TYPE);
+		Predicate<Recipe<?>> types = RecipeConditions.isOfType(CARecipes.ROLLING_TYPE.get());
 
 		List<Recipe<?>> startedSearch = RecipeFinder.get(rollingRecipesKey, level, types);
 		return startedSearch.stream()
@@ -515,12 +502,12 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 	@Nullable
 	@Override
 	public Storage<ItemVariant> getItemStorage(@Nullable Direction face) {
-		return storage;
+		return inventory;
 	}
 
 	private boolean canProcess(ItemStack stack) {
 		ItemStackHandler tester = new ItemStackHandler(1);
-		var stack = playEvent;
+		var stack2 = playEvent;
 		tester.setStackInSlot(0, stack);
 		RecipeWrapper inventoryIn = new RecipeWrapper(tester);
 
@@ -530,8 +517,6 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		}
 
 		assert level != null;
-		if (lastRecipe != null && lastRecipe.matches(inventoryIn, level))
-			return true;
 		return find(inventoryIn, level)
 			.isPresent();
 	}

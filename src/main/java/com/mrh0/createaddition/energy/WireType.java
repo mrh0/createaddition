@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.energy;
 
 import com.mrh0.createaddition.index.CAItems;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 

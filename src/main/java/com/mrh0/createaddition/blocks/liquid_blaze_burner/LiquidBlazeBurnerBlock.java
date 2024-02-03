@@ -73,12 +73,6 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> list) {
-		list.add(AllItems.EMPTY_BLAZE_BURNER.asStack());
-		super.fillItemCategory(group, list);
-	}
-
-	@Override
 	public Class<LiquidBlazeBurnerBlockEntity> getBlockEntityClass() {
 		return LiquidBlazeBurnerBlockEntity.class;
 	}

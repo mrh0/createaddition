@@ -28,7 +28,7 @@ import java.util.Set;
 
 public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> implements IAssemblyRecipe {
 
-	public static RecipeType<ChargingRecipe> TYPE = new ChargingRecipeType();
+	public static RecipeType<ChargingRecipe> TYPE = CARecipes.CHARGING_TYPE.get();
 	@SuppressWarnings("deprecation")
 	public static RecipeSerializer<?> SERIALIZER = BuiltInRegistries.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "charging"));
 	public final ResourceLocation id;
@@ -37,7 +37,7 @@ public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> implements I
 	public int energy;
     public int maxChargeRate;
 
-	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy) {
+	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy, int maxChargeRate) {
 		super(new ChargingRecipeInfo(id, (SequencedAssemblyChargingRecipeSerializer) SERIALIZER, TYPE), new ChargingRecipeParams(id, ingredient, new ProcessingOutput(output, 1f)));
 		this.id = id;
 		this.ingredient = ingredient;
@@ -60,12 +60,6 @@ public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> implements I
 
 
 	@Override
-	public ItemStack assemble(RecipeWrapper wrapper) {
-		return output;
-	}
-
-
-	@Override
 	protected int getMaxInputCount() {
 		return 1;
 	}
@@ -80,12 +74,6 @@ public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> implements I
 	@Override
 	public boolean canCraftInDimensions(int w, int h) {
 		return true;
-	}
-
-
-	@Override
-	public ItemStack getResultItem() {
-		return output;
 	}
 
 

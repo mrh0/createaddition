@@ -84,14 +84,14 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 	public void updateEntityAfterFallOn(@NotNull BlockGetter worldIn, @NotNull Entity entityIn) {
 		super.updateEntityAfterFallOn(worldIn, entityIn);
 
-		if (entityIn.level.isClientSide)
+		if (entityIn.level().isClientSide)
 			return;
 		if (!(entityIn instanceof ItemEntity itemEntity))
 			return;
 		if (!entityIn.isAlive())
 			return;
 
-		RollingMillTileEntity rollingMill = null;
+		RollingMillBlockEntity rollingMill = null;
 		for (BlockPos pos : Iterate.hereAndBelow(entityIn.blockPosition())) {
 			rollingMill = getBlockEntity(worldIn, pos);
 		}
@@ -99,24 +99,24 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 			return;
 
 		BlockPos pos = entityIn.blockPosition().below();
-		RollingMillTileEntity be = (RollingMillTileEntity)entityIn.level().getBlockEntity(pos);
+		RollingMillBlockEntity be = (RollingMillBlockEntity) entityIn.level().getBlockEntity(pos);
 		if (be == null) return;
 		if (be.getSpeed() == 0) return;
 		be.insertItem((ItemEntity) entityIn);
 
 	}
 
-	@Override
+	/*@Override
 	public void onRemove(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
 		if (state.hasBlockEntity() && state.getBlock() != newState.getBlock()) {
 			withBlockEntityDo(worldIn, pos, te -> {
-				ItemHelper.dropContents(worldIn, pos, te.inputInv);
+				ItemHelper.dropContents(worldIn, pos, te.);
 				ItemHelper.dropContents(worldIn, pos, te.outputInv);
 			});
 
 			worldIn.removeBlockEntity(pos);
 		}
-	}
+	}*/
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {

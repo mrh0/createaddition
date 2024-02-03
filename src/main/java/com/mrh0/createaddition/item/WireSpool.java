@@ -58,16 +58,16 @@ public class WireSpool extends Item {
 
 			// Play sound
 			if(result.isLinked()) {
-				c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_XYLOPHONE, SoundSource.BLOCKS, .7f, 1f, false);
+				c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_XYLOPHONE.value(), SoundSource.BLOCKS, .7f, 1f, false);
 			}
 			else if(result.isConnect()) {
 				c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1f, 1f, false);
 			}
 			else if(result == WireConnectResult.REMOVED) {
-				c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_XYLOPHONE, SoundSource.BLOCKS, .7f, .5f, false);
+				c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_XYLOPHONE.value(), SoundSource.BLOCKS, .7f, .5f, false);
 			}
 			else {
-				c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_DIDGERIDOO, SoundSource.BLOCKS, .7f, 1f, false);
+				c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_DIDGERIDOO.value(), SoundSource.BLOCKS, .7f, 1f, false);
 			}
 
 			te.setChanged();
@@ -97,7 +97,7 @@ public class WireSpool extends Item {
 			if(isRemover(heldItem)) {
 				if (!node.hasAnyConnection()) {
 					c.getPlayer().displayClientMessage(WireConnectResult.NO_CONNECTION.getMessage(), true);
-					c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_DIDGERIDOO, SoundSource.BLOCKS, .7f, 1f, false);
+					c.getLevel().playLocalSound(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ(), SoundEvents.NOTE_BLOCK_DIDGERIDOO.value(), SoundSource.BLOCKS, .7f, 1f, false);
 					return InteractionResult.CONSUME;
 				}
 			}

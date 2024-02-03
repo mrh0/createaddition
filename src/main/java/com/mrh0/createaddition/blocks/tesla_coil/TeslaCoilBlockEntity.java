@@ -18,6 +18,7 @@ import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandlerContainer;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -192,7 +193,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 		final TransportedItemStack ignoredTransported,
 		final TransportedItemStackHandlerBehaviour ignoredHandler) {
 
-        ContainerItemContext context = ContainerItemContext.withInitial(stack);
+        ContainerItemContext context = ContainerItemContext.withConstant(stack);
         final EnergyStorage es =  EnergyStorage.ITEM.find(stack, context);
 
 		if (es == null)
@@ -213,7 +214,8 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		if (this.getLevel() == null) return false;
-		if(!inputInv.getStackInSlot(0).sameItem(stack)) {
+		final var inventoryIn = new RecipeWrapper(inputInv);
+		if(!inputInv.getStackInSlot(0).is(stack.getItem())) {
 			inputInv.setStackInSlot(0, stack);
 			recipeCache = find(stack, inventoryIn, level);
 			chargeAccumulator = 0;
