@@ -35,39 +35,59 @@
 	"emi.category.createaddition.liquid_burning": "Liquid Burning",
 
 
+	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
+
+	"createaddition.command.cca_api.link": "Click here to open API documentation",
+
 	"desc.immersiveengineering.info.mineral.sphalerite": "Sphalerite",
 
 	"item.createaddition.capacitor": "Capacitor",
 
-	"item.createaddition.zinc_sheet": "Zinc Sheet",
 	"item.createaddition.diamond_grit": "Diamond Grit",
 	"item.createaddition.diamond_grit_sandpaper": "Diamond Grit Sandpaper",
 	"item.createaddition.diamond_grit_sandpaper.tooltip": "DIAMOND GRIT SANDPAPER",
 
+	"item.createaddition.zinc_sheet": "Zinc Sheet",
+
 	"item.createaddition.copper_spool": "Copper Spool",
 	"item.createaddition.copper_spool.tooltip": "SPOOL",
-	"item.createaddition.copper_spool.tooltip.condition1": "R-Clicking two Connectors",
-	"item.createaddition.copper_spool.tooltip.behaviour1": "Will create a wire link between them and return an _Empty Spool_.",
-
-	"item.createaddition.iron_wire": "Iron Wire",
-	"item.createaddition.iron_spool": "Iron Spool",
-	"item.createaddition.iron_rod": "Iron Rod",
-
+	"item.createaddition.copper_spool.tooltip.condition1": "Low Current",
+	"item.createaddition.copper_spool.tooltip.behaviour1": "Connects to _low current connectors_.",
+	"item.createaddition.copper_spool.tooltip.condition2": "R-Clicking two Connectors",
+	"item.createaddition.copper_spool.tooltip.behaviour2": "Will create a wire link between them, while retaining the _Empty Spool_.",
 	"item.createaddition.copper_wire": "Copper Wire",
 	"item.createaddition.copper_rod": "Copper Rod",
 
+	"item.createaddition.festive_spool": "Copper Spool with Festive Lights",
+	"item.createaddition.festive_spool.tooltip": "SPOOL",
+	"item.createaddition.festive_spool.tooltip.condition1": "Low Current",
+	"item.createaddition.festive_spool.tooltip.behaviour1": "Connects to _low current connectors_.",
+	"item.createaddition.festive_spool.tooltip.condition2": "R-Clicking two Connectors",
+	"item.createaddition.festive_spool.tooltip.behaviour2": "Will create a wire link between them and return an _Empty Spool_.",
+
+	"item.createaddition.iron_wire": "Iron Wire",
+	"item.createaddition.iron_rod": "Iron Rod",
+
 	"item.createaddition.gold_spool": "Gold Spool",
 	"item.createaddition.gold_spool.tooltip": "SPOOL",
-	"item.createaddition.gold_spool.tooltip.condition1": "R-Clicking two Connectors",
-	"item.createaddition.gold_spool.tooltip.behaviour1": "Will create a wire link between them and return an _Empty Spool_.",
-
+	"item.createaddition.gold_spool.tooltip.condition1": "High Current",
+	"item.createaddition.gold_spool.tooltip.behaviour1": "Connects to _high current connectors_.",
+	"item.createaddition.gold_spool.tooltip.condition2": "R-Clicking two Connectors",
+	"item.createaddition.gold_spool.tooltip.behaviour2": "Will create a wire link between them, while retaining the _Empty Spool_.",
 	"item.createaddition.gold_wire": "Gold Wire",
 	"item.createaddition.gold_rod": "Gold Rod",
 
-	"item.createaddition.festive_spool": "Copper Spool with Festive Lights",
-	"item.createaddition.festive_spool.tooltip": "SPOOL",
-	"item.createaddition.festive_spool.tooltip.condition1": "R-Clicking two Connectors",
-	"item.createaddition.festive_spool.tooltip.behaviour1": "Will create a wire link between them and return an _Empty Spool_.",
+	"item.createaddition.electrum_ingot": "Electrum Ingot",
+	"item.createaddition.electrum_nugget": "Electrum Nugget",
+	"item.createaddition.electrum_sheet": "Electrum Sheet",
+	"item.createaddition.electrum_spool": "Electrum Spool",
+	"item.createaddition.electrum_spool.tooltip": "SPOOL",
+	"item.createaddition.electrum_spool.tooltip.condition1": "High Current",
+	"item.createaddition.electrum_spool.tooltip.behaviour1": "Connects to _high current connectors_.",
+	"item.createaddition.electrum_spool.tooltip.condition2": "R-Clicking two Connectors",
+	"item.createaddition.electrum_spool.tooltip.behaviour2": "Will create a wire link between them, while retaining the _Empty Spool_.",
+	"item.createaddition.electrum_wire": "Electrum Wire",
+	"item.createaddition.electrum_rod": "Electrum Rod",
 
 	"item.createaddition.brass_rod": "Brass Rod",
 	"item.createaddition.bronze_rod": "Bronze Rod",
@@ -77,15 +97,31 @@
 
 	"item.createaddition.straw": "Straw",
 
+	"item.createaddition.electrum_amulet": "Pale Gold Amulet",
+	"item.createaddition.electrum_amulet.tooltip": "ELECTRUM_AMULET",
+	"item.createaddition.electrum_amulet.tooltip.summary": "When _life_ has got you down, clutching this _amulet_ in your pocket makes you feel like your _luck_ is about to change.",
+
+	"item.createaddition.brass_figurine": "Brass Figurine",
+	"item.createaddition.brass_figurine.tooltip": "BRASS_FIGURINE",
+	"item.createaddition.brass_figurine.tooltip.summary": ".",
+
+	"item.createaddition.copper_goblet": "Copper Goblet",
+	"item.createaddition.copper_goblet.tooltip": "COPPER_GOBLET",
+	"item.createaddition.copper_goblet.tooltip.summary": "The extraordinary heat transfer ability of this _goblet_ will keep you cool when you need it the most.",
+
+	"item.createaddition.gold_goblet": "Ornate Goblet",
+	"item.createaddition.gold_goblet.tooltip": "GOLD_GOBLET",
+	"item.createaddition.gold_goblet.tooltip.summary": "Drinking from this _goblet_ will satisfy more than any regular bottle.",
+
 	"item.createaddition.seed_oil_bucket": "Bucket of Seed Oil",
 	"item.createaddition.seed_oil_bucket.tooltip": "SEED_OIL_BUCKET",
 	"item.createaddition.seed_oil_bucket.tooltip.summary": "A simple _flammable liquid_.",
 	"fluid.createaddition.seed_oil": "Seed Oil",
 
-	"item.createaddition.bioethanol_bucket": "Bucket of Bioethanol",
+	"item.createaddition.bioethanol_bucket": "Bucket of Biofuel",
 	"item.createaddition.bioethanol_bucket.tooltip": "BIOETHANOL_BUCKET",
 	"item.createaddition.bioethanol_bucket.tooltip.summary": "An efficient _flammable liquid_.",
-	"fluid.createaddition.bioethanol": "Bioethanol",
+	"fluid.createaddition.bioethanol": "Biofuel",
 
 	"item.createaddition.biomass": "Biomass",
 	"item.createaddition.biomass_pellet": "Biomass Pellet",
@@ -107,63 +143,74 @@
 	"statusbar.createaddition.wire.connect_out": "Wire connector output selected",
 
 	"statusbar.createaddition.wire.long": "Wire is too long",
-	"statusbar.createaddition.wire.obstructed": "Wire path is obstructed",
 	"statusbar.createaddition.wire.count": "Wire node is full",
 	"statusbar.createaddition.wire.removed": "Wire removed",
 	"statusbar.createaddition.wire.exists": "Wire connection already exists",
 	"statusbar.createaddition.wire.no_connection": "Wire not connected here",
 	"statusbar.createaddition.wire.invalid": "Invalid connection",
+	"statusbar.createaddition.wire.requires_high_current": "This connection requires a high current wire",
 
 	"block.createaddition.electric_motor": "Electric Motor",
-	"deprecated.block.createaddition.electric_motor.tooltip": "ELECTRIC MOTOR",
-	"deprecated.block.createaddition.electric_motor.tooltip.summary": "Generates _SU_ from _E_ and has configurable _speed_. The energy consumption is based on the set _RPM_.",
+
 	"block.createaddition.alternator": "Alternator",
-	"deprecated.block.createaddition.alternator.tooltip": "ALTERNATOR",
-	"deprecated.block.createaddition.alternator.tooltip.summary": "Generates _E_ from _SU_. The amount of energy produced is based on _RPM_.",
+
 	"block.createaddition.creative_energy": "Creative Generator",
 	"block.createaddition.creative_energy.tooltip": "CREATIVE_GENERATOR",
-	"block.createaddition.creative_energy.tooltip.summary": "Generates an infinite supply of _E_.",
+	"block.createaddition.creative_energy.tooltip.summary": "Generates an infinite supply of _FE_.",
 
 	"block.createaddition.rolling_mill": "Rolling Mill",
 
 	"block.createaddition.accumulator": "Accumulator",
 	"block.createaddition.accumulator.tooltip": "ACCUMULATOR",
-	"block.createaddition.accumulator.tooltip.summary": "_[DEPRECATED]_ Accumulates electric charge.",
+	"block.createaddition.accumulator.tooltip.summary": "Accumulates electric charge. _Deprecated and subject to removal from future releases_.",
 	"block.createaddition.accumulator.tooltip.condition1": "Pull",
-	"block.createaddition.accumulator.tooltip.behaviour1": "Provides _E_ to _wires_ connected to the _connector_ marked with an upwards arrow.",
+	"block.createaddition.accumulator.tooltip.behaviour1": "Provides _FE_ to _wires_ connected to the _connector_ marked with an upwards arrow.",
 	"block.createaddition.accumulator.tooltip.condition2": "Push",
-	"block.createaddition.accumulator.tooltip.behaviour2": "Accepts _E_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
+	"block.createaddition.accumulator.tooltip.behaviour2": "Accepts _FE_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
+
 	"block.createaddition.modular_accumulator": "Accumulator",
 
 	"block.createaddition.portable_energy_interface": "Portable Energy Interface",
 
-	"block.createaddition.connector": "Connector",
+	"block.createaddition.connector": "Small Connector",
 	"block.createaddition.connector.tooltip": "CONNECTOR",
-	"block.createaddition.connector.tooltip.summary": "Connects _Energy_ compatible blocks with _wires_ to transfer _E_.",
-	"block.createaddition.connector.tooltip.condition1": "R-click",
-	"block.createaddition.connector.tooltip.behaviour1": "While holding a _Copper Spool_ or _Gold Spool_ to create a _wire link_ between two _Connectors_.",
-	"block.createaddition.connector.tooltip.condition2": "R-click with Wrench",
-	"block.createaddition.connector.tooltip.behaviour2": "To cycle between _Push_, _Pull_, _Passive_, and _None_ modes.",
+	"block.createaddition.connector.tooltip.summary": "Connects _Forge Energy_ compatible blocks with _wires_ to transfer _FE_.",
+	"block.createaddition.connector.tooltip.condition1": "Low Current",
+	"block.createaddition.connector.tooltip.behaviour1": "Connected with _low current wires_.",
+	"block.createaddition.connector.tooltip.condition2": "R-click",
+	"block.createaddition.connector.tooltip.behaviour2": "While holding a _Copper Spool_, _Gold Spool_, or _Electrum Spool_ to create a _wire link_ with up to 4 other connectors.",
+	"block.createaddition.connector.tooltip.condition3": "R-click with Wrench",
+	"block.createaddition.connector.tooltip.behaviour3": "To cycle between _Push_, _Pull_, and _None_ modes.",
 
-	"block.createaddition.connector_copper": "Copper Connector",
-	"block.createaddition.connector_copper.tooltip": "CONNECTOR",
-	"block.createaddition.connector_copper.tooltip.summary": "Connects Energy compatible blocks with _wires_ to transfer _E_.",
-	"block.createaddition.connector_copper.tooltip.condition1": "R-click",
-	"block.createaddition.connector_copper.tooltip.behaviour1": "While holding a _Copper Spool_ to create a _wire link_ between two _Connectors_.",
+	"block.createaddition.small_light_connector": "Small Connector With Light",
+	"block.createaddition.small_light_connector.tooltip": "CONNECTOR",
+	"block.createaddition.small_light_connector.tooltip.summary": "Connects _Forge Energy_ compatible blocks with _wires_ to transfer _FE_, provides light when receiving power.",
+	"block.createaddition.small_light_connector.tooltip.condition1": "Low Current",
+	"block.createaddition.small_light_connector.tooltip.behaviour1": "Connected with _low current wires_.",
+	"block.createaddition.small_light_connector.tooltip.condition2": "R-click",
+	"block.createaddition.small_light_connector.tooltip.behaviour2": "While holding a _Copper Spool_, _Gold Spool_, or _Electrum Spool_ to create a _wire link_ with up to 4 other connectors.",
+	"block.createaddition.small_light_connector.tooltip.condition3": "R-click with Wrench",
+	"block.createaddition.small_light_connector.tooltip.behaviour3": "To cycle between _Push_, _Pull_, and _None_ modes.",
 
-	"block.createaddition.connector_gold": "Gold Connector",
-	"block.createaddition.connector_gold.tooltip": "CONNECTOR",
-	"block.createaddition.connector_gold.tooltip.summary": "Connects Energy compatible blocks with _wires_ to transfer _E_.",
-	"block.createaddition.connector_gold.tooltip.condition1": "R-click",
-	"block.createaddition.connector_gold.tooltip.behaviour1": "While holding a _Gold Spool_ to create a _wire link_ between two _Connectors_.",
+	"block.createaddition.large_connector": "Large Connector",
+	"block.createaddition.large_connector.tooltip": "CONNECTOR",
+	"block.createaddition.large_connector.tooltip.summary": "Connects _Forge Energy_ compatible blocks with _wires_ to transfer _FE_.",
+	"block.createaddition.large_connector.tooltip.condition1": "High Current",
+	"block.createaddition.large_connector.tooltip.behaviour1": "Connected with _high current wires_.",
+	"block.createaddition.large_connector.tooltip.condition2": "R-click",
+	"block.createaddition.large_connector.tooltip.behaviour2": "While holding a _Gold Spool_ or _Electrum Spool_ to create a _wire link_ with up to 6 other connectors.",
+	"block.createaddition.large_connector.tooltip.condition3": "R-click with Wrench",
+	"block.createaddition.large_connector.tooltip.behaviour3": "To cycle between _Push_, _Pull_, and _None_ modes.",
 
 	"block.createaddition.redstone_relay": "Redstone Relay",
 	"block.createaddition.redstone_relay.tooltip": "REDSTONE_RELAY",
-	"block.createaddition.redstone_relay.tooltip.summary": "Allows _E_ to pass from the _input connector_ to the _output connector_ when receiving a _redstone signal_.",
-	"block.createaddition.redstone_relay.tooltip.condition1": "Pull",
-	"block.createaddition.redstone_relay.tooltip.behaviour1": "Provides _E_ to _wires_ connected to the _connector_ marked with a upwards arrow.",
-	"block.createaddition.redstone_relay.tooltip.condition2": "Push",
-	"block.createaddition.redstone_relay.tooltip.behaviour2": "Accepts _E_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
+	"block.createaddition.redstone_relay.tooltip.summary": "Allows _FE_ to pass from the _input connector_ to the _output connector_ when receiving a _redstone signal_.",
+	"block.createaddition.redstone_relay.tooltip.condition1": "Low Current",
+	"block.createaddition.redstone_relay.tooltip.behaviour1": "Connected with _low current wires_.",
+	"block.createaddition.redstone_relay.tooltip.condition2": "Pull",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "Provides _FE_ to _wires_ connected to the _connector_ marked with a upwards arrow.",
+	"block.createaddition.redstone_relay.tooltip.condition3": "Push",
+	"block.createaddition.redstone_relay.tooltip.behaviour3": "Accepts _FE_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
 
 	"block.createaddition.digital_adapter": "Digital Adapter",
 	"block.createaddition.digital_adapter.tooltip": "DIGITAL_ADAPTER",
@@ -172,6 +219,8 @@
 	"block.createaddition.chocolate_cake": "Chocolate Cake",
 	"block.createaddition.honey_cake": "Honey Cake",
 
+	"block.createaddition.biomass_pellet_block": "Biomass Pallet",
+
 	"block.createaddition.seed_oil": "Seed Oil",
 	"block.createaddition.bioethanol": "Bioethanol",
 
@@ -179,15 +228,11 @@
 	"block.createaddition.barbed_wire.tooltip": "BARBED_WIRE",
 	"block.createaddition.barbed_wire.tooltip.summary": "Inflicts damage when walked through.",
 
-	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
-
 	"block.createaddition.tesla_coil": "Tesla Coil",
 
 	"block.createaddition.liquid_blaze_burner": "Blaze Burner with Straw",
 
 	"itemGroup.createaddition.main":"Create Crafts & Additions",
-
-	"createaddition.command.cca_api.link": "Click here to open API documentation",
 
 	"createaddition.ponder.tag.electric": "Electric Appliances",
 	"createaddition.ponder.tag.electric.description": "Components which use electricity",
@@ -195,12 +240,12 @@
 	"createaddition.ponder.electric_motor.header": "Generating Rotational Force using Electric Motors",
 	"createaddition.ponder.electric_motor.text_1": "Electric Motors are a compact and configurable source of Rotational Force",
 	"createaddition.ponder.electric_motor.text_2": "Scrolling on the back panel changes the RPM of the motor's rotational output",
-	"createaddition.ponder.electric_motor.text_3": "The Electric Motor requires a source of energy (E)",
+	"createaddition.ponder.electric_motor.text_3": "The Electric Motor requires a source of energy (FE)",
 	"createaddition.ponder.electric_motor.text_4": "The motor's energy consumption is determined by the set RPM",
 
 	"createaddition.ponder.alternator.header": "Generating Electric energy using an Alternator",
 	"createaddition.ponder.alternator.text_1": "The Alternator requires at least 32 RPM to operate",
-	"createaddition.ponder.alternator.text_2": "It generates electric energy (E) from rotational force",
+	"createaddition.ponder.alternator.text_2": "It generates electric energy (FE) from rotational force",
 	"createaddition.ponder.alternator.text_3": "Its energy production is determined by the input RPM",
 
 	"createaddition.ponder.rolling_mill.header": "Rolling metals into Rods and Wires",
@@ -220,7 +265,8 @@
 
 	"createaddition.ponder.tesla_coil.header": "Using a Tesla Coil to charge Items",
 	"createaddition.ponder.tesla_coil.text_1": "The Tesla Coil will charge Items below it",
-	"createaddition.ponder.tesla_coil.text_2": "It will charge any Energy Items and more!",
+	"createaddition.ponder.tesla_coil.text_2": "It will charge any Forge Energy Items and more!",
+
 	"createaddition.ponder.tesla_coil_hurt.header": "Dangerous Tesla Coils",
 	"createaddition.ponder.tesla_coil_hurt.text_1": "The Tesla Coil is also able to inflict damage on nearby Players and Mobs",
 	"createaddition.ponder.tesla_coil_hurt.text_2": "This can be activated with a Redstone signal",
@@ -243,9 +289,9 @@
 	"createaddition.display_source.modular_accumulator": "Accumulator",
 	"createaddition.display_source.accumulator.progress_bar": "Progress Bar",
 	"createaddition.display_source.accumulator.percent": "Percentage",
-	"createaddition.display_source.accumulator.current": "Energy Stored in E",
+	"createaddition.display_source.accumulator.current": "Energy Stored in FE",
 	"createaddition.display_source.accumulator.max": "Total Capacity",
-	"createaddition.display_source.accumulator.remaining": "Remaining E",
+	"createaddition.display_source.accumulator.remaining": "Remaining FE",
 	"createaddition.display_source.accumulator.display": "Choose an Option:",
 
 	"createaddition.ponder.pei_transfer.header": "Contraption Energy Exchange",

@@ -25,6 +25,9 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,10 +47,8 @@ public class CreateAddition implements ModInitializer {
 	public static final SimpleChannel Network = new SimpleChannel(new ResourceLocation(MODID, "main"));
 
     static {
-        REGISTRATE.setTooltipModifierFactory(item ->
-            new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
-                    .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
-        );
+        REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
+                .andThen(TooltipModifier.mapNull(KineticStats.create(item))));
     }
 
     @Override
@@ -62,8 +63,9 @@ public class CreateAddition implements ModInitializer {
         IE_ACTIVE = FabricLoader.getInstance().isModLoaded("immersiveengineering");
         CC_ACTIVE = FabricLoader.getInstance().isModLoaded("computercraft");
         AE2_ACTIVE = FabricLoader.getInstance().isModLoaded("ae2");
+        CAArmInteractions.register();
         CABlocks.register();
-        CATileEntities.register();
+        CABlockEntities.register();
         CAItems.register();
         CAFluids.register();
         CAEffects.register();
@@ -71,7 +73,6 @@ public class CreateAddition implements ModInitializer {
         CASchedule.register();
         ModGroup.register();
         REGISTRATE.register();
-
 
         //  Setup events
         GameEvents.initCommon();
@@ -86,15 +87,9 @@ public class CreateAddition implements ModInitializer {
     	BlockStressValues.registerProvider(MODID, AllConfigs.server().kinetics.stressValues);
     	BoilerHeaters.registerHeater(CABlocks.LIQUID_BLAZE_BURNER.get(), (level, pos, state) -> {
     		BlazeBurnerBlock.HeatLevel value = state.getValue(LiquidBlazeBurnerBlock.HEAT_LEVEL);
-			if (value == BlazeBurnerBlock.HeatLevel.NONE) {
-				return -1;
-			}
-			if (value == BlazeBurnerBlock.HeatLevel.SEETHING) {
-				return 2;
-			}
-			if (value.isAtLeast(BlazeBurnerBlock.HeatLevel.FADING)) {
-				return 1;
-			}
+			if (value == BlazeBurnerBlock.HeatLevel.NONE) return -1;
+			if (value == BlazeBurnerBlock.HeatLevel.SEETHING) return 2;
+			if (value.isAtLeast(BlazeBurnerBlock.HeatLevel.FADING)) return 1;
 			return 0;
     	});
 

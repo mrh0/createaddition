@@ -1,7 +1,7 @@
 package com.mrh0.createaddition.compat.computercraft;
 
-import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
-import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
+import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlockEntity;
+import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlockEntity;
 import com.simibubi.create.content.contraptions.elevator.ElevatorColumn;
 import com.simibubi.create.content.contraptions.elevator.ElevatorContactBlock;
 import com.simibubi.create.content.contraptions.elevator.ElevatorContraption;
@@ -14,6 +14,7 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -21,9 +22,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class DigitalAdapterPeripheral implements IPeripheral {
     private final String type;
-    private final DigitalAdapterTileEntity tileEntity;
+    private final DigitalAdapterBlockEntity tileEntity;
 
-    public DigitalAdapterPeripheral(String type, DigitalAdapterTileEntity tileEntity) {
+    public DigitalAdapterPeripheral(String type, DigitalAdapterBlockEntity tileEntity) {
         this.type = type;
         this.tileEntity = tileEntity;
     }
@@ -82,7 +83,7 @@ public class DigitalAdapterPeripheral implements IPeripheral {
 
     @LuaFunction(mainThread = true)
     public final int getMaxLines() {
-        return DigitalAdapterTileEntity.MAX_LINES;
+        return DigitalAdapterBlockEntity.MAX_LINES;
     }
 
     // Speed Controller
@@ -261,11 +262,11 @@ public class DigitalAdapterPeripheral implements IPeripheral {
 
     @LuaFunction(mainThread = true)
     public final float getDurationAngle(int deg, int rpm) throws LuaException {
-        return ElectricMotorTileEntity.getDurationAngle(deg, 0, rpm) / 20f;
+        return ElectricMotorBlockEntity.getDurationAngle(deg, 0, rpm) / 20f;
     }
 
     @LuaFunction(mainThread = true)
     public final float getDurationDistance(int blocks, int rpm) throws LuaException {
-        return ElectricMotorTileEntity.getDurationDistance(blocks, 0, rpm) / 20f;
+        return ElectricMotorBlockEntity.getDurationDistance(blocks, 0, rpm) / 20f;
     }
 }

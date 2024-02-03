@@ -1,10 +1,10 @@
 package com.mrh0.createaddition.compat.computercraft;
 
-import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterTileEntity;
-import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorTileEntity;
-import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorTileEntity;
-import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
-import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayTileEntity;
+import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlockEntity;
+import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlockEntity;
+import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlockEntity;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlockEntity;
+import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlockEntity;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,15 +18,15 @@ public class PeripheralProvider{
 
     @Nullable
     public static IPeripheral getPeripheral(@NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState state, @NotNull BlockEntity be, @NotNull Direction direction) {
-        if(be instanceof ElectricMotorTileEntity electricMotorTile) {
+        if(be instanceof ElectricMotorBlockEntity electricMotorTile) {
             return Peripherals.createElectricMotorPeripheral(electricMotorTile);
-        } else if (be instanceof PortableEnergyInterfaceTileEntity portableEnergyInterfaceTile) {
+        } else if (be instanceof PortableEnergyInterfaceBlockEntity portableEnergyInterfaceTile) {
             return Peripherals.createPortableEnergyInterfacePeripheral(portableEnergyInterfaceTile);
-        } else if (be instanceof ModularAccumulatorTileEntity modularAccumulatorTile) {
+        } else if (be instanceof ModularAccumulatorBlockEntity modularAccumulatorTile) {
             return Peripherals.createModularAccumulatorPeripheral(modularAccumulatorTile);
-        } else if (be instanceof RedstoneRelayTileEntity redstoneRelayTile) {
+        } else if (be instanceof RedstoneRelayBlockEntity redstoneRelayTile) {
             return Peripherals.createRedstoneRelayPeripheral(redstoneRelayTile);
-        } else if (be instanceof DigitalAdapterTileEntity digitalAdapterTileEntity) {
+        } else if (be instanceof DigitalAdapterBlockEntity digitalAdapterTileEntity) {
             return Peripherals.createDigitalAdapterPeripheral(digitalAdapterTileEntity);
         }
 

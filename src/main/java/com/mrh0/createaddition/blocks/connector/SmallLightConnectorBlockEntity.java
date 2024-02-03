@@ -26,7 +26,7 @@ public class SmallLightConnectorBlockEntity extends AbstractConnectorBlockEntity
     private int posTimeOffset = 0;
 
     public SmallLightConnectorBlockEntity(BlockEntityType<?> blockEntityTypeIn, BlockPos pos, BlockState state) {
-        super(blockEntityTypeIn, pos, state, Config.SMALL_CONNECTOR_MAX_INPUT.get(), Config.SMALL_CONNECTOR_MAX_OUTPUT.get(), Math.max(Config.SMALL_CONNECTOR_MAX_INPUT.get(), Config.SMALL_CONNECTOR_MAX_OUTPUT.get()));
+        super(blockEntityTypeIn, pos, state);
 
         posTimeOffset = 10 + (Math.abs(pos.getX()*31 + pos.getY()*45 + pos.getZ()*33) % 7) * 3;
     }
@@ -45,6 +45,16 @@ public class SmallLightConnectorBlockEntity extends AbstractConnectorBlockEntity
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> list) {}
+
+    @Override
+    public long getMaxIn() {
+        return Config.SMALL_CONNECTOR_MAX_INPUT.get();
+    }
+
+    @Override
+    public long getMaxOut() {
+        return Config.SMALL_CONNECTOR_MAX_OUTPUT.get();
+    }
 
     @Override
     public int getNodeCount() {

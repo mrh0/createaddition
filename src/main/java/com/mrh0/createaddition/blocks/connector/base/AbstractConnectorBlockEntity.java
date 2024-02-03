@@ -1,18 +1,24 @@
 package com.mrh0.createaddition.blocks.connector.base;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.blocks.connector.ConnectorType;
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.debug.IDebugDrawer;
-import com.mrh0.createaddition.energy.*;
+import com.mrh0.createaddition.energy.IWireNode;
+import com.mrh0.createaddition.energy.LocalNode;
+import com.mrh0.createaddition.energy.NodeRotation;
+import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,6 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
@@ -32,7 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class AbstractConnectorBlockEntity extends BaseElectricTileEntity implements IWireNode, IObserveTileEntity, IHaveGoggleInformation, IDebugDrawer {
+public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity implements EnergyTransferable, IWireNode, IObserveTileEntity, IHaveGoggleInformation, IDebugDrawer {
 
 	private final Set<LocalNode> wireCache = new HashSet<>();
 	private final LocalNode[] localNodes;
@@ -43,10 +50,61 @@ public abstract class AbstractConnectorBlockEntity extends BaseElectricTileEntit
 	private boolean wasContraption = false;
 	private boolean firstTick = true;
 
-	public AbstractConnectorBlockEntity(BlockEntityType<?> blockEntityTypeIn, BlockPos pos, BlockState state, long capacity, long maxInput, long maxOutput) {
-		super(blockEntityTypeIn, pos, state, capacity, maxInput, maxOutput);
+	@NotNull
+	protected EnergyStorage networkStorage = new NetworkEnergyStorage();
+	@NotNull
+	protected EnergyStorage externalStorage = EnergyStorage.EMPTY;
+
+	public AbstractConnectorBlockEntity(BlockEntityType<?> blockEntityTypeIn, BlockPos pos, BlockState state) {
+		super(blockEntityTypeIn, pos, state);
 		this.localNodes = new LocalNode[getNodeCount()];
 		this.nodeCache = new IWireNode[getNodeCount()];
+	}
+
+	public EnergyStorage getEnergyStorage(Direction side){
+		if(isEnergyInput(side)||isEnergyOutput(side)) {
+			return networkStorage;
+		}
+		return null;
+	}
+
+
+	public abstract long getMaxIn();
+	public abstract long getMaxOut();
+	//Renamed to prevent name conflict
+	public long getCapacityOutside() {
+		return Math.min(getMaxIn(), getMaxOut());
+	}
+	private class NetworkEnergyStorage implements EnergyStorage {
+
+		@Override
+		public long insert(long maxAmount, TransactionContext transaction) {
+			if(!Config.CONNECTOR_ALLOW_PASSIVE_IO.get()) return 0;
+			if(getMode() != ConnectorMode.Pull) return 0;
+			if (network == null) return 0;
+			maxAmount = Math.min(maxAmount, getMaxIn());
+			return network.push(maxAmount);
+		}
+
+		@Override
+		public long extract(long maxAmount, TransactionContext transaction) {
+			if(!Config.CONNECTOR_ALLOW_PASSIVE_IO.get()) return 0;
+			if(getMode() != ConnectorMode.Push) return 0;
+			if (network == null) return 0;
+			maxAmount = Math.min(maxAmount, getMaxOut());
+			return network.pull(maxAmount);
+		}
+
+		@Override
+		public long getAmount() {
+			if (network == null) return 0;
+			return Math.min(getCapacity(), network.getBuff());
+		}
+
+		@Override
+		public long getCapacity() {
+			return getCapacityOutside();
+		}
 	}
 
 	@Override
@@ -184,10 +242,13 @@ public abstract class AbstractConnectorBlockEntity extends BaseElectricTileEntit
 			this.wasContraption = false;
 			validateNodes();
 		}
+
+		updateExternalEnergyStorage();
 	}
 
 	protected void specialTick() {}
 
+	boolean externalStorageInvalid = false;
 	@Override
 	public void tick() {
 		if (this.firstTick) firstTick();
@@ -205,44 +266,35 @@ public abstract class AbstractConnectorBlockEntity extends BaseElectricTileEntit
 		if(level == null) return;
 		if(level.isClientSide()) return;
 		if(awakeNetwork(level)) notifyUpdate();
+
 		networkTick(network);
+
+		if (externalStorageInvalid) updateExternalEnergyStorage();
 	}
 
 	private void networkTick(EnergyNetwork network) {
 		ConnectorMode mode = getMode();
         if(level == null) return;
-        if(level.isClientSide())
-			return;
+		if(level.isClientSide()) return;
 
-		Direction d = getBlockState().getValue(AbstractConnectorBlock.FACING);
-		EnergyStorage ies = getCachedEnergy(d);
-		if(ies == null) return;
-
-		if (mode == ConnectorMode.Push || mode == ConnectorMode.Passive) {
-			long pull = network.pull(demand);
-			try (Transaction t = TransferUtil.getTransaction()) {
-				ies.insert(pull, t);
-				t.commit();
+		if (mode == ConnectorMode.Push) {
+			long pulled;
+			try (Transaction t = TransferUtil.getTransaction()){
+				pulled = network.pull(network.demand(externalStorage.insert(getMaxOut(), t)));
 			}
-
 			try (Transaction t = TransferUtil.getTransaction()) {
-				long testInsert = ies.insert(MAX_OUT, t);
-				demand = network.demand(testInsert);
+				externalStorage.insert(pulled, t);
+				t.commit();
 			}
 		}
 
 		if (mode == ConnectorMode.Pull) {
-			try (Transaction t = TransferUtil.getTransaction()) {
-				long extracted = ies.extract(localEnergy.getSpace(), t);
-				localEnergy.internalProduceEnergy(extracted);
+			long toPush;
+			try(Transaction t = TransferUtil.getTransaction()) {
+				toPush = externalStorage.extract(network.push(getMaxIn(), true), t);
 				t.commit();
 			}
-		}
-
-		if (mode == ConnectorMode.Pull || mode == ConnectorMode.Passive) {
-			long testExtract = localEnergy.simulateExtract(Long.MAX_VALUE);
-			long push = network.push(testExtract);
-			localEnergy.internalConsumeEnergy(push);
+			network.push(toPush);
 		}
 	}
 
@@ -288,8 +340,11 @@ public abstract class AbstractConnectorBlockEntity extends BaseElectricTileEntit
 
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacket pack) {
-		if(isNetworkValid(0))
+		if(isNetworkValid(0)) {
 			EnergyNetworkPacket.send(worldPosition, getNetwork(0).getPulled(), getNetwork(0).getPushed(), player);
+		} else {
+			EnergyNetworkPacket.send(worldPosition, 0, 0, player);
+		}
 	}
 
 	@Override
@@ -309,11 +364,32 @@ public abstract class AbstractConnectorBlockEntity extends BaseElectricTileEntit
 		tooltip.add(Component.literal(spacing).append(" ")
 				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 
-		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+		return true;
 	}
 
 	public boolean ignoreCapSide() {
 		return this.getBlockState().getValue(AbstractConnectorBlock.MODE).isActive();
+	}
+
+	public void updateExternalEnergyStorage() {
+		if (level == null) return;
+		if (!level.isLoaded(getBlockPos())) return;
+		externalStorageInvalid = false;
+		var side = getBlockState().getValue(AbstractConnectorBlock.FACING);
+		BlockPos externalPos = worldPosition.relative(side);
+		if (!level.isLoaded(externalPos)) {
+			externalStorage = EnergyStorage.EMPTY;
+			return;
+		}
+		EnergyStorage es = EnergyStorage.SIDED.find(level, externalPos, side.getOpposite());
+		if(ignoreCapSide() && es == null) {
+			es = EnergyStorage.SIDED.find(level, externalPos, null);
+		}
+		if(es == null){
+			externalStorage = EnergyStorage.EMPTY;
+		} else {
+			externalStorage = es;
+		}
 	}
 
 	@Override

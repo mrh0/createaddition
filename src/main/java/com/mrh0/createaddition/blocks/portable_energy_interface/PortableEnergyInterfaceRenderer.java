@@ -26,13 +26,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Consumer;
 
-public class PortableEnergyInterfaceRenderer extends SafeBlockEntityRenderer<PortableEnergyInterfaceTileEntity> {
+public class PortableEnergyInterfaceRenderer extends SafeBlockEntityRenderer<PortableEnergyInterfaceBlockEntity> {
 
 	public PortableEnergyInterfaceRenderer(BlockEntityRendererProvider.Context context) {
 	}
 
 	@Override
-	protected void renderSafe(PortableEnergyInterfaceTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+	protected void renderSafe(PortableEnergyInterfaceBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		if (Backend.canUseInstancing(te.getLevel())) return;
 		BlockState blockState = te.getBlockState();
 		float progress = te.getExtensionDistance(partialTicks);
@@ -74,12 +74,12 @@ public class PortableEnergyInterfaceRenderer extends SafeBlockEntityRenderer<Por
 		buffer.centre().rotateY(AngleHelper.horizontalAngle(facing)).rotateX(facing == Direction.UP ? 0.0D : (facing == Direction.DOWN ? 180.0D : 90.0D)).unCentre();
 	}
 
-	static PortableEnergyInterfaceTileEntity getTargetPSI(MovementContext context) {
+	static PortableEnergyInterfaceBlockEntity getTargetPSI(MovementContext context) {
 		String _workingPos_ = "WorkingPos";
 		if (!context.data.contains(_workingPos_)) return null;
 		BlockPos pos = NbtUtils.readBlockPos(context.data.getCompound(_workingPos_));
 		BlockEntity tileEntity = context.world.getBlockEntity(pos);
-		if (tileEntity instanceof PortableEnergyInterfaceTileEntity psi) return !psi.isTransferring() ? null : psi;
+		if (tileEntity instanceof PortableEnergyInterfaceBlockEntity psi) return !psi.isTransferring() ? null : psi;
 		return null;
 	}
 }

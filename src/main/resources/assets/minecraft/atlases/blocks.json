@@ -16,7 +16,7 @@
       "type": "single",
       "resource": "createaddition:fluid/seed_oil_still"
     },
-    {
+	{
       "type": "single",
       "resource": "createaddition:entity/liquid_hat"
     },

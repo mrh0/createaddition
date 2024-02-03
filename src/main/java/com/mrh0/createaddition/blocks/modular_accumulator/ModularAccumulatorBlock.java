@@ -1,6 +1,6 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
@@ -29,8 +29,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<ModularAccumulatorTileEntity>, CustomSoundTypeBlock {
-
+public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<ModularAccumulatorBlockEntity>, CustomSoundTypeBlock {
+	public ModularAccumulatorBlock(Properties properties){
+        super(properties);
+    }
 	public static final BooleanProperty TOP = BooleanProperty.create("top");
 	public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom");
 
@@ -67,7 +69,7 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<M
 			return;
 		if (moved)
 			return;
-		withBlockEntityDo(world, pos, ModularAccumulatorTileEntity::updateConnectivity);
+		withBlockEntityDo(world, pos, ModularAccumulatorBlockEntity::updateConnectivity);
 	}
 
 	@Override
@@ -215,9 +217,9 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<M
 	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.hasBlockEntity() && (state.getBlock() != newState.getBlock() || !newState.hasBlockEntity())) {
 			BlockEntity te = world.getBlockEntity(pos);
-			if (!(te instanceof ModularAccumulatorTileEntity))
+			if (!(te instanceof ModularAccumulatorBlockEntity))
 				return;
-			ModularAccumulatorTileEntity accumulatorTE = (ModularAccumulatorTileEntity) te;
+			ModularAccumulatorBlockEntity accumulatorTE = (ModularAccumulatorBlockEntity) te;
 			world.removeBlockEntity(pos);
 			CAConnectivityHandler.splitMulti(accumulatorTE);
 		}
@@ -244,7 +246,7 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<M
 
 	@Override
 	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-		return getBlockEntityOptional(worldIn, pos).map(ModularAccumulatorTileEntity::getControllerBE)
+		return getBlockEntityOptional(worldIn, pos).map(ModularAccumulatorBlockEntity::getControllerBE)
 			.map(te -> ComparatorUtil.fractionToRedstoneLevel(te.getFillState()))
 			.orElse(0);
 	}
@@ -253,24 +255,24 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<M
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
 		if(tileentity != null) {
-			if(tileentity instanceof ModularAccumulatorTileEntity) {
-				((ModularAccumulatorTileEntity)tileentity).updateCache();
+			if(tileentity instanceof ModularAccumulatorBlockEntity) {
+				((ModularAccumulatorBlockEntity)tileentity).updateCache();
 			}
 		}
 	}
 
 	@Override
-	public Class<ModularAccumulatorTileEntity> getBlockEntityClass() {
-		return ModularAccumulatorTileEntity.class;
+	public Class<ModularAccumulatorBlockEntity> getBlockEntityClass() {
+		return ModularAccumulatorBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends ModularAccumulatorTileEntity> getBlockEntityType() {
-		return CATileEntities.MODULAR_ACCUMULATOR.get();
+	public BlockEntityType<? extends ModularAccumulatorBlockEntity> getBlockEntityType() {
+		return CABlockEntities.MODULAR_ACCUMULATOR.get();
 	}
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return CATileEntities.MODULAR_ACCUMULATOR.create(pos, state);
+		return CABlockEntities.MODULAR_ACCUMULATOR.create(pos, state);
 	}
 }

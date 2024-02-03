@@ -3,7 +3,7 @@ package com.mrh0.createaddition.ponder;
 import com.mrh0.createaddition.blocks.connector.base.AbstractConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.base.ConnectorMode;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
-import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceTileEntity;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlockEntity;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAFluids;
@@ -471,7 +471,7 @@ public class PonderScenes {
 		scene.idle(35);
 
 		Selection both = util.select.fromTo(2, 2, 2, 4, 2, 2);
-		Class<PortableEnergyInterfaceTileEntity> peiClass = PortableEnergyInterfaceTileEntity.class;
+		Class<PortableEnergyInterfaceBlockEntity> peiClass = PortableEnergyInterfaceBlockEntity.class;
 
 		scene.world.modifyBlockEntityNBT(both, peiClass, nbt -> {
 			nbt.putFloat("Distance", 1);
@@ -516,7 +516,7 @@ public class PonderScenes {
 		scene.configureBasePlate(0, 0, 5);
 		scene.setSceneOffsetY(-1);
 
-		Class<PortableEnergyInterfaceTileEntity> peiClass = PortableEnergyInterfaceTileEntity.class;
+		Class<PortableEnergyInterfaceBlockEntity> peiClass = PortableEnergyInterfaceBlockEntity.class;
 		Selection peis = util.select.fromTo(1, 1, 3, 1, 3, 3);
 		scene.world.modifyBlockEntityNBT(peis, peiClass, nbt -> {
 			nbt.putFloat("Distance", 1);

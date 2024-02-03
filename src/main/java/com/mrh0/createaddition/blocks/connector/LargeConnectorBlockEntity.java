@@ -22,11 +22,21 @@ public class LargeConnectorBlockEntity extends AbstractConnectorBlockEntity {
     public final static Vec3 OFFSET_EAST = new Vec3(OFFSET_HEIGHT/16f, 0f, 0f);
 
     public LargeConnectorBlockEntity(BlockEntityType<?> blockEntityTypeIn, BlockPos pos, BlockState state) {
-        super(blockEntityTypeIn, pos, state, Config.LARGE_CONNECTOR_MAX_INPUT.get(), Config.LARGE_CONNECTOR_MAX_OUTPUT.get(), Math.max(Config.LARGE_CONNECTOR_MAX_INPUT.get(), Config.LARGE_CONNECTOR_MAX_OUTPUT.get()));
+        super(blockEntityTypeIn, pos, state);
     }
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> list) {}
+
+    @Override
+    public long getMaxIn() {
+        return Config.LARGE_CONNECTOR_MAX_INPUT.get();
+    }
+
+    @Override
+    public long getMaxOut() {
+        return Config.LARGE_CONNECTOR_MAX_OUTPUT.get();
+    }
 
     @Override
     public int getNodeCount() {

@@ -37,7 +37,7 @@ description='''
 Create Crafts & Additions extends Create and acts as a bridge between electric and kinetic energy from Create.
 Join the Discord: https://discord.gg/mRbNnyKTEu
 Special thanks to:
-the Create team, the Forge team, and all contributors on the CC&A discord including: 
+the Create team, the Forge team, and all contributors on the CC&A discord including:
 AlphaMode, BobDole, legoatoom, StockiesLad, THEREDSTONEBRO, and Uraxys.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
@@ -55,13 +55,13 @@ AlphaMode, BobDole, legoatoom, StockiesLad, THEREDSTONEBRO, and Uraxys.
 [[dependencies.createaddition]]
     modId="create"
     mandatory=true
-    versionRange="[0.5.1b,0.5.2)"
+    versionRange="[0.5.1.e,0.5.2)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
     modId="flywheel"
     mandatory=true
-    versionRange="[0.6,0.7)"
+    versionRange="[0.6.8.a,0.7)"
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.createaddition]]

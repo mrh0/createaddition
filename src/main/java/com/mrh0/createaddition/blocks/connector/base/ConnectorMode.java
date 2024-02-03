@@ -16,7 +16,7 @@ public enum ConnectorMode implements StringRepresentable {
 
 	private String name;
 
-	private ConnectorMode(String name) {
+	ConnectorMode(String name) {
 		this.name = name;
 	}
 
@@ -63,7 +63,7 @@ public enum ConnectorMode implements StringRepresentable {
 
 		if(e.supportsExtraction()) return Pull;
 		if(e.supportsInsertion()) return Push;
-		
+
 		return None;
 	}
 }

@@ -1,7 +1,7 @@
 package com.mrh0.createaddition.blocks.connector;
 
 import com.mrh0.createaddition.blocks.connector.base.AbstractConnectorBlock;
-import com.mrh0.createaddition.index.CATileEntities;
+import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.core.BlockPos;
@@ -25,12 +25,12 @@ public class LargeConnectorBlock extends AbstractConnectorBlock<LargeConnectorBl
 
     @Override
     public BlockEntityType<? extends LargeConnectorBlockEntity> getBlockEntityType() {
-        return CATileEntities.LARGE_CONNECTOR.get();
+        return CABlockEntities.LARGE_CONNECTOR.get();
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return CATileEntities.LARGE_CONNECTOR.create(pos, state);
+        return CABlockEntities.LARGE_CONNECTOR.create(pos, state);
     }
 
     @Override

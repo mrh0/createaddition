@@ -21,25 +21,24 @@ public enum WireConnectResult {
 	NO_CONNECTION(Component.translatable("statusbar.createaddition.wire.no_connection").withStyle(ChatFormatting.RED)),
 	INVALID(Component.translatable("statusbar.createaddition.wire.invalid").withStyle(ChatFormatting.RED)),
 	REQUIRES_HIGH_CURRENT(Component.translatable("statusbar.createaddition.wire.requires_high_current").withStyle(ChatFormatting.RED));
-	
 	private final Component message;
-	
+
 	WireConnectResult(Component message) {
 		this.message = message;
 	}
-	
+
 	public Component getMessage() {
 		return message;
 	}
-	
+
 	public boolean isLinked() {
 		return this == LINKED || this == LINKED_IN || this == LINKED_OUT;
 	}
-	
+
 	public boolean isConnect() {
 		return this == CONNECT || this == CONNECT_IN || this == CONNECT_OUT;
 	}
-	
+
 	public static WireConnectResult getLink(boolean in, boolean out) {
 		if(in && !out)
 			return LINKED_IN;
@@ -47,7 +46,7 @@ public enum WireConnectResult {
 			return LINKED_OUT;
 		return LINKED;
 	}
-	
+
 	public static WireConnectResult getConnect(boolean in, boolean out) {
 		if(in && !out)
 			return CONNECT_IN;

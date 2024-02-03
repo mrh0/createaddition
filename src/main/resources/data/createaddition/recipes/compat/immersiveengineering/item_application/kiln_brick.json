@@ -1,0 +1,22 @@
+{
+  "type": "create:item_application",
+  "ingredients": [
+    {
+      "tag": "forge:sandstone"
+    },
+    {
+      "item": "minecraft:brick"
+    }
+  ],
+  "results": [
+    {
+      "item": "immersiveengineering:alloybrick"
+    }
+  ],
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ]
+}

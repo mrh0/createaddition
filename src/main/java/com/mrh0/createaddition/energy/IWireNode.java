@@ -1,10 +1,14 @@
 package com.mrh0.createaddition.energy;
 
+import java.util.HashMap;
+import java.util.Set;
+
 import com.mrh0.createaddition.blocks.connector.ConnectorType;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.util.Util;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -18,9 +22,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Set;
 
 public interface IWireNode {
 
@@ -214,6 +215,18 @@ public interface IWireNode {
 	}
 
 	/**
+	 * Check if this {@link IWireNode} has any connection.
+	 *
+	 * @return  True if any node exists, false otherwise.
+	 */
+	default boolean hasAnyConnection() {
+		for (int i = 0; i < getNodeCount(); i++) {
+			if(hasConnection(i)) return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Check if this {@link IWireNode} has a node at the given position.
 	 *
 	 * @param   pos
@@ -309,7 +322,7 @@ public interface IWireNode {
 			return getNetwork(node).isValid();
 	}
 
-	default boolean isNodeIndicesConnected(int in, int other) {
+	default boolean isNodeIndeciesConnected(int in, int other) {
 		return true;
 	}
 
@@ -534,6 +547,7 @@ public interface IWireNode {
 	}
 
 	int getMaxWireLength();
+
 	static WireConnectResult connect(Level world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
 		BlockEntity te1 = world.getBlockEntity(pos1);
 		BlockEntity te2 = world.getBlockEntity(pos2);
@@ -551,7 +565,6 @@ public interface IWireNode {
 		if(wn1.getConnectorType() == ConnectorType.Large && wn2.getConnectorType() == ConnectorType.Large) {
 			if(type == WireType.COPPER) return WireConnectResult.REQUIRES_HIGH_CURRENT;
 		}
-
 		wn1.setNode(node1, node2, wn2.getPos(), type);
 		wn2.setNode(node2, node1, wn1.getPos(), type);
 		return WireConnectResult.getLink(wn2.isNodeInput(node2), wn2.isNodeOutput(node2));

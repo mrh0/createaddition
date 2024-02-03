@@ -7,7 +7,6 @@ import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -96,17 +95,17 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-		if(tileentity != null) {
-			if(tileentity instanceof AbstractConnectorBlockEntity) {
-				((AbstractConnectorBlockEntity)tileentity).updateCache();
+		BlockEntity blockEntity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
+		if(blockEntity != null) {
+			if(blockEntity instanceof AbstractConnectorBlockEntity) {
+				((AbstractConnectorBlockEntity)blockEntity).updateExternalEnergyStorage();
 			}
 		}
 		if (!state.canSurvive(worldIn, pos)) {
-			dropResources(state, worldIn, pos, tileentity);
+			dropResources(state, worldIn, pos, blockEntity);
 
-			if(tileentity instanceof IWireNode)
-				((IWireNode) tileentity).dropWires(worldIn, true);
+			if(blockEntity instanceof IWireNode)
+				((IWireNode) blockEntity).dropWires(worldIn, true);
 
 			worldIn.removeBlock(pos, false);
 
@@ -128,11 +127,6 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 		// Handle old rotation.
 		return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
 	}
-
-	/*@Override
-	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
-		return rotate(state, direction);
-	}*/
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
