@@ -2,6 +2,7 @@ package com.mrh0.createaddition.blocks.liquid_blaze_burner;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,6 +40,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.fluid.base.FullItemFluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
@@ -150,19 +152,21 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 			update(tankInventory.getFluid());
 		first = false;
 
-		if(remainingBurnTime >= 1)
-			return;
-
 		if (recipeCache.isEmpty())
 			return;
 
 		if (tankInventory.getFluidAmount() < FLUID_CONSUMPTION_THRESHOLD)
 			return;
-		if (remainingBurnTime > MAX_HEAT_CAPACITY)
+
+		FuelType newActiveFuel = recipeCache.get().isSuperheated() ? FuelType.SPECIAL : FuelType.NORMAL;
+
+		if(remainingBurnTime >= 1 && !(activeFuel == FuelType.NORMAL && newActiveFuel == FuelType.SPECIAL))
 			return;
 
+		activeFuel = newActiveFuel;
+
 		remainingBurnTime += recipeCache.get().getBurnTime() / 10;
-		activeFuel = recipeCache.get().isSuperheated() ? FuelType.SPECIAL : FuelType.NORMAL;
+
 
 		TransferUtil.extractAnyFluid(tankInventory, FLUID_CONSUMPTION_THRESHOLD);
 
@@ -203,13 +207,13 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 			return;
 		}
 
+		if (remainingBurnTime > 0 && !isCreative)
+			remainingBurnTime--;
+
 		burningTick();
 
 		if (isCreative)
 			return;
-
-		if (remainingBurnTime > 0)
-			remainingBurnTime--;
 
 		if (activeFuel == FuelType.NORMAL)
 			updateBlockState();
@@ -305,19 +309,14 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		Storage<FluidVariant> handler = context.find(FluidStorage.ITEM);
 		if (handler == null)
 			return false;
-		FluidStack stack = TransferUtil.firstOrEmpty(handler);
-		if (stack.isEmpty())
-			return false;
-		Optional<LiquidBurningRecipe> recipe = find(stack, level);
-		if (recipe.isEmpty()) return false;
 
 		if (tankInventory == null)
 			return false;
 
-		long extracted = handler.extract(stack.getType(),
-				tankInventory.getCapacity() - tankInventory.getFluidAmount(), t);
-		if(extracted > 0) {
-			tankInventory.insert(stack.getType(), extracted, t);
+		Predicate<FluidVariant> filter = fluidVariant -> find(new FluidStack(fluidVariant, 1), level).isPresent();
+
+		long moved = StorageUtil.move(handler, tankInventory, filter, Long.MAX_VALUE, t);
+		if(moved > 0) {
 			level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
 			return true;
 		} else {
@@ -326,8 +325,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	}
 
 	/**
-	 * @return true if the heater updated its burn time and an item should be
-	 *         consumed
+	 * @return true if the heater updated its burn time, items are auto-consumed!
 	 */
 	protected boolean tryUpdateFuel(ItemStack itemStack, ContainerItemContext context, TransactionContext t, boolean forceOverflow) {
 		if (isCreative)
