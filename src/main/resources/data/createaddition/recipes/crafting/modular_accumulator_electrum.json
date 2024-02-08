@@ -8,7 +8,7 @@
 	{
 		"R":
 		{
-			"tag": "forge:rods/copper"
+			"tag": "c:copper_rods"
 		},
 		"B":
 		{
@@ -20,7 +20,7 @@
 		},
 		"W":
 		{
-			"tag": "forge:wires/electrum"
+			"tag": "c:wires/electrum"
 		}
 	},
 	"result":{
