@@ -202,14 +202,14 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 				spawnParticles(getHeatLevelFromBlock(), 1);
 			return;
 		}
+		
+		if (remainingBurnTime > 0)
+			remainingBurnTime--;
 
 		burningTick();
 
 		if (isCreative)
 			return;
-
-		if (remainingBurnTime > 0)
-			remainingBurnTime--;
 
 		if (activeFuel == FuelType.NORMAL)
 			updateBlockState();
