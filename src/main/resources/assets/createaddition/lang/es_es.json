@@ -211,5 +211,8 @@
 	"effect.createaddition.shocking": "Electrocutado",
 	"death.attack.tesla_coil": "%1$s recibió una descarga eléctrica letal",
 	"death.attack.tesla_coil.player": "%1$s recibió una descarga eléctrica letal mientras luchaba %2$s",
-	"effect.createaddition.shocking.description": "Causa una velocidad de movimiento severamente reducida"
+	"effect.createaddition.shocking.description": "Causa una velocidad de movimiento severamente reducida",
+
+	"createaddition.subtitle.loud_zap": "Bobina de Tesla descarga",
+	"createaddition.subtitle.little_zap": "Bobina de Tesla chispea"
 }
