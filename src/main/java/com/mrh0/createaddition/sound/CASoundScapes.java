@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.sound;
 
+import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.index.CASounds;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import com.simibubi.create.foundation.utility.Pair;
@@ -20,7 +21,6 @@ public class CASoundScapes {
 		DYNAMO(CASoundScapes::dynamo),
 		TESLA(CASoundScapes::tesla),
 		CHARGE(CASoundScapes::charge),
-
 		;
 
 		private final BiFunction<Float, AmbienceGroup, CASoundScape> factory;
@@ -58,18 +58,18 @@ public class CASoundScapes {
 	private static final Map<Pair<AmbienceGroup, PitchGroup>, CASoundScape> activeSounds = new HashMap<>();
 
 	public static void play(AmbienceGroup group, BlockPos pos, float pitch) {
-		if (!AllConfigs.client().enableAmbientSounds.get())
-			return;
-		if (!outOfRange(pos))
-			addSound(group, pos, pitch);
+		if (!AllConfigs.client().enableAmbientSounds.get()) return;
+		// if (!Config.AUDIO_ENABLED.get()) return;
+		if(!CASounds.ELECTRIC_MOTOR_BUZZ.isPresent() || !CASounds.ELECTRIC_CHARGE.isPresent()) return;
+
+		if (!outOfRange(pos)) addSound(group, pos, pitch);
 	}
 
 	public static void tick() {
 		activeSounds.values()
 			.forEach(CASoundScape::tick);
 
-		if (AnimationTickHolder.getTicks() % UPDATE_INTERVAL != 0)
-			return;
+		if (AnimationTickHolder.getTicks() % UPDATE_INTERVAL != 0) return;
 
 		boolean disable = !AllConfigs.client().enableAmbientSounds.get();
 		for (Iterator<Map.Entry<Pair<AmbienceGroup, PitchGroup>, CASoundScape>> iterator = activeSounds.entrySet()
@@ -116,8 +116,7 @@ public class CASoundScapes {
 
 	protected static BlockPos getCameraPos() {
 		Entity renderViewEntity = Minecraft.getInstance().cameraEntity;
-		if (renderViewEntity == null)
-			return BlockPos.ZERO;
+		if (renderViewEntity == null) return BlockPos.ZERO;
         return renderViewEntity.blockPosition();
 	}
 
@@ -131,14 +130,10 @@ public class CASoundScapes {
 	}
 
 	public static PitchGroup getGroupFromPitch(float pitch) {
-		if (pitch < .70)
-			return PitchGroup.VERY_LOW;
-		if (pitch < .90)
-			return PitchGroup.LOW;
-		if (pitch < 1.10)
-			return PitchGroup.NORMAL;
-		if (pitch < 1.30)
-			return PitchGroup.HIGH;
+		if (pitch < .70) return PitchGroup.VERY_LOW;
+		if (pitch < .90) return PitchGroup.LOW;
+		if (pitch < 1.10) return PitchGroup.NORMAL;
+		if (pitch < 1.30) return PitchGroup.HIGH;
 		return PitchGroup.VERY_HIGH;
 	}
 }
