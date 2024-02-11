@@ -132,7 +132,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 			if(dmg > 0) {
 				e.hurt(DMG_SOURCE, dmg);
 				if (!zapped) {
-					level.playSound(null, worldPosition, CASounds.LOUD_ZAP.get(), SoundSource.BLOCKS, 0.6f, 1f);
+					if (Config.AUDIO_ENABLED.get()) level.playSound(null, worldPosition, CASounds.LOUD_ZAP.get(), SoundSource.BLOCKS, 0.6f, 1f);
 					zapped = true;
 				}
 			}
@@ -162,7 +162,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 
 		if(poweredTimer > 0) {
 			if (zapTimer == 0) {
-				level.playSound(null, worldPosition, CASounds.LITTLE_ZAP.get(), SoundSource.BLOCKS, 0.1f, 1f);
+				if (Config.AUDIO_ENABLED.get()) level.playSound(null, worldPosition, CASounds.LITTLE_ZAP.get(), SoundSource.BLOCKS, 0.1f, 1f);
 				zapTimer = level.random.nextInt(100, 300);
 			}
 			zapTimer--;
@@ -179,7 +179,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	@OnlyIn(Dist.CLIENT)
 	public void tickAudio() {
 		if (!isPoweredState()) return;
-		CASoundScapes.play(CASoundScapes.AmbienceGroup.TESLA, worldPosition, 1f);
+		if (Config.AUDIO_ENABLED.get()) CASoundScapes.play(CASoundScapes.AmbienceGroup.TESLA, worldPosition, 1f);
 	}
 
 	public boolean isPoweredState() {
@@ -189,8 +189,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	protected BeltProcessingBehaviour.ProcessingResult chargeCompundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 
 		ItemStack stack = transported.stack;
-		if(stack == null)
-			return BeltProcessingBehaviour.ProcessingResult.PASS;
+		if(stack == null) return BeltProcessingBehaviour.ProcessingResult.PASS;
 		if(chargeStack(stack, transported, handler)) {
 			poweredTimer = 10;
 			return BeltProcessingBehaviour.ProcessingResult.HOLD;
@@ -231,7 +230,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 				outList.add(result);
 				handler.handleProcessingOnItem(transported, TransportedItemStackHandlerBehaviour.TransportedResult.convertToAndLeaveHeld(outList, remainingStack));
 				chargeAccumulator = 0;
-				level.playSound(null, worldPosition, CASounds.LITTLE_ZAP.get(), SoundSource.BLOCKS, 0.1f, 1f);
+				if (Config.AUDIO_ENABLED.get()) level.playSound(null, worldPosition, CASounds.LITTLE_ZAP.get(), SoundSource.BLOCKS, 0.1f, 1f);
 			}
 			return true;
 		}

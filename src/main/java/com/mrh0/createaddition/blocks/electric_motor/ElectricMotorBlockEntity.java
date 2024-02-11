@@ -216,7 +216,7 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity {
 	public void tickAudio() {
 		super.tickAudio();
 		if (!active) return;
-		CASoundScapes.play(CASoundScapes.AmbienceGroup.DYNAMO, worldPosition, 1);
+		if (Config.AUDIO_ENABLED.get()) CASoundScapes.play(CASoundScapes.AmbienceGroup.DYNAMO, worldPosition, 1);
 	}
 
 	public static int getDurationAngle(int deg, float initialProgress, float speed) {
