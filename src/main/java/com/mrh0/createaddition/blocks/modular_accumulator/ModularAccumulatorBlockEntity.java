@@ -15,6 +15,7 @@ import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
+import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.Create;
@@ -138,6 +139,7 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 
 	long lastEnergy = 0;
 	boolean firstTickState = true;
+	int energyChangeTick = 0;
 	@Override
 	public void tick() {
 		super.tick();
@@ -170,8 +172,11 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 			onEnergyChanged();
 		}
 
+		if (energyChangeTick > 0) energyChangeTick--;
+
 		if (level == null) return;
 		if (level.isClientSide()) {
+            tickAudio();
 			gauge.tickChaser();
 			float current = gauge.getValue(1);
 			if (current > 1 && Create.RANDOM.nextFloat() < 1 / 2f)
@@ -198,6 +203,15 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 			EnergyStorageUtil.move(getControllerBE().energyStorage, ies, Config.ACCUMULATOR_MAX_OUTPUT.get(), t);
 			t.commit();
 		}
+	}
+
+	public void tickAudio() {
+		if (energyChangeTick == 0) return;
+		int sizeInBlocks = getTotalAccumulatorSize();
+		float pitch = 0.75f;
+		if (sizeInBlocks < 4) pitch = 1.25f;
+		if (sizeInBlocks < 9) pitch = 1f;
+		CASoundScapes.play(CASoundScapes.AmbienceGroup.CHARGE, worldPosition, pitch);
 	}
 
 	@Override
@@ -228,6 +242,8 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 		if (level == null) return;
 		if (!level.isLoaded(getBlockPos())) return;
 		if (!hasLevel()) return;
+
+		energyChangeTick = 20;
 
 		for (int yOffset = 0; yOffset < height; yOffset++) {
 			for (int xOffset = 0; xOffset < width; xOffset++) {

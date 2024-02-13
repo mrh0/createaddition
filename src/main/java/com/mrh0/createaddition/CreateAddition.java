@@ -7,6 +7,7 @@ import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.event.GameEvents;
 import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.*;
+import com.mrh0.createaddition.index.CASounds;
 import com.mrh0.createaddition.network.CANetwork;
 import com.mrh0.createaddition.trains.schedule.CASchedule;
 import com.simibubi.create.content.fluids.tank.BoilerHeaters;
@@ -32,7 +33,19 @@ import net.minecraftforge.fml.config.ModConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class CreateAddition implements ModInitializer {
+import com.mojang.brigadier.CommandDispatcher;
+import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
+import com.mrh0.createaddition.commands.CCApiCommand;
+import com.mrh0.createaddition.config.Config;
+import com.mrh0.createaddition.groups.ModGroup;
+import com.mrh0.createaddition.network.EnergyNetworkPacket;
+import com.mrh0.createaddition.network.ObservePacket;
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.item.TooltipModifier;
+
+import javax.annotation.Nullable;
+
+public class CreateAddition implements ModInitializer{
     public static final Logger LOGGER = LogManager.getLogger();
 
     public static final String MODID = "createaddition";
@@ -70,6 +83,7 @@ public class CreateAddition implements ModInitializer {
         CAFluids.register();
         CAEffects.register();
         CARecipes.register();
+        CASounds.register();
         CASchedule.register();
         ModGroup.register();
         REGISTRATE.register();
