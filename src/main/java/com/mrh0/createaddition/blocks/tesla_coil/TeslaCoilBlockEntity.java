@@ -5,7 +5,9 @@ import com.mrh0.createaddition.energy.BaseElectricBlockEntity;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAEffects;
 import com.mrh0.createaddition.index.CARecipes;
+import com.mrh0.createaddition.index.CASounds;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
+import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
@@ -20,6 +22,7 @@ import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -107,6 +110,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 		localEnergy.internalConsumeEnergy(Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get());
 		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoilBlock.FACING).getOpposite());
 		List<LivingEntity> ents = Objects.requireNonNull(getLevel()).getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(Config.TESLA_COIL_HURT_RANGE.get()));
+		boolean zapped = false;
 		for(LivingEntity e : ents) {
 			if(e == null) return;
 
@@ -127,13 +131,19 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 				dmg = Config.TESLA_COIL_HURT_DMG_PLAYER.get();
 				time = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get();
 			}
-			if(dmg > 0) e.hurt(DMG_SOURCE, dmg);
+			if(dmg > 0) {
+				e.hurt(DMG_SOURCE, dmg);
+				if (!zapped) {
+					level.playSound(null, worldPosition, CASounds.LOUD_ZAP.get(), SoundSource.BLOCKS, 0.6f, 1f);
+					zapped = true;
+				}
+			}
 			if(time > 0) e.addEffect(new MobEffectInstance(CAEffects.SHOCKING.get(), time));
 		}
 	}
 
 	int dmgTick = 0;
-	int soundTimeout = 0;
+	int zapTimer = 200;
 
 	@Override
 	public void tick() {
@@ -141,10 +151,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 		if(level == null) return;
 
 		if(level.isClientSide()) {
-			if(isPoweredState() && soundTimeout++ > 20) {
-				//level.playLocalSound(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), SoundEvents.BEE_LOOP, SoundSource.BLOCKS, 1f, 16f, false);
-				soundTimeout = 0;
-			}
+			tickAudio();
 			return;
 		}
 		int signal = Objects.requireNonNull(getLevel()).getBestNeighborSignal(getBlockPos());
@@ -156,6 +163,12 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 			doDmg();
 
 		if(poweredTimer > 0) {
+			if (zapTimer == 0) {
+				level.playSound(null, worldPosition, CASounds.LITTLE_ZAP.get(), SoundSource.BLOCKS, 0.1f, 1f);
+				zapTimer = level.random.nextInt(100, 300);
+			}
+			zapTimer--;
+
 			if(!isPoweredState())
 				CABlocks.TESLA_COIL.get().setPowered(level, getBlockPos(), true);
 			poweredTimer--;
@@ -163,6 +176,11 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 		else
 			if(isPoweredState())
 				CABlocks.TESLA_COIL.get().setPowered(level, getBlockPos(), false);
+	}
+
+	public void tickAudio() {
+		if (!isPoweredState()) return;
+		CASoundScapes.play(CASoundScapes.AmbienceGroup.TESLA, worldPosition, 1f);
 	}
 
 	public boolean isPoweredState() {
@@ -229,6 +247,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 				outList.add(result);
 				handler.handleProcessingOnItem(transported, TransportedItemStackHandlerBehaviour.TransportedResult.convertToAndLeaveHeld(outList, remainingStack));
 				chargeAccumulator = 0;
+				level.playSound(null, worldPosition, CASounds.LITTLE_ZAP.get(), SoundSource.BLOCKS, 0.1f, 1f);
 			}
 			return true;
 		}

@@ -6,6 +6,8 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.sound.CASoundScapes;
+import com.mrh0.createaddition.sound.CASoundScapes.AmbienceGroup;
 import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.AllBlocks;
@@ -13,12 +15,15 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.utility.Lang;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -38,7 +43,6 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyT
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
 				.withStyle(ChatFormatting.AQUA)).append(Lang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
@@ -82,7 +86,6 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyT
 	@Override
 	public void tick() {
 		super.tick();
-		assert level != null;
 		if(level.isClientSide()) return;
 		if(firstTickState) firstTick();
 		firstTickState = false;
@@ -101,6 +104,19 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyT
 				t.commit();
 			}
         }
+	}
+
+	@Environment(EnvType.CLIENT)
+	@Override
+	public void tickAudio() {
+		super.tickAudio();
+
+		float componentSpeed = Math.abs(getSpeed());
+		if (componentSpeed == 0 || !isSpeedRequirementFulfilled())
+			return;
+
+		float pitch = Mth.clamp((componentSpeed / 256f) + .5f, .5f, 1.5f);
+		CASoundScapes.play(AmbienceGroup.DYNAMO, worldPosition, pitch);
 	}
 
 	public static int getEnergyProductionRate(int rpm) {

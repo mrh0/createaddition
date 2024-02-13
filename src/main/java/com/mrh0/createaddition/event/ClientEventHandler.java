@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.event;
 
 import com.mrh0.createaddition.item.WireSpool;
+import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.util.ClientMinecraftWrapper;
 import com.mrh0.createaddition.util.Util;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -17,5 +18,6 @@ public class ClientEventHandler {
         if(stack.isEmpty()) return;
         if(WireSpool.isRemover(stack.getItem())) return;
         clientRenderHeldWire = Util.getWireNodeOfSpools(stack) != null;
+        CASoundScapes.tick();
     }
 }
