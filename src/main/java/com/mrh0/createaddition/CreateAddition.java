@@ -45,7 +45,7 @@ import com.simibubi.create.foundation.item.TooltipModifier;
 
 import javax.annotation.Nullable;
 
-public class CreateAddition {
+public class CreateAddition implements ModInitializer{
     public static final Logger LOGGER = LogManager.getLogger();
 
     public static final String MODID = "createaddition";
