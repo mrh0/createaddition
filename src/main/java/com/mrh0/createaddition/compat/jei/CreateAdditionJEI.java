@@ -3,6 +3,7 @@ package com.mrh0.createaddition.compat.jei;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
+import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
@@ -54,21 +55,21 @@ public class CreateAdditionJEI implements IModPlugin {
 		ALL.clear();
 
 		ALL.add(builder(RollingRecipe.class)
-				.addTypedRecipes(() -> RollingRecipe.TYPE)
+				.addTypedRecipes(CARecipes.ROLLING_TYPE::get)
 				.catalyst(CABlocks.ROLLING_MILL::get)
 				.itemIcon(CABlocks.ROLLING_MILL.get())
 				.emptyBackground(177, 53)
 				.build("rolling", RollingMillCategory::new));
 
 		ALL.add(builder(ChargingRecipe.class)
-				.addTypedRecipes(() -> ChargingRecipe.TYPE)
+				.addTypedRecipes(CARecipes.CHARGING_TYPE::get)
 				.catalyst(CABlocks.TESLA_COIL::get)
 				.itemIcon(CABlocks.TESLA_COIL.get())
 				.emptyBackground(177, 53)
 				.build("charging", ChargingCategory::new));
 
 		ALL.add(builder(LiquidBurningRecipe.class)
-				.addTypedRecipes(() -> LiquidBurningRecipe.TYPE)
+				.addTypedRecipes(CARecipes.LIQUID_BURNING_TYPE::get)
 				.catalyst(AllBlocks.BLAZE_BURNER::get)
 				.itemIcon(AllBlocks.BLAZE_BURNER.get())
 				.emptyBackground(177, 53)

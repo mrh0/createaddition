@@ -11,6 +11,7 @@ public class ChargingRecipeProcessingFactory implements ProcessingRecipeBuilder.
         Ingredient ingredient = Ingredient.EMPTY;
         ItemStack result = ItemStack.EMPTY;
         int energy = 0;
+        int maxChargeRate = 0;
         if (!params.getIngredients().isEmpty()) {
             ingredient = params.getIngredients().get(0);
         }
@@ -20,6 +21,9 @@ public class ChargingRecipeProcessingFactory implements ProcessingRecipeBuilder.
         if (params.getEnergy() > 0) {
             energy = params.getEnergy();
         }
-        return new ChargingRecipe(params.getID(), ingredient, result, energy);
+        if (params.getMaxChargeRate() > 0) {
+            maxChargeRate = params.getMaxChargeRate();
+        }
+        return new ChargingRecipe(params.getID(), ingredient, result, energy, maxChargeRate);
     }
 }

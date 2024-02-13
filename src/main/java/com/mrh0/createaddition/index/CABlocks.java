@@ -5,7 +5,9 @@ import com.mrh0.createaddition.blocks.accumulator.AccumulatorBlock;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.barbed_wire.BarbedWireBlock;
 import com.mrh0.createaddition.blocks.cake.CACakeBlock;
-import com.mrh0.createaddition.blocks.connector.ConnectorBlock;
+import com.mrh0.createaddition.blocks.connector.LargeConnectorBlock;
+import com.mrh0.createaddition.blocks.connector.SmallConnectorBlock;
+import com.mrh0.createaddition.blocks.connector.SmallLightConnectorBlock;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlock;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlockItem;
@@ -21,6 +23,7 @@ import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.NodeMovementBehaviour;
 import com.mrh0.createaddition.groups.ModGroup;
+import com.mrh0.createaddition.item.BiomassPelletBlock;
 import com.simibubi.create.AllMovementBehaviours;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
@@ -33,6 +36,7 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -82,24 +86,33 @@ public class CABlocks {
 			.transform(customItemModel())
 			.register();
 
-	public static final BlockEntry<ConnectorBlock> CONNECTOR_COPPER = CreateAddition.REGISTRATE.block("connector",  ConnectorBlock::new)
+	public static final BlockEntry<SmallConnectorBlock> SMALL_CONNECTOR = CreateAddition.REGISTRATE.block("connector",  SmallConnectorBlock::new)
 			.initialProperties(SharedProperties::stone)
 			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
 			.item()
 			.transform(customItemModel())
 			.register();
 
-	/*public static final BlockEntry<ConnectorBlock> CONNECTOR_GOLD = REGISTRATE.block("connector_gold",  ConnectorBlock::new)
+	public static final BlockEntry<SmallLightConnectorBlock> SMALL_LIGHT_CONNECTOR = CreateAddition.REGISTRATE.block("small_light_connector",  SmallLightConnectorBlock::new)
 			.initialProperties(SharedProperties::stone)
+			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
+            .properties(properties -> properties.lightLevel(blockstate -> blockstate.getValue(SmallLightConnectorBlock.POWERED)?15:0))
 			.item()
 			.transform(customItemModel())
-			.register();*/
+			.register();
+
+	public static final BlockEntry<LargeConnectorBlock> LARGE_CONNECTOR = CreateAddition.REGISTRATE.block("large_connector",  LargeConnectorBlock::new)
+			.initialProperties(SharedProperties::stone)
+			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
+			.item()
+			.transform(customItemModel())
+			.register();
 
 	public static final BlockEntry<AccumulatorBlock> ACCUMULATOR = (BlockEntry<AccumulatorBlock>) CreateAddition.REGISTRATE.block("accumulator",  AccumulatorBlock::new)
 			.initialProperties(SharedProperties::softMetal)
 			.onRegister(AllMovementBehaviours.movementBehaviour(new NodeMovementBehaviour()))
 			.item()
-			.tab(ModGroup.MAIN_KEY)
+			.tab(null)
 			.transform(customItemModel())
 			.register();
 
@@ -123,6 +136,13 @@ public class CABlocks {
 			.item()
 			.transform(customItemModel())
 			.register();
+
+	/*public static final BlockEntry<HarmfulPlantBlock> HARMFUL_PLANT = CreateAddition.REGISTRATE.block("harmful_plant",  HarmfulPlantBlock::new)
+			.initialProperties(Material.PLANT)
+			.properties(props -> props.sound(SoundType.CROP).strength(0.5f))
+			.item()
+			.transform(customItemModel())
+			.register();*/
 
 	public static final BlockEntry<BarbedWireBlock> BARBED_WIRE = CreateAddition.REGISTRATE.block("barbed_wire",  BarbedWireBlock::new)
 			.initialProperties(() -> Blocks.COBWEB)
@@ -170,6 +190,13 @@ public class CABlocks {
 			.properties(p -> p.color(MaterialColor.PODZOL))
 			.transform(BuilderTransformers.casing(() -> CASpriteShifts.COPPER_WIRE_CASING))
 			.register();*/
+
+	public static final BlockEntry<Block> BIOMASS_PALLET = CreateAddition.REGISTRATE.block("biomass_pellet_block", Block::new)
+			.initialProperties(() -> Blocks.DRIED_KELP_BLOCK)
+			.properties(p -> p.mapColor(DyeColor.GRAY))
+			.item(BiomassPelletBlock::new)
+			.transform(customItemModel())
+			.register();
 
 	public static final BlockEntry<DigitalAdapterBlock> DIGITAL_ADAPTER = CreateAddition.REGISTRATE.block("digital_adapter",  DigitalAdapterBlock::new)
 			.initialProperties(SharedProperties::softMetal)

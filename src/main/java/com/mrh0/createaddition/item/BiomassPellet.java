@@ -10,7 +10,7 @@ public class BiomassPellet extends Item {
 		FuelRegistry.INSTANCE.add(this, getBurnTime());
 	}
 
-	public int getBurnTime() {
+	public static int getBurnTime() {
 		return 6400;
 	}
 }

@@ -12,6 +12,8 @@ public class ChargingRecipeParams extends ProcessingRecipeBuilder.ProcessingReci
 
     public int energy;
 
+    public int maxChargeRate;
+
     protected ChargingRecipeParams(ResourceLocation id, Ingredient input, ProcessingOutput output) {
         super(id);
         if(ingredients == null) {
@@ -54,4 +56,6 @@ public class ChargingRecipeParams extends ProcessingRecipeBuilder.ProcessingReci
     public int getEnergy() {
         return energy;
     }
+
+    public int getMaxChargeRate() { return maxChargeRate;}
 }

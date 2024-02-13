@@ -1,0 +1,33 @@
+{
+  "electric_motor_buzz": {
+    "sounds": [
+      "createaddition:electric_motor_buzz"
+    ]
+  },
+  "tesla_coil": {
+    "sounds": [
+      "createaddition:tesla_coil"
+    ]
+  },
+  "electric_charge": {
+    "sounds": [
+      "createaddition:electric_charge"
+    ]
+  },
+  "loud_zap": {
+    "subtitle": "createaddition.subtitle.loud_zap",
+    "sounds": [
+      "createaddition:loud_zap_1",
+      "createaddition:loud_zap_2",
+      "createaddition:loud_zap_3"
+    ]
+  },
+  "little_zap": {
+    "subtitle": "createaddition.subtitle.little_zap",
+    "sounds": [
+      "createaddition:little_zap_1",
+      "createaddition:little_zap_2",
+      "createaddition:little_zap_3"
+    ]
+  }
+}

@@ -28,7 +28,7 @@ public class ModularAccumulatorDisplaySource extends PercentOrProgressBarDisplay
 
 	@Override
 	protected Float getProgress(DisplayLinkContext context) {
-		if (!(context.getSourceBlockEntity() instanceof ModularAccumulatorTileEntity te)) return null;
+		if (!(context.getSourceBlockEntity() instanceof ModularAccumulatorBlockEntity te)) return null;
 		te = te.getControllerBE();
 		if(te == null) return null;
 

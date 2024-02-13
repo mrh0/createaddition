@@ -15,8 +15,7 @@ public class AnimatedRollingMill extends AnimatedKinetics {
 	}
 
 	public AnimatedRollingMill() {
-		shadow = true;
-	}
+    }
 
 	@Override
 	public void draw(GuiGraphics matrixStack, int xOffset, int yOffset) {
@@ -27,11 +26,11 @@ public class AnimatedRollingMill extends AnimatedKinetics {
 		matrixStack.pose().translate(-2, 18, 0);
 		int scale = 22;
 
-		
+
 		GuiGameElement.of(CABlocks.ROLLING_MILL.getDefaultState())
-			.rotateBlock(22.5, 22.5, 0)
-			.scale(scale)
-			.render(matrixStack);
+				.rotateBlock(22.5, 22.5, 0)
+				.scale(scale)
+				.render(matrixStack);
 
 		matrixStack.pose().popPose();
 	}

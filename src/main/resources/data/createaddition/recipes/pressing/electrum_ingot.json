@@ -1,17 +1,9 @@
 {
 	"type":"create:pressing",
 	"ingredients": [{
-      	"tag": "c:ingots/electrum"
+      	"tag": "c:electrum_ingots"
 	}],
 	"results": [{
-		"item": "immersiveengineering:plate_electrum"
-	}],
-	"fabric:load_conditions": [
-		{
-			"condition": "fabric:all_mods_loaded",
-			"values": [
-				"immersiveengineering"
-			]
-		}
-	]
+		"item": "createaddition:electrum_sheet"
+	}]
 }

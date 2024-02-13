@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.recipe.charging;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.compat.emi.EmiChargingAssemblySubCategory;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.util.Util;
@@ -27,33 +28,34 @@ import java.util.Set;
 
 public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> implements IAssemblyRecipe {
 
-	public static RecipeType<ChargingRecipe> TYPE = new ChargingRecipeType();
+	public static RecipeType<ChargingRecipe> TYPE = CARecipes.CHARGING_TYPE.get();
 	@SuppressWarnings("deprecation")
 	public static RecipeSerializer<?> SERIALIZER = BuiltInRegistries.RECIPE_SERIALIZER.get(new ResourceLocation(CreateAddition.MODID, "charging"));
 	public final ResourceLocation id;
 	public Ingredient ingredient;
 	public ItemStack output;
 	public int energy;
+    public int maxChargeRate;
 
-	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy) {
+	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy, int maxChargeRate) {
 		super(new ChargingRecipeInfo(id, (SequencedAssemblyChargingRecipeSerializer) SERIALIZER, TYPE), new ChargingRecipeParams(id, ingredient, new ProcessingOutput(output, 1f)));
 		this.id = id;
 		this.ingredient = ingredient;
 		this.output = output;
 		this.energy = energy;
+		this.maxChargeRate = maxChargeRate;
 	}
 
 
 	@Override
-	public boolean matches(RecipeWrapper wrapper, Level level) {
-		if(ingredient == null) return false;
+	public boolean matches(RecipeWrapper wrapper, Level world) {
+		if(ingredient == null)
+			return false;
+		if(wrapper == null)
+			return false;
+		if(wrapper.getItem(0) == null)
+			return false;
 		return ingredient.test(wrapper.getItem(0));
-	}
-
-
-	@Override
-	public ItemStack assemble(@NotNull RecipeWrapper wrapper, RegistryAccess access) {
-		return output;
 	}
 
 
@@ -76,12 +78,6 @@ public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> implements I
 
 
 	@Override
-	public ItemStack getResultItem(RegistryAccess access) {
-		return output;
-	}
-
-
-	@Override
 	public ResourceLocation getId() {
 		return id;
 	}
@@ -95,11 +91,15 @@ public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> implements I
 
 	@Override
 	public RecipeType<?> getType() {
-		return TYPE;
+		return CARecipes.CHARGING_TYPE.get();
 	}
 
 	public int getEnergy() {
 		return energy;
+	}
+
+	public int getMaxChargeRate() {
+		return maxChargeRate;
 	}
 
 

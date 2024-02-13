@@ -4,12 +4,12 @@
 		{
 			"item": "create:brass_casing"
 		},
-    	{
-      		"item": "create:chute"
-    	},
-    	{
-      		"item": "createaddition:copper_spool"
-    	}
+		{
+			"item": "create:chute"
+		},
+		{
+			"item": "createaddition:copper_spool"
+		}
 	],
 	"result": {
 		"item": "createaddition:portable_energy_interface"

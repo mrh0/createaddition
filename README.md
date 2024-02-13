@@ -6,7 +6,7 @@ Minecraft Forge Mod by MRH0
 
 # Download
 
-Minecraft 1.16, 1.17, 1.18, 1.19
+Minecraft 1.16, 1.17, 1.18, 1.19, 1.20
 
 At: https://www.curseforge.com/minecraft/mc-mods/createaddition
 

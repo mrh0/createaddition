@@ -65,7 +65,9 @@ public class SequencedAssemblyChargingRecipeSerializer extends ProcessingRecipeS
         ItemStack output = readOutput(json);
         Ingredient input = readIngredient(json);
         int energy = json.get("energy").getAsInt();
-        return new ChargingRecipe(recipeId, input, output, energy);
+        int maxChargeRate = Integer.MAX_VALUE;
+        if(json.has("maxChargeRate")) maxChargeRate = json.get("maxChargeRate").getAsInt();
+        return new ChargingRecipe(recipeId, input, output, energy, maxChargeRate);
     }
 
     @Override
@@ -77,9 +79,10 @@ public class SequencedAssemblyChargingRecipeSerializer extends ProcessingRecipeS
 
     @Override
     protected ChargingRecipe readFromBuffer(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+        int maxChargeRate = buffer.readInt();
         Ingredient input = Ingredient.fromNetwork(buffer);
         ItemStack output = buffer.readItem();
         int energy = buffer.readInt();
-        return new ChargingRecipe(recipeId, input, output, energy);
+        return new ChargingRecipe(recipeId, input, output, energy, maxChargeRate);
     }
 }

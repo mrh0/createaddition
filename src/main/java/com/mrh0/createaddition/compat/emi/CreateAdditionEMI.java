@@ -3,6 +3,7 @@ package com.mrh0.createaddition.compat.emi;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
+import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
@@ -45,9 +46,9 @@ public class CreateAdditionEMI implements EmiPlugin {
         registry.addWorkstation(CHARGING, EmiStack.of(CABlocks.TESLA_COIL.get()));
         registry.addWorkstation(LIQUID_BURNING, EmiStack.of(CABlocks.LIQUID_BLAZE_BURNER.get()));
 
-        addRollingRecipes(registry, RollingRecipe.TYPE, RollingMillCategory::new);
-        addChargingRecipes(registry, ChargingRecipe.TYPE, ChargingCategory::new);
-        addLiquidBurningRecipes(registry, LiquidBurningRecipe.TYPE, LiquidBurningCategory::new);
+        addRollingRecipes(registry, CARecipes.ROLLING_TYPE.get(), RollingMillCategory::new);
+        addChargingRecipes(registry, CARecipes.CHARGING_TYPE.get(), ChargingCategory::new);
+        addLiquidBurningRecipes(registry, CARecipes.LIQUID_BURNING_TYPE.get(), LiquidBurningCategory::new);
     }
 
     @SuppressWarnings("unchecked")

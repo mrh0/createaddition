@@ -1,0 +1,23 @@
+{
+	"type":"createaddition:charging",
+	"input": {
+      	"item": "minecraft:book",
+		"count": 1
+	},
+	"result":  {
+		"item": "minecraft:enchanted_book",
+		"count": 1,
+		"nbt":
+		{
+			"Enchantments":
+			[
+				{
+					"id": "channeling",
+					"lvl": 1
+				}
+			]
+		}
+	},
+	"energy": 10000000,
+	"maxChargeRate": 1000
+}
