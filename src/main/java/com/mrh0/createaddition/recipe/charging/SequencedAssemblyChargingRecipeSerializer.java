@@ -72,6 +72,7 @@ public class SequencedAssemblyChargingRecipeSerializer extends ProcessingRecipeS
 
     @Override
     protected void writeToBuffer(FriendlyByteBuf buffer, ChargingRecipe recipe) {
+        buffer.writeInt(recipe.maxChargeRate);
         recipe.ingredient.toNetwork(buffer);
         buffer.writeItem(recipe.output);
         buffer.writeInt(recipe.energy);
