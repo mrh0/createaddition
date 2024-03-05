@@ -1,15 +1,12 @@
 package com.mrh0.createaddition.energy.network;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import net.minecraft.world.level.LevelAccessor;
 
 
 public class EnergyNetworkManager {
-	public static Map<LevelAccessor, EnergyNetworkManager> instances = new HashMap<>();
+	public static Map<LevelAccessor, EnergyNetworkManager> instances = new WeakHashMap<>();
 	
 	private List<EnergyNetwork> networks;
 	
