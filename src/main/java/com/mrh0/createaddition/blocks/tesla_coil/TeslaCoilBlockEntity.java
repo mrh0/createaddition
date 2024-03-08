@@ -3,12 +3,8 @@ package com.mrh0.createaddition.blocks.tesla_coil;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricBlockEntity;
-import com.mrh0.createaddition.index.CABlocks;
-import com.mrh0.createaddition.index.CADamageTypes;
-import com.mrh0.createaddition.index.CAEffects;
-import com.mrh0.createaddition.index.CARecipes;
+import com.mrh0.createaddition.index.*;
 import com.mrh0.createaddition.network.ObservePacket;
-import com.mrh0.createaddition.index.CASounds;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.util.Util;
@@ -29,7 +25,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -137,7 +132,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 				time = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get();
 			}
 			if(dmg > 0) {
-				e.hurt(CADamageTypes.TESLA_COIL.source(level), dmg);
+				e.hurt(CADamageSources.teslaCoil(level), dmg);
 				if (!zapped) {
 					level.playSound(null, worldPosition, CASounds.LOUD_ZAP.get(), SoundSource.BLOCKS, 0.6f, 1f);
 					zapped = true;

@@ -17,7 +17,7 @@ import static com.simibubi.create.AllTags.forgeItemTag;
 public class CAItems {
 
 	static {
-		CreateAddition.REGISTRATE.useCreativeTab(ModGroup.MAIN_KEY);
+		CreateAddition.REGISTRATE.setCreativeTab(ModGroup.MAIN_KEY);
 	}
 	
 	public static final ItemEntry<Item> CAPACITOR =
