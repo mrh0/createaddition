@@ -83,6 +83,7 @@ repositories {
             includeModule("org.squiddev", "Cobalt")
         }
     }
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } //forge config api port
 }
 
 dependencies {
