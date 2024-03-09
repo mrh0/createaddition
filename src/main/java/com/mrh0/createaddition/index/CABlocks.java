@@ -51,7 +51,7 @@ import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 public class CABlocks {
 
 	static {
-		CreateAddition.REGISTRATE.useCreativeTab(ModGroup.MAIN_KEY);
+		CreateAddition.REGISTRATE.setCreativeTab(ModGroup.MAIN_KEY);
 	}
 
 	public static final BlockEntry<ElectricMotorBlock> ELECTRIC_MOTOR = CreateAddition.REGISTRATE.block("electric_motor", ElectricMotorBlock::new)

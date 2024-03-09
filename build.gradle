@@ -1,6 +1,6 @@
 //file:noinspection GroovyUnusedAssignment
 plugins {
-    id 'fabric-loom' version '1.3-SNAPSHOT'
+    id 'fabric-loom' version '1.5-SNAPSHOT'
     id 'eclipse'
     id 'maven-publish'
     //id 'io.github.juuxel.loom-quiltflower' version '1.+'
@@ -83,6 +83,7 @@ repositories {
             includeModule("org.squiddev", "Cobalt")
         }
     }
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } //forge config api port
 }
 
 dependencies {
