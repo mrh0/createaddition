@@ -74,6 +74,7 @@ repositories {
         }
     }
     maven { url = "https://maven.terraformersmc.com/" } // Mod Menu, Trinkets
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
 }
 
 dependencies {
