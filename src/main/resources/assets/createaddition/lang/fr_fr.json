@@ -171,7 +171,17 @@
 	"block.createaddition.connector.tooltip.condition2": "Clique-Droit",
 	"block.createaddition.connector.tooltip.behaviour2": "Tout en tenant une _Bobine de Cuivre_, une _Bobine d'Or_ ou une _Bobine d'éléctrum_ pour créer un _lien_ avec jusqu'à 4 autres connecteurs.",
 	"block.createaddition.connector.tooltip.condition3": "Clique-Droit avec une clé",
-	"block.createaddition.connector.tooltip.behaviour3": "Pour alterner entre les modes _Récéption_, _Envoie_ et _None_.",
+	"block.createaddition.connector.tooltip.behaviour3": "Pour alterner entre les modes _Récéption_, _Envoie_ et _Passif_.",
+	
+	"block.createaddition.small_light_connector": "Petit Connecteur avec lumière",
+	"block.createaddition.small_light_connector.tooltip": "CONNECTEUR",
+	"block.createaddition.small_light_connector.tooltip.summary": "Connecte les blocs compatibles _Forge Energy_ avec des _fils_ pour transférer _FE_, fournit de la lumière quand allimenté.",
+	"block.createaddition.small_light_connector.tooltip.condition1": "Courant faible",
+	"block.createaddition.small_light_connector.tooltip.behaviour1": "Connecté avec des _fils à faible courant_.",
+	"block.createaddition.small_light_connector.tooltip.condition2": "Clique-Droit",
+	"block.createaddition.small_light_connector.tooltip.behaviour2": "Tout en tenant une _Bobine de Cuivre_, une _Bobine d'Or_ ou une _Bobine d'éléctrum_ pour créer un _lien_ avec jusqu'à 4 autres connecteurs.",
+	"block.createaddition.small_light_connector.tooltip.condition3": "Clique-Droit avec une clé",
+	"block.createaddition.small_light_connector.tooltip.behaviour3": "Pour alterner entre les modes _Récéption_, _Envoie_ et _Passif_.",
 
 	"block.createaddition.large_connector": "Grand Connecteur",
 	"block.createaddition.large_connector.tooltip": "CONNECTEUR",
@@ -181,7 +191,7 @@
 	"block.createaddition.large_connector.tooltip.condition2": "Clique-Droit",
 	"block.createaddition.large_connector.tooltip.behaviour2": "Tout en tenant une _Bobine d'Or_ ou une _Bobine d'éléctrum_ pour créer un _lien_ avec jusqu'à 6 autres connecteurs.",
 	"block.createaddition.large_connector.tooltip.condition3": "Clique-Droit avec une clé",
-	"block.createaddition.large_connector.tooltip.behaviour3": "Pour alterner entre les modes _Récéption_, _Envoie_ et _None_.",
+	"block.createaddition.large_connector.tooltip.behaviour3": "Pour alterner entre les modes _Récéption_, _Envoie_ et _Passif_.",
 
 	"block.createaddition.redstone_relay": "Relai Redstone",
 	"block.createaddition.redstone_relay.tooltip": "RELAI_REDSTONE",
