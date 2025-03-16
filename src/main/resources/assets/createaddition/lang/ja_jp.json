@@ -3,7 +3,7 @@
 	"createaddition.tooltip.energy.capacity": "容量:",
 	"createaddition.tooltip.energy.consumption": "消費エネルギー:",
 	"createaddition.tooltip.energy.production": "生成エネルギー:",
-	"createaddition.tooltip.energy.charged": "充電済",
+	"createaddition.tooltip.energy.charged": "充電済み",
 	"createaddition.tooltip.energy.usage": "ネットワーク使用状況:",
 	"createaddition.tooltip.energy.demand": "ネットワーク消費量:",
 	"createaddition.tooltip.energy.supply": "ネットワーク生成量:",
@@ -216,6 +216,8 @@
 	"block.createaddition.chocolate_cake": "チョコレートケーキ",
 	"block.createaddition.honey_cake": "ハチミツケーキ",
 
+	"block.createaddition.electrum_block": "Electrum Block",
+
 	"block.createaddition.biomass_pellet_block": "バイオマスペレット",
 
 	"block.createaddition.seed_oil": "種油",
@@ -229,7 +231,7 @@
 
 	"block.createaddition.liquid_blaze_burner": "ストロー付きブレイズバーナー",
 
-	"itemGroup.createaddition:main": "Create Crafts & Additions",
+	"itemGroup.createaddition.main":"Create Crafts & Additions",
 
 	"createaddition.ponder.tag.electric": "電気機器",
 	"createaddition.ponder.tag.electric.description": "電気を扱う機械",
