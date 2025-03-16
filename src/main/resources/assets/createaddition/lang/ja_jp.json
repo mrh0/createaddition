@@ -127,7 +127,7 @@
 
 	"item.createaddition.spool": "空のスプール",
 	"item.createaddition.spool.nbt": "接続場所を格納.",
-	"item.createaddition.spool.tooltip.summary": "配線を収納するのに使用。"",
+	"item.createaddition.spool.tooltip.summary": "配線を収納するのに使用。",
 	"item.createaddition.spool.tooltip.condition1": "2つのコネクタを右クリックする",
 	"item.createaddition.spool.tooltip.behaviour1": "それらの間にワイヤーリンクを作成し、_空のスプール_が戻ってきます。",
 
