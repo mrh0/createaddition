@@ -8,7 +8,10 @@ public class DigitalAdapterBlockItem extends BlockItem {
         super(block, props);
     }
 
-    /*public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
+    // TODO: Implement this again
+    /*
+    @Override
+    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
         if (tab == CreativeModeTab.TAB_SEARCH) {
             super.fillItemCategory(tab, stacks);
         }

@@ -17,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
@@ -35,7 +36,7 @@ public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> implements I
 	public Ingredient ingredient;
 	public ItemStack output;
 	public int energy;
-    public int maxChargeRate;
+	public int maxChargeRate;
 
 	public ChargingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack output, int energy, int maxChargeRate) {
 		super(new ChargingRecipeInfo(id, (SequencedAssemblyChargingRecipeSerializer) SERIALIZER, TYPE), new ChargingRecipeParams(id, ingredient, new ProcessingOutput(output, 1f)));
@@ -58,7 +59,6 @@ public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> implements I
 		return ingredient.test(wrapper.getItem(0));
 	}
 
-
 	@Override
 	protected int getMaxInputCount() {
 		return 1;
@@ -68,8 +68,6 @@ public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> implements I
 	protected int getMaxOutputCount() {
 		return 1;
 	}
-
-
 
 	@Override
 	public boolean canCraftInDimensions(int w, int h) {
@@ -85,7 +83,7 @@ public class ChargingRecipe extends ProcessingRecipe<RecipeWrapper> implements I
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return CARecipes.CHARGING.get();
 	}
 
 

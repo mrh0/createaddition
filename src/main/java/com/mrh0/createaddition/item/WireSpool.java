@@ -1,5 +1,7 @@
 package com.mrh0.createaddition.item;
 
+import java.util.List;
+
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.WireConnectResult;
@@ -22,16 +24,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Objects;
-
-@SuppressWarnings("CommentedOutCode")
 public class WireSpool extends Item {
 
 	public WireSpool(Properties props) {
 		super(props);
 	}
-	
+
 	@Override
 	public InteractionResult useOn(UseOnContext c) {
 		CompoundTag nbt = c.getItemInHand().getTag();
@@ -42,9 +40,10 @@ public class WireSpool extends Item {
 		BlockEntity te = c.getLevel().getBlockEntity(clickedPos);
 		if(te == null)
 			return InteractionResult.PASS;
-		if(!(te instanceof IWireNode node))
+		if(!(te instanceof IWireNode))
 			return InteractionResult.PASS;
-        var heldItem = c.getItemInHand().getItem();
+		IWireNode node = (IWireNode) te;
+		var heldItem = c.getItemInHand().getItem();
 
 		if(hasPos(nbt)) {
 			WireConnectResult result;
@@ -90,7 +89,7 @@ public class WireSpool extends Item {
 			}
 			c.getItemInHand().setTag(null);
 			c.getPlayer().displayClientMessage(result.getMessage(), true);
-			
+
 		}
 		else {
 			if(c.getPlayer() == null) return InteractionResult.PASS;
@@ -111,25 +110,25 @@ public class WireSpool extends Item {
 		}
 		return InteractionResult.CONSUME;
 	}
-	
+
 	public static boolean hasPos(CompoundTag nbt) {
 		if(nbt == null)
 			return false;
     	return nbt.contains("x") && nbt.contains("y") && nbt.contains("z") && nbt.contains("node");
     }
-	
+
 	public static BlockPos getPos(CompoundTag nbt){
 		if(nbt == null)
 			return null;
     	return new BlockPos(nbt.getInt("x"), nbt.getInt("y"), nbt.getInt("z"));
     }
-	
+
 	public static int getNode(CompoundTag nbt){
 		if(nbt == null)
 			return -1;
     	return nbt.getInt("node");
     }
-	
+
 	public static CompoundTag setContent(CompoundTag nbt, BlockPos pos, int node){
 		if(nbt == null)
 			return new CompoundTag();
@@ -139,7 +138,7 @@ public class WireSpool extends Item {
     	nbt.putInt("node", node);
     	return nbt;
     }
-	
+
 	@Override
     public void appendHoverText(ItemStack stack, Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
 		CompoundTag nbt = stack.getTag();

@@ -140,8 +140,6 @@ public interface IWireNode {
 	 * @return  The node index, or -1 if none are available.
 	 */
 	default int getAvailableNode(Vec3 pos) {
-		// before: return 0;
-		// Might be a good idea to not return 0 if the method isn't implemented.
 		return getAvailableNode();
 	}
 
@@ -547,7 +545,7 @@ public interface IWireNode {
 	}
 
 	int getMaxWireLength();
-
+	
 	static WireConnectResult connect(Level world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
 		BlockEntity te1 = world.getBlockEntity(pos1);
 		BlockEntity te2 = world.getBlockEntity(pos2);
@@ -565,6 +563,7 @@ public interface IWireNode {
 		if(wn1.getConnectorType() == ConnectorType.Large && wn2.getConnectorType() == ConnectorType.Large) {
 			if(type == WireType.COPPER) return WireConnectResult.REQUIRES_HIGH_CURRENT;
 		}
+		
 		wn1.setNode(node1, node2, wn2.getPos(), type);
 		wn2.setNode(node2, node1, wn1.getPos(), type);
 		return WireConnectResult.getLink(wn2.isNodeInput(node2), wn2.isNodeOutput(node2));
@@ -592,23 +591,20 @@ public interface IWireNode {
 	}
 
 	@Nullable
-	static WireType getTypeOfConnection(Level world, BlockPos pos1, BlockPos pos2) {
-		BlockEntity te1 = world.getBlockEntity(pos1);
+	static WireType getTypeOfConnection(Level level, BlockPos pos1, BlockPos pos2) {
+		BlockEntity te1 = level.getBlockEntity(pos1);
 		if (te1 == null) return null;
 		if (!(te1 instanceof IWireNode wn)) return null;
 		LocalNode ln = wn.getConnectionTo(pos2);
 		if (ln == null) return null;
 		return ln.getType();
 	}
-
-	static IWireNode getWireNode(Level world, BlockPos pos) {
-		if(pos == null)
-			return null;
-		BlockEntity te = world.getBlockEntity(pos);
-		if(te == null)
-			return null;
-		if(!(te instanceof IWireNode))
-			return null;
+	
+	static IWireNode getWireNode(Level level, BlockPos pos) {
+		if(pos == null) return null;
+		BlockEntity te = level.getBlockEntity(pos);
+		if(te == null) return null;
+		if(!(te instanceof IWireNode)) return null;
 		return (IWireNode) te;
 	}
 	

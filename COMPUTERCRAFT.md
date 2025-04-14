@@ -240,6 +240,10 @@ The function `gotoElevatorFloor(side, index)` will trigger a Elevator Pulley att
 ```lua
 local floorName = da.gotoElevatorFloor("south", 0)
 ```
+The function `hasElevatorArrived(side)` will return true if a Elevator Pulley attached to the side of a Digital Adapter has arrived at a floor.
+```lua
+local arrived = da.hasElevatorArrived("south")
+```
 ### Mechanical Piston
 The function `getPistonDistance(side)` will get the extended distance of a Mechanical Piston attached to the side of a Digital Adapter.
 ```lua

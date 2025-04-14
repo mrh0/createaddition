@@ -86,7 +86,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 
 		if (entityIn.level().isClientSide)
 			return;
-		if (!(entityIn instanceof ItemEntity itemEntity))
+		if (!(entityIn instanceof ItemEntity))
 			return;
 		if (!entityIn.isAlive())
 			return;
@@ -110,7 +110,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 	public void onRemove(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
 		if (state.hasBlockEntity() && state.getBlock() != newState.getBlock()) {
 			withBlockEntityDo(worldIn, pos, te -> {
-				ItemHelper.dropContents(worldIn, pos, te.);
+				ItemHelper.dropContents(worldIn, pos, te.inputInv);
 				ItemHelper.dropContents(worldIn, pos, te.outputInv);
 			});
 

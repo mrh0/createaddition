@@ -26,10 +26,11 @@ repositories {
         name 'Shedman maven'
         url 'https://maven.shedaniel.me/'
     }
-
     maven {
-        name 'blamejared'
-        url 'https://maven.blamejared.com'
+        // location of the maven that hosts JEI files since January 2023
+        // location of the maven for Vazkii's mods
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
     }
     maven { url = "https://api.modrinth.com/maven" }
     maven { url = "https://mvn.devos.one/releases/" }

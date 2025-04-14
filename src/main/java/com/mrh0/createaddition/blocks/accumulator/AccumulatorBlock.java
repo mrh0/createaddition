@@ -1,5 +1,5 @@
 package com.mrh0.createaddition.blocks.accumulator;
-
+/*
 import com.mrh0.createaddition.energy.IWireNode;
 import com.mrh0.createaddition.energy.NodeRotation;
 import com.mrh0.createaddition.index.CABlockEntities;
@@ -154,3 +154,4 @@ public class AccumulatorBlock extends Block implements IBE<AccumulatorBlockEntit
 		return CABlockEntities.ACCUMULATOR.create(pos, state);
 	}
 }
+*/

@@ -61,13 +61,13 @@ AlphaMode, BobDole, legoatoom, StockiesLad, THEREDSTONEBRO, and Uraxys.
 [[dependencies.createaddition]]
     modId="flywheel"
     mandatory=true
-    versionRange="[0.6.8.a,0.7)"
+    versionRange="[0.6.9.a,0.7)"
     ordering="AFTER"
     side="CLIENT"
 [[dependencies.createaddition]]
     modId="jei"
     mandatory=false
-    versionRange="[11.4.0.274,)"
+    versionRange="[15.0.0.0,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
@@ -80,6 +80,6 @@ AlphaMode, BobDole, legoatoom, StockiesLad, THEREDSTONEBRO, and Uraxys.
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.19.2,1.20)"
+    versionRange="[1.20.1,1.21)"
     ordering="NONE"
     side="BOTH"

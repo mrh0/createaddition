@@ -54,11 +54,6 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 	private int recipeIndex;
 	private ItemStack playEvent;
 
-	
-	/*private static final int
-		STRESS = Config.ROLLING_MILL_STRESS.get(), 
-		DURATION = Config.ROLLING_MILL_PROCESSING_DURATION.get();*/
-
 	public RollingMillBlockEntity(BlockEntityType<? extends RollingMillBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		inventory = new ProcessingInventory(this::start);
@@ -180,13 +175,12 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 			return;
 		for (int i = 0; i < outputInv.getSlotCount(); i++)
 			if (outputInv.getStackInSlot(i)
-					.getCount() == outputInv.getSlotLimit(i))
+				.getCount() == outputInv.getSlotLimit(i))
 				return;
 
 		if (timer > 0) {
 			timer -= getProcessingSpeed();
 
-			assert level != null;
 			if (level.isClientSide) {
 				spawnParticles();
 				return;
@@ -224,10 +218,10 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 				var stack = outputInv.getStackInSlot(slot);
 				if(stack.isEmpty())
 					continue;
-				ItemStack rest = behaviour.handleInsertion(stack,ejectDirection,false);
-				if(!stack.isEmpty() && rest.getCount() == stack.getCount() && rest.getItem() == stack.getItem() && ItemStack.tagMatches(rest, stack))
+				ItemStack rest = behaviour.handleInsertion(stack, ejectDirection, false);
+				if(rest.equals(stack, false))
 					continue;
-				outputInv.setStackInSlot(slot,rest);
+				outputInv.setStackInSlot(slot, rest);
 				changed = true;
 			}
 			if(changed) {
@@ -237,22 +231,18 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		}
 		//end of copied code
 
-		if (inputInv.getStackInSlot(0)
-				.isEmpty())
-			return;
+		if (inputInv.getStackInSlot(0).isEmpty()) return;
 
 		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
-		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, Objects.requireNonNull(level))) {
-			assert level != null;
+		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
 			Optional<RollingRecipe> recipe = find(inventoryIn, level);
 			if (recipe.isEmpty()) {
 				timer = 100;
-				sendData();
 			} else {
 				lastRecipe = recipe.get();
 				timer = getProcessingDuration();
-				sendData();
 			}
+			sendData();
 			return;
 		}
 
@@ -273,22 +263,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		ItemHelper.dropContents(level, worldPosition, inventory);
 	}
 
-	public void spawnParticles() {
-		ItemStack stackInSlot = playEvent.copy();
-		if (stackInSlot.isEmpty())
-			return;
 
-		ItemParticleOption data = new ItemParticleOption(ParticleTypes.ITEM, stackInSlot);
-		assert level != null;
-		float angle = level.random.nextFloat() * 360;
-		Vec3 offset = new Vec3(0, 0, 0.5f);
-		offset = VecHelper.rotate(offset, angle, Axis.Y);
-		Vec3 target = VecHelper.rotate(offset, getSpeed() > 0 ? 25 : -25, Axis.Y);
-
-		Vec3 center = offset.add(VecHelper.getCenterOf(worldPosition));
-		target = VecHelper.offsetRandomly(target.subtract(offset), level.random, 1 / 128f);
-		level.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
-	}
 
 	public Vec3 getItemMovementVec() {
 		var dir = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
@@ -417,15 +392,16 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 
 	/*
 	private void process() {
-		final var inventoryIn = new RecipeWrapper(inputInv);
+		if(getLevel() == null) return;
+		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
 
-		var sequenced = SequencedAssemblyRecipe.getRecipe(level,inventoryIn.getItem(0), RollingRecipe.TYPE,RollingRecipe.class);
+		var sequenced = SequencedAssemblyRecipe.getRecipe(level, inventoryIn.getItem(0), CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
 		if(sequenced.isPresent()) {
 			var recipe = sequenced.get();
 			var results = recipe.rollResults();
 			if(!results.isEmpty()) {
 				var result = results.get(0);
-				TransferUtil.insertItem(outputInv, result);
+				ItemHandlerHelper.insertItemStacked(outputInv, result, false);
 				ItemStack stackInSlot = inputInv.getStackInSlot(0);
 				stackInSlot.shrink(1);
 				inputInv.setStackInSlot(0, stackInSlot);
@@ -435,26 +411,36 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 			}
 		}
 
-		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, Objects.requireNonNull(level))) {
-			assert level != null;
+		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
 			Optional<RollingRecipe> recipe = find(inventoryIn, level);
-			if (recipe.isEmpty())
-				return;
+			if (recipe.isEmpty()) return;
 			lastRecipe = recipe.get();
 		}
 
-		ItemStack result = lastRecipe.assemble(inventoryIn).copy();
-		try(Transaction t = TransferUtil.getTransaction()) {
-			outputInv.insert(ItemVariant.of(result), result.getCount(), t);
-			t.commit();
-		}
+		ItemStack result = lastRecipe.assemble(inventoryIn, getLevel().registryAccess()).copy();
+		ItemHandlerHelper.insertItemStacked(outputInv, result, false);
 		ItemStack stackInSlot = inputInv.getStackInSlot(0);
-		stackInSlot.shrink(1);
+		stackInSlot.shrink(1); //lastRecipe.getIngredient().getItems()[0].getCount()
 		inputInv.setStackInSlot(0, stackInSlot);
 		sendData();
 		setChanged();
 	}
 	 */
+
+    public void spawnParticles() {
+        ItemStack stackInSlot = playEvent.copy();
+        if (stackInSlot.isEmpty()) return;
+
+        ItemParticleOption data = new ItemParticleOption(ParticleTypes.ITEM, stackInSlot);
+        float angle = level.random.nextFloat() * 360;
+        Vec3 offset = new Vec3(0, 0, 0.5f);
+        offset = VecHelper.rotate(offset, angle, Axis.Y);
+        Vec3 target = VecHelper.rotate(offset, getSpeed() > 0 ? 25 : -25, Axis.Y);
+
+        Vec3 center = offset.add(VecHelper.getCenterOf(worldPosition));
+        target = VecHelper.offsetRandomly(target.subtract(offset), level.random, 1 / 128f);
+        level.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
+    }
 
 	@Override
 	public void write(CompoundTag compound, boolean clientPacket) {
@@ -472,7 +458,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		compound.put("PlayEvent", NBTSerializer.serializeNBT(playEvent));
 		playEvent = ItemStack.EMPTY;
 	}
-	
+
 	@Override
 	protected void read(CompoundTag compound, boolean clientPacket) {
 		//timer = compound.getInt("Timer");
@@ -486,20 +472,11 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		if (compound.contains("PlayEvent"))
 			playEvent = ItemStack.of(compound.getCompound("PlayEvent"));
 	}
-	
+
 	public int getProcessingSpeed() {
 		return Mth.clamp((int) Math.abs(getSpeed() / 16f), 1, 512);
 	}
 
-//	@Override
-//	public <T> LazyOptional<T> getStorage(Capability<T> cap, Direction side) {
-//		if (isItemHandlerCap(cap))
-//			return capability.cast();
-//		return super.getStorage(cap, side);
-//	}
-
-
-	@Nullable
 	@Override
 	public Storage<ItemVariant> getItemStorage(@Nullable Direction face) {
 		return inventory;
@@ -526,24 +503,23 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 	private class RollingMillInventoryHandler extends CombinedStorage<ItemVariant, ItemStackHandler> {
 
 		public RollingMillInventoryHandler() {
-			super(List.of(inputInv, outputInv));
+			super(inputInv, outputInv);
 		}
 
 		@Override
-		public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction) {
-			if (canProcess(resource.toStack()))
-				return inputInv.insert(resource, maxAmount, transaction);
-			return 0;
+		public boolean isItemValid(int slot, ItemStack stack) {
+			if (outputInv == getHandlerFromIndex(getIndexForSlot(slot)))
+				return false;
+			return canProcess(stack) && super.isItemValid(slot, stack);
 		}
 
 		@Override
-		public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
-			return outputInv.extract(resource, maxAmount, transaction);
-		}
-
-		@Override
-		public @NotNull Iterator<StorageView<ItemVariant>> iterator(){
-			return new RollingMillInventoryHandlerIterator();
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			if (outputInv == getHandlerFromIndex(getIndexForSlot(slot)))
+				return stack;
+			if (!isItemValid(slot, stack))
+				return stack;
+			return super.insertItem(slot, stack, simulate);
 		}
 
 		private class RollingMillInventoryHandlerIterator implements Iterator<StorageView<ItemVariant>> {
@@ -554,10 +530,12 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 				wrapped = outputInv.iterator();
 			}
 
-			@Override
-			public boolean hasNext(){
-				return wrapped.hasNext();
-			}
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			if (inputInv == getHandlerFromIndex(getIndexForSlot(slot)))
+				return ItemStack.EMPTY;
+			return super.extractItem(slot, amount, simulate);
+		}
 
 			@Override
 			public StorageView<ItemVariant> next(){
@@ -591,4 +569,3 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		return impact;
 	}
 }
-

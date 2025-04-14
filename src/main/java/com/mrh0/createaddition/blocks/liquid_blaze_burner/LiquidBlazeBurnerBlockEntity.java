@@ -162,6 +162,8 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 
 		if(remainingBurnTime >= 1 && !(activeFuel == FuelType.NORMAL && newActiveFuel == FuelType.SPECIAL))
 			return;
+		if(tankInventory.getFluidAmount() < 100) return;
+		if(remainingBurnTime > MAX_HEAT_CAPACITY) return;
 
 		activeFuel = newActiveFuel;
 
@@ -206,25 +208,22 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 				spawnParticles(getHeatLevelFromBlock(), 1);
 			return;
 		}
-		
+
 		if (remainingBurnTime > 0 && !isCreative)
 			remainingBurnTime--;
 
 		burningTick();
 
-		if (isCreative)
-			return;
+		if (isCreative) return;
 
 		if (activeFuel == FuelType.NORMAL)
 			updateBlockState();
-		if (remainingBurnTime > 0)
-			return;
+		if (remainingBurnTime > 0) return;
 
 		if (activeFuel == FuelType.SPECIAL) {
 			activeFuel = FuelType.NORMAL;
 			remainingBurnTime = MAX_HEAT_CAPACITY / 2;
-		} else
-			activeFuel = FuelType.NONE;
+		} else activeFuel = FuelType.NONE;
 
 		updateBlockState();
 	}
@@ -268,12 +267,9 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		if (!isCreative) {
 			compound.putInt("fuelLevel", activeFuel.ordinal());
 			compound.putInt("burnTimeRemaining", remainingBurnTime);
-		} else
-			compound.putBoolean("isCreative", true);
-		if (goggles)
-			compound.putBoolean("Goggles", true);
-		if (hat)
-			compound.putBoolean("TrainHat", true);
+		} else compound.putBoolean("isCreative", true);
+		if (goggles) compound.putBoolean("Goggles", true);
+		if (hat) compound.putBoolean("TrainHat", true);
 		compound.put("TankContent", tankInventory.writeToNBT(new CompoundTag()));
 		super.write(compound, clientPacket);
 	}
@@ -325,7 +321,8 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	}
 
 	/**
-	 * @return true if the heater updated its burn time, items are auto-consumed!
+	 * @return true if the heater updated its burn time and an item should be
+	 *         consumed
 	 */
 	protected boolean tryUpdateFuel(ItemStack itemStack, ContainerItemContext context, TransactionContext t, boolean forceOverflow) {
 		if (isCreative)
@@ -373,9 +370,9 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 				return;
 			}
 
-			BlazeBurnerBlock.HeatLevel prev = getHeatLevelFromBlock();
-			playSound();
-			updateBlockState();
+		    BlazeBurnerBlock.HeatLevel prev = getHeatLevelFromBlock();
+		    playSound();
+		    updateBlockState();
 
 			if (prev != getHeatLevelFromBlock())
 				level.playSound(null, worldPosition, SoundEvents.BLAZE_AMBIENT, SoundSource.BLOCKS,
@@ -419,7 +416,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 
 	protected BlazeBurnerBlock.HeatLevel getHeatLevelFromFuelType(FuelType fuel) {
 		BlazeBurnerBlock.HeatLevel level = BlazeBurnerBlock.HeatLevel.SMOULDERING;
-		switch (fuel) {
+		switch (activeFuel) {
 		case SPECIAL:
 			level = BlazeBurnerBlock.HeatLevel.SEETHING;
 			break;
@@ -435,10 +432,8 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	}
 
 	protected void spawnParticles(BlazeBurnerBlock.HeatLevel heatLevel, double burstMult) {
-		if (level == null)
-			return;
-		if (heatLevel == BlazeBurnerBlock.HeatLevel.NONE)
-			return;
+		if (level == null) return;
+		if (heatLevel == BlazeBurnerBlock.HeatLevel.NONE) return;
 
 		RandomSource r = level.getRandom();
 
@@ -446,10 +441,8 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		Vec3 v = c.add(VecHelper.offsetRandomly(Vec3.ZERO, r, .125f)
 			.multiply(1, 0, 1));
 
-		if (r.nextInt(3) == 0)
-			level.addParticle(ParticleTypes.LARGE_SMOKE, v.x, v.y, v.z, 0, 0, 0);
-		if (r.nextInt(2) != 0)
-			return;
+		if (r.nextInt(3) == 0) level.addParticle(ParticleTypes.LARGE_SMOKE, v.x, v.y, v.z, 0, 0, 0);
+		if (r.nextInt(2) != 0) return;
 
 		boolean empty = level.getBlockState(worldPosition.above())
 			.getCollisionShape(level, worldPosition.above())

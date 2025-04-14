@@ -29,35 +29,35 @@ public record ObservePacket(BlockPos pos, int node) {
 				if (player != null) {
 					sendUpdate(pkt, player);
 				}
-
+			
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
 	}
-
+	
 	private static void sendUpdate(ObservePacket pkt, ServerPlayer player) {
-		BlockEntity te = player.level().getBlockEntity(pkt.pos);
-		if (te != null) {
-			if (te instanceof IObserveTileEntity ote) {
-				ote.onObserved(player, pkt);
-				Packet<ClientGamePacketListener> supdatetileentitypacket = te.getUpdatePacket();
-				if (supdatetileentitypacket != null)
-					player.connection.send(supdatetileentitypacket);
-			}
-		}
-	}
-
+		BlockEntity te = (BlockEntity) player.level().getBlockEntity(pkt.pos);
+        if (te != null) {
+        	if(te instanceof IObserveTileEntity) {
+	        	IObserveTileEntity ote = (IObserveTileEntity) te;
+	        	ote.onObserved(player, pkt);
+	            Packet<ClientGamePacketListener> supdatetileentitypacket = te.getUpdatePacket();
+	            if (supdatetileentitypacket != null)
+	                player.connection.send(supdatetileentitypacket);
+        	}
+        }
+    }
+	
 	private static int cooldown = 0;
-
 	public static void tick() {
 		cooldown--;
-		if (cooldown < 0)
+		if(cooldown < 0)
 			cooldown = 0;
 	}
-
+	
 	public static boolean send(BlockPos pos, int node) {
-		if (cooldown > 0)
+		if(cooldown > 0)
 			return false;
 		cooldown = 10;
 		ClientPlayNetworking.send(CANetwork.OBSERVE_PACKET, new ObservePacket(pos, node).encode());

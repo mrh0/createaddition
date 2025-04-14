@@ -5,7 +5,6 @@ import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.compat.computercraft.ComputerCraftCompat;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.event.GameEvents;
-import com.mrh0.createaddition.groups.ModGroup;
 import com.mrh0.createaddition.index.*;
 import com.mrh0.createaddition.index.CASounds;
 import com.mrh0.createaddition.network.CANetwork;
@@ -26,24 +25,9 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.mojang.brigadier.CommandDispatcher;
-import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
-import com.mrh0.createaddition.commands.CCApiCommand;
-import com.mrh0.createaddition.config.Config;
-import com.mrh0.createaddition.groups.ModGroup;
-import com.mrh0.createaddition.network.EnergyNetworkPacket;
-import com.mrh0.createaddition.network.ObservePacket;
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.foundation.item.TooltipModifier;
-
-import javax.annotation.Nullable;
 
 public class CreateAddition implements ModInitializer{
     public static final Logger LOGGER = LogManager.getLogger();
@@ -76,7 +60,8 @@ public class CreateAddition implements ModInitializer{
         IE_ACTIVE = FabricLoader.getInstance().isModLoaded("immersiveengineering");
         CC_ACTIVE = FabricLoader.getInstance().isModLoaded("computercraft");
         AE2_ACTIVE = FabricLoader.getInstance().isModLoaded("ae2");
-        CAArmInteractions.register();
+
+        CACreativeModeTabs.register();
         CABlocks.register();
         CABlockEntities.register();
         CAItems.register();
@@ -85,7 +70,9 @@ public class CreateAddition implements ModInitializer{
         CARecipes.register();
         CASounds.register();
         CASchedule.register();
-        ModGroup.register();
+        CADamageTypes.register();
+        CAArmInteractions.register();
+
         REGISTRATE.register();
 
         //  Setup events

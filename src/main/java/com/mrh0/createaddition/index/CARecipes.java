@@ -34,19 +34,21 @@ public class CARecipes {
 	}
 
 	public static final Supplier<RecipeType<RollingRecipe>> ROLLING_TYPE = register("rolling");
-	static RegistryObject<RecipeSerializer<?>> ROLLING = SERIALIZERS.register("rolling", () ->
+	public static RegistryObject<RecipeSerializer<?>> ROLLING = SERIALIZERS.register("rolling", () ->
 			new SequencedAssemblyRollingRecipeSerializer(new RollingRecipeProcessingFactory()));
 
 	public static final Supplier<RecipeType<ChargingRecipe>> CHARGING_TYPE = register("charging");
-	static RegistryObject<RecipeSerializer<?>> CHARGING = SERIALIZERS.register("charging", () ->
+	public static RegistryObject<RecipeSerializer<?>> CHARGING = SERIALIZERS.register("charging", () ->
 			new SequencedAssemblyChargingRecipeSerializer(new ChargingRecipeProcessingFactory()));
 
 	public static final Supplier<RecipeType<LiquidBurningRecipe>> LIQUID_BURNING_TYPE = register("liquid_burning");
-	static RegistryObject<RecipeSerializer<?>> LIQUID_BURNING = SERIALIZERS.register("liquid_burning", () ->
-			new LiquidBurningRecipeSerializer());
-	
+	public static final RegistryObject<RecipeSerializer<?>> LIQUID_BURNING = SERIALIZERS.register("liquid_burning", LiquidBurningRecipeSerializer::new);
+
     public static void register() {
-    	RECIPE_TYPES.register();
+
     	SERIALIZERS.register();
+		RECIPE_TYPES.register();
+
+        //CraftingHelper.register(HasFluidTagCondition.Serializer.INSTANCE);
     }
 }

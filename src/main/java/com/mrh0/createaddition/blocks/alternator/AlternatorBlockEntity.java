@@ -116,7 +116,7 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyT
 			return;
 
 		float pitch = Mth.clamp((componentSpeed / 256f) + .5f, .5f, 1.5f);
-		CASoundScapes.play(AmbienceGroup.DYNAMO, worldPosition, pitch);
+		if (Config.AUDIO_ENABLED.get()) CASoundScapes.play(AmbienceGroup.DYNAMO, worldPosition, pitch);
 	}
 
 	public static int getEnergyProductionRate(int rpm) {

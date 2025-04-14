@@ -1,5 +1,5 @@
 package com.mrh0.createaddition.blocks.accumulator;
-
+/*
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -293,10 +293,6 @@ public class AccumulatorBlockEntity extends BaseElectricBlockEntity implements I
 
 	private boolean firstTickState = true;
 
-	/**
-	 * Called after the tile entity has been part of a contraption.
-	 * Only runs on the server.
-	 */
 	private void validateNodes() {
 		boolean changed = validateLocalNodes(this.localNodes);
 
@@ -472,3 +468,4 @@ public class AccumulatorBlockEntity extends BaseElectricBlockEntity implements I
 		return Config.SMALL_CONNECTOR_MAX_LENGTH.get();
 	}
 }
+*/
