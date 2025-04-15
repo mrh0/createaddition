@@ -3,7 +3,7 @@ package com.mrh0.createaddition.index;
 import static com.simibubi.create.api.behaviour.display.DisplaySource.displaySource;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
-import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
+
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.barbed_wire.BarbedWireBlock;
@@ -12,7 +12,6 @@ import com.mrh0.createaddition.blocks.connector.LargeConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.SmallConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.SmallLightConnectorBlock;
 import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlock;
-import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlockItem;
 import com.mrh0.createaddition.blocks.modular_accumulator.*;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlock;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceMovement;
@@ -26,8 +25,8 @@ import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.item.BiomassPelletBlock;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
-import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.AssetLookup;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
@@ -156,7 +155,7 @@ public class CABlocks {
 			.initialProperties(SharedProperties::softMetal)
 			.properties(BlockBehaviour.Properties::noOcclusion)
 			.onRegister(movementBehaviour(new ModularAccumulatorMovement()))
-			.onRegister(connectedTextures(ModularAccumulatorCTBehaviour::new))
+			.onRegister(CreateRegistrate.blockModel(() -> ModularAccumulatorModel::standard))
 			.transform(displaySource(CADisplaySources.MODULAR_ACCUMULATOR))
 			.addLayer(() -> RenderType::cutoutMipped)
 			.item(ModularAccumulatorBlockItem::new)
