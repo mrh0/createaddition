@@ -9,12 +9,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 
 public class CADamageSources {
-    public static DamageSource barbedWire(Level level){
-        return source(CADamageTypes.BARBED_WIRE, level);
-    }
-    public static DamageSource teslaCoil(Level level){
-        return source(CADamageTypes.TESLA_COIL, level);
-    }
     private static DamageSource source(ResourceKey<DamageType> key, LevelReader level) {
         Registry<DamageType> registry = level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE);
         return new DamageSource(registry.getHolderOrThrow(key));

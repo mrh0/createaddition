@@ -14,11 +14,12 @@ public class RollingMillAssemblySubCategory extends JeiSequencedAssemblySubCateg
     }
 
     @Override
-    public void draw(SequencedRecipe<?> sequencedRecipe, GuiGraphics ms, double mouseX, double mouseY, int index) {
-        ms.pose().pushPose();
-        ms.pose().translate(0, 51.5f, 0);
-        ms.pose().scale(.6f, .6f, .6f);
-        mill.draw(ms, getWidth() / 2, 30);
-        ms.pose().popPose();
+    public void draw(SequencedRecipe<?> sequencedRecipe, GuiGraphics gg, double mouseX, double mouseY, int index) {
+        var ms = gg.pose();
+        ms.pushPose();
+        ms.translate(0, 51.5f, 0);
+        ms.scale(.6f, .6f, .6f);
+        mill.draw(gg, getWidth() / 2, 30);
+        ms.popPose();
     }
 }

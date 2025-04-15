@@ -3,7 +3,11 @@ package com.mrh0.createaddition.blocks.tesla_coil;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.BaseElectricBlockEntity;
-import com.mrh0.createaddition.index.*;
+import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CADamageTypes;
+import com.mrh0.createaddition.index.CAEffects;
+import com.mrh0.createaddition.index.CARecipes;
+import com.mrh0.createaddition.index.CASounds;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.sound.CASoundScapes;
@@ -44,8 +48,7 @@ import java.util.Optional;
 
 public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHaveGoggleInformation {
 
-	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	private Optional<ChargingRecipe> recipeCache;
+	private Optional<ChargingRecipe> recipeCache = Optional.empty();
 
 	private final ItemStackHandler inputInv;
 	private int chargeAccumulator;
@@ -54,7 +57,6 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	public TeslaCoilBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 		inputInv = new ItemStackHandler(1);
-		recipeCache = Optional.empty();
 	}
 
 	@Override
@@ -110,7 +112,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	private void doDmg() {
 		localEnergy.internalConsumeEnergy(Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get());
 		BlockPos origin = getBlockPos().relative(getBlockState().getValue(TeslaCoilBlock.FACING).getOpposite());
-		List<LivingEntity> ents = Objects.requireNonNull(getLevel()).getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(Config.TESLA_COIL_HURT_RANGE.get()));
+		List<LivingEntity> ents = getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(origin).inflate(Config.TESLA_COIL_HURT_RANGE.get()));
 		boolean zapped = false;
 		for(LivingEntity e : ents) {
 			if(e == null) return;
@@ -132,10 +134,11 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 				dmg = Config.TESLA_COIL_HURT_DMG_PLAYER.get();
 				time = Config.TESLA_COIL_HURT_EFFECT_TIME_PLAYER.get();
 			}
+
 			if(dmg > 0) {
-				e.hurt(CADamageSources.teslaCoil(level), dmg);
+				e.hurt(CADamageTypes.teslaCoil(level), dmg);
 				if (!zapped) {
-					level.playSound(null, worldPosition, CASounds.LOUD_ZAP.get(), SoundSource.BLOCKS, 0.6f, 1f);
+					if (Config.AUDIO_ENABLED.get()) level.playSound(null, worldPosition, CASounds.LOUD_ZAP.get(), SoundSource.BLOCKS, 0.6f, 1f);
 					zapped = true;
 				}
 			}
@@ -165,7 +168,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 
 		if(poweredTimer > 0) {
 			if (zapTimer == 0) {
-				level.playSound(null, worldPosition, CASounds.LITTLE_ZAP.get(), SoundSource.BLOCKS, 0.1f, 1f);
+				if (Config.AUDIO_ENABLED.get()) level.playSound(null, worldPosition, CASounds.LITTLE_ZAP.get(), SoundSource.BLOCKS, 0.1f, 1f);
 				zapTimer = level.random.nextInt(100, 300);
 			}
 			zapTimer--;
@@ -181,7 +184,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 
 	public void tickAudio() {
 		if (!isPoweredState()) return;
-		CASoundScapes.play(CASoundScapes.AmbienceGroup.TESLA, worldPosition, 1f);
+		if (Config.AUDIO_ENABLED.get()) CASoundScapes.play(CASoundScapes.AmbienceGroup.TESLA, worldPosition, 1f);
 	}
 
 	public boolean isPoweredState() {
@@ -191,8 +194,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	protected BeltProcessingBehaviour.ProcessingResult chargeCompundAndStack(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 
 		ItemStack stack = transported.stack;
-		if(stack == null)
-			return BeltProcessingBehaviour.ProcessingResult.PASS;
+		if(stack == null) return BeltProcessingBehaviour.ProcessingResult.PASS;
 		if(chargeStack(stack, transported, handler)) {
 			poweredTimer = 10;
 			return BeltProcessingBehaviour.ProcessingResult.HOLD;
@@ -241,10 +243,9 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		if (this.getLevel() == null) return false;
-		final var inventoryIn = new RecipeWrapper(inputInv);
 		if(!inputInv.getStackInSlot(0).is(stack.getItem())) {
 			inputInv.setStackInSlot(0, stack);
-			recipeCache = find(stack, inventoryIn, level);
+			recipeCache = find(stack, new RecipeWrapper(inputInv), this.getLevel());
 			chargeAccumulator = 0;
 		}
 		if(recipeCache.isPresent()) {
@@ -254,13 +255,13 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 			if(chargeAccumulator >= recipe.getEnergy()) {
 				TransportedItemStack remainingStack = transported.copy();
 				TransportedItemStack result = transported.copy();
-				result.stack = recipe.getResultItem(null).copy();
+				result.stack = recipe.getResultItem(this.getLevel().registryAccess()).copy();
 				remainingStack.stack.shrink(1);
 				List<TransportedItemStack> outList = new ArrayList<>();
 				outList.add(result);
 				handler.handleProcessingOnItem(transported, TransportedItemStackHandlerBehaviour.TransportedResult.convertToAndLeaveHeld(outList, remainingStack));
 				chargeAccumulator = 0;
-				level.playSound(null, worldPosition, CASounds.LITTLE_ZAP.get(), SoundSource.BLOCKS, 0.1f, 1f);
+				if (Config.AUDIO_ENABLED.get()) level.playSound(null, worldPosition, CASounds.LITTLE_ZAP.get(), SoundSource.BLOCKS, 0.1f, 1f);
 			}
 			return true;
 		}

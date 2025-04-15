@@ -2,11 +2,15 @@ package com.mrh0.createaddition.blocks.barbed_wire;
 
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.index.CADamageSources;
+import com.mrh0.createaddition.index.CADamageTypes;
 import io.github.fabricators_of_create.porting_lib.extensions.extensions.IShearable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -32,7 +36,7 @@ public class BarbedWireBlock extends Block implements IShearable {
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		double delta = Math.abs(entity.getX() - entity.xOld) + Math.abs(entity.getY() - entity.yOld) + Math.abs(entity.getZ() - entity.zOld);
 		if((entity instanceof LivingEntity) && delta > 0d) {
-			if(entity.hurt(CADamageSources.barbedWire(level), Config.BARBED_WIRE_DAMAGE.get().floatValue()))
+			if(entity.hurt(CADamageTypes.barbedWire(level), Config.BARBED_WIRE_DAMAGE.get().floatValue()))
 				entity.playSound(SoundEvents.PLAYER_HURT_SWEET_BERRY_BUSH, 1f, 1f);
 		}
 		entity.makeStuckInBlock(state, new Vec3(0.25D, (double)0.05F, 0.25D));
@@ -45,6 +49,7 @@ public class BarbedWireBlock extends Block implements IShearable {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext c) {
+		if(c.getPlayer() == null) return defaultBlockState();
 		if(c.getClickedFace().getAxis() == Axis.Y)
 			return defaultBlockState().setValue(HORIZONTAL_FACING, c.getPlayer().isShiftKeyDown() ? c.getHorizontalDirection().getClockWise() : c.getHorizontalDirection()).setValue(VERTICAL, false);
 		else

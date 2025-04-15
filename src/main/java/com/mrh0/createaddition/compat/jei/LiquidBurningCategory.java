@@ -1,5 +1,7 @@
 package com.mrh0.createaddition.compat.jei;
 
+import java.util.List;
+
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.mrh0.createaddition.util.ClientMinecraftWrapper;
@@ -14,8 +16,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.List;
 
 public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe> {
 
@@ -47,24 +47,23 @@ public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe>
 	}
 
 	@Override
-	public void draw(LiquidBurningRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics stack, double mouseX,
-					 double mouseY) {
+	public void draw(LiquidBurningRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gg, double mouseX,
+			double mouseY) {
 
-		stack.drawString(ClientMinecraftWrapper.getFont(), formatTime(recipe.getBurnTime()), getBackground().getWidth() / 2 + 48, 86 - 50, 4210752);
-
+		gg.drawString(ClientMinecraftWrapper.getFont(), formatTime(recipe.getBurnTime()), getBackground().getWidth() / 2 + 48, 86 - 50, 4210752);
 
 		HeatCondition requiredHeat = recipe.isSuperheated() ? HeatCondition.SUPERHEATED : HeatCondition.HEATED;
 
-		AllGuiTextures.JEI_LIGHT.render(stack, 81, 58 + 30 - 50);
+		AllGuiTextures.JEI_LIGHT.render(gg, 81, 58 + 30 - 50);
 
-		AllGuiTextures.JEI_HEAT_BAR.render(stack, 4, 80 - 50);
-		stack.drawString(ClientMinecraftWrapper.getFont(), Lang.translateDirect(requiredHeat.getTranslationKey()), 9,
+		AllGuiTextures.JEI_HEAT_BAR.render(gg, 4, 80 - 50);
+		gg.drawString(ClientMinecraftWrapper.getFont(), Lang.translateDirect(requiredHeat.getTranslationKey()), 9,
 				86 - 50, requiredHeat.getColor());
 
 		heater.withHeat(requiredHeat.visualizeAsBlazeBurner())
-			.draw(stack, getBackground().getWidth() / 2 + 3, 55 - 50);
+			.draw(gg, getBackground().getWidth() / 2 + 3, 55 - 50);
 
-		AllGuiTextures.JEI_DOWN_ARROW.render(stack, getBackground().getWidth() / 2 + 3, 8);
+		AllGuiTextures.JEI_DOWN_ARROW.render(gg, getBackground().getWidth() / 2 + 3, 8);
 	}
 
 	public static String formatTime(int ticks) {

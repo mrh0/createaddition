@@ -88,7 +88,8 @@ public class SmallLightConnectorBlockEntity extends AbstractConnectorBlockEntity
         if(getLevel() == null) return;
         if(level.isClientSide()) return;
         EnergyNetwork network = getNetwork(0);
-        boolean hasEnergy = network != null && network.pull(Config.SMALL_LIGHT_CONNECTOR_CONSUMPTION.get()) > 0;
+        if (network != null) network.demand(1);
+        boolean hasEnergy = network != null && network.pull(Config.SMALL_LIGHT_CONNECTOR_CONSUMPTION.get(), false) > 0;
         tickToggleTimer = tickToggleTimer + (hasEnergy ? 1 : -1);
 
         if (tickToggleTimer >= posTimeOffset) {

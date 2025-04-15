@@ -260,7 +260,7 @@
 	"createaddition.ponder.rolling_mill.text_3": "Right-click the Mill to manually retrieve the output items",
 
 	"createaddition.ponder.automated_rolling_mill.header": "Automating the Rolling Mill",
-	"createaddition.ponder.automated_rolling_mill.text_1": "The Rolling Mill can be automated by placing it between two belts",
+	"createaddition.ponder.automated_rolling_mill.text_1": "The Rolling Mill can be automated using a Belt and two Funnels",
 	"createaddition.ponder.automated_rolling_mill.text_2": "Input Funnel",
 	"createaddition.ponder.automated_rolling_mill.text_3": "Output Funnel",
 

@@ -28,6 +28,8 @@ public class Config {
 	public static ForgeConfigSpec.IntValue FE_RPM;
 	public static ForgeConfigSpec.IntValue MAX_STRESS;
 
+    public static ForgeConfigSpec.BooleanValue AUDIO_ENABLED;
+
 	public static ForgeConfigSpec.LongValue ALTERNATOR_MAX_OUTPUT;
 	public static ForgeConfigSpec.LongValue ALTERNATOR_CAPACITY;
 	public static ForgeConfigSpec.DoubleValue ALTERNATOR_EFFICIENCY;
@@ -81,6 +83,9 @@ public class Config {
 
 		MAX_STRESS = COMMON_BUILDER.comment("Max stress for the Alternator and Electric Motor (in SU at 256 RPM).")
 				.defineInRange("max_stress", 16384, 0, Integer.MAX_VALUE);
+
+		AUDIO_ENABLED = COMMON_BUILDER.comment("If audio should be enabled or not.")
+				.define("audio_enabled", true);
 		COMMON_BUILDER.pop();
 
 

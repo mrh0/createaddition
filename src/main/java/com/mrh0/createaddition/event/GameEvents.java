@@ -9,6 +9,7 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.simibubi.create.AllBlocks;
+
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -36,6 +37,7 @@ public class GameEvents {
 		ServerTickEvents.START_WORLD_TICK.register(GameEvents::worldTickEvent);
 		ServerTickEvents.START_SERVER_TICK.register(GameEvents::serverTickEvent);
 		ServerWorldEvents.LOAD.register(GameEvents::loadEvent);
+        ServerWorldEvents.UNLOAD.register(GameEvents::unloadEvent);
 		UseBlockCallback.EVENT.register(GameEvents::interact);
 	}
 
@@ -60,6 +62,12 @@ public class GameEvents {
 	public static void loadEvent(MinecraftServer server, ServerLevel world) {
 		new EnergyNetworkManager(world);
 	}
+
+    public static void unloadEvent(MinecraftServer server, ServerLevel world) {
+        if (!world.isClientSide()) {
+            EnergyNetworkManager.instances.remove(world);
+        }
+    }
 
     public static InteractionResult interact(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
 		try {

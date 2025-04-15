@@ -205,6 +205,17 @@ public class DigitalAdapterPeripheral implements IPeripheral {
     }
 
     @LuaFunction(mainThread = true)
+    public final boolean hasElevatorArrived(String direction) {
+        Direction dir = Helpers.nameToDir(direction);
+        if(dir == null) return false;
+        var ep = this.tileEntity.getElevatorPulley(dir);
+        if(ep == null) return false;
+        var ec = getElevatorContraption(ep);
+        if(ec == null) return false;
+        return ec.arrived;
+    }
+
+    @LuaFunction(mainThread = true)
     public final int getElevatorFloors(String direction) {
         Direction dir = Helpers.nameToDir(direction);
         if(dir == null) return 0;

@@ -137,7 +137,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 
 		VertexConsumer ivertexbuilder = buffer.getBuffer(CARenderType.WIRE);
 		Matrix4f matrix4f = stack.last().pose();
-		float f = Mth.invSqrt(x * x + z * z) * 0.025F / 2.0F;//fastInvSqrt
+		float f = (float) (Mth.fastInvSqrt(x * x + z * z) * 0.025F / 2.0F);
 		float o1 = z * f;
 		float o2 = x * f;
 		BlockPos blockpos1 = tileEntityIn.getBlockPos();

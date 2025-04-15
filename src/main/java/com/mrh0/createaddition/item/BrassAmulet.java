@@ -22,7 +22,6 @@ public class BrassAmulet extends Item {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int pSlotId, boolean pIsSelected) {
         if(!(entity instanceof Player player)) return;
-        System.out.println(player.getFoodData().getSaturationLevel());
         if(player.getFoodData().getSaturationLevel() > 1f) {
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3, 0, true, true, true));
         }

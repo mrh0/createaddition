@@ -2,6 +2,7 @@ package com.mrh0.createaddition.compat.jei;
 
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
+
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -26,14 +27,14 @@ public class RollingMillCategory extends CARecipeCategory<RollingRecipe> {
 		builder
 				.addSlot(RecipeIngredientRole.OUTPUT, 140, 28)
 				.setBackground(getRenderedSlot(), -1, -1)
-				.addItemStack(recipe.getResultItem(null));
+				.addItemStack(recipe.getResultItem());
 	}
 
 	@Override
-	public void draw(RollingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics stack, double mouseX,
+	public void draw(RollingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gg, double mouseX,
 					 double mouseY) {
-		AllGuiTextures.JEI_ARROW.render(stack, 85, 32);
-		AllGuiTextures.JEI_DOWN_ARROW.render(stack, 43, 4);
-		rolling_mill.draw(stack, 48, 27);
+		AllGuiTextures.JEI_ARROW.render(gg, 85, 32);
+		AllGuiTextures.JEI_DOWN_ARROW.render(gg, 43, 4);
+		rolling_mill.draw(gg, 48, 27);
 	}
 }

@@ -1,8 +1,8 @@
 package com.mrh0.createaddition.energy.network;
 
-import net.minecraft.world.level.LevelAccessor;
-
 import java.util.*;
+
+import net.minecraft.world.level.LevelAccessor;
 
 
 public class EnergyNetworkManager {
@@ -12,7 +12,7 @@ public class EnergyNetworkManager {
 	
 	public EnergyNetworkManager(LevelAccessor world) {
 		instances.put(world, this);
-		networks = new ArrayList<>();
+		networks = new ArrayList<EnergyNetwork>();
 	}
 	
 	public void add(EnergyNetwork network) {
