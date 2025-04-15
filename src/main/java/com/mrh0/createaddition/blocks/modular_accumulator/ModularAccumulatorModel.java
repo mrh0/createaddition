@@ -3,7 +3,8 @@ package com.mrh0.createaddition.blocks.modular_accumulator;
 import com.mrh0.createaddition.index.CASpriteShifts;
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.foundation.block.connected.CTModel;
-import com.simibubi.create.foundation.block.connected.HorizontalCTBehaviour;
+import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
+import com.simibubi.create.foundation.block.connected.ConnectedTextureBehaviour;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -24,12 +25,8 @@ import java.util.List;
 public class ModularAccumulatorModel extends CTModel {
     protected static final ModelProperty<CullData> CULL_PROPERTY = new ModelProperty<>();
 
-    public static ModularAccumulatorModel standard(BakedModel originalModel) {
-        return new ModularAccumulatorModel(originalModel);
-    }
-
-    private ModularAccumulatorModel(BakedModel originalModel) {
-        super(originalModel, new HorizontalCTBehaviour(CASpriteShifts.ACCUMULATOR, CASpriteShifts.ACCUMULATOR_TOP));
+    public ModularAccumulatorModel(BakedModel originalModel) {
+        super(originalModel, new ModularAccumulatorCTBehaviour());
     }
 
     @Override

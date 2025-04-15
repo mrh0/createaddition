@@ -155,7 +155,7 @@ public class CABlocks {
 			.initialProperties(SharedProperties::softMetal)
 			.properties(BlockBehaviour.Properties::noOcclusion)
 			.onRegister(movementBehaviour(new ModularAccumulatorMovement()))
-			.onRegister(CreateRegistrate.blockModel(() -> ModularAccumulatorModel::standard))
+			.onRegister(CreateRegistrate.blockModel(() -> ModularAccumulatorModel::new))
 			.transform(displaySource(CADisplaySources.MODULAR_ACCUMULATOR))
 			.addLayer(() -> RenderType::cutoutMipped)
 			.item(ModularAccumulatorBlockItem::new)
