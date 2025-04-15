@@ -30,8 +30,7 @@ public class ModularAccumulatorModel extends CTModel {
     }
 
     @Override
-    protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state,
-                                                ModelData blockEntityData) {
+    protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state, ModelData blockEntityData) {
         super.gatherModelData(builder, world, pos, state, blockEntityData);
         CullData cullData = new CullData();
         for (Direction d : Iterate.horizontalDirections)
@@ -41,14 +40,11 @@ public class ModularAccumulatorModel extends CTModel {
 
     @Override
     public List<BakedQuad> getQuads(BlockState state, Direction side, RandomSource rand, ModelData extraData, RenderType renderType) {
-        if (side != null)
-            return Collections.emptyList();
+        if (side != null) return Collections.emptyList();
 
         List<BakedQuad> quads = new ArrayList<>();
         for (Direction d : Iterate.directions) {
-            if (extraData.has(CULL_PROPERTY) && extraData.get(CULL_PROPERTY)
-                    .isCulled(d))
-                continue;
+            if (extraData.has(CULL_PROPERTY) && extraData.get(CULL_PROPERTY).isCulled(d)) continue;
             quads.addAll(super.getQuads(state, d, rand, extraData, renderType));
         }
         quads.addAll(super.getQuads(state, null, rand, extraData, renderType));
@@ -65,16 +61,12 @@ public class ModularAccumulatorModel extends CTModel {
         }
 
         void setCulled(Direction face, boolean cull) {
-            if (face.getAxis()
-                    .isVertical())
-                return;
+            if (face.getAxis().isVertical()) return;
             culledFaces[face.get2DDataValue()] = cull;
         }
 
         boolean isCulled(Direction face) {
-            if (face.getAxis()
-                    .isVertical())
-                return false;
+            if (face.getAxis().isVertical()) return false;
             return culledFaces[face.get2DDataValue()];
         }
     }
