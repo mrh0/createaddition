@@ -1,6 +1,5 @@
 package com.mrh0.createaddition.recipe.rolling;
 
-import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.compat.emi.EmiRollingMillAssemblySubCategory;
 import com.mrh0.createaddition.compat.jei.RollingMillAssemblySubCategory;
 import com.mrh0.createaddition.compat.rei.ReiRollingMillAssemblySubCategory;
@@ -13,7 +12,6 @@ import com.simibubi.create.content.processing.sequenced.IAssemblyRecipe;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
