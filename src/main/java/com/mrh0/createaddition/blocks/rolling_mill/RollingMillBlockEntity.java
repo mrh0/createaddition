@@ -8,6 +8,7 @@ import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
+import com.simibubi.create.content.processing.recipe.ProcessingInventory;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.VecHelper;
@@ -228,9 +229,18 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 
 	@Override
 	protected void read(CompoundTag compound, boolean clientPacket) {
+		if(compound.contains("Inventory")) {
+			ProcessingInventory inventory = new ProcessingInventory((stack) -> {});
+			inventory.deserializeNBT(compound.getCompound("Inventory"));
+			try(Transaction t = Transaction.openOuter()) {
+				StorageUtil.move(inventory, inputInv, variant -> true, Long.MAX_VALUE, t);
+			}
+		}
+
 		timer = compound.getInt("Timer");
 		inputInv.deserializeNBT(compound.getCompound("InputInventory"));
 		outputInv.deserializeNBT(compound.getCompound("OutputInventory"));
+
 		super.read(compound, clientPacket);
 	}
 
