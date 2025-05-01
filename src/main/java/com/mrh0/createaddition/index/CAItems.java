@@ -23,7 +23,8 @@ public class CAItems {
 
 	public static final ItemEntry<Item> DIAMOND_GRIT =
 			CreateAddition.REGISTRATE.item("diamond_grit", Item::new).register();
-	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER = CreateAddition.REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new).register();
+	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER =
+			CreateAddition.REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new).register();
 
 	public static final ItemEntry<Item> BIOMASS =
 			CreateAddition.REGISTRATE.item("biomass", Item::new)
@@ -90,6 +91,15 @@ public class CAItems {
 			.properties(p -> p.stacksTo(16))
 			.register();
 
+	public static final ItemEntry<Item> CHOCOLATE_CAKE_SLICE =
+			CreateAddition.REGISTRATE.item("chocolate_cake_slice", Item::new)
+			.properties(p -> p.food(CAFoodProperties.CAKE_SLICE))
+			.register();
+	public static final ItemEntry<Item> HONEY_CAKE_SLICE =
+			CreateAddition.REGISTRATE.item("honey_cake_slice", Item::new)
+			.properties(p -> p.food(CAFoodProperties.CAKE_SLICE))
+			.register();
+			
 	public static void register() {
 
 	}
