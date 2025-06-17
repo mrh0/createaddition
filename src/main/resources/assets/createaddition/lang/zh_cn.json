@@ -36,12 +36,15 @@
 
   "item.createaddition.diamond_grit": "钻石粉",
   "item.createaddition.diamond_grit_sandpaper": "钻石细粒砂纸",
-  "item.createaddition.diamond_grit_sandpaper.tooltip": "钻石细粒砂纸",
+  "item.createaddition.diamond_grit_sandpaper.tooltip.summary": "用来_打磨_物品的砂纸。可以用机械手来实现自动化",
+  "item.createaddition.diamond_grit_sandpaper.tooltip.condition1": "使用时",
+  "item.createaddition.diamond_grit_sandpaper.tooltip.behaviour1": "打磨_副手_上或者_准星所指_的物品",
 
   "item.createaddition.zinc_sheet": "锌板",
 
   "item.createaddition.copper_spool": "铜线轴",
   "item.createaddition.copper_spool.tooltip": "线轴",
+  "item.createaddition.copper_spool.tooltip.summary": "用于存储电线。",
   "item.createaddition.copper_spool.tooltip.condition1": "低电流",
   "item.createaddition.copper_spool.tooltip.behaviour1": "连接_低电流连接器_。",
   "item.createaddition.copper_spool.tooltip.condition2": "右击两个连接器时",
@@ -49,8 +52,10 @@
   "item.createaddition.copper_wire": "铜线",
   "item.createaddition.copper_rod": "铜棒",
 
+
   "item.createaddition.festive_spool": "有节日灯的铜线轴",
   "item.createaddition.festive_spool.tooltip": "线轴",
+  "item.createaddition.festive_spool.tooltip.summary": "用于存储电线。",
   "item.createaddition.festive_spool.tooltip.condition1": "低电流",
   "item.createaddition.festive_spool.tooltip.behaviour1": "连接_低电流连接器_。",
   "item.createaddition.festive_spool.tooltip.condition2": "右击两个连接器时",
@@ -61,6 +66,7 @@
 
   "item.createaddition.gold_spool": "金线轴",
   "item.createaddition.gold_spool.tooltip": "线轴",
+  "item.createaddition.gold_spool.tooltip.summary": "用于存储电线。",
   "item.createaddition.gold_spool.tooltip.condition1": "高电流",
   "item.createaddition.gold_spool.tooltip.behaviour1": "连接_高电流连接器_。",
   "item.createaddition.gold_spool.tooltip.condition2": "右击两个连接器时",
@@ -73,6 +79,7 @@
   "item.createaddition.electrum_sheet": "琥珀金板",
   "item.createaddition.electrum_spool": "琥珀金线轴",
   "item.createaddition.electrum_spool.tooltip": "线轴",
+  "item.createaddition.electrum_spool.tooltip.summary": "用于存储电线。",
   "item.createaddition.electrum_spool.tooltip.condition1": "高电流",
   "item.createaddition.electrum_spool.tooltip.behaviour1": "连接_高电流连接器_。",
   "item.createaddition.electrum_spool.tooltip.condition2": "右击两个连接器时",
@@ -121,9 +128,9 @@
 
   "item.createaddition.spool": "空线轴",
   "item.createaddition.spool.nbt": "存储连接地点。",
-  "item.createaddition.spool.tooltip": "线轴",
-  "item.createaddition.spool.tooltip.control1": "右击两个已连接的连接器时",
-  "item.createaddition.spool.tooltip.action1": "解除它们之间的连接，并返还一个对应线缆的_线轴_",
+  "item.createaddition.spool.tooltip.summary": "用于存储电线。",
+  "item.createaddition.spool.tooltip.condition1": "右击两个已连接的连接器时",
+  "item.createaddition.spool.tooltip.behaviour1": "解除它们之间的连接，并返还一个对应线缆的_线轴_",
 
   "statusbar.createaddition.wire.linked": "节点已连接",
   "statusbar.createaddition.wire.linked_in": "线缆已连接至输入端",
@@ -210,6 +217,8 @@
   "block.createaddition.chocolate_cake": "巧克力蛋糕",
   "block.createaddition.honey_cake": "蜂蜜蛋糕",
 
+	"block.createaddition.electrum_block": "琥珀金块",
+
   "block.createaddition.biomass_pellet_block": "生物质托盘",
 
   "block.createaddition.seed_oil": "种子油",
@@ -223,7 +232,7 @@
 
   "block.createaddition.liquid_blaze_burner": "带吸管的烈焰人燃烧室",
 
-  "itemGroup.createaddition:main": "Create Crafts & Additions",
+	"itemGroup.createaddition.main":"Create Crafts & Additions",
 
   "createaddition.ponder.tag.electric": "电力组件",
   "createaddition.ponder.tag.electric.description": "使用电力的组件",
@@ -256,7 +265,7 @@
 
   "createaddition.ponder.tesla_coil.header": "使用特斯拉线圈给物品充电",
   "createaddition.ponder.tesla_coil.text_1": "特斯拉线圈会给放置在它下面的物品充电",
-  "createaddition.ponder.tesla_coil.text_2": "它可以为任何支持 FE 的物品和更多的物品充电!",
+  "createaddition.ponder.tesla_coil.text_2": "它可以为任何支持 FE 的物品和更多的物品充电！",
 
   "createaddition.ponder.tesla_coil_hurt.header": "危险的特斯拉线圈",
   "createaddition.ponder.tesla_coil_hurt.text_1": "特斯拉线圈也能对附近的玩家和生物造成伤害",
@@ -307,5 +316,8 @@
   "effect.createaddition.shocking":"触电",
   "death.attack.tesla_coil": "%1$s 受到了致命电击",
   "death.attack.tesla_coil.player": "%1$s 在与 %2$s 的战斗中受到了致命电击",
-  "effect.createaddition.shocking.description": "导致移动速度严重下降"
+  "effect.createaddition.shocking.description": "使移动速度严重下降",
+
+	"createaddition.subtitle.loud_zap": "特斯拉线圈电击",
+	"createaddition.subtitle.little_zap": "特斯拉线圈火花"
 }
