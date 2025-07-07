@@ -7,10 +7,8 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.AllRecipeTypes;
-import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
-import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
+import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
+import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeGen;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -20,14 +18,9 @@ import net.minecraft.world.level.ItemLike;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 
-public class CAMechanicalCrafterRecipeGen extends ProcessingRecipeGen {
+public class CAMechanicalCrafterRecipeGen extends MechanicalCraftingRecipeGen {
     public CAMechanicalCrafterRecipeGen(PackOutput generator, CompletableFuture<HolderLookup.Provider> registries) {
-        super(generator, registries);
-    }
-
-    @Override
-    protected IRecipeTypeInfo getRecipeType() {
-        return AllRecipeTypes.MECHANICAL_CRAFTING;
+        super(generator, registries, CreateAddition.MODID);
     }
 
 
@@ -64,11 +57,6 @@ public class CAMechanicalCrafterRecipeGen extends ProcessingRecipeGen {
             .patternLine("PEP")
     )
     ;
-
-
-    GeneratedRecipeBuilder create(Supplier<ItemLike> result) {
-        return new GeneratedRecipeBuilder(result);
-    }
 
     class GeneratedRecipeBuilder {
 

@@ -7,6 +7,8 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.api.data.recipe.BaseRecipeProvider;
 import com.simibubi.create.api.data.recipe.ProcessingRecipeGen;
+import com.simibubi.create.api.data.recipe.StandardProcessingRecipeGen;
+import com.simibubi.create.content.kinetics.mixer.CompactingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -17,9 +19,9 @@ import net.neoforged.neoforge.common.Tags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class CACompactingRecipeGen extends ProcessingRecipeGen {
+public class CACompactingRecipeGen extends StandardProcessingRecipeGen<CompactingRecipe> {
     public CACompactingRecipeGen(PackOutput generator, CompletableFuture<HolderLookup.Provider> provider) {
-        super(generator, provider);
+        super(generator, provider, CreateAddition.MODID);
     }
 
     @Override

@@ -3,7 +3,9 @@ package com.mrh0.createaddition.recipe.rolling;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.mrh0.createaddition.datagen.RecipeProvider.CARollingRecipeProvider;
 import com.mrh0.createaddition.index.CARecipes;
+import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -17,11 +19,12 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 import org.jetbrains.annotations.NotNull;
 
-public class RollingRecipe implements Recipe<RecipeWrapper> {
+public class RollingRecipe extends StandardProcessingRecipe<RecipeWrapper> implements Recipe<RecipeWrapper> {
     protected final ItemStack output;
     protected final Ingredient ingredient;
 
     public RollingRecipe(String group, Ingredient ingredient, ItemStack output) {
+        super(CARollingRecipeProvider.recipeType, new RollingRecipeParams());
         this.output = output;
         this.ingredient = ingredient;
     }
@@ -42,6 +45,16 @@ public class RollingRecipe implements Recipe<RecipeWrapper> {
     @Override
     public @NotNull ItemStack assemble(@NotNull RecipeWrapper recipeWrapper, HolderLookup.@NotNull Provider provider) {
         return this.output;
+    }
+
+    @Override
+    protected int getMaxInputCount() {
+        return 1;
+    }
+
+    @Override
+    protected int getMaxOutputCount() {
+        return 4;
     }
 
     @Override

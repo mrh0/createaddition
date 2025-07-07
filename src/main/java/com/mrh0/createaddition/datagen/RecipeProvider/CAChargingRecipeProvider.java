@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class CAChargingRecipeProvider extends ProcessingRecipeGen<ChargingRecipe> {
+public class CAChargingRecipeProvider extends ProcessingRecipeGen {
     public static final IRecipeTypeInfo recipeType = new IRecipeTypeInfo() {
         @Override
         public ResourceLocation getId() {
@@ -49,7 +49,7 @@ public class CAChargingRecipeProvider extends ProcessingRecipeGen<ChargingRecipe
     private final HolderLookup.Provider provider;
 
     public CAChargingRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, registries);
+        super(output, registries, CreateAddition.MODID);
         try {
             this.provider = registries.get();
         } catch (InterruptedException | ExecutionException e) {

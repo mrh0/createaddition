@@ -3,34 +3,30 @@ package com.mrh0.createaddition.recipe.liquid_burning;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.datagen.RecipeProvider.CALiquidBurningRecipeProvider;
 import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
-import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
+import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
+public class LiquidBurningRecipe extends StandardProcessingRecipe<FluidRecipeWrapper> implements Recipe<FluidRecipeWrapper> {
 	protected FluidIngredient fluidIngredients;
 	protected int burnTime;
 	protected boolean superheated;
 	
 	public LiquidBurningRecipe(String group, FluidIngredient fluid, int burnTime, boolean superheated) {
-		this.fluidIngredients = fluid;
+        super(CALiquidBurningRecipeProvider.recipeType, new LiquidBurningRecipeParams());
+        this.fluidIngredients = fluid;
 		this.burnTime = burnTime;
 		this.superheated = superheated;
 	}
@@ -45,6 +41,16 @@ public class LiquidBurningRecipe implements Recipe<FluidRecipeWrapper> {
 	@Override
 	public @NotNull ItemStack assemble(@NotNull FluidRecipeWrapper fluidRecipeWrapper, HolderLookup.@NotNull Provider provider) {
 		return new ItemStack(Items.AIR);
+	}
+
+	@Override
+	protected int getMaxInputCount() {
+		return 1;
+	}
+
+	@Override
+	protected int getMaxOutputCount() {
+		return 0;
 	}
 
 	@Override

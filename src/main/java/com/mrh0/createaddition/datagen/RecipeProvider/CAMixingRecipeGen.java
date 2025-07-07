@@ -5,11 +5,8 @@ import com.mrh0.createaddition.datagen.TagProvider.CATagRegister;
 import com.mrh0.createaddition.index.CAFluids;
 import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.api.data.recipe.MixingRecipeGen;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
-import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -26,18 +23,13 @@ import net.neoforged.neoforge.common.conditions.TagEmptyCondition;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 
-public class CAMixingRecipeGen extends ProcessingRecipeGen {
+public class CAMixingRecipeGen extends MixingRecipeGen {
 
     public CAMixingRecipeGen(PackOutput generator, CompletableFuture<HolderLookup.Provider> registries) {
-        super(generator, registries);
+        super(generator, registries, CreateAddition.MODID);
     }
 
-    @Override
-    protected IRecipeTypeInfo getRecipeType() {
-        return AllRecipeTypes.MIXING;
-    }
-
-    private GeneratedRecipe makeBiomassRecipe(String recipeName, ItemLike itemLike, int amount, UnaryOperator<ProcessingRecipeBuilder<?>> transform) {
+    private GeneratedRecipe makeBiomassRecipe(String recipeName, ItemLike itemLike, int amount, UnaryOperator<?> transform) {
         return create(ResourceLocation.fromNamespaceAndPath(CreateAddition.MODID, recipeName), b -> {
             b.require(CATagRegister.Fluids.PLANTOIL,100)
                     .output(CAItems.BIOMASS)
@@ -47,7 +39,7 @@ public class CAMixingRecipeGen extends ProcessingRecipeGen {
         });
     }
 
-    private GeneratedRecipe makeBiomassRecipe(String recipeName, TagKey<Item> tag, int amount, UnaryOperator<ProcessingRecipeBuilder<?>> transform) {
+    private GeneratedRecipe makeBiomassRecipe(String recipeName, TagKey<Item> tag, int amount, UnaryOperator<?> transform) {
         return create(ResourceLocation.fromNamespaceAndPath(CreateAddition.MODID, recipeName), b -> {
             b.require(CATagRegister.Fluids.PLANTOIL, 100)
                     .output(CAItems.BIOMASS)

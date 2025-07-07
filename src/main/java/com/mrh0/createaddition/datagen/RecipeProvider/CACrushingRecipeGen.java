@@ -3,11 +3,12 @@ package com.mrh0.createaddition.datagen.RecipeProvider;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.datagen.TagProvider.CATagRegister;
 import com.mrh0.createaddition.index.CAItems;
-import com.simibubi.create.*;
-import com.simibubi.create.api.data.recipe.ProcessingRecipeGen;
+import com.simibubi.create.AllItems;
+import com.simibubi.create.Create;
+import com.simibubi.create.api.data.recipe.CrushingRecipeGen;
 import com.simibubi.create.content.decoration.palettes.AllPaletteStoneTypes;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
-import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
+import com.simibubi.create.content.kinetics.crusher.CrushingRecipe;
+import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -16,24 +17,18 @@ import net.neoforged.neoforge.common.conditions.NotCondition;
 import net.neoforged.neoforge.common.conditions.TagEmptyCondition;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.UnaryOperator;
 
-public class CACrushingRecipeGen extends ProcessingRecipeGen {
-    public CACrushingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, String namespace) {
-        super(output, provider, namespace);
+public class CACrushingRecipeGen extends CrushingRecipeGen {
+    public CACrushingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+        super(output, provider, CreateAddition.MODID);
     }
 
     @Override
-    protected IRecipeTypeInfo getRecipeType() {
-        return AllRecipeTypes.CRUSHING;
-    }
-
-    protected GeneratedRecipe mineralRecycling(AllPaletteStoneTypes type,
-                                               UnaryOperator<ProcessingRecipeBuilder<ProcessingRecipe<?>>> transform) {
+    protected GeneratedRecipe mineralRecycling(AllPaletteStoneTypes type, UnaryOperator<StandardProcessingRecipe.Builder<CrushingRecipe>> transform) {
         create(Create.asResource(Lang.asId(type.name()) + "_recycling"), b -> transform.apply(b.require(type.materialTag)));
         return create(Create.ID,type.getBaseBlock().get()::asItem, transform);
     }
-
-
 
     GeneratedRecipe
 

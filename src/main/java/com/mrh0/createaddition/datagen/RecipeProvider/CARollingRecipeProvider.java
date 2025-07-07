@@ -1,10 +1,13 @@
 package com.mrh0.createaddition.datagen.RecipeProvider;
 
+import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.datagen.RecipeBuilders.CARollingRecipeBuilder;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.index.CARecipes;
+import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
+import com.simibubi.create.api.data.recipe.ProcessingRecipeGen;
+import com.simibubi.create.api.data.recipe.StandardProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -21,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class CARollingRecipeProvider extends ProcessingRecipeGen {
+public class CARollingRecipeProvider extends StandardProcessingRecipeGen<RollingRecipe> {
     public static final IRecipeTypeInfo recipeType = new IRecipeTypeInfo() {
         @Override
         public ResourceLocation getId() {
@@ -42,7 +45,7 @@ public class CARollingRecipeProvider extends ProcessingRecipeGen {
     private final HolderLookup.Provider provider;
 
     public CARollingRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, registries);
+        super(output, registries, CreateAddition.MODID);
         try {
             this.provider = registries.get();
         } catch (InterruptedException | ExecutionException e) {
