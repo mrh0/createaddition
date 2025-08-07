@@ -14,17 +14,26 @@
 	"createaddition.tooltip.energy.mode": "Режим:",
 	"createaddition.tooltip.energy.push": "Брать",
 	"createaddition.tooltip.energy.pull": "Отдавать",
-	"createaddition.tooltip.energy.passive": "Пассивный ",
+	"createaddition.tooltip.energy.passive": "Пассивный",
 	"createaddition.tooltip.energy.none": "Нет",
 
 	"createaddition.tooltip.accumulator.info": "Информация об аккумуляторе:",
 	"createaddition.tooltip.relay.info": "Информация о реле:",
 	"createaddition.tooltip.connector.info": "Информация об коннекторе:",
+	"createaddition.tooltip.tesla_coil.info": "Информация о катушке теслы:",
 
 	"createaddition.recipe.rolling": "Прокатка",
+	"emi.category.createaddition.rolling": "Прокатка",
 	"createaddition.recipe.rolling.sequence": "Прокатка в станке",
+
 	"createaddition.recipe.charging": "Зарядка",
+	"emi.category.createaddition.charging": "Зарядка",
+	"createaddition.recipe.charging.sequence_0": "Зарядка ",
+	"createaddition.recipe.charging.sequence_1": "У катушки теслы",
+
 	"createaddition.recipe.liquid_burning": "Сжигание жидкого топлива",
+	"emi.category.createaddition.liquid_burning": "Сжигание жидкого топлива",
+
 
 	"createaddition.recipe.liquid_burning.burn_time": "Время горения",
 
@@ -36,12 +45,15 @@
 
 	"item.createaddition.diamond_grit": "Измельченный алмаз",
 	"item.createaddition.diamond_grit_sandpaper": "Алмазная наждачная бумага",
-	"item.createaddition.diamond_grit_sandpaper.tooltip": "АЛМАЗНАЯ НАЖДАЧНАЯ БУМАГА",
+	"item.createaddition.diamond_grit_sandpaper.tooltip.summary": "Используется для _очистки материалов_. Этот процесс может быть автоматизирован Автономным Активатором.",
+	"item.createaddition.diamond_grit_sandpaper.tooltip.condition1": "При использовании",
+	"item.createaddition.diamond_grit_sandpaper.tooltip.behaviour1": "Полирует предметы, находящиеся во _второй руке_ или лежащие на _полу_, когда вы _смотрите на них_",
 
 	"item.createaddition.zinc_sheet": "Цинковый лист",
 
 	"item.createaddition.copper_spool": "Медная катушка",
 	"item.createaddition.copper_spool.tooltip": "КАТУШКА",
+	"item.createaddition.copper_spool.tooltip.summary": "Используется для хранения проводов.",
 	"item.createaddition.copper_spool.tooltip.condition1": "Низкий ток",
 	"item.createaddition.copper_spool.tooltip.behaviour1": "Подключается к _низковольтным коннекторам_.",
 	"item.createaddition.copper_spool.tooltip.condition2": "ПКМ по двум коннекторам",
@@ -51,6 +63,7 @@
 
 	"item.createaddition.festive_spool": "Медная катушка с гирляндой",
 	"item.createaddition.festive_spool.tooltip": "КАТУШКА",
+	"item.createaddition.festive_spool.tooltip.summary": "Используется для хранения проводов.",
 	"item.createaddition.festive_spool.tooltip.condition1": "Низкий ток",
 	"item.createaddition.festive_spool.tooltip.behaviour1": "Подключается к _низковольтным коннекторам_.",
 	"item.createaddition.festive_spool.tooltip.condition2": "ПКМ по двум коннекторам",
@@ -61,7 +74,7 @@
 
 	"item.createaddition.gold_spool": "Золотая катушка",
 	"item.createaddition.gold_spool.tooltip": "КАТУШКА",
-
+	"item.createaddition.gold_spool.tooltip.summary": "Используется для хранения проводов.",
 	"item.createaddition.gold_spool.tooltip.condition1": "Высокий ток",
 	"item.createaddition.gold_spool.tooltip.behaviour1": "Подключается к _низковольтным коннекторам_.",
 	"item.createaddition.gold_spool.tooltip.condition2": "ПКМ по двум коннекторам",
@@ -74,6 +87,7 @@
 	"item.createaddition.electrum_sheet": "Электровый лист",
 	"item.createaddition.electrum_spool": "Электровая катушка",
 	"item.createaddition.electrum_spool.tooltip": "КАТУШКА",
+	"item.createaddition.electrum_spool.tooltip.summary": "Используется для хранения проводов.",
 	"item.createaddition.electrum_spool.tooltip.condition1": "Высокий ток",
 	"item.createaddition.electrum_spool.tooltip.behaviour1": "Подключается к _Высоковольтным коннекторам_.",
 	"item.createaddition.electrum_spool.tooltip.condition2": "ПКМ по двум коннекторам",
@@ -148,7 +162,7 @@
 
 	"block.createaddition.creative_energy": "Творческий генератор",
 	"block.createaddition.creative_energy.tooltip": "ТВОРЧЕСКИЙ_ГЕНЕРАТОР",
-	"block.createaddition.creative_energy.tooltip.summary": "Генерирует бесконечное количество _FE_.",
+	"block.createaddition.creative_energy.tooltip.summary": "Генерирует бесконечное количество _⚡_.",
 
 	"block.createaddition.rolling_mill": "Прокатный станок",
 
@@ -156,27 +170,37 @@
 	"block.createaddition.accumulator.tooltip": "АККУМУЛЯТОР",
 	"block.createaddition.accumulator.tooltip.summary": "Накапливает электричество. _Устарело и может быть удалено из будущих выпусков_.",
 	"block.createaddition.accumulator.tooltip.condition1": "Отдавать",
-	"block.createaddition.accumulator.tooltip.behaviour1": "Отдает _FE_  _проводам_, подключенным к _коннектору_, отмеченному стрелкой вверх.",
+	"block.createaddition.accumulator.tooltip.behaviour1": "Отдает _⚡_  _проводам_, подключенным к _коннектору_, отмеченному стрелкой вверх.",
 	"block.createaddition.accumulator.tooltip.condition2": "Брать",
-	"block.createaddition.accumulator.tooltip.behaviour2": "Берет _FE_ от _проводов_, подключенных к _коннектору_, отмеченному стрелкой вниз.",
+	"block.createaddition.accumulator.tooltip.behaviour2": "Берет _⚡_ от _проводов_, подключенных к _коннектору_, отмеченному стрелкой вниз.",
 
 	"block.createaddition.modular_accumulator": "Аккумулятор",
 
 	"block.createaddition.portable_energy_interface": "Портативный энергетический интерфейс",
 
-	"block.createaddition.connector": "Коннектор",
-	"block.createaddition.connector.tooltip": "КОННЕКТОР",
-	"block.createaddition.connector.tooltip.summary": "Соединяет совместимые с _Forge Energy_ блоки с помощью _проводов_ для передачи _FE_.",
+	"block.createaddition.connector": "Небольшой коннектор",
+	"block.createaddition.connector.tooltip": "CONNECTOR",
+	"block.createaddition.connector.tooltip.summary": "Соединяет совместимые с _Forge Energy_ блоки с помощью _проводов_ для передачи _⚡_.",
 	"block.createaddition.connector.tooltip.condition1": "Низкий ток.",
 	"block.createaddition.connector.tooltip.behaviour1": "Подключается к _низковольтным проводам_.",
 	"block.createaddition.connector.tooltip.condition2": "ПКМ",
-	"block.createaddition.connector.tooltip.behaviour2": "Удерживая _Медную катушку_, _Золотую_ катушку_ или _Электровую катушку_, можно создать до 4 _соединений_ с другими коннекторами.",
+	"block.createaddition.connector.tooltip.behaviour2": "Удерживая _Медную катушку_, _Золотую катушку_ или _Электровую катушку_, можно создать до 4 _соединений_ с другими коннекторами.",
 	"block.createaddition.connector.tooltip.condition3": "ПКМ с гаечным ключом",
 	"block.createaddition.connector.tooltip.behaviour3": "Для переключения между режимами _Брать_, _Отдавать_ и _Нет_.",
 
+	"block.createaddition.small_light_connector": "Небольшой коннектор со светом",
+	"block.createaddition.small_light_connector.tooltip": "CONNECTOR",
+	"block.createaddition.small_light_connector.tooltip.summary": "Соединяет совместимые с _Forge Energy_ блоки с помощью _проводов_ для передачи _⚡_, излучает свет при получении энергии.",
+	"block.createaddition.small_light_connector.tooltip.condition1": "Низкий ток",
+	"block.createaddition.small_light_connector.tooltip.behaviour1": "Подключается к _низковольтным проводам_.",
+	"block.createaddition.small_light_connector.tooltip.condition2": "ПКМ",
+	"block.createaddition.small_light_connector.tooltip.behaviour2": "Удерживая _Медную катушку_, _Золотую катушку_ или _Электровую катушку_, можно создать до 4 _соединений_ с другими коннекторами.",
+	"block.createaddition.small_light_connector.tooltip.condition3": "ПКМ с гаечным ключом",
+	"block.createaddition.small_light_connector.tooltip.behaviour3": "Для переключения между режимами _Брать_, _Отдавать_ и _Нет_.",
+
 	"block.createaddition.large_connector": "Большой коннектор",
-	"block.createaddition.large_connector.tooltip": "БОЛЬШОЙ_КОННЕКТОР",
-	"block.createaddition.large_connector.tooltip.summary": "Соединяет совместимые с _Forge Energy_ блоки с помощью _проводов_ для передачи _FE_.",
+	"block.createaddition.large_connector.tooltip": "CONNECTOR",
+	"block.createaddition.large_connector.tooltip.summary": "Соединяет совместимые с _Forge Energy_ блоки с помощью _проводов_ для передачи _⚡_.",
 	"block.createaddition.large_connector.tooltip.condition1": "Высокий ток",
 	"block.createaddition.large_connector.tooltip.behaviour1": "Подключается к _Высоковольтным проводам_.",
 	"block.createaddition.large_connector.tooltip.condition2": "ПКМ",
@@ -186,13 +210,13 @@
 
 	"block.createaddition.redstone_relay": "Редстоун реле",
 	"block.createaddition.redstone_relay.tooltip": "РЕДСТОУН_РЕЛЕ",
-	"block.createaddition.redstone_relay.tooltip.summary": "Позволяет _FE_ переходить от входного разъема к выходному при получении _редстоун сигнала_.",
+	"block.createaddition.redstone_relay.tooltip.summary": "Позволяет _⚡_ переходить от входного разъема к выходному при получении _редстоун сигнала_.",
 	"block.createaddition.redstone_relay.tooltip.condition1": "Низкий ток.",
 	"block.createaddition.redstone_relay.tooltip.behaviour1": "Подключается к _низковольтным проводам_.",
 	"block.createaddition.redstone_relay.tooltip.condition2": "Отдает",
-	"block.createaddition.redstone_relay.tooltip.behaviour2": "Отдает _FE_  _проводам_, подключенным к _коннектору_, отмеченному стрелкой вверх.",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "Отдает _⚡_  _проводам_, подключенным к _коннектору_, отмеченному стрелкой вверх.",
 	"block.createaddition.redstone_relay.tooltip.condition3": "Берет",
-	"block.createaddition.redstone_relay.tooltip.behaviour3": "Берет _FE_ от _проводов_, подключенных к _коннектору_, отмеченному стрелкой вниз.",
+	"block.createaddition.redstone_relay.tooltip.behaviour3": "Берет _⚡_ от _проводов_, подключенных к _коннектору_, отмеченному стрелкой вниз.",
 
 	"block.createaddition.digital_adapter": "Цифровой адаптер",
 	"block.createaddition.digital_adapter.tooltip": "ЦИФРОВОЙ_АДАПТЕР",
@@ -200,6 +224,8 @@
 
 	"block.createaddition.chocolate_cake": "Шоколадный торт",
 	"block.createaddition.honey_cake": "Медовик",
+
+	"block.createaddition.biomass_pellet_block": "Ящик биомассы",
 
 	"block.createaddition.seed_oil": "Растительное масло",
 	"block.createaddition.bioethanol": "Биоэтанол",
@@ -213,6 +239,7 @@
 	"block.createaddition.liquid_blaze_burner": "Горелка всполоха с соломкой",
 
 	"itemGroup.createaddition.main": "Create Crafts & Additions",
+
 	"createaddition.ponder.tag.electric": "Электрические приборы",
 	"createaddition.ponder.tag.electric.description": "Компоненты, использующие электричество",
 
@@ -268,9 +295,9 @@
 	"createaddition.display_source.modular_accumulator": "Аккумулятор",
 	"createaddition.display_source.accumulator.progress_bar": "Шкала прогресса",
 	"createaddition.display_source.accumulator.percent": "Процент",
-	"createaddition.display_source.accumulator.current": "Запасенная энергия в FE",
+	"createaddition.display_source.accumulator.current": "Запасенная энергия в ⚡",
 	"createaddition.display_source.accumulator.max": "Общая емкость",
-	"createaddition.display_source.accumulator.remaining": "Оставшиеся FE",
+	"createaddition.display_source.accumulator.remaining": "Оставшиеся ⚡",
 	"createaddition.display_source.accumulator.display": "Выберите опцию:",
 
 	"createaddition.ponder.pei_transfer.header": "Хитроумный энергетический обмен",
@@ -286,14 +313,17 @@
 	"createaddition.ponder.pei_redstone.text_1": "Активация редстоуном предотвратит включение стационарного интерфейса.",
 
 	"createaddition.schedule.condition.energy_threshold": "Состояние энергетического груза",
-	"createaddition.schedule.condition.threshold.unit": "Kfe",
+	"createaddition.schedule.condition.threshold.unit": "K⚡",
 	"createaddition.schedule.condition.threshold.energy": "Энергия",
 
 	"death.attack.createaddition.barbed_wire": "%1$s попытался пересечь колючую проволоку",
 	"death.attack.createaddition.barbed_wire.player": "%1$s попытался пересечь колючую проволоку во время боя %2$s",
 
-	"effect.createaddition.shocking": "в шоке",
+	"effect.createaddition.shocking": "В шоке",
 	"death.attack.createaddition.tesla_coil": "%1$s получил смертельный удар током",
 	"death.attack.createaddition.tesla_coil.player": "%1$s получил смертельный удар током во время боя %2$s",
-	"effect.createaddition.shocking.description": "Вызывает серьезное снижение скорости передвижения."
+	"effect.createaddition.shocking.description": "Вызывает серьезное снижение скорости передвижения.",
+
+	"createaddition.subtitle.loud_zap": "Катушка Теслы бьет молнией",
+	"createaddition.subtitle.little_zap": "Катушка Теслы искрит"
 }
