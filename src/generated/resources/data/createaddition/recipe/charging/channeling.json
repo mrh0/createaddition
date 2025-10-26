@@ -1,12 +1,12 @@
 {
   "type": "createaddition:charging",
-  "energy": 4000000,
+  "energy": 1000000,
   "ingredients": [
     {
       "item": "minecraft:book"
     }
   ],
-  "max_charge_rate": 200,
+  "max_charge_rate": 360,
   "results": [
     {
       "components": {

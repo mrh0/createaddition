@@ -2,7 +2,10 @@ package com.mrh0.createaddition.datagen.RecipeProvider;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.datagen.RecipeGen.ChargingRecipeGen;
+import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.block.CopperBlockSet;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -47,11 +50,44 @@ public class CAChargingRecipeProvider extends ChargingRecipeGen {
         );
     }
 
+    int BASE_COST = 2_000;
+    int BASE_RATE = 360;
+
     GeneratedRecipe
             CHANNELING = create(CreateAddition.asResource(Enchantments.CHANNELING.location().getPath()), (b) -> b.require(Items.BOOK)
             .enchantedOutput(new ItemStack(Items.ENCHANTED_BOOK), Enchantments.CHANNELING, provider)
-            .energy(4_000_000)
-            .maxChargeRate(200)),
+            .energy(1_000_000)
+            .maxChargeRate(BASE_RATE)),
+
+    ELECTRUM_NUGGET = create("electrify_gold_nugget", (b) -> b.require(Items.GOLD_NUGGET)
+            .output(CAItems.ELECTRUM_NUGGET)
+            .energy(BASE_COST*2)
+            .maxChargeRate(BASE_RATE)),
+
+    ELECTRUM_INGOT = create("electrify_gold_ingot", (b) -> b.require(Items.GOLD_INGOT)
+            .output(CAItems.ELECTRUM_INGOT)
+            .energy(BASE_COST*2*9)
+            .maxChargeRate(BASE_RATE)),
+
+    ELECTRUM_SHEET  = create("electrify_gold_sheet", (b) -> b.require(AllItems.GOLDEN_SHEET)
+            .output(CAItems.ELECTRUM_SHEET)
+            .energy(BASE_COST*2*9)
+            .maxChargeRate(BASE_RATE)),
+
+    ELECTRUM_ROD  = create("electrify_gold_rod", (b) -> b.require(CAItems.GOLD_ROD)
+            .output(CAItems.ELECTRUM_ROD)
+            .energy(BASE_COST*9)
+            .maxChargeRate(BASE_RATE)),
+
+    ELECTRUM_WIRE  = create("electrify_gold_wire", (b) -> b.require(CAItems.GOLD_WIRE)
+            .output(CAItems.ELECTRUM_WIRE)
+            .energy(BASE_COST*9)
+            .maxChargeRate(BASE_RATE)),
+
+    ELECTRUM_BLOCK = create("electrify_gold_block", (b) -> b.require(Items.GOLD_BLOCK)
+            .output(CABlocks.ELECTRUM_BLOCK)
+            .energy(BASE_COST*2*9*9)
+            .maxChargeRate(BASE_RATE)),
 
     OXIDIZED_COPPER = deoxidize(Blocks.OXIDIZED_COPPER),
             OXIDIZED_CHISELED_COPPER = deoxidize(Blocks.OXIDIZED_CHISELED_COPPER),
