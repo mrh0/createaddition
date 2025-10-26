@@ -50,7 +50,7 @@ AlphaMode, Skippyall, BobDole, legoatoom, gobiidaiah, StockiesLad, THEREDSTONEBR
 [[dependencies.createaddition]]
     modId="create"
     type="required"
-    versionRange="[6.0.6,6.1.0)"
+    versionRange="[6.0.7,6.1.0)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
