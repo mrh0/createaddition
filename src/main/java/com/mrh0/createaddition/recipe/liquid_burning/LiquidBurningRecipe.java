@@ -5,7 +5,6 @@ import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.FluidRecipeWrapper;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -17,6 +16,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.NotNull;
 
 public class LiquidBurningRecipe extends ProcessingRecipe<FluidRecipeWrapper, LiquidBurningRecipeParams> {
@@ -60,7 +60,7 @@ public class LiquidBurningRecipe extends ProcessingRecipe<FluidRecipeWrapper, Li
         return getFluidInput().test(wrapper.fluid);
     }
 
-    public FluidIngredient getFluidInput() {
+    public SizedFluidIngredient getFluidInput() {
         if (fluidIngredients.isEmpty())
             throw new IllegalStateException("Filling Recipe has no fluid ingredient!");
         return fluidIngredients.get(0);
@@ -104,7 +104,7 @@ public class LiquidBurningRecipe extends ProcessingRecipe<FluidRecipeWrapper, Li
 
 
         public LiquidBurningRecipe.Builder<R> fluid(TagKey<Fluid> fluidTag) {
-            return require(FluidIngredient.fromTag(fluidTag, 1000));
+            return require(SizedFluidIngredient.of(fluidTag, 1000));
         }
 
         public LiquidBurningRecipe.Builder<R> burnTime(int burnTime) {

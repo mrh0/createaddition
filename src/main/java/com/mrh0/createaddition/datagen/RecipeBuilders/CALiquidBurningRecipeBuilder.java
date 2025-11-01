@@ -1,9 +1,6 @@
 package com.mrh0.createaddition.datagen.RecipeBuilders;
 
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeParams;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -11,15 +8,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 
 import java.util.Objects;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 public class CALiquidBurningRecipeBuilder extends CARecipeBuilder {
-    protected FluidIngredient ingredient;
+    protected SizedFluidIngredient ingredient;
     protected int burnTime;
     protected boolean superheated;
 
     public CALiquidBurningRecipeBuilder(int burnTime) {
         super(ItemStack.EMPTY);
-        this.ingredient = FluidIngredient.EMPTY;
+        // this.ingredient = new SizedFluidIngredient.EMPTY;
         this.burnTime = burnTime;
         this.superheated = false;
     }
@@ -28,18 +26,18 @@ public class CALiquidBurningRecipeBuilder extends CARecipeBuilder {
         return new CALiquidBurningRecipeBuilder(burnTime);
     }
 
-    public CALiquidBurningRecipeBuilder require(FluidIngredient ingredient) {
+    public CALiquidBurningRecipeBuilder require(SizedFluidIngredient ingredient) {
         this.ingredient = ingredient;
         return this;
     }
 
     public CALiquidBurningRecipeBuilder require(Fluid fluid) {
-        this.ingredient = FluidIngredient.fromFluid(fluid, 1000);
+        // this.ingredient = SizedFluidIngredient.fromFluid(fluid, 1000);
         return this;
     }
 
     public CALiquidBurningRecipeBuilder require(TagKey<Fluid> fluidTag) {
-        this.ingredient = FluidIngredient.fromTag(fluidTag, 1000);
+        // this.ingredient = SizedFluidIngredient.fromTag(fluidTag, 1000);
         return this;
     }
 

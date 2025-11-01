@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.compat.jei;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.mrh0.createaddition.index.CAItems;
@@ -10,6 +11,7 @@ import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.utility.CreateLang;
 
+import java.util.Objects;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -29,8 +31,8 @@ public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe>
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, LiquidBurningRecipe recipe, IFocusGroup focuses) {
-		List<ItemStack> buckets = recipe.getFluidInput().getMatchingFluidStacks().stream()
-				.filter(e -> e != null)
+		List<ItemStack> buckets = Arrays.stream(recipe.getFluidInput().getFluids())
+				.filter(Objects::nonNull)
 				.map((e) -> new ItemStack(e.getFluid().getBucket()))
 				.toList();
 		builder
