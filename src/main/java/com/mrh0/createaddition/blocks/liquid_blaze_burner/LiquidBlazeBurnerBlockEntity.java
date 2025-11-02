@@ -115,6 +115,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	}
 
 	protected void onFluidStackChanged(FluidStack newFluidStack) {
+
 		if (!hasLevel()) return;
 		update(newFluidStack);
 	}
@@ -129,7 +130,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	public Optional<RecipeHolder<LiquidBurningRecipe>> find(@Nullable FluidStack stack,@Nullable Level level) {
 		if (stack == null || level == null) return Optional.empty();
 		if (CARecipes.LIQUID_BURNING_TYPE.get() == null) return Optional.empty();
-		return level.getRecipeManager().getRecipeFor(CARecipes.LIQUID_BURNING_TYPE.get(), new FluidRecipeWrapper(stack), level);
+		return level.getRecipeManager().getRecipeFor(CARecipes.LIQUID_BURNING_TYPE.get(), new FluidRecipeWrapper(new FluidStack(stack.getFluid(), 1000)), level);
 	}
 
 	public boolean first = true;
@@ -156,6 +157,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 			activeFuel = fuelType;
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			return;
 		}
 		tankInventory.drain(100, IFluidHandler.FluidAction.EXECUTE);
