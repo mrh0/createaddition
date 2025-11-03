@@ -11,10 +11,10 @@ import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehavi
 import com.simibubi.create.content.processing.recipe.ProcessingInventory;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.VecHelper;
 
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
+import net.createmod.catnip.math.VecHelper;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
@@ -269,37 +269,6 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 				.isPresent();
 	}
 
-	/*
-    private class RollingMillInventoryHandler extends CombinedStorage<ItemVariant, Storage<ItemVariant>> {
-
-        public RollingMillInventoryHandler() {
-            super();
-        }
-
-        @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
-            if (outputInv == getHandlerFromIndex(getIndexForSlot(slot)))
-                return false;
-            return canProcess(stack) && super.isItemValid(slot, stack);
-        }
-
-        @Override
-        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-            if (outputInv == getHandlerFromIndex(getIndexForSlot(slot)))
-                return stack;
-            if (!isItemValid(slot, stack))
-                return stack;
-            return super.insertItem(slot, stack, simulate);
-        }
-
-        @Override
-        public ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if (inputInv == getHandlerFromIndex(getIndexForSlot(slot)))
-                return ItemStack.EMPTY;
-            return super.extractItem(slot, amount, simulate);
-        }
-
-    }*/
 	public Optional<RollingRecipe> find(RecipeWrapper inv, Level world) {
 		var sequenced = SequencedAssemblyRecipe.getRecipe(level,inv.getItem(0), CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
 		if(sequenced.isPresent()) {

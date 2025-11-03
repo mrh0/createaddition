@@ -7,7 +7,8 @@ import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.VoxelShaper;
+//import com.simibubi.create.foundation.utility.VoxelShaper;
+import net.createmod.catnip.math.VoxelShaper;
 import io.github.fabricators_of_create.porting_lib.block.ConnectableRedstoneBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -91,21 +92,6 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements IBE<E
 	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
 		return true;
 	}
-
-	/*
-	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos from, boolean b) {
-		if (!world.isClientSide) {
-			boolean flag = state.getValue(POWERED);
-			if (flag != world.hasNeighborSignal(pos)) {
-				if (flag)
-					world.scheduleTick(pos, this, 4);
-				else
-					world.setBlock(pos, state.cycle(POWERED), 2);
-			}
-		}
-	}
-	*/
 
 	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos from, boolean b) {
 		if (!world.isClientSide) {

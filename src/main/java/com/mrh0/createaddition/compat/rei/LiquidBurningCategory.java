@@ -8,7 +8,8 @@ import com.simibubi.create.compat.rei.category.animations.AnimatedBlazeBurner;
 import com.simibubi.create.compat.rei.display.CreateDisplay;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-import com.simibubi.create.foundation.utility.Lang;
+//import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.widgets.Slot;
@@ -59,7 +60,7 @@ public class LiquidBurningCategory extends CreateRecipeCategory<LiquidBurningRec
             AllGuiTextures.JEI_LIGHT.render(helper, 81, 58 + 30 - 50);
 
             AllGuiTextures.JEI_HEAT_BAR.render(helper, 4, 80 - 50);
-            helper.drawString(ClientMinecraftWrapper.getFont(), Lang.translateDirect(requiredHeat.getTranslationKey()), 9,
+            helper.drawString(ClientMinecraftWrapper.getFont(), CreateLang.translateDirect(requiredHeat.getTranslationKey()), 9,
                     86 - 50, requiredHeat.getColor());
 
             heater.withHeat(requiredHeat.visualizeAsBlazeBurner())

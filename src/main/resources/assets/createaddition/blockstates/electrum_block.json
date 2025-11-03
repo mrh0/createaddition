@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "createaddition:block/electrum_block/block" }
+  }
+}

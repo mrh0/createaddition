@@ -2,8 +2,8 @@ package com.mrh0.createaddition.blocks.liquid_blaze_burner;
 
 import javax.annotation.Nullable;
 
-import com.jozufozu.flywheel.core.PartialModel;
-import com.jozufozu.flywheel.core.virtual.VirtualRenderWorld;
+//import com.jozufozu.flywheel.core.PartialModel;
+//import com.jozufozu.flywheel.core.virtual.VirtualRenderWorld;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mrh0.createaddition.index.CAPartials;
@@ -13,14 +13,22 @@ import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.contraptions.render.ContraptionMatrices;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.foundation.block.render.SpriteShiftEntry;
+//import com.simibubi.create.foundation.block.render.SpriteShiftEntry;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-import com.simibubi.create.foundation.utility.AngleHelper;
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
-import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+//import com.simibubi.create.foundation.render.CachedBufferer;
+//import com.simibubi.create.foundation.render.SuperByteBuffer;
+//import com.simibubi.create.foundation.utility.AngleHelper;
+//import com.simibubi.create.foundation.utility.AnimationTickHolder;
+//import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 
+import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.math.AngleHelper;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SpriteShiftEntry;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -68,7 +76,6 @@ public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBla
 		Level level = context.world;
 		float horizontalAngle = AngleHelper.rad(headAngle.getValue(AnimationTickHolder.getPartialTicks(level)));
 		boolean drawGoggles = context.blockEntityData.contains("Goggles");
-		//boolean drawHat = conductor || context.tileData.contains("TrainHat");
 		int hashCode = context.hashCode();
 
 		renderShared(matrices.getViewProjection(), matrices.getModel(), bufferSource,
@@ -118,7 +125,7 @@ public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBla
 			uScroll = uScroll - Math.floor(uScroll);
 			uScroll = uScroll * spriteWidth / 2;
 
-			SuperByteBuffer flameBuffer = CachedBufferer.partial(AllPartialModels.BLAZE_BURNER_FLAME, blockState);
+			SuperByteBuffer flameBuffer = CachedBuffers.partial(AllPartialModels.BLAZE_BURNER_FLAME, blockState);
 			if (modelTransform != null)
 				flameBuffer.transform(modelTransform);
 			flameBuffer.shiftUVScrolling(spriteShift, (float) uScroll, (float) vScroll);
@@ -135,7 +142,7 @@ public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBla
 			blazeModel = AllPartialModels.BLAZE_INERT;
 		}
 
-		SuperByteBuffer blazeBuffer = CachedBufferer.partial(blazeModel, blockState);
+		SuperByteBuffer blazeBuffer = CachedBuffers.partial(blazeModel, blockState);
 		if (modelTransform != null)
 			blazeBuffer.transform(modelTransform);
 		blazeBuffer.translate(0, headY, 0);
@@ -145,7 +152,7 @@ public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBla
 			PartialModel gogglesModel = blazeModel == AllPartialModels.BLAZE_INERT
 					? AllPartialModels.BLAZE_GOGGLES_SMALL : AllPartialModels.BLAZE_GOGGLES;
 
-			SuperByteBuffer gogglesBuffer = CachedBufferer.partial(gogglesModel, blockState);
+			SuperByteBuffer gogglesBuffer = CachedBuffers.partial(gogglesModel, blockState);
 			if (modelTransform != null)
 				gogglesBuffer.transform(modelTransform);
 			gogglesBuffer.translate(0, headY + 8 / 16f, 0);
@@ -153,20 +160,20 @@ public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBla
 		}
 
 		//Draw hat
-		SuperByteBuffer hatBuffer = CachedBufferer.partial(CAPartials.LIQUID_HAT, blockState);
+		SuperByteBuffer hatBuffer = CachedBuffers.partial(CAPartials.LIQUID_HAT, blockState);
 		if (modelTransform != null)
 			hatBuffer.transform(modelTransform);
 		hatBuffer.translate(0, headY, 0);
 		if (blazeModel == AllPartialModels.BLAZE_INERT) {
 			hatBuffer.translateY(0.5f)
-				.centre()
+				.center()
 				.scale(0.75f)
-				.unCentre();
+				.uncenter();
 		} else {
 			hatBuffer.translateY(0.75f);
 		}
 		hatBuffer
-			.rotateCentered(Direction.UP, horizontalAngle + Mth.PI)
+			.rotateCentered(horizontalAngle + Mth.PI,Direction.UP)
 			.translate(0.5f, 0, 0.5f)
 			.light(LightTexture.FULL_BRIGHT)
 			.renderInto(ms, solid);
@@ -177,14 +184,14 @@ public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBla
 			PartialModel rodsModel2 = heatLevel == BlazeBurnerBlock.HeatLevel.SEETHING ? AllPartialModels.BLAZE_BURNER_SUPER_RODS_2
 				: AllPartialModels.BLAZE_BURNER_RODS_2;
 
-			SuperByteBuffer rodsBuffer = CachedBufferer.partial(rodsModel, blockState);
+			SuperByteBuffer rodsBuffer = CachedBuffers.partial(rodsModel, blockState);
 			if (modelTransform != null)
 				rodsBuffer.transform(modelTransform);
 			rodsBuffer.translate(0, offset1 + animation + .125f, 0)
 				.light(LightTexture.FULL_BRIGHT)
 				.renderInto(ms, solid);
 
-			SuperByteBuffer rodsBuffer2 = CachedBufferer.partial(rodsModel2, blockState);
+			SuperByteBuffer rodsBuffer2 = CachedBuffers.partial(rodsModel2, blockState);
 			if (modelTransform != null)
 				rodsBuffer2.transform(modelTransform);
 			rodsBuffer2.translate(0, offset2 + animation - 3 / 16f, 0)
@@ -196,7 +203,7 @@ public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBla
 	}
 
 	private static void draw(SuperByteBuffer buffer, float horizontalAngle, PoseStack ms, VertexConsumer vc) {
-		buffer.rotateCentered(Direction.UP, horizontalAngle)
+		buffer.rotateCentered(horizontalAngle,Direction.UP)
 			.light(LightTexture.FULL_BRIGHT)
 			.renderInto(ms, vc);
 	}

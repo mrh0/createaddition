@@ -2,8 +2,10 @@ package com.mrh0.createaddition.sound;
 
 
 import com.mrh0.createaddition.CreateAddition;
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
-import com.simibubi.create.foundation.utility.VecHelper;
+//import com.simibubi.create.foundation.utility.AnimationTickHolder;
+//import com.simibubi.create.foundation.utility.VecHelper;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.math.VecHelper;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.Sound;
@@ -21,7 +23,6 @@ import java.util.List;
 
 class CASoundScape {
 	List<CAContinuousSound> continuous;
-//	List<RepeatingSound> repeating;
 	private final float pitch;
 	private final AmbienceGroup group;
 	private Vec3 meanPos;
@@ -32,26 +33,16 @@ class CASoundScape {
 		this.pitch = pitch;
 		this.group = group;
 		continuous = new ArrayList<>();
-//		repeating = new ArrayList<>();
 	}
 
 	public CASoundScape continuous(SoundEvent sound, float relativeVolume, float relativePitch) {
 		return add(new CAContinuousSound(sound, this, pitch * relativePitch, relativeVolume));
 	}
 
-//	public CASoundScape repeating(SoundEvent sound, float relativeVolume, float relativePitch, int delay) {
-//		return add(new RepeatingSound(sound, this, pitch * relativePitch, relativeVolume, delay));
-//	}
-
 	public CASoundScape add(CAContinuousSound continuousSound) {
 		continuous.add(continuousSound);
 		return this;
 	}
-
-//	public CASoundScape add(RepeatingSound repeatingSound) {
-//		repeating.add(repeatingSound);
-//		return this;
-//	}
 
 	public void play() {
 		continuous.forEach(Minecraft.getInstance()
@@ -61,7 +52,6 @@ class CASoundScape {
 	public void tick() {
 		if (AnimationTickHolder.getTicks() % CASoundScapes.UPDATE_INTERVAL == 0)
 			meanPos = null;
-//		repeating.forEach(RepeatingSound::tick);
 	}
 
 	public void remove() {

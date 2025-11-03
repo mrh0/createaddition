@@ -14,9 +14,11 @@ import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.CreateClient;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+//import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import net.createmod.catnip.outliner.Outliner;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.ChatFormatting;
@@ -351,6 +353,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
 
+        String spacing = " ";
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.connector.info").withStyle(ChatFormatting.WHITE)));
 
@@ -413,7 +416,8 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 				color = 0xFF00FF;
 			}
 			// ca_ = Create Addition
-			CreateClient.OUTLINER.chaseAABB("ca_nodes_" + i, shape.bounds().move(pos)).lineWidth(0.0625F).colored(color);
+//			CreateClient.OUTLINER.chaseAABB("ca_nodes_" + i, shape.bounds().move(pos)).lineWidth(0.0625F).colored(color);
+            Outliner.getInstance().chaseAABB("ca_nodes_" + i, shape.bounds().move(pos)).lineWidth(0.0625F).colored(color);
 		}
 		// Outline connected power
 		BlockPos pos = worldPosition.relative(getBlockState().getValue(AbstractConnectorBlock.FACING));
@@ -423,6 +427,6 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 //		if(ignoreCapSide() && !cap.isPresent()) cap = te.getCapability(CapabilityEnergy.ENERGY);
 
 		VoxelShape shape = level.getBlockState(pos).getBlockSupportShape(level, pos);
-		CreateClient.OUTLINER.chaseAABB("ca_output", shape.bounds().move(pos)).lineWidth(0.0625F).colored(0x5B5BFF);
+        Outliner.getInstance().chaseAABB("ca_output", shape.bounds().move(pos)).lineWidth(0.0625F).colored(0x5B5BFF);
 	}
 }

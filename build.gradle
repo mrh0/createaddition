@@ -1,6 +1,6 @@
 //file:noinspection GroovyUnusedAssignment
 plugins {
-    id 'fabric-loom' version '1.5-SNAPSHOT'
+    id 'fabric-loom' version '1.10-SNAPSHOT'
     id 'eclipse'
     id 'maven-publish'
     //id 'io.github.juuxel.loom-quiltflower' version '1.+'
@@ -35,6 +35,7 @@ repositories {
     maven { url = "https://api.modrinth.com/maven" }
     maven { url = "https://mvn.devos.one/releases/" }
     maven { url = "https://mvn.devos.one/snapshots/" }
+    maven { url = "https://maven.createmod.net/"}
     maven { url = "https://maven.tterrag.com/" }
     maven { url = "https://jitpack.io/" }
     maven { url = "https://maven.terraformersmc.com/" }
@@ -108,8 +109,13 @@ dependencies {
 
     modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")
 
-    modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:" +
-            "${project.create_version}+mc${project.minecraft_version}")
+    modImplementation("com.simibubi.create:create-fabric:" +
+            "${project.create_version}")
+
+    modImplementation("dev.engine-room.flywheel:flywheel-fabric-${project.minecraft_version}")
+    modImplementation("dev.engine-room.flywheel:flywheel-fabric-api-${project.minecraft_version}")
+    modImplementation("net.createmod.ponder:Ponder-Fabric-${project.minecraft_version}")
+//    modImplementation("net.createmod.ponder:Ponder-Common-${project.minecraft_version}")
 
     modCompileOnly("cc.tweaked:cc-tweaked-$minecraft_version-fabric-api:$cc_tweaked_version")
     modRuntimeOnly("cc.tweaked:cc-tweaked-$minecraft_version-fabric:$cc_tweaked_version")

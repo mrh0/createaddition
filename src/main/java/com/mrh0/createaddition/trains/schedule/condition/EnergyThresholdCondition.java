@@ -8,8 +8,9 @@ import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.schedule.condition.CargoThresholdCondition;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+//import com.simibubi.create.foundation.utility.Components;
+//import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
@@ -26,7 +27,7 @@ import java.util.List;
 public class EnergyThresholdCondition extends CargoThresholdCondition {
     @Override
     protected Component getUnit() {
-        return Components.literal("Kfe");
+        return Component.literal("Kfe");
     }
 
     @Override
@@ -68,9 +69,9 @@ public class EnergyThresholdCondition extends CargoThresholdCondition {
     @Override
     public List<Component> getTitleAs(String type) {
         return ImmutableList.of(
-                Lang.translateDirect("schedule.condition.threshold.train_holds",
-                        Lang.translateDirect("schedule.condition.threshold." + Lang.asId(getOperator().name()))),
-                Lang.translateDirect("schedule.condition.threshold.x_units_of_item", getThreshold(),
+                CreateLang.translateDirect("schedule.condition.threshold.train_holds",
+                        CreateLang.translateDirect("schedule.condition.threshold." + CreateLang.asId(getOperator().name()))),
+                CreateLang.translateDirect("schedule.condition.threshold.x_units_of_item", getThreshold(),
                                 Component.translatable("createaddition.schedule.condition.threshold.unit"),
                                 Component.translatable("createaddition.schedule.condition.threshold.energy"))
                         .withStyle(ChatFormatting.DARK_AQUA));
@@ -95,9 +96,9 @@ public class EnergyThresholdCondition extends CargoThresholdCondition {
     public MutableComponent getWaitingStatus(Level level, Train train, CompoundTag tag) {
         long lastDisplaySnapshot = getLastDisplaySnapshot(tag);
         if (lastDisplaySnapshot == -1)
-            return Components.empty();
+            return Component.empty();
         int offset = getOperator() == Ops.LESS ? -1 : getOperator() == Ops.GREATER ? 1 : 0;
-        return Lang.translateDirect("schedule.condition.threshold.status", lastDisplaySnapshot,
+        return CreateLang.translateDirect("schedule.condition.threshold.status", lastDisplaySnapshot,
                 Math.max(0, getThreshold() + offset), Component.translatable("createaddition.schedule.condition.threshold.unit"));
     }
 
