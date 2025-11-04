@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.rolling_mill;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,20 +9,23 @@ import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
+import com.simibubi.create.content.kinetics.millstone.MillstoneBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingInventory;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
+import io.github.fabricators_of_create.porting_lib.transfer.ViewOnlyWrappedStorageView;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.createmod.catnip.math.VecHelper;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.FilteringStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -35,13 +39,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("UnstableApiUsage")
 public class RollingMillBlockEntity extends KineticBlockEntity implements SidedStorageBlockEntity {
 	public ItemStackHandler inputInv;
 	public ItemStackHandler outputInv;
-	public Storage<ItemVariant> storage;
+    public RollingMillInventoryHandler storage;
 	public int timer;
 	private RollingRecipe lastRecipe;
 
@@ -49,7 +54,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		super(type, pos, state);
 		inputInv = new ItemStackHandler(1);
 		outputInv = new ItemStackHandler(9);
-		storage = new CombinedStorage<>(List.of(FilteringStorage.insertOnlyOf(inputInv), FilteringStorage.extractOnlyOf(outputInv)));
+        storage = new RollingMillInventoryHandler();
 	}
 
 	@Override
@@ -61,7 +66,6 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 	@Override
 	public void tick() {
 		super.tick();
-
 		if (getSpeed() == 0)
 			return;
 		for (int i = 0; i < outputInv.getSlotCount(); i++)
@@ -102,7 +106,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		BlockPos nextPos = getBlockPos().offset(step);
 		DirectBeltInputBehaviour behaviour = BlockEntityBehaviour.get(level,nextPos,DirectBeltInputBehaviour.TYPE);
 		if(behaviour != null) {
-			boolean changed = false;
+            boolean changed = false;
 			if(level.isClientSide && !isVirtual())
 				return;
 			for (int slot = 0; slot < outputInv.getSlotCount(); slot++) {
@@ -136,7 +140,6 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 			sendData();
 			return;
 		}
-
 		timer = getProcessingDuration();
 		sendData();
 	}
@@ -164,44 +167,44 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 	}
 
 	private void process() {
-		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
+        if(getLevel() == null) return;
+        RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
 
-		var sequenced = SequencedAssemblyRecipe.getRecipe(level, inventoryIn.getItem(0), CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
-		if(sequenced.isPresent()) {
-			var recipe = sequenced.get();
-			var results = recipe.rollResults();
-			if(!results.isEmpty()) {
-				var result = results.get(0);
+        var sequenced = SequencedAssemblyRecipe.getRecipe(level, inventoryIn.getItem(0), CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
+        if(sequenced.isPresent()) {
+            var recipe = sequenced.get();
+            var results = recipe.rollResults();
+            if(!results.isEmpty()) {
+                var result = results.get(0);
+                try(Transaction t = Transaction.openOuter()) {
+                    StorageUtil.insertStacking(outputInv.getSlots(), ItemVariant.of(result), result.getCount(), t);
+                    t.commit();
+                }
+                ItemStack stackInSlot = inputInv.getStackInSlot(0);
+                stackInSlot.shrink(1);
+                inputInv.setStackInSlot(0, stackInSlot);
+                sendData();
+                setChanged();
+                return;
+            }
+        }
 
-				try (Transaction t = Transaction.openOuter()) {
-					long inserted = StorageUtil.insertStacking(outputInv.getSlots(), ItemVariant.of(result), result.getCount(), t);
-					t.commit();
-				}
-				ItemStack stackInSlot = inputInv.getStackInSlot(0).copy();
-				stackInSlot.shrink(1);
-				inputInv.setStackInSlot(0, stackInSlot);
-				sendData();
-				setChanged();
-				return;
-			}
-		}
+        if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
+            Optional<RollingRecipe> recipe = find(inventoryIn, level);
+            if (recipe.isEmpty()) return;
+            lastRecipe = recipe.get();
+        }
 
-		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
-			Optional<RollingRecipe> recipe = find(inventoryIn, level);
-			if (recipe.isEmpty()) return;
-			lastRecipe = recipe.get();
-		}
-
-		ItemStack result = lastRecipe.assemble(inventoryIn, level.registryAccess()).copy();
-		try(Transaction t = Transaction.openOuter()) {
-			StorageUtil.insertStacking(outputInv.getSlots(), ItemVariant.of(result), result.getCount(), t);
-			t.commit();
-		}
-		ItemStack stackInSlot = inputInv.getStackInSlot(0).copy();
-		stackInSlot.shrink(1); //lastRecipe.getIngredient().getItems()[0].getCount()
-		inputInv.setStackInSlot(0, stackInSlot);
-		sendData();
-		setChanged();
+        ItemStack result = lastRecipe.assemble(inventoryIn, getLevel().registryAccess()).copy();
+        try(Transaction t = Transaction.openOuter()) {
+            StorageUtil.insertStacking(outputInv.getSlots(), ItemVariant.of(result), result.getCount(), t);
+            t.commit();
+        }
+        ItemStack stackInSlot = inputInv.getStackInSlot(0);
+        stackInSlot.shrink(1); //lastRecipe.getIngredient().getItems()[0].getCount()
+        inputInv.setStackInSlot(0, stackInSlot);
+        sendData();
+        setChanged();
 	}
 
 	public void spawnParticles() {
@@ -286,6 +289,58 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		this.lastStressApplied = impact;
 		return impact;
 	}
+
+    /**
+     * The same as Create's{@link MillstoneBlockEntity.MillstoneInventoryHandler}class but for the rolling mill. (Copied)
+     */
+    private class RollingMillInventoryHandler extends CombinedStorage<ItemVariant, ItemStackHandler> {
+
+        public RollingMillInventoryHandler() {
+            super(List.of(inputInv, outputInv));
+        }
+
+        @Override
+        public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction) {
+            if (canProcess(resource.toStack()))
+                return inputInv.insert(resource, maxAmount, transaction);
+            return 0;
+        }
+
+        @Override
+        public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
+            return outputInv.extract(resource, maxAmount, transaction);
+        }
+
+        @Override
+        public @NotNull Iterator<StorageView<ItemVariant>> iterator() {
+            return new RollingMillInventoryHandlerIterator();
+        }
+
+        private class RollingMillInventoryHandlerIterator implements Iterator<StorageView<ItemVariant>> {
+            private boolean output = true;
+            private Iterator<StorageView<ItemVariant>> wrapped;
+
+            public RollingMillInventoryHandlerIterator() {
+                wrapped = outputInv.iterator();
+            }
+
+            @Override
+            public boolean hasNext() {
+                return wrapped.hasNext();
+            }
+
+            @Override
+            public StorageView<ItemVariant> next() {
+                StorageView<ItemVariant> view = wrapped.next();
+                if (!output) view = new ViewOnlyWrappedStorageView<>(view);
+                if (output && !hasNext()) {
+                    wrapped = inputInv.iterator();
+                    output = false;
+                }
+                return view;
+            }
+        }
+    }
 }
 
 
