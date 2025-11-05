@@ -112,9 +112,9 @@ dependencies {
     modImplementation("com.simibubi.create:create-fabric:" +
             "${project.create_version}")
 
-    modImplementation("dev.engine-room.flywheel:flywheel-fabric-${project.minecraft_version}")
-    modImplementation("dev.engine-room.flywheel:flywheel-fabric-api-${project.minecraft_version}")
-    modImplementation("net.createmod.ponder:Ponder-Fabric-${project.minecraft_version}")
+//    modImplementation("dev.engine-room.flywheel:flywheel-fabric-${project.minecraft_version}")
+//    modImplementation("dev.engine-room.flywheel:flywheel-fabric-api-${project.minecraft_version}")
+//    modImplementation("net.createmod.ponder:Ponder-Fabric-${project.minecraft_version}")
 //    modImplementation("net.createmod.ponder:Ponder-Common-${project.minecraft_version}")
 
     modCompileOnly("cc.tweaked:cc-tweaked-$minecraft_version-fabric-api:$cc_tweaked_version")
