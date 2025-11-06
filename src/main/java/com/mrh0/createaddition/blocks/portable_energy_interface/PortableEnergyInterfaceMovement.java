@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 public class PortableEnergyInterfaceMovement extends PortableStorageInterfaceMovement{
     @Nullable
     @Override
+    @Environment(EnvType.CLIENT)
     public ActorVisual createVisual(VisualizationContext visualizationContext, VirtualRenderWorld simulationWorld,
                                     MovementContext movementContext) {
         return new PEIIActorVisual(visualizationContext, simulationWorld, movementContext);
