@@ -6,7 +6,7 @@ import com.simibubi.create.content.contraptions.elevator.ElevatorColumn;
 import com.simibubi.create.content.contraptions.elevator.ElevatorContactBlock;
 import com.simibubi.create.content.contraptions.elevator.ElevatorContraption;
 import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyBlockEntity;
-import com.simibubi.create.foundation.utility.IntAttached;
+//import com.simibubi.create.foundation.utility.IntAttached;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;
@@ -63,13 +63,6 @@ public class DigitalAdapterPeripheral implements IPeripheral {
         this.tileEntity.setTextLine(this.tileEntity.getLine(), Component.literal(text.substring(0, Math.min(text.length(), 128))));
         this.tileEntity.incrementLine();
     }
-
-    /*
-    @LuaFunction(mainThread = true)
-    public final void write(String text) {
-        this.tileEntity.append(this.tileEntity.getLine(), new TextComponent(text));
-    }
-    */
 
     @LuaFunction(mainThread = true)
     public final int getLine() {
@@ -197,7 +190,7 @@ public class DigitalAdapterPeripheral implements IPeripheral {
         if(ec == null) return 0;
 
         for(int i = 0; i < ec.namesList.size(); ++i) {
-            if ((int)((IntAttached)ec.namesList.get(i)).getFirst() == ec.getCurrentTargetY(ep.getLevel())) {
+            if ((int) ec.namesList.get(i).getFirst() == ec.getCurrentTargetY(ep.getLevel())) {
                 return i;
             }
         }

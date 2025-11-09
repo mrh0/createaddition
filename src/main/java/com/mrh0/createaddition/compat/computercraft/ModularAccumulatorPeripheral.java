@@ -48,7 +48,7 @@ public class ModularAccumulatorPeripheral implements IPeripheral {
     @LuaFunction(mainThread = true)
     public final float getPercent() {
         if(this.tileEntity.getControllerBE() == null) return 0;
-        return this.tileEntity.getControllerBE().getPercent();
+        return this.tileEntity.getControllerBE().getCurrentValue();
     }
 
     @LuaFunction(mainThread = true)

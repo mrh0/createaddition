@@ -15,21 +15,25 @@ import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags.AllItemTags;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+//import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.fluids.tank.FluidTankBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
-import com.simibubi.create.foundation.utility.AngleHelper;
-import com.simibubi.create.foundation.utility.VecHelper;
-import com.simibubi.create.foundation.utility.animation.LerpedFloat;
-import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
+//import com.simibubi.create.foundation.utility.AngleHelper;
+//import com.simibubi.create.foundation.utility.VecHelper;
+//import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+//import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.callbacks.TransactionCallback;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity.FuelType;
+import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.math.VecHelper;
+import net.createmod.catnip.math.AngleHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
@@ -250,15 +254,15 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 				target = AngleHelper.deg(-Mth.atan2(dz, dx)) - 90;
 			}
 			target = headAngle.getValue() + AngleHelper.getShortestAngleDiff(headAngle.getValue(), target);
-			headAngle.chase(target, .25f, Chaser.exp(5));
+			headAngle.chase(target, .25f, LerpedFloat.Chaser.exp(5));
 			headAngle.tickChaser();
 		} else {
 			headAngle.chase((AngleHelper.horizontalAngle(getBlockState().getOptionalValue(LiquidBlazeBurnerBlock.FACING)
-				.orElse(Direction.SOUTH)) + 180) % 360, .125f, Chaser.EXP);
+				.orElse(Direction.SOUTH)) + 180) % 360, .125f, LerpedFloat.Chaser.EXP);
 			headAngle.tickChaser();
 		}
 
-		headAnimation.chase(active ? 1 : 0, .25f, Chaser.exp(.25f));
+		headAnimation.chase(active ? 1 : 0, .25f, LerpedFloat.Chaser.exp(.25f));
 		headAnimation.tickChaser();
 	}
 

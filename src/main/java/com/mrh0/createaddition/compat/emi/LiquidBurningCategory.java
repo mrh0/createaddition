@@ -6,7 +6,8 @@ import com.simibubi.create.compat.emi.CreateEmiAnimations;
 import com.simibubi.create.compat.emi.recipes.CreateEmiRecipe;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-import com.simibubi.create.foundation.utility.Lang;
+//import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.network.chat.Component;
@@ -37,7 +38,7 @@ public class LiquidBurningCategory extends CreateEmiRecipe<LiquidBurningRecipe> 
 
         //output
         HeatCondition requiredHeat = recipe.isSuperheated() ? HeatCondition.SUPERHEATED : HeatCondition.HEATED;
-        widgets.addText(Lang.translateDirect(requiredHeat.getTranslationKey()).getVisualOrderText(), 9, 86 - 45, requiredHeat.getColor(), true);
+        widgets.addText(CreateLang.translateDirect(requiredHeat.getTranslationKey()).getVisualOrderText(), 9, 86 - 45, requiredHeat.getColor(), true);
         addTexture(widgets, AllGuiTextures.JEI_LIGHT, 81, 58 + 30 - 45);
         addTexture(widgets, AllGuiTextures.JEI_HEAT_BAR, 4, 80 - 45);
         CreateEmiAnimations.addBlazeBurner(widgets, width / 2 + 3, 55 - 45, requiredHeat.visualizeAsBlazeBurner());

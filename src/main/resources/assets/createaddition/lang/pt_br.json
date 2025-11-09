@@ -4,240 +4,319 @@
 	"createaddition.tooltip.energy.consumption": "Uso de Energia:",
 	"createaddition.tooltip.energy.production": "Energia Gerada:",
 	"createaddition.tooltip.energy.charged": "Carregado",
-	"createaddition.tooltip.energy.usage": "Usagem da rede:",
-	"createaddition.tooltip.energy.demand": "Consumo da rede",
-	"createaddition.tooltip.energy.supply": "Produção da rede:",
-	"createaddition.tooltip.energy.selected": "Connector em foco:",
+	"createaddition.tooltip.energy.usage": "Uso da Rede:",
+	"createaddition.tooltip.energy.demand": "Consumo da Rede:",
+	"createaddition.tooltip.energy.supply": "Produção da Rede:",
+	"createaddition.tooltip.energy.selected": "Conector em Foco:",
 	"createaddition.tooltip.energy.input": "Entrada",
-	"createaddition.tooltip.energy.output": "Saida",
-	
+	"createaddition.tooltip.energy.output": "Saída",
+
 	"createaddition.tooltip.energy.mode": "Modo:",
 	"createaddition.tooltip.energy.push": "Empurrar",
 	"createaddition.tooltip.energy.pull": "Puxar",
 	"createaddition.tooltip.energy.passive": "Passivo",
 	"createaddition.tooltip.energy.none": "Nenhum",
-	
-	"createaddition.tooltip.accumulator.info": "Info. Acumulador:",
-	"createaddition.tooltip.relay.info": "Info. Transmissor:",
-	"createaddition.tooltip.connector.info": "Info. Conector:",
-	
+
+	"createaddition.tooltip.accumulator.info": "Informações do Acumulador:",
+	"createaddition.tooltip.relay.info": "Informações do Relé:",
+	"createaddition.tooltip.connector.info": "Informações do Conector:",
+
 	"createaddition.recipe.rolling": "Laminação",
-	"createaddition.recipe.rolling.sequence": "Laminação nos rolos",
+	"createaddition.recipe.rolling.sequence": "Laminação na Laminadora",
 	"createaddition.recipe.charging": "Carregamento",
-	"createaddition.recipe.liquid_burning": "Combustão de líquido",
-	
+	"createaddition.recipe.liquid_burning": "Queima de Líquido",
+
+	"createaddition.recipe.liquid_burning.burn_time": "Tempo de Queima",
+
+	"createaddition.command.cca_api.link": "Clique aqui para abrir a documentação da API",
+
 	"desc.immersiveengineering.info.mineral.sphalerite": "Esfalerita",
-	
+
 	"item.createaddition.capacitor": "Capacitor",
-	
-	"item.createaddition.zinc_sheet": "Folha de Zinco",
+
 	"item.createaddition.diamond_grit": "Grãos de Diamante",
 	"item.createaddition.diamond_grit_sandpaper": "Lixa de Grãos de Diamante",
-	"item.createaddition.diamond_grit_sandpaper.tooltip": "LIXA DE GRÃOS DE DIAMANTE",
-	
+	"item.createaddition.diamond_grit_sandpaper.tooltip.summary": "Pode ser usado para _refinar materiais_. O processo pode ser automatizado com um Implantador.",
+	"item.createaddition.diamond_grit_sandpaper.tooltip.condition1": "Quando Usado",
+	"item.createaddition.diamond_grit_sandpaper.tooltip.behaviour1": "Aplica polimento a itens segurados na _mão secundária_ ou que estão no _chão_ ao _olhar para eles_",
+
+	"item.createaddition.zinc_sheet": "Chapa de Zinco",
+
 	"item.createaddition.copper_spool": "Carretel de Cobre",
 	"item.createaddition.copper_spool.tooltip": "CARRETEL",
-	"item.createaddition.copper_spool.tooltip.control1": "Click Dir. em 2 Conectores",
-	"item.createaddition.copper_spool.tooltip.action1": "Criará uma ligação entre eles e devolver um _Carretel Vazio_.",
-	
-	"item.createaddition.iron_wire": "Fio de Ferro",
-	"item.createaddition.iron_spool": "Carretel de Ferro",
-	"item.createaddition.iron_rod": "Haste de Ferro",
-	
+	"item.createaddition.copper_spool.tooltip.summary": "Usado para armazenar fios.",
+	"item.createaddition.copper_spool.tooltip.condition1": "Baixa Corrente",
+	"item.createaddition.copper_spool.tooltip.behaviour1": "Conecta-se a _conectores de baixa corrente_.",
+	"item.createaddition.copper_spool.tooltip.condition2": "Clicar com o Botão Direito em dois Conectores",
+	"item.createaddition.copper_spool.tooltip.behaviour2": "Criará uma conexão por um fio entre eles, enquanto mantém o _Carretel Vazio_.",
 	"item.createaddition.copper_wire": "Fio de Cobre",
 	"item.createaddition.copper_rod": "Haste de Cobre",
-	
+
+	"item.createaddition.festive_spool": "Carretel de Cobre com Luzes Festivas",
+	"item.createaddition.festive_spool.tooltip": "CARRETEL",
+	"item.createaddition.festive_spool.tooltip.summary": "Usado para armazenar fios.",
+	"item.createaddition.festive_spool.tooltip.condition1": "Baixa Corrente",
+	"item.createaddition.festive_spool.tooltip.behaviour1": "Conecta-se a _conectores de baixa corrente_.",
+	"item.createaddition.festive_spool.tooltip.condition2": "Clicar com o botão direito em 2 Conectores",
+	"item.createaddition.festive_spool.tooltip.behaviour2": "Criará uma conexão por um fio entre eles e retornará um _Carretel Vazio_.",
+
+	"item.createaddition.iron_wire": "Fio de Ferro",
+	"item.createaddition.iron_rod": "Haste de Ferro",
+
 	"item.createaddition.gold_spool": "Carretel de Ouro",
 	"item.createaddition.gold_spool.tooltip": "CARRETEL",
-	"item.createaddition.gold_spool.tooltip.control1": "Click Dir. em 2 Conectores",
-	"item.createaddition.gold_spool.tooltip.action1": "Criará uma ligação entre eles e devolver um _Carretel Vazio_.",
-	
+	"item.createaddition.gold_spool.tooltip.summary": "Usada para armazenar fios.",
+	"item.createaddition.gold_spool.tooltip.condition1": "Alta Corrente",
+	"item.createaddition.gold_spool.tooltip.behaviour1": "Conecta-se a _conectores de alta corrente_.",
+	"item.createaddition.gold_spool.tooltip.condition2": "Clicar com o botão direito em 2 Conectores",
+	"item.createaddition.gold_spool.tooltip.behaviour2": "Criará uma conexão por um fio entre eles, enquanto mantém o _Carretel Vazio_.",
 	"item.createaddition.gold_wire": "Fio de Ouro",
 	"item.createaddition.gold_rod": "Haste de Ouro",
-	
-	"item.createaddition.festive_spool": "Carretel de Luzes Festivas",
-	"item.createaddition.festive_spool.tooltip": "CARRETEL",
-	"item.createaddition.festive_spool.tooltip.control1": "Click Dir. em 2 Conectores",
-	"item.createaddition.festive_spool.tooltip.action1": "Criará uma ligação entre eles e devolver um _Carretel Vazio_.",
-	
+
+	"item.createaddition.electrum_ingot": "Barra de Eletro",
+	"item.createaddition.electrum_nugget": "Pepita de Eletro",
+	"item.createaddition.electrum_sheet": "Chapa de Eletro",
+	"item.createaddition.electrum_spool": "Carretel de Eletro",
+	"item.createaddition.electrum_spool.tooltip": "CARRETEL",
+	"item.createaddition.electrum_spool.tooltip.summary": "Usada para armazenar fios.",
+	"item.createaddition.electrum_spool.tooltip.condition1": "Alta Corrente",
+	"item.createaddition.electrum_spool.tooltip.behaviour1": "Conecta-se a _conectores de alta corrente_.",
+	"item.createaddition.electrum_spool.tooltip.condition2": "Clicar com o botão direito em 2 Conectores",
+	"item.createaddition.electrum_spool.tooltip.behaviour2": "Criará uma conexão por um fio entre eles, enquanto mantém o _Carretel Vazio_.",
+	"item.createaddition.electrum_wire": "Fio de Eletro",
+	"item.createaddition.electrum_rod": "Haste de Eletro",
+
 	"item.createaddition.brass_rod": "Haste de Latão",
 	"item.createaddition.bronze_rod": "Haste de Bronze",
-	
-	"item.createaddition.cake_base": "Base de bolo",
-	"item.createaddition.cake_base_baked": "Base de bolo cozida",
-	
+
+	"item.createaddition.cake_base": "Base de Bolo",
+	"item.createaddition.cake_base_baked": "Base de Bolo Assada",
+
 	"item.createaddition.straw": "Canudo",
-	
-	"item.createaddition.seed_oil_bucket": "Balde de óleo de semente",
-	"item.createaddition.seed_oil_bucket.tooltip": "BALDE_SEMENTE_ÓLEO",
-	"item.createaddition.seed_oil_bucket.tooltip.summary": "Um _líquido inflamável_ simples.",
-	"fluid.createaddition.seed_oil": "Óleo de semente",
-	
+
+	"item.createaddition.electrum_amulet": "Amuleto de Ouro Pálido",
+	"item.createaddition.electrum_amulet.tooltip": "AMULETO_DE_ELETRO",
+	"item.createaddition.electrum_amulet.tooltip.summary": "Quando a _vida_ te derruba, guardar este _amuleto_ no bolso faz você sentir que sua _sorte_ está prestes a mudar.",
+
+	"item.createaddition.brass_figurine": "Estatueta de Latão",
+	"item.createaddition.brass_figurine.tooltip": "ESTATUETA_DE_LATÃO",
+	"item.createaddition.brass_figurine.tooltip.summary": ".",
+
+	"item.createaddition.copper_goblet": "Cálice de Cobre",
+	"item.createaddition.copper_goblet.tooltip": "CALICE_DE_COBRE",
+	"item.createaddition.copper_goblet.tooltip.summary": "A extraordinária capacidade de transferência de calor deste _cálice_ irá mantê-lo fresco quando você mais precisar.",
+
+	"item.createaddition.gold_goblet": "Cálice Ornado",
+	"item.createaddition.gold_goblet.tooltip": "CALICE_DE_OURO",
+	"item.createaddition.gold_goblet.tooltip.summary": "Beber deste _cálice_ satisfaz mais do que qualquer garrafa comum.",
+
+	"item.createaddition.seed_oil_bucket": "Balde de Óleo de Semente",
+	"item.createaddition.seed_oil_bucket.tooltip": "BALDE_DE_OLEO_DE_SEMENTE",
+	"item.createaddition.seed_oil_bucket.tooltip.summary": "Um simples _líquido inflamável_.",
+	"fluid.createaddition.seed_oil": "Óleo de Semente",
+
 	"item.createaddition.bioethanol_bucket": "Balde de Bioetanol",
-	"item.createaddition.bioethanol_bucket.tooltip": "BALDE_BIOETANOL",
-	"item.createaddition.bioethanol_bucket.tooltip.summary": "Um _líquido inflamável_ eficiente.",
+	"item.createaddition.bioethanol_bucket.tooltip": "BALDE_DE_BIOETANOL",
+	"item.createaddition.bioethanol_bucket.tooltip.summary": "Um eficiente _líquido inflamável_.",
 	"fluid.createaddition.bioethanol": "Bioetanol",
-	
+
 	"item.createaddition.biomass": "Biomassa",
-	"item.createaddition.biomass_pellet": "Pastilha de Biomassa",
-	"item.createaddition.biomass_pellet.tooltip": "PASTILHA_BIOMASSA",
-	"item.createaddition.biomass_pellet.tooltip.summary": "Um _combustível sólido_ poderoso.",
-	
+	"item.createaddition.biomass_pellet": "Pelota de Biomassa",
+	"item.createaddition.biomass_pellet.tooltip": "PELOTA_DE_BIOMASSA",
+	"item.createaddition.biomass_pellet.tooltip.summary": "Um poderoso _combustível sólido_.",
+
 	"item.createaddition.spool": "Carretel Vazio",
-	"item.createaddition.spool.nbt": "Guarda a localização da conexão.",
-	"item.createaddition.spool.tooltip": "CARRETEL",
-	"item.createaddition.spool.tooltip.control1": "Click Dir. em 2 Conectores",
-	"item.createaddition.spool.tooltip.action1": "Criará uma ligação entre eles e devolver um _Carretel Vazio_.",
-	
-	"statusbar.createaddition.wire.linked": "Nós ligados",
-	"statusbar.createaddition.wire.linked_in": "Fio ligado a entrada",
-	"statusbar.createaddition.wire.linked_out": "Fio ligado a saída",
-	
+	"item.createaddition.spool.nbt": "Armazena a localização da conexão.",
+	"item.createaddition.spool.tooltip.summary": "Usado para armazenar fios.",
+	"item.createaddition.spool.tooltip.condition1": "Clicar com o botão direito em 2 Conectores vinculados",
+	"item.createaddition.spool.tooltip.behaviour1": "Removerá a conexão por fio feita, retornando uma _bobina_ com o fio.",
+
+	"statusbar.createaddition.wire.linked": "Nós vinculados",
+	"statusbar.createaddition.wire.linked_in": "Fio vinculado à entrada",
+	"statusbar.createaddition.wire.linked_out": "Fio vinculado à saída",
+
 	"statusbar.createaddition.wire.connect": "Conector de fio selecionado",
-	"statusbar.createaddition.wire.connect_in": "Entrada do conector de fio selecionada",
-	"statusbar.createaddition.wire.connect_out": "Saida do conector de fio selecionada",
-	
-	"statusbar.createaddition.wire.long": "O fio é muito comprido",
-	"statusbar.createaddition.wire.obstructed": "O trajeto do fio está obstruido",
-	"statusbar.createaddition.wire.count": "O nó do fio está cheio",
+	"statusbar.createaddition.wire.connect_in": "Conector de entrada de fio selecionado",
+	"statusbar.createaddition.wire.connect_out": "Conector de saída de fio selecionado",
+
+	"statusbar.createaddition.wire.long": "Fio muito longo",
+	"statusbar.createaddition.wire.count": "Nó de fio está cheio",
 	"statusbar.createaddition.wire.removed": "Fio removido",
-	"statusbar.createaddition.wire.exists": "Conexão do fio já existe",
-	"statusbar.createaddition.wire.no_connection": "O fio não está conectado aqui",
-	"statusbar.createaddition.wire.invalid": "Conexão invalida",
-	
+	"statusbar.createaddition.wire.exists": "Conexão de fio já existe",
+	"statusbar.createaddition.wire.no_connection": "Fio não conectado aqui",
+	"statusbar.createaddition.wire.invalid": "Conexão inválida",
+	"statusbar.createaddition.wire.requires_high_current": "Esta conexão requer um fio de alta corrente",
+
 	"block.createaddition.electric_motor": "Motor Elétrico",
-	"deprecated.block.createaddition.electric_motor.tooltip": "MOTOR ELÉTRICO",
-	"deprecated.block.createaddition.electric_motor.tooltip.summary": "Gera _SU_ a partir de _FE_ e tem uma _velocidade_ configurável. O consumo de energia se baseia na _RPM_ definido.",
-	
+
 	"block.createaddition.alternator": "Alternador",
-	"deprecated.block.createaddition.alternator.tooltip": "ALTERNATOR",
-	"deprecated.block.createaddition.alternator.tooltip.summary": "Gera _FE_ a partir de _SU_. A quantida de energia produzida é baseada na _RPM_.",
-	
+
 	"block.createaddition.creative_energy": "Gerador Criativo",
 	"block.createaddition.creative_energy.tooltip": "GERADOR_CRIATIVO",
-	"block.createaddition.creative_energy.tooltip.summary": "Gera uma fonte infinita de _FE_.",
-	
+	"block.createaddition.creative_energy.tooltip.summary": "Gera um suprimento infinito de _⚡_.",
+
 	"block.createaddition.rolling_mill": "Laminadora",
-	
+
 	"block.createaddition.accumulator": "Acumulador",
 	"block.createaddition.accumulator.tooltip": "ACUMULADOR",
-	"block.createaddition.accumulator.tooltip.summary": "_[DESCONTINUADO]_ Accumulates electric charge.",
-	"block.createaddition.accumulator.tooltip.condition1": "Pull",
-	"block.createaddition.accumulator.tooltip.behaviour1": "Provides _FE_ to _wires_ connected to the _connector_ marked with a upwards arrow.",
-	"block.createaddition.accumulator.tooltip.condition2": "Push",
-	"block.createaddition.accumulator.tooltip.behaviour2": "Accepts _FE_ from _wires_ connected to the _connector_ marked with a downwards arrow.",
-	
+	"block.createaddition.accumulator.tooltip.summary": "Acumula carga elétrica. _Obsoleto e sujeito a remoção em futuras versões_.",
+	"block.createaddition.accumulator.tooltip.condition1": "Puxar",
+	"block.createaddition.accumulator.tooltip.behaviour1": "Fornece _⚡_ para _fios_ conectados ao _conector_ marcado com uma seta para cima.",
+	"block.createaddition.accumulator.tooltip.condition2": "Empurrar",
+	"block.createaddition.accumulator.tooltip.behaviour2": "Aceita _⚡_ de _fios_ conectados ao _conector_ marcado com uma seta para baixo.",
+
 	"block.createaddition.modular_accumulator": "Acumulador",
-	
+
 	"block.createaddition.portable_energy_interface": "Interface de Energia Portátil",
-	
-	"block.createaddition.connector": "Conector",
+
+	"block.createaddition.connector": "Conector Pequeno",
 	"block.createaddition.connector.tooltip": "CONECTOR",
-	"block.createaddition.connector.tooltip.summary": "Connecta blocos compatíveis _Forge Energy_ com _fios_ para transferir _FE_.",
-	"block.createaddition.connector.tooltip.control1": "Click Dir.",
-	"block.createaddition.connector.tooltip.action1": "Enquanto segura um _Carretel de Cobre_ ou _Carretel de Ouro_ para criar uma _ligação de fios_ entre dois _Conectores_.",
-	"block.createaddition.connector.tooltip.control2": "Click Dir. com uma Chave Inglesa",
-	"block.createaddition.connector.tooltip.action2": "Para alterar entre os modos _Empurrar_, _Puxar_, _Passivo_, e _Nenhum_.",
-	
-	"block.createaddition.connector_copper": "Conector de Cobre",
-	"block.createaddition.connector_copper.tooltip": "CONECTOR",
-	"block.createaddition.connector_copper.tooltip.summary": "Connecta blocos compatíveis Forge Energy com _fios_ para transferir _FE_.",
-	"block.createaddition.connector_copper.tooltip.control1": "Click Dir.",
-	"block.createaddition.connector_copper.tooltip.action1": "Enquanto segura um _Carretel de Cobre_ para criar uma _ligação de fios_ entre dois _Conectores_.",
-	
-	"block.createaddition.connector_gold": "Gold Connector",
-	"block.createaddition.connector_gold.tooltip": "CONNECTOR",
-	"block.createaddition.connector_gold.tooltip.summary": "Connecta blocos compatíveis Forge Energy com _fios_ para transferir _FE_.",
-	"block.createaddition.connector_gold.tooltip.control1": "Click Dir.",
-	"block.createaddition.connector_gold.tooltip.action1": "Enquanto segura um _Carretel de Ouro_ para criar uma _ligação de fios_ entre dois _Conectores_.",
-	
-	"block.createaddition.redstone_relay": "Transmissor de Redstone",
-	"block.createaddition.redstone_relay.tooltip": "TRANSMISSOR_REDSTONE",
-	"block.createaddition.redstone_relay.tooltip.summary": "Permite passar _FE_ do _conector de entrada_ para o _conector de saída_ quando recebe um _sinal de redstone_.",
-	"block.createaddition.redstone_relay.tooltip.condition1": "Puxar",
-	"block.createaddition.redstone_relay.tooltip.behaviour1": "Providencia _FE_ para _fios_ conectados ao _conector_ indicado com uma flecha para cima.",
-	"block.createaddition.redstone_relay.tooltip.condition2": "Empurrar",
-	"block.createaddition.redstone_relay.tooltip.behaviour2": "Aceita _FE_ de _fios_ conectados ao _conector_ indicado com uma flecha para baixo.",
-	
-	"block.createaddition.digital_adapter": "Digital Adapter",
-	"block.createaddition.digital_adapter.tooltip": "DIGITAL_ADAPTER",
-	"block.createaddition.digital_adapter.tooltip.summary": "A _Computercraft Peripheral_ which allows computers to interface with _Display Boards_, _Speedometers_, _Stressometers_, _Rope Pulley_, _Hose Pulley_, _Mechanical Piston_, _Mechanical Bearing_, and _Rotational Speed Controllers_.",
-	"block.createaddition.chocolate_cake": "Chocolate Cake",
-	"block.createaddition.honey_cake": "Honey Cake",
-	"block.createaddition.seed_oil": "Seed Oil",
-	"block.createaddition.bioethanol": "Bioethanol",
-	"block.createaddition.barbed_wire": "Barbed Wire",
-	"block.createaddition.barbed_wire.tooltip": "BARBED_WIRE",
-	"block.createaddition.barbed_wire.tooltip.summary": "Inflicts damage when walked through.",
-	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
-	"block.createaddition.tesla_coil": "Tesla Coil",
+	"block.createaddition.connector.tooltip.summary": "Conecta blocos compatíveis com _Forge Energy_ com _fios_ para transferir _⚡_.",
+	"block.createaddition.connector.tooltip.condition1": "Baixa Corrente",
+	"block.createaddition.connector.tooltip.behaviour1": "Conectado com _fios de baixa corrente_.",
+	"block.createaddition.connector.tooltip.condition2": "Clicar com o botão direito",
+	"block.createaddition.connector.tooltip.behaviour2": "Enquanto segura um _Carretel de Cobre_, _Carretel de Ouro_ ou _Carretel de Eletro_ irá criar uma _conexão por fio_ com até 4 outros conectores.",
+	"block.createaddition.connector.tooltip.condition3": "Clicar com o botão direito com a Chave",
+	"block.createaddition.connector.tooltip.behaviour3": "Irá alternar entre os modos _Empurrar_, _Puxar_ e _Nenhum_.",
+
+	"block.createaddition.small_light_connector": "Conector Pequeno com Lâmpada",
+	"block.createaddition.small_light_connector.tooltip": "CONECTOR",
+	"block.createaddition.small_light_connector.tooltip.summary": "Conecta blocos compatíveis com _Forge Energy_ com _fios_ para transferir _⚡_, fornece luz ao receber energia.",
+	"block.createaddition.small_light_connector.tooltip.condition1": "Baixa Corrente",
+	"block.createaddition.small_light_connector.tooltip.behaviour1": "Conectado com _fios de baixa corrente_.",
+	"block.createaddition.small_light_connector.tooltip.condition2": "Clicar com o botão direito",
+	"block.createaddition.small_light_connector.tooltip.behaviour2": "Enquanto segura um _Carretel de Cobre_, _Carretel de Ouro_ ou _Carretel de Eletro_ irá criar uma _conexão por fio_ com até 4 outros conectores.",
+	"block.createaddition.small_light_connector.tooltip.condition3": "Clicar com o botão direito com a Chave",
+	"block.createaddition.small_light_connector.tooltip.behaviour3": "Irá alternar entre os modos _Empurrar_, _Puxar_ e _Nenhum_.",
+
+	"block.createaddition.large_connector": "Conector Grande",
+	"block.createaddition.large_connector.tooltip": "CONECTOR",
+	"block.createaddition.large_connector.tooltip.summary": "Conecta blocos compatíveis com _Forge Energy_ com _fios_ para transferir _⚡_.",
+	"block.createaddition.large_connector.tooltip.condition1": "Alta Corrente",
+	"block.createaddition.large_connector.tooltip.behaviour1": "Conectado com _fios de alta corrente_.",
+	"block.createaddition.large_connector.tooltip.condition2": "Clicar com o botão direito",
+	"block.createaddition.large_connector.tooltip.behaviour2": "Enquanto segura um _Carretel de Ouro_ ou _Carretel de Eletro_ irá criar uma _conexão por fio_ com até 6 outros conectores.",
+	"block.createaddition.large_connector.tooltip.condition3": "Clicar com o botão direito com a Chave",
+	"block.createaddition.large_connector.tooltip.behaviour3": "Irá alternar entre os modos _Empurrar_, _Puxar_ e _Nenhum_.",
+
+	"block.createaddition.redstone_relay": "Relé de Redstone",
+	"block.createaddition.redstone_relay.tooltip": "RELÉ_DE_REDSTONE",
+	"block.createaddition.redstone_relay.tooltip.summary": "Permite que _⚡_ passe do _conector de entrada_ para o _conector de saída_ ao receber um _sinal de redstone_.",
+	"block.createaddition.redstone_relay.tooltip.condition1": "Baixa Corrente",
+	"block.createaddition.redstone_relay.tooltip.behaviour1": "Conectado com _fios de baixa corrente_.",
+	"block.createaddition.redstone_relay.tooltip.condition2": "Puxar",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "Fornece _⚡_ para _fios_ conectados ao _conector_ marcado com uma seta para cima.",
+	"block.createaddition.redstone_relay.tooltip.condition3": "Empurrar",
+	"block.createaddition.redstone_relay.tooltip.behaviour3": "Aceita _⚡_ de _fios_ conectados ao _conector_ marcado com uma seta para baixo.",
+
+	"block.createaddition.digital_adapter": "Adaptador Digital",
+	"block.createaddition.digital_adapter.tooltip": "ADAPTADOR_DIGITAL",
+	"block.createaddition.digital_adapter.tooltip.summary": "Um _Periférico do ComputerCraft_ que permite que computadores interajam com _Placas de Exibição_, _Velocímetros_, _Estressômetros_, _Polia de Corda_, _Polia de Mangueira_, _Polia de Elevador_, _Pistão Mecânico_, _Rolamento Mecânico_ e _Controladores de Velocidade Rotacional_.",
+
+	"block.createaddition.chocolate_cake": "Bolo de Chocolate",
+	"block.createaddition.honey_cake": "Bolo de Mel",
+
+	"block.createaddition.electrum_block": "Bloco de Eletro",
+
+	"block.createaddition.biomass_pellet_block": "Bloco de Biomassa",
+
+	"block.createaddition.seed_oil": "Óleo de Semente",
+	"block.createaddition.bioethanol": "Bioetanol",
+
+	"block.createaddition.barbed_wire": "Fio de Arame Farpado",
+	"block.createaddition.barbed_wire.tooltip": "FIO_DE_ARAME_FARPADO",
+	"block.createaddition.barbed_wire.tooltip.summary": "Causa dano ao ser atravessado.",
+
+	"block.createaddition.tesla_coil": "Bobina de Tesla",
+
+	"block.createaddition.liquid_blaze_burner": "Queimador de Blaze com Canudo",
+
 	"itemGroup.createaddition.main": "Create Crafts & Additions",
-	"createaddition.command.cca_api.link": "Click here to open API documentation",
-	"createaddition.ponder.tag.electric": "Electric Appliances",
-	"createaddition.ponder.tag.electric.description": "Components which use electricity",
-	"createaddition.ponder.electric_motor.header": "Generating Rotational Force using Electric Motors",
-	"createaddition.ponder.electric_motor.text_1": "Electric Motors are a compact and configurable source of Rotational Force",
-	"createaddition.ponder.electric_motor.text_2": "Scrolling on the back panel changes the RPM of the motor's rotational output",
-	"createaddition.ponder.electric_motor.text_3": "The Electric Motor requires a source of energy (FE)",
-	"createaddition.ponder.electric_motor.text_4": "The motor's energy consumption is determined by the set RPM",
-	"createaddition.ponder.alternator.header": "Generating Electric energy using an Alternator",
-	"createaddition.ponder.alternator.text_1": "The Alternator requires at least 32 RPM to operate",
-	"createaddition.ponder.alternator.text_2": "It generates electric energy (FE) from rotational force",
-	"createaddition.ponder.alternator.text_3": "Its energy production is determined by the input RPM",
-	"createaddition.ponder.rolling_mill.header": "Rolling metals into Rods and Wires",
-	"createaddition.ponder.rolling_mill.text_1": "The Rolling Mill uses rotational force to roll metals into Rods and Wires",
-	"createaddition.ponder.rolling_mill.text_2": "To manually input items, drop Ingots or Plates on the top of the Mill",
-	"createaddition.ponder.rolling_mill.text_3": "Right-click the Mill to manually retrieve the output items",
-	"createaddition.ponder.automated_rolling_mill.header": "Automating the Rolling Mill",
-	"createaddition.ponder.automated_rolling_mill.text_1": "The Rolling Mill can be automated using a Belt and two Funnels",
-	"createaddition.ponder.automated_rolling_mill.text_2": "Input Funnel",
-	"createaddition.ponder.automated_rolling_mill.text_3": "Output Funnel",
-	"createaddition.ponder.cc_electric_motor.header": "Using ComputerCraft to control an Electric Motor",
-	"createaddition.ponder.cc_electric_motor.text_1": "The Electric Motor can be controlled using ComputerCraft",
-	"createaddition.ponder.cc_electric_motor.text_2": "Connect to the motor using 'peripheral.wrap(side)'",
-	"createaddition.ponder.cc_electric_motor.text_3": "Get to the API documentation by issuing the command '/cca_api' in the chat",
-	"createaddition.ponder.tesla_coil.header": "Using a Tesla Coil to charge Items",
-	"createaddition.ponder.tesla_coil.text_1": "The Tesla Coil will charge Items below it",
-	"createaddition.ponder.tesla_coil.text_2": "It will charge any Forge Energy Items and more!",
-	"createaddition.ponder.tesla_coil_hurt.header": "Dangerous Tesla Coils",
-	"createaddition.ponder.tesla_coil_hurt.text_1": "The Tesla Coil is also able to inflict damage on nearby Players and Mobs",
-	"createaddition.ponder.tesla_coil_hurt.text_2": "This can be activated with a Redstone signal",
-	"createaddition.ponder.tesla_coil_hurt.text_3": "Prepare to be Shocked!",
-	"createaddition.ponder.liquid_blaze_burner.header": "Liquid Fuel Burning",
-	"createaddition.ponder.liquid_blaze_burner.text_1": "Giving the Blaze Burner a Straw",
-	"createaddition.ponder.liquid_blaze_burner.text_2": "will allow it to accept liquid fuels by Buckets",
-	"createaddition.ponder.liquid_blaze_burner.text_3": "- or by pipes.",
-	"createaddition.ponder.modular_accumulator.header": "The Multi-block Accumulator",
-	"createaddition.ponder.modular_accumulator.text_1": "The Accumulator is a multi-block structure",
-	"createaddition.ponder.modular_accumulator.text_2": "It can store large amounts of electric energy",
-	"createaddition.ponder.modular_accumulator.text_3": "Configure an input connector",
-	"createaddition.ponder.modular_accumulator.text_4": "and an output connector.",
-	"createaddition.ponder.modular_accumulator.text_5": "To improve mod compatibility, the Accumulator will actively push energy to blocks placed on the top and bottom faces.",
-	"createaddition.display_source.digital_adapter_source": "Digital Adapter",
-	"createaddition.display_source.modular_accumulator": "Accumulator",
-	"createaddition.display_source.accumulator.progress_bar": "Progress Bar",
-	"createaddition.display_source.accumulator.percent": "Percentage",
-	"createaddition.display_source.accumulator.current": "Energy Stored in FE",
-	"createaddition.display_source.accumulator.max": "Total Capacity",
-	"createaddition.display_source.accumulator.remaining": "Remaining FE",
-	"createaddition.display_source.accumulator.display": "Choose an Option:",
-	"createaddition.ponder.pei_transfer.header": "Contraption Energy Exchange",
-	"createaddition.ponder.pei_transfer.text_1": "Accumulators on moving contraptions cannot connect to stationary connectors.",
-	"createaddition.ponder.pei_transfer.text_2": "This component can interact with Accumulators without the need to stop the contraption.",
-	"createaddition.ponder.pei_transfer.text_3": "Place a second one with a gap of 1 or 2 blocks inbetween",
-	"createaddition.ponder.pei_transfer.text_4": "Whenever they pass by each other, they will engage in a connection",
-	"createaddition.ponder.pei_transfer.text_5": "While engaged, the stationary interface will represent ALL Accumulators on the contraption",
-	"createaddition.ponder.pei_transfer.text_6": "Energy can now be exchanged according to the Push/Pull configuration of the connector...",
-	"createaddition.ponder.pei_transfer.text_7": "After no energy have been exchanged for a while, the contraption will continue on its way.",
-	"createaddition.ponder.pei_redstone.header": "Redstone Control",
-	"createaddition.ponder.pei_redstone.text_1": "Redstone power will prevent the stationary interface from engaging.",
-	"createaddition.schedule.condition.energy_threshold": "Energy Cargo Condition",
-	"createaddition.schedule.condition.threshold.unit": "Kfe",
-	"createaddition.schedule.condition.threshold.energy": "Energy",
-	"death.attack.createaddition.barbed_wire": "%1$s tried to cross barbed wire",
-	"death.attack.createaddition.barbed_wire.player": "%1$s tried to cross barbed wire while fighting %2$s",
-	"effect.createaddition.shocking": "Shocked",
-	"death.attack.createaddition.tesla_coil": "%1$s received a lethal electric shock",
-	"death.attack.createaddition.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",
-	"effect.createaddition.shocking.description": "Causes severely reduced movement speed"
+
+	"createaddition.ponder.tag.electric": "Aparelhos Elétricos",
+	"createaddition.ponder.tag.electric.description": "Componentes que usam eletricidade",
+
+	"createaddition.ponder.electric_motor.header": "Gerando Força Rotacional usando Motores Elétricos",
+	"createaddition.ponder.electric_motor.text_1": "Motores Elétricos são uma fonte compacta e configurável de Força Rotacional",
+	"createaddition.ponder.electric_motor.text_2": "Rolar no painel traseiro muda o RPM da saída rotacional do motor",
+	"createaddition.ponder.electric_motor.text_3": "O Motor Elétrico requer uma fonte de energia",
+	"createaddition.ponder.electric_motor.text_4": "O consumo de energia do motor é determinado pela RPM definida",
+
+	"createaddition.ponder.alternator.header": "Gerando energia elétrica usando um Alternador",
+	"createaddition.ponder.alternator.text_1": "O Alternador requer pelo menos 32 RPM para operar",
+	"createaddition.ponder.alternator.text_2": "Ele gera energia elétrica a partir da força rotacional",
+	"createaddition.ponder.alternator.text_3": "Sua produção de energia é determinada pela RPM de entrada",
+
+	"createaddition.ponder.rolling_mill.header": "Laminando metais em Hastes e Fios",
+	"createaddition.ponder.rolling_mill.text_1": "A Laminadora usa força rotacional para laminar metais em Hastes e Fios",
+	"createaddition.ponder.rolling_mill.text_2": "Para inserir itens manualmente, derrube Lingotes ou Chapas no topo da máquina",
+	"createaddition.ponder.rolling_mill.text_3": "Clique com o botão direito na Laminadora para recuperar manualmente os itens de saída",
+
+	"createaddition.ponder.automated_rolling_mill.header": "Automatizando a Laminadora",
+	"createaddition.ponder.automated_rolling_mill.text_1": "A Laminadora pode ser automatizada usando uma Esteira e dois Funis",
+	"createaddition.ponder.automated_rolling_mill.text_2": "Funil de Entrada",
+	"createaddition.ponder.automated_rolling_mill.text_3": "Funil de Saída",
+
+	"createaddition.ponder.cc_electric_motor.header": "Usando ComputerCraft para controlar um Motor Elétrico",
+	"createaddition.ponder.cc_electric_motor.text_1": "O Motor Elétrico pode ser controlado usando ComputerCraft",
+	"createaddition.ponder.cc_electric_motor.text_2": "Conecte-se ao motor usando 'peripheral.wrap(side)'",
+	"createaddition.ponder.cc_electric_motor.text_3": "Acesse a documentação da API emitindo o comando '/cca_api' no chat",
+
+	"createaddition.ponder.tesla_coil.header": "Usando uma Bobina de Tesla para carregar Itens",
+	"createaddition.ponder.tesla_coil.text_1": "A Bobina de Tesla irá carregar Itens abaixo dela",
+	"createaddition.ponder.tesla_coil.text_2": "Ela irá carregar qualquer Item que use Forge Energy e também outros!",
+
+	"createaddition.ponder.tesla_coil_hurt.header": "Bobinas de Tesla Perigosas",
+	"createaddition.ponder.tesla_coil_hurt.text_1": "A Bobina de Tesla também pode causar dano a Jogadores e Mobs próximos",
+	"createaddition.ponder.tesla_coil_hurt.text_2": "Isso pode ser ativado com um sinal de Redstone",
+	"createaddition.ponder.tesla_coil_hurt.text_3": "Prepare-se para ser Chocado!",
+
+	"createaddition.ponder.liquid_blaze_burner.header": "Queima de Combustível Líquido",
+	"createaddition.ponder.liquid_blaze_burner.text_1": "Dar ao Queimador de Blaze um Canudo",
+	"createaddition.ponder.liquid_blaze_burner.text_2": "permitirá que ele aceite combustíveis líquidos por Baldes",
+	"createaddition.ponder.liquid_blaze_burner.text_3": "- ou por tubos.",
+
+	"createaddition.ponder.modular_accumulator.header": "O Acumulador Multi-bloco",
+	"createaddition.ponder.modular_accumulator.text_1": "O Acumulador é uma estrutura multi-bloco",
+	"createaddition.ponder.modular_accumulator.text_2": "Ele pode armazenar grandes quantidades de energia elétrica",
+	"createaddition.ponder.modular_accumulator.text_3": "Configure um conector de entrada",
+	"createaddition.ponder.modular_accumulator.text_4": "e um conector de saída.",
+	"createaddition.ponder.modular_accumulator.text_5": "Para melhorar a compatibilidade do mod, o Acumulador irá empurrar energia ativamente para blocos colocados nas faces superiora e inferiora.",
+
+	"createaddition.display_source.digital_adapter_source": "Adaptador Digital",
+	"createaddition.display_source.digital_adapter_source_digital_adapter": "Adaptador Digital",
+	"createaddition.display_source.modular_accumulator": "Acumulador",
+	"createaddition.display_source.accumulator.progress_bar": "Barra de Progresso",
+	"createaddition.display_source.accumulator.percent": "Porcentagem",
+	"createaddition.display_source.accumulator.current": "Energia Armazenada em ⚡",
+	"createaddition.display_source.accumulator.max": "Capacidade Total",
+	"createaddition.display_source.accumulator.remaining": "⚡ Restante",
+	"createaddition.display_source.accumulator.display": "Escolha uma Opção:",
+
+	"createaddition.ponder.pei_transfer.header": "Troca de Energia em Engenhocas",
+	"createaddition.ponder.pei_transfer.text_1": "Acumuladores em engenhocas móveis não podem se conectar a conectores estacionários.",
+	"createaddition.ponder.pei_transfer.text_2": "Este componente pode interagir com Acumuladores sem a necessidade de parar a engenhoca.",
+	"createaddition.ponder.pei_transfer.text_3": "Coloque um segundo com um espaço de 1 ou 2 blocos entre eles",
+	"createaddition.ponder.pei_transfer.text_4": "Sempre que eles passarem um pelo outro, eles se conectarão",
+	"createaddition.ponder.pei_transfer.text_5": "Enquanto estiverem conectados, a interface estacionária representará TODOS os Acumuladores na engenhoca",
+	"createaddition.ponder.pei_transfer.text_6": "A energia agora pode ser trocada de acordo com a configuração de Empurrar/Puxar do conector...",
+	"createaddition.ponder.pei_transfer.text_7": "Após não haver troca de energia por um tempo, a engenhoca continuará seu caminho.",
+
+	"createaddition.ponder.pei_redstone.header": "Controle de Redstone",
+	"createaddition.ponder.pei_redstone.text_1": "Um sinal de redstone contínuo impedirá que a interface estacionária se conecte.",
+
+	"createaddition.schedule.condition.energy_threshold": "Condição de Carga de Energia",
+	"createaddition.schedule.condition.threshold.unit": "K⚡",
+	"createaddition.schedule.condition.threshold.energy": "Energia",
+
+	"attack.death.createaddition.barbed_wire": "%1$s tentou atravessar arame farpado",
+  	"attack.death.createaddition.barbed_wire.player": "%1$s tentou atravessar arame farpado enquanto lutava contra %2$s",
+
+	"effect.createaddition.shocking": "Chocado",
+	"attack.death.createaddition.tesla_coil": "%1$s recebeu um choque elétrico letal",
+  	"attack.death.createaddition.tesla_coil.player": "%1$s recebeu um choque elétrico letal enquanto lutava contra %2$s",
+  	"effect.createaddition.shocking.description": "Causa redução severa na velocidade de movimento",
+
+	"createaddition.subtitle.loud_zap": "Descarga de Bobina de Tesla",
+	"createaddition.subtitle.little_zap": "Faíscas da Bobina de Tesla"
 }

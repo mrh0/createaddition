@@ -1,0 +1,12 @@
+{
+  "damage": 8,
+  "items": "createaddition:honey_cake",
+  "knockback": 0.1,
+  "reload_ticks": 15,
+  "render_mode": {
+    "type": "create:tumble"
+  },
+  "sticky": true,
+  "velocity_multiplier": 1.0,
+  "sound_pitch": 0.8
+}

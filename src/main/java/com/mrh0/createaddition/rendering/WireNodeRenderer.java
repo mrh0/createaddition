@@ -9,8 +9,11 @@ import com.mrh0.createaddition.event.ClientEventHandler;
 import com.mrh0.createaddition.index.CAPartials;
 import com.mrh0.createaddition.util.ClientMinecraftWrapper;
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.utility.Color;
+//import com.simibubi.create.foundation.render.CachedBufferer;
+//import com.simibubi.create.foundation.utility.Color;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.theme.Color;
+
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LightTexture;
@@ -187,7 +190,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 		float fz = z * part;
 
 		if (index % 3 == 0 && index != 1 && index != count && lightOffset == 0) {
-			CachedBufferer.partial(CAPartials.SMALL_LIGHT, state).color(colors[(main ? 2-(index/3)%3 : (index/3)%3)]).light(255).translate(fx, fy, fz).renderInto(stack, vertBuilder);
+			CachedBuffers.partial(CAPartials.SMALL_LIGHT, state).color(colors[(main ? 2-(index/3)%3 : (index/3)%3)]).light(255).translate(fx, fy, fz).renderInto(stack, vertBuilder);
 		}
 	}
 
@@ -201,7 +204,7 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 
 		if (index % 3 == 0 && index != 1 && index != count && lightOffset == 0) {
 			float l = 1.7f*16f-fyh*16f;
-			CachedBufferer.partial(CAPartials.SMALL_LIGHT, state).light(255).translate(fx, fy + hang(divf(index, count), dis), fz).scale(.5f, l, .5f).renderInto(stack, vertBuilder);//.scale(.25f, (1.7f*16f)-fy, .25f)
+            CachedBuffers.partial(CAPartials.SMALL_LIGHT, state).light(255).translate(fx, fy + hang(divf(index, count), dis), fz).scale(.5f, l, .5f).renderInto(stack, vertBuilder);//.scale(.25f, (1.7f*16f)-fy, .25f)
 		}
 	}
 
@@ -220,9 +223,6 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 		float fx = x * part;
 		float fy = (y > 0.0F ? y * part * part : y - y * (1.0F - part) * (1.0F - part)) + (hangFactor*hang(divf(index, count), dis));
 		float fz = z * part;
-
-		//System.out.println((fx + o1) +":"+ (fy + n1 - n2) +":"+ (fz - o2));
-
 
 		if(Math.abs(x) + Math.abs(z) < Math.abs(y)) {
 			boolean p = b > 0;

@@ -8,7 +8,8 @@ import com.mrh0.createaddition.util.ClientMinecraftWrapper;
 import com.simibubi.create.compat.jei.category.animations.AnimatedBlazeBurner;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-import com.simibubi.create.foundation.utility.Lang;
+//import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import mezz.jei.api.fabric.constants.FabricTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -27,23 +28,19 @@ public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe>
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, LiquidBurningRecipe recipe, IFocusGroup focuses) {
-		List<ItemStack> buckets = recipe.getFluidIngredient().getMatchingFluidStacks().stream()
-				.filter(e -> e != null)
-				.map((e) -> new ItemStack(e.getFluid().getBucket()))
-				.toList();
-		builder
-			.addSlot(RecipeIngredientRole.INPUT, getBackground().getWidth() / 2 -56, 3)
-			.setBackground(getRenderedSlot(), -1, -1)
-			.addItemStack(new ItemStack(CAItems.STRAW.get()));
-		builder
-			.addSlot(RecipeIngredientRole.INPUT, getBackground().getWidth() / 2 -36, 3)
-			.setBackground(getRenderedSlot(), -1, -1)
-			.addItemStacks(buckets);
-		builder
-			.addSlot(RecipeIngredientRole.INPUT, getBackground().getWidth() / 2 -16, 3)
-			.setBackground(getRenderedSlot(), -1, -1)
-			.addIngredients(FabricTypes.FLUID_STACK, toJei(withImprovedVisibility(recipe.getFluidIngredient().getMatchingFluidStacks())))
-			.addTooltipCallback(addFluidTooltip(recipe.getFluidIngredient().getRequiredAmount()));
+        List<ItemStack> buckets = recipe.getFluidIngredient().getMatchingFluidStacks().stream()
+                .filter(e -> e != null)
+                .map((e) -> new ItemStack(e.getFluid().getBucket()))
+                .toList();
+        builder
+                .addSlot(RecipeIngredientRole.INPUT, getBackground().getWidth() / 2 -56, 3)
+                .setBackground(getRenderedSlot(), -1, -1)
+                .addItemStack(new ItemStack(CAItems.STRAW.get()));
+        builder
+                .addSlot(RecipeIngredientRole.INPUT, getBackground().getWidth() / 2 -36, 3)
+                .setBackground(getRenderedSlot(), -1, -1)
+                .addItemStacks(buckets);
+        addFluidSlot(builder, getBackground().getWidth() / 2 -16, 3, recipe.getFluidIngredient());
 	}
 
 	@Override
@@ -57,7 +54,7 @@ public class LiquidBurningCategory extends CARecipeCategory<LiquidBurningRecipe>
 		AllGuiTextures.JEI_LIGHT.render(gg, 81, 58 + 30 - 50);
 
 		AllGuiTextures.JEI_HEAT_BAR.render(gg, 4, 80 - 50);
-		gg.drawString(ClientMinecraftWrapper.getFont(), Lang.translateDirect(requiredHeat.getTranslationKey()), 9,
+		gg.drawString(ClientMinecraftWrapper.getFont(), CreateLang.translateDirect(requiredHeat.getTranslationKey()), 9,
 				86 - 50, requiredHeat.getColor());
 
 		heater.withHeat(requiredHeat.visualizeAsBlazeBurner())

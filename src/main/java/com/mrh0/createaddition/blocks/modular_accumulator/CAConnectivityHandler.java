@@ -2,7 +2,7 @@ package com.mrh0.createaddition.blocks.modular_accumulator;
 
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;

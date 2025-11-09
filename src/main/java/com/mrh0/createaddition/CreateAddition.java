@@ -9,8 +9,10 @@ import com.mrh0.createaddition.index.*;
 import com.mrh0.createaddition.index.CASounds;
 import com.mrh0.createaddition.network.CANetwork;
 import com.mrh0.createaddition.trains.schedule.CASchedule;
+import com.simibubi.create.api.boiler.BoilerHeater;
+import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.fluids.tank.BoilerHeaters;
-import com.simibubi.create.content.kinetics.BlockStressValues;
+//import com.simibubi.create.content.kinetics.BlockStressValues;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
@@ -21,6 +23,7 @@ import com.simibubi.create.infrastructure.config.AllConfigs;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import io.github.fabricators_of_create.porting_lib.event.common.ModsLoadedCallback;
 import me.pepperbell.simplenetworking.SimpleChannel;
+import net.createmod.catnip.lang.FontHelper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
@@ -44,7 +47,7 @@ public class CreateAddition implements ModInitializer{
 	public static final SimpleChannel Network = new SimpleChannel(new ResourceLocation(MODID, "main"));
 
     static {
-        REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
+        REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
                 .andThen(TooltipModifier.mapNull(KineticStats.create(item))));
     }
 
@@ -84,15 +87,14 @@ public class CreateAddition implements ModInitializer{
     }
 
     private void setup() {
-    	CAPotatoCannonProjectiles.register();
-    	BlockStressValues.registerProvider(MODID, AllConfigs.server().kinetics.stressValues);
-    	BoilerHeaters.registerHeater(CABlocks.LIQUID_BLAZE_BURNER.get(), (level, pos, state) -> {
-    		BlazeBurnerBlock.HeatLevel value = state.getValue(LiquidBlazeBurnerBlock.HEAT_LEVEL);
-			if (value == BlazeBurnerBlock.HeatLevel.NONE) return -1;
-			if (value == BlazeBurnerBlock.HeatLevel.SEETHING) return 2;
-			if (value.isAtLeast(BlazeBurnerBlock.HeatLevel.FADING)) return 1;
-			return 0;
-    	});
+
+        BoilerHeater.REGISTRY.register(CABlocks.LIQUID_BLAZE_BURNER.get(), ((level, blockPos, blockState) -> {
+            BlazeBurnerBlock.HeatLevel value = blockState.getValue(LiquidBlazeBurnerBlock.HEAT_LEVEL);
+            if (value == BlazeBurnerBlock.HeatLevel.NONE) return -1;
+            if (value == BlazeBurnerBlock.HeatLevel.SEETHING) return 2;
+            if (value.isAtLeast(BlazeBurnerBlock.HeatLevel.FADING)) return 1;
+            return 0;
+        }));
 
         if(CC_ACTIVE){
             ComputerCraftCompat.registerCompat();

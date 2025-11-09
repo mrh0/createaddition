@@ -13,7 +13,8 @@ import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+//import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.ChatFormatting;
@@ -36,10 +37,6 @@ import java.util.List;
 import java.util.Set;
 
 public class RedstoneRelayBlockEntity extends SmartBlockEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
-
-	//private final InternalEnergyStorage energyBufferIn;
-	//private final InternalEnergyStorage energyBufferOut;
-
 	private final Set<LocalNode> wireCache = new HashSet<>();
 	private final LocalNode[] localNodes;
 	private final IWireNode[] nodeCache;
@@ -375,6 +372,7 @@ public class RedstoneRelayBlockEntity extends SmartBlockEntity implements IWireN
 
 		ObservePacket.send(worldPosition, node);
 
+        String spacing = " ";
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.relay.info").withStyle(ChatFormatting.WHITE)));
 		tooltip.add(Component.literal(spacing)

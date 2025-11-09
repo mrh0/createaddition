@@ -2,8 +2,10 @@ package com.mrh0.createaddition.sound;
 
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.index.CASounds;
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
-import com.simibubi.create.foundation.utility.Pair;
+//import com.simibubi.create.foundation.utility.AnimationTickHolder;
+//import com.simibubi.create.foundation.utility.Pair;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.data.Pair;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -38,10 +40,6 @@ public class CASoundScapes {
 		return new CASoundScape(pitch, group).continuous(CASounds.ELECTRIC_MOTOR_BUZZ.get(), 0.75f, 1f);
 	}
 
-//	private static CASoundScape tesla(float pitch, AmbienceGroup group) {
-//		return new CASoundScape(pitch, group).continuous(CASounds.TESLA_COIL.get(), 1f, 1f);
-//	}
-
 	private static CASoundScape tesla(float pitch, AmbienceGroup group) {
 		return new CASoundScape(pitch, group).continuous(CASounds.ELECTRIC_CHARGE.get(), 1f, 1f);
 	}
@@ -59,7 +57,6 @@ public class CASoundScapes {
 
 	public static void play(AmbienceGroup group, BlockPos pos, float pitch) {
 		if (!AllConfigs.client().enableAmbientSounds.get()) return;
-		// if (!Config.AUDIO_ENABLED.get()) return;
 
 		if (!outOfRange(pos)) addSound(group, pos, pitch);
 	}

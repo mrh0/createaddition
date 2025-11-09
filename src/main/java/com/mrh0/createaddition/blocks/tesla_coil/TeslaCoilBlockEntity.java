@@ -12,7 +12,8 @@ import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+//import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
@@ -280,6 +281,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
 
+        String spacing = " ";
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.tesla_coil.info").withStyle(ChatFormatting.WHITE)));
 
@@ -287,14 +289,6 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.stored").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" "))
 				.append(Util.format(localEnergy.getAmount())).append("fe / ").append(Util.format(Config.TESLA_COIL_CAPACITY.get())).append("fe").withStyle(ChatFormatting.AQUA));
-
-		/*
-		tooltip.add(Component.literal(spacing)
-				.append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.usage").withStyle(ChatFormatting.GRAY)));
-		tooltip.add(Component.literal(spacing).append(" ")
-				.append(Util.format(EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
-
-		 */
 
 		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 	}

@@ -6,8 +6,9 @@ import com.mrh0.createaddition.index.CABlocks;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.compat.emi.CreateEmiAnimations;
 import com.simibubi.create.foundation.gui.CustomLightingSettings;
-import com.simibubi.create.foundation.gui.ILightingSettings;
+//import com.simibubi.create.foundation.gui.ILightingSettings;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.createmod.catnip.gui.ILightingSettings;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Direction;
 

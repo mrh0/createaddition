@@ -20,20 +20,11 @@
 	"createaddition.tooltip.accumulator.info": "Accumulator Info:",
 	"createaddition.tooltip.relay.info": "Relay Info:",
 	"createaddition.tooltip.connector.info": "Connector Info:",
-	"createaddition.tooltip.tesla_coil.info": "Tesla Coil Info:",
 
 	"createaddition.recipe.rolling": "Rolling",
-	"emi.category.createaddition.rolling": "Rolling",
 	"createaddition.recipe.rolling.sequence": "Rolling in Mill",
-
 	"createaddition.recipe.charging": "Charging",
-	"emi.category.createaddition.charging": "Charging",
-	"createaddition.recipe.charging.sequence_0": "Charge ",
-	"createaddition.recipe.charging.sequence_1": "at a Tesla Coil",
-
 	"createaddition.recipe.liquid_burning": "Liquid Burning",
-	"emi.category.createaddition.liquid_burning": "Liquid Burning",
-
 
 	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",
 
@@ -225,6 +216,8 @@
 	"block.createaddition.chocolate_cake": "Chocolate Cake",
 	"block.createaddition.honey_cake": "Honey Cake",
 
+	"block.createaddition.electrum_block": "Electrum Block",
+
 	"block.createaddition.biomass_pellet_block": "Biomass Pallet",
 
 	"block.createaddition.seed_oil": "Seed Oil",
@@ -316,12 +309,12 @@
 	"createaddition.schedule.condition.threshold.unit": "K⚡",
 	"createaddition.schedule.condition.threshold.energy": "Energy",
 
-	"death.attack.createaddition.barbed_wire": "%1$s tried to cross barbed wire",
-  	"death.attack.createaddition.barbed_wire.player": "%1$s tried to cross barbed wire while fighting %2$s",
+	"attack.death.createaddition.barbed_wire": "%1$s tried to cross barbed wire",
+  	"attack.death.createaddition.barbed_wire.player": "%1$s tried to cross barbed wire while fighting %2$s",
 
 	"effect.createaddition.shocking":"Shocked",
-	"death.attack.createaddition.tesla_coil": "%1$s received a lethal electric shock",
-  	"death.attack.createaddition.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",
+	"attack.death.createaddition.tesla_coil": "%1$s received a lethal electric shock",
+  	"attack.death.createaddition.tesla_coil.player": "%1$s received a lethal electric shock while fighting %2$s",
   	"effect.createaddition.shocking.description": "Causes severely reduced movement speed",
 
 	"createaddition.subtitle.loud_zap": "Tesla Coil zaps",
