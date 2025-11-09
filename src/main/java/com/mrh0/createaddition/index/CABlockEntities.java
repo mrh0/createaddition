@@ -11,7 +11,7 @@ import com.mrh0.createaddition.blocks.electric_motor.*;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.*;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlockEntity;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorRenderer;
-import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceVisual;
+import com.mrh0.createaddition.blocks.portable_energy_interface.PEIIVisual;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceRenderer;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlockEntity;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlockEntity;
@@ -95,7 +95,7 @@ public class CABlockEntities {
 
 	public static final BlockEntityEntry<PortableEnergyInterfaceBlockEntity> PORTABLE_ENERGY_INTERFACE = CreateAddition.REGISTRATE
 			.blockEntity("portable_energy_interface", PortableEnergyInterfaceBlockEntity::new)
-			// .visual(() -> PortableEnergyInterfaceVisual::new)
+			 .visual(() -> PEIIVisual::new)
 			.validBlocks(CABlocks.PORTABLE_ENERGY_INTERFACE)
 			.renderer(() -> PortableEnergyInterfaceRenderer::new)
 			.register();
