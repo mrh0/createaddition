@@ -12,7 +12,6 @@ import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-//import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.CreateLang;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
@@ -44,7 +43,7 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyT
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        String spacing = " ";
+		String spacing = " ";
 		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
 				.withStyle(ChatFormatting.AQUA)).append(CreateLang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
@@ -96,16 +95,14 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyT
 			energy.internalProduceEnergy(getEnergyProductionRate((int)getSpeed()));
 
 		for(Direction d : Direction.values()) {
-			if(!isEnergyOutput(d))
-				continue;
+			if(!isEnergyOutput(d)) continue;
 			EnergyStorage ies = getCachedEnergy(d);
-			if(ies == null)
-				continue;
-			try(Transaction t = Transaction.openOuter()) {
-				EnergyStorageUtil.move(energy, ies, Config.ALTERNATOR_MAX_OUTPUT.get(), t);
-				t.commit();
-			}
-        }
+			if(ies == null) continue;
+            try(Transaction t = Transaction.openOuter()) {
+                EnergyStorageUtil.move(energy, ies, Config.ALTERNATOR_MAX_OUTPUT.get(), t);
+                t.commit();
+            }
+		}
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -133,7 +130,8 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyT
 
 	public void firstTick() {
 		updateCache();
-	}
+	};
+
 	public void updateCache() {
 		if(level.isClientSide()) return;
 		for(Direction side : Direction.values()) {

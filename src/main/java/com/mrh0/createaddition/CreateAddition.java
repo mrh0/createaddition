@@ -5,21 +5,25 @@ import com.mrh0.createaddition.commands.CCApiCommand;
 import com.mrh0.createaddition.compat.computercraft.ComputerCraftCompat;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.event.GameEvents;
-import com.mrh0.createaddition.index.*;
+import com.mrh0.createaddition.index.CAArmInteractions;
+import com.mrh0.createaddition.index.CABlockEntities;
+import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.index.CACreativeModeTabs;
+import com.mrh0.createaddition.index.CADamageTypes;
+import com.mrh0.createaddition.index.CADisplaySources;
+import com.mrh0.createaddition.index.CAEffects;
+import com.mrh0.createaddition.index.CAFluids;
+import com.mrh0.createaddition.index.CAItems;
+import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CASounds;
 import com.mrh0.createaddition.network.CANetwork;
 import com.mrh0.createaddition.trains.schedule.CASchedule;
 import com.simibubi.create.api.boiler.BoilerHeater;
-import com.simibubi.create.api.stress.BlockStressValues;
-import com.simibubi.create.content.fluids.tank.BoilerHeaters;
-//import com.simibubi.create.content.kinetics.BlockStressValues;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
-import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
-import com.simibubi.create.infrastructure.config.AllConfigs;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import io.github.fabricators_of_create.porting_lib.event.common.ModsLoadedCallback;
 import me.pepperbell.simplenetworking.SimpleChannel;
@@ -74,6 +78,7 @@ public class CreateAddition implements ModInitializer{
         CASounds.register();
         CASchedule.register();
         CADamageTypes.register();
+        CADisplaySources.register();
         CAArmInteractions.register();
 
         REGISTRATE.register();
@@ -87,7 +92,6 @@ public class CreateAddition implements ModInitializer{
     }
 
     private void setup() {
-
         BoilerHeater.REGISTRY.register(CABlocks.LIQUID_BLAZE_BURNER.get(), ((level, blockPos, blockState) -> {
             BlazeBurnerBlock.HeatLevel value = blockState.getValue(LiquidBlazeBurnerBlock.HEAT_LEVEL);
             if (value == BlazeBurnerBlock.HeatLevel.NONE) return -1;

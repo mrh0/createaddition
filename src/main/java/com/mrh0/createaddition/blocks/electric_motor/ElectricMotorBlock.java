@@ -1,13 +1,10 @@
 package com.mrh0.createaddition.blocks.electric_motor;
 
-import java.util.Random;
-
 import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
-import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.foundation.block.IBE;
-//import com.simibubi.create.foundation.utility.VoxelShaper;
+
 import net.createmod.catnip.math.VoxelShaper;
 import io.github.fabricators_of_create.porting_lib.block.ConnectableRedstoneBlock;
 import net.minecraft.core.BlockPos;

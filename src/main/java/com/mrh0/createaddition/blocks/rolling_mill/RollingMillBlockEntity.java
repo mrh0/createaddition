@@ -9,7 +9,6 @@ import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.recipe.rolling.RollingRecipe;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
-import com.simibubi.create.content.kinetics.millstone.MillstoneBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingInventory;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -66,11 +65,12 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 	@Override
 	public void tick() {
 		super.tick();
+
 		if (getSpeed() == 0)
 			return;
 		for (int i = 0; i < outputInv.getSlotCount(); i++)
 			if (outputInv.getStackInSlot(i)
-					.getCount() == outputInv.getSlotLimit(i))
+				.getCount() == outputInv.getSlotLimit(i))
 				return;
 
 		if (timer > 0) {
@@ -106,7 +106,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		BlockPos nextPos = getBlockPos().offset(step);
 		DirectBeltInputBehaviour behaviour = BlockEntityBehaviour.get(level,nextPos,DirectBeltInputBehaviour.TYPE);
 		if(behaviour != null) {
-            boolean changed = false;
+			boolean changed = false;
 			if(level.isClientSide && !isVirtual())
 				return;
 			for (int slot = 0; slot < outputInv.getSlotCount(); slot++) {
@@ -140,6 +140,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 			sendData();
 			return;
 		}
+
 		timer = getProcessingDuration();
 		sendData();
 	}
@@ -167,44 +168,44 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 	}
 
 	private void process() {
-        if(getLevel() == null) return;
-        RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
+		if(getLevel() == null) return;
+		RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
 
-        var sequenced = SequencedAssemblyRecipe.getRecipe(level, inventoryIn.getItem(0), CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
-        if(sequenced.isPresent()) {
-            var recipe = sequenced.get();
-            var results = recipe.rollResults();
-            if(!results.isEmpty()) {
-                var result = results.get(0);
+		var sequenced = SequencedAssemblyRecipe.getRecipe(level, inventoryIn.getItem(0), CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
+		if(sequenced.isPresent()) {
+			var recipe = sequenced.get();
+			var results = recipe.rollResults();
+			if(!results.isEmpty()) {
+				var result = results.get(0);
                 try(Transaction t = Transaction.openOuter()) {
                     StorageUtil.insertStacking(outputInv.getSlots(), ItemVariant.of(result), result.getCount(), t);
                     t.commit();
                 }
-                ItemStack stackInSlot = inputInv.getStackInSlot(0);
-                stackInSlot.shrink(1);
-                inputInv.setStackInSlot(0, stackInSlot);
-                sendData();
-                setChanged();
-                return;
-            }
-        }
+				ItemStack stackInSlot = inputInv.getStackInSlot(0);
+				stackInSlot.shrink(1);
+				inputInv.setStackInSlot(0, stackInSlot);
+				sendData();
+				setChanged();
+				return;
+			}
+		}
 
-        if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
-            Optional<RollingRecipe> recipe = find(inventoryIn, level);
-            if (recipe.isEmpty()) return;
-            lastRecipe = recipe.get();
-        }
+		if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
+			Optional<RollingRecipe> recipe = find(inventoryIn, level);
+			if (recipe.isEmpty()) return;
+			lastRecipe = recipe.get();
+		}
 
-        ItemStack result = lastRecipe.assemble(inventoryIn, getLevel().registryAccess()).copy();
+		ItemStack result = lastRecipe.assemble(inventoryIn, getLevel().registryAccess()).copy();
         try(Transaction t = Transaction.openOuter()) {
             StorageUtil.insertStacking(outputInv.getSlots(), ItemVariant.of(result), result.getCount(), t);
             t.commit();
         }
-        ItemStack stackInSlot = inputInv.getStackInSlot(0);
-        stackInSlot.shrink(1); //lastRecipe.getIngredient().getItems()[0].getCount()
-        inputInv.setStackInSlot(0, stackInSlot);
-        sendData();
-        setChanged();
+		ItemStack stackInSlot = inputInv.getStackInSlot(0);
+		stackInSlot.shrink(1); //lastRecipe.getIngredient().getItems()[0].getCount()
+		inputInv.setStackInSlot(0, stackInSlot);
+		sendData();
+		setChanged();
 	}
 
 	public void spawnParticles() {
@@ -243,7 +244,6 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		timer = compound.getInt("Timer");
 		inputInv.deserializeNBT(compound.getCompound("InputInventory"));
 		outputInv.deserializeNBT(compound.getCompound("OutputInventory"));
-
 		super.read(compound, clientPacket);
 	}
 
@@ -261,7 +261,7 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		tester.setStackInSlot(0, stack);
 		RecipeWrapper inventoryIn = new RecipeWrapper(tester);
 
-		var sequenced = SequencedAssemblyRecipe.getRecipe(level,stack,CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
+		var sequenced = SequencedAssemblyRecipe.getRecipe(level, stack, CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
 		if(sequenced.isPresent()) {
 			return true;
 		}
@@ -269,11 +269,11 @@ public class RollingMillBlockEntity extends KineticBlockEntity implements SidedS
 		if (lastRecipe != null && lastRecipe.matches(inventoryIn, level))
 			return true;
 		return find(inventoryIn, level)
-				.isPresent();
+			.isPresent();
 	}
 
 	public Optional<RollingRecipe> find(RecipeWrapper inv, Level world) {
-		var sequenced = SequencedAssemblyRecipe.getRecipe(level,inv.getItem(0), CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
+		var sequenced = SequencedAssemblyRecipe.getRecipe(level, inv.getItem(0), CARecipes.ROLLING_TYPE.get(), RollingRecipe.class);
 		if(sequenced.isPresent()) {
 			return sequenced;
 		}

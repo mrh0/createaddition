@@ -1,5 +1,7 @@
 package com.mrh0.createaddition.trains.schedule.condition;
 
+import java.util.List;
+
 import com.google.common.collect.ImmutableList;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyManager;
@@ -8,9 +10,8 @@ import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.schedule.condition.CargoThresholdCondition;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
-//import com.simibubi.create.foundation.utility.Components;
-//import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.CreateLang;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
@@ -21,8 +22,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import team.reborn.energy.api.EnergyStorage;
-
-import java.util.List;
 
 public class EnergyThresholdCondition extends CargoThresholdCondition {
     @Override

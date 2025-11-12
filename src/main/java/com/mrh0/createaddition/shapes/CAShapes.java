@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.shapes;
 
-//import com.simibubi.create.foundation.utility.VoxelShaper;
+import java.util.function.BiFunction;
+
 import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -8,8 +9,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import java.util.function.BiFunction;
 
 public class CAShapes {
 	

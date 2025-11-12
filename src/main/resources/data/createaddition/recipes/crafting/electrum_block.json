@@ -1,19 +1,19 @@
 {
-  "type": "minecraft:crafting_shaped",
+	"type": "minecraft:crafting_shaped",
 
-  "pattern":
-  ["PPP",
-    "PPP",
-    "PPP"],
-  "key":
-  {
-    "P":
-    {
-      "tag": "c:ingots/electrum"
-    }
-  },
-  "result":{
-    "item": "createaddition:electrum_block",
-    "count": 1
-  }
+	"pattern":
+	["PPP",
+	 "PPP",
+	 "PPP"],
+	"key":
+	{
+		"P":
+		{
+			"tag": "c:ingots/electrum"
+		}
+	},
+	"result":{
+		"item": "createaddition:electrum_block",
+		"count": 1
+	}
 }

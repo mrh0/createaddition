@@ -1,0 +1,4 @@
+// 1.21.1	2025-07-16T00:36:26.0734186	createaddition's mechanical crafting recipes
+29f52afb169cdd43f857a033f2c765e9813d13bc data/createaddition/recipe/mechanical_crafting/alternator.json
+fd1c4177ef924ab5e4be4d758c780a53e9c90d76 data/createaddition/recipe/mechanical_crafting/electric_motor.json
+25dcdb69f059542586ef9412c649804b18733083 data/createaddition/recipe/mechanical_crafting/tesla_coil.json

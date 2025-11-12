@@ -6,13 +6,11 @@ import com.mrh0.createaddition.energy.BaseElectricBlockEntity;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CADamageTypes;
 import com.mrh0.createaddition.index.CAEffects;
-import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.index.CASounds;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.recipe.charging.ChargingRecipe;
 import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.util.Util;
-//import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
@@ -21,7 +19,6 @@ import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
-import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandlerContainer;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
@@ -44,7 +41,6 @@ import team.reborn.energy.api.EnergyStorage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHaveGoggleInformation {
@@ -52,7 +48,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 	private Optional<ChargingRecipe> recipeCache = Optional.empty();
 
 	private final ItemStackHandler inputInv;
-	private int chargeAccumulator;
+	private long chargeAccumulator;
 	protected int poweredTimer = 0;
 
 	public TeslaCoilBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
@@ -159,7 +155,7 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 			tickAudio();
 			return;
 		}
-		int signal = Objects.requireNonNull(getLevel()).getBestNeighborSignal(getBlockPos());
+		int signal = getLevel().getBestNeighborSignal(getBlockPos());
 		if(signal > 0 && localEnergy.getAmount() >= Config.TESLA_COIL_HURT_ENERGY_REQUIRED.get())
 			poweredTimer = 10;
 
@@ -209,41 +205,34 @@ public class TeslaCoilBlockEntity extends BaseElectricBlockEntity implements IHa
 
 	protected final boolean chargeStack(
 			final ItemStack stack,
-			final TransportedItemStack ignoredTransported,
+			final TransportedItemStack transported,
 			final TransportedItemStackHandlerBehaviour ignoredHandler
 	) {
-		final ItemStack[] finalStack = {stack.copy()};
 		ContainerItemContext context = ContainerItemContext.ofSingleSlot(new SingleStackStorage() {
 			@Override
 			protected ItemStack getStack() {
-				return finalStack[0];
+				return transported.stack;
 			}
 
 			@Override
 			protected void setStack(ItemStack stack) {
-				finalStack[0] = stack;
+				transported.stack = stack;
 			}
 		});
-		final EnergyStorage es =  EnergyStorage.ITEM.find(stack, context);
+		final EnergyStorage es = EnergyStorage.ITEM.find(stack, context);
 
 		if (es == null)
 			return false;
-		try (Transaction t = TransferUtil.getTransaction()) {
-			if (es.insert(1, t) != 1)
-				return false;
-		}
-		if(localEnergy.getAmount() < stack.getCount())
-			return false;
+
 		try (Transaction t = TransferUtil.getTransaction()) {
 			localEnergy.internalConsumeEnergy(es.insert(Math.min(getConsumption(), localEnergy.getAmount()), t));
 			t.commit();
 		}
-		stack.setTag(finalStack[0].getTag());
 		return true;
 	}
 
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
-		if (this.getLevel() == null) return false;
+		if(this.getLevel() == null) return false;
 		if(!inputInv.getStackInSlot(0).is(stack.getItem())) {
 			inputInv.setStackInSlot(0, stack);
 			recipeCache = find(stack, new RecipeWrapper(inputInv), this.getLevel());

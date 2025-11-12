@@ -1,13 +1,6 @@
 package com.mrh0.createaddition.blocks.modular_accumulator;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.compat.computercraft.ModularAccumulatorPeripheral;
-import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.debug.IDebugDrawer;
 import com.mrh0.createaddition.energy.IMultiTileEnergyContainer;
@@ -19,19 +12,16 @@ import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.Create;
-import com.simibubi.create.CreateClient;
-//import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.redstone.thresholdSwitch.ThresholdSwitchObservable;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.createmod.catnip.animation.LerpedFloat;
-//import com.simibubi.create.foundation.utility.animation.LerpedFloat;
-//import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.createmod.catnip.outliner.Outliner;
+import net.fabricmc.fabric.api.lookup.v1.block.BlockApiCache;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -40,6 +30,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -50,7 +41,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.EnergyStorageUtil;
 
-public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer, ThresholdSwitchObservable, EnergyTransferable {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.EnumMap;
+import java.util.List;
+
+public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements EnergyTransferable, IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer, ThresholdSwitchObservable {
 	protected LazyOptional<EnergyStorage> energyCap;
 	protected InternalEnergyStorage energyStorage;
 	protected BlockPos controller;
@@ -63,8 +59,7 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 	protected int syncCooldown;
 	protected boolean queuedSync;
 
-	private EnergyStorage escacheUp = null;
-	private EnergyStorage escacheDown = null;
+	private final EnumMap<Direction, BlockApiCache<EnergyStorage, Direction>> escacheMap = new EnumMap<>(Direction.class);
 
 	public ModularAccumulatorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -83,51 +78,14 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 		return new InternalEnergyStorage(getCapacityMultiplier(), Config.ACCUMULATOR_MAX_INPUT.get(), Config.ACCUMULATOR_MAX_OUTPUT.get());
 	}
 
-	public void setCache(Direction side, EnergyStorage storage) {
-		switch (side) {
-			case DOWN -> escacheDown = storage;
-			case UP -> escacheUp = storage;
-		}
-	}
-
+    @Nullable
 	public EnergyStorage getCachedEnergy(Direction side) {
-        return switch (side) {
-            case DOWN -> escacheDown;
-            case UP -> escacheUp;
-            default -> null;
-        };
-    }
+        if(!(level instanceof ServerLevel serverLevel)) {
+            return null;
+        }
 
-	public void firstTick() {
-		updateCache();
-	};
-
-	public void updateCache() {
-		if(level.isClientSide()) return;
-		for(Direction side : Direction.values()) {
-			updateCache(side);
-		}
-	}
-
-	public void updateCache(Direction side) {
-		// No need to update the cache if we're removed.
-		if (isRemoved()) return;
-		// Make sure the side we're checking is loaded.
-		if (!level.isLoaded(worldPosition.relative(side))) {
-			setCache(side, null);
-			return;
-		}
-
-		EnergyStorage le = EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite());
-		if(le == null) {
-			setCache(side, null);
-			return;
-		}
-		// Make sure that the side we're caching can actually be cached.
-		if (side != Direction.UP && side != Direction.DOWN) return;
-		// Make sure the side isn't already cached.
-		if (le.equals(getCachedEnergy(side))) return;
-		setCache(side, le);
+		BlockApiCache<EnergyStorage, Direction> cache = escacheMap.computeIfAbsent(side, side1 -> BlockApiCache.create(EnergyStorage.SIDED, serverLevel, getBlockPos().relative(side)));
+        return cache.find(side.getOpposite());
 	}
 
 	protected void updateConnectivity() {
@@ -142,14 +100,10 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 	public LerpedFloat gauge = LerpedFloat.linear();
 
 	long lastEnergy = 0;
-	boolean firstTickState = true;
 	int energyChangeTick = 0;
 	@Override
 	public void tick() {
 		super.tick();
-		if(firstTickState)
-			firstTick();
-		firstTickState = false;
 
 		tickOutput();
 
@@ -391,8 +345,10 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 			energyStorage.setCapacity(getTotalAccumulatorSize() * getCapacityMultiplier());
 			energyStorage.read(compound.getCompound("EnergyContent"));
 			try (Transaction t = TransferUtil.getTransaction()) {
-				if (energyStorage.getSpace() < 0)
-					energyStorage.extract(-energyStorage.getSpace(), t);
+				if (energyStorage.getSpace() < 0) {
+                    energyStorage.extract(-energyStorage.getSpace(), t);
+                    t.commit();
+                }
 			}
 		}
 
@@ -531,7 +487,7 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 
 		ObservePacket.send(worldPosition, 0);
 
-        String spacing = " ";
+		String spacing = " ";
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.accumulator.info").withStyle(ChatFormatting.WHITE)));
 		tooltip.add(Component.literal(spacing)
@@ -579,28 +535,28 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 		if (controller == null) return;
 		// Outline controller.
 		VoxelShape shape = level.getBlockState(controller.getBlockPos()).getBlockSupportShape(level, controller.getBlockPos());
-        Outliner.getInstance().chaseAABB("ca_accumulator", shape.bounds().move(controller.getBlockPos())).lineWidth(0.0625F).colored(0xFF5B5B);
-    }
+		Outliner.getInstance().chaseAABB("ca_accumulator", shape.bounds().move(controller.getBlockPos())).lineWidth(0.0625F).colored(0xFF5B5B);
+	}
 
-    @Override
-    public int getMaxValue() {
-        return 100;
-    }
+	@Override
+	public int getMaxValue() {
+		return 100;
+	}
 
-    @Override
-    public int getMinValue() {
-        return 0;
-    }
+	@Override
+	public int getMinValue() {
+		return 0;
+	}
 
-    @Override
-    public int getCurrentValue() {
-        ModularAccumulatorBlockEntity controllerBE = getControllerBE();
-        if (controllerBE == null) return 0;
-        return (int)((float)controllerBE.energyStorage.getAmount() / (float)controllerBE.energyStorage.getCapacity() * 100f);
-    }
+	@Override
+	public int getCurrentValue() {
+		ModularAccumulatorBlockEntity controllerBE = getControllerBE();
+		if (controllerBE == null) return 0;
+		return (int)((float)controllerBE.energyStorage.getAmount() / (float)controllerBE.energyStorage.getCapacity() * 100f);
+	}
 
-    @Override
-    public MutableComponent format(int i) {
-        return Component.literal(i + "%");
-    }
+	@Override
+	public MutableComponent format(int i) {
+		return Component.literal(i + "%");
+	}
 }

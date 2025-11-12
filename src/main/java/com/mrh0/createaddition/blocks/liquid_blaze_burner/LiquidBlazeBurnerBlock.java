@@ -11,7 +11,6 @@ import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.foundation.block.IBE;
 
 import io.github.fabricators_of_create.porting_lib.transfer.callbacks.TransactionCallback;
@@ -22,14 +21,11 @@ import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -126,15 +122,6 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 			result = tryInsert(state, level, pos, heldItem, context, t, forceOverflow);
 			t.commit();
 		}
-		/*ItemStack leftover = res.getObject();
-		if (!level.isClientSide && !doNotConsume && !leftover.isEmpty()) {
-			if (heldItem.isEmpty()) {
-				player.setItemInHand(hand, leftover);
-			} else if (!player.getInventory()
-				.add(leftover)) {
-				player.drop(leftover, false);
-			}
-		}*/
 
 		return result == InteractionResult.SUCCESS ? InteractionResult.SUCCESS : InteractionResult.PASS;
 	}
@@ -153,16 +140,19 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 			TransactionCallback.onSuccess(t, () -> burnerTE.applyCreativeFuel());
 			return InteractionResult.SUCCESS;
 		}
+
+		if (burnerTE.isCreative) {
+			return InteractionResult.SUCCESS;
+		}
+
+		boolean liquidResult = burnerTE.tryUpdateLiquid(context, t);
+		if(liquidResult) {
+			return InteractionResult.SUCCESS;
+		}
+
 		if (!burnerTE.tryUpdateFuel(stack, context, t, forceOverflow))
 			return InteractionResult.FAIL;
 
-		/*if (!doNotConsume) {
-			ItemStack container = stack.getRecipeRemainder();
-			if (!level.isClientSide) {
-				stack.shrink(1);
-			}
-			return InteractionResult.SUCCESS;
-		}*/
 		return InteractionResult.SUCCESS;
 	}
 

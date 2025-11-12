@@ -9,10 +9,10 @@
 		"count": 1,
 		"nbt":
 		{
-			"Enchantments":
+			"StoredEnchantments":
 			[
 				{
-					"id": "channeling",
+					"id": "minecraft:channeling",
 					"lvl": 1
 				}
 			]

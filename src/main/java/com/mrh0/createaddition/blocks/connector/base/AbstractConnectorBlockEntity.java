@@ -1,20 +1,20 @@
 package com.mrh0.createaddition.blocks.connector.base;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.debug.IDebugDrawer;
-import com.mrh0.createaddition.energy.IWireNode;
-import com.mrh0.createaddition.energy.LocalNode;
-import com.mrh0.createaddition.energy.NodeRotation;
-import com.mrh0.createaddition.energy.WireType;
+import com.mrh0.createaddition.energy.*;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
+import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
-import com.mrh0.createaddition.util.Util;
-import com.simibubi.create.CreateClient;
-//import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
@@ -37,10 +37,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity implements EnergyTransferable, IWireNode, IObserveTileEntity, IHaveGoggleInformation, IDebugDrawer {
 
 	private final Set<LocalNode> wireCache = new HashSet<>();
@@ -59,6 +55,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 
 	public AbstractConnectorBlockEntity(BlockEntityType<?> blockEntityTypeIn, BlockPos pos, BlockState state) {
 		super(blockEntityTypeIn, pos, state);
+
 		this.localNodes = new LocalNode[getNodeCount()];
 		this.nodeCache = new IWireNode[getNodeCount()];
 	}
@@ -276,7 +273,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 
 	private void networkTick(EnergyNetwork network) {
 		ConnectorMode mode = getMode();
-        if(level == null) return;
+		if(level == null) return;
 		if(level.isClientSide()) return;
 
 		if (mode == ConnectorMode.Push) {
@@ -353,7 +350,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacket.send(worldPosition, 0);
 
-        String spacing = " ";
+		String spacing = " ";
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.connector.info").withStyle(ChatFormatting.WHITE)));
 
@@ -367,7 +364,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		tooltip.add(Component.literal(spacing).append(" ")
 				.append(Util.format((int)EnergyNetworkPacket.clientBuff)).append("fe/t").withStyle(ChatFormatting.AQUA));
 
-		return true;
+		return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 	}
 
 	public boolean ignoreCapSide() {
@@ -416,16 +413,17 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 				color = 0xFF00FF;
 			}
 			// ca_ = Create Addition
-//			CreateClient.OUTLINER.chaseAABB("ca_nodes_" + i, shape.bounds().move(pos)).lineWidth(0.0625F).colored(color);
             Outliner.getInstance().chaseAABB("ca_nodes_" + i, shape.bounds().move(pos)).lineWidth(0.0625F).colored(color);
 		}
 		// Outline connected power
 		BlockPos pos = worldPosition.relative(getBlockState().getValue(AbstractConnectorBlock.FACING));
 		EnergyStorage cap = EnergyStorage.SIDED.find(level, pos, getBlockState().getValue(AbstractConnectorBlock.FACING).getOpposite());
-		if(cap == null) return;
 
-//		if(ignoreCapSide() && !cap.isPresent()) cap = te.getCapability(CapabilityEnergy.ENERGY);
+        if(ignoreCapSide() && cap == null) {
+            cap = EnergyStorage.SIDED.find(level, pos, null);
+        }
 
+        if(cap == null) return;
 		VoxelShape shape = level.getBlockState(pos).getBlockSupportShape(level, pos);
         Outliner.getInstance().chaseAABB("ca_output", shape.bounds().move(pos)).lineWidth(0.0625F).colored(0x5B5BFF);
 	}

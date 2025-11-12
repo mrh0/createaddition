@@ -23,7 +23,7 @@ public class ElectrumAmulet extends Item {
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int pSlotId, boolean pIsSelected) {
         if(!(entity instanceof Player player)) return;
 
-        if(player.getHealth() <= 4) {
+        if(player.getHealth() <= 8) {
             player.addEffect(new MobEffectInstance(MobEffects.LUCK, 5, 0, true, true, true));
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 5, 0, true, true, true));
         }

@@ -52,11 +52,11 @@ public class ElectricMotorPeripheral implements IPeripheral {
     }
     
     @LuaFunction(mainThread = true)
-    public final void setSpeed(int rpm) throws LuaException {
-    	if(rpm == getSpeed())
+    public final void setSpeed(double rpm) throws LuaException {
+    	if ((float) rpm == getSpeed())
     		return;
     	if(tileEntity != null) {
-    		if(!tileEntity.setRPM(rpm))
+    		if(!tileEntity.setRPM( (float) rpm))
     			throw new LuaException("Speed is set too many times per second (Anti Spam).");
     	}
     }
@@ -67,7 +67,7 @@ public class ElectricMotorPeripheral implements IPeripheral {
     }
     
     @LuaFunction(mainThread = true)
-    public final int getSpeed() throws LuaException {
+    public final float getSpeed() throws LuaException {
     	if(tileEntity != null)
     		return tileEntity.getRPM();
     	return 0;
@@ -81,30 +81,30 @@ public class ElectricMotorPeripheral implements IPeripheral {
     }
     
     @LuaFunction(mainThread = true)
-    public final int getEnergyConsumption() throws LuaException {
+    public final float getEnergyConsumption() throws LuaException {
     	if(tileEntity != null)
     		return tileEntity.getEnergyConsumption();
     	return 0;
     }
     
     @LuaFunction(mainThread = true)
-    public final float rotate(int deg, Optional<Integer> rpm) throws LuaException {
+    public final float rotate(double deg, Optional<Double> rpm) throws LuaException {
     	if(tileEntity != null) {
-    		int _rpm = rpm.orElse(getSpeed());
+    		double _rpm = rpm.orElse((double) getSpeed());
     		if(rpm.isPresent())
     			setSpeed(deg < 0 ? -_rpm : _rpm);
-    		return ElectricMotorBlockEntity.getDurationAngle(deg, 0, _rpm) / 20f;
+    		return ElectricMotorBlockEntity.getDurationAngle((float)deg, 0, (float)_rpm) / 20f;
     	}
     	return 0f;
     }
     
     @LuaFunction(mainThread = true)
-    public final float translate(int blocks, Optional<Integer> rpm) throws LuaException {
+    public final float translate(double dist, Optional<Double> rpm) throws LuaException {
     	if(tileEntity != null) {
-    		int _rpm = rpm.orElse(getSpeed());
+    		double _rpm = rpm.orElse((double) getSpeed());
     		if(rpm.isPresent())
-    			setSpeed(blocks < 0 ? -_rpm : _rpm);
-    		return ElectricMotorBlockEntity.getDurationDistance(blocks, 0, _rpm) / 20f;
+    			setSpeed(dist < 0 ? -_rpm : _rpm);
+    		return ElectricMotorBlockEntity.getDurationDistance((float)dist, 0, (float)_rpm) / 20f;
     	}
     	return 0f;
     }

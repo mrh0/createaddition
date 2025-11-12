@@ -1,12 +1,10 @@
 package com.mrh0.createaddition.sound;
 
-import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.index.CASounds;
-//import com.simibubi.create.foundation.utility.AnimationTickHolder;
-//import com.simibubi.create.foundation.utility.Pair;
+
+import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.data.Pair;
-import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -67,7 +65,10 @@ public class CASoundScapes {
 
 		if (AnimationTickHolder.getTicks() % UPDATE_INTERVAL != 0) return;
 
-		boolean disable = !AllConfigs.client().enableAmbientSounds.get();
+		boolean disable = false;
+		try { // Catch odd "Cannot get config value before config is loaded." crashes
+			disable = AllConfigs.client().enableAmbientSounds.get();
+		} catch (Exception ignored) {}
 		for (Iterator<Map.Entry<Pair<AmbienceGroup, PitchGroup>, CASoundScape>> iterator = activeSounds.entrySet()
 			.iterator(); iterator.hasNext();) {
 

@@ -1,5 +1,9 @@
 package com.mrh0.createaddition.blocks.redstone_relay;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.connector.ConnectorType;
 import com.mrh0.createaddition.config.Config;
@@ -9,14 +13,14 @@ import com.mrh0.createaddition.energy.NodeRotation;
 import com.mrh0.createaddition.energy.WireType;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CABlocks;
+import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacket;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
-import com.mrh0.createaddition.util.Util;
-//import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -31,10 +35,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class RedstoneRelayBlockEntity extends SmartBlockEntity implements IWireNode, IHaveGoggleInformation, IObserveTileEntity {
 	private final Set<LocalNode> wireCache = new HashSet<>();
@@ -372,7 +372,7 @@ public class RedstoneRelayBlockEntity extends SmartBlockEntity implements IWireN
 
 		ObservePacket.send(worldPosition, node);
 
-        String spacing = " ";
+		String spacing = " ";
 		tooltip.add(Component.literal(spacing)
 				.append(Component.translatable(CreateAddition.MODID + ".tooltip.relay.info").withStyle(ChatFormatting.WHITE)));
 		tooltip.add(Component.literal(spacing)
