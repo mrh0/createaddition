@@ -12,6 +12,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 @EventBusSubscriber(modid = CreateAddition.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class ClientEventHandler {
@@ -28,8 +29,10 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public static void tickSoundscapes(ClientTickEvent.Post event) {
-        CASoundScapes.tick();
+    public static void tickSoundscapes(LevelTickEvent.Post event) {
+        if(event.getLevel().isClientSide) {
+            CASoundScapes.tick();
+        }
     }
 
     @EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
