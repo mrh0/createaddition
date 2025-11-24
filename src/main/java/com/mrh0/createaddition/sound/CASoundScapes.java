@@ -66,6 +66,7 @@ public class CASoundScapes {
 	}
 
 	public static void tick() {
+        if (Minecraft.getInstance().level == null) return;
 		activeSounds.values()
 			.forEach(CASoundScape::tick);
 
