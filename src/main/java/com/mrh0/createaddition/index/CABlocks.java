@@ -15,6 +15,7 @@ import com.mrh0.createaddition.blocks.digital_adapter.DigitalAdapterBlock;
 import com.mrh0.createaddition.blocks.modular_accumulator.*;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlock;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceMovement;
+import com.mrh0.createaddition.config.CommonConfig;
 import com.mrh0.createaddition.datagen.Models.BlockGenHelper;
 import com.mrh0.createaddition.energy.NodeMovementBehaviour;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
@@ -25,15 +26,20 @@ import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.item.BiomassPelletBlock;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllTags.AllBlockTags;
+import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.KineticStats;
+import com.simibubi.create.foundation.item.TooltipModifier;
+import com.simibubi.create.infrastructure.config.CStress;
 import com.tterrag.registrate.util.entry.BlockEntry;
 
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
+import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.item.DyeColor;
@@ -56,30 +62,37 @@ public class CABlocks {
 		CreateAddition.REGISTRATE.setCreativeTab(CreateAddition.MAIN_TAB);
 	}
 
-	public static final BlockEntry<ElectricMotorBlock> ELECTRIC_MOTOR = CreateAddition.REGISTRATE.block("electric_motor", ElectricMotorBlock::new)
+	public static final BlockEntry<ElectricMotorBlock> ELECTRIC_MOTOR = CreateAddition.REGISTRATE
+            .setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
+                    .andThen(TooltipModifier.mapNull(KineticStats.create(item))))
+            .block("electric_motor", ElectricMotorBlock::new)
 			.initialProperties(SharedProperties::softMetal)
-			//.tag(AllBlockTags.SAFE_NBT.tag)
-			//.transform(CStress.setCapacity(Config.MAX_STRESS.get()/256f))
-			//.onRegister(BlockStressValues.setGeneratorSpeed(256, true))
 			.transform(pickaxeOnly())
 			.blockstate(BlockGenHelper.directionalBlockState())
+            .onRegister(BlockStressValues.setGeneratorSpeed(256, true))
+            .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, () -> CommonConfig.MAX_STRESS.get()/256f))
 			.item()
 			.transform(customItemModel())
 			.register();
 
-	public static final BlockEntry<AlternatorBlock> ALTERNATOR = CreateAddition.REGISTRATE.block("alternator", AlternatorBlock::new)
+	public static final BlockEntry<AlternatorBlock> ALTERNATOR = CreateAddition.REGISTRATE
+            .setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
+                    .andThen(TooltipModifier.mapNull(KineticStats.create(item))))
+            .block("alternator", AlternatorBlock::new)
 			.initialProperties(SharedProperties::softMetal)
-			//.transform(CStress.setImpact(Config.MAX_STRESS.get()/256f))
-			//.tag(AllBlockTags.SAFE_NBT.tag)
 			.transform(pickaxeOnly())
-		.blockstate(BlockGenHelper.directionalBlockState())
+		    .blockstate(BlockGenHelper.directionalBlockState())
+            .onRegister((block) -> BlockStressValues.IMPACTS.register(block, () -> CommonConfig.MAX_STRESS.get()/256f))
 			.item()
 			.transform(customItemModel())
 			.register();
 
-	public static final BlockEntry<RollingMillBlock> ROLLING_MILL = CreateAddition.REGISTRATE.block("rolling_mill", RollingMillBlock::new)
+	public static final BlockEntry<RollingMillBlock> ROLLING_MILL = CreateAddition.REGISTRATE
+            .setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
+                    .andThen(TooltipModifier.mapNull(KineticStats.create(item))))
+            .block("rolling_mill", RollingMillBlock::new)
 			.initialProperties(SharedProperties::stone)
-			//.transform(CStress.setImpact(Config.ROLLING_MILL_STRESS.get()))
+            .onRegister((block) -> BlockStressValues.IMPACTS.register(block, () -> CommonConfig.ROLLING_MILL_STRESS.get()))
 			.transform(axeOrPickaxe())
 			.blockstate(BlockGenHelper.horizontalBlockState())
 			.item()

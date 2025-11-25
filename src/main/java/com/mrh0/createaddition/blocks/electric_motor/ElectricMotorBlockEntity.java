@@ -94,6 +94,7 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity {
 		return step;
 	}
 
+    @Override
 	public float calculateAddedStressCapacity() {
 		float capacity = CommonConfig.MAX_STRESS.get()/256f;
 		this.lastCapacityProvided = capacity;
@@ -132,7 +133,7 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity {
 
 	@Override
 	protected Block getStressConfigKey() {
-		return AllBlocks.WATER_WHEEL.get();
+		return CABlocks.ELECTRIC_MOTOR.get();
 	}
 
 	@Override

@@ -62,7 +62,8 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements IEnergy
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		CALang.builder().add(Component.translatable(CreateAddition.MODID + ".tooltip.alternator.info").withStyle(ChatFormatting.WHITE)).forGoggles(tooltip);
+        super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+		// CALang.builder().add(Component.translatable(CreateAddition.MODID + ".tooltip.alternator.info").withStyle(ChatFormatting.WHITE)).forGoggles(tooltip);
 		CALang.builder().add(Component.translatable(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
 		CALang.builder().add(Component.literal(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "⚡/t ")
 				.withStyle(ChatFormatting.AQUA).append(CreateLang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY))).forGoggles(tooltip);

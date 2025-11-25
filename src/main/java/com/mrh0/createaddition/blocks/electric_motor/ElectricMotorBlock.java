@@ -77,11 +77,6 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements IBE<E
 		return state.getValue(FACING).getAxis();
 	}
 
-	@Override
-	public boolean hideStressImpact() {
-		return true;
-	}
-
 	public void setPowered(Level world, BlockPos pos, boolean powered) {
 		world.setBlock(pos, world.getBlockState(pos).setValue(POWERED, powered), 3);
 	}
@@ -90,6 +85,11 @@ public class ElectricMotorBlock extends DirectionalKineticBlock implements IBE<E
 	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @Nullable Direction side) {
 		return true;
 	}
+
+    @Override
+    public boolean hideStressImpact() {
+        return true;
+    }
 
 	/*
 	@Override

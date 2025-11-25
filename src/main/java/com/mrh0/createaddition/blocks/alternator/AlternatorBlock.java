@@ -70,11 +70,12 @@ public class AlternatorBlock extends DirectionalKineticBlock implements IBE<Alte
 		return CABlockEntities.ALTERNATOR.create(pos, state);
 	}
 
+    /*
 	@Override
 	public SpeedLevel getMinimumRequiredSpeedLevel() {
 		return SpeedLevel.MEDIUM;
 	}
-	
+	*/
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
