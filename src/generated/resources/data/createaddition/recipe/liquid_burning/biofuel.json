@@ -1,6 +1,6 @@
 {
   "type": "createaddition:liquid_burning",
-  "burn_time": 2400,
+  "burn_time": 24000,
   "ingredients": [
     {
       "type": "fluid_tag",
