@@ -17,6 +17,13 @@
 	"createaddition.tooltip.energy.passive": "被动",
 	"createaddition.tooltip.energy.none": "无",
 
+  "createaddition.tooltip.liquid_burning.info": "烈焰人液体燃烧室信息：",
+	"createaddition.tooltip.liquid_burning.time_remaining": "剩余燃烧时间：",
+
+  "createaddition.tooltip.charging.info": "特斯拉线圈信息：",
+	"createaddition.tooltip.charging.time_remaining": "剩余充电时间：",
+
+	"createaddition.tooltip.alternator.info": "交流发电机信息：",
 	"createaddition.tooltip.accumulator.info": "蓄电池信息：",
 	"createaddition.tooltip.relay.info": "红石继电器信息：",
 	"createaddition.tooltip.connector.info": "接线器信息：",
@@ -36,9 +43,9 @@
 
 	"item.createaddition.diamond_grit": "钻石粉",
 	"item.createaddition.diamond_grit_sandpaper": "钻石细粒砂纸",
-	"item.createaddition.diamond_grit_sandpaper.tooltip.summary": "用来_打磨_物品的砂纸，可以用机械手来实现自动化。",
+	"item.createaddition.diamond_grit_sandpaper.tooltip.summary": "用来_打磨_物品的砂纸。可以用机械手来实现自动化。",
 	"item.createaddition.diamond_grit_sandpaper.tooltip.condition1": "使用时",
-	"item.createaddition.diamond_grit_sandpaper.tooltip.behaviour1": "打磨_副手_上或者_准心所指_的物品",
+	"item.createaddition.diamond_grit_sandpaper.tooltip.behaviour1": "打磨_副手_上或是_准星所指_的物品",
 
 	"item.createaddition.zinc_sheet": "锌板",
 
