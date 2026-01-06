@@ -94,11 +94,6 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockEntity blockEntity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-		if(blockEntity != null) {
-			if(blockEntity instanceof AbstractConnectorBlockEntity) {
-				((AbstractConnectorBlockEntity)blockEntity).updateExternalEnergyStorage();
-			}
-		}
 		if (!state.canSurvive(worldIn, pos)) {
 			dropResources(state, worldIn, pos, blockEntity);
 

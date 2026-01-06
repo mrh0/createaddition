@@ -14,15 +14,13 @@ import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
 import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Objects;
 
 public abstract class BaseElectricBlockEntity extends SmartBlockEntity implements EnergyTransferable {
 
 	protected final InternalEnergyStorage localEnergy;
 
-	private EnumMap<Direction, BlockApiCache<EnergyStorage, Direction>> escacheMap = new EnumMap<>(Direction.class);
+	private final EnumMap<Direction, BlockApiCache<EnergyStorage, Direction>> escacheMap = new EnumMap<>(Direction.class);
 
 	public BaseElectricBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);

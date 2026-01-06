@@ -19,6 +19,7 @@ import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import net.createmod.catnip.outliner.Outliner;
+import net.fabricmc.fabric.api.lookup.v1.block.BlockApiCache;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.ChatFormatting;
@@ -28,6 +29,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,21 +39,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
+@SuppressWarnings("UnstableApiUsage")
 public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity implements EnergyTransferable, IWireNode, IObserveTileEntity, IHaveGoggleInformation, IDebugDrawer {
 
 	private final Set<LocalNode> wireCache = new HashSet<>();
 	private final LocalNode[] localNodes;
 	private final IWireNode[] nodeCache;
 	private EnergyNetwork network;
-	private long demand = 0;
 
 	private boolean wasContraption = false;
 	private boolean firstTick = true;
 
 	@NotNull
 	protected EnergyStorage networkStorage = new NetworkEnergyStorage();
-	@NotNull
-	protected EnergyStorage externalStorage = EnergyStorage.EMPTY;
+	protected BlockApiCache<EnergyStorage, Direction> externalStorageCache;
 
 	public AbstractConnectorBlockEntity(BlockEntityType<?> blockEntityTypeIn, BlockPos pos, BlockState state) {
 		super(blockEntityTypeIn, pos, state);
@@ -247,7 +248,6 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 
 	protected void specialTick() {}
 
-	boolean externalStorageInvalid = false;
 	@Override
 	public void tick() {
 		if (this.firstTick) firstTick();
@@ -267,14 +267,17 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		if(awakeNetwork(level)) notifyUpdate();
 
 		networkTick(network);
-
-		if (externalStorageInvalid) updateExternalEnergyStorage();
 	}
 
 	private void networkTick(EnergyNetwork network) {
 		ConnectorMode mode = getMode();
 		if(level == null) return;
 		if(level.isClientSide()) return;
+
+		EnergyStorage externalStorage = getExternalEnergyStorage();
+		if(externalStorage == null) {
+			return;
+		}
 
 		if (mode == ConnectorMode.Push) {
 			long pulled;
@@ -372,24 +375,23 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 	}
 
 	public void updateExternalEnergyStorage() {
-		if (level == null) return;
-		if (!level.isLoaded(getBlockPos())) return;
-		externalStorageInvalid = false;
-		var side = getBlockState().getValue(AbstractConnectorBlock.FACING);
-		BlockPos externalPos = worldPosition.relative(side);
-		if (!level.isLoaded(externalPos)) {
-			externalStorage = EnergyStorage.EMPTY;
+		Direction side = getBlockState().getValue(AbstractConnectorBlock.FACING);
+
+		if(!(level instanceof ServerLevel serverLevel)) {
 			return;
 		}
-		EnergyStorage es = EnergyStorage.SIDED.find(level, externalPos, side.getOpposite());
+
+		BlockPos externalPos = worldPosition.relative(side);
+		externalStorageCache = BlockApiCache.create(EnergyStorage.SIDED, serverLevel, externalPos);
+	}
+
+	public @Nullable EnergyStorage getExternalEnergyStorage() {
+		Direction side = getBlockState().getValue(AbstractConnectorBlock.FACING);
+		EnergyStorage es = externalStorageCache.find(side.getOpposite());
 		if(ignoreCapSide() && es == null) {
-			es = EnergyStorage.SIDED.find(level, externalPos, null);
+			es = externalStorageCache.find(null);
 		}
-		if(es == null){
-			externalStorage = EnergyStorage.EMPTY;
-		} else {
-			externalStorage = es;
-		}
+		return es;
 	}
 
 	@Override
