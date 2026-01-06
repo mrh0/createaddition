@@ -1,0 +1,333 @@
+{
+	"createaddition.tooltip.energy.stored": "Năng lượng lưu trữ:",
+	"createaddition.tooltip.energy.capacity": "Dung lượng:",
+	"createaddition.tooltip.energy.consumption": "Mức tiêu thụ năng lượng:",
+	"createaddition.tooltip.energy.production": "Năng lượng tạo ra:",
+	"createaddition.tooltip.energy.charged": "Đã sạc",
+	"createaddition.tooltip.energy.usage": "Mức sử dụng mạng:",
+	"createaddition.tooltip.energy.demand": "Nhu cầu mạng:",
+	"createaddition.tooltip.energy.supply": "Nguồn cung mạng:",
+	"createaddition.tooltip.energy.selected": "Đầu nối được tập trung:",
+	"createaddition.tooltip.energy.input": "Đầu vào",
+	"createaddition.tooltip.energy.output": "Đầu ra",
+
+	"createaddition.tooltip.energy.mode": "Chế độ:",
+	"createaddition.tooltip.energy.push": "Nhận",
+	"createaddition.tooltip.energy.pull": "Truyền",
+	"createaddition.tooltip.energy.passive": "Thụ động",
+	"createaddition.tooltip.energy.none": "Không",
+
+	"createaddition.tooltip.accumulator.info": "Thông tin Bộ tích điện:",
+	"createaddition.tooltip.relay.info": "Thông tin Rơ-le:",
+	"createaddition.tooltip.connector.info": "Thông tin Đầu nối:",
+
+	"createaddition.recipe.rolling": "Cán",
+	"createaddition.recipe.rolling.sequence": "Cán trong Máy cán",
+	"createaddition.recipe.charging": "Sạc",
+	"createaddition.recipe.liquid_burning": "Đốt chất lỏng",
+
+	"createaddition.recipe.liquid_burning.burn_time": "Thời gian cháy",
+
+	"createaddition.command.cca_api.link": "Nhấn vào đây để mở tài liệu API",
+
+	"desc.immersiveengineering.info.mineral.sphalerite": "Khoáng chất Sphalerite",
+
+	"item.createaddition.capacitor": "Tụ điện",
+
+	"item.createaddition.diamond_grit": "Bột kim cương",
+	"item.createaddition.diamond_grit_sandpaper": "Giấy nhám bột kim cương",
+	"item.createaddition.diamond_grit_sandpaper.tooltip.summary": "Có thể được sử dụng để _tinh chế vật liệu_.
+Quá trình có thể được tự động hóa với Bộ triển khai (Deployer).",
+	"item.createaddition.diamond_grit_sandpaper.tooltip.condition1": "Khi sử dụng",
+	"item.createaddition.diamond_grit_sandpaper.tooltip.behaviour1": "Áp dụng đánh bóng cho các vật phẩm giữ ở _tay phụ_ hoặc nằm trên _sàn_ khi _nhìn vào chúng_",
+
+	"item.createaddition.zinc_sheet": "Tấm Kẽm",
+
+	"item.createaddition.copper_spool": "Cuộn dây Đồng",
+	"item.createaddition.copper_spool.tooltip": "CUỘN DÂY",
+	"item.createaddition.copper_spool.tooltip.summary": "Dùng để lưu trữ dây.",
+	"item.createaddition.copper_spool.tooltip.condition1": "Dòng điện thấp",
+	"item.createaddition.copper_spool.tooltip.behaviour1": "Kết nối với _đầu nối dòng điện thấp_.",
+	"item.createaddition.copper_spool.tooltip.condition2": "Nhấp chuột phải vào hai Đầu nối",
+	"item.createaddition.copper_spool.tooltip.behaviour2": "Sẽ tạo một liên kết dây giữa chúng, trong khi vẫn giữ lại _Ống cuộn rỗng_.",
+	"item.createaddition.copper_wire": "Dây Đồng",
+	"item.createaddition.copper_rod": "Thanh Đồng",
+
+	"item.createaddition.festive_spool": "Cuộn dây Đồng có đèn",
+	"item.createaddition.festive_spool.tooltip": "CUỘN DÂY",
+	"item.createaddition.festive_spool.tooltip.summary": "Dùng để lưu trữ dây.",
+	"item.createaddition.festive_spool.tooltip.condition1": "Dòng điện thấp",
+	"item.createaddition.festive_spool.tooltip.behaviour1": "Kết nối với _đầu nối dòng điện thấp_.",
+	"item.createaddition.festive_spool.tooltip.condition2": "Nhấp chuột phải vào hai Đầu nối",
+	"item.createaddition.festive_spool.tooltip.behaviour2": "Sẽ tạo một liên kết dây giữa chúng và trả lại _Ống cuộn rỗng_.",
+
+	"item.createaddition.iron_wire": "Dây Sắt",
+	"item.createaddition.iron_rod": "Thanh Sắt",
+
+	"item.createaddition.gold_spool": "Cuộn dây Vàng",
+	"item.createaddition.gold_spool.tooltip": "CUỘN DÂY",
+	"item.createaddition.gold_spool.tooltip.summary": "Dùng để lưu trữ dây.",
+	"item.createaddition.gold_spool.tooltip.condition1": "Dòng điện cao",
+	"item.createaddition.gold_spool.tooltip.behaviour1": "Kết nối với _đầu nối dòng điện cao_.",
+	"item.createaddition.gold_spool.tooltip.condition2": "Nhấp chuột phải vào hai Đầu nối",
+	"item.createaddition.gold_spool.tooltip.behaviour2": "Sẽ tạo một liên kết dây giữa chúng, trong khi vẫn giữ lại _Ống cuộn rỗng_.",
+	"item.createaddition.gold_wire": "Dây Vàng",
+	"item.createaddition.gold_rod": "Thanh Vàng",
+
+	"item.createaddition.electrum_ingot": "Thỏi Electrum",
+	"item.createaddition.electrum_nugget": "Hạt Electrum",
+	"item.createaddition.electrum_sheet": "Tấm Electrum",
+	"item.createaddition.electrum_spool": "Cuộn dây Electrum",
+	"item.createaddition.electrum_spool.tooltip": "CUỘN DÂY",
+	"item.createaddition.electrum_spool.tooltip.summary": "Dùng để lưu trữ dây.",
+	"item.createaddition.electrum_spool.tooltip.condition1": "Dòng điện cao",
+	"item.createaddition.electrum_spool.tooltip.behaviour1": "Kết nối với _đầu nối dòng điện cao_.",
+	"item.createaddition.electrum_spool.tooltip.condition2": "Nhấp chuột phải vào hai Đầu nối",
+	"item.createaddition.electrum_spool.tooltip.behaviour2": "Sẽ tạo một liên kết dây giữa chúng, trong khi vẫn giữ lại _Ống cuộn rỗng_.",
+	"item.createaddition.electrum_wire": "Dây Electrum",
+	"item.createaddition.electrum_rod": "Thanh Electrum",
+
+	"item.createaddition.brass_rod": "Thanh Đồng thau",
+	"item.createaddition.bronze_rod": "Thanh Đồng thiếc",
+
+	"item.createaddition.cake_base": "Đế bánh",
+	"item.createaddition.cake_base_baked": "Đế bánh đã nướng",
+
+	"item.createaddition.straw": "Ống hút",
+
+	"item.createaddition.electrum_amulet": "Bùa Vàng nhạt",
+	"item.createaddition.electrum_amulet.tooltip": "BÙA ELECTRUM",
+	"item.createaddition.electrum_amulet.tooltip.summary": "Khi _cuộc sống_ khiến bạn thất vọng, nắm chặt chiếc _bùa_ này trong túi khiến bạn cảm thấy như 
+_may mắn_ của bạn sắp thay đổi.",
+
+	"item.createaddition.brass_figurine": "Tượng nhỏ Đồng thau",
+	"item.createaddition.brass_figurine.tooltip": "TƯỢNG NHỎ ĐỒNG THAU",
+	"item.createaddition.brass_figurine.tooltip.summary": ".",
+
+	"item.createaddition.copper_goblet": "Cốc Đồng",
+	"item.createaddition.copper_goblet.tooltip": "CỐC ĐỒNG",
+	"item.createaddition.copper_goblet.tooltip.summary": "Khả năng truyền nhiệt phi thường của chiếc _cốc_ này sẽ giữ cho bạn mát mẻ khi bạn cần nhất.",
+
+	"item.createaddition.gold_goblet": "Cốc Trang trí",
+	"item.createaddition.gold_goblet.tooltip": "CỐC VÀNG",
+	"item.createaddition.gold_goblet.tooltip.summary": "Uống từ chiếc _cốc_ này sẽ làm thỏa mãn hơn bất kỳ chai thông thường nào.",
+
+	"item.createaddition.seed_oil_bucket": "Xô dầu hạt",
+	"item.createaddition.seed_oil_bucket.tooltip": "XÔ DẦU HẠT",
+	"item.createaddition.seed_oil_bucket.tooltip.summary": "Một _chất lỏng dễ cháy_ đơn giản.",
+	"fluid.createaddition.seed_oil": "Dầu hạt",
+
+	"item.createaddition.bioethanol_bucket": "Xô nhiên liệu sinh học",
+	"item.createaddition.bioethanol_bucket.tooltip": "XÔ BIOETHANOL",
+	"item.createaddition.bioethanol_bucket.tooltip.summary": "Một _chất lỏng dễ cháy_ hiệu quả.",
+	"fluid.createaddition.bioethanol": "Nhiên liệu sinh học",
+
+	"item.createaddition.biomass": "Sinh khối",
+	"item.createaddition.biomass_pellet": "Viên nén sinh khối",
+	"item.createaddition.biomass_pellet.tooltip": "VIÊN NÉN SINH KHỐI",
+	"item.createaddition.biomass_pellet.tooltip.summary": "Một _nhiên liệu rắn_ mạnh mẽ.",
+
+	"item.createaddition.spool": "Cuộn dây rỗng",
+	"item.createaddition.spool.nbt": "Lưu trữ vị trí kết nối.",
+	"item.createaddition.spool.tooltip.summary": "Dùng để lưu trữ dây.",
+	"item.createaddition.spool.tooltip.condition1": "Nhấp chuột phải vào hai Đầu nối đã liên kết",
+	"item.createaddition.spool.tooltip.behaviour1": "Sẽ loại bỏ liên kết dây và trả lại một _ống cuộn_ đã đầy.",
+
+	"statusbar.createaddition.wire.linked": "Các nút đã liên kết",
+	"statusbar.createaddition.wire.linked_in": "Dây đã liên kết 
+đến đầu vào",
+	"statusbar.createaddition.wire.linked_out": "Dây đã liên kết đến đầu ra",
+
+	"statusbar.createaddition.wire.connect": "Đầu nối dây đã chọn",
+	"statusbar.createaddition.wire.connect_in": "Đầu nối dây đầu vào đã chọn",
+	"statusbar.createaddition.wire.connect_out": "Đầu nối dây đầu ra đã chọn",
+
+	"statusbar.createaddition.wire.long": "Dây quá dài",
+	"statusbar.createaddition.wire.count": "Nút dây đã đầy",
+	"statusbar.createaddition.wire.removed": "Dây đã gỡ bỏ",
+	"statusbar.createaddition.wire.exists": "Kết nối dây đã tồn tại",
+	"statusbar.createaddition.wire.no_connection": "Dây không được kết nối tại đây",
+	"statusbar.createaddition.wire.invalid": "Kết nối không hợp lệ",
+	"statusbar.createaddition.wire.requires_high_current": "Kết nối này yêu cầu dây dòng điện cao",
+
+	"block.createaddition.electric_motor": "Động cơ Điện",
+
+	"block.createaddition.alternator": "Máy phát điện xoay chiều",
+
+	"block.createaddition.creative_energy": "Máy tạo năng lượng Sáng tạo",
+	"block.createaddition.creative_energy.tooltip": "MÁY TẠO NĂNG LƯỢNG SÁNG TẠO",
+	"block.createaddition.creative_energy.tooltip.summary": "Tạo ra nguồn cung cấp _⚡_ vô hạn.",
+
+	"block.createaddition.rolling_mill": "Máy cán",
+
+	"block.createaddition.accumulator": "Bộ tích điện",
+	"block.createaddition.accumulator.tooltip": "BỘ TÍCH ĐIỆN",
+	"block.createaddition.accumulator.tooltip.summary": "Tích lũy điện tích.
+_Đã lỗi thời và có thể bị loại bỏ trong các bản phát hành tương lai_.",
+	"block.createaddition.accumulator.tooltip.condition1": "Kéo",
+	"block.createaddition.accumulator.tooltip.behaviour1": "Cung cấp _⚡_ cho _dây_ được kết nối với _đầu nối_ được đánh dấu bằng mũi tên hướng lên.",
+	"block.createaddition.accumulator.tooltip.condition2": "Đẩy",
+	"block.createaddition.accumulator.tooltip.behaviour2": "Chấp nhận _⚡_ từ _dây_ được kết nối với _đầu nối_ được đánh dấu bằng mũi tên hướng xuống.",
+
+	"block.createaddition.modular_accumulator": "Bộ tích điện",
+
+	"block.createaddition.portable_energy_interface": "Giao diện Năng lượng Di động",
+
+	"block.createaddition.connector": "Đầu nối nhỏ",
+	"block.createaddition.connector.tooltip": "ĐẦU NỐI",
+	"block.createaddition.connector.tooltip.summary": "Kết nối các khối tương thích với _Forge Energy_ bằng _dây_ để truyền _⚡_.",
+	"block.createaddition.connector.tooltip.condition1": "Dòng điện thấp",
+	"block.createaddition.connector.tooltip.behaviour1": "Kết nối với _dây dòng điện thấp_.",
+	"block.createaddition.connector.tooltip.condition2": "Nhấp chuột phải",
+	"block.createaddition.connector.tooltip.behaviour2": "Trong khi giữ _Ống cuộn Đồng_, _Ống cuộn Vàng_, hoặc _Ống cuộn Electrum_ để tạo _liên kết dây_ với tối đa 4 đầu nối khác.",
+	"block.createaddition.connector.tooltip.condition3": "Nhấp chuột phải với Cờ lê",
+	"block.createaddition.connector.tooltip.behaviour3": "Để chuyển đổi giữa các chế độ _Đẩy_, _Kéo_, và _Không_.",
+
+	"block.createaddition.small_light_connector": "Đầu nối nhỏ có đèn",
+	"block.createaddition.small_light_connector.tooltip": "ĐẦU NỐI",
+	"block.createaddition.small_light_connector.tooltip.summary": "Kết nối các khối tương thích với _Forge 
+Energy_ bằng _dây_ để truyền _⚡_, cung cấp ánh sáng khi nhận năng lượng.",
+	"block.createaddition.small_light_connector.tooltip.condition1": "Dòng điện thấp",
+	"block.createaddition.small_light_connector.tooltip.behaviour1": "Kết nối với _dây dòng điện thấp_.",
+	"block.createaddition.small_light_connector.tooltip.condition2": "Nhấp chuột phải",
+	"block.createaddition.small_light_connector.tooltip.behaviour2": "Trong khi giữ _Ống cuộn Đồng_, _Ống cuộn Vàng_, hoặc _Ống cuộn Electrum_ để tạo _liên kết dây_ với tối đa 4 đầu nối khác.",
+	"block.createaddition.small_light_connector.tooltip.condition3": "Nhấp chuột phải với Cờ lê",
+	"block.createaddition.small_light_connector.tooltip.behaviour3": "Để chuyển đổi giữa các chế độ _Đẩy_, _Kéo_, và _Không_.",
+
+	"block.createaddition.large_connector": "Đầu nối lớn",
+	"block.createaddition.large_connector.tooltip": "ĐẦU NỐI",
+	"block.createaddition.large_connector.tooltip.summary": "Kết nối các khối tương thích với _Forge Energy_ bằng _dây_ để truyền _⚡_.",
+	"block.createaddition.large_connector.tooltip.condition1": "Dòng điện cao",
+	"block.createaddition.large_connector.tooltip.behaviour1": "Kết nối với _dây dòng điện cao_.",
+	"block.createaddition.large_connector.tooltip.condition2": "Nhấp chuột phải",
+	"block.createaddition.large_connector.tooltip.behaviour2": "Trong khi giữ _Ống cuộn Vàng_ hoặc _Ống cuộn Electrum_ để tạo _liên kết dây_ với tối đa 6 đầu nối khác.",
+	"block.createaddition.large_connector.tooltip.condition3": "Nhấp chuột phải với Cờ lê",
+	"block.createaddition.large_connector.tooltip.behaviour3": "Để chuyển đổi giữa các chế độ _Đẩy_, 
+_Kéo_, và _Không_.",
+
+	"block.createaddition.redstone_relay": "Rơ-le Redstone",
+	"block.createaddition.redstone_relay.tooltip": "RƠ-LE REDSTONE",
+	"block.createaddition.redstone_relay.tooltip.summary": "Cho phép _⚡_ đi qua từ _đầu nối đầu vào_ đến _đầu nối đầu ra_ khi nhận _tín hiệu redstone_.",
+	"block.createaddition.redstone_relay.tooltip.condition1": "Dòng điện thấp",
+	"block.createaddition.redstone_relay.tooltip.behaviour1": "Kết nối với _dây dòng điện thấp_.",
+	"block.createaddition.redstone_relay.tooltip.condition2": "Kéo",
+	"block.createaddition.redstone_relay.tooltip.behaviour2": "Cung cấp _⚡_ cho _dây_ được kết nối với _đầu nối_ được đánh dấu bằng mũi tên hướng lên.",
+	"block.createaddition.redstone_relay.tooltip.condition3": "Đẩy",
+	"block.createaddition.redstone_relay.tooltip.behaviour3": "Chấp nhận _⚡_ từ _dây_ được kết nối với _đầu nối_ được đánh dấu bằng mũi tên hướng xuống.",
+
+	"block.createaddition.digital_adapter": "Bộ điều hợp Kỹ thuật số",
+	"block.createaddition.digital_adapter.tooltip": "BỘ ĐIỀU HỢP KỸ THUẬT SỐ",
+	"block.createaddition.digital_adapter.tooltip.summary": "Một _Thiết bị ngoại vi Computercraft_ cho phép máy tính giao tiếp với _Bảng hiển thị_, _Đồng hồ tốc độ_, _Đồng hồ đo căng thẳng_, _Ròng rọc dây_, _Ròng rọc ống_, _Ròng rọc thang máy_, _Piston cơ học_, _Ổ trục cơ học_, và _Bộ điều khiển tốc độ quay_.",
+
+	"block.createaddition.chocolate_cake": "Bánh sô cô la",
+	"block.createaddition.honey_cake": "Bánh mật ong",
+
+	"block.createaddition.electrum_block": "Khối Electrum",
+
+	"block.createaddition.biomass_pellet_block": "Pallet sinh khối",
+
+	"block.createaddition.seed_oil": "Dầu hạt",
+	"block.createaddition.bioethanol": "Bioethanol",
+
+	"block.createaddition.barbed_wire": 
+"Dây thép gai",
+	"block.createaddition.barbed_wire.tooltip": "DÂY THÉP GAI",
+	"block.createaddition.barbed_wire.tooltip.summary": "Gây sát thương khi đi qua.",
+
+	"block.createaddition.tesla_coil": "Cuộn dây Tesla",
+
+	"block.createaddition.liquid_blaze_burner": "Lò đốt Blaze với Ống hút",
+
+	"itemGroup.createaddition.main":"Create Crafts & Additions",
+
+	"createaddition.ponder.tag.electric": "Thiết bị Điện",
+	"createaddition.ponder.tag.electric.description": "Các thành phần sử dụng điện",
+
+	"createaddition.ponder.electric_motor.header": "Tạo Lực Quay bằng Động cơ Điện",
+	"createaddition.ponder.electric_motor.text_1": "Động cơ Điện là nguồn Lực Quay nhỏ gọn và có thể cấu hình",
+	"createaddition.ponder.electric_motor.text_2": "Cuộn trên bảng điều khiển phía sau thay đổi RPM của đầu ra quay của động cơ",
+	"createaddition.ponder.electric_motor.text_3": "Động cơ Điện yêu cầu một nguồn năng lượng",
+	"createaddition.ponder.electric_motor.text_4": "Mức tiêu thụ năng lượng của động cơ được xác định bởi RPM đã cài đặt",
+
+	"createaddition.ponder.alternator.header": "Tạo năng lượng Điện bằng Máy phát điện xoay chiều",
+	"createaddition.ponder.alternator.text_1": "Máy phát điện xoay chiều yêu cầu ít nhất 32 RPM để hoạt động",
+	"createaddition.ponder.alternator.text_2": "Nó tạo ra năng lượng điện từ lực quay",
+	"createaddition.ponder.alternator.text_3": "Sản lượng năng lượng của nó được xác định bởi 
+RPM đầu vào",
+
+	"createaddition.ponder.rolling_mill.header": "Cán kim loại thành Thanh và Dây",
+	"createaddition.ponder.rolling_mill.text_1": "Máy cán sử dụng lực quay để cán kim loại thành Thanh và Dây",
+	"createaddition.ponder.rolling_mill.text_2": "Để nhập vật phẩm thủ công, thả Thỏi hoặc Tấm lên trên Máy cán",
+	"createaddition.ponder.rolling_mill.text_3": "Nhấp chuột phải vào Máy cán để lấy vật phẩm đầu ra thủ công",
+
+	"createaddition.ponder.automated_rolling_mill.header": "Tự động hóa Máy cán",
+	"createaddition.ponder.automated_rolling_mill.text_1": "Máy cán có thể được tự động hóa bằng cách sử dụng Dây đai và hai Phễu",
+	"createaddition.ponder.automated_rolling_mill.text_2": "Phễu đầu vào",
+	"createaddition.ponder.automated_rolling_mill.text_3": "Phễu đầu ra",
+
+	"createaddition.ponder.cc_electric_motor.header": "Sử dụng ComputerCraft để điều khiển Động cơ Điện",
+	"createaddition.ponder.cc_electric_motor.text_1": "Động cơ Điện có thể được điều khiển bằng ComputerCraft",
+	"createaddition.ponder.cc_electric_motor.text_2": "Kết nối với động cơ bằng cách sử dụng 'peripheral.wrap(side)'",
+	"createaddition.ponder.cc_electric_motor.text_3": "Truy cập tài liệu API bằng cách đưa ra lệnh '/cca_api' trong trò chuyện",
+
+	"createaddition.ponder.tesla_coil.header": "Sử dụng 
+Cuộn dây Tesla để sạc Vật phẩm",
+	"createaddition.ponder.tesla_coil.text_1": "Cuộn dây Tesla sẽ sạc Vật phẩm bên dưới nó",
+	"createaddition.ponder.tesla_coil.text_2": "Nó sẽ sạc bất kỳ Vật phẩm Forge Energy nào và nhiều hơn nữa!",
+
+	"createaddition.ponder.tesla_coil_hurt.header": "Cuộn dây Tesla Nguy hiểm",
+	"createaddition.ponder.tesla_coil_hurt.text_1": "Cuộn dây Tesla cũng có khả năng gây sát thương cho Người chơi và Đám đông gần đó",
+	"createaddition.ponder.tesla_coil_hurt.text_2": "Điều này có thể được kích hoạt bằng tín hiệu Redstone",
+	"createaddition.ponder.tesla_coil_hurt.text_3": "Hãy sẵn sàng bị Sốc!",
+
+	"createaddition.ponder.liquid_blaze_burner.header": "Đốt nhiên liệu lỏng",
+	"createaddition.ponder.liquid_blaze_burner.text_1": "Đưa Ống hút cho Lò đốt Blaze",
+	"createaddition.ponder.liquid_blaze_burner.text_2": "sẽ cho phép nó chấp nhận nhiên liệu lỏng bằng Xô",
+	"createaddition.ponder.liquid_blaze_burner.text_3": "- hoặc bằng ống.",
+
+	"createaddition.ponder.modular_accumulator.header": "Bộ tích điện Đa khối",
+	"createaddition.ponder.modular_accumulator.text_1": "Bộ tích điện là một cấu trúc đa khối",
+	"createaddition.ponder.modular_accumulator.text_2": "Nó có thể lưu trữ lượng lớn năng lượng điện",
+	"createaddition.ponder.modular_accumulator.text_3": "Cấu hình một đầu nối đầu vào",
+	"createaddition.ponder.modular_accumulator.text_4": "và một đầu nối đầu ra.",
+	"createaddition.ponder.modular_accumulator.text_5": "Để cải thiện 
+khả năng tương thích với mod, Bộ tích điện sẽ chủ động đẩy năng lượng đến các khối được đặt ở mặt trên và mặt dưới.",
+
+	"createaddition.display_source.digital_adapter_source": "Bộ điều hợp Kỹ thuật số",
+	"createaddition.display_source.digital_adapter_source_digital_adapter": "Bộ điều hợp Kỹ thuật số",
+	"createaddition.display_source.modular_accumulator": "Bộ tích điện",
+	"createaddition.display_source.accumulator.progress_bar": "Thanh tiến trình",
+	"createaddition.display_source.accumulator.percent": "Tỷ lệ phần trăm",
+	"createaddition.display_source.accumulator.current": "Năng lượng lưu trữ trong ⚡",
+	"createaddition.display_source.accumulator.max": "Tổng dung lượng",
+	"createaddition.display_source.accumulator.remaining": "⚡ còn lại",
+	"createaddition.display_source.accumulator.display": "Chọn một Tùy chọn:",
+
+	"createaddition.ponder.pei_transfer.header": "Trao đổi Năng lượng Vật phẩm Contraption",
+	"createaddition.ponder.pei_transfer.text_1": "Bộ tích điện trên các vật phẩm contraption đang di chuyển không thể kết nối với các đầu nối cố định.",
+	"createaddition.ponder.pei_transfer.text_2": "Thành phần này có thể tương tác với Bộ tích điện mà không cần dừng vật phẩm contraption.",
+	"createaddition.ponder.pei_transfer.text_3": "Đặt một cái thứ hai với một khoảng trống 1 hoặc 2 khối ở giữa",
+	"createaddition.ponder.pei_transfer.text_4": "Bất cứ khi nào chúng đi qua nhau, chúng sẽ tham gia vào một kết nối",
+	"createaddition.ponder.pei_transfer.text_5": "Trong khi kết nối, giao diện cố định sẽ đại diện cho TẤT CẢ Bộ tích điện trên vật phẩm contraption",
+	"createaddition.ponder.pei_transfer.text_6": "Năng lượng hiện có thể được trao đổi theo cấu hình Đẩy/Kéo của đầu nối...
+",
+	"createaddition.ponder.pei_transfer.text_7": "Sau khi không có năng lượng nào được trao đổi trong một thời gian, vật phẩm contraption sẽ tiếp tục hành trình của nó.",
+
+	"createaddition.ponder.pei_redstone.header": "Điều khiển Redstone",
+	"createaddition.ponder.pei_redstone.text_1": "Nguồn Redstone sẽ ngăn giao diện cố định tham gia.",
+
+	"createaddition.schedule.condition.energy_threshold": "Điều kiện Tải trọng Năng lượng",
+	"createaddition.schedule.condition.threshold.unit": "K⚡",
+	"createaddition.schedule.condition.threshold.energy": "Năng lượng",
+
+	"attack.death.createaddition.barbed_wire": "%1$s đã cố gắng vượt qua dây thép gai",
+  	"attack.death.createaddition.barbed_wire.player": "%1$s đã cố gắng vượt qua dây thép gai trong khi chiến đấu với %2$s",
+
+	"effect.createaddition.shocking":"Bị sốc",
+	"attack.death.createaddition.tesla_coil": "%1$s đã nhận một cú sốc điện gây chết người",
+  	"attack.death.createaddition.tesla_coil.player": "%1$s đã nhận một cú sốc điện gây chết người trong khi chiến đấu với %2$s",
+  	"effect.createaddition.shocking.description": "Gây giảm đáng kể tốc độ di chuyển",
+
+	"createaddition.subtitle.loud_zap": "Tiếng Cuộn dây Tesla giật lớn",
+	"createaddition.subtitle.little_zap": "Tiếng Cuộn dây Tesla tóe lửa nhỏ"
+}
