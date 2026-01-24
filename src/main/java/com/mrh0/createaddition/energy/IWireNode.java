@@ -560,7 +560,7 @@ public interface IWireNode {
 		if (pos1.distSqr(pos2) > maxLength * maxLength) return WireConnectResult.LONG;
 		if (wn1.hasConnectionTo(pos2)) return WireConnectResult.EXISTS;
 		if(wn1.getConnectorType() == ConnectorType.Large && wn2.getConnectorType() == ConnectorType.Large) {
-			if(type == WireType.COPPER) return WireConnectResult.REQUIRES_HIGH_CURRENT;
+			if(type == WireType.COPPER || type == WireType.FESTIVE) return WireConnectResult.REQUIRES_HIGH_CURRENT;
 		}
 		
 		wn1.setNode(node1, node2, wn2.getPos(), type);
