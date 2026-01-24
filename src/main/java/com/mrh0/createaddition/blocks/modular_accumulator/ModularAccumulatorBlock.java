@@ -252,16 +252,6 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<M
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-		if(tileentity != null) {
-			if(tileentity instanceof ModularAccumulatorBlockEntity) {
-				((ModularAccumulatorBlockEntity)tileentity).updateCache();
-			}
-		}
-	}
-
-	@Override
 	public Class<ModularAccumulatorBlockEntity> getBlockEntityClass() {
 		return ModularAccumulatorBlockEntity.class;
 	}

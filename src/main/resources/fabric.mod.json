@@ -46,6 +46,7 @@
     "fabric": ">=0.87.0",
     "minecraft": "~1.20.1",
     "registrate-fabric": "*",
-    "flywheel": "*"
+    "flywheel": "*",
+    "create": ">=6.0.7.0"
   }
 }

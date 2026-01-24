@@ -335,9 +335,6 @@ public class CAConnectivityHandler {
 			ienergyBE.getEnergy().setEnergy(toDistribute);
 		}
 
-		if (be instanceof ModularAccumulatorBlockEntity ienergy && ienergy.hasAccumulator())
-            ienergy.updateCache();
-
 		if (tryReconnect)
 			formMulti(be.getType(), level, cache == null ? new SearchCache<>() : cache, frontier);
 	}
