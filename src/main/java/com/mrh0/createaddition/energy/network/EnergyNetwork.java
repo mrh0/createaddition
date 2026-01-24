@@ -19,8 +19,8 @@ public class EnergyNetwork {
 	private long outDemand;
 	private boolean valid;
 	
-	private int pulled = 0;
-	private int pushed = 0;
+	private long pulled = 0;
+	private long pushed = 0;
 
 	private int nodeCount = 0;
 
@@ -80,11 +80,11 @@ public class EnergyNetwork {
 		return outDemand;
 	}
 	
-	public int getPulled() {
+	public long getPulled() {
 		return pulled;
 	}
 	
-	public int getPushed() {
+	public long getPushed() {
 		return pushed;
 	}
 

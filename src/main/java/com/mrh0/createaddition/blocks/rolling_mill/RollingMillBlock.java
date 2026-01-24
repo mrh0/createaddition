@@ -31,9 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings({"deprecation", "UnstableApiUsage"})
 public class RollingMillBlock extends HorizontalKineticBlock implements IBE<RollingMillBlockEntity> {
 
 	public static final VoxelShape ROLLING_MILL_SHAPE = CAShapes.shape(0,0,0,16,5,16).add(2,0,2,14,16,14).build();
@@ -43,12 +41,12 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 	}
 
 	@Override
-	public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return ROLLING_MILL_SHAPE;
 	}
 	
 	@Override
-	public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, Player player, @NotNull InteractionHand handIn, @NotNull BlockHitResult hit) {
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		if (!player.getItemInHand(handIn).isEmpty())
 			return InteractionResult.PASS;
 		if (worldIn.isClientSide)
@@ -81,7 +79,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 	}
 
 	@Override
-	public void updateEntityAfterFallOn(@NotNull BlockGetter worldIn, @NotNull Entity entityIn) {
+	public void updateEntityAfterFallOn(BlockGetter worldIn, Entity entityIn) {
 		super.updateEntityAfterFallOn(worldIn, entityIn);
 
 		if (entityIn.level().isClientSide)
@@ -117,7 +115,7 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 	}
 
 	@Override
-	public void onRemove(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.hasBlockEntity() && state.getBlock() != newState.getBlock()) {
 			withBlockEntityDo(worldIn, pos, te -> {
 				ItemHelper.dropContents(worldIn, pos, te.inputInv);
@@ -130,9 +128,9 @@ public class RollingMillBlock extends HorizontalKineticBlock implements IBE<Roll
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		Direction prefferedSide = getPreferredHorizontalFacing(context);
-		if (prefferedSide != null)
-			return defaultBlockState().setValue(HORIZONTAL_FACING, prefferedSide);
+		Direction preferredSide = getPreferredHorizontalFacing(context);
+		if (preferredSide != null)
+			return defaultBlockState().setValue(HORIZONTAL_FACING, preferredSide);
 		return super.getStateForPlacement(context);
 	}
 

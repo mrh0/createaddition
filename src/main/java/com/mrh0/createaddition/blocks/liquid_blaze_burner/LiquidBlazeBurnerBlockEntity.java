@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.mrh0.createaddition.index.CARecipes;
@@ -15,22 +14,16 @@ import com.mrh0.createaddition.recipe.liquid_burning.LiquidBurningRecipe;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags.AllItemTags;
-//import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.fluids.tank.FluidTankBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
-//import com.simibubi.create.foundation.utility.AngleHelper;
-//import com.simibubi.create.foundation.utility.VecHelper;
-//import com.simibubi.create.foundation.utility.animation.LerpedFloat;
-//import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.callbacks.TransactionCallback;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
-import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity.FuelType;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.math.AngleHelper;
@@ -41,14 +34,9 @@ import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.fluid.base.FullItemFluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -62,8 +50,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -85,6 +71,13 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	protected boolean goggles;
 	protected boolean hat;
 
+	protected FluidTank tankInventory;
+
+	private Optional<LiquidBurningRecipe> recipeCache = Optional.empty();
+	private Fluid lastFluid = null;
+
+	public boolean firstTick = true;
+
 	public LiquidBlazeBurnerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		activeFuel = FuelType.NONE;
@@ -105,31 +98,20 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 
 	}
 
-	// Custom fluid handling
-	protected FluidTank tankInventory;
-
-	private Optional<LiquidBurningRecipe> recipeCache = Optional.empty();
-	private Fluid lastFluid = null;
-	private int updateTimeout = 10;
-	private boolean changed = true;
-
 	protected SmartFluidTank createInventory() {
-		return new SmartFluidTank(FLUID_CAPACITY, this::onFluidStackChanged);
-	}
-
-	protected void onFluidStackChanged(FluidStack newFluidStack) {
-		if (!hasLevel())
-			return;
-		update(newFluidStack);
+		SmartFluidTank fluidTank = new SmartFluidTank(FLUID_CAPACITY, this::update);
+		fluidTank.setValidator(stack -> find(stack, level).isPresent());
+		return fluidTank;
 	}
 
 	private void update(FluidStack stack) {
+		if (!hasLevel())
+			return;
 		if(level.isClientSide())
 			return;
 		if(stack.getFluid() != lastFluid)
 			recipeCache = find(stack, level);
 		lastFluid = stack.getFluid();
-		changed = true;
 	}
 
 	public Optional<LiquidBurningRecipe> find(FluidStack stack, Level level) {
@@ -147,35 +129,24 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		return tankInventory;
 	}
 
-	public boolean first = true;
 	public void burningTick() {
 		if(level.isClientSide())
 			return;
 
-		if(first)
+		if(firstTick)
 			update(tankInventory.getFluid());
-		first = false;
+		firstTick = false;
 
-		if (recipeCache.isEmpty())
-			return;
 
-		if (tankInventory.getFluidAmount() < FLUID_CONSUMPTION_THRESHOLD)
-			return;
+		if(recipeCache.isEmpty()) return;
 
-		FuelType newActiveFuel = recipeCache.get().isSuperheated() ? FuelType.SPECIAL : FuelType.NORMAL;
-
-		if(remainingBurnTime >= 1 && !(activeFuel == FuelType.NORMAL && newActiveFuel == FuelType.SPECIAL))
-			return;
 		if(tankInventory.getFluidAmount() < 100) return;
 		if(remainingBurnTime > MAX_HEAT_CAPACITY) return;
 
-		activeFuel = newActiveFuel;
-
 		remainingBurnTime += recipeCache.get().getBurnTime() / 10;
+		activeFuel = recipeCache.get().isSuperheated() ? FuelType.SPECIAL : FuelType.NORMAL;
 
-
-		TransferUtil.extractAnyFluid(tankInventory, FLUID_CONSUMPTION_THRESHOLD);
-
+        TransferUtil.extractAnyFluid(tankInventory, FLUID_CONSUMPTION_THRESHOLD);
 
 		BlazeBurnerBlock.HeatLevel prev = getHeatLevelFromBlock();
 		playSound();
@@ -213,12 +184,11 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 			return;
 		}
 
-		if (remainingBurnTime > 0 && !isCreative)
-			remainingBurnTime--;
-
 		burningTick();
 
 		if (isCreative) return;
+
+		if (remainingBurnTime > 0) remainingBurnTime--;
 
 		if (activeFuel == FuelType.NORMAL)
 			updateBlockState();
@@ -294,7 +264,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	}
 
 	public void updateBlockState() {
-		setBlockHeat(getHeatLevelFromFuelType(activeFuel));
+		setBlockHeat(getHeatLevel());
 	}
 
 	protected void setBlockHeat(BlazeBurnerBlock.HeatLevel heat) {
@@ -305,7 +275,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		notifyUpdate();
 	}
 
-	private boolean tryUpdateLiquid(ContainerItemContext context, TransactionContext t) {
+	protected boolean tryUpdateLiquid(ContainerItemContext context, TransactionContext t) {
 		Storage<FluidVariant> handler = context.find(FluidStorage.ITEM);
 		if (handler == null)
 			return false;
@@ -329,18 +299,13 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	 *         consumed
 	 */
 	protected boolean tryUpdateFuel(ItemStack itemStack, ContainerItemContext context, TransactionContext t, boolean forceOverflow) {
-		if (isCreative)
-			return false;
+		if (isCreative) return false;
 
 		FuelType newFuel = FuelType.NONE;
 		int newBurnTime;
 
-		// Liquid Fluid Logic
-		if(tryUpdateLiquid(context, t))
-			return true;
-
 		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
-			newBurnTime = 1000;
+			newBurnTime = 3200;
 			newFuel = FuelType.SPECIAL;
 		} else {
 			var burn = FuelRegistry.INSTANCE.get(itemStack.getItem());
@@ -418,7 +383,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 			.125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
 	}
 
-	protected BlazeBurnerBlock.HeatLevel getHeatLevelFromFuelType(FuelType fuel) {
+	protected BlazeBurnerBlock.HeatLevel getHeatLevel() {
 		BlazeBurnerBlock.HeatLevel level = BlazeBurnerBlock.HeatLevel.SMOULDERING;
 		switch (activeFuel) {
 		case SPECIAL:

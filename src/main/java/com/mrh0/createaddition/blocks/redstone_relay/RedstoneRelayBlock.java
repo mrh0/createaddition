@@ -25,7 +25,11 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -96,7 +100,7 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayBlockE
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext c) {
 		if(c.getClickedFace().getAxis() == Axis.Y)
-			return defaultBlockState().setValue(HORIZONTAL_FACING, Objects.requireNonNull(c.getPlayer()).isShiftKeyDown() ? c.getHorizontalDirection().getCounterClockWise() : c.getHorizontalDirection().getClockWise()).setValue(VERTICAL, false);
+			return defaultBlockState().setValue(HORIZONTAL_FACING, c.getPlayer().isShiftKeyDown() ? c.getHorizontalDirection().getCounterClockWise() : c.getHorizontalDirection().getClockWise()).setValue(VERTICAL, false);
 		else
 			return defaultBlockState().setValue(HORIZONTAL_FACING, c.getClickedFace().getOpposite()).setValue(VERTICAL, true);
 	}
@@ -106,10 +110,10 @@ public class RedstoneRelayBlock extends Block implements IBE<RedstoneRelayBlockE
 		boolean flag = state.getValue(POWERED);
 		boolean flag1 = this.shouldBePowered(worldIn, pos, state);
 		if (flag && !flag1) {
-			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.FALSE), 2);
+			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(false)), 2);
 		}
 		else if (!flag) {
-			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.TRUE), 2);
+			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(true)), 2);
 		}
 	}
 

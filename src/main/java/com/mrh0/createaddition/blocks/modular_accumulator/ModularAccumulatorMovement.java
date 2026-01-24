@@ -3,7 +3,6 @@ package com.mrh0.createaddition.blocks.modular_accumulator;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyManager;
 import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
-
 import net.minecraft.nbt.CompoundTag;
 
 public class ModularAccumulatorMovement implements MovementBehaviour {

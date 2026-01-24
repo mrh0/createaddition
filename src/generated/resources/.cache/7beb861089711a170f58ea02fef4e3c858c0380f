@@ -1,0 +1,6 @@
+// 1.21.1	2025-07-15T00:36:28.6922596	createaddition's processing recipes: crushing
+535ac42b6381759e0172c83ce3855baaad891a3f data/createaddition/recipe/crushing/diamond.json
+39fdc7e8c59be3abee70cb291bb65afde6b422d6 data/createaddition/recipe/crushing/ochrum_recycling.json
+35941bcddf8de08420e96f4e85063cb71ced768c data/createaddition/recipe/crushing/tuff_recycling.json
+aae2882c787ac33b7dd2e1d8d3ed1eb178d0769d data/create/recipe/crushing/ochrum.json
+2ad52775ff8fa210a29ff488a401a62645cd9b6c data/create/recipe/crushing/tuff.json

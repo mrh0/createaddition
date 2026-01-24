@@ -9,7 +9,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
-
 import java.util.ArrayList;
 import java.util.List;
 

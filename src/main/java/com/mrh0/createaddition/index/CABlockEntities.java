@@ -26,47 +26,51 @@ import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.AllPartialModels;
 
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
+import com.mrh0.createaddition.blocks.rolling_mill.*;
+import com.mrh0.createaddition.blocks.redstone_relay.*;
+import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import team.reborn.energy.api.EnergyStorage;
 
 public class CABlockEntities {
-    public static final BlockEntityEntry<ElectricMotorBlockEntity> ELECTRIC_MOTOR = CreateAddition.REGISTRATE
-            .blockEntity("electric_motor", ElectricMotorBlockEntity::new)
-            .visual(() -> OrientedRotatingVisual.of(AllPartialModels.SHAFT_HALF), false)
-            .validBlocks(CABlocks.ELECTRIC_MOTOR)
-            .renderer(() -> ElectricMotorRenderer::new)
-            .register();
+	public static final BlockEntityEntry<ElectricMotorBlockEntity> ELECTRIC_MOTOR = CreateAddition.REGISTRATE
+			.blockEntity("electric_motor", ElectricMotorBlockEntity::new)
+			.visual(() -> OrientedRotatingVisual.of(AllPartialModels.SHAFT_HALF), false)
+			.validBlocks(CABlocks.ELECTRIC_MOTOR)
+			.renderer(() -> ElectricMotorRenderer::new)
+			.register();
 
-    public static final BlockEntityEntry<AlternatorBlockEntity> ALTERNATOR = CreateAddition.REGISTRATE
-            .blockEntity("alternator", AlternatorBlockEntity::new)
-            .visual(() -> OrientedRotatingVisual.of(AllPartialModels.SHAFT_HALF), false)
-            .validBlocks(CABlocks.ALTERNATOR)
-            .renderer(() -> AlternatorRenderer::new)
-            .register();
+	public static final BlockEntityEntry<AlternatorBlockEntity> ALTERNATOR = CreateAddition.REGISTRATE
+			.blockEntity("alternator", AlternatorBlockEntity::new)
+			.visual(() -> OrientedRotatingVisual.of(AllPartialModels.SHAFT_HALF), false)
+			.validBlocks(CABlocks.ALTERNATOR)
+			.renderer(() -> AlternatorRenderer::new)
+			.register();
 
-    public static final BlockEntityEntry<RollingMillBlockEntity> ROLLING_MILL = CreateAddition.REGISTRATE
-            .blockEntity("rolling_mill", RollingMillBlockEntity::new)
-            .visual(() -> RollingMillVisual::new)
-            .validBlocks(CABlocks.ROLLING_MILL)
-            .renderer(() -> RollingMillRenderer::new)
-            .register();
+	public static final BlockEntityEntry<RollingMillBlockEntity> ROLLING_MILL = CreateAddition.REGISTRATE
+			.blockEntity("rolling_mill", RollingMillBlockEntity::new)
+			.visual(() -> RollingMillVisual::new)
+			.validBlocks(CABlocks.ROLLING_MILL)
+			.renderer(() -> RollingMillRenderer::new)
+			.register();
+	
+	public static final BlockEntityEntry<CreativeEnergyBlockEntity> CREATIVE_ENERGY = CreateAddition.REGISTRATE
+			.blockEntity("creative_energy", CreativeEnergyBlockEntity::new)
+			.validBlocks(CABlocks.CREATIVE_ENERGY)
+			.register();
+	
+	public static final BlockEntityEntry<SmallConnectorBlockEntity> SMALL_CONNECTOR = CreateAddition.REGISTRATE
+			.blockEntity("connector", SmallConnectorBlockEntity::new)
+			.validBlocks(CABlocks.SMALL_CONNECTOR)
+			.renderer(() -> ConnectorRenderer::new)
+			.register();
 
-    public static final BlockEntityEntry<CreativeEnergyBlockEntity> CREATIVE_ENERGY = CreateAddition.REGISTRATE
-            .blockEntity("creative_energy", CreativeEnergyBlockEntity::new)
-            .validBlocks(CABlocks.CREATIVE_ENERGY)
-            .register();
-
-    public static final BlockEntityEntry<SmallConnectorBlockEntity> SMALL_CONNECTOR = CreateAddition.REGISTRATE
-            .blockEntity("connector", SmallConnectorBlockEntity::new)
-            .validBlocks(CABlocks.SMALL_CONNECTOR)
-            .renderer(() -> ConnectorRenderer::new)
-            .register();
-
-    public static final BlockEntityEntry<SmallLightConnectorBlockEntity> SMALL_LIGHT_CONNECTOR = CreateAddition.REGISTRATE
-            .blockEntity("small_light_connector", SmallLightConnectorBlockEntity::new)
-            .validBlocks(CABlocks.SMALL_LIGHT_CONNECTOR)
-            .renderer(() -> ConnectorRenderer::new)
-            .register();
+	public static final BlockEntityEntry<SmallLightConnectorBlockEntity> SMALL_LIGHT_CONNECTOR = CreateAddition.REGISTRATE
+			.blockEntity("small_light_connector", SmallLightConnectorBlockEntity::new)
+			.validBlocks(CABlocks.SMALL_LIGHT_CONNECTOR)
+			.renderer(() -> ConnectorRenderer::new)
+			.register();
 
     public static final BlockEntityEntry<LargeConnectorBlockEntity> LARGE_CONNECTOR = CreateAddition.REGISTRATE
             .blockEntity("large_connector", LargeConnectorBlockEntity::new)
@@ -97,12 +101,12 @@ public class CABlockEntities {
             .renderer(() -> ModularAccumulatorRenderer::new)
             .register();
 
-    public static final BlockEntityEntry<PortableEnergyInterfaceBlockEntity> PORTABLE_ENERGY_INTERFACE = CreateAddition.REGISTRATE
-            .blockEntity("portable_energy_interface", PortableEnergyInterfaceBlockEntity::new)
+	public static final BlockEntityEntry<PortableEnergyInterfaceBlockEntity> PORTABLE_ENERGY_INTERFACE = CreateAddition.REGISTRATE
+			.blockEntity("portable_energy_interface", PortableEnergyInterfaceBlockEntity::new)
             .visual(() -> PEIIVisual::new)
-            .validBlocks(CABlocks.PORTABLE_ENERGY_INTERFACE)
-            .renderer(() -> PortableEnergyInterfaceRenderer::new)
-            .register();
+			.validBlocks(CABlocks.PORTABLE_ENERGY_INTERFACE)
+			.renderer(() -> PortableEnergyInterfaceRenderer::new)
+			.register();
 
     public static final BlockEntityEntry<DigitalAdapterBlockEntity> DIGITAL_ADAPTER = CreateAddition.REGISTRATE
             .blockEntity("digital_adapter", DigitalAdapterBlockEntity::new)

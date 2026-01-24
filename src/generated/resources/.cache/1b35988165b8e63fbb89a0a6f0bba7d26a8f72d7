@@ -1,0 +1,6 @@
+// 1.21.1	2025-04-18T01:23:21.7314478	Tags for minecraft:fluid mod id createaddition
+d00965e1074c6d7e90fdb88566c7dcda73408736 data/c/tags/fluid/biofuel.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/c/tags/fluid/creosote.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/c/tags/fluid/crude_oil.json
+0d69a91cb088e8cace2b36282c42c6bc1de69b43 data/c/tags/fluid/plantoil.json
+f8ced8efed9aa8e7fce9aa741ef32070cc203fd0 data/minecraft/tags/fluid/water.json

@@ -1,0 +1,11 @@
+// 1.21.1	2025-07-15T00:36:28.6669804	createaddition's processing recipes: rolling
+a3bfd13e043c0c61c0b13da470533d42cfa4e5ec data/createaddition/recipe/rolling/brass_rod.json
+23b07b50cd6a15df8ec64033ae566f2891b1bd1d data/createaddition/recipe/rolling/copper_ingot.json
+524b3d16bd2fd8655de8ae51c73086e6a6e5d2a5 data/createaddition/recipe/rolling/copper_plate.json
+f0557b2bcd48da0ab1902c1c0f77cddff0e241ae data/createaddition/recipe/rolling/electrum_ingot.json
+63f9420650b713dfe7ccfb96e3f29215bc13aa6a data/createaddition/recipe/rolling/electrum_plate.json
+b67d870f35b081685ebcaa3bb9a43998b8873902 data/createaddition/recipe/rolling/gold_ingot.json
+e82db441c9d3d2efcde9c9f01f53810ca7a1b741 data/createaddition/recipe/rolling/gold_plate.json
+b21f03877917934ee8e1b2a087fb667b432349ba data/createaddition/recipe/rolling/iron_ingot.json
+f2375bbcab65d63db6bb8f1b50e34b76ec829ed6 data/createaddition/recipe/rolling/iron_plate.json
+cca31dac27cdfc557ef99778bb6bb1f55c38b9af data/create/recipe/rolling/bamboo.json

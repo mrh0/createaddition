@@ -3,8 +3,7 @@ package com.mrh0.createaddition.blocks.electric_motor;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-//import com.simibubi.create.foundation.render.CachedBufferer;
-//import com.simibubi.create.foundation.render.SuperByteBuffer;
+
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;

@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
-import com.mrh0.createaddition.compat.computercraft.ElectricMotorPeripheral;
-import com.mrh0.createaddition.compat.computercraft.Peripherals;
 import com.mrh0.createaddition.config.Config;
 import com.mrh0.createaddition.energy.InternalEnergyStorage;
 import com.mrh0.createaddition.index.CABlocks;
@@ -18,9 +16,8 @@ import com.simibubi.create.content.kinetics.motor.KineticScrollValueBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
-//import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.CreateLang;
-import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,19 +30,17 @@ import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
 public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity implements EnergyTransferable {
-
+	protected float motorSpeed;
 	protected ScrollValueBehaviour generatedSpeed;
 	protected final InternalEnergyStorage energy;
-	private final LazyOptional<EnergyStorage> lazyEnergy;
 	private boolean cc_update_rpm = false;
-	private int cc_new_rpm = 32;
+	private float cc_new_rpm = 32.0f;
 
 	private boolean active = false;
 
 	public ElectricMotorBlockEntity(BlockEntityType<? extends ElectricMotorBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		energy = new InternalEnergyStorage(Config.ELECTRIC_MOTOR_CAPACITY.get(), Config.ELECTRIC_MOTOR_MAX_INPUT.get(), 0);
-		lazyEnergy = LazyOptional.of(() -> energy);
 		setLazyTickRate(20);
 	}
 
@@ -87,16 +82,17 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity imple
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-        String spacing = " ";
+		String spacing = " ";
 		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.consumption").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyConsumptionRate(generatedSpeed.getValue())) + "fe/t ")
 				.withStyle(ChatFormatting.AQUA)).append(CreateLang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
 		return true;
 	}
 
-	public void updateGeneratedRotation(int i) {
+	// This is the callback that is called by the ScrollValueBehaviour!
+	public void updateGeneratedRotation(int rpm) {
+		motorSpeed = rpm;
 		super.updateGeneratedRotation();
-		cc_new_rpm = i;
 	}
 
 	@Override
@@ -106,10 +102,12 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity imple
 			updateGeneratedRotation();
 	}
 
+	// This is the method that determines the absolute true output speed!
 	@Override
 	public float getGeneratedSpeed() {
-		if (!CABlocks.ELECTRIC_MOTOR.has(getBlockState())) return 0;
-		return convertToDirection(active ? generatedSpeed.getValue() : 0, getBlockState().getValue(ElectricMotorBlock.FACING));
+		if (!CABlocks.ELECTRIC_MOTOR.has(getBlockState()))
+			return 0;
+		return convertToDirection(active ? motorSpeed : 0, getBlockState().getValue(ElectricMotorBlock.FACING));
 	}
 
 	@Override
@@ -125,7 +123,7 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity imple
 	@Nullable
 	@Override
 	public EnergyStorage getEnergyStorage(@Nullable Direction side) {
-		return lazyEnergy.getValueUnsafer();
+		return energy;
 	}
 
 	public boolean isEnergyInput(Direction side) {
@@ -153,42 +151,39 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity imple
 	@Override
 	public void lazyTick() {
 		super.lazyTick();
-		cc_antiSpam = 5;
-
 	}
 
-	public static int getEnergyConsumptionRate(int rpm) {
+	public static int getEnergyConsumptionRate(float rpm) {
 		return Math.abs(rpm) > 0 ? (int)Math.max((double)Config.FE_RPM.get() * ((double)Math.abs(rpm) / 256d), (double)Config.ELECTRIC_MOTOR_MINIMUM_CONSUMPTION.get()) : 0;
 	}
 
 	@Override
 	public void remove() {
-		lazyEnergy.invalidate();
 		super.remove();
 	}
 
 	// CC
-	int cc_antiSpam = 0;
 	boolean first = true;
 
 	@Override
 	public void tick() {
 		super.tick();
 		if(first) {
+			motorSpeed = generatedSpeed.getValue();
 			updateGeneratedRotation();
 			first = false;
 		}
 
-		if(cc_update_rpm && cc_antiSpam > 0) {
-			generatedSpeed.setValue(cc_new_rpm);
+		if(cc_update_rpm) {
+			generatedSpeed.setValue(Math.round(cc_new_rpm));
+			motorSpeed = cc_new_rpm;
 			cc_update_rpm = false;
-			cc_antiSpam--;
 			updateGeneratedRotation();
 		}
 
 		//Old Lazy
 		if(level.isClientSide()) return;
-		int con = getEnergyConsumptionRate(generatedSpeed.getValue());
+		int con = getEnergyConsumptionRate(motorSpeed);
 		if(!active) {
 			if(energy.getAmount() > con * 2L && !getBlockState().getValue(ElectricMotorBlock.POWERED)) {
 				active = true;
@@ -197,7 +192,7 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity imple
 		}
 		else {
 			long ext = energy.internalConsumeEnergy(con);
-			if (ext < con || getBlockState().getValue(ElectricMotorBlock.POWERED)) {
+			if(ext < con || getBlockState().getValue(ElectricMotorBlock.POWERED)) {
 				active = false;
 				updateGeneratedRotation();
 			}
@@ -211,31 +206,33 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity imple
 		if (Config.AUDIO_ENABLED.get()) CASoundScapes.play(CASoundScapes.AmbienceGroup.DYNAMO, worldPosition, 1);
 	}
 
-	public static int getDurationAngle(int deg, float initialProgress, float speed) {
+
+	public static float getDurationAngle(float deg, float initialProgress, float speed) {
 		speed = Math.abs(speed);
 		deg = Math.abs(deg);
 		if(speed < 0.1f) return 0;
 		double degreesPerTick = (speed * 360) / 60 / 20;
-		return (int) ((1 - initialProgress) * deg / degreesPerTick + 1);
+		return (float) ((1 - initialProgress) * deg / degreesPerTick + 1);
 	}
 
-	public static int getDurationDistance(int dis, float initialProgress, float speed) {
+	public static float getDurationDistance(float dis, float initialProgress, float speed) {
 		speed = Math.abs(speed);
 		dis = Math.abs(dis);
 		if(speed < 0.1f) return 0;
 		double metersPerTick = speed / 512;
-		return (int) ((1 - initialProgress) * dis / metersPerTick);
+		return (float) ((1 - initialProgress) * dis / metersPerTick);
 	}
 
-	public boolean setRPM(int rpm) {
+	// This is the callback used by the CC Peripheral!
+	public boolean setRPM(float rpm) {
 		rpm = Math.max(Math.min(rpm, Config.ELECTRIC_MOTOR_RPM_RANGE.get()), -Config.ELECTRIC_MOTOR_RPM_RANGE.get());
 		cc_new_rpm = rpm;
 		cc_update_rpm = true;
-		return cc_antiSpam > 0;
+		return true;
 	}
 
-	public int getRPM() {
-		return cc_new_rpm;//generatedSpeed.getValue();
+	public float getRPM() {
+		return motorSpeed;
 	}
 
 	public int getGeneratedStress() {
@@ -243,7 +240,7 @@ public class ElectricMotorBlockEntity extends GeneratingKineticBlockEntity imple
 	}
 
 	public int getEnergyConsumption() {
-		return getEnergyConsumptionRate(generatedSpeed.getValue());
+		return getEnergyConsumptionRate(motorSpeed);
 	}
 
 	@SuppressWarnings("unused")

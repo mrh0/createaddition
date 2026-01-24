@@ -5,7 +5,6 @@ import com.mrh0.createaddition.event.GameEvents;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItemProperties;
 import com.mrh0.createaddition.index.CAPartials;
-import com.mrh0.createaddition.index.CAPonders;
 import com.mrh0.createaddition.network.CANetwork;
 import com.mrh0.createaddition.ponder.CAPonderPlugin;
 import net.createmod.ponder.foundation.PonderIndex;
@@ -19,8 +18,6 @@ public class CreateAdditionClient implements ClientModInitializer {
     public void onInitializeClient() {
         CANetwork.initClient();
         GameEvents.initClient();
-//        CAPonders.register();
-        //CAEntities.registerRenderers();
         PonderIndex.addPlugin(new CAPonderPlugin());
         CAPartials.init();
         CAItemProperties.register();

@@ -1,0 +1,16 @@
+// 1.21.1	2025-04-20T11:26:58.8223037	Tags for minecraft:block mod id createaddition
+bc947a69c0c4b8382b7ee15369e75ed7fc76bec0 data/create/tags/block/brittle.json
+0fbe627f78a78b4f5ab675e69558567a06c6fcd0 data/create/tags/block/fan_processing_catalysts/blasting.json
+0fbe627f78a78b4f5ab675e69558567a06c6fcd0 data/create/tags/block/fan_transparent.json
+d78b595e1b98225cc6b8a7ece47819d09e6a381a data/c/tags/block/storage_blocks.json
+493e525b55b68a78b75d9be8d52fc57f8cd903fe data/c/tags/block/storage_blocks/bio.json
+493e525b55b68a78b75d9be8d52fc57f8cd903fe data/c/tags/block/storage_blocks/biomass.json
+632fc9502bfceba4b8c5b099fbb8d9f0ae4973d8 data/c/tags/block/storage_blocks/electrum.json
+bc947a69c0c4b8382b7ee15369e75ed7fc76bec0 data/farmersdelight/tags/block/mineable/knife.json
+632fc9502bfceba4b8c5b099fbb8d9f0ae4973d8 data/minecraft/tags/block/beacon_base_blocks.json
+632fc9502bfceba4b8c5b099fbb8d9f0ae4973d8 data/minecraft/tags/block/incorrect_for_gold_tool.json
+632fc9502bfceba4b8c5b099fbb8d9f0ae4973d8 data/minecraft/tags/block/incorrect_for_stone_tool.json
+632fc9502bfceba4b8c5b099fbb8d9f0ae4973d8 data/minecraft/tags/block/incorrect_for_wooden_tool.json
+493e525b55b68a78b75d9be8d52fc57f8cd903fe data/minecraft/tags/block/mineable/hoe.json
+a21ead64d2f02449e6650f60ea63cba89b5fd0b7 data/minecraft/tags/block/mineable/pickaxe.json
+632fc9502bfceba4b8c5b099fbb8d9f0ae4973d8 data/minecraft/tags/block/needs_iron_tool.json

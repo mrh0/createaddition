@@ -2,7 +2,6 @@ package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.simibubi.create.foundation.data.CreateEntityBuilder;
-//import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
@@ -18,6 +17,11 @@ public class CAEntities {
 	static {
 
 	}
+	
+	
+	/*public static final EntityEntry<OverchargedHammerEntity> OVERCHARGED_HAMMER_ENTITY =
+			register("super_glue", OverchargedHammerEntity::new, () -> OverchargedHammerRenderer::new, MobCategory.MISC, 10,
+				40, true, true, OverchargedHammerEntity::build).register();*/
 	
 	private static <T extends Entity> CreateEntityBuilder<T, ?> register(String name, EntityFactory<T> factory,
 			NonNullSupplier<NonNullFunction<Context, EntityRenderer<? super T>>> renderer,

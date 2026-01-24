@@ -3,7 +3,6 @@ plugins {
     id 'fabric-loom' version '1.10-SNAPSHOT'
     id 'eclipse'
     id 'maven-publish'
-    //id 'io.github.juuxel.loom-quiltflower' version '1.+'
     id 'org.quiltmc.quilt-mappings-on-loom' version '4.2.+'
 }
 
@@ -57,10 +56,6 @@ repositories {
         name = 'Ladysnake Mods'
         url = 'https://maven.ladysnake.org/releases'
     }
-    /*maven {
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }*/
     maven {
         name = "ModMaven"
         url = "https://modmaven.dev"
@@ -112,11 +107,6 @@ dependencies {
     modImplementation("com.simibubi.create:create-fabric:" +
             "${project.create_version}")
 
-//    modImplementation("dev.engine-room.flywheel:flywheel-fabric-${project.minecraft_version}")
-//    modImplementation("dev.engine-room.flywheel:flywheel-fabric-api-${project.minecraft_version}")
-//    modImplementation("net.createmod.ponder:Ponder-Fabric-${project.minecraft_version}")
-//    modImplementation("net.createmod.ponder:Ponder-Common-${project.minecraft_version}")
-
     modCompileOnly("cc.tweaked:cc-tweaked-$minecraft_version-fabric-api:$cc_tweaked_version")
     modRuntimeOnly("cc.tweaked:cc-tweaked-$minecraft_version-fabric:$cc_tweaked_version")
 
@@ -160,4 +150,8 @@ publishing {
             url "file://${project.projectDir}/mcmodsrepo"
         }
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }

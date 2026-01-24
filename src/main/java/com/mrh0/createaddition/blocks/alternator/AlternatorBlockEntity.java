@@ -1,5 +1,6 @@
 package com.mrh0.createaddition.blocks.alternator;
 
+import java.util.EnumMap;
 import java.util.List;
 
 import com.mrh0.createaddition.CreateAddition;
@@ -12,18 +13,19 @@ import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.transfer.EnergyTransferable;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-//import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.CreateLang;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.lookup.v1.block.BlockApiCache;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -34,8 +36,8 @@ import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.EnergyStorageUtil;
 
 public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyTransferable {
-
 	protected final InternalEnergyStorage energy;
+    private final EnumMap<Direction, BlockApiCache<EnergyStorage, Direction>> escacheMap = new EnumMap<>(Direction.class);
 
 	public AlternatorBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);
@@ -44,7 +46,7 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyT
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        String spacing = " ";
+		String spacing = " ";
 		tooltip.add(Component.literal(spacing).append(Component.translatable(CreateAddition.MODID + ".tooltip.energy.production").withStyle(ChatFormatting.GRAY)));
 		tooltip.add(Component.literal(spacing).append(Component.literal(" " + Util.format(getEnergyProductionRate((int) (isSpeedRequirementFulfilled() ? getSpeed() : 0))) + "fe/t ") // fix
 				.withStyle(ChatFormatting.AQUA)).append(CreateLang.translateDirect("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
@@ -83,29 +85,23 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyT
 		energy.write(compound);
 	}
 
-	private boolean firstTickState = true;
-
 	@Override
 	public void tick() {
 		super.tick();
 		if(level.isClientSide()) return;
-		if(firstTickState) firstTick();
-		firstTickState = false;
 
 		if(Math.abs(getSpeed()) > 0 && isSpeedRequirementFulfilled())
 			energy.internalProduceEnergy(getEnergyProductionRate((int)getSpeed()));
 
 		for(Direction d : Direction.values()) {
-			if(!isEnergyOutput(d))
-				continue;
+			if(!isEnergyOutput(d)) continue;
 			EnergyStorage ies = getCachedEnergy(d);
-			if(ies == null)
-				continue;
-			try(Transaction t = Transaction.openOuter()) {
-				EnergyStorageUtil.move(energy, ies, Config.ALTERNATOR_MAX_OUTPUT.get(), t);
-				t.commit();
-			}
-        }
+			if(ies == null) continue;
+            try(Transaction t = Transaction.openOuter()) {
+                EnergyStorageUtil.move(energy, ies, Config.ALTERNATOR_MAX_OUTPUT.get(), t);
+                t.commit();
+            }
+		}
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -131,48 +127,13 @@ public class AlternatorBlockEntity extends KineticBlockEntity implements EnergyT
 		return CABlocks.ALTERNATOR.get();
 	}
 
-	public void firstTick() {
-		updateCache();
-	}
-	public void updateCache() {
-		if(level.isClientSide()) return;
-		for(Direction side : Direction.values()) {
-			BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
-			if(te == null) {
-				setCache(side, LazyOptional.empty());
-				continue;
-			}
-			LazyOptional<EnergyStorage> le = LazyOptional.ofObject(EnergyStorage.SIDED.find(level, worldPosition.relative(side), side.getOpposite()));
-			setCache(side, le);
-		}
-	}
+    @Nullable
+    public EnergyStorage getCachedEnergy(Direction side) {
+        if(!(getLevel() instanceof ServerLevel serverLevel)) {
+            return null;
+        }
+        BlockApiCache<EnergyStorage, Direction> cache = escacheMap.computeIfAbsent(side, side1 -> BlockApiCache.create(EnergyStorage.SIDED, serverLevel, getBlockPos().relative(side)));
 
-	private LazyOptional<EnergyStorage> escacheUp = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheDown = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheNorth = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheEast = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheSouth = LazyOptional.empty();
-	private LazyOptional<EnergyStorage> escacheWest = LazyOptional.empty();
-
-	public void setCache(Direction side, LazyOptional<EnergyStorage> storage) {
-		switch (side) {
-			case DOWN -> escacheDown = storage;
-			case EAST -> escacheEast = storage;
-			case NORTH -> escacheNorth = storage;
-			case SOUTH -> escacheSouth = storage;
-			case UP -> escacheUp = storage;
-			case WEST -> escacheWest = storage;
-		}
-	}
-
-	public EnergyStorage getCachedEnergy(Direction side) {
-		return switch (side) {
-			case DOWN -> escacheDown.orElse(null);
-			case EAST -> escacheEast.orElse(null);
-			case NORTH -> escacheNorth.orElse(null);
-			case SOUTH -> escacheSouth.orElse(null);
-			case UP -> escacheUp.orElse(null);
-			case WEST -> escacheWest.orElse(null);
-		};
-	}
+        return cache.find(side.getOpposite());
+    }
 }
