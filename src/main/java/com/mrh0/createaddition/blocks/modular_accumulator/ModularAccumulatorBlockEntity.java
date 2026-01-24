@@ -324,8 +324,12 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 	}
 
 	private InternalEnergyStorage handlerForCapability() {
-		return isController() ? energyCapability
-			: (getControllerBE() != null ? getControllerBE().handlerForCapability() : new InternalEnergyStorage(0, CommonConfig.ACCUMULATOR_MAX_INPUT.get(), CommonConfig.ACCUMULATOR_MAX_OUTPUT.get()));
+		if (isController()) return energyCapability;
+		ModularAccumulatorBlockEntity controllerBE = getControllerBE();
+		if (controllerBE != null && controllerBE != this) {
+			return controllerBE.handlerForCapability();
+		}
+		return new InternalEnergyStorage(0, CommonConfig.ACCUMULATOR_MAX_INPUT.get(), CommonConfig.ACCUMULATOR_MAX_OUTPUT.get());
 	}
 
 	@Override
