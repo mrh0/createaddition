@@ -47,7 +47,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements EnergyTransferable, IHaveGoggleInformation, IMultiTileEnergyContainer, IObserveTileEntity, IDebugDrawer, ThresholdSwitchObservable {
-	protected EnergyStorage energyCap;
+	protected LazyOptional<EnergyStorage> energyCap;
 	protected InternalEnergyStorage energyStorage;
 	protected BlockPos controller;
 	protected BlockPos lastKnownPos;
@@ -64,7 +64,7 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements E
 	public ModularAccumulatorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		energyStorage = createEnergyStorage();
-		energyCap = energyStorage;
+		energyCap = LazyOptional.of(() -> energyStorage);
 		updateConnectivity = false;
 		height = 1;
 		width = 1;
@@ -298,7 +298,9 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements E
 	}
 
 	private void refreshCapability() {
-		energyCap = handlerForCapability();
+		LazyOptional<EnergyStorage> oldCap = energyCap;
+		energyCap = LazyOptional.of(this::handlerForCapability);
+		oldCap.invalidate();
 	}
 
 	private InternalEnergyStorage handlerForCapability() {
@@ -398,8 +400,14 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements E
 	@Nonnull
 	@Override
 	public EnergyStorage getEnergyStorage(@Nullable Direction side) {
-		if (energyCap == null) refreshCapability();
-		return energyCap;
+		if (!energyCap.isPresent()) refreshCapability();
+		return energyCap.getValueUnsafer();
+	}
+
+	@Override
+	public void invalidate() {
+		energyCap.invalidate();
+		super.invalidate();
 	}
 
 	public int getTotalAccumulatorSize() {

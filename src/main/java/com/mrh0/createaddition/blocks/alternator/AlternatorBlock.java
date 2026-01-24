@@ -11,9 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -76,15 +74,5 @@ public class AlternatorBlock extends DirectionalKineticBlock implements IBE<Alte
 	@Override
 	public SpeedLevel getMinimumRequiredSpeedLevel() {
 		return SpeedLevel.MEDIUM;
-	}
-	
-	@Override
-	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-		if(tileentity != null) {
-			if(tileentity instanceof AlternatorBlockEntity) {
-				((AlternatorBlockEntity)tileentity).updateCache();
-			}
-		}
 	}
 }
