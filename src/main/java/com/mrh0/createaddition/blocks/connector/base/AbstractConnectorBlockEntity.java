@@ -248,13 +248,10 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 			this.wasContraption = false;
 			validateNodes();
 		}
-
-		updateExternalEnergyStorage();
 	}
 
 	protected void specialTick() {}
 
-	boolean externalStorageInvalid = false;
 	@Override
 	public void tick() {
 		if (this.firstTick) firstTick();
@@ -274,15 +271,18 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		if(awakeNetwork(level)) notifyUpdate();
 
 		networkTick(network);
-
-		if (externalStorageInvalid) updateExternalEnergyStorage();
-
 	}
 
 	private void networkTick(EnergyNetwork network) {
 		ConnectorMode mode = getMode();
 		if(level == null) return;
 		if(level.isClientSide()) return;
+		if(external == null) {
+			updateExternalEnergyStorage();
+			if(external == null) {
+				return;
+			}
+		}
 		IEnergyStorage otherStorage = external.getCapability();
 		if (otherStorage == null) return;
 
@@ -316,7 +316,6 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		}
 
 		invalidateNodeCache();
-		// invalidateCaps();
 
 		// Invalidate
 		if (network != null) network.invalidate();
@@ -369,24 +368,6 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		if (!(level instanceof ServerLevel)) return;
 		if (!level.isLoaded(getBlockPos())) return;
 		var side = getBlockState().getValue(AbstractConnectorBlock.FACING);
-		if (!level.isLoaded(getBlockPos().relative(side))) return;
-		externalStorageInvalid = false;
-
-		//if (!level.isLoaded(worldPosition.relative(side))) {
-		//	external = LazyOptional.empty();
-		//	return;
-		//}
-		//BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
-		//if(te == null) {
-		//	external = LazyOptional.empty();
-		//	return;
-		//}
-		//LazyOptional<IEnergyStorage> le = te.getCapability(ForgeCapabilities.ENERGY, side.getOpposite());
-		//if(ignoreCapSide() && !le.isPresent()) le = te.getCapability(ForgeCapabilities.ENERGY);
-		// Make sure the side isn't already cached.
-		//if (le.equals(external)) return;
-		//external = le;
-		//le.addListener((es) -> { externalStorageInvalid = true; });
 
 		external = BlockCapabilityCache.create(
 			Capabilities.EnergyStorage.BLOCK, // capability to cache
@@ -394,7 +375,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 			getPos().relative(side),
 			side.getOpposite(),
 			() -> !this.isRemoved(), // validity check (because the cache might outlive the object it belongs to)
-			() -> externalStorageInvalid = true // invalidation listener
+			() -> {} // invalidation listener
 		);
 	}
 
