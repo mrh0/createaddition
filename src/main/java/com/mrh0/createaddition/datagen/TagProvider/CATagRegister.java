@@ -115,6 +115,7 @@ public class CATagRegister {
         public static final TagKey<Fluid> GASOLINE = commonTags("gasoline");
         public static final TagKey<Fluid> DIESEL = commonTags("diesel");
         public static final TagKey<Fluid> BIODIESEL = commonTags("biodiesel");
+        public static final TagKey<Fluid> IGNITES = commonTags("ignites");
 
         public static TagKey<Fluid> commonTags(String folder, String name) {
             return FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", String.format("%s/%s", folder, name)));
