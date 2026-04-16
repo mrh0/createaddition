@@ -1,0 +1,36 @@
+{
+  "values": [
+    {
+      "id": "#c:biofuel",
+      "required": false
+    },
+    {
+      "id": "#c:creosote",
+      "required": false
+    },
+    {
+      "id": "#c:crude_oil",
+      "required": false
+    },
+    {
+      "id": "#c:plantoil",
+      "required": false
+    },
+    {
+      "id": "#c:ethanol",
+      "required": false
+    },
+    {
+      "id": "#c:gasoline",
+      "required": false
+    },
+    {
+      "id": "#c:diesel",
+      "required": false
+    },
+    {
+      "id": "#c:biodiesel",
+      "required": false
+    }
+  ]
+}
