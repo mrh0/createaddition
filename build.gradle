@@ -191,7 +191,6 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -236,6 +235,9 @@ publishing {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
     options.warnings = false
+}
+tasks.named("processResources", ProcessResources) {
+    duplicatesStrategy = DuplicatesStrategy.WARN
 }
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
