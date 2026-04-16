@@ -6,9 +6,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mrh0.createaddition.datagen.TagProvider.CATagRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
@@ -19,57 +16,10 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FlowingFluid.class)
 public class FlowingFluidMixin {
-
-    @Unique
-    private void ca_ignite(Level level, BlockPos pos, FluidState state) {
-        if (!level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
-            return;
-        }
-
-        if (!state.is(CATagRegister.Fluids.IGNITES)) {
-            return;
-        }
-
-        BlockPos.MutableBlockPos mutable = pos.mutable();
-        Direction fireFace = Direction.Plane.HORIZONTAL.stream().filter(adjacent -> {
-            mutable.setWithOffset(pos, adjacent);
-            return level.getBlockState(mutable).is(BlockTags.FIRE);
-        }).findAny().orElse(null);
-
-        if (fireFace == null) {
-            return;
-        }
-
-        BlockPos firePos = pos.relative(fireFace);
-        BlockState fire = level.getBlockState(firePos);
-        if (fire.canSurvive(level, firePos)) {
-            level.setBlockAndUpdate(pos, fire);
-            level.playSound(
-                    null,
-                    pos,
-                    SoundEvents.FIRE_EXTINGUISH,
-                    SoundSource.BLOCKS,
-                    0.5F,
-                    2.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.8F
-            );
-        }
-    }
-
-    @Inject(
-            method = "tick(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/material/FluidState;)V",
-            at = @At("RETURN")
-    )
-    private void injectIgnite(Level level, BlockPos pos, FluidState state, CallbackInfo ci) {
-        ca_ignite(level, pos, state);
-    }
-
     @WrapMethod(
             method = "canSpreadTo(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/material/FluidState;Lnet/minecraft/world/level/material/Fluid;)Z"
     )
@@ -108,7 +58,7 @@ public class FlowingFluidMixin {
                     target = "Lnet/minecraft/world/level/LevelAccessor;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"
             )
     )
-    private boolean propagateFireUp(
+    private boolean spreadFire(
             LevelAccessor level,
             BlockPos blockPos,
             BlockState fluidBlockState,
@@ -117,7 +67,7 @@ public class FlowingFluidMixin {
             LevelAccessor duplicate1,
             BlockPos duplicate2,
             BlockState toReplace,
-            Direction direction,
+            Direction flowDirection,
             FluidState fluidState
     ) {
         boolean result = original.call(level, blockPos, fluidBlockState, i);
@@ -128,9 +78,13 @@ public class FlowingFluidMixin {
         }
 
 
-        if (direction == Direction.DOWN && fluidState.is(CATagRegister.Fluids.IGNITES) && toReplace.is(BlockTags.FIRE)) {
-            BlockPos fluidPos = blockPos.above();
-            level.setBlock(fluidPos, toReplace, 3);
+        if (flowDirection == Direction.DOWN && fluidState.is(CATagRegister.Fluids.IGNITES) && toReplace.is(BlockTags.FIRE)) {
+            Direction.Plane.HORIZONTAL.stream().forEach(direction -> {
+                BlockPos side = blockPos.relative(direction);
+                if (level.isEmptyBlock(side) && toReplace.canSurvive(level, side)) {
+                    level.setBlock(side, toReplace, 3);
+                }
+            });
         }
         return result;
     }
