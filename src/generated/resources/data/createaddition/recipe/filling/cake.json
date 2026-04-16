@@ -5,9 +5,9 @@
       "item": "createaddition:cake_base_baked"
     },
     {
-      "type": "fluid_tag",
+      "type": "neoforge:tag",
       "amount": 1000,
-      "fluid_tag": "c:milk"
+      "tag": "c:milk"
     }
   ],
   "results": [

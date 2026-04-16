@@ -8,9 +8,9 @@
       "item": "create:cinder_flour"
     },
     {
-      "type": "fluid_tag",
+      "type": "neoforge:tag",
       "amount": 25,
-      "fluid_tag": "minecraft:lava"
+      "tag": "minecraft:lava"
     }
   ],
   "results": [

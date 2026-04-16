@@ -3,9 +3,9 @@
   "burn_time": 4800,
   "ingredients": [
     {
-      "type": "fluid_tag",
+      "type": "neoforge:tag",
       "amount": 1000,
-      "fluid_tag": "c:plantoil"
+      "tag": "c:plantoil"
     }
   ],
   "results": []

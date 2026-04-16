@@ -1,11 +1,11 @@
 {
   "type": "createaddition:liquid_burning",
-  "burn_time": 24000,
+  "burn_time": 2400,
   "ingredients": [
     {
-      "type": "fluid_tag",
+      "type": "neoforge:tag",
       "amount": 1000,
-      "fluid_tag": "c:biofuel"
+      "tag": "c:biofuel"
     }
   ],
   "results": [],

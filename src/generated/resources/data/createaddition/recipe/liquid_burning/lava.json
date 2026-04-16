@@ -3,9 +3,9 @@
   "burn_time": 20000,
   "ingredients": [
     {
-      "type": "fluid_tag",
+      "type": "neoforge:tag",
       "amount": 1000,
-      "fluid_tag": "minecraft:lava"
+      "tag": "minecraft:lava"
     }
   ],
   "results": []
