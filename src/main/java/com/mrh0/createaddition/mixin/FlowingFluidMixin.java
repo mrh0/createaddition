@@ -11,6 +11,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -82,7 +83,13 @@ public class FlowingFluidMixin {
             Direction.Plane.HORIZONTAL.stream().forEach(direction -> {
                 BlockPos side = blockPos.relative(direction);
                 if (level.isEmptyBlock(side) && toReplace.canSurvive(level, side)) {
-                    level.setBlock(side, toReplace, 3);
+                    BlockState fireState;
+                    if (toReplace.getBlock() instanceof FireBlock fire) {
+                        fireState = ((FireBlockInvoker)fire).invokeSpreadPlacement(level, side);
+                    } else {
+                        fireState = toReplace.getBlock().defaultBlockState();
+                    }
+                    level.setBlock(side, fireState, 3);
                 }
             });
         }
