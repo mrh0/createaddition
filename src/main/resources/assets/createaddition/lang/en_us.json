@@ -327,5 +327,5 @@
 	"createaddition.subtitle.loud_zap": "Tesla Coil zaps",
 	"createaddition.subtitle.little_zap": "Tesla Coil sparks",
 
-    "tag.fluid.createaddition.ignites": "Ignitable fluids"
+    "tag.fluid.c.ignites": "Ignitable fluids"
 }
