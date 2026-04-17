@@ -294,5 +294,7 @@
 	"effect.createaddition.shocking":"쇼크",
 	"death.attack.createaddition.tesla_coil": "%1$s이(가) 치명적인 전기 충격을 받았습니다",
   	"death.attack.createaddition.tesla_coil.player": "%1$s이(가) %2$s와(과) 싸우다가 치명적인 전기 충격을 받았습니다",
-  	"effect.createaddition.shocking.description": "이동 속도를 심각하게 감소시킵니다"
+  	"effect.createaddition.shocking.description": "이동 속도를 심각하게 감소시킵니다",
+
+    "tag.fluid.createaddition.ignites": "점화 가능 액체"
 }

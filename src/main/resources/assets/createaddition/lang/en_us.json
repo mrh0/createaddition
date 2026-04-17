@@ -325,5 +325,7 @@
   	"effect.createaddition.shocking.description": "Causes severely reduced movement speed",
 
 	"createaddition.subtitle.loud_zap": "Tesla Coil zaps",
-	"createaddition.subtitle.little_zap": "Tesla Coil sparks"
+	"createaddition.subtitle.little_zap": "Tesla Coil sparks",
+
+    "tag.fluid.createaddition.ignites": "Ignitable fluids"
 }
