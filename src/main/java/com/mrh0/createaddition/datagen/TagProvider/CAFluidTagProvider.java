@@ -5,11 +5,10 @@ import com.mrh0.createaddition.index.CAFluids;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class CAFluidTagProvider extends FluidTagsProvider {
@@ -27,6 +26,18 @@ public class CAFluidTagProvider extends FluidTagsProvider {
                 CAFluids.SEED_OIL.get(),
                 CAFluids.SEED_OIL.getSource()
         );
+
+        var ignites = tag(CATagRegister.Fluids.IGNITES);
+        List.of(
+                CATagRegister.Fluids.BIOFUEL,
+                CATagRegister.Fluids.CREOSOTE,
+                CATagRegister.Fluids.CRUDE_OIL,
+                CATagRegister.Fluids.PLANTOIL,
+                CATagRegister.Fluids.ETHANOL,
+                CATagRegister.Fluids.GASOLINE,
+                CATagRegister.Fluids.DIESEL,
+                CATagRegister.Fluids.BIODIESEL
+        ).forEach(ignites::addOptionalTag);
 
         /*
         tag(FluidTags.WATER).add(

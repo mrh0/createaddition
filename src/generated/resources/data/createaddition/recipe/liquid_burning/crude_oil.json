@@ -9,9 +9,9 @@
   "burn_time": 9600,
   "ingredients": [
     {
-      "type": "fluid_tag",
+      "type": "neoforge:tag",
       "amount": 1000,
-      "fluid_tag": "c:crude_oil"
+      "tag": "c:crude_oil"
     }
   ],
   "results": []

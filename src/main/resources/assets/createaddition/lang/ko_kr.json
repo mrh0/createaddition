@@ -36,7 +36,7 @@
 
 	"item.createaddition.diamond_grit": "다이아몬드 그릿",
 	"item.createaddition.diamond_grit_sandpaper": "다이아몬드 그릿 사포",
-	"item.createaddition.diamond_grit_sandpaper.tooltip": "다이아몬드 그릿 사포",
+	"item.createaddition.diamond_grit_sandpaper.tooltip.summary": "다이아몬드 그릿 사포",
 
 	"item.createaddition.zinc_sheet": "아연 판",
 	
@@ -109,7 +109,7 @@
 	
 	"item.createaddition.spool": "빈 전선 타래",
 	"item.createaddition.spool.nbt": "연결 위치를 저장합니다.",
-	"item.createaddition.spool.tooltip": "전선 타래",
+	"item.createaddition.spool.tooltip.summary": "전선 타래",
 	"item.createaddition.spool.tooltip.condition1": "연결된 두 단자를 우클릭",
 	"item.createaddition.spool.tooltip.behaviour1": "연결된 전선을 제거합니다. 사용 후 _전선이 감긴 타래_가 남습니다.",
 	
@@ -211,7 +211,7 @@
 
 	"block.createaddition.liquid_blaze_burner": "빨대를 문 블레이즈 버너",
 	
-	"itemGroup.createaddition:main":"Create Crafts & Additions",
+	"itemGroup.createaddition.main":"Create Crafts & Additions",
 	
 	"createaddition.ponder.tag.electric": "전기 기구",
 	"createaddition.ponder.tag.electric.description": "전기를 사용하는 장치입니다.",
@@ -287,12 +287,14 @@
 	"createaddition.schedule.condition.energy_threshold": "에너지 저장소 조건",
 	"createaddition.schedule.condition.threshold.unit": "Kfe",
 	"createaddition.schedule.condition.threshold.energy": "에너지",
-	
-	"death.attack.barbed_wire": "%1$s이(가) 철조망을 넘으려 했습니다",
-  	"death.attack.barbed_wire.player": "%1$s이(가) %2$s와(과) 싸우다가 철조망을 넘으려 했습니다",
+
+	"death.attack.createaddition.barbed_wire": "%1$s이(가) 철조망을 넘으려 했습니다",
+  	"death.attack.createaddition.barbed_wire.player": "%1$s이(가) %2$s와(과) 싸우다가 철조망을 넘으려 했습니다",
 	
 	"effect.createaddition.shocking":"쇼크",
-	"death.attack.tesla_coil": "%1$s이(가) 치명적인 전기 충격을 받았습니다",
-  	"death.attack.tesla_coil.player": "%1$s이(가) %2$s와(과) 싸우다가 치명적인 전기 충격을 받았습니다",
-  	"effect.createaddition.shocking.description": "이동 속도를 심각하게 감소시킵니다"
+	"death.attack.createaddition.tesla_coil": "%1$s이(가) 치명적인 전기 충격을 받았습니다",
+  	"death.attack.createaddition.tesla_coil.player": "%1$s이(가) %2$s와(과) 싸우다가 치명적인 전기 충격을 받았습니다",
+  	"effect.createaddition.shocking.description": "이동 속도를 심각하게 감소시킵니다",
+
+    "tag.fluid.c.ignites": "점화 가능 액체"
 }

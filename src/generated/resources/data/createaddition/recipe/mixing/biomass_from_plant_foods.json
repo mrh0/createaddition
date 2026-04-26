@@ -9,9 +9,9 @@
       "tag": "createaddition:plant_foods"
     },
     {
-      "type": "fluid_tag",
+      "type": "neoforge:tag",
       "amount": 100,
-      "fluid_tag": "c:plantoil"
+      "tag": "c:plantoil"
     }
   ],
   "results": [
