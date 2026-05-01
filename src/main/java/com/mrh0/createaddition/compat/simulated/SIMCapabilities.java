@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
-public class CASimulated {
+public class SIMCapabilities {
     public static void registerBECapabilities(RegisterCapabilitiesEvent event) {
 
         var dockType = BuiltInRegistries.BLOCK_ENTITY_TYPE.get(

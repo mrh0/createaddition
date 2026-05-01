@@ -13,7 +13,7 @@ import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyIn
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlockEntity;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlockEntity;
 import com.mrh0.createaddition.compat.computercraft.Peripherals;
-import com.mrh0.createaddition.compat.simulated.CASimulated;
+import com.mrh0.createaddition.compat.simulated.SIMCapabilities;
 
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
@@ -36,7 +36,7 @@ public class CACapabilities {
         }
 
         if(CreateAddition.SIM_ACTIVE) {
-            CASimulated.registerBECapabilities(event);
+            SIMCapabilities.registerBECapabilities(event);
         }
     }
 }

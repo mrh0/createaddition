@@ -36,6 +36,7 @@ public class DockEnergyStorage implements IEnergyStorage {
         this.connectedStorage = null;
         this.isPrimary = false;
 
+        // invalidate so the connector cache rebuilds
         if (this.blockEntity.getLevel() != null  && !blockEntity.getLevel().isClientSide()) {
             this.blockEntity.getLevel().invalidateCapabilities(this.blockEntity.getBlockPos());
         }

@@ -24,8 +24,6 @@ abstract public class DockingConnectorBEMixin implements DockingConnectorBEAcces
     @Shadow
     public BlockPos otherConnectorPosition;
 
-
-
     @Inject(method = "<init>", at = @At("TAIL"), remap = false)
     private void onInit(BlockEntityType<?> type, BlockPos pos,
                         BlockState state, CallbackInfo ci) {
@@ -40,7 +38,7 @@ abstract public class DockingConnectorBEMixin implements DockingConnectorBEAcces
             target = "Ldev/simulated_team/simulated/content/blocks/docking_connector/DockingConnectorTank;connect(Lnet/minecraft/core/BlockPos;Ldev/simulated_team/simulated/content/blocks/docking_connector/DockingConnectorTank;)V"
     ), remap = false)
     private void onConnect(CallbackInfo ci) {
-        BlockPos otherPos = ((DockingConnectorBEAccess)(Object)this).getOtherConnectorPosition();
+        BlockPos otherPos = this.otherConnectorPosition;
         if (otherPos == null) return;
 
         Level level = ((BlockEntity)(Object)this).getLevel();
@@ -62,7 +60,6 @@ abstract public class DockingConnectorBEMixin implements DockingConnectorBEAcces
             ),remap = false
     )
     private void onDisconnect(CallbackInfo ci) {
-
         this.energyStorage.disconnect();
     }
 
@@ -71,9 +68,5 @@ abstract public class DockingConnectorBEMixin implements DockingConnectorBEAcces
         return energyStorage;
     }
 
-    @Override
-    public BlockPos getOtherConnectorPosition() {
-        return this.otherConnectorPosition;
-    }
 
 }
