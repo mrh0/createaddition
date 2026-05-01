@@ -60,7 +60,7 @@ public class CreateAddition {
     public static boolean CC_ACTIVE = false;
     public static boolean AE2_ACTIVE = false;
     public static boolean MEK_ACTIVE = false;
-
+    public static boolean SIM_ACTIVE = false;
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(CreateAddition.MODID)
             .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
             .setTooltipModifierFactory(item ->
@@ -117,6 +117,7 @@ public class CreateAddition {
         CC_ACTIVE = ModList.get().isLoaded("computercraft");
         AE2_ACTIVE = ModList.get().isLoaded("ae2");
         MEK_ACTIVE = ModList.get().isLoaded("mekanism");
+        SIM_ACTIVE = ModList.get().isLoaded("simulated");
 
         REGISTRATE.registerEventListeners(eventBus);
         CABlocks.register();

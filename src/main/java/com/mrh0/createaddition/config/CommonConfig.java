@@ -24,6 +24,7 @@ public class CommonConfig {
 	public static final String CATAGORY_PEI = "portable_energy_interface";
 	public static final String CATAGORY_TESLA_COIL = "tesla_coil";
 	public static final String CATAGORY_MISC = "misc";
+	public static final String CATAGORY_COMPATIBILITY = "compatibility";
 
 	private static final ModConfigSpec.Builder COMMON_BUILDER = new ModConfigSpec.Builder();
 
@@ -83,6 +84,9 @@ public class CommonConfig {
 
 	public static ModConfigSpec.IntValue DIAMOND_GRIT_SANDPAPER_USES;
 	public static ModConfigSpec.DoubleValue BARBED_WIRE_DAMAGE;
+
+	public static ModConfigSpec.IntValue DOCKING_CONNECTOR_CAPACITY;
+
 
 	static {
 		COMMON_BUILDER.comment("Make sure config changes are duplicated on both Clients and the Server when running a dedicated Server,")
@@ -239,6 +243,11 @@ public class CommonConfig {
 		BARBED_WIRE_DAMAGE = COMMON_BUILDER.comment("Barbed Wire Damage.")
 				.defineInRange("barbed_wire_damage", 2, 0, Float.MAX_VALUE);
 
+		COMMON_BUILDER.pop();
+
+		COMMON_BUILDER.comment("Compatibility").push(CATAGORY_COMPATIBILITY);
+		DOCKING_CONNECTOR_CAPACITY = COMMON_BUILDER.comment("Energy capacity of the Docking Connector (Aeronautics/Simulated).")
+				.defineInRange("docking_connector_capacity", 80000, 1, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 
 		COMMON_CONFIG = COMMON_BUILDER.build();
