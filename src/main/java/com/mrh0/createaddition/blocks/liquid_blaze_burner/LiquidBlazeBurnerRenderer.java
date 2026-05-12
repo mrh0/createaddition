@@ -1,18 +1,14 @@
 package com.mrh0.createaddition.blocks.liquid_blaze_burner;
 
-import javax.annotation.Nullable;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mrh0.createaddition.index.CAPartials;
-
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.contraptions.render.ContraptionMatrices;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-
 import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.animation.AnimationTickHolder;
@@ -29,6 +25,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+
+import javax.annotation.Nullable;
 
 public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBlazeBurnerBlockEntity> {
 
@@ -122,12 +120,11 @@ public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBla
 		} else {
 			hatBuffer.translateY(0.75f);
 		}
-		VertexConsumer cutout = bufferSource.getBuffer(RenderType.cutoutMipped());
 		hatBuffer
 				.rotateCentered(horizontalAngle + Mth.PI, Direction.UP)
 				.translate(0.5f, 0, 0.5f)
 				.light(LightTexture.FULL_BRIGHT)
-				.renderInto(ms, cutout);
+				.renderInto(ms, bufferSource.getBuffer(RenderType.cutoutMipped()));
 
 		if (heatLevel.isAtLeast(BlazeBurnerBlock.HeatLevel.FADING)) {
 			PartialModel rodsModel = heatLevel == BlazeBurnerBlock.HeatLevel.SEETHING ? AllPartialModels.BLAZE_BURNER_SUPER_RODS
@@ -178,7 +175,7 @@ public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBla
 			if (modelTransform != null)
 				flameBuffer.transform(modelTransform);
 			flameBuffer.shiftUVScrolling(spriteShift, (float) uScroll, (float) vScroll);
-			draw(flameBuffer, horizontalAngle, ms, cutout);
+			draw(flameBuffer, horizontalAngle, ms, bufferSource.getBuffer(RenderType.cutoutMipped()));
 		}
 		ms.popPose();
 	}
