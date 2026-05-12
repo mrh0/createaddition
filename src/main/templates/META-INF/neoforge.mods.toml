@@ -66,6 +66,10 @@ AlphaMode, Skippyall, BobDole, legoatoom, gobiidaiah, StockiesLad, THEREDSTONEBR
     ordering="NONE"
     side="BOTH"
 [[dependencies.createaddition]]
+    modId="simulated"
+    type="optional"
+    ordering="AFTER"
+[[dependencies.createaddition]]
     modId="minecraft"
     type="required"
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
