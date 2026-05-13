@@ -1,6 +1,6 @@
 {
   "values": [
-    "#c:plates/electrum",
-    "#c:plates/zinc"
+    "createaddition:electrum_sheet",
+    "createaddition:zinc_sheet"
   ]
 }
