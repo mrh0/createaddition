@@ -14,11 +14,6 @@ public class BrassAmulet extends Item {
         super(props.stacksTo(1));
     }
 
-//    @Override
-//    public Rarity getRarity(ItemStack pStack) {
-//        return Rarity.UNCOMMON;
-//    }
-
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int pSlotId, boolean pIsSelected) {
         if(!(entity instanceof Player player)) return;
