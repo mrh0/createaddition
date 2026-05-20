@@ -326,7 +326,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		if(tryUpdateLiquid(itemStack, simulate)) return true;
 
 		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
-			newBurnTime = 1000;
+			newBurnTime = 3200;
 			newFuel = FuelType.SPECIAL;
 		} else {
 			newBurnTime = itemStack.getBurnTime(null);
