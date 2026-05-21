@@ -22,7 +22,7 @@ public class LiquidBlazeScrollSlot extends ValueBoxTransform.Dual {
 
     @Override
     public Vec3 getLocalOffset(LevelAccessor level, BlockPos pos, BlockState state) {
-        return VecHelper.voxelSpace(first ? 4 : 12, 0.1, 8);
+        return VecHelper.voxelSpace(first ? 5 : 11, 0, 8);
     }
 
     @Override

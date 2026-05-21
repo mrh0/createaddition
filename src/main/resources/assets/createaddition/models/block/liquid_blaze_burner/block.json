@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"loader": "neoforge:obj",
 	"flip_v": true,
-	"model": "createaddition:models/block/liquid_blaze_burner/liquid_blaze_cage.obj",
+	"model": "create:models/block/blaze_burner/blaze_cage.obj",
 	"textures": {
 		"0": "createaddition:block/liquid_blaze_heater_brazier",
 		"particle": "create:block/dark_metal_block"
