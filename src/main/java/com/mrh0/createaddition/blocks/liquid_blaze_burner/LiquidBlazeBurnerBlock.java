@@ -50,7 +50,7 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 		registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.NONE));
 	}
 
-	public static final MapCodec<BlazeBurnerBlock> CODEC = simpleCodec(BlazeBurnerBlock::new);
+	public static final MapCodec<LiquidBlazeBurnerBlock> CODEC = simpleCodec(LiquidBlazeBurnerBlock::new);
 
 	@Override
 	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {

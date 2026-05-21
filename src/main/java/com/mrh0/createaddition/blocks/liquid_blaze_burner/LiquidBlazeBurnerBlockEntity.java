@@ -22,6 +22,7 @@ import com.simibubi.create.content.fluids.tank.FluidTankBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 
 import net.createmod.catnip.animation.LerpedFloat;
@@ -60,7 +61,7 @@ import org.jetbrains.annotations.Nullable;
 import static com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HEAT_LEVEL;
 
 public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation, IObserveBlockEntity {
-	public static int MAX_HEAT_CAPACITY = CommonConfig.LIQUID_BLAZE_BURNER_MAX_HEAT_CAPACITY.get();
+	public int MAX_HEAT_CAPACITY = CommonConfig.LIQUID_BLAZE_BURNER_MAX_HEAT_CAPACITY.get();
 
 	protected FuelType activeFuel;
 	protected int remainingBurnTime;
@@ -71,6 +72,8 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	protected boolean hat;
 	public final boolean stockKeeper = false;
 	BlazeBurnerBlock.HeatLevel heatLevel;
+	private ScrollValueBehaviour HEAT_CAPACITY;
+	private ScrollValueBehaviour LIQUID_CAPACITY;
 
 	public LiquidBlazeBurnerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -89,8 +92,37 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	}
 
 	@Override
-	public void addBehaviours(List<BlockEntityBehaviour> list) {
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+		LIQUID_CAPACITY = new LiquidBlazeScrollValueBehaviourLiquid(Component.translatable(CreateAddition.MODID + ".tooltip.liquid_burning.liquid_capacity"), this,
+			new LiquidBlazeScrollSlot(false)).between(0, defaultLiquidValue());
+		LIQUID_CAPACITY.withFormatter(this::formatLiquid);
+		LIQUID_CAPACITY.withCallback(v -> syncTankCapacity());
+		LIQUID_CAPACITY.setValue(defaultLiquidValue());
+		behaviours.add(LIQUID_CAPACITY);
 
+		HEAT_CAPACITY = new LiquidBlazeScrollValueBehaviourHeat(Component.translatable(CreateAddition.MODID + ".tooltip.liquid_burning.heat_capacity"), this,
+			new LiquidBlazeScrollSlot(true)).between(0, defaultHeatValue());
+		HEAT_CAPACITY.withFormatter(this::formatHeat);
+		HEAT_CAPACITY.withCallback(v -> MAX_HEAT_CAPACITY = v);
+		HEAT_CAPACITY.setValue(defaultHeatValue());
+		behaviours.add(HEAT_CAPACITY);
+	}
+
+	protected int defaultHeatValue() {
+		return CommonConfig.LIQUID_BLAZE_BURNER_MAX_HEAT_CAPACITY.get();
+	}
+
+	protected int defaultLiquidValue() {
+		return CommonConfig.LIQUID_BLAZE_BURNER_MAX_LIQUID_CAPACITY.get();
+	}
+
+	private void syncTankCapacity(){
+		if (tankInventory == null || LIQUID_CAPACITY == null) return;
+    	int capacity = LIQUID_CAPACITY.getValue();
+    	tankInventory.setCapacity(capacity);
+    	if (tankInventory.getFluidAmount() > capacity)
+        	tankInventory.drain(tankInventory.getFluidAmount() - capacity, IFluidHandler.FluidAction.EXECUTE);
+		notifyUpdate();
 	}
 
 	public BlazeBurnerBlock.HeatLevel getHeatLevelForRender() {
@@ -116,8 +148,8 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	}
 
 	protected void onFluidStackChanged(FluidStack newFluidStack) {
-
 		if (!hasLevel()) return;
+		syncTankCapacity();
 		update(newFluidStack);
 	}
 
@@ -188,9 +220,16 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		return isCreative;
 	}
 
+	private boolean firstTick = true;
 	@Override
 	public void tick() {
 		super.tick();
+
+		if (firstTick) {
+			firstTick = false;
+			syncTankCapacity();
+			if (HEAT_CAPACITY != null) MAX_HEAT_CAPACITY = HEAT_CAPACITY.getValue();
+		}
 
 		if (level == null) return;
 		if (level.isClientSide) {
@@ -210,7 +249,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 
 		if (activeFuel == FuelType.SPECIAL) {
 			activeFuel = FuelType.NORMAL;
-			remainingBurnTime = MAX_HEAT_CAPACITY / 2;
+			remainingBurnTime = HEAT_CAPACITY.getValue() / 2;
 		} else activeFuel = FuelType.NONE;
 
 		updateBlockState();
@@ -265,18 +304,34 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		if (goggles) tag.putBoolean("Goggles", true);
 		if (hat) tag.putBoolean("TrainHat", true);
 		tag.put("TankContent", tankInventory.writeToNBT(registries, new CompoundTag()));
+		tag.putInt("TankCapacity", tankInventory.getCapacity());
 		super.write(tag, registries, clientPacket);
 	}
 
 	@Override
 	protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(tag, registries, clientPacket);
 		activeFuel = FuelType.values()[tag.getInt("fuelLevel")];
 		remainingBurnTime = tag.getInt("burnTimeRemaining");
 		isCreative = tag.getBoolean("isCreative");
 		goggles = tag.contains("Goggles");
 		hat = tag.contains("TrainHat");
 		tankInventory.readFromNBT(registries, tag.getCompound("TankContent"));
-		super.read(tag, registries, clientPacket);
+		if (tag.contains("TankCapacity")) tankInventory.setCapacity(tag.getInt("TankCapacity"));
+	}
+
+	private String formatHeat(int value) {
+		if (value < 60)
+			return value + "t";
+		if (value < 20 * 60)
+			return (value / 20) + "s";
+		return (value / 20 / 60) + "m";
+	}
+
+	private String formatLiquid(int value) {
+		if (value < 1000)
+			return value + "mB";
+		return (value / 1000) + "B";
 	}
 
 	public BlazeBurnerBlock.HeatLevel getHeatLevelFromBlock() {
@@ -343,8 +398,8 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		if (activeFuel == FuelType.SPECIAL && remainingBurnTime > 20) return false;
 
 		if (newFuel == activeFuel) {
-			if (remainingBurnTime + newBurnTime > MAX_HEAT_CAPACITY && !forceOverflow) return false;
-			newBurnTime = Mth.clamp(remainingBurnTime + newBurnTime, 0, MAX_HEAT_CAPACITY);
+			if (remainingBurnTime + newBurnTime > HEAT_CAPACITY.getValue() && !forceOverflow) return false;
+			newBurnTime = Mth.clamp(remainingBurnTime + newBurnTime, 0, HEAT_CAPACITY.getValue());
 		}
 
 		if (simulate) return true;
@@ -408,7 +463,7 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 				level = BlazeBurnerBlock.HeatLevel.SEETHING;
 				break;
 			case NORMAL:
-				boolean lowPercent = (double) remainingBurnTime / MAX_HEAT_CAPACITY < 0.0125;
+				boolean lowPercent = (double) remainingBurnTime / HEAT_CAPACITY.getValue() < 0.0125;
 				level = lowPercent ? BlazeBurnerBlock.HeatLevel.FADING : BlazeBurnerBlock.HeatLevel.KINDLED;
 				break;
 			case NONE:

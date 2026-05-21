@@ -19,7 +19,8 @@
 
 	"createaddition.tooltip.liquid_burning.info": "Liquid Blaze Burner Info:",
 	"createaddition.tooltip.liquid_burning.time_remaining": "Burn Time Remaining:",
-
+	"createaddition.tooltip.liquid_burning.heat_capacity": "Heat Capacity",
+	"createaddition.tooltip.liquid_burning.liquid_capacity": "Liquid Capacity",
 	"createaddition.tooltip.charging.info": "Tesla Coil Info:",
 	"createaddition.tooltip.charging.time_remaining": "Charge Time Remaining:",
 
