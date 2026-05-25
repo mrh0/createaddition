@@ -29,8 +29,6 @@ public class LiquidBlazeScrollValueBehaviourLiquid extends ScrollValueBehaviour 
         return TYPE;
     }
 
-	
-
 	public LiquidBlazeScrollValueBehaviourLiquid(Component label, SmartBlockEntity be, ValueBoxTransform slot) {
 		super(label, be, slot);
 	}
@@ -51,7 +49,10 @@ public class LiquidBlazeScrollValueBehaviourLiquid extends ScrollValueBehaviour 
 
 	@Override
 	public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
-    	value = nbt.getInt("LiquidCapacityValue");
+    	if (nbt.contains("LiquidCapacityValue"))
+        	value = nbt.getInt("LiquidCapacityValue");
+    	else
+        	value = CommonConfig.LIQUID_BLAZE_BURNER_MAX_LIQUID_CAPACITY.get();
 	}
 
 	@Override

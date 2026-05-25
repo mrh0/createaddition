@@ -244,7 +244,7 @@ public class CommonConfig {
 				.defineInRange("liquid_blaze_burner_max_liquid_capacity",4000,100,10000);
 
 		LIQUID_BLAZE_BURNER_MAX_HEAT_CAPACITY = COMMON_BUILDER.comment("Liquid Blaze Burner internal heat capacity (in ticks).")
-				.defineInRange("liquid_blaze_burner_max_heat_capacity",10000,0,72000);
+				.defineInRange("liquid_blaze_burner_max_heat_capacity",10000,2,72000);
 		COMMON_BUILDER.pop();
 
 

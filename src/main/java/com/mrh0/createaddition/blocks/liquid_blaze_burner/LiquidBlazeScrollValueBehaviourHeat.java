@@ -49,7 +49,10 @@ public class LiquidBlazeScrollValueBehaviourHeat extends ScrollValueBehaviour {
 
 	@Override
 	public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
-    	value = nbt.getInt("HeatCapacityValue");
+		if (nbt.contains("HeatCapacityValue"))
+        	value = nbt.getInt("HeatCapacityValue");
+    	else
+        	value = CommonConfig.LIQUID_BLAZE_BURNER_MAX_HEAT_CAPACITY.get();
 	}
 
 	@Override
