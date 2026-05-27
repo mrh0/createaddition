@@ -23,6 +23,7 @@ public class CommonConfig {
 	public static final String CATAGORY_ACCUMULATOR = "accumulator";
 	public static final String CATAGORY_PEI = "portable_energy_interface";
 	public static final String CATAGORY_TESLA_COIL = "tesla_coil";
+	public static final String CATEGORY_LIQUID_BLAZE_BURNER = "liquid_blaze_burner";
 	public static final String CATAGORY_MISC = "misc";
 	public static final String CATAGORY_COMPATIBILITY = "compatibility";
 
@@ -81,6 +82,9 @@ public class CommonConfig {
 	public static ModConfigSpec.IntValue TESLA_COIL_HURT_EFFECT_TIME_MOB;
 	public static ModConfigSpec.IntValue TESLA_COIL_HURT_EFFECT_TIME_PLAYER;
 	public static ModConfigSpec.IntValue TESLA_COIL_HURT_FIRE_COOLDOWN;
+
+	public static ModConfigSpec.IntValue LIQUID_BLAZE_BURNER_MAX_LIQUID_CAPACITY;
+	public static ModConfigSpec.IntValue LIQUID_BLAZE_BURNER_MAX_HEAT_CAPACITY;
 
 	public static ModConfigSpec.IntValue DIAMOND_GRIT_SANDPAPER_USES;
 	public static ModConfigSpec.DoubleValue BARBED_WIRE_DAMAGE;
@@ -233,6 +237,14 @@ public class CommonConfig {
 
 		TESLA_COIL_HURT_FIRE_COOLDOWN = COMMON_BUILDER.comment("Tesla Coil fire interval (in ticks).")
 				.defineInRange("tesla_coil_fire_cooldown", 20, 0, Integer.MAX_VALUE);
+		COMMON_BUILDER.pop();
+
+		COMMON_BUILDER.comment("Liquid Blaze Burner").push(CATEGORY_LIQUID_BLAZE_BURNER);
+		LIQUID_BLAZE_BURNER_MAX_LIQUID_CAPACITY = COMMON_BUILDER.comment("Liquid Blaze Burner internal liquid storage capacity (in mB). A value less than 1000 prevents players from refilling with a bucket.")
+				.defineInRange("liquid_blaze_burner_max_liquid_capacity",4000,100,Integer.MAX_VALUE);
+
+		LIQUID_BLAZE_BURNER_MAX_HEAT_CAPACITY = COMMON_BUILDER.comment("Liquid Blaze Burner internal heat capacity (in ticks).")
+				.defineInRange("liquid_blaze_burner_max_heat_capacity",10000,0,Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 
 
