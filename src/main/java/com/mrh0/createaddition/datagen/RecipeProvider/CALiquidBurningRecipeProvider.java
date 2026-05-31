@@ -25,7 +25,7 @@ public class CALiquidBurningRecipeProvider extends LiquidBurningRecipeGen {
     }
 
     GeneratedRecipe
-            BIOFUEL = create("biofuel", (b) -> b.fluid(CATagRegister.Fluids.BIOFUEL).burnTime(2400).superheated()),
+            BIOFUEL = create("biofuel", (b) -> b.fluid(CATagRegister.Fluids.BIOFUEL).burnTime(24000).superheated()),
             PLANTOIL = create("plantoil", (b) -> b.fluid(CATagRegister.Fluids.PLANTOIL).burnTime(4800)),
             LAVA = create("lava", (b) -> b.fluid(FluidTags.LAVA).burnTime(20000)),
             BIODIESEL = conditional("biodiesel", CATagRegister.Fluids.BIODIESEL, 24000),
