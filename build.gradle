@@ -139,6 +139,11 @@ configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
+// Hand-crafted resources take priority over datagen output.
+tasks.named('processResources') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 dependencies {
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
     implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
