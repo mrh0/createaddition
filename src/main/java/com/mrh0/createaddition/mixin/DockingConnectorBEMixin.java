@@ -32,10 +32,11 @@ abstract public class DockingConnectorBEMixin implements DockingConnectorBEAcces
                 CommonConfig.DOCKING_CONNECTOR_CAPACITY.getAsInt()
         );
     }
-    // Hook into setDock, fires alongside tank.connect()
+    // Hook into setDock, fires after tank.connect() so capability invalidation sees the fully-connected state
     @Inject(method = "setDock", at = @At(
             value = "INVOKE",
-            target = "Ldev/simulated_team/simulated/content/blocks/docking_connector/DockingConnectorTank;connect(Lnet/minecraft/core/BlockPos;Ldev/simulated_team/simulated/content/blocks/docking_connector/DockingConnectorTank;)V"
+            target = "Ldev/simulated_team/simulated/content/blocks/docking_connector/DockingConnectorTank;connect(Lnet/minecraft/core/BlockPos;Ldev/simulated_team/simulated/content/blocks/docking_connector/DockingConnectorTank;)V",
+            shift = At.Shift.AFTER
     ), remap = false)
     private void onConnect(CallbackInfo ci) {
         BlockPos otherPos = this.otherConnectorPosition;
@@ -47,17 +48,17 @@ abstract public class DockingConnectorBEMixin implements DockingConnectorBEAcces
         BlockEntity other = level.getBlockEntity(otherPos);
         if (other instanceof DockingConnectorBEAccess otherAccess) {
             this.energyStorage.connect(otherPos, otherAccess.getEnergyStorage());
-
         }
     }
 
-    // Hook into unDock, fires alongside tank.disconnect()
+    // Hook into unDock, fires after tank.disconnect() so capability invalidation sees the fully-disconnected state
     @Inject(
             method = "unDock",
             at = @At(
                     value = "INVOKE",
-                    target = "Ldev/simulated_team/simulated/content/blocks/docking_connector/DockingConnectorTank;disconnect()V"
-            ),remap = false
+                    target = "Ldev/simulated_team/simulated/content/blocks/docking_connector/DockingConnectorTank;disconnect()V",
+                    shift = At.Shift.AFTER
+            ), remap = false
     )
     private void onDisconnect(CallbackInfo ci) {
         this.energyStorage.disconnect();

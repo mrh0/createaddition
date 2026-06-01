@@ -33,7 +33,6 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
-import com.simibubi.create.infrastructure.config.CStress;
 import com.tterrag.registrate.util.entry.BlockEntry;
 
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
@@ -184,6 +183,7 @@ public class CABlocks {
 	public static final BlockEntry<TeslaCoilBlock> TESLA_COIL = CreateAddition.REGISTRATE
 			.block("tesla_coil",  TeslaCoilBlock::new)
 			.initialProperties(SharedProperties::softMetal)
+			.properties(p -> p.lightLevel(state -> state.getValue(TeslaCoilBlock.POWERED) ? 10 : 0))
 			.blockstate(TeslaCoilBlock::makeBlockState)
 			.item(AssemblyOperatorBlockItem::new)
 			.transform(customItemModel())
