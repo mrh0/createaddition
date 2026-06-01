@@ -139,10 +139,6 @@ configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
-// Hand-crafted resources take priority over datagen output.
-tasks.named('processResources') {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
 
 dependencies {
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
@@ -241,8 +237,9 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
     options.warnings = false
 }
+// Hand-crafted resources take priority over datagen output.
 tasks.named("processResources", ProcessResources) {
-    duplicatesStrategy = DuplicatesStrategy.WARN
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
