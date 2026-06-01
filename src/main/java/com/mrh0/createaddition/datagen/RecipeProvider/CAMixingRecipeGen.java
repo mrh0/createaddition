@@ -69,7 +69,7 @@ public class CAMixingRecipeGen extends MixingRecipeGen {
             .require(CATagRegister.Items.commonTags("ingots","silver"))
             .output(CAItems.ELECTRUM_INGOT,2)
             .withCondition(new NotCondition(
-                    new TagEmptyCondition(CATagRegister.Items.commonTags("ingots","silver"))
+                    new TagEmptyCondition(CATagRegister.Items.commonTags("ingots", "silver"))
             ))
     ),
     NETHERRACK = create(ResourceLocation.fromNamespaceAndPath(CreateAddition.MODID,"netherrack"), b -> b

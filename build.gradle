@@ -39,6 +39,14 @@ repositories {
             includeGroup("cc.tweaked")
         }
     }
+    exclusiveContent {
+        forRepository {
+            maven { url = "https://maven.ryanhcode.dev/releases" }
+        }
+        filter {
+            includeGroup("dev.ryanhcode.sable-companion")
+        }
+    }
 }
 
 base {
@@ -170,6 +178,16 @@ dependencies {
         // https://mvnrepository.com/artifact/blusunrize.immersiveengineering/ImmersiveEngineering
         implementation("blusunrize.immersiveengineering:ImmersiveEngineering:${ie_version}")
     }
+
+    jarJar(api("dev.ryanhcode.sable-companion:sable-companion-common-${cc_tweaked_minecraft_version}:${project.sable_companion_version}")) {
+        version {
+            prefer(project.sable_companion_version)
+        }
+    }
+
+    // if (aeronautics_enable.toBoolean()) {
+    //     runtimeOnly("group:artifact:${aeronautics_version}")
+    // }
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

@@ -279,6 +279,7 @@ public class CACraftingRecipeProvider extends RecipeProvider {
                         .unlockedBy("has_small_connector", has(CABlocks.SMALL_CONNECTOR.asItem()))
         );
 
+        /*
         utility.saveToCraftingFolder(
                 ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CAItems.SPOOL.asItem(), 16)
                         .pattern("P")
@@ -289,6 +290,18 @@ public class CACraftingRecipeProvider extends RecipeProvider {
                         .unlockedBy("has_spool", has(CAItems.SPOOL.asItem()))
                         .unlockedBy("has_iron_plate", has(CATagRegister.Items.commonTags("plates/iron")))
                         .unlockedBy("has_iron_nugget", has(Tags.Items.NUGGETS_IRON))
+        );
+        */
+        utility.saveToCraftingFolder(
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CAItems.SPOOL.asItem(), 24)
+                        .pattern("P")
+                        .pattern("N")
+                        .pattern("P")
+                        .define('P', CATagRegister.Items.commonTags("plates/iron"))
+                        .define('N', CATagRegister.Items.RODS_IRON)
+                        .unlockedBy("has_spool", has(CAItems.SPOOL.asItem()))
+                        .unlockedBy("has_iron_plate", has(CATagRegister.Items.commonTags("plates/iron")))
+                        .unlockedBy("has_iron_rod", has(CATagRegister.Items.RODS))
         );
 
         SimpleCookingRecipeBuilder.smoking(

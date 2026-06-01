@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "N": {
-      "tag": "c:nuggets/iron"
+      "tag": "c:rods/iron"
     },
     "P": {
       "tag": "c:plates/iron"
@@ -15,7 +15,7 @@
     "P"
   ],
   "result": {
-    "count": 16,
+    "count": 24,
     "id": "createaddition:spool"
   }
 }

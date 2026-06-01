@@ -41,6 +41,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -201,7 +202,7 @@ public class TeslaCoilBlockEntity extends AbstractElectricBlockEntity implements
 			return BeltProcessingBehaviour.ProcessingResult.HOLD;
 		}
 		else if(chargeRecipe(stack, transported, handler)) {
-			poweredTimer = 10;
+			if (energyRemoved > 0) poweredTimer = 10;
 			return BeltProcessingBehaviour.ProcessingResult.HOLD;
 		}
 		return BeltProcessingBehaviour.ProcessingResult.PASS;
@@ -217,16 +218,26 @@ public class TeslaCoilBlockEntity extends AbstractElectricBlockEntity implements
 	}
 
 	private int energyRemoved = 0;
+	private final int[] chargeRateHistory = new int[20];
+	private int chargeRateIndex = 0;
+	private int chargeRateSamples = 0;
+
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		if(this.getLevel() == null) return false;
 		if(!inputInv.getStackInSlot(0).is(stack.getItem())) {
 			inputInv.setStackInSlot(0, stack);
 			recipeCache = find(new RecipeWrapper(inputInv), this.getLevel());
 			chargeAccumulator = 0;
+			Arrays.fill(chargeRateHistory, 0);
+			chargeRateIndex = 0;
+			chargeRateSamples = 0;
 		}
 		if(recipeCache.isPresent()) {
 			ChargingRecipe recipe = recipeCache.get().value();
 			energyRemoved = localEnergy.internalConsumeEnergy(Util.min(CommonConfig.TESLA_COIL_RECIPE_CHARGE_RATE.get(), recipe.getEnergy() - chargeAccumulator, recipe.getMaxChargeRate()));
+			chargeRateHistory[chargeRateIndex] = energyRemoved;
+			chargeRateIndex = (chargeRateIndex + 1) % 20;
+			if (chargeRateSamples < 20) chargeRateSamples++;
 			chargeAccumulator += energyRemoved;
 			if(chargeAccumulator >= recipe.getEnergy()) {
 				TransportedItemStack remainingStack = transported.copy();
@@ -263,21 +274,28 @@ public class TeslaCoilBlockEntity extends AbstractElectricBlockEntity implements
 			CALang.builder().add(Component.literal(" " + Util.format(chargeAccumulator) + " / " + Util.format(recipe.getEnergy()) + "⚡").withStyle(ChatFormatting.AQUA)).forGoggles(tooltip);
 		}
 		*/
-		if (TimeRemainingPacketPayload.clientTimeRemaining <= 20) return false;
+		int tr = TimeRemainingPacketPayload.clientTimeRemaining;
+		if (tr == 0 || tr > 0 && tr <= 20) return false;
+		String timeStr = tr == -1 ? "∞" : Util.formatTime(tr);
 		CALang.builder().add(Component.translatable(CreateAddition.MODID + ".tooltip.charging.info").withStyle(ChatFormatting.WHITE)).forGoggles(tooltip);
 		CALang.builder().add(Component.literal(" ").append(Component.translatable(CreateAddition.MODID + ".tooltip.charging.time_remaining").withStyle(ChatFormatting.GRAY))
-			.append(Component.literal(" " + Util.formatTime(TimeRemainingPacketPayload.clientTimeRemaining)).withStyle(ChatFormatting.AQUA))).forGoggles(tooltip);
+			.append(Component.literal(" " + timeStr).withStyle(ChatFormatting.AQUA))).forGoggles(tooltip);
 		return true;
 	}
 
 	@Override
 	public void onObserved(ServerPlayer player, ObservePacketPayload pkt) {
 		int timeRemaining = 0;
-		if(recipeCache.isPresent()) {
+		if(recipeCache.isPresent() && chargeRateSamples > 0) {
 			ChargingRecipe recipe = recipeCache.get().value();
-			int chargeRate = Util.min(CommonConfig.TESLA_COIL_RECIPE_CHARGE_RATE.get(), recipe.getEnergy() - chargeAccumulator, recipe.getMaxChargeRate());
-			if (chargeRate == 0) return;
-			timeRemaining = (recipe.getEnergy() - chargeAccumulator) / chargeRate;
+			int totalRate = 0;
+			for (int rate : chargeRateHistory) totalRate += rate;
+			int avgChargeRate = totalRate / chargeRateSamples;
+			if (avgChargeRate == 0) {
+				TimeRemainingPacketPayload.send(-1, player);
+				return;
+			}
+			timeRemaining = (recipe.getEnergy() - chargeAccumulator) / avgChargeRate;
 		}
 		TimeRemainingPacketPayload.send(timeRemaining, player);
 	}

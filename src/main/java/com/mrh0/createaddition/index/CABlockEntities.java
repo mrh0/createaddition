@@ -1,6 +1,7 @@
 package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlockEntity;
+import com.mrh0.createaddition.blocks.alternator.AlternatorVisual;
 import com.mrh0.createaddition.blocks.connector.LargeConnectorBlockEntity;
 import com.mrh0.createaddition.blocks.connector.SmallConnectorBlockEntity;
 import com.mrh0.createaddition.blocks.connector.SmallLightConnectorBlockEntity;
@@ -35,7 +36,7 @@ public class CABlockEntities {
 	
 	public static final BlockEntityEntry<AlternatorBlockEntity> ALTERNATOR = CreateAddition.REGISTRATE
 			.blockEntity("alternator", AlternatorBlockEntity::new)
-			.visual(() -> OrientedRotatingVisual.of(AllPartialModels.SHAFT_HALF), false)
+			.visual(() -> AlternatorVisual::new, false)
 			.validBlocks(CABlocks.ALTERNATOR)
 			.renderer(() -> AlternatorRenderer::new)
 			.register();

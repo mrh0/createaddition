@@ -40,6 +40,7 @@ public class CATagRegister {
         public static final TagKey<Item> NUGGETS = commonTags("nuggets");
         public static final TagKey<Item> PLATES = commonTags("plates");
         public static final TagKey<Item> RODS = commonTags("rods");
+        public static final TagKey<Item> RODS_IRON = commonTags("rods", "iron");
         public static final TagKey<Item> WIRES = commonTags("wires");
 
         public static final TagKey<Item> FOODS = commonTags("foods");

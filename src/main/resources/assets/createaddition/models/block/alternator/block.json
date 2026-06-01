@@ -1,5 +1,4 @@
 {
-	"credit": "Made with Blockbench",
 	"textures": {
 		"particle": "createaddition:block/alternator/alternator",
 		"main": "createaddition:block/alternator/alternator"
@@ -20,18 +19,41 @@
 			}
 		},
 		{
-			"name": "housing",
-			"from": [2, 2, 0],
-			"to": [14, 14, 14],
+			"name": "housing_n",
+			"from": [2, 2, 2],
+			"to": [14, 14, 4],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 7]},
 			"faces": {
-				"north": {"uv": [9, 1, 15, 7], "texture": "#main", "cullface": "north"},
-				"east": {"uv": [9, 1, 16, 7], "texture": "#main"},
+				"north": {"uv": [1, 9, 7, 15], "texture": "#main", "cullface": "north"},
+				"east": {"uv": [15, 1, 16, 7], "texture": "#main"},
 				"south": {"uv": [1, 9, 7, 15], "texture": "#main"},
-				"west": {"uv": [8, 1, 15, 7], "texture": "#main"},
-				"up": {"uv": [9, 0, 15, 7], "texture": "#main"},
-				"down": {"uv": [9, 1, 15, 8], "texture": "#main"}
+				"west": {"uv": [8, 1, 9, 7], "texture": "#main"},
+				"up": {"uv": [9, 0, 15, 1], "texture": "#main"},
+				"down": {"uv": [9, 7, 15, 8], "texture": "#main"}
 			}
+		},
+		{
+			"name": "housing_s",
+			"from": [2, 2, 12],
+			"to": [14, 14, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 17]},
+			"faces": {
+				"north": {"uv": [1, 9, 7, 15], "texture": "#main", "cullface": "north"},
+				"east": {"uv": [8, 1, 9, 7], "texture": "#main"},
+				"south": {"uv": [1, 9, 7, 15], "texture": "#main"},
+				"west": {"uv": [15, 1, 16, 7], "texture": "#main"},
+				"up": {"uv": [9, 7, 15, 8], "texture": "#main"},
+				"down": {"uv": [9, 0, 15, 1], "texture": "#main"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "block",
+			"origin": [8, 8, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1, 2]
 		}
 	]
 }
