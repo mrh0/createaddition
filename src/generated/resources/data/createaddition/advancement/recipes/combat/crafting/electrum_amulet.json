@@ -1,6 +1,16 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "has_diamond_dust": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:dusts/diamond"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_electrum_amulet": {
       "conditions": {
         "items": [
@@ -31,16 +41,6 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_emerald": {
-      "conditions": {
-        "items": [
-          {
-            "items": "#c:gems/emerald"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_the_recipe": {
       "conditions": {
         "recipe": "createaddition:crafting/electrum_amulet"
@@ -53,7 +53,7 @@
       "has_the_recipe",
       "has_electrum_wire",
       "has_electrum_ingot",
-      "has_emerald",
+      "has_diamond_dust",
       "has_electrum_amulet"
     ]
   ],

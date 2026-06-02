@@ -260,10 +260,10 @@ public class CommonConfig {
 
 		AMULET_EFFECT_ENABLED = COMMON_BUILDER.comment("If the effects of the amulets should be enabled or not.")
 				.define("amulet_effect_enabled", true);
-		ELECTRUM_AMULET_CHARGE_RATE = COMMON_BUILDER.comment("Passive charge rate of the Electrum Amulet in FE/t when held in main or offhand.")
-				.defineInRange("electrum_amulet_charge_rate", 4, 0, Integer.MAX_VALUE);
+		ELECTRUM_AMULET_CHARGE_RATE = COMMON_BUILDER.comment("Passive charge rate of the Electrum Amulet in average FE/t when held in main or offhand.")
+				.defineInRange("electrum_amulet_charge_rate", 2, 0, Integer.MAX_VALUE);
 		CAPACITOR_CAPACITY = COMMON_BUILDER.comment("Maximum energy the Capacitor item can store in FE.")
-				.defineInRange("capacitor_capacity", 10000, 1, Integer.MAX_VALUE);
+				.defineInRange("capacitor_capacity", 5000, 1, Integer.MAX_VALUE);
 		CAPACITOR_CHARGE_RATE = COMMON_BUILDER.comment("Max FE per transfer operation for the Capacitor item.")
 				.defineInRange("capacitor_charge_rate", 500, 1, Integer.MAX_VALUE);
 

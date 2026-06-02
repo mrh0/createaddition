@@ -6,15 +6,18 @@
       "tag": "c:ingots/electrum"
     },
     "G": {
-      "tag": "c:gems/emerald"
+      "tag": "c:dusts/diamond"
     },
     "W": {
       "tag": "c:wires/electrum"
+    },
+    "Z": {
+      "tag": "c:plates/zinc"
     }
   },
   "pattern": [
     " WW",
-    "EEW",
+    "EZW",
     "GE "
   ],
   "result": {
