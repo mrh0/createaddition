@@ -244,10 +244,10 @@ public class CommonConfig {
 
 		COMMON_BUILDER.comment("Liquid Blaze Burner").push(CATEGORY_LIQUID_BLAZE_BURNER);
 		LIQUID_BLAZE_BURNER_MAX_LIQUID_CAPACITY = COMMON_BUILDER.comment("Liquid Blaze Burner internal liquid storage capacity (in mB). A value less than 1000 prevents players from refilling with a bucket.")
-				.defineInRange("liquid_blaze_burner_max_liquid_capacity",4000,100,Integer.MAX_VALUE);
+				.defineInRange("liquid_blaze_burner_max_liquid_capacity", 4000, 100, Integer.MAX_VALUE);
 
 		LIQUID_BLAZE_BURNER_MAX_HEAT_CAPACITY = COMMON_BUILDER.comment("Liquid Blaze Burner internal heat capacity (in ticks).")
-				.defineInRange("liquid_blaze_burner_max_heat_capacity",10000,0,Integer.MAX_VALUE);
+				.defineInRange("liquid_blaze_burner_max_heat_capacity", 10000, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 
 
