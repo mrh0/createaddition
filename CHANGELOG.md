@@ -4,6 +4,8 @@ Add changes below NEXT...
 
 ## NEXT
 
+## Release 1.6.0
+
 ### Added
 
 - Capacitor can now be charged with FE.
