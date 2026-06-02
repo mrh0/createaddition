@@ -4,7 +4,6 @@ import com.mrh0.createaddition.config.CommonConfig;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.util.Util;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -46,9 +45,8 @@ public class CapacitorItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        int stored = getEnergy(stack);
-        int capacity = CommonConfig.CAPACITOR_CAPACITY.get();
-        tooltip.add(Component.literal(Util.format(stored) + " / " + Util.format(capacity) + " ⚡").withStyle(ChatFormatting.AQUA));
+        IEnergyStorage es = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        if (es != null) tooltip.add(Util.getTextComponent(es));
     }
 
     @Override
