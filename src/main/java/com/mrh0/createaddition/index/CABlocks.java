@@ -24,7 +24,7 @@ import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlock;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
-import com.mrh0.createaddition.item.BiomassPelletBlock;
+import com.mrh0.createaddition.item.BiomassPelletBlockItem;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
@@ -243,7 +243,7 @@ public class CABlocks {
 			.initialProperties(() -> Blocks.DRIED_KELP_BLOCK)
 			.properties(p -> p.mapColor(MapColor.COLOR_GREEN))
 			.blockstate(BlockGenHelper.simpleBlock())
-			.item(BiomassPelletBlock::new)
+			.item(BiomassPelletBlockItem::new)
 			.transform(customItemModel())
 			.register();
 

@@ -165,14 +165,15 @@ public class CACraftingRecipeProvider extends RecipeProvider {
         utility.saveToCraftingFolder(
                 ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, CAItems.ELECTRUM_AMULET.asItem())
                         .pattern(" WW")
-                        .pattern("EEW")
+                        .pattern("EZW")
                         .pattern("GE ")
                         .define('W', CATagRegister.Items.ELECTRUM_WIRES)
                         .define('E', CATagRegister.Items.ELECTRUM_INGOTS)
-                        .define('G', Tags.Items.GEMS_EMERALD)
+                        .define('Z', CATagRegister.Items.ZINC_PLATES)
+                        .define('G', CATagRegister.Items.DIAMOND_DUSTS)
                         .unlockedBy("has_electrum_wire", has(CATagRegister.Items.ELECTRUM_WIRES))
                         .unlockedBy("has_electrum_ingot", has(CATagRegister.Items.ELECTRUM_INGOTS))
-                        .unlockedBy("has_emerald", has(Tags.Items.GEMS_EMERALD))
+                        .unlockedBy("has_diamond_dust", has(CATagRegister.Items.DIAMOND_DUSTS))
                         .unlockedBy("has_electrum_amulet", has(CAItems.ELECTRUM_AMULET))
         );
 
@@ -347,6 +348,7 @@ public class CACraftingRecipeProvider extends RecipeProvider {
             recipeBuilder.save(this.output, ResourceLocation.fromNamespaceAndPath(modId, path));
         }
 
+        @SuppressWarnings("unused")
         private void saveToPath( RecipeBuilder recipeBuilder, String path) {
             saveToPath(recipeBuilder, path, CreateAddition.MODID);
         }

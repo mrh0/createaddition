@@ -5,13 +5,10 @@ import com.electronwill.nightconfig.core.io.WritingMode;
 
 import com.mrh0.createaddition.CreateAddition;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.ModConfigSpec;
-import net.neoforged.neoforge.common.NeoForge;
 
 @EventBusSubscriber(modid = CreateAddition.MODID,bus = EventBusSubscriber.Bus.MOD)
 public class CommonConfig {
@@ -40,6 +37,12 @@ public class CommonConfig {
 	public static ModConfigSpec.IntValue MAX_STRESS;
 
 	public static ModConfigSpec.BooleanValue AUDIO_ENABLED;
+
+	public static ModConfigSpec.BooleanValue AMULET_EFFECT_ENABLED;
+	public static ModConfigSpec.IntValue ELECTRUM_AMULET_CHARGE_RATE;
+
+	public static ModConfigSpec.IntValue CAPACITOR_CAPACITY;
+	public static ModConfigSpec.IntValue CAPACITOR_CHARGE_RATE;
 
 	public static ModConfigSpec.IntValue ALTERNATOR_MAX_OUTPUT;
 	public static ModConfigSpec.IntValue ALTERNATOR_CAPACITY;
@@ -254,6 +257,15 @@ public class CommonConfig {
 
 		BARBED_WIRE_DAMAGE = COMMON_BUILDER.comment("Barbed Wire Damage.")
 				.defineInRange("barbed_wire_damage", 2, 0, Float.MAX_VALUE);
+
+		AMULET_EFFECT_ENABLED = COMMON_BUILDER.comment("If the effects of the amulets should be enabled or not.")
+				.define("amulet_effect_enabled", true);
+		ELECTRUM_AMULET_CHARGE_RATE = COMMON_BUILDER.comment("Passive charge rate of the Electrum Amulet in FE/t when held in main or offhand.")
+				.defineInRange("electrum_amulet_charge_rate", 4, 0, Integer.MAX_VALUE);
+		CAPACITOR_CAPACITY = COMMON_BUILDER.comment("Maximum energy the Capacitor item can store in FE.")
+				.defineInRange("capacitor_capacity", 10000, 1, Integer.MAX_VALUE);
+		CAPACITOR_CHARGE_RATE = COMMON_BUILDER.comment("Max FE per transfer operation for the Capacitor item.")
+				.defineInRange("capacitor_charge_rate", 500, 1, Integer.MAX_VALUE);
 
 		COMMON_BUILDER.pop();
 

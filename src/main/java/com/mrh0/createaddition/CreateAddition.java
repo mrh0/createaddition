@@ -140,8 +140,6 @@ public class CreateAddition {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
     	// event.enqueueWork(CAPonder::register);
-        event.enqueueWork(CAItemProperties::register);
-
         PonderIndex.addPlugin(new CAPonderPlugin());
 
         RenderType cutout = RenderType.cutoutMipped();

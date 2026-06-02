@@ -2,6 +2,7 @@ package com.mrh0.createaddition.index;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlockEntity;
+import com.mrh0.createaddition.item.CapacitorItem;
 import com.mrh0.createaddition.blocks.connector.LargeConnectorBlockEntity;
 import com.mrh0.createaddition.blocks.connector.SmallConnectorBlockEntity;
 import com.mrh0.createaddition.blocks.connector.SmallLightConnectorBlockEntity;
@@ -30,6 +31,7 @@ public class CACapabilities {
         TeslaCoilBlockEntity.registerCapabilities(event);
         RollingMillBlockEntity.registerCapabilities(event);
         LiquidBlazeBurnerBlockEntity.registerCapability(event);
+        CapacitorItem.registerCapabilities(event);
 
         if(CreateAddition.CC_ACTIVE) {
             Peripherals.registerPeripheralCapabilities(event);

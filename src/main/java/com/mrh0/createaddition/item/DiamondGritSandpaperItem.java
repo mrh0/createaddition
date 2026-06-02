@@ -13,8 +13,8 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 
-public class DiamondGritSandpaper extends SandPaperItem {
-	public DiamondGritSandpaper(Properties properties) {
+public class DiamondGritSandpaperItem extends SandPaperItem {
+	public DiamondGritSandpaperItem(Properties properties) {
 		super(properties);
 	}
 	

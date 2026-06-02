@@ -6,9 +6,6 @@
     "A": {
       "item": "create:andesite_alloy"
     },
-    "C": {
-      "item": "createaddition:capacitor"
-    },
     "I": {
       "tag": "c:plates/iron"
     },
@@ -23,7 +20,8 @@
     "  A  ",
     " ISI ",
     "ISRSI",
-    " ICI "
+    " ISI ",
+    "  A  "
   ],
   "result": {
     "count": 1,

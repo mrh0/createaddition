@@ -55,7 +55,7 @@ public class CAFluids {
 						.explosionResistance(100f))
 				.source(BaseFlowingFluid.Flowing.Source::new);
 
-		var seedOilBucket = seedOil.bucket()
+		seedOil.bucket()
 			.properties(p -> p.stacksTo(1))
 			.register();
 		SEED_OIL = seedOil.register();
@@ -69,7 +69,7 @@ public class CAFluids {
 						.slopeFindDistance(6)
 						.explosionResistance(100f))
 				.source(BaseFlowingFluid.Flowing.Source::new);
-		var bioethanolBucket = bioethanol.bucket()
+		bioethanol.bucket()
 			.properties(p -> p.stacksTo(1))
 			.register();
 		BIOETHANOL = bioethanol.register();

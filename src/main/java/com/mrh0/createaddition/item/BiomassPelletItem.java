@@ -4,9 +4,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 
-public class BiomassPellet extends Item {
+public class BiomassPelletItem extends Item {
 
-	public BiomassPellet(Properties props) {
+	public BiomassPelletItem(Properties props) {
 		super(props);
 	}
 

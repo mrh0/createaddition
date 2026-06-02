@@ -1,12 +1,13 @@
 package com.mrh0.createaddition.index;
 
-import static com.simibubi.create.AllTags.commonItemTag;
 import static com.simibubi.create.AllTags.AllItemTags.PLATES;
 import com.mrh0.createaddition.CreateAddition;
-import com.mrh0.createaddition.item.ElectrumAmulet;
+import com.mrh0.createaddition.datagen.TagProvider.CATagRegister;
+import com.mrh0.createaddition.item.ElectrumAmuletItem;
 import com.mrh0.createaddition.item.WireSpool;
-import com.mrh0.createaddition.item.BiomassPellet;
-import com.mrh0.createaddition.item.DiamondGritSandpaper;
+import com.mrh0.createaddition.item.BiomassPelletItem;
+import com.mrh0.createaddition.item.CapacitorItem;
+import com.mrh0.createaddition.item.DiamondGritSandpaperItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.world.item.Item;
@@ -18,26 +19,26 @@ public class CAItems {
 		CreateAddition.REGISTRATE.setCreativeTab(CreateAddition.MAIN_TAB);
 	}
 
-	public static final ItemEntry<Item> CAPACITOR =
-			CreateAddition.REGISTRATE.item("capacitor", Item::new)
+	public static final ItemEntry<CapacitorItem> CAPACITOR =
+			CreateAddition.REGISTRATE.item("capacitor", CapacitorItem::new)
 			.register();
 
 	public static final ItemEntry<Item> DIAMOND_GRIT =
 			CreateAddition.REGISTRATE.item("diamond_grit", Item::new)
 			.register();
-	public static final ItemEntry<DiamondGritSandpaper> DIAMOND_GRIT_SANDPAPER = CreateAddition.REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaper::new)
+	public static final ItemEntry<DiamondGritSandpaperItem> DIAMOND_GRIT_SANDPAPER = CreateAddition.REGISTRATE.item("diamond_grit_sandpaper", DiamondGritSandpaperItem::new)
 			.register();
 
 	public static final ItemEntry<Item> BIOMASS =
 			CreateAddition.REGISTRATE.item("biomass", Item::new)
 			.properties(p -> p.stacksTo(16))
 			.register();
-	public static final ItemEntry<BiomassPellet> BIOMASS_PELLET =
-			CreateAddition.REGISTRATE.item("biomass_pellet", BiomassPellet::new)
+	public static final ItemEntry<BiomassPelletItem> BIOMASS_PELLET =
+			CreateAddition.REGISTRATE.item("biomass_pellet", BiomassPelletItem::new)
 			.register();
 
-	public static final ItemEntry<ElectrumAmulet> ELECTRUM_AMULET =
-			CreateAddition.REGISTRATE.item("electrum_amulet", ElectrumAmulet::new)
+	public static final ItemEntry<ElectrumAmuletItem> ELECTRUM_AMULET =
+			CreateAddition.REGISTRATE.item("electrum_amulet", ElectrumAmuletItem::new)
 					.register();
 
 	public static final ItemEntry<Item> ELECTRUM_INGOT =
@@ -47,11 +48,11 @@ public class CAItems {
 
 	public static final ItemEntry<Item> ELECTRUM_SHEET =
 			CreateAddition.REGISTRATE.item("electrum_sheet", Item::new)
-					.tag(commonItemTag("plates/electrum"), PLATES.tag)
+					.tag(CATagRegister.Items.commonTags("plates", "electrum"), PLATES.tag)
 					.register();
 	public static final ItemEntry<Item> ZINC_SHEET =
 			CreateAddition.REGISTRATE.item("zinc_sheet", Item::new)
-					.tag(commonItemTag("plates/zinc"), PLATES.tag)
+					.tag(CATagRegister.Items.commonTags("plates", "zinc"), PLATES.tag)
 					.register();
 
 	public static final ItemEntry<Item> COPPER_WIRE =

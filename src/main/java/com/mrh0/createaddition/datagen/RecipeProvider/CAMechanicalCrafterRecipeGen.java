@@ -19,7 +19,7 @@ public class CAMechanicalCrafterRecipeGen extends MechanicalCraftingRecipeGen {
 
     GeneratedRecipe
     ALTERNATOR = create(CABlocks.ALTERNATOR::get).recipe(b -> b
-            .key('C', CAItems.CAPACITOR)
+            //.key('C', CAItems.CAPACITOR)
             .key('I', CATagRegister.Items.commonTags("plates","iron"))
             .key('R', CATagRegister.Items.IRON_RODS)
             .key('S', CAItems.COPPER_SPOOL)
@@ -27,7 +27,8 @@ public class CAMechanicalCrafterRecipeGen extends MechanicalCraftingRecipeGen {
             .patternLine("  A  ")
             .patternLine(" ISI ")
             .patternLine("ISRSI")
-            .patternLine(" ICI ")
+            .patternLine(" ISI ")
+            .patternLine("  A  ")
     ),
     ELECTRIC_MOTOR = create(CABlocks.ELECTRIC_MOTOR::get).recipe(b -> b
             .key('A', AllItems.ANDESITE_ALLOY)

@@ -6,9 +6,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 
-public class BiomassPelletBlock extends BlockItem {
+public class BiomassPelletBlockItem extends BlockItem {
 
-	public BiomassPelletBlock(Block pBlock, Properties pProperties) {
+	public BiomassPelletBlockItem(Block pBlock, Properties pProperties) {
 		super(pBlock, pProperties);
 	}
 
