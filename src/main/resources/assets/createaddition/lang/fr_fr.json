@@ -104,7 +104,7 @@
 
 	"item.createaddition.electrum_amulet": "Amulette en électrum",
 	"item.createaddition.electrum_amulet.tooltip": "AMULETTE_EN_ÉLECTRUM",
-	"item.createaddition.electrum_amulet.tooltip.summary": "Lorsque _vous êtes au plus bas_, tenir cette _amulette_ dans votre poche vous donne l'impression que votre _chance_ va tourner.",
+	"item.createaddition.electrum_amulet.tooltip.summary": "Cette _amulette_ a un effet _\"foudroyant⚡\"_ sur les objets chargeables en Énergie Forge (Forge Energy ou FE) ! Tiens la dans ta main et elle chargera les objets dans ton autre main par à-coups..",
 
 	"item.createaddition.brass_figurine": "Figurine en laiton",
 	"item.createaddition.brass_figurine.tooltip": "FIGURINE_EN_LAITON",
@@ -312,7 +312,7 @@
 	"death.attack.barbed_wire": "%1$s a essayé de traverser des barbelés",
 	"death.attack.barbed_wire.player": "%1$s a essayé de traverser des barbelés en combattant %2$s",
 
-	"effect.createaddition.shocking": "Foudroyé",
+	"effect.createaddition.shocking": "Choc électrique",
 	"death.attack.tesla_coil": "%1$s a reçu un choc électrique mortel",
 	"death.attack.tesla_coil.player": "%1$s a reçu un choc électrique mortel alors qu'il combattait %2$s",
 	"effect.createaddition.shocking.description": "Immobilise l'entité ou joueur affecté"
