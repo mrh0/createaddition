@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createaddition:block/servo_motor/block",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "createaddition:block/servo_motor/block",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "createaddition:block/servo_motor/block",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "createaddition:block/servo_motor/block",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "createaddition:block/servo_motor/block"
+    },
+    "facing=west": {
+      "model": "createaddition:block/servo_motor/block",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

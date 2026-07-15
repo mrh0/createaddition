@@ -8,6 +8,7 @@ import com.mrh0.createaddition.blocks.connector.SmallConnectorBlockEntity;
 import com.mrh0.createaddition.blocks.connector.SmallLightConnectorBlockEntity;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlockEntity;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlockEntity;
+import com.mrh0.createaddition.blocks.servo_motor.ServoMotorBlockEntity;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlockEntity;
 import com.mrh0.createaddition.blocks.modular_accumulator.ModularAccumulatorBlockEntity;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyInterfaceBlockEntity;
@@ -25,6 +26,7 @@ public class CACapabilities {
         SmallConnectorBlockEntity.registerCapabilities(event);
         SmallLightConnectorBlockEntity.registerCapabilities(event);
         ElectricMotorBlockEntity.registerCapabilities(event);
+        ServoMotorBlockEntity.registerCapabilities(event);
         CreativeEnergyBlockEntity.registerCapabilities(event);
         ModularAccumulatorBlockEntity.registerCapabilities(event);
         PortableEnergyInterfaceBlockEntity.registerCapabilities(event);

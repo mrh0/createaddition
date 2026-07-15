@@ -20,6 +20,7 @@ import com.mrh0.createaddition.datagen.Models.BlockGenHelper;
 import com.mrh0.createaddition.energy.NodeMovementBehaviour;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
+import com.mrh0.createaddition.blocks.servo_motor.ServoMotorBlock;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlock;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
@@ -66,6 +67,20 @@ public class CABlocks {
                     .andThen(TooltipModifier.mapNull(KineticStats.create(item))))
             .block("electric_motor", ElectricMotorBlock::new)
 			.initialProperties(SharedProperties::softMetal)
+			.transform(pickaxeOnly())
+			.blockstate(BlockGenHelper.directionalBlockState())
+            .onRegister(BlockStressValues.setGeneratorSpeed(256, true))
+            .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, () -> CommonConfig.MAX_STRESS.get()/256f))
+			.item()
+			.transform(customItemModel())
+			.register();
+
+	public static final BlockEntry<ServoMotorBlock> SERVO_MOTOR = CreateAddition.REGISTRATE
+            .setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
+                    .andThen(TooltipModifier.mapNull(KineticStats.create(item))))
+            .block("servo_motor", ServoMotorBlock::new)
+			.initialProperties(SharedProperties::softMetal)
+			.properties(p -> p.noOcclusion())
 			.transform(pickaxeOnly())
 			.blockstate(BlockGenHelper.directionalBlockState())
             .onRegister(BlockStressValues.setGeneratorSpeed(256, true))
