@@ -280,6 +280,16 @@ public class CACraftingRecipeProvider extends RecipeProvider {
                         .unlockedBy("has_small_connector", has(CABlocks.SMALL_CONNECTOR.asItem()))
         );
 
+        utility.saveToCraftingFolder(
+                ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, CABlocks.SERVO_MOTOR.asItem())
+                        .requires(AllBlocks.MECHANICAL_BEARING.asItem())
+                        .requires(CABlocks.ELECTRIC_MOTOR.asItem())
+                        .requires(AllItems.ELECTRON_TUBE.asItem())
+                        .unlockedBy("has_mechanical_bearing", has(AllBlocks.MECHANICAL_BEARING.asItem()))
+                        .unlockedBy("has_electric_motor", has(CABlocks.ELECTRIC_MOTOR.asItem()))
+                        .unlockedBy("has_electron_tube", has(AllItems.ELECTRON_TUBE.asItem()))
+        );
+
         /*
         utility.saveToCraftingFolder(
                 ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CAItems.SPOOL.asItem(), 16)

@@ -41,6 +41,12 @@ public class Peripherals {
 				CABlockEntities.DIGITAL_ADAPTER.get(),
 				(be, dir) -> createDigitalAdapterPeripheral(be)
 		);
+
+		event.registerBlockEntity(
+				PeripheralCapability.get(),
+				CABlockEntities.SERVO_MOTOR.get(),
+				(be, dir) -> new ServoMotorPeripheral(be)
+		);
 	}
 	
 	public static ElectricMotorPeripheral createElectricMotorPeripheral(ElectricMotorBlockEntity te) {

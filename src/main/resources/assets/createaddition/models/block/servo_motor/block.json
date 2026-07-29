@@ -1,5 +1,4 @@
 {
-	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "createaddition:block/servo_motor/block",
@@ -8,14 +7,14 @@
 	"elements": [
 		{
 			"from": [0, 0, 0],
-			"to": [16, 12, 16],
+			"to": [16, 16, 12],
 			"faces": {
-				"north": {"uv": [0, 2, 8, 8], "texture": "#0"},
-				"east": {"uv": [8, 10, 16, 16], "texture": "#0"},
-				"south": {"uv": [0, 2, 8, 8], "texture": "#0"},
-				"west": {"uv": [16, 10, 8, 16], "texture": "#0"},
-				"down": {"uv": [8, 0, 16, 8], "texture": "#0"},
-				"up": {"uv": [8, 0, 16, 8], "texture": "#0"}
+				"north": {"uv": [8, 0, 16, 8], "texture": "#0"},
+				"east": {"uv": [0, 2, 8, 8], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [8, 0, 16, 8], "texture": "#0"},
+				"west": {"uv": [0, 2, 8, 8], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [16, 16, 8, 10], "texture": "#0"},
+				"down": {"uv": [16, 10, 8, 16], "texture": "#0"}
 			}
 		}
 	]

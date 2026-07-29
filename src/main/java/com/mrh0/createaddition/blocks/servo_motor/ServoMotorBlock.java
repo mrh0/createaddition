@@ -28,12 +28,12 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
 import org.jetbrains.annotations.Nullable;
 
 public class ServoMotorBlock extends DirectionalKineticBlock implements IBE<ServoMotorBlockEntity> {
 
-	// Occlusion shape: body depth only (12/16), leaving the bearing face uncovered
-	// so the adjacent block behind the disc is not culled. Collision shape stays full.
 	private static final VoxelShaper OCCLUSION_SHAPE = CAShapes.shape(0, 0, 0, 16, 12, 16).forDirectional();
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -59,7 +59,7 @@ public class ServoMotorBlock extends DirectionalKineticBlock implements IBE<Serv
 	}
 
 	@Override
-	public net.minecraft.world.phys.shapes.VoxelShape getOcclusionShape(BlockState state, BlockGetter world, BlockPos pos) {
+	public VoxelShape getOcclusionShape(BlockState state, BlockGetter world, BlockPos pos) {
 		return OCCLUSION_SHAPE.get(state.getValue(FACING));
 	}
 

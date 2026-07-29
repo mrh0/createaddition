@@ -17,7 +17,6 @@ import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ControlledContraptionEntity;
 import com.simibubi.create.content.contraptions.bearing.BearingContraption;
 import com.simibubi.create.content.contraptions.DirectionalExtenderScrollOptionSlot;
-import com.simibubi.create.content.contraptions.IControlContraption.RotationMode;
 import com.simibubi.create.content.contraptions.bearing.MechanicalBearingBlockEntity;
 import com.simibubi.create.content.kinetics.motor.KineticScrollValueBehaviour;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
@@ -455,6 +454,41 @@ public class ServoMotorBlockEntity extends MechanicalBearingBlockEntity {
 
 	public float getRPM() {
 		return motorSpeed;
+	}
+
+	public void setRPM(float rpm) {
+		int clamped = (int) Math.max(-CommonConfig.ELECTRIC_MOTOR_RPM_RANGE.get(),
+				Math.min(CommonConfig.ELECTRIC_MOTOR_RPM_RANGE.get(), rpm));
+		generatedSpeed.setValue(clamped);
+		motorSpeed = clamped;
+		updateGeneratedRotation();
+		sendData();
+	}
+
+	public float getCurrentAngle() {
+		return angle;
+	}
+
+	public float getTargetAngle() {
+		return targetAngle;
+	}
+
+	public float getMinAngleDegrees() {
+		return minAngle.getAngle();
+	}
+
+	public void setMinAngleDegrees(int degrees) {
+		minAngle.value = Math.max(0, Math.min(180, Math.abs(degrees)));
+		sendData();
+	}
+
+	public float getMaxAngleDegrees() {
+		return maxAngle.getAngle();
+	}
+
+	public void setMaxAngleDegrees(int degrees) {
+		maxAngle.value = Math.max(0, Math.min(180, Math.abs(degrees)));
+		sendData();
 	}
 
 	public int getEnergyConsumption() {
