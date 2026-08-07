@@ -10,7 +10,8 @@
         "FireBlockInvoker",
         "FireBlockMixin",
         "FlowingFluidMixin",
-        "DockingConnectorBEMixin"
+        "DockingConnectorBEMixin",
+        "VanillaSubLevelBERenderMixin"
     ],
     "minVersion": "0.8.5"
 }

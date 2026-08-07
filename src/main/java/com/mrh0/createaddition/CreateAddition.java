@@ -46,6 +46,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mrh0.createaddition.commands.CCApiCommand;
+import com.mrh0.createaddition.compat.sable.CreateAdditionSable;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import com.simibubi.create.api.boiler.BoilerHeater;
@@ -61,6 +62,7 @@ public class CreateAddition {
     public static boolean AE2_ACTIVE = false;
     public static boolean MEK_ACTIVE = false;
     public static boolean SIM_ACTIVE = false;
+    public static boolean SABLE_ACTIVE = false;
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(CreateAddition.MODID)
             .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
             .setTooltipModifierFactory(item ->
@@ -118,6 +120,11 @@ public class CreateAddition {
         AE2_ACTIVE = ModList.get().isLoaded("ae2");
         MEK_ACTIVE = ModList.get().isLoaded("mekanism");
         SIM_ACTIVE = ModList.get().isLoaded("simulated");
+        SABLE_ACTIVE = ModList.get().isLoaded("sable") && ModList.get().isLoaded("sablecompanion");
+
+        if (SABLE_ACTIVE) {
+            CreateAdditionSable.register();
+        }
 
         REGISTRATE.registerEventListeners(eventBus);
         CABlocks.register();

@@ -2,6 +2,8 @@ package com.mrh0.createaddition.blocks.liquid_blaze_burner;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.compat.sable.SableUtil;
 import com.mrh0.createaddition.index.CAPartials;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.AllSpriteShifts;
@@ -35,6 +37,12 @@ public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBla
 	@Override
 	protected void renderSafe(LiquidBlazeBurnerBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource,
 							  int light, int overlay) {
+		if (CreateAddition.SABLE_ACTIVE
+				&& SableUtil.isInSubLevel(be.getLevel(), be.getBlockPos())) {
+			LiquidBlazeBurnerSubLevelRenderer.render(be, partialTicks, ms, bufferSource);
+			return;
+		}
+
 		BlazeBurnerBlock.HeatLevel heatLevel = be.getHeatLevelFromBlock();
 		if (heatLevel == BlazeBurnerBlock.HeatLevel.NONE)
 			return;
@@ -74,7 +82,7 @@ public class LiquidBlazeBurnerRenderer extends SafeBlockEntityRenderer<LiquidBla
 			false, drawGoggles, hashCode);
 	}
 
-	private static void renderShared(PoseStack ms, @Nullable PoseStack modelTransform, MultiBufferSource bufferSource,
+	static void renderShared(PoseStack ms, @Nullable PoseStack modelTransform, MultiBufferSource bufferSource,
 									 Level level, BlockState blockState, BlazeBurnerBlock.HeatLevel heatLevel, float animation, float horizontalAngle,
 									 boolean canDrawFlame, boolean drawGoggles, int hashCode) {
 

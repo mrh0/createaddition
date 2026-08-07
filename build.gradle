@@ -45,6 +45,15 @@ repositories {
         }
         filter {
             includeGroup("dev.ryanhcode.sable-companion")
+            includeGroup("dev.ryanhcode.sable")
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven { url = "https://api.modrinth.com/maven" }
+        }
+        filter {
+            includeGroup("maven.modrinth")
         }
     }
 }
@@ -185,9 +194,14 @@ dependencies {
         }
     }
 
-    // if (aeronautics_enable.toBoolean()) {
-    //     runtimeOnly("group:artifact:${aeronautics_version}")
-    // }
+    if (sable_companion_enable.toBoolean()) {
+        compileOnly("dev.ryanhcode.sable:sable-neoforge-${minecraft_version}:${sable_version}")
+        localRuntime("dev.ryanhcode.sable:sable-neoforge-${minecraft_version}:${sable_version}")
+    }
+
+    if (aeronautics_enable.toBoolean()) {
+        localRuntime("maven.modrinth:create-aeronautics:${aeronautics_version}")
+    }
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

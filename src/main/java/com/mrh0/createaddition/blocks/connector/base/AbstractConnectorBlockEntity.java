@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.mrh0.createaddition.CreateAddition;
+import com.mrh0.createaddition.compat.sable.ISableRender;
+import com.mrh0.createaddition.compat.sable.SableUtil;
 import com.mrh0.createaddition.config.CommonConfig;
 import com.mrh0.createaddition.debug.IDebugDrawer;
 import com.mrh0.createaddition.energy.*;
@@ -36,7 +38,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity implements IWireNode, IObserveBlockEntity, IHaveGoggleInformation, IDebugDrawer, IEnergyProvider {
+public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity implements IWireNode, IObserveBlockEntity, IHaveGoggleInformation, IDebugDrawer, IEnergyProvider, ISableRender {
 
 	private final Set<LocalNode> wireCache = new HashSet<>();
 	private final LocalNode[] localNodes;
@@ -271,7 +273,18 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		if(awakeNetwork(level)) notifyUpdate();
 
 		networkTick(network);
+
+		if (CreateAddition.SABLE_ACTIVE
+				&& !SableUtil.isInSubLevel(level, getBlockPos())) {
+			sableDistanceCheckTicker++;
+			if (sableDistanceCheckTicker >= 10) {
+				sableDistanceCheckTicker = 0;
+				SableUtil.breakWires(level, (IWireNode) this);
+			}
+		}
 	}
+
+	private int sableDistanceCheckTicker;
 
 	private void networkTick(EnergyNetwork network) {
 		ConnectorMode mode = getMode();

@@ -3,7 +3,9 @@ package com.mrh0.createaddition.energy;
 import java.util.HashMap;
 import java.util.Set;
 
+import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.connector.ConnectorType;
+import com.mrh0.createaddition.compat.sable.SableUtil;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.util.Util;
@@ -557,7 +559,15 @@ public interface IWireNode {
 
 		int maxLength = Math.min(wn1.getMaxWireLength(), wn2.getMaxWireLength());
 
-		if (pos1.distSqr(pos2) > maxLength * maxLength) return WireConnectResult.LONG;
+		if (CreateAddition.SABLE_ACTIVE) {
+			double distSq = SableUtil.localNodeDistSq(
+					world,
+					wn1.getPos(), wn1.getNodeOffset(node1),
+					wn2.getPos(), wn2.getNodeOffset(node2));
+			if (distSq > (double) maxLength * maxLength) return WireConnectResult.LONG;
+		} else {
+			if (pos1.distSqr(pos2) > maxLength * maxLength) return WireConnectResult.LONG;
+		}
 		if (wn1.hasConnectionTo(pos2)) return WireConnectResult.EXISTS;
 		if(wn1.getConnectorType() == ConnectorType.Large && wn2.getConnectorType() == ConnectorType.Large) {
 			if(type == WireType.COPPER || type == WireType.FESTIVE) return WireConnectResult.REQUIRES_HIGH_CURRENT;

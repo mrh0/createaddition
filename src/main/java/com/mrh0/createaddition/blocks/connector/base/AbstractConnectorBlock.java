@@ -40,7 +40,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEntity> extends Block implements IBE<BE>, IWrenchable, TransformableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -71,15 +70,20 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 		return this.defaultBlockState().setValue(FACING, dir).setValue(MODE, mode).setValue(VARIANT, variant);
 	}
 
-	@Override
-	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
-		super.playerDestroy(level, player, pos, state, blockEntity, tool);
+	public static void playWireBreakSound(Level level, BlockPos pos) {
+		level.playSound(null, pos, SoundEvents.CHAIN_BREAK, SoundSource.BLOCKS, 1.0f, 2.0f + level.random.nextFloat() * 0.1f);
+	}
 
-		if (level.isClientSide()) return;
-		BlockEntity te = level.getBlockEntity(pos);
-		if (te == null) return;
-		if (!(te instanceof IWireNode cte)) return;
-		cte.dropWires(level, !player.isCreative());
+	@Override
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		if (!level.isClientSide()) {
+			BlockEntity te = level.getBlockEntity(pos);
+			if (te instanceof IWireNode cte) {
+				if (cte.hasAnyConnection()) playWireBreakSound(level, pos);
+				cte.dropWires(level, !player.isCreative());
+			}
+		}
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
@@ -102,7 +106,8 @@ public abstract class AbstractConnectorBlock<BE extends AbstractConnectorBlockEn
 						if (remoteNodes.get(i) != null)
 							remoteNodes.get(i).removeNode(remoteIndices.get(i), false);
 					}
-					level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1f, 1f);
+					playWireBreakSound(level, pos);
+					level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1f, 1f + level.random.nextFloat() * 0.1f);
 				}
 			}
 			return ItemInteractionResult.SUCCESS;
