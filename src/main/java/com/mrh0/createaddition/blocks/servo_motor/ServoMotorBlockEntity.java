@@ -54,7 +54,7 @@ public class ServoMotorBlockEntity extends MechanicalBearingBlockEntity {
 
 	// ScrollOptionBehaviour and KineticScrollValueBehaviour both inherit ScrollValueBehaviour.TYPE,
 	// so they'd overwrite each other in SmartBlockEntity's BehaviourType→Behaviour map. This
-	// subclass gets its own type, a distinct NBT key, and a distinct netId — three separate
+	// subclass gets its own type, a distinct NBT key, and a distinct netId three separate
 	// conflicts that all need to be resolved for two scroll behaviours to coexist.
 	static class ServoMovementMode extends ScrollOptionBehaviour<RotationMode> {
 		ServoMovementMode(Component label, SmartBlockEntity be, ValueBoxTransform slot) {
@@ -133,7 +133,7 @@ public class ServoMotorBlockEntity extends MechanicalBearingBlockEntity {
 
 		@Override
 		public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
-			// nbt.getInt() returns 0 for a missing key — fall back to the constructor default.
+			// nbt.getInt() returns 0 for a missing key fall back to the constructor default.
 			value = nbt.contains(nbtKey) ? nbt.getInt(nbtKey) : defaultVal;
 		}
 	}
@@ -196,7 +196,7 @@ public class ServoMotorBlockEntity extends MechanicalBearingBlockEntity {
 	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
 		super.addBehaviours(behaviours);
 
-		// super's movementMode uses ScrollValueBehaviour.TYPE — same as generatedSpeed's type,
+		// super's movementMode uses ScrollValueBehaviour.TYPE same as generatedSpeed's type,
 		// so one would silently overwrite the other in SmartBlockEntity's type→behaviour map.
 		// Replace it in-place with our ServoMovementMode that has its own distinct type.
 		for (int i = 0; i < behaviours.size(); i++) {
@@ -236,7 +236,7 @@ public class ServoMotorBlockEntity extends MechanicalBearingBlockEntity {
 
 	// When assembled, delegate directly to the contraption entity's own lerp so the disc
 	// is always in perfect sync with the rotating contraption blocks.
-	// Returns the static angle when not assembled — disc stays fixed before assembly.
+	// Returns the static angle when not assembled disc stays fixed before assembly.
 	@Override
 	public float getInterpolatedAngle(float partialTicks) {
 		if (!running) return angle;
@@ -246,7 +246,7 @@ public class ServoMotorBlockEntity extends MechanicalBearingBlockEntity {
 	}
 
 	// When the contraption is assembled, the angle is set directly by the redstone
-	// signal every tick — continuous spinning is not used.
+	// signal every tick continuous spinning is not used.
 	@Override
 	public float getAngularSpeed() {
 		if (running) return 0;

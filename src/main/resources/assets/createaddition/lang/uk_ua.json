@@ -217,7 +217,7 @@
 	"createaddition.ponder.tag.electric.description": "Компоненти, які використовують електрику",
 	
 	"createaddition.ponder.electric_motor.header": "Створення обертальної сили за допомогою електродвигунів",
-	"createaddition.ponder.electric_motor.text_1": "Електродвигуни — це компактне та настроюване джерело обертальної сили",
+	"createaddition.ponder.electric_motor.text_1": "Електродвигуни - це компактне та настроюване джерело обертальної сили",
 	"createaddition.ponder.electric_motor.text_2": "Прокручування на задній панелі змінює швидкість обертання двигуна",
 	"createaddition.ponder.electric_motor.text_3": "Для роботи електродвигуна потрібне джерело енергії (FE)",
 	"createaddition.ponder.electric_motor.text_4": "Енергоспоживання двигуна визначається заданими обертами",

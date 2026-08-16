@@ -244,7 +244,7 @@
 	"createaddition.ponder.tag.electric.description": "Компоненты, использующие электричество",
 
 	"createaddition.ponder.electric_motor.header": "Генерацией силы вращения с помощью электромотора",
-	"createaddition.ponder.electric_motor.text_1": "Электромоторы — это компактные и настраиваемые источники силы вращения",
+	"createaddition.ponder.electric_motor.text_1": "Электромоторы - это компактные и настраиваемые источники силы вращения",
 	"createaddition.ponder.electric_motor.text_2": "Генерируемая скорость вращения может быть настроена на панели параметров",
 	"createaddition.ponder.electric_motor.text_3": "Для работы электромотора требуется источник энергии (⚡)",
 	"createaddition.ponder.electric_motor.text_4": "Энергопотребление мотора определяется генерируемой скоростью вращения",
@@ -284,7 +284,7 @@
 	"createaddition.ponder.liquid_blaze_burner.text_3": "или с помощью труб",
 
 	"createaddition.ponder.modular_accumulator.header": "Многоблочным аккумулятором",
-	"createaddition.ponder.modular_accumulator.text_1": "Аккумулятор — это многоблочная структура",
+	"createaddition.ponder.modular_accumulator.text_1": "Аккумулятор - это многоблочная структура",
 	"createaddition.ponder.modular_accumulator.text_2": "Он может хранить огромное количество электроэнергии",
 	"createaddition.ponder.modular_accumulator.text_3": "Настройте соединители на получение энергии...",
 	"createaddition.ponder.modular_accumulator.text_4": "и её отдачу",
