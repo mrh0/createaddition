@@ -44,7 +44,6 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 	private final LocalNode[] localNodes;
 	private final IWireNode[] nodeCache;
 	private EnergyNetwork network;
-	private int demand = 0;
 
 	private boolean wasContraption = false;
 	private boolean firstTick = true;
@@ -359,7 +358,6 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ObservePacketPayload.send(worldPosition, 0);
 
-		String spacing = " ";
 		CALang.builder().add(Component.translatable(CreateAddition.MODID + ".tooltip.connector.info").withStyle(ChatFormatting.WHITE)).forGoggles(tooltip);
 
 		CALang.builder().add(Component.translatable(CreateAddition.MODID + ".tooltip.energy.mode").withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
