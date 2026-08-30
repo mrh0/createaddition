@@ -3,6 +3,7 @@ package com.mrh0.createaddition.blocks.barbed_wire;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.config.CommonConfig;
 import com.mrh0.createaddition.index.CADamageTypes;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import net.minecraft.core.BlockPos;
@@ -31,7 +32,7 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.IShearable;
 
-public class BarbedWireBlock extends Block implements IShearable, SimpleWaterloggedBlock {
+public class BarbedWireBlock extends Block implements IShearable, SimpleWaterloggedBlock, IWrenchable {
 	public static final BooleanProperty VERTICAL = BooleanProperty.create("vertical");
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
