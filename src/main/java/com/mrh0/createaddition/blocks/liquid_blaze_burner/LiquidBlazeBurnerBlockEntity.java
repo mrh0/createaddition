@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.index.CARecipes;
 import com.mrh0.createaddition.network.IObserveTileEntity;
 import com.mrh0.createaddition.network.ObservePacket;
@@ -17,6 +18,7 @@ import com.simibubi.create.AllTags.AllItemTags;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.fluids.tank.FluidTankBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
@@ -96,6 +98,11 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 	public void addBehaviours(List<BlockEntityBehaviour> list) {
 
 	}
+
+    @Override
+    public ItemRequirement getRequiredItems(BlockState state) {
+        return new ItemRequirement(ItemRequirement.ItemUseType.CONSUME, CAItems.STRAW.get());
+    }
 
 	protected SmartFluidTank createInventory() {
 		SmartFluidTank fluidTank = new SmartFluidTank(4000, this::update);
