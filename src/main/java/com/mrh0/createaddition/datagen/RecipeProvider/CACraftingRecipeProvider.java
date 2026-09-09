@@ -290,6 +290,15 @@ public class CACraftingRecipeProvider extends RecipeProvider {
                         .unlockedBy("has_electron_tube", has(AllItems.ELECTRON_TUBE.asItem()))
         );
 
+        utility.saveToCraftingFolder(
+                ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, CABlocks.ELECTRIC_PUMP.asItem())
+                        .requires(AllBlocks.MECHANICAL_PUMP.asItem())
+                        .requires(CABlocks.ELECTRIC_MOTOR.asItem())
+                        .unlockedBy("has_mechanical_pump", has(AllBlocks.MECHANICAL_PUMP.asItem()))
+                        .unlockedBy("has_electric_motor", has(CABlocks.ELECTRIC_MOTOR.asItem()))
+                        .unlockedBy("has_capacitor", has(CAItems.CAPACITOR))
+        );
+
         /*
         utility.saveToCraftingFolder(
                 ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CAItems.SPOOL.asItem(), 16)

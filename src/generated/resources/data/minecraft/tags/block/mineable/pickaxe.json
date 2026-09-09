@@ -1,9 +1,21 @@
 {
   "values": [
-    "createaddition:electric_motor",
-    "createaddition:servo_motor",
     "createaddition:alternator",
+    "createaddition:electric_motor",
+    "createaddition:electric_pump",
     "createaddition:rolling_mill",
-    "createaddition:liquid_blaze_burner"
+    "createaddition:creative_energy",
+    "createaddition:connector",
+    "createaddition:small_light_connector",
+    "createaddition:servo_motor",
+    "createaddition:large_connector",
+    "createaddition:redstone_relay",
+    "createaddition:tesla_coil",
+    "createaddition:liquid_blaze_burner",
+    "createaddition:barbed_wire",
+    "createaddition:modular_accumulator",
+    "createaddition:portable_energy_interface",
+    "createaddition:digital_adapter",
+    "createaddition:electrum_block"
   ]
 }

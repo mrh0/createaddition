@@ -14,6 +14,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public class CommonConfig {
 	public static final String CATAGORY_GENERAL = "general";
 	public static final String CATAGORY_ELECTRIC_MOTOR = "electric_motor";
+	public static final String CATAGORY_ELECTRIC_PUMP = "electric_pump";
 	public static final String CATAGORY_ALTERNATOR = "alternator";
 	public static final String CATAGORY_ROLLING_MILL = "rolling_mill";
 	public static final String CATAGORY_WIRES = "wires";
@@ -32,6 +33,11 @@ public class CommonConfig {
 	public static ModConfigSpec.IntValue ELECTRIC_MOTOR_MAX_INPUT;
 	public static ModConfigSpec.IntValue ELECTRIC_MOTOR_MINIMUM_CONSUMPTION;
 	public static ModConfigSpec.IntValue ELECTRIC_MOTOR_CAPACITY;
+
+	public static ModConfigSpec.IntValue ELECTRIC_PUMP_RPM_RANGE;
+	public static ModConfigSpec.IntValue ELECTRIC_PUMP_FE_RPM;
+	public static ModConfigSpec.IntValue ELECTRIC_PUMP_MAX_INPUT;
+	public static ModConfigSpec.IntValue ELECTRIC_PUMP_CAPACITY;
 
 	public static ModConfigSpec.IntValue FE_RPM;
 	public static ModConfigSpec.IntValue MAX_STRESS;
@@ -122,6 +128,21 @@ public class CommonConfig {
 
 		ELECTRIC_MOTOR_CAPACITY = COMMON_BUILDER.comment("Electric Motor internal capacity in FE.")
 				.defineInRange("motor_capacity", 5000, 0, Integer.MAX_VALUE);
+		COMMON_BUILDER.pop();
+
+
+		COMMON_BUILDER.comment("Electric Pump").push(CATAGORY_ELECTRIC_PUMP);
+		ELECTRIC_PUMP_RPM_RANGE = COMMON_BUILDER.comment("Electric Pump min/max pump strength (equivalent to the Mechanical Pumps RPM).")
+				.defineInRange("pump_rpm_range", 256, 1, Integer.MAX_VALUE);
+
+		ELECTRIC_PUMP_FE_RPM = COMMON_BUILDER.comment("Electric Pump energy consumption in FE/t at max pump strength (256).")
+				.defineInRange("pump_fe_at_max_rpm", 240, 1, Integer.MAX_VALUE);
+
+		ELECTRIC_PUMP_MAX_INPUT = COMMON_BUILDER.comment("Electric Pump max input in FE (Energy transfer not consumption).")
+				.defineInRange("pump_max_input", 5000, 0, Integer.MAX_VALUE);
+
+		ELECTRIC_PUMP_CAPACITY = COMMON_BUILDER.comment("Electric Pump internal capacity in FE.")
+				.defineInRange("pump_capacity", 5000, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 
 
@@ -244,7 +265,7 @@ public class CommonConfig {
 
 		COMMON_BUILDER.comment("Liquid Blaze Burner").push(CATEGORY_LIQUID_BLAZE_BURNER);
 		LIQUID_BLAZE_BURNER_MAX_LIQUID_CAPACITY = COMMON_BUILDER.comment("Liquid Blaze Burner internal liquid storage capacity (in mB). A value less than 1000 prevents players from refilling with a bucket.")
-				.defineInRange("liquid_blaze_burner_max_liquid_capacity", 4000, 100, Integer.MAX_VALUE);
+				.defineInRange("liquid_blaze_burner_max_liquid_capacity", 1000, 100, Integer.MAX_VALUE);
 
 		LIQUID_BLAZE_BURNER_MAX_HEAT_CAPACITY = COMMON_BUILDER.comment("Liquid Blaze Burner internal heat capacity (in ticks).")
 				.defineInRange("liquid_blaze_burner_max_heat_capacity", 10000, 0, Integer.MAX_VALUE);

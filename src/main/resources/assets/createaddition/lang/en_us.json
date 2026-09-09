@@ -155,6 +155,7 @@
 	"statusbar.createaddition.wire.requires_high_current": "This connection requires a high current wire",
 
 	"block.createaddition.electric_motor": "Electric Motor",
+	"block.createaddition.electric_pump": "Electric Pump",
 
 	"block.createaddition.servo_motor": "Servo Motor",
 

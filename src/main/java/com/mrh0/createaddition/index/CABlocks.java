@@ -20,6 +20,7 @@ import com.mrh0.createaddition.datagen.Models.BlockGenHelper;
 import com.mrh0.createaddition.energy.NodeMovementBehaviour;
 import com.mrh0.createaddition.blocks.creative_energy.CreativeEnergyBlock;
 import com.mrh0.createaddition.blocks.electric_motor.ElectricMotorBlock;
+import com.mrh0.createaddition.blocks.electric_pump.ElectricPumpBlock;
 import com.mrh0.createaddition.blocks.servo_motor.ServoMotorBlock;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlock;
@@ -71,6 +72,16 @@ public class CABlocks {
 			.blockstate(BlockGenHelper.directionalBlockState())
             .onRegister(BlockStressValues.setGeneratorSpeed(256, true))
             .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, () -> CommonConfig.MAX_STRESS.get()/256f))
+			.item()
+			.transform(customItemModel())
+			.register();
+
+	public static final BlockEntry<ElectricPumpBlock> ELECTRIC_PUMP = CreateAddition.REGISTRATE
+            .block("electric_pump", ElectricPumpBlock::new)
+			.initialProperties(SharedProperties::softMetal)
+			.properties(p -> p.noOcclusion())
+			.transform(pickaxeOnly())
+			.blockstate(BlockGenHelper.pumpBlockState())
 			.item()
 			.transform(customItemModel())
 			.register();

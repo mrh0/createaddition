@@ -14,6 +14,7 @@ public class CAPartials {
 	public static final PartialModel PORTABLE_ENERGY_INTERFACE_MIDDLE = block("portable_energy_interface/block_middle");
 	public static final PartialModel PORTABLE_ENERGY_INTERFACE_MIDDLE_POWERED = block("portable_energy_interface/block_middle_powered");
 	public static final PartialModel PORTABLE_ENERGY_INTERFACE_TOP = block("portable_energy_interface/block_top");
+	public static final PartialModel ELECTRIC_PUMP_PARTIAL = block("electric_pump/block_pump_partial");
 
 	private static PartialModel block(String path) {
 		return PartialModel.of(ResourceLocation.fromNamespaceAndPath(CreateAddition.MODID, "block/" + path));

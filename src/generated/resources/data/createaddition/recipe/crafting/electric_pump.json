@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "create:mechanical_pump"
+    },
+    {
+      "item": "createaddition:electric_motor"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "createaddition:electric_pump"
+  }
+}

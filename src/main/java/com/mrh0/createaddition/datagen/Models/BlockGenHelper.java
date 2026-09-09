@@ -71,6 +71,34 @@ public class BlockGenHelper {
         prov.simpleBlock(ctx.get(),blockModel);
     }
 
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> pumpBlockState() {
+        return (ctx, prov) -> pumpModel(ResourceLocation.fromNamespaceAndPath(CreateAddition.MODID, "block/" + getBlockName(ctx.get()) + "/block"), ctx, prov);
+    }
+
+    public static <T extends Block> void pumpModel(ResourceLocation resourceLocation, DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov) {
+        BlockModelProvider models = prov.models();
+        ModelFile.ExistingModelFile blockModel = models.getExistingFile(resourceLocation);
+        prov.getVariantBuilder(ctx.get())
+                .forAllStatesExcept(state -> {
+            Direction dir = state.getValue(BlockStateProperties.FACING);
+            int rotX;
+            int rotY = 0;
+            switch (dir) {
+                case DOWN -> rotX = 180;
+                case NORTH -> rotX = 90;
+                case SOUTH -> { rotX = 90; rotY = 180; }
+                case WEST -> { rotX = 90; rotY = 270; }
+                case EAST -> { rotX = 90; rotY = 90; }
+                default -> rotX = 0; // UP
+            }
+            return ConfiguredModel.builder()
+                    .modelFile(blockModel)
+                    .rotationX(rotX)
+                    .rotationY(rotY)
+                    .build();
+        }, BlockStateProperties.WATERLOGGED, BlockStateProperties.POWERED);
+    }
+
     public static String getBlockName(Block block) {
         return  BuiltInRegistries.BLOCK.getKey(block).getPath();
     }

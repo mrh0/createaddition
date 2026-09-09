@@ -28,6 +28,7 @@ public class CABlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
                 CABlocks.ALTERNATOR.get(),
                 CABlocks.ELECTRIC_MOTOR.get(),
+                CABlocks.ELECTRIC_PUMP.get(),
                 CABlocks.ROLLING_MILL.get(),
                 CABlocks.CREATIVE_ENERGY.get(),
                 CABlocks.SMALL_CONNECTOR.get(),
