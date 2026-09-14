@@ -9,6 +9,7 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeGen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -52,5 +53,15 @@ public class CAMechanicalCrafterRecipeGen extends MechanicalCraftingRecipeGen {
             .patternLine(" A ")
             .patternLine("CBC")
             .patternLine("PEP")
+    ),
+    ELECTRIC_PUMP = create(CABlocks.ELECTRIC_PUMP::get).recipe(b -> b
+            .key('K', Items.DRIED_KELP)
+            .key('P', AllBlocks.MECHANICAL_PUMP.asItem())
+            .key('S', CAItems.COPPER_SPOOL)
+            .key('C', CAItems.CAPACITOR)
+            .patternLine(" K ")
+            .patternLine("SPS")
+            .patternLine(" K ")
+            .patternLine(" C ")
     );
 }

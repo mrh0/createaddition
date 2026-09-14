@@ -29,7 +29,9 @@ public class ElectricPumpBlock extends PumpBlock {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public static final VoxelShaper ELECTRIC_PUMP_SHAPE = CAShapes.shape(0, 5, 0, 16, 11, 16).forDirectional();
+	public static final VoxelShaper ELECTRIC_PUMP_SHAPE = CAShapes.shape(0, 5, 0, 16, 11, 16)
+			.add(4, 0, 4, 12, 16, 12)
+			.forDirectional();
 
 	public ElectricPumpBlock(Properties properties) {
 		super(properties);

@@ -3,7 +3,7 @@
 	"credit": "Made with Blockbench",
 	"parent": "create:block/block",
 	"textures": {
-		"4": "createaddition:block/electric_pump/block",
+		"0": "createaddition:block/electric_pump/block",
 		"particle": "createaddition:block/electric_pump/block"
 	},
 	"elements": [
@@ -13,10 +13,10 @@
 			"to": [5, 2, 5],
 			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 0]},
 			"faces": {
-				"north": {"uv": [0, 8, 5, 10], "texture": "#4"},
-				"east": {"uv": [0, 8, 5, 10], "texture": "#4"},
-				"south": {"uv": [0, 8, 5, 10], "texture": "#4"},
-				"west": {"uv": [0, 8, 5, 10], "texture": "#4"},
+				"north": {"uv": [0, 8, 5, 10], "texture": "0"},
+				"east": {"uv": [0, 8, 5, 10], "texture": "0"},
+				"south": {"uv": [0, 8, 5, 10], "texture": "0"},
+				"west": {"uv": [0, 8, 5, 10], "texture": "0"},
 				"up": {"uv": [0, 0, 10, 10], "texture": "#missing"},
 				"down": {"uv": [0, 0, 10, 10], "texture": "#missing"}
 			}

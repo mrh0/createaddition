@@ -10,7 +10,6 @@ import com.mrh0.createaddition.index.CALang;
 import com.mrh0.createaddition.sound.CASoundScapes;
 import com.mrh0.createaddition.util.Util;
 import com.simibubi.create.content.fluids.pump.PumpBlockEntity;
-import com.simibubi.create.content.kinetics.motor.KineticScrollValueBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
@@ -67,16 +66,15 @@ public class ElectricPumpBlockEntity extends PumpBlockEntity {
 		CenteredSideValueBoxTransform slot =
 				new CenteredSideValueBoxTransform((pump, side) -> side.getAxis() != pump.getValue(ElectricPumpBlock.FACING).getAxis());
 
-		speedBehaviour = new KineticScrollValueBehaviour(CreateLang.translateDirect("generic.speed"), this, slot);
-		speedBehaviour.between(32, CommonConfig.ELECTRIC_PUMP_RPM_RANGE.get());
+		speedBehaviour = new ScrollValueBehaviour(CreateLang.translateDirect("generic.speed"), this, slot);
+		speedBehaviour.between(0, CommonConfig.ELECTRIC_PUMP_RPM_RANGE.get());
 		speedBehaviour.value = 32;
 		behaviours.add(speedBehaviour);
 	}
 
 	protected void applySpeed() {
 		float target = active ? pumpSpeed : 0;
-		if (target == speed)
-			return;
+		if (target == speed) return;
 		float prevSpeed = speed;
 		speed = target;
 		onSpeedChanged(prevSpeed);
@@ -89,7 +87,6 @@ public class ElectricPumpBlockEntity extends PumpBlockEntity {
 		return active ? pumpSpeed : 0;
 	}
 
-	// no kinetic network - speed is FE-driven only
 	@Override
 	public void attachKinetics() {
 		updateSpeed = false;
@@ -119,9 +116,10 @@ public class ElectricPumpBlockEntity extends PumpBlockEntity {
 	}
 
 	public static int getEnergyConsumptionRate(float speed) {
-		if (Math.abs(speed) <= 0)
-			return 0;
-		return (int) Math.max(1, Math.round(CommonConfig.ELECTRIC_PUMP_FE_RPM.get() * Math.abs(speed) / 256d));
+		float magnitude = Math.abs(speed);
+		if (magnitude <= 0) return 0;
+		float effectiveSpeed = Math.max(magnitude, 32);
+		return (int) Math.max(1, Math.round(CommonConfig.ELECTRIC_PUMP_FE_RPM.get() * effectiveSpeed / 256d));
 	}
 
 	@Override
@@ -131,7 +129,6 @@ public class ElectricPumpBlockEntity extends PumpBlockEntity {
 		active = tag.getBoolean("Active");
 	}
 
-	// writeClient() calls write(), not writeSafe() - both need energy/active for the sync packet
 	@Override
 	protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
 		super.write(tag, registries, clientPacket);
@@ -156,15 +153,13 @@ public class ElectricPumpBlockEntity extends PumpBlockEntity {
 			applySpeed();
 		}
 
-		if (level.isClientSide())
-			return;
+		if (level.isClientSide()) return;
 
 		int con = getEnergyConsumptionRate(pumpSpeed);
 		boolean powered = getBlockState().getValue(ElectricPumpBlock.POWERED);
 		boolean shouldRun = !powered && con > 0 && energy.getEnergyStored() >= con;
 
-		if (shouldRun)
-			energy.internalConsumeEnergy(con);
+		if (shouldRun) energy.internalConsumeEnergy(con);
 
 		if (shouldRun != active) {
 			active = shouldRun;
@@ -186,16 +181,14 @@ public class ElectricPumpBlockEntity extends PumpBlockEntity {
 
 	@Override
 	public void tickAudio() {
-		if (!active)
-			return;
+		if (!active) return;
 		if (CommonConfig.AUDIO_ENABLED.get())
 			CASoundScapes.play(CASoundScapes.AmbienceGroup.DYNAMO, worldPosition, 1);
 	}
 
 	public static float getPulseScale(boolean active, float pumpSpeed, float renderTime, float phaseOffsetTicks) {
-		if (!active)
-			return 1f;
-		float rate = Math.abs(pumpSpeed) / 32f;
+		if (!active) return 1f;
+		float rate = Math.max(32f, Math.abs(pumpSpeed)) / 32f;
 		return 1f + Mth.sin((renderTime + phaseOffsetTicks) * 0.1f * rate) * 0.1f;
 	}
 

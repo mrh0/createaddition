@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
@@ -76,16 +75,6 @@ public class ModularAccumulatorBlock extends Block implements IWrenchable, IBE<M
 	@Override
 	public InteractionResult onWrenched(BlockState state, UseOnContext context) {
 		return InteractionResult.SUCCESS;
-	}
-
-	static final VoxelShape CAMPFIRE_SMOKE_CLIP = Block.box(0, 4, 0, 16, 16, 16);
-
-	@Override
-	public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos,
-		CollisionContext pContext) {
-		if (pContext == CollisionContext.empty())
-			return CAMPFIRE_SMOKE_CLIP;
-		return pState.getShape(pLevel, pPos);
 	}
 
 	@Override

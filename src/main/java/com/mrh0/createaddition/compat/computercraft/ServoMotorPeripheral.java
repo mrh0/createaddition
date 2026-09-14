@@ -51,6 +51,8 @@ public class ServoMotorPeripheral implements IPeripheral {
 
 	@LuaFunction(mainThread = true)
 	public final void setSpeed(double rpm) throws LuaException {
+		if (!Double.isFinite(rpm))
+			throw new LuaException("Speed must be a finite number.");
 		double limit = CommonConfig.ELECTRIC_MOTOR_RPM_RANGE.get();
 		if (Math.abs(rpm) > limit)
 			throw new LuaException("Speed out of range (max " + (int) limit + " RPM).");
@@ -69,6 +71,8 @@ public class ServoMotorPeripheral implements IPeripheral {
 
 	@LuaFunction(mainThread = true)
 	public final void setTargetAngle(double angle) throws LuaException {
+		if (!Double.isFinite(angle))
+			throw new LuaException("Angle must be a finite number.");
 		if (angle > 180 || angle < -180)
 			throw new LuaException("Angle must be between -180 and 180.");
 		if (angle >= 0) {
@@ -87,6 +91,8 @@ public class ServoMotorPeripheral implements IPeripheral {
 
 	@LuaFunction(mainThread = true)
 	public final void setMinAngle(double degrees) throws LuaException {
+		if (!Double.isFinite(degrees))
+			throw new LuaException("Min angle must be a finite number.");
 		if (degrees < 0 || degrees > 180)
 			throw new LuaException("Min angle must be between 0 and 180.");
 		tileEntity.setMinAngleDegrees((int) Math.abs(degrees));
@@ -99,6 +105,8 @@ public class ServoMotorPeripheral implements IPeripheral {
 
 	@LuaFunction(mainThread = true)
 	public final void setMaxAngle(double degrees) throws LuaException {
+		if (!Double.isFinite(degrees))
+			throw new LuaException("Max angle must be a finite number.");
 		if (degrees < 0 || degrees > 180)
 			throw new LuaException("Max angle must be between 0 and 180.");
 		tileEntity.setMaxAngleDegrees((int) degrees);

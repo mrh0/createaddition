@@ -457,6 +457,7 @@ public class ServoMotorBlockEntity extends MechanicalBearingBlockEntity {
 	}
 
 	public void setRPM(float rpm) {
+		if (!Float.isFinite(rpm)) return;
 		int clamped = (int) Math.max(-CommonConfig.ELECTRIC_MOTOR_RPM_RANGE.get(),
 				Math.min(CommonConfig.ELECTRIC_MOTOR_RPM_RANGE.get(), rpm));
 		generatedSpeed.setValue(clamped);

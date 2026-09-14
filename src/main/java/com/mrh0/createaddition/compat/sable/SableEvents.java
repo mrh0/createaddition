@@ -31,8 +31,7 @@ public final class SableEvents {
                 LevelChunk chunk = holder.getChunk();
                 if (chunk == null) continue;
                 for (BlockEntity be : chunk.getBlockEntities().values()) {
-                    if (be instanceof IWireNode wn && !be.isRemoved())
-                        result.put(be.getBlockPos().immutable(), wn);
+                    if (be instanceof IWireNode wn && !be.isRemoved()) result.put(be.getBlockPos().immutable(), wn);
                 }
             }
         }

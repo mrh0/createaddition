@@ -42,7 +42,7 @@
 	"item.createaddition.capacitor": "Capacitor",
 
 	"item.createaddition.diamond_grit": "Diamond Grit",
-	"item.createaddition.diamond_grit_sandpaper": "Diamond Grit Sandpaper",
+	"item.createaddition.diamond_grit_sandpaper": "Diamond Grit Sand Paper",
 	"item.createaddition.diamond_grit_sandpaper.tooltip.summary": "Can be used to _refine materials_. The process can be automated with a Deployer.",
 	"item.createaddition.diamond_grit_sandpaper.tooltip.condition1": "When Used",
 	"item.createaddition.diamond_grit_sandpaper.tooltip.behaviour1": "Applies polish to items held in the _offhand_ or lying on the _floor_ when _looking at them_",

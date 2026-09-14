@@ -20,24 +20,21 @@ public class EnergyNetworkManager {
 	}
 	
 	public void tick() {
-		List<EnergyNetwork> keep = new ArrayList<EnergyNetwork>();
-		for(int i = 0; i < networks.size(); i++) {
-			EnergyNetwork en = networks.get(i);
-			if(en.isValid()) {
-				en.tick(i);
-				keep.add(en);
-				continue;
+		Iterator<EnergyNetwork> it = networks.iterator();
+		int i = 0;
+		while (it.hasNext()) {
+			EnergyNetwork en = it.next();
+			if (en.isValid()) en.tick(i++);
+			else {
+				it.remove();
+				en.removed();
 			}
-			en.removed();
 		}
-		networks = keep;
 	}
 	
 	public static void tickWorld(LevelAccessor world) {
-		if(instances == null)
-			return;
-		if(instances.get(world) == null)
-			return;
+		if(instances == null) return;
+		if(instances.get(world) == null) return;
 		instances.get(world).tick();
 	}
 }

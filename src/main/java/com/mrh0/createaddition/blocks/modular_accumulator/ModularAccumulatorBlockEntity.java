@@ -403,6 +403,15 @@ public class ModularAccumulatorBlockEntity extends SmartBlockEntity implements I
 		if (queuedSync) tag.putBoolean("LazySync", true);
 	}
 
+	@Override
+	public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
+		super.writeSafe(tag, registries);
+		if (isController()) {
+			tag.putInt("Size", width);
+			tag.putInt("Height", height);
+		}
+	}
+
 	public int getTotalAccumulatorSize() {
 		return width * width * height;
 	}

@@ -136,7 +136,7 @@ public class CommonConfig {
 				.defineInRange("pump_rpm_range", 256, 1, Integer.MAX_VALUE);
 
 		ELECTRIC_PUMP_FE_RPM = COMMON_BUILDER.comment("Electric Pump energy consumption in FE/t at max pump strength (256).")
-				.defineInRange("pump_fe_at_max_rpm", 240, 1, Integer.MAX_VALUE);
+				.defineInRange("pump_fe_at_max_rpm", 120, 1, Integer.MAX_VALUE);
 
 		ELECTRIC_PUMP_MAX_INPUT = COMMON_BUILDER.comment("Electric Pump max input in FE (Energy transfer not consumption).")
 				.defineInRange("pump_max_input", 5000, 0, Integer.MAX_VALUE);

@@ -291,34 +291,12 @@ public class CACraftingRecipeProvider extends RecipeProvider {
         );
 
         utility.saveToCraftingFolder(
-                ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, CABlocks.ELECTRIC_PUMP.asItem())
-                        .requires(AllBlocks.MECHANICAL_PUMP.asItem())
-                        .requires(CABlocks.ELECTRIC_MOTOR.asItem())
-                        .unlockedBy("has_mechanical_pump", has(AllBlocks.MECHANICAL_PUMP.asItem()))
-                        .unlockedBy("has_electric_motor", has(CABlocks.ELECTRIC_MOTOR.asItem()))
-                        .unlockedBy("has_capacitor", has(CAItems.CAPACITOR))
-        );
-
-        /*
-        utility.saveToCraftingFolder(
-                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CAItems.SPOOL.asItem(), 16)
-                        .pattern("P")
-                        .pattern("N")
-                        .pattern("P")
-                        .define('P', CATagRegister.Items.commonTags("plates/iron"))
-                        .define('N', Tags.Items.NUGGETS_IRON)
-                        .unlockedBy("has_spool", has(CAItems.SPOOL.asItem()))
-                        .unlockedBy("has_iron_plate", has(CATagRegister.Items.commonTags("plates/iron")))
-                        .unlockedBy("has_iron_nugget", has(Tags.Items.NUGGETS_IRON))
-        );
-        */
-        utility.saveToCraftingFolder(
                 ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CAItems.SPOOL.asItem(), 24)
                         .pattern("P")
-                        .pattern("N")
+                        .pattern("R")
                         .pattern("P")
                         .define('P', CATagRegister.Items.commonTags("plates/iron"))
-                        .define('N', CATagRegister.Items.RODS_IRON)
+                        .define('R', CATagRegister.Items.RODS_IRON)
                         .unlockedBy("has_spool", has(CAItems.SPOOL.asItem()))
                         .unlockedBy("has_iron_plate", has(CATagRegister.Items.commonTags("plates/iron")))
                         .unlockedBy("has_iron_rod", has(CATagRegister.Items.RODS))

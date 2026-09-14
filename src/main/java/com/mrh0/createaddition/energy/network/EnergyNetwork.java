@@ -104,6 +104,8 @@ public class EnergyNetwork {
 	
 	public static EnergyNetwork nextNode(Level level, EnergyNetwork en, Map<String, IWireNode> visited, IWireNode current, int index) {
 		if (visited.containsKey(posKey(current.getPos(), index))) return null; // should never matter?
+		EnergyNetwork previous = current.getNetwork(index);
+		if (previous != null && previous != en) previous.invalidate();
 		current.setNetwork(index, en);
 		visited.put(posKey(current.getPos(), index), current);
 		en.nodeCount++;
