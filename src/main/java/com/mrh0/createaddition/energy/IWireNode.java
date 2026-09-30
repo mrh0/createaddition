@@ -1,12 +1,13 @@
 package com.mrh0.createaddition.energy;
 
-import java.util.HashMap;
 import java.util.Set;
 
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.connector.ConnectorType;
 import com.mrh0.createaddition.compat.sable.SableUtil;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
+import com.mrh0.createaddition.energy.network.WireGraph;
+import com.mrh0.createaddition.energy.network.WireNodeKind;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.util.Util;
 
@@ -15,6 +16,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,17 +42,17 @@ public interface IWireNode {
 
 	/**
 	 * Used by {@link IWireNode#getWireNode(int)} to get a cached
-	 * {@link IWireNode}.
+	 * {@link IWireNode}. Returns null if the other end isn't loaded.
 	 */
 	@Nullable
 	static IWireNode getWireNodeFrom(int index, IWireNode obj, LocalNode[] localNodes, IWireNode[] nodeCache,
 	                                 Level level) {
 		if (!obj.hasConnection(index)) return null;
-		// Cache the node if it isn't already.
-		if (nodeCache[index] == null)
-			nodeCache[index] = IWireNode.getWireNode(level, localNodes[index].getPos());
-		// If the node is still null, remove it.
-		if (nodeCache[index] == null) obj.removeNode(index);
+		// Cached nodes go stale when their chunk unloads or their block is replaced.
+		IWireNode cached = nodeCache[index];
+		if (cached instanceof BlockEntity be && !be.isRemoved() && be.getBlockPos().equals(localNodes[index].getPos()))
+			return cached;
+		nodeCache[index] = IWireNode.getWireNode(level, localNodes[index].getPos());
 		return nodeCache[index];
 	}
 
@@ -303,11 +305,26 @@ public interface IWireNode {
 	void setNetwork(int node, EnergyNetwork network);
 	EnergyNetwork getNetwork(int node);
 
+	// How this node's indices split into ports, each on its own network
+	default WireNodeKind getWireNodeKind() {
+		return WireNodeKind.CONNECTOR;
+	}
+
+	default int getPort(int node) {
+		return getWireNodeKind().portOf(node);
+	}
+
+	/**
+	 * Looks up the networks of any nodes whose network changed. The {@link WireGraph}
+	 * knows the networks, so this never has to visit (or load) other nodes.
+	 */
 	default boolean awakeNetwork(Level world) {
 		boolean b = false;
 		for(int i = 0; i < getNodeCount(); i++) {
 			if(!isNetworkValid(i)) {
-				setNetwork(i, EnergyNetwork.nextNode(world, new EnergyNetwork(world), new HashMap<>(), this, i));
+				EnergyNetwork network = WireGraph.getNetwork(world, this, getPort(i));
+				if (network == null) return b;
+				setNetwork(i, network);
 				b = true;
 			}
 		}
@@ -322,7 +339,7 @@ public interface IWireNode {
 	}
 
 	default boolean isNodeIndeciesConnected(int in, int other) {
-		return true;
+		return getPort(in) == getPort(other);
 	}
 
 	// Node Validation
@@ -332,7 +349,7 @@ public interface IWireNode {
 		for (int i = 0; i < getNodeCount(); i++) {
 			if (localNodes[i] == null) continue;
 			IWireNode otherNode = getWireNode(i);
-			if (otherNode == null) continue; // getWireNode removes the node if it's null.
+			if (otherNode == null) continue; // Not loaded; the wire graph checks it against the world instead.
 			// If the other node exists but isn't connected to us.
 			if (!otherNode.hasConnectionTo(getPos())) {
 				changed = true;
@@ -548,11 +565,9 @@ public interface IWireNode {
 	int getMaxWireLength();
 	
 	static WireConnectResult connect(Level world, BlockPos pos1, int node1, BlockPos pos2, int node2, WireType type) {
-		BlockEntity te1 = world.getBlockEntity(pos1);
-		BlockEntity te2 = world.getBlockEntity(pos2);
-		if (te1 == null || te2 == null || te1 == te2)
-			return WireConnectResult.INVALID;
-		if (!(te1 instanceof IWireNode wn1) || !(te2 instanceof IWireNode wn2))
+		IWireNode wn1 = getWireNode(world, pos1);
+		IWireNode wn2 = getWireNode(world, pos2);
+		if (wn1 == null || wn2 == null || wn1 == wn2)
 			return WireConnectResult.INVALID;
 		if (node1 < 0 || node2 < 0)
 			return WireConnectResult.COUNT;
@@ -579,13 +594,11 @@ public interface IWireNode {
 	}
 	
 	static WireConnectResult disconnect(Level world, BlockPos pos1, BlockPos pos2) {
-		BlockEntity te1 = world.getBlockEntity(pos1);
-		BlockEntity te2 = world.getBlockEntity(pos2);
-		if (te1 == null || te2 == null || te1 == te2)
+		IWireNode wn1 = getWireNode(world, pos1);
+		IWireNode wn2 = getWireNode(world, pos2);
+		if (wn1 == null || wn2 == null || wn1 == wn2)
 			return WireConnectResult.INVALID;
-		if (!(te1 instanceof IWireNode wn1) || !(te2 instanceof IWireNode wn2))
-			return WireConnectResult.INVALID;
-		
+
 		if (!wn1.hasConnectionTo(pos2))
 			return WireConnectResult.NO_CONNECTION;
 
@@ -601,20 +614,25 @@ public interface IWireNode {
 
 	@Nullable
 	static WireType getTypeOfConnection(Level level, BlockPos pos1, BlockPos pos2) {
-		BlockEntity te1 = level.getBlockEntity(pos1);
-		if (te1 == null) return null;
-		if (!(te1 instanceof IWireNode wn)) return null;
+		IWireNode wn = getWireNode(level, pos1);
+		if (wn == null) return null;
 		LocalNode ln = wn.getConnectionTo(pos2);
 		if (ln == null) return null;
 		return ln.getType();
 	}
-	
-	static IWireNode getWireNode(Level level, BlockPos pos) {
-		if(pos == null) return null;
+
+	/**
+	 * Get the {@link IWireNode} at the given position, if its chunk is loaded.
+	 * Never loads a chunk.
+	 */
+	@Nullable
+	static IWireNode getWireNode(@Nullable Level level, @Nullable BlockPos pos) {
+		if (level == null || pos == null) return null;
+		if (level instanceof ServerLevel serverLevel) return WireGraph.findLoadedNode(serverLevel, pos);
+		// Client and simulated levels return nothing for chunks they don't have.
 		BlockEntity te = level.getBlockEntity(pos);
-		if(te == null) return null;
-		if(!(te instanceof IWireNode)) return null;
-		return (IWireNode) te;
+		if (!(te instanceof IWireNode node) || te.isRemoved()) return null;
+		return node;
 	}
 	
 	static void dropWire(Level world, BlockPos pos, ItemStack stack) {

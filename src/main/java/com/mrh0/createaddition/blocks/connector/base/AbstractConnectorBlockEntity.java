@@ -11,6 +11,7 @@ import com.mrh0.createaddition.config.CommonConfig;
 import com.mrh0.createaddition.debug.IDebugDrawer;
 import com.mrh0.createaddition.energy.*;
 import com.mrh0.createaddition.energy.network.EnergyNetwork;
+import com.mrh0.createaddition.energy.network.WireGraph;
 import com.mrh0.createaddition.index.CALang;
 import com.mrh0.createaddition.util.Util;
 import com.mrh0.createaddition.network.EnergyNetworkPacketPayload;
@@ -130,8 +131,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 
 		notifyUpdate();
 
-		// Invalidate
-		if (network != null) network.invalidate();
+		WireGraph.nodeChanged(level, this);
 	}
 
 	@Override
@@ -143,8 +143,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		invalidateNodeCache();
 		notifyUpdate();
 
-		// Invalidate
-		if (network != null) network.invalidate();
+		WireGraph.nodeChanged(level, this);
 		// Drop wire next tick.
 		if (dropWire && old != null) this.wireCache.add(old);
 	}
@@ -204,8 +203,8 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 			}
 		}
 
-		// Invalidate the network if we updated the nodes.
-		if (!nodes.isEmpty() && this.network != null) this.network.invalidate();
+		// Only when already in the level (e.g. /data); on chunk load the level isn't set yet and onLoad registers instead.
+		if (!clientPacket) WireGraph.nodeChanged(level, this);
 	}
 
 	@Override
@@ -223,10 +222,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		nbt.put(LocalNode.NODES, nodes);
 	}
 
-	/**
-	 * Called after the tile entity has been part of a contraption.
-	 * Only runs on the server.
-	 */
+	// Called after the tile entity has been part of a contraption
 	private void validateNodes() {
 		boolean changed = validateLocalNodes(this.localNodes);
 
@@ -235,8 +231,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 
 		if (changed) {
 			invalidateNodeCache();
-			// Invalidate
-			if (this.network != null) this.network.invalidate();
+			WireGraph.nodeChanged(level, this);
 		}
 	}
 
@@ -262,6 +257,9 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		// Check if we need to drop any wires due to contraption.
 		if (!this.wireCache.isEmpty() && !isRemoved()) handleWireCache(level, this.wireCache);
 
+		// Every mode needs its network: light connectors and passive IO use it too.
+		if (!level.isClientSide()) awakeNetwork(level);
+
 		specialTick();
 
 		if (getMode() == ConnectorMode.None) return;
@@ -269,7 +267,6 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 
 		if(level == null) return;
 		if(level.isClientSide()) return;
-		if(awakeNetwork(level)) notifyUpdate();
 
 		networkTick(network);
 
@@ -289,6 +286,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 		ConnectorMode mode = getMode();
 		if(level == null) return;
 		if(level.isClientSide()) return;
+		if(network == null) return;
 		if(external == null) {
 			updateExternalEnergyStorage();
 			if(external == null) {
@@ -310,6 +308,19 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 	}
 
 	@Override
+	public void onLoad() {
+		super.onLoad();
+		WireGraph.nodeLoaded(level, this);
+	}
+
+	// Chunk unloaded or block removed.
+	@Override
+	public void invalidate() {
+		super.invalidate();
+		WireGraph.nodeUnloaded(level, this);
+	}
+
+	@Override
 	public void remove() {
 		if(level == null) return;
 		if (level.isClientSide()) return;
@@ -318,9 +329,15 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 			LocalNode localNode = getLocalNode(i);
 			if (localNode == null) continue;
 			IWireNode otherNode = getWireNode(i);
-			if(otherNode == null) continue;
+			if(otherNode == null) {
+				// The other end is unloaded and lets go of the wire when it next loads, so the wire drops here.
+				if (!localNode.isInvalid()) dropWire(level, localNode);
+				continue;
+			}
 
 			int ourNode = localNode.getOtherIndex();
+			LocalNode otherLocal = otherNode.getLocalNode(ourNode);
+			if (otherLocal == null || !otherLocal.getPos().equals(getBlockPos())) continue;
 			if (localNode.isInvalid())
 				otherNode.removeNode(ourNode);
 			else
@@ -329,8 +346,7 @@ public abstract class AbstractConnectorBlockEntity extends SmartBlockEntity impl
 
 		invalidateNodeCache();
 
-		// Invalidate
-		if (network != null) network.invalidate();
+		WireGraph.nodeRemoved(level, this);
 	}
 
 	public void invalidateLocalNodes() {

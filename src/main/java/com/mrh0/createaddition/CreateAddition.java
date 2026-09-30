@@ -46,6 +46,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mrh0.createaddition.commands.CCApiCommand;
+import com.mrh0.createaddition.commands.WireGraphCommand;
 import com.mrh0.createaddition.compat.sable.CreateAdditionSable;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.TooltipModifier;
@@ -183,6 +184,7 @@ public class CreateAddition {
     public void onRegisterCommandEvent(RegisterCommandsEvent event) {
     	CommandDispatcher<CommandSourceStack> dispather = event.getDispatcher();
     	CCApiCommand.register(dispather);
+    	WireGraphCommand.register(dispather);
     }
 
     private static final String PROTOCOL = "1";

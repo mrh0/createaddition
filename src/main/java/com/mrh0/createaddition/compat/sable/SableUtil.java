@@ -80,10 +80,10 @@ public final class SableUtil {
         return SableCompanion.INSTANCE.runIncludingSubLevels(level, (Position) Vec3.atCenterOf(pos),
                 true, access,
                 (context, bp) -> {
-                    BlockEntity be = context instanceof SubLevel sl
-                            ? sl.getPlot().getEmbeddedLevelAccessor().getBlockEntity(bp)
-                            : level.getBlockEntity(bp);
-                    return be instanceof IWireNode wn ? wn : null;
+                    if (context instanceof SubLevel sl)
+                        return sl.getPlot().getEmbeddedLevelAccessor().getBlockEntity(bp) instanceof IWireNode wn ? wn : null;
+                    // Outside sub-levels only loaded chunks count; level.getBlockEntity would load the chunk
+                    return IWireNode.getWireNode(level, bp);
                 });
     }
 

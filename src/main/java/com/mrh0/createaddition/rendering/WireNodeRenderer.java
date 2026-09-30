@@ -24,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
@@ -34,6 +35,46 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 
 	private static final float HANG = 0.5f;
 	private float time = 0f;
+
+	// The wires drawn here reach far past the connector block, so cull by the wires rather than the block.
+	@Override
+	public boolean shouldRenderOffScreen(T be) {
+		return true;
+	}
+
+	@Override
+	public AABB getRenderBoundingBox(T be) {
+		IWireNode te = (IWireNode) be;
+		BlockPos pos = be.getBlockPos();
+		int minX = pos.getX(), minY = pos.getY(), minZ = pos.getZ();
+		int maxX = minX, maxY = minY, maxZ = minZ;
+		for (int i = 0; i < te.getNodeCount(); i++) {
+			BlockPos other = te.getNodePos(i);
+			if (other == null) continue;
+			minX = Math.min(minX, other.getX());
+			minY = Math.min(minY, other.getY());
+			minZ = Math.min(minZ, other.getZ());
+			maxX = Math.max(maxX, other.getX());
+			maxY = Math.max(maxY, other.getY());
+			maxZ = Math.max(maxZ, other.getZ());
+		}
+		// One block of margin covers the sag.
+		AABB box = new AABB(minX - 1, minY - 1, minZ - 1, maxX + 2, maxY + 2, maxZ + 2);
+		if (ClientEventHandler.clientRenderHeldWire) {
+			// A wire being placed runs to the player.
+			LocalPlayer player = ClientMinecraftWrapper.getPlayer();
+			Util.Triple<BlockPos, Integer, WireType> wireNode = player == null ? null : Util.getWireNodeOfSpools(player.getInventory().getSelected());
+			if (wireNode != null && wireNode.a.equals(pos)) box = box.minmax(player.getBoundingBox());
+		}
+		return box;
+	}
+
+	// Measured to the nearest part of the wires, so a long wire doesn't vanish when its connector is far away.
+	@Override
+	public boolean shouldRender(T be, Vec3 cameraPos) {
+		double distance = getViewDistance();
+		return getRenderBoundingBox(be).distanceToSqr(cameraPos) < distance * distance;
+	}
 
 	@Override
 	public void render(T be, float partialTicks, PoseStack stack, MultiBufferSource bufferIn,
@@ -56,10 +97,9 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 			float oy1 = ((float) d1.y());
 			float oz1 = ((float) d1.z());
 
+			// The other end may be outside the client's loaded chunks; aim at its block centre then.
 			IWireNode wn = te.getWireNode(i);
-			if (wn == null) return;
-
-			Vec3 d2 = wn.getNodeOffset(te.getOtherNodeIndex(i)); // get other
+			Vec3 d2 = wn != null ? wn.getNodeOffset(te.getOtherNodeIndex(i)) : Vec3.ZERO; // get other
 			float ox2 = ((float) d2.x());
 			float oy2 = ((float) d2.y());
 			float oz2 = ((float) d2.z());
@@ -138,15 +178,17 @@ public class WireNodeRenderer<T extends BlockEntity> implements BlockEntityRende
 			IWireNode remoteNode = te.getWireNode(i);
 			BlockPos remotePos = te.getNodePos(i);
 			WireType wireType = te.getNodeType(i);
-			if (remoteNode == null || remotePos == null || wireType == null) continue;
+			if (remotePos == null || wireType == null) continue;
 
 			int otherIdx = te.getOtherNodeIndex(i);
-			if (!shouldRenderConnection(te, i, remoteNode, otherIdx, level)) continue;
+			// Without the other end loaded client-side only this end draws the wire, aimed at the other block's centre.
+			if (remoteNode != null && !shouldRenderConnection(te, i, remoteNode, otherIdx, level)) continue;
+			Vec3 remoteOffset = remoteNode != null ? remoteNode.getNodeOffset(otherIdx) : Vec3.ZERO;
 
 			Vec3 localNodePos = Vec3.atCenterOf(te.getPos()).add(te.getNodeOffset(i));
 			Vec3 remoteNodePos = SableUtil
 					.nodeWireOffsetRelativeTo(level, te.getPos(), remotePos,
-							remoteNode.getNodeOffset(otherIdx), partialTicks);
+							remoteOffset, partialTicks);
 
 			Vec3 translateTo = remoteNodePos.subtract(localOrigin);
 			Vec3 wireDir = localNodePos.subtract(remoteNodePos);

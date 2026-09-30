@@ -3,7 +3,7 @@ package com.mrh0.createaddition.event;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyManager;
 import com.mrh0.createaddition.debug.CADebugger;
-import com.mrh0.createaddition.energy.network.EnergyNetworkManager;
+import com.mrh0.createaddition.energy.network.WireGraph;
 import com.mrh0.createaddition.index.CABlocks;
 import com.mrh0.createaddition.index.CAItems;
 import com.mrh0.createaddition.network.ObservePacketPayload;
@@ -12,12 +12,15 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
@@ -28,7 +31,7 @@ public class GameEvents {
 	public static void levelTickEvent(LevelTickEvent.Pre evt) {
 		if(evt.getLevel().isClientSide()) return;
 		// if (evt == Phase.END) return;
-		EnergyNetworkManager.tickWorld(evt.getLevel());
+		WireGraph.tick(evt.getLevel());
 	}
 
 	@SubscribeEvent
@@ -46,16 +49,14 @@ public class GameEvents {
 	}
 
 	@SubscribeEvent
-	public static void loadEvent(LevelEvent.Load evt) {
-		if(evt.getLevel().isClientSide()) return;
-		new EnergyNetworkManager(evt.getLevel());
+	public static void chunkLoadEvent(ChunkEvent.Load evt) {
+		if (evt.getLevel() instanceof ServerLevel level && evt.getChunk() instanceof LevelChunk chunk)
+			WireGraph.chunkLoaded(level, chunk);
 	}
 
 	@SubscribeEvent
 	public static void LevelUnload(LevelEvent.Unload event) {
-		if (!event.getLevel().isClientSide()) {
-			EnergyNetworkManager.instances.remove(event.getLevel());
-		}
+		if (event.getLevel() instanceof ServerLevel level) WireGraph.levelUnloaded(level);
 	}
 
 	@SubscribeEvent
