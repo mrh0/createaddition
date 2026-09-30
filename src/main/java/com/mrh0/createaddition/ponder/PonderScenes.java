@@ -15,6 +15,7 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.fluids.pump.PumpBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.redstone.analogLever.AnalogLeverBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import net.createmod.catnip.math.Pointing;
@@ -707,5 +708,328 @@ public class PonderScenes {
 		scene.overlay().chaseBoundingBoxOutline(PonderPalette.OUTPUT, out, bb2.move(util.vector().centerOf(1, 1, 2)), 30);
 		scene.idle(25);
 
+	}
+
+	public static void connector(SceneBuilder builder, SceneBuildingUtil util) {
+		CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+		scene.title("connector", "Transferring Energy using Connectors");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		BlockPos alternator = util.grid().at(4, 1, 2);
+		BlockPos motor = util.grid().at(1, 1, 1);
+		BlockPos pull = alternator.above();
+		BlockPos push = motor.above();
+		BlockPos relay = util.grid().at(2, 3, 3);
+
+		Selection largeCog = util.select().position(5, 0, 1);
+		Selection alternatorKinetics = util.select().fromTo(4, 1, 2, 5, 1, 2);
+		Selection motorKinetics = util.select().fromTo(1, 1, 0, 1, 1, 1);
+
+		// The structure is saved with its wires attached, take them down until the relay is shown.
+		scene.world().modifyBlockEntity(relay, SmallConnectorBlockEntity.class, be -> {
+			Level level = be.getLevel();
+			if (level == null) return;
+			IWireNode.disconnect(level, relay, pull);
+			IWireNode.disconnect(level, relay, push);
+		});
+		scene.world().setKineticSpeed(largeCog, 32);
+		scene.world().setKineticSpeed(alternatorKinetics, -64);
+		scene.idle(5);
+
+		scene.world().showSection(alternatorKinetics.add(largeCog), Direction.DOWN);
+		scene.idle(5);
+		scene.world().showSection(motorKinetics, Direction.DOWN);
+		scene.idle(10);
+
+		scene.overlay().showText(60)
+			.text("The Alternator is a producer of energy...")
+			.placeNearTarget()
+			.pointAt(util.vector().topOf(alternator));
+		scene.idle(70);
+
+		scene.overlay().showText(60)
+			.text("...while the Electric Motor is a consumer of energy")
+			.placeNearTarget()
+			.pointAt(util.vector().topOf(motor));
+		scene.idle(70);
+
+		scene.world().showSection(util.select().position(pull), Direction.DOWN);
+		scene.idle(10);
+		scene.overlay().showText(80)
+			.attachKeyFrame()
+			.text("Producers need a connector in Pull mode, which pulls energy out of the block it is attached to")
+			.placeNearTarget()
+			.pointAt(util.vector().centerOf(pull));
+		scene.idle(90);
+
+		scene.world().showSection(util.select().position(push), Direction.DOWN);
+		scene.idle(10);
+		scene.overlay().showText(80)
+			.attachKeyFrame()
+			.text("Consumers need a connector in Push mode, which pushes energy into the block it is attached to")
+			.placeNearTarget()
+			.pointAt(util.vector().centerOf(push));
+		scene.idle(90);
+
+		scene.overlay().showControls(util.vector().topOf(push), Pointing.DOWN, 50).rightClick()
+			.withItem(AllItems.WRENCH.asStack());
+		scene.overlay().showText(50)
+			.text("Use a Wrench on a connector to cycle its mode")
+			.placeNearTarget()
+			.pointAt(util.vector().centerOf(push));
+		scene.idle(60);
+
+		scene.world().showSection(util.select().fromTo(2, 1, 3, 2, 2, 3), Direction.DOWN);
+		scene.idle(5);
+		scene.world().showSection(util.select().position(relay), Direction.DOWN);
+		scene.idle(10);
+		scene.overlay().showText(70)
+			.attachKeyFrame()
+			.text("Connectors in None mode do not interact with the block they are attached to...")
+			.placeNearTarget()
+			.pointAt(util.vector().centerOf(relay));
+		scene.idle(80);
+
+		scene.overlay().showText(70)
+			.text("...they only relay energy through their wires, so they can be placed on any block")
+			.placeNearTarget()
+			.pointAt(util.vector().centerOf(relay));
+		scene.idle(80);
+
+		scene.overlay().showText(110)
+			.attachKeyFrame()
+			.text("Connect two connectors with a wire by right-clicking both using a Copper Spool")
+			.placeNearTarget()
+			.pointAt(util.vector().centerOf(relay));
+		scene.idle(10);
+
+		scene.overlay().showControls(util.vector().topOf(relay), Pointing.DOWN, 20).rightClick()
+			.withItem(CAItems.COPPER_SPOOL.asStack());
+		scene.idle(25);
+		scene.overlay().showControls(util.vector().topOf(pull), Pointing.DOWN, 20).rightClick()
+			.withItem(CAItems.COPPER_SPOOL.asStack());
+		scene.idle(5);
+		scene.world().modifyBlockEntity(relay, SmallConnectorBlockEntity.class, be -> {
+			Level level = be.getLevel();
+			if (level != null)
+				IWireNode.connect(level, relay, 1, pull, 0, WireType.COPPER);
+		});
+		scene.idle(20);
+
+		scene.overlay().showControls(util.vector().topOf(relay), Pointing.DOWN, 20).rightClick()
+			.withItem(CAItems.COPPER_SPOOL.asStack());
+		scene.idle(25);
+		scene.overlay().showControls(util.vector().topOf(push), Pointing.DOWN, 20).rightClick()
+			.withItem(CAItems.COPPER_SPOOL.asStack());
+		scene.idle(5);
+		scene.world().modifyBlockEntity(relay, SmallConnectorBlockEntity.class, be -> {
+			Level level = be.getLevel();
+			if (level != null)
+				IWireNode.connect(level, relay, 0, push, 0, WireType.COPPER);
+		});
+		scene.idle(25);
+
+		scene.world().setKineticSpeed(motorKinetics, -32);
+		scene.effects().rotationDirectionIndicator(motor.north());
+		scene.overlay().showText(60)
+			.attachKeyFrame()
+			.text("Energy now flows from the Alternator to the Electric Motor")
+			.placeNearTarget()
+			.pointAt(util.vector().topOf(motor));
+		scene.idle(70);
+		scene.markAsFinished();
+	}
+
+	public static void connectorRemove(SceneBuilder builder, SceneBuildingUtil util) {
+		CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+		scene.title("connector_remove", "Removing Wires using an Empty Spool");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		BlockPos motor = util.grid().at(1, 1, 1);
+		BlockPos push = motor.above();
+		BlockPos relay = util.grid().at(2, 3, 3);
+
+		Selection largeCog = util.select().position(5, 0, 1);
+		Selection motorKinetics = util.select().fromTo(1, 1, 0, 1, 1, 1);
+
+		scene.world().setKineticSpeed(largeCog, 32);
+		scene.world().setKineticSpeed(util.select().fromTo(4, 1, 2, 5, 1, 2), -64);
+		scene.world().setKineticSpeed(motorKinetics, -32);
+		scene.idle(5);
+
+		scene.world().showSection(util.select().layersFrom(1).add(largeCog), Direction.DOWN);
+		scene.idle(20);
+
+		scene.overlay().showText(90)
+			.text("Right-click both ends of a wire with an Empty Spool to remove it")
+			.placeNearTarget()
+			.pointAt(util.vector().centerOf(push));
+		scene.idle(20);
+
+		scene.overlay().showControls(util.vector().topOf(push), Pointing.DOWN, 20).rightClick()
+			.withItem(CAItems.SPOOL.asStack());
+		scene.idle(25);
+		scene.overlay().showControls(util.vector().topOf(relay), Pointing.DOWN, 20).rightClick()
+			.withItem(CAItems.SPOOL.asStack());
+		scene.idle(5);
+		scene.world().modifyBlockEntity(relay, SmallConnectorBlockEntity.class, be -> {
+			Level level = be.getLevel();
+			if (level != null)
+				IWireNode.disconnect(level, relay, push);
+		});
+		scene.idle(20);
+		scene.world().setKineticSpeed(motorKinetics, 0);
+		scene.idle(30);
+
+		scene.overlay().showText(60)
+			.text("The wire is returned as a filled Spool")
+			.placeNearTarget()
+			.pointAt(util.vector().centerOf(relay));
+		scene.idle(70);
+		scene.markAsFinished();
+	}
+
+	public static void servoMotor(SceneBuilder builder, SceneBuildingUtil util) {
+		CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+		scene.title("servo_motor", "Rotating Blocks to precise Angles using the Servo Motor");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+		scene.idle(5);
+
+		BlockPos servo = util.grid().at(2, 1, 1);
+		BlockPos connector = util.grid().at(2, 1, 2);
+		Selection minLever = util.select().position(1, 1, 1);
+		Selection maxLever = util.select().position(3, 1, 1);
+		Vec3 minLeverVec = util.vector().centerOf(1, 1, 1).add(0, -.25, 0);
+		Vec3 maxLeverVec = util.vector().centerOf(3, 1, 1).add(0, -.25, 0);
+
+		scene.world().showSection(util.select().position(servo), Direction.DOWN);
+		scene.idle(15);
+
+		scene.overlay().showText(60)
+			.text("The Servo Motor uses redstone to rotate attached blocks to a precise angle")
+			.placeNearTarget()
+			.pointAt(util.vector().topOf(servo));
+		scene.idle(70);
+
+		scene.world().showSection(util.select().position(connector)
+			.add(util.select().fromTo(4, 1, 3, 4, 2, 3)), Direction.DOWN);
+		scene.idle(15);
+		scene.overlay().showText(50)
+			.text("It requires a source of energy (fe) to operate")
+			.placeNearTarget()
+			.pointAt(util.vector().centerOf(connector));
+		scene.idle(60);
+
+		ElementLink<WorldSectionElement> observer =
+			scene.world().showIndependentSection(util.select().position(servo.above()), Direction.DOWN);
+		scene.world().configureCenterOfRotation(observer, util.vector().centerOf(servo));
+		scene.idle(15);
+
+		scene.world().showSection(minLever, Direction.DOWN);
+		scene.idle(5);
+		scene.world().showSection(maxLever, Direction.DOWN);
+		scene.idle(15);
+
+		// Max side 15, min side 0: 0° -> 90°
+		scene.addKeyframe();
+		scene.overlay().showControls(maxLeverVec, Pointing.DOWN, 30).rightClick();
+		scene.idle(7);
+		rotateServo(scene, servo, observer, 90, 30);
+		turnLever(scene, maxLever, 0, 15);
+		scene.overlay().showText(60)
+			.text("Redstone power on this side turns the Servo towards its Max Angle...")
+			.placeNearTarget()
+			.pointAt(maxLeverVec);
+		scene.idle(70);
+
+		// Max side 0: back to 0°
+		scene.overlay().showControls(maxLeverVec, Pointing.DOWN, 30).rightClick().whileSneaking();
+		scene.idle(7);
+		rotateServo(scene, servo, observer, -90, 30);
+		turnLever(scene, maxLever, 15, 0);
+		scene.idle(10);
+
+		// Min side 15: 0° -> -90°
+		scene.addKeyframe();
+		scene.overlay().showControls(minLeverVec, Pointing.DOWN, 30).rightClick();
+		scene.idle(7);
+		rotateServo(scene, servo, observer, -90, 30);
+		turnLever(scene, minLever, 0, 15);
+		scene.overlay().showText(60)
+			.text("...while power on the opposite side turns it towards its Min Angle")
+			.placeNearTarget()
+			.pointAt(minLeverVec);
+		scene.idle(70);
+
+		// Both sides 15, net 0: -90° -> 0°
+		scene.addKeyframe();
+		scene.overlay().showControls(maxLeverVec, Pointing.DOWN, 30).rightClick();
+		scene.idle(7);
+		rotateServo(scene, servo, observer, 90, 30);
+		turnLever(scene, maxLever, 0, 15);
+		scene.overlay().showText(80)
+			.text("The signals from both sides are summed, with the Min side counting as negative, so equal signals cancel each other out")
+			.placeNearTarget()
+			.pointAt(util.vector().topOf(servo.above()));
+		scene.idle(90);
+
+		// Min side 5, net 10: 0° -> 60°
+		scene.addKeyframe();
+		scene.overlay().showControls(minLeverVec, Pointing.DOWN, 30).rightClick().whileSneaking();
+		scene.idle(7);
+		rotateServo(scene, servo, observer, 60, 20);
+		turnLever(scene, minLever, 15, 5);
+		scene.overlay().showText(70)
+			.text("How far the Servo turns depends on the strength of the summed signal")
+			.placeNearTarget()
+			.pointAt(util.vector().topOf(servo.above()));
+		scene.idle(80);
+
+		scene.rotateCameraY(90);
+		scene.idle(20);
+
+		Vec3 maxAngleSlot = util.vector().blockSurface(servo, Direction.EAST).add(0, -2 / 16f, 0);
+		AABB point = new AABB(maxAngleSlot, maxAngleSlot);
+		AABB expanded = point.inflate(1 / 16f, 1 / 5f, 1 / 5f);
+
+		scene.addKeyframe();
+		scene.overlay().chaseBoundingBoxOutline(PonderPalette.WHITE, maxAngleSlot, point, 1);
+		scene.idle(1);
+		scene.overlay().chaseBoundingBoxOutline(PonderPalette.WHITE, maxAngleSlot, expanded, 80);
+		scene.overlay().showControls(maxAngleSlot, Pointing.DOWN, 80).scroll();
+		scene.overlay().showText(80)
+			.text("Scroll on the sides of the Servo to adjust its Max and Min Angles between 0° and 180°")
+			.placeNearTarget()
+			.pointAt(maxAngleSlot);
+		scene.idle(90);
+
+		// Max angle 90° -> 180°, same net 10: 60° -> 120°
+		rotateServo(scene, servo, observer, 60, 20);
+		scene.idle(20);
+		scene.overlay().showText(70)
+			.text("With the Max Angle raised to 180°, the same signal now turns it twice as far")
+			.placeNearTarget()
+			.pointAt(util.vector().topOf(servo.above()));
+		scene.idle(80);
+		scene.markAsFinished();
+	}
+
+	private static void rotateServo(CreateSceneBuilder scene, BlockPos servo,
+			ElementLink<WorldSectionElement> attached, float angle, int duration) {
+		scene.world().rotateBearing(servo, angle, duration);
+		scene.world().rotateSection(attached, 0, angle, 0, duration);
+	}
+
+	// Steps an Analog Lever one power level every 2 ticks.
+	private static void turnLever(CreateSceneBuilder scene, Selection lever, int from, int to) {
+		int step = Integer.signum(to - from);
+		for (int state = from + step; state != to + step; state += step) {
+			final int power = state;
+			scene.idle(2);
+			scene.world().modifyBlockEntityNBT(lever, AnalogLeverBlockEntity.class, nbt -> nbt.putInt("State", power));
+		}
 	}
 }

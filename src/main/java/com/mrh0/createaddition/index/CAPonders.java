@@ -46,7 +46,14 @@ public class CAPonders {
 				.add(CABlocks.ALTERNATOR)
 				.add(CABlocks.TESLA_COIL)
 				.add(CABlocks.MODULAR_ACCUMULATOR)
-				.add(CABlocks.PORTABLE_ENERGY_INTERFACE);
+				.add(CABlocks.PORTABLE_ENERGY_INTERFACE)
+				.add(CABlocks.SMALL_CONNECTOR)
+				.add(CABlocks.SMALL_LIGHT_CONNECTOR)
+				.add(CABlocks.LARGE_CONNECTOR)
+				.add(CABlocks.SERVO_MOTOR);
+
+		HELPER.addToTag(AllCreatePonderTags.MOVEMENT_ANCHOR)
+				.add(CABlocks.SERVO_MOTOR);
 	}
 
 	public static void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
@@ -64,6 +71,10 @@ public class CAPonders {
 		HELPER.addStoryBoard(CABlocks.PORTABLE_ENERGY_INTERFACE, "pei_transfer", PonderScenes::peiTransfer, AllCreatePonderTags.CONTRAPTION_ACTOR, ELECTRIC);
 		HELPER.addStoryBoard(CABlocks.PORTABLE_ENERGY_INTERFACE, "pei_redstone", PonderScenes::peiRedstone, AllCreatePonderTags.CONTRAPTION_ACTOR, ELECTRIC);
 		HELPER.addStoryBoard(CABlocks.ELECTRIC_PUMP, "electric_pump_flow", PonderScenes::electricPumpflow, ELECTRIC);
+		HELPER.forComponents(CABlocks.SMALL_CONNECTOR, CABlocks.SMALL_LIGHT_CONNECTOR, CABlocks.LARGE_CONNECTOR)
+				.addStoryBoard("connector", PonderScenes::connector, ELECTRIC)
+				.addStoryBoard("connector", PonderScenes::connectorRemove, ELECTRIC);
+		HELPER.addStoryBoard(CABlocks.SERVO_MOTOR, "servo", PonderScenes::servoMotor, AllCreatePonderTags.MOVEMENT_ANCHOR, ELECTRIC);
 		
 		if(CreateAddition.CC_ACTIVE)
 			HELPER.addStoryBoard(CABlocks.ELECTRIC_MOTOR, "cc_electric_motor", PonderScenes::ccMotor, AllCreatePonderTags.KINETIC_SOURCES, ELECTRIC);
