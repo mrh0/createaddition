@@ -9,10 +9,16 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.util.TransformationHelper;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
+import java.util.function.Function;
 
 public class BlockGenHelper {
     public static NonNullBiConsumer<DataGenContext<Block, ElectricMotorBlock>, RegistrateBlockstateProvider> directionalBlockState(ResourceLocation resourceLocation) {
@@ -46,6 +52,51 @@ public class BlockGenHelper {
                             .isVertical() ? 90 : (((int) dir.toYRot()) + 360) % 360)
                     .build();
         }, BlockStateProperties.WATERLOGGED, BlockStateProperties.POWERED);
+    }
+
+    /**
+     * Like {@link #directionalBlockState()}, but also rotates the model around FACING so that the
+     * model's up side points towards {@code top}. The model must face south with its top side up.
+     */
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> rollableDirectionalBlockState(Function<BlockState, Direction> top) {
+        return (ctx, prov) -> rollableDirectionalModel(ResourceLocation.fromNamespaceAndPath(CreateAddition.MODID, "block/" + getBlockName(ctx.get()) + "/block"), top, ctx, prov);
+    }
+
+    public static <T extends Block> void rollableDirectionalModel(ResourceLocation resourceLocation, Function<BlockState, Direction> topGetter, DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov) {
+        BlockModelProvider models = prov.models();
+        ModelFile.ExistingModelFile blockModel = models.getExistingFile(resourceLocation);
+        // Blockstate x/y rotations can't lay a horizontally facing model on its side, so those
+        // orientations use a copy that is pre-rolled 90° around the model's facing (Z) axis.
+        ModelFile rolledModel = models.withExistingParent(resourceLocation.getPath() + "_rolled", resourceLocation)
+                .rootTransforms()
+                .rotation(0, 0, 90, true)
+                .origin(TransformationHelper.TransformOrigin.CENTER)
+                .end();
+        prov.getVariantBuilder(ctx.get())
+                .forAllStatesExcept(state -> {
+            Direction facing = state.getValue(BlockStateProperties.FACING);
+            Direction top = topGetter.apply(state);
+            for (int roll = 0; roll <= 90; roll += 90)
+                for (int x = 0; x < 360; x += 90)
+                    for (int y = 0; y < 360; y += 90) {
+                        // Same composition as BlockModelRotation applied after the NeoForge root transform.
+                        Quaternionf rotation = new Quaternionf()
+                                .rotateYXZ((float) Math.toRadians(-y), (float) Math.toRadians(-x), 0)
+                                .rotateZ((float) Math.toRadians(roll));
+                        if (rotateDirection(rotation, Direction.SOUTH) == facing && rotateDirection(rotation, Direction.UP) == top)
+                            return ConfiguredModel.builder()
+                                    .modelFile(roll == 0 ? blockModel : rolledModel)
+                                    .rotationX(x)
+                                    .rotationY(y)
+                                    .build();
+                    }
+            throw new IllegalStateException("No model rotation for facing " + facing + " with top " + top);
+        }, BlockStateProperties.WATERLOGGED, BlockStateProperties.POWERED);
+    }
+
+    private static Direction rotateDirection(Quaternionf rotation, Direction direction) {
+        Vector3f v = rotation.transform(new Vector3f(direction.getStepX(), direction.getStepY(), direction.getStepZ()));
+        return Direction.getNearest(v.x, v.y, v.z);
     }
 
     public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> simpleBlock(ResourceLocation resourceLocation) {

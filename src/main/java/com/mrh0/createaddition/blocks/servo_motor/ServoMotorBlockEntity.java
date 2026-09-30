@@ -166,25 +166,20 @@ public class ServoMotorBlockEntity extends MechanicalBearingBlockEntity {
 				(be, context) -> be.energyCapability);
 	}
 
-	// Movement mode shows on the two horizontal sides perpendicular to FACING.
-	// For a vertical FACING (UP/DOWN), NORTH and SOUTH are used.
+	// Max angle on the top side, min angle opposite it, movement mode on the remaining two sides.
+	// Which side is the top depends on FACING and ROLL, see ServoMotorBlock.getTop.
 	private static boolean isModeSide(BlockState state, Direction d) {
-		Axis facingAxis = state.getValue(ServoMotorBlock.FACING).getAxis();
 		Axis dAxis = d.getAxis();
-		if (facingAxis == Axis.Y) return dAxis == Axis.Z;
-		return dAxis != facingAxis && dAxis != Axis.Y;
+		return dAxis != state.getValue(ServoMotorBlock.FACING).getAxis()
+				&& dAxis != ServoMotorBlock.getTop(state).getAxis();
 	}
 
-	// Max angle on the UP face (EAST for vertical servos).
 	private static boolean isMaxAngleSide(BlockState state, Direction d) {
-		if (state.getValue(ServoMotorBlock.FACING).getAxis() == Axis.Y) return d == Direction.EAST;
-		return d == Direction.UP;
+		return d == ServoMotorBlock.getTop(state);
 	}
 
-	// Min angle on the DOWN face (WEST for vertical servos).
 	private static boolean isMinAngleSide(BlockState state, Direction d) {
-		if (state.getValue(ServoMotorBlock.FACING).getAxis() == Axis.Y) return d == Direction.WEST;
-		return d == Direction.DOWN;
+		return d == ServoMotorBlock.getTop(state).getOpposite();
 	}
 
 	@Override
@@ -221,13 +216,13 @@ public class ServoMotorBlockEntity extends MechanicalBearingBlockEntity {
 		});
 		behaviours.add(generatedSpeed);
 
-		// Max angle: 0 to +180°, shown on the UP face. Default 90°.
+		// Max angle: 0 to +180°, shown on the top side. Default 90°.
 		maxAngle = new ServoAngleLimit(Component.literal("Max Angle"), this,
 				new DirectionalExtenderScrollOptionSlot(ServoMotorBlockEntity::isMaxAngleSide),
 				MAX_ANGLE_TYPE, 2, "MaxAngle", 90, false);
 		behaviours.add(maxAngle);
 
-		// Min angle: 0 to -180°, shown on the DOWN face. Default -90° (stored as 90).
+		// Min angle: 0 to -180°, shown opposite the top side. Default -90° (stored as 90).
 		minAngle = new ServoAngleLimit(Component.literal("Min Angle"), this,
 				new DirectionalExtenderScrollOptionSlot(ServoMotorBlockEntity::isMinAngleSide),
 				MIN_ANGLE_TYPE, 3, "MinAngle", 90, true);
@@ -239,10 +234,28 @@ public class ServoMotorBlockEntity extends MechanicalBearingBlockEntity {
 	// Returns the static angle when not assembled disc stays fixed before assembly.
 	@Override
 	public float getInterpolatedAngle(float partialTicks) {
-		if (!running) return angle;
+		if (!running) return toContraptionAngle(angle);
 		if (movedContraption != null)
 			return movedContraption.getAngle(partialTicks + 1f);
-		return angle;
+		return toContraptionAngle(angle);
+	}
+
+	// Contraptions and the disc rotate around the positive direction of the axis, while the servo's
+	// angles are relative to its front, so they are flipped for negative facings (north, west, down).
+	private float toContraptionAngle(float servoAngle) {
+		BlockState state = getBlockState();
+		if (!state.hasProperty(ServoMotorBlock.FACING)) return servoAngle;
+		return state.getValue(ServoMotorBlock.FACING).getAxisDirection() == Direction.AxisDirection.POSITIVE
+				? servoAngle : -servoAngle;
+	}
+
+	@Override
+	protected void applyRotation() {
+		if (movedContraption == null) return;
+		movedContraption.setAngle(toContraptionAngle(angle));
+		BlockState state = getBlockState();
+		if (state.hasProperty(ServoMotorBlock.FACING))
+			movedContraption.setRotationAxis(state.getValue(ServoMotorBlock.FACING).getAxis());
 	}
 
 	// When the contraption is assembled, the angle is set directly by the redstone
@@ -352,9 +365,8 @@ public class ServoMotorBlockEntity extends MechanicalBearingBlockEntity {
 		// Net redstone = maxFaceSignal - minFaceSignal, range -15 to +15.
 		// Net 0 → center (angle 0), positive → toward maxAngle, negative → toward minAngle.
 		if (!level.isClientSide && active) {
-			Direction facing = getBlockState().getValue(ServoMotorBlock.FACING);
-			Direction maxFace = facing.getAxis() == Axis.Y ? Direction.EAST : Direction.UP;
-			Direction minFace = facing.getAxis() == Axis.Y ? Direction.WEST : Direction.DOWN;
+			Direction maxFace = ServoMotorBlock.getTop(getBlockState());
+			Direction minFace = maxFace.getOpposite();
 			int maxSignal = level.getSignal(worldPosition.relative(maxFace), maxFace);
 			int minSignal = level.getSignal(worldPosition.relative(minFace), minFace);
 			int net = maxSignal - minSignal;

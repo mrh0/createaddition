@@ -93,7 +93,7 @@ public class CABlocks {
 			.initialProperties(SharedProperties::softMetal)
 			.properties(p -> p.noOcclusion())
 			.transform(pickaxeOnly())
-			.blockstate(BlockGenHelper.directionalBlockState())
+			.blockstate(BlockGenHelper.rollableDirectionalBlockState(ServoMotorBlock::getTop))
             .onRegister(BlockStressValues.setGeneratorSpeed(256, true))
             .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, () -> CommonConfig.MAX_STRESS.get()/256f))
 			.item()

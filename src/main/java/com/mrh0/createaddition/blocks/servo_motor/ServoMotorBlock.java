@@ -2,6 +2,8 @@ package com.mrh0.createaddition.blocks.servo_motor;
 
 import com.mrh0.createaddition.index.CABlockEntities;
 import com.mrh0.createaddition.shapes.CAShapes;
+import com.simibubi.create.api.contraption.transformable.TransformableBlock;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 
@@ -21,22 +23,27 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import org.jetbrains.annotations.Nullable;
 
-public class ServoMotorBlock extends DirectionalKineticBlock implements IBE<ServoMotorBlockEntity> {
+public class ServoMotorBlock extends DirectionalKineticBlock implements IBE<ServoMotorBlockEntity>, TransformableBlock {
 
 	private static final VoxelShaper OCCLUSION_SHAPE = CAShapes.shape(0, 0, 0, 16, 12, 16).forDirectional();
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+	// Quarter turns of the top (max angle) side around the FACING axis, relative to getReferenceTop.
+	public static final IntegerProperty ROLL = IntegerProperty.create("roll", 0, 3);
 
 	public ServoMotorBlock(Properties properties) {
 		super(properties);
@@ -46,7 +53,59 @@ public class ServoMotorBlock extends DirectionalKineticBlock implements IBE<Serv
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(POWERED);
+		builder.add(POWERED, ROLL);
+	}
+
+	// Top side at roll 0. Matches the pre-roll layout so existing servos keep their sides.
+	private static Direction getReferenceTop(Direction facing) {
+		return facing.getAxis() == Axis.Y ? Direction.EAST : Direction.UP;
+	}
+
+	/** The max angle side; the min angle side is its opposite and the mode sides are the remaining two. */
+	public static Direction getTop(BlockState state) {
+		Direction facing = state.getValue(FACING);
+		Direction top = getReferenceTop(facing);
+		for (int i = state.getValue(ROLL); i > 0; i--)
+			top = top.getClockWise(facing.getAxis());
+		return top;
+	}
+
+	public static BlockState withOrientation(BlockState state, Direction facing, Direction top) {
+		Direction candidate = getReferenceTop(facing);
+		for (int roll = 0; roll < 4; roll++) {
+			if (candidate == top)
+				return state.setValue(FACING, facing).setValue(ROLL, roll);
+			candidate = candidate.getClockWise(facing.getAxis());
+		}
+		// top is parallel to facing, which is not a valid orientation.
+		return state.setValue(FACING, facing).setValue(ROLL, 0);
+	}
+
+	// Facing and top rotate together as a rigid body, so wrenching the front or back rolls the
+	// sides around the facing axis, and wrenching a side turns the whole block around that side.
+	@Override
+	public BlockState getRotatedBlockState(BlockState originalState, Direction targetedFace) {
+		Axis axis = targetedFace.getAxis();
+		return withOrientation(originalState,
+				originalState.getValue(FACING).getClockWise(axis),
+				getTop(originalState).getClockWise(axis));
+	}
+
+	@Override
+	public BlockState rotate(BlockState state, Rotation rot) {
+		return withOrientation(state, rot.rotate(state.getValue(FACING)), rot.rotate(getTop(state)));
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return withOrientation(state, mirror.mirror(state.getValue(FACING)), mirror.mirror(getTop(state)));
+	}
+
+	@Override
+	public BlockState transform(BlockState state, StructureTransform transform) {
+		return withOrientation(state,
+				transform.rotateFacing(transform.mirrorFacing(state.getValue(FACING))),
+				transform.rotateFacing(transform.mirrorFacing(getTop(state))));
 	}
 
 	@Nullable
