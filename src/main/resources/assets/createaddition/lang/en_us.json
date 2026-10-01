@@ -31,6 +31,7 @@
 	"createaddition.recipe.rolling": "Rolling",
 	"createaddition.recipe.rolling.sequence": "Rolling in Mill",
 	"createaddition.recipe.charging": "Charging",
+	"createaddition.recipe.charging.sequence": "Charge %1$s⚡ with Tesla Coil",
 	"createaddition.recipe.liquid_burning": "Liquid Burning",
 
 	"createaddition.recipe.liquid_burning.burn_time": "Burn Time",

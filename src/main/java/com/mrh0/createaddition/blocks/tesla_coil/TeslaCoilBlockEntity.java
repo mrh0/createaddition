@@ -14,6 +14,7 @@ import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.ChatFormatting;
@@ -224,9 +225,10 @@ public class TeslaCoilBlockEntity extends AbstractElectricBlockEntity implements
 
 	private boolean chargeRecipe(ItemStack stack, TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 		if(this.getLevel() == null) return false;
-		if(!inputInv.getStackInSlot(0).is(stack.getItem())) {
+		// Compare components too, every sequenced assembly step uses the same transitional item
+		if(!ItemStack.isSameItemSameComponents(inputInv.getStackInSlot(0), stack)) {
 			inputInv.setStackInSlot(0, stack);
-			recipeCache = find(new RecipeWrapper(inputInv), this.getLevel());
+			recipeCache = find(stack, new RecipeWrapper(inputInv), this.getLevel());
 			chargeAccumulator = 0;
 			Arrays.fill(chargeRateHistory, 0);
 			chargeRateIndex = 0;
@@ -240,12 +242,17 @@ public class TeslaCoilBlockEntity extends AbstractElectricBlockEntity implements
 			if (chargeRateSamples < 20) chargeRateSamples++;
 			chargeAccumulator += energyRemoved;
 			if(chargeAccumulator >= recipe.getEnergy()) {
+				// Sequenced assembly steps are shared recipe instances whose next result is bound to the
+				// last stack looked up, possibly by another machine, so look it up again for this stack.
+				recipe = find(stack, new RecipeWrapper(inputInv), this.getLevel()).map(RecipeHolder::value).orElse(recipe);
 				TransportedItemStack remainingStack = transported.copy();
-				TransportedItemStack result = transported.copy();
-				result.stack = recipe.getResultItem(this.getLevel().registryAccess()).copy();
 				remainingStack.stack.shrink(1);
 				List<TransportedItemStack> outList = new ArrayList<>();
-				outList.add(result);
+				for(ItemStack out : recipe.rollResults(this.getLevel().random)) {
+					TransportedItemStack result = transported.copy();
+					result.stack = out;
+					outList.add(result);
+				}
 				handler.handleProcessingOnItem(transported, TransportedItemStackHandlerBehaviour.TransportedResult.convertToAndLeaveHeld(outList, remainingStack));
 				chargeAccumulator = 0;
 
@@ -256,7 +263,10 @@ public class TeslaCoilBlockEntity extends AbstractElectricBlockEntity implements
 		return false;
 	}
 
-	public Optional<RecipeHolder<ChargingRecipe>> find(RecipeWrapper wrapper, Level level) {
+	public Optional<RecipeHolder<ChargingRecipe>> find(ItemStack stack, RecipeWrapper wrapper, Level level) {
+		Optional<RecipeHolder<ChargingRecipe>> assemblyRecipe =
+				SequencedAssemblyRecipe.getRecipe(level, stack, CARecipes.CHARGING_TYPE.get(), ChargingRecipe.class);
+		if(assemblyRecipe.isPresent()) return assemblyRecipe;
 		return level.getRecipeManager().getRecipeFor(CARecipes.CHARGING_TYPE.get(), wrapper, level);
 	}
 
