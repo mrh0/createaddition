@@ -40,6 +40,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.fluids.FluidActionResult;
 
 import static com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HEAT_LEVEL;
 
@@ -157,6 +158,14 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 			if (!simulate) burnerTE.applyCreativeFuel();
 			return InteractionResultHolder.success(ItemStack.EMPTY);
 		}
+
+		FluidActionResult emptied = burnerTE.tryEmptyFluidContainer(stack, simulate);
+		if (emptied.isSuccess()) {
+			if (doNotConsume) return InteractionResultHolder.success(ItemStack.EMPTY);
+			if (!level.isClientSide) stack.shrink(1);
+			return InteractionResultHolder.success(emptied.getResult());
+		}
+
 		if (!burnerTE.tryUpdateFuel(stack, forceOverflow, simulate)) return InteractionResultHolder.fail(ItemStack.EMPTY);
 
 		if (!doNotConsume) {

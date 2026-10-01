@@ -52,6 +52,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.FluidActionResult;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
@@ -295,25 +296,27 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 		notifyUpdate();
 	}
 
-	private boolean tryUpdateLiquid(ItemStack itemStack, boolean simulate) {
-		if (level == null) return false;
-		var itemHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+	protected FluidActionResult tryEmptyFluidContainer(ItemStack itemStack, boolean simulate) {
+		if (isCreative || level == null) return FluidActionResult.FAILURE;
+		// Drained for real even when simulating, it is a copy and getContainer() needs to see the change
+		ItemStack container = itemStack.copyWithCount(1);
+		var itemHandler = container.getCapability(Capabilities.FluidHandler.ITEM);
+		if (itemHandler == null) return FluidActionResult.FAILURE;
 
-		if (itemHandler == null) return false;
-		if (itemHandler.getFluidInTank(0).isEmpty()) return false;
-		FluidStack stack = itemHandler.getFluidInTank(0);
-		Optional<RecipeHolder<LiquidBurningRecipe>> recipe = find(stack, level);
-		if (recipe.isEmpty()) return false;
+		FluidStack contained = itemHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
+		if (contained.isEmpty() || find(contained, level).isEmpty()) return FluidActionResult.FAILURE;
 
-		var beHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, getBlockPos(), null);
-		if (beHandler == null) return false;
-		if (beHandler.getTankCapacity(0) - beHandler.getFluidInTank(0).getAmount() < 1000) return false;
+		int accepted = tankInventory.fill(contained, IFluidHandler.FluidAction.SIMULATE);
+		if (accepted <= 0) return FluidActionResult.FAILURE;
+		// Buckets can only be emptied whole, so this fails if the tank has less than a bucket of space
+		FluidStack drained = itemHandler.drain(contained.copyWithAmount(accepted), IFluidHandler.FluidAction.EXECUTE);
+		if (drained.isEmpty()) return FluidActionResult.FAILURE;
 
-		if (!simulate) beHandler.fill(new FluidStack(itemHandler.getFluidInTank(0).getFluid(), 1000), IFluidHandler.FluidAction.EXECUTE);
-		//if (!player.isCreative())
-		//	player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET, 1));
-		if (!simulate) level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
-		return true;
+		if (!simulate && !level.isClientSide) {
+			tankInventory.fill(drained, IFluidHandler.FluidAction.EXECUTE);
+			level.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, .125f + level.random.nextFloat() * .125f, .75f - level.random.nextFloat() * .25f);
+		}
+		return new FluidActionResult(itemHandler.getContainer());
 	}
 
 	protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate) {
@@ -321,9 +324,6 @@ public class LiquidBlazeBurnerBlockEntity extends SmartBlockEntity implements IH
 
 		FuelType newFuel = FuelType.NONE;
 		int newBurnTime;
-
-		// Liquid Fluid Logic
-		if(tryUpdateLiquid(itemStack, simulate)) return true;
 
 		if (AllItemTags.BLAZE_BURNER_FUEL_SPECIAL.matches(itemStack)) {
 			newBurnTime = 3200;
