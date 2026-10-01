@@ -169,8 +169,7 @@ public class LiquidBlazeBurnerBlock extends HorizontalDirectionalBlock implement
 
 		if (!doNotConsume) {
 			ItemStack container = stack.hasCraftingRemainingItem() ? stack.getCraftingRemainingItem() : ItemStack.EMPTY;
-			if (!level.isClientSide) {stack.shrink(1);
-			}
+			if (!level.isClientSide) stack.shrink(1);
 			return InteractionResultHolder.success(container);
 		}
 		return InteractionResultHolder.success(ItemStack.EMPTY);
