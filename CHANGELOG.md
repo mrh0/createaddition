@@ -4,6 +4,21 @@ Add changes below NEXT...
 
 ## NEXT
 
+## Release 1.7.2
+
+### Added
+
+- Added support for Charging in Sequenced Assembly
+- Additional ponder scenes for Connectors, Electric Pump, and Electric Servo
+- Electric Servo can now be rotated around its axis with the wrench
+
+### Fixed
+
+- Reworked Connectors should now function across unloaded chunks
+- Improved Connector wire rendering and culling
+- Fixed Servo rotating in the wrong direction when facing north, west, and down
+- Liquid Blaze Burner should now properly handle refuling using fluid container items
+
 ## Release 1.7.1
 
 ### Added
