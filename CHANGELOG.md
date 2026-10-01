@@ -17,7 +17,7 @@ Add changes below NEXT...
 - Reworked Connectors should now function across unloaded chunks
 - Improved Connector wire rendering and culling
 - Fixed Servo rotating in the wrong direction when facing north, west, and down
-- Liquid Blaze Burner should now properly handle refuling using fluid container items
+- Liquid Blaze Burner should now properly handle refueling using fluid container items
 
 ## Release 1.7.1
 
