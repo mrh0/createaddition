@@ -4,6 +4,10 @@ Add changes below NEXT...
 
 ## NEXT
 
+### Added
+
+- Added Language es_ar by Texaliuz
+
 ## Release 1.7.2
 
 ### Added
