@@ -79,6 +79,11 @@ public class CAChargingRecipeProvider extends ChargingRecipeGen {
             .energy(BASE_COST*9)
             .maxChargeRate(BASE_RATE)),
 
+    MAGNETIC_ROD  = create("magnetize_iron_rod", (b) -> b.require(CAItems.IRON_ROD)
+            .output(CAItems.MAGNETIC_ROD)
+            .energy(BASE_COST*9)
+            .maxChargeRate(BASE_RATE)),
+
     ELECTRUM_WIRE  = create("electrify_gold_wire", (b) -> b.require(CAItems.GOLD_WIRE)
             .output(CAItems.ELECTRUM_WIRE)
             .energy(BASE_COST*9)

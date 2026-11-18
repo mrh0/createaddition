@@ -70,6 +70,7 @@
 
 	"item.createaddition.iron_wire": "Iron Wire",
 	"item.createaddition.iron_rod": "Iron Rod",
+	"item.createaddition.magnetic_rod": "Magnetic Rod",
 
 	"item.createaddition.gold_spool": "Gold Spool",
 	"item.createaddition.gold_spool.tooltip": "SPOOL",

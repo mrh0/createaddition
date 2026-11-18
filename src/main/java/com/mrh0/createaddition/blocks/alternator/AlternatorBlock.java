@@ -78,10 +78,10 @@ public class AlternatorBlock extends DirectionalKineticBlock implements IBE<Alte
 	*/
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-		if(tileentity != null) {
-			if(tileentity instanceof AlternatorBlockEntity) {
-				((AlternatorBlockEntity)tileentity).updateCache();
+		BlockEntity be = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
+		if(be != null) {
+			if(be instanceof AlternatorBlockEntity) {
+				((AlternatorBlockEntity)be).updateCache();
 			}
 		}
 	}

@@ -1,0 +1,92 @@
+{
+  "variants": {
+    "axis=x,roll=0,type=corner": {
+      "model": "createaddition:block/stator/block_corner",
+      "y": 90
+    },
+    "axis=x,roll=0,type=side": {
+      "model": "createaddition:block/stator/block_side",
+      "y": 90
+    },
+    "axis=x,roll=1,type=corner": {
+      "model": "createaddition:block/stator/block_corner_r90",
+      "y": 90
+    },
+    "axis=x,roll=1,type=side": {
+      "model": "createaddition:block/stator/block_side_r90",
+      "y": 90
+    },
+    "axis=x,roll=2,type=corner": {
+      "model": "createaddition:block/stator/block_corner_r180",
+      "y": 90
+    },
+    "axis=x,roll=2,type=side": {
+      "model": "createaddition:block/stator/block_side_r180",
+      "y": 90
+    },
+    "axis=x,roll=3,type=corner": {
+      "model": "createaddition:block/stator/block_corner_r270",
+      "y": 90
+    },
+    "axis=x,roll=3,type=side": {
+      "model": "createaddition:block/stator/block_side_r270",
+      "y": 90
+    },
+    "axis=y,roll=0,type=corner": {
+      "model": "createaddition:block/stator/block_corner",
+      "x": 90
+    },
+    "axis=y,roll=0,type=side": {
+      "model": "createaddition:block/stator/block_side",
+      "x": 90
+    },
+    "axis=y,roll=1,type=corner": {
+      "model": "createaddition:block/stator/block_corner_r90",
+      "x": 90
+    },
+    "axis=y,roll=1,type=side": {
+      "model": "createaddition:block/stator/block_side_r90",
+      "x": 90
+    },
+    "axis=y,roll=2,type=corner": {
+      "model": "createaddition:block/stator/block_corner_r180",
+      "x": 90
+    },
+    "axis=y,roll=2,type=side": {
+      "model": "createaddition:block/stator/block_side_r180",
+      "x": 90
+    },
+    "axis=y,roll=3,type=corner": {
+      "model": "createaddition:block/stator/block_corner_r270",
+      "x": 90
+    },
+    "axis=y,roll=3,type=side": {
+      "model": "createaddition:block/stator/block_side_r270",
+      "x": 90
+    },
+    "axis=z,roll=0,type=corner": {
+      "model": "createaddition:block/stator/block_corner"
+    },
+    "axis=z,roll=0,type=side": {
+      "model": "createaddition:block/stator/block_side"
+    },
+    "axis=z,roll=1,type=corner": {
+      "model": "createaddition:block/stator/block_corner_r90"
+    },
+    "axis=z,roll=1,type=side": {
+      "model": "createaddition:block/stator/block_side_r90"
+    },
+    "axis=z,roll=2,type=corner": {
+      "model": "createaddition:block/stator/block_corner_r180"
+    },
+    "axis=z,roll=2,type=side": {
+      "model": "createaddition:block/stator/block_side_r180"
+    },
+    "axis=z,roll=3,type=corner": {
+      "model": "createaddition:block/stator/block_corner_r270"
+    },
+    "axis=z,roll=3,type=side": {
+      "model": "createaddition:block/stator/block_side_r270"
+    }
+  }
+}

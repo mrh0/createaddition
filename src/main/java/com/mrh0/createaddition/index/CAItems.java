@@ -81,6 +81,8 @@ public class CAItems {
 			CreateAddition.REGISTRATE.item("copper_rod", Item::new).register();
 	public static final ItemEntry<Item> IRON_ROD =
 			CreateAddition.REGISTRATE.item("iron_rod", Item::new).register();
+	public static final ItemEntry<Item> MAGNETIC_ROD =
+			CreateAddition.REGISTRATE.item("magnetic_rod", Item::new).register();
 	public static final ItemEntry<Item> GOLD_ROD =
 			CreateAddition.REGISTRATE.item("gold_rod", Item::new).register();
 	public static final ItemEntry<Item> ELECTRUM_ROD =

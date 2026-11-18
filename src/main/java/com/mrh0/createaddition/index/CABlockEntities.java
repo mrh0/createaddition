@@ -21,6 +21,9 @@ import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyIn
 import com.mrh0.createaddition.blocks.portable_energy_interface.PEIVisual;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlockEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlockEntity;
+import com.mrh0.createaddition.blocks.rotor.RotorBlockEntity;
+import com.mrh0.createaddition.blocks.rotor.RotorRenderer;
+import com.mrh0.createaddition.blocks.rotor.RotorVisual;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlockEntity;
 import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.alternator.*;
@@ -59,6 +62,13 @@ public class CABlockEntities {
 			.renderer(() -> AlternatorRenderer::new)
 			.register();
 	
+	public static final BlockEntityEntry<RotorBlockEntity> ROTOR = CreateAddition.REGISTRATE
+			.blockEntity("rotor", RotorBlockEntity::new)
+			.visual(() -> RotorVisual::new, false)
+			.validBlocks(CABlocks.ROTOR)
+			.renderer(() -> RotorRenderer::new)
+			.register();
+
 	public static final BlockEntityEntry<RollingMillBlockEntity> ROLLING_MILL = CreateAddition.REGISTRATE
 			.blockEntity("rolling_mill", RollingMillBlockEntity::new)
 			.visual(() -> RollingMillVisual::new)

@@ -19,6 +19,8 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.function.Function;
+import com.mrh0.createaddition.blocks.stator.StatorBlock;
+import com.mrh0.createaddition.blocks.stator.StatorType;
 
 public class BlockGenHelper {
     public static NonNullBiConsumer<DataGenContext<Block, ElectricMotorBlock>, RegistrateBlockstateProvider> directionalBlockState(ResourceLocation resourceLocation) {
@@ -148,6 +150,39 @@ public class BlockGenHelper {
                     .rotationY(rotY)
                     .build();
         }, BlockStateProperties.WATERLOGGED, BlockStateProperties.POWERED);
+    }
+
+    /**
+     * Stator blockstate. The side/corner models are authored for a Z-axis rotor; the roll around the rotor
+     * axis is baked into child models via a NeoForge root transform (blockstate x/y rotations cannot express
+     * every roll), then x/y rotations move the Z-axis frame onto the rotor's axis (Y: x=90, X: y=90).
+     * Must stay in sync with StatorBlock#ringOffset.
+     */
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> statorBlockState() {
+        return (ctx, prov) -> {
+            ModelFile[][] models = new ModelFile[StatorType.values().length][4];
+            for (StatorType type : StatorType.values()) {
+                ResourceLocation base = prov.modLoc("block/stator/block_" + type.getSerializedName());
+                models[type.ordinal()][0] = new ModelFile.UncheckedModelFile(base);
+                for (int roll = 1; roll < 4; roll++) {
+                    models[type.ordinal()][roll] = prov.models()
+                            .getBuilder(base.getPath() + "_r" + (roll * 90))
+                            .parent(new ModelFile.UncheckedModelFile(base))
+                            .rootTransforms()
+                                .rotation(0, 0, roll * 90, true)
+                                .origin(TransformationHelper.TransformOrigin.CENTER)
+                            .end();
+                }
+            }
+            prov.getVariantBuilder(ctx.get()).forAllStates(state -> {
+                Direction.Axis axis = state.getValue(StatorBlock.AXIS);
+                return ConfiguredModel.builder()
+                        .modelFile(models[state.getValue(StatorBlock.TYPE).ordinal()][state.getValue(StatorBlock.ROLL)])
+                        .rotationX(axis == Direction.Axis.Y ? 90 : 0)
+                        .rotationY(axis == Direction.Axis.X ? 90 : 0)
+                        .build();
+            });
+        };
     }
 
     public static String getBlockName(Block block) {

@@ -1,0 +1,294 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "createaddition:block/stator/block",
+		"particle": "createaddition:block/stator/block"
+	},
+	"elements": [
+		{
+			"name": "base",
+			"from": [
+				0,
+				0,
+				0
+			],
+			"to": [
+				16,
+				4,
+				16
+			],
+			"rotation": {
+				"angle": 0,
+				"axis": "y",
+				"origin": [
+					0,
+					0,
+					0
+				]
+			},
+			"faces": {
+				"north": {
+					"uv": [
+						0,
+						0,
+						8,
+						2
+					],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [
+						0,
+						2,
+						8,
+						4
+					],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [
+						0,
+						0,
+						8,
+						2
+					],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [
+						0,
+						2,
+						8,
+						4
+					],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [
+						0,
+						8,
+						8,
+						16
+					],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [
+						0,
+						8,
+						8,
+						16
+					],
+					"texture": "#0"
+				}
+			}
+		},
+		{
+			"name": "magnet_1",
+			"from": [
+				1,
+				4,
+				0
+			],
+			"to": [
+				5,
+				6,
+				16
+			],
+			"rotation": {
+				"angle": 0,
+				"axis": "y",
+				"origin": [
+					2,
+					5,
+					0
+				]
+			},
+			"faces": {
+				"north": {
+					"uv": [
+						14,
+						0.5,
+						16,
+						1.5
+					],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [
+						0,
+						7,
+						8,
+						8
+					],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [
+						14,
+						6.5,
+						16,
+						7.5
+					],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [
+						0,
+						7,
+						8,
+						8
+					],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [
+						14,
+						0,
+						16,
+						8
+					],
+					"texture": "#0"
+				}
+			}
+		},
+		{
+			"name": "magnet_2",
+			"from": [
+				6,
+				4,
+				0
+			],
+			"to": [
+				10,
+				5,
+				16
+			],
+			"rotation": {
+				"angle": 0,
+				"axis": "y",
+				"origin": [
+					7,
+					5,
+					0
+				]
+			},
+			"faces": {
+				"north": {
+					"uv": [
+						14,
+						0.5,
+						16,
+						1
+					],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [
+						0,
+						7,
+						8,
+						8
+					],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [
+						14,
+						6.5,
+						16,
+						7
+					],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [
+						0,
+						7,
+						8,
+						8
+					],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [
+						14,
+						0,
+						16,
+						8
+					],
+					"texture": "#0"
+				}
+			}
+		},
+		{
+			"name": "magnet_3",
+			"from": [
+				11,
+				4,
+				0
+			],
+			"to": [
+				15,
+				6,
+				16
+			],
+			"rotation": {
+				"angle": 0,
+				"axis": "y",
+				"origin": [
+					12,
+					5,
+					0
+				]
+			},
+			"faces": {
+				"north": {
+					"uv": [
+						14,
+						0.5,
+						16,
+						1.5
+					],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [
+						0,
+						7,
+						8,
+						8
+					],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [
+						14,
+						6.5,
+						16,
+						7.5
+					],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [
+						0,
+						7,
+						8,
+						8
+					],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [
+						16,
+						0,
+						14,
+						8
+					],
+					"texture": "#0"
+				}
+			}
+		}
+	]
+}

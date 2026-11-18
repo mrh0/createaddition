@@ -1,0 +1,12 @@
+{
+  "parent": "createaddition:block/stator/block_side",
+  "transform": {
+    "origin": "center",
+    "rotation": [
+      0.0,
+      -0.0,
+      1.0,
+      -0.0
+    ]
+  }
+}

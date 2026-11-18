@@ -25,12 +25,17 @@ import com.mrh0.createaddition.blocks.servo_motor.ServoMotorBlock;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerBlock;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlock;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlock;
+import com.mrh0.createaddition.blocks.rotor.RotorBlock;
+import com.mrh0.createaddition.blocks.stator.StatorBlock;
 import com.mrh0.createaddition.blocks.tesla_coil.TeslaCoilBlock;
 import com.mrh0.createaddition.item.BiomassPelletBlockItem;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.AssetLookup;
+import com.simibubi.create.foundation.data.BlockStateGen;
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
@@ -110,6 +115,29 @@ public class CABlocks {
             .onRegister((block) -> BlockStressValues.IMPACTS.register(block, () -> CommonConfig.MAX_STRESS.get()/256f))
 			.item()
 			.transform(customItemModel())
+			.register();
+
+	public static final BlockEntry<RotorBlock> ROTOR = CreateAddition.REGISTRATE
+			.block("rotor", RotorBlock::new)
+			.initialProperties(SharedProperties::stone)
+			.properties(p -> p.mapColor(MapColor.METAL).forceSolidOff())
+			.transform(pickaxeOnly())
+			.blockstate(BlockStateGen.axisBlockProvider(true))
+			.onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
+			.onRegister((block) -> BlockStressValues.IMPACTS.register(block, () -> 0d))
+			.item()
+			.transform(customItemModel())
+			.register();
+
+	public static final BlockEntry<StatorBlock> STATOR = CreateAddition.REGISTRATE
+			.block("stator", StatorBlock::new)
+			.initialProperties(SharedProperties::softMetal)
+			.properties(p -> p.noOcclusion())
+			.transform(pickaxeOnly())
+			.blockstate(BlockGenHelper.statorBlockState())
+			.item()
+			.model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/stator/block_side")))
+			.build()
 			.register();
 
 	public static final BlockEntry<RollingMillBlock> ROLLING_MILL = CreateAddition.REGISTRATE
