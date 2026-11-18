@@ -8,11 +8,13 @@ import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.util.TransformationHelper;
 import org.joml.Quaternionf;
@@ -23,6 +25,17 @@ import com.mrh0.createaddition.blocks.stator.StatorBlock;
 import com.mrh0.createaddition.blocks.stator.StatorType;
 
 public class BlockGenHelper {
+
+    public static ItemModelBuilder blockDisplayTransforms(ItemModelBuilder builder) {
+        return builder.transforms()
+                .transform(ItemDisplayContext.GUI).rotation(30, 225, 0).scale(0.625f).end()
+                .transform(ItemDisplayContext.GROUND).translation(0, 3, 0).scale(0.25f).end()
+                .transform(ItemDisplayContext.FIXED).scale(0.5f).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4f).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4f).end()
+                .end();
+    }
     public static NonNullBiConsumer<DataGenContext<Block, ElectricMotorBlock>, RegistrateBlockstateProvider> directionalBlockState(ResourceLocation resourceLocation) {
         return (ctx, prov) -> directionalModel(resourceLocation, ctx, prov);
     }
@@ -56,10 +69,6 @@ public class BlockGenHelper {
         }, BlockStateProperties.WATERLOGGED, BlockStateProperties.POWERED);
     }
 
-    /**
-     * Like {@link #directionalBlockState()}, but also rotates the model around FACING so that the
-     * model's up side points towards {@code top}. The model must face south with its top side up.
-     */
     public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> rollableDirectionalBlockState(Function<BlockState, Direction> top) {
         return (ctx, prov) -> rollableDirectionalModel(ResourceLocation.fromNamespaceAndPath(CreateAddition.MODID, "block/" + getBlockName(ctx.get()) + "/block"), top, ctx, prov);
     }
@@ -67,8 +76,6 @@ public class BlockGenHelper {
     public static <T extends Block> void rollableDirectionalModel(ResourceLocation resourceLocation, Function<BlockState, Direction> topGetter, DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov) {
         BlockModelProvider models = prov.models();
         ModelFile.ExistingModelFile blockModel = models.getExistingFile(resourceLocation);
-        // Blockstate x/y rotations can't lay a horizontally facing model on its side, so those
-        // orientations use a copy that is pre-rolled 90° around the model's facing (Z) axis.
         ModelFile rolledModel = models.withExistingParent(resourceLocation.getPath() + "_rolled", resourceLocation)
                 .rootTransforms()
                 .rotation(0, 0, 90, true)
@@ -81,7 +88,6 @@ public class BlockGenHelper {
             for (int roll = 0; roll <= 90; roll += 90)
                 for (int x = 0; x < 360; x += 90)
                     for (int y = 0; y < 360; y += 90) {
-                        // Same composition as BlockModelRotation applied after the NeoForge root transform.
                         Quaternionf rotation = new Quaternionf()
                                 .rotateYXZ((float) Math.toRadians(-y), (float) Math.toRadians(-x), 0)
                                 .rotateZ((float) Math.toRadians(roll));
@@ -152,12 +158,6 @@ public class BlockGenHelper {
         }, BlockStateProperties.WATERLOGGED, BlockStateProperties.POWERED);
     }
 
-    /**
-     * Stator blockstate. The side/corner models are authored for a Z-axis rotor; the roll around the rotor
-     * axis is baked into child models via a NeoForge root transform (blockstate x/y rotations cannot express
-     * every roll), then x/y rotations move the Z-axis frame onto the rotor's axis (Y: x=90, X: y=90).
-     * Must stay in sync with StatorBlock#ringOffset.
-     */
     public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> statorBlockState() {
         return (ctx, prov) -> {
             ModelFile[][] models = new ModelFile[StatorType.values().length][4];

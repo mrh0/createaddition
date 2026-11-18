@@ -136,7 +136,8 @@ public class CABlocks {
 			.transform(pickaxeOnly())
 			.blockstate(BlockGenHelper.statorBlockState())
 			.item()
-			.model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/stator/block_side")))
+			.model((c, p) -> BlockGenHelper.blockDisplayTransforms(
+					p.withExistingParent(c.getName(), p.modLoc("block/stator/block_side"))))
 			.build()
 			.register();
 

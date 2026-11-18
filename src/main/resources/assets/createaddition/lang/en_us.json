@@ -162,6 +162,8 @@
 	"block.createaddition.servo_motor": "Servo Motor",
 
 	"block.createaddition.alternator": "Alternator",
+	"block.createaddition.rotor": "Rotor",
+	"block.createaddition.stator": "Stator",
 
 	"block.createaddition.creative_energy": "Creative Generator",
 	"block.createaddition.creative_energy.tooltip": "CREATIVE_GENERATOR",
