@@ -63,5 +63,16 @@ public class CAMechanicalCrafterRecipeGen extends MechanicalCraftingRecipeGen {
             .patternLine("SPS")
             .patternLine(" K ")
             .patternLine(" C ")
+    ),
+    ROTOR = create(CABlocks.ROTOR::get).recipe(b -> b
+            .key('S', CAItems.COPPER_SPOOL)
+            .key('I', AllBlocks.INDUSTRIAL_IRON_BLOCK.asItem())
+            .key('H', AllBlocks.SHAFT.asItem())
+            .patternLine(" SSS ")
+            .patternLine("SSISS")
+            .patternLine("SIHIS")
+            .patternLine("SSISS")
+            .patternLine(" SSS ")
+            .disallowMirrored()
     );
 }

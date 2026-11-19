@@ -180,7 +180,7 @@ public class StatorBlock extends Block {
 
 	/** Boxes in the model frame (pixels, rotor along Z): {x1, y1, x2, y2}, all spanning z 0..16. */
 	private static final int[][] SIDE_BOXES = { { 0, 0, 16, 6 } };
-	private static final int[][] CORNER_BOXES = { { 0, 0, 4, 8 }, { 4, 0, 8, 12 }, { 8, 0, 16, 16 } };
+	private static final int[][] CORNER_BOXES = { { 0, 0, 4, 8 }, { 4, 0, 8, 12 }, { 8, 4, 12, 16 }, { 12, 8, 16, 16 } };
 
 	private static VoxelShape computeShape(BlockState state) {
 		int[][] boxes = state.getValue(TYPE) == StatorType.CORNER ? CORNER_BOXES : SIDE_BOXES;

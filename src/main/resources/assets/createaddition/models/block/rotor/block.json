@@ -1,6 +1,5 @@
 {
-	"__comment": "Rotor body only (spinning partial, no shaft). Baked from Blockbench export: multi-axis element rotations flattened and reoriented to Y-axis.",
-	"textures": {
+"textures": {
 		"0": "createaddition:block/rotor/block",
 		"particle": "createaddition:block/rotor/block"
 	},

@@ -1,5 +1,4 @@
 {
-	"__comment": "Rotor body + Create shaft for inventory display. Body elements copied from rotor/block.json; keep in sync.",
 	"parent": "block/block",
 	"textures": {
 		"0": "createaddition:block/rotor/block",

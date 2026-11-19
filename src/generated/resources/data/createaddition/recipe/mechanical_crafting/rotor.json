@@ -1,0 +1,28 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "category": "misc",
+  "key": {
+    "H": {
+      "item": "create:shaft"
+    },
+    "I": {
+      "item": "create:industrial_iron_block"
+    },
+    "S": {
+      "item": "createaddition:copper_spool"
+    }
+  },
+  "pattern": [
+    " SSS ",
+    "SSISS",
+    "SIHIS",
+    "SSISS",
+    " SSS "
+  ],
+  "result": {
+    "count": 1,
+    "id": "createaddition:rotor"
+  },
+  "show_notification": false
+}
