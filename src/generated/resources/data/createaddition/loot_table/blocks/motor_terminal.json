@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createaddition:motor_terminal"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "createaddition:blocks/motor_terminal"
+}

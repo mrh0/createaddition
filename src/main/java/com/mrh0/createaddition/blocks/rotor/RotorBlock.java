@@ -16,10 +16,24 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 public class RotorBlock extends AbstractSimpleShaftBlock {
+
+	private static final VoxelShape CORE = Block.box(2, 2, 2, 14, 14, 14);
+	private static final Map<Direction.Axis, VoxelShape> SHAPES = new EnumMap<>(Direction.Axis.class);
+
+	static {
+		for (Direction.Axis axis : Direction.Axis.values())
+			SHAPES.put(axis, Shapes.or(AllShapes.SIX_VOXEL_POLE.get(axis), CORE));
+	}
 
 	public RotorBlock(Properties properties) {
 		super(properties);
@@ -27,7 +41,7 @@ public class RotorBlock extends AbstractSimpleShaftBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return AllShapes.SIX_VOXEL_POLE.get(state.getValue(AXIS));
+		return SHAPES.get(state.getValue(AXIS));
 	}
 
 	@Override

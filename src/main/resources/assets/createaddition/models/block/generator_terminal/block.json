@@ -1,0 +1,79 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "create:block/andesite_casing",
+    "casing": "create:block/andesite_casing",
+    "end": "create:block/andesite_casing"
+  },
+  "elements": [
+    {
+      "name": "housing",
+      "from": [
+        1,
+        1,
+        1
+      ],
+      "to": [
+        15,
+        15,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#casing"
+        },
+        "east": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#casing"
+        },
+        "south": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#casing"
+        },
+        "west": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#casing"
+        },
+        "up": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#end"
+        },
+        "down": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#end"
+        }
+      }
+    }
+  ]
+}

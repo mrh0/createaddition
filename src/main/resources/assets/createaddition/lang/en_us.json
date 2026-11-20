@@ -24,6 +24,10 @@
 	"createaddition.tooltip.charging.time_remaining": "Charge Time Remaining:",
 
 	"createaddition.tooltip.alternator.info": "Alternator Info:",
+	"createaddition.tooltip.rotor_assembly.info": "Rotor Assembly:",
+	"createaddition.tooltip.rotor_assembly.rotors": "Rotors:",
+	"createaddition.tooltip.rotor_assembly.stators": "Stators:",
+	"createaddition.generic.excitation": "Excitation",
 	"createaddition.tooltip.accumulator.info": "Accumulator Info:",
 	"createaddition.tooltip.relay.info": "Relay Info:",
 	"createaddition.tooltip.connector.info": "Connector Info:",
@@ -163,6 +167,8 @@
 	"block.createaddition.alternator": "Alternator",
 	"block.createaddition.rotor": "Rotor",
 	"block.createaddition.stator": "Stator",
+	"block.createaddition.motor_terminal": "Motor Terminal",
+	"block.createaddition.generator_terminal": "Generator Terminal",
 
 	"block.createaddition.creative_energy": "Creative Generator",
 	"block.createaddition.creative_energy.tooltip": "CREATIVE_GENERATOR",

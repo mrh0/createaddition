@@ -21,6 +21,8 @@ import com.mrh0.createaddition.blocks.portable_energy_interface.PortableEnergyIn
 import com.mrh0.createaddition.blocks.portable_energy_interface.PEIVisual;
 import com.mrh0.createaddition.blocks.redstone_relay.RedstoneRelayBlockEntity;
 import com.mrh0.createaddition.blocks.rolling_mill.RollingMillBlockEntity;
+import com.mrh0.createaddition.blocks.motor_terminal.MotorTerminalBlockEntity;
+import com.mrh0.createaddition.blocks.generator_terminal.GeneratorTerminalBlockEntity;
 import com.mrh0.createaddition.blocks.rotor.RotorBlockEntity;
 import com.mrh0.createaddition.blocks.rotor.RotorRenderer;
 import com.mrh0.createaddition.blocks.rotor.RotorVisual;
@@ -31,6 +33,8 @@ import com.mrh0.createaddition.blocks.rolling_mill.*;
 import com.mrh0.createaddition.blocks.redstone_relay.*;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
+import com.simibubi.create.content.kinetics.base.ShaftRenderer;
+import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class CABlockEntities {
@@ -67,6 +71,20 @@ public class CABlockEntities {
 			.visual(() -> RotorVisual::new, false)
 			.validBlocks(CABlocks.ROTOR)
 			.renderer(() -> RotorRenderer::new)
+			.register();
+
+	public static final BlockEntityEntry<MotorTerminalBlockEntity> MOTOR_TERMINAL = CreateAddition.REGISTRATE
+			.blockEntity("motor_terminal", MotorTerminalBlockEntity::new)
+			.visual(() -> SingleAxisRotatingVisual::shaft, false)
+			.validBlocks(CABlocks.MOTOR_TERMINAL)
+			.renderer(() -> ShaftRenderer::new)
+			.register();
+
+	public static final BlockEntityEntry<GeneratorTerminalBlockEntity> GENERATOR_TERMINAL = CreateAddition.REGISTRATE
+			.blockEntity("generator_terminal", GeneratorTerminalBlockEntity::new)
+			.visual(() -> SingleAxisRotatingVisual::shaft, false)
+			.validBlocks(CABlocks.GENERATOR_TERMINAL)
+			.renderer(() -> ShaftRenderer::new)
 			.register();
 
 	public static final BlockEntityEntry<RollingMillBlockEntity> ROLLING_MILL = CreateAddition.REGISTRATE

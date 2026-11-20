@@ -74,5 +74,23 @@ public class CAMechanicalCrafterRecipeGen extends MechanicalCraftingRecipeGen {
             .patternLine("SSISS")
             .patternLine(" SSS ")
             .disallowMirrored()
+    ),
+    MOTOR_TERMINAL = create(CABlocks.MOTOR_TERMINAL::get).recipe(b -> b
+            .key('B', CATagRegister.Items.commonTags("plates","brass"))
+            .key('C', CAItems.CAPACITOR)
+            .key('H', AllBlocks.SHAFT.asItem())
+            .key('K', AllBlocks.BRASS_CASING.asItem())
+            .patternLine("BCB")
+            .patternLine("HKH")
+            .patternLine("BCB")
+    ),
+    GENERATOR_TERMINAL = create(CABlocks.GENERATOR_TERMINAL::get).recipe(b -> b
+            .key('I', CATagRegister.Items.commonTags("plates","iron"))
+            .key('S', CAItems.COPPER_SPOOL)
+            .key('H', AllBlocks.SHAFT.asItem())
+            .key('K', AllBlocks.ANDESITE_CASING.asItem())
+            .patternLine("ISI")
+            .patternLine("HKH")
+            .patternLine("ISI")
     );
 }

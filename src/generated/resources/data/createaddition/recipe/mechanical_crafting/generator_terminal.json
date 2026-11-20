@@ -1,0 +1,28 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "misc",
+  "key": {
+    "H": {
+      "item": "create:shaft"
+    },
+    "I": {
+      "tag": "c:plates/iron"
+    },
+    "K": {
+      "item": "create:andesite_casing"
+    },
+    "S": {
+      "item": "createaddition:copper_spool"
+    }
+  },
+  "pattern": [
+    "ISI",
+    "HKH",
+    "ISI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createaddition:generator_terminal"
+  }
+}

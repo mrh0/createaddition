@@ -17,6 +17,7 @@ public class CommonConfig {
 	public static final String CATAGORY_ELECTRIC_PUMP = "electric_pump";
 	public static final String CATAGORY_ALTERNATOR = "alternator";
 	public static final String CATAGORY_ROLLING_MILL = "rolling_mill";
+	public static final String CATAGORY_ROTOR_ASSEMBLY = "rotor_assembly";
 	public static final String CATAGORY_WIRES = "wires";
 	public static final String CATAGORY_ACCUMULATOR = "accumulator";
 	public static final String CATAGORY_PEI = "portable_energy_interface";
@@ -53,6 +54,16 @@ public class CommonConfig {
 	public static ModConfigSpec.IntValue ALTERNATOR_MAX_OUTPUT;
 	public static ModConfigSpec.IntValue ALTERNATOR_CAPACITY;
 	public static ModConfigSpec.DoubleValue ALTERNATOR_EFFICIENCY;
+
+	public static ModConfigSpec.IntValue ROTOR_ASSEMBLY_MAX_ROTORS;
+	public static ModConfigSpec.IntValue ROTOR_STRESS;
+	public static ModConfigSpec.IntValue MOTOR_TERMINAL_RPM_RANGE;
+	public static ModConfigSpec.DoubleValue MOTOR_TERMINAL_CONSUMPTION_RATIO;
+	public static ModConfigSpec.IntValue MOTOR_TERMINAL_MAX_INPUT;
+	public static ModConfigSpec.IntValue MOTOR_TERMINAL_CAPACITY;
+	public static ModConfigSpec.DoubleValue GENERATOR_TERMINAL_EFFICIENCY;
+	public static ModConfigSpec.IntValue GENERATOR_TERMINAL_MAX_OUTPUT;
+	public static ModConfigSpec.IntValue GENERATOR_TERMINAL_CAPACITY;
 
 	public static ModConfigSpec.IntValue ROLLING_MILL_PROCESSING_DURATION;
 	public static ModConfigSpec.IntValue ROLLING_MILL_STRESS;
@@ -155,6 +166,37 @@ public class CommonConfig {
 
 		ALTERNATOR_EFFICIENCY = COMMON_BUILDER.comment("Alternator efficiency relative to base conversion rate.")
 				.defineInRange("generator_efficiency", 0.75d, 0.01d, 1.0d);
+		COMMON_BUILDER.pop();
+
+
+		COMMON_BUILDER.comment("Rotor Assembly (Motor Terminal / Generator Terminal)").push(CATAGORY_ROTOR_ASSEMBLY);
+		ROTOR_ASSEMBLY_MAX_ROTORS = COMMON_BUILDER.comment("Maximum number of Rotors a Motor Terminal or Generator Terminal can use.")
+				.defineInRange("rotor_assembly_max_rotors", 16, 1, 256);
+
+		ROTOR_STRESS = COMMON_BUILDER.comment("Stress (in SU at 256 RPM) provided/consumed per Rotor with all 8 Stators. Each Stator unlocks 1/8 of this.",
+						"Energy is derived from this using fe_at_max_rpm / max_stress.")
+				.defineInRange("rotor_stress", 16384, 0, Integer.MAX_VALUE);
+
+		MOTOR_TERMINAL_RPM_RANGE = COMMON_BUILDER.comment("Motor Terminal min/max RPM.")
+				.defineInRange("motor_terminal_rpm_range", 256, 1, Integer.MAX_VALUE);
+
+		MOTOR_TERMINAL_CONSUMPTION_RATIO = COMMON_BUILDER.comment("Motor Terminal energy consumption relative to base conversion rate.")
+				.defineInRange("motor_terminal_consumption_ratio", 0.9d, 0.01d, 100.0d);
+
+		MOTOR_TERMINAL_MAX_INPUT = COMMON_BUILDER.comment("Motor Terminal max input in FE (Energy transfer, not consumption).")
+				.defineInRange("motor_terminal_max_input", 20000, 0, Integer.MAX_VALUE);
+
+		MOTOR_TERMINAL_CAPACITY = COMMON_BUILDER.comment("Motor Terminal internal capacity in FE.")
+				.defineInRange("motor_terminal_capacity", 40000, 0, Integer.MAX_VALUE);
+
+		GENERATOR_TERMINAL_EFFICIENCY = COMMON_BUILDER.comment("Generator Terminal efficiency relative to base conversion rate.")
+				.defineInRange("generator_terminal_efficiency", 0.9d, 0.01d, 1.0d);
+
+		GENERATOR_TERMINAL_MAX_OUTPUT = COMMON_BUILDER.comment("Generator Terminal max output in FE (Energy transfer, not generation).")
+				.defineInRange("generator_terminal_max_output", 20000, 0, Integer.MAX_VALUE);
+
+		GENERATOR_TERMINAL_CAPACITY = COMMON_BUILDER.comment("Generator Terminal internal capacity in FE.")
+				.defineInRange("generator_terminal_capacity", 40000, 0, Integer.MAX_VALUE);
 		COMMON_BUILDER.pop();
 
 

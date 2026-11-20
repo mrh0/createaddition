@@ -56,8 +56,6 @@ public class StatorBlock extends Block {
 		super.createBlockStateDefinition(builder.add(AXIS, TYPE, ROLL));
 	}
 
-	// ---- Ring geometry ----
-
 	public static StatorType typeOfRingIndex(int index) {
 		return (index & 1) == 0 ? StatorType.SIDE : StatorType.CORNER;
 	}
@@ -108,8 +106,6 @@ public class StatorBlock extends Block {
 	public static boolean isRotor(BlockState state, Axis axis) {
 		return state.getBlock() instanceof RotorBlock && state.getValue(RotorBlock.AXIS) == axis;
 	}
-
-	// ---- Placement & survival ----
 
 	@Override
 	@Nullable
@@ -171,14 +167,26 @@ public class StatorBlock extends Block {
 		}
 	}
 
-	// ---- Shape ----
+	/** Number of correctly placed stators (0-8) around the rotor. Skips unloaded positions. */
+	public static int countRing(Level level, BlockPos rotorPos, Axis axis) {
+		int count = 0;
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		for (int i = 0; i < RING_SIZE; i++) {
+			pos.setWithOffset(rotorPos, ringOffset(axis, i));
+			if (!level.isLoaded(pos))
+				continue;
+			BlockState state = level.getBlockState(pos);
+			if (state.getBlock() instanceof StatorBlock && state.getValue(AXIS) == axis && ringIndex(state) == i)
+				count++;
+		}
+		return count;
+	}
 
 	@Override
 	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return SHAPES.computeIfAbsent(state, StatorBlock::computeShape);
 	}
 
-	/** Boxes in the model frame (pixels, rotor along Z): {x1, y1, x2, y2}, all spanning z 0..16. */
 	private static final int[][] SIDE_BOXES = { { 0, 0, 16, 6 } };
 	private static final int[][] CORNER_BOXES = { { 0, 0, 4, 8 }, { 4, 0, 8, 12 }, { 8, 4, 12, 16 }, { 12, 8, 16, 16 } };
 

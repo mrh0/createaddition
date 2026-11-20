@@ -1,0 +1,17 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "createaddition:block/generator_terminal/block",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "createaddition:block/generator_terminal/block"
+    },
+    "axis=z": {
+      "model": "createaddition:block/generator_terminal/block",
+      "x": 90,
+      "y": 180
+    }
+  }
+}

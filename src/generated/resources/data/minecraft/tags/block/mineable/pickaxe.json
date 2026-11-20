@@ -6,6 +6,8 @@
     "createaddition:alternator",
     "createaddition:rotor",
     "createaddition:stator",
+    "createaddition:motor_terminal",
+    "createaddition:generator_terminal",
     "createaddition:rolling_mill",
     "createaddition:liquid_blaze_burner"
   ]

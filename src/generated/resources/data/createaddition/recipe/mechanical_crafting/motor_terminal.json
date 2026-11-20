@@ -1,0 +1,28 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "c:plates/brass"
+    },
+    "C": {
+      "item": "createaddition:capacitor"
+    },
+    "H": {
+      "item": "create:shaft"
+    },
+    "K": {
+      "item": "create:brass_casing"
+    }
+  },
+  "pattern": [
+    "BCB",
+    "HKH",
+    "BCB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createaddition:motor_terminal"
+  }
+}

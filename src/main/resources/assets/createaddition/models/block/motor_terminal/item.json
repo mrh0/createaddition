@@ -1,0 +1,150 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "create:block/brass_casing",
+    "casing": "create:block/brass_casing",
+    "end": "create:block/brass_casing",
+    "axis": "create:block/axis",
+    "axis_top": "create:block/axis_top"
+  },
+  "elements": [
+    {
+      "name": "housing",
+      "from": [
+        1,
+        1,
+        1
+      ],
+      "to": [
+        15,
+        15,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#casing"
+        },
+        "east": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#casing"
+        },
+        "south": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#casing"
+        },
+        "west": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#casing"
+        },
+        "up": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#end"
+        },
+        "down": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#end"
+        }
+      }
+    },
+    {
+      "name": "shaft",
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        16,
+        10
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#axis"
+        },
+        "east": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#axis"
+        },
+        "south": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#axis"
+        },
+        "west": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#axis"
+        },
+        "up": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "texture": "#axis_top"
+        },
+        "down": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "texture": "#axis_top"
+        }
+      }
+    }
+  ]
+}

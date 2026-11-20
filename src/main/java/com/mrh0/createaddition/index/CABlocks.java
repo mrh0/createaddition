@@ -8,6 +8,8 @@ import com.mrh0.createaddition.CreateAddition;
 import com.mrh0.createaddition.blocks.alternator.AlternatorBlock;
 import com.mrh0.createaddition.blocks.barbed_wire.BarbedWireBlock;
 import com.mrh0.createaddition.blocks.cake.CACakeBlock;
+import com.mrh0.createaddition.blocks.motor_terminal.MotorTerminalBlock;
+import com.mrh0.createaddition.blocks.generator_terminal.GeneratorTerminalBlock;
 import com.mrh0.createaddition.blocks.connector.LargeConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.SmallConnectorBlock;
 import com.mrh0.createaddition.blocks.connector.SmallLightConnectorBlock;
@@ -139,6 +141,26 @@ public class CABlocks {
 			.model((c, p) -> BlockGenHelper.blockDisplayTransforms(
 					p.withExistingParent(c.getName(), p.modLoc("block/stator/block_side"))))
 			.build()
+			.register();
+
+	public static final BlockEntry<MotorTerminalBlock> MOTOR_TERMINAL = CreateAddition.REGISTRATE
+			.block("motor_terminal", MotorTerminalBlock::new)
+			.initialProperties(SharedProperties::softMetal)
+			.properties(p -> p.noOcclusion())
+			.transform(pickaxeOnly())
+			.blockstate(BlockStateGen.axisBlockProvider(true))
+			.item()
+			.transform(customItemModel())
+			.register();
+
+	public static final BlockEntry<GeneratorTerminalBlock> GENERATOR_TERMINAL = CreateAddition.REGISTRATE
+			.block("generator_terminal", GeneratorTerminalBlock::new)
+			.initialProperties(SharedProperties::softMetal)
+			.properties(p -> p.noOcclusion())
+			.transform(pickaxeOnly())
+			.blockstate(BlockStateGen.axisBlockProvider(true))
+			.item()
+			.transform(customItemModel())
 			.register();
 
 	public static final BlockEntry<RollingMillBlock> ROLLING_MILL = CreateAddition.REGISTRATE
